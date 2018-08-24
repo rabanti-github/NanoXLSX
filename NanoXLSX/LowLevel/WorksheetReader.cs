@@ -60,6 +60,9 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Constructor with parameters
         /// </summary>
+        /// <param name="sharedStrings">SharedStringsReader object</param>
+        /// <param name="name">Worksheet name</param>
+        /// <param name="number">Worksheet number</param>
         public WorksheetReader(SharedStringsReader sharedStrings, String name, int number)
         {
             Data = new Dictionary<string, Cell>();
@@ -198,12 +201,12 @@ namespace NanoXLSX.LowLevel
                                             {
                                                 value = valueNode.InnerText;
                                             }
+                                            if (valueNode.LocalName.ToLower() == "f")
+                                            {
+                                                formula = valueNode.InnerText;
+                                            }
                                         }
                                     }
-                                }
-                                else if (rowChild.LocalName.ToLower() == "f")
-                                {
-                                    formula = rowChild.InnerText;
                                 }
                                 ResolveCellData(address, type, value, style, formula);
                             }
@@ -253,14 +256,12 @@ namespace NanoXLSX.LowLevel
         private void ResolveCellData(string address, string type, string value, string style, string formula)
         {
             address = address.ToUpper();
-            double d, b;
-            int i;
             String s;
             Cell cell;
             CellResolverTuple tuple;
             if (style != null && style == "1") // Date must come before numeric values
             {
-                tuple = GetNumericValue(value);
+                tuple = GetDateValue(value);
                 if (tuple.IsValid == true)
                 {
                     cell = new Cell(tuple.Data, Cell.CellType.DATE, address);
@@ -294,7 +295,7 @@ namespace NanoXLSX.LowLevel
                     cell = new Cell(value, Cell.CellType.STRING, address);
                 }
             }
-            else if (formula != null)
+            else if (formula != null) // formula before string
             {
                 cell = new Cell(formula, Cell.CellType.FORMULA, address);
             }
@@ -400,11 +401,35 @@ namespace NanoXLSX.LowLevel
             return new CellResolverTuple(state, value, typeof(bool));
         }
 
-    #endregion
+        /// <summary>
+        /// Parses the date (DateTime) value of a raw cell
+        /// </summary>
+        /// <param name="raw">Raw value as string</param>
+        /// <returns>CellResolverTuple with information about the validity and resolved data</returns>
+        private static CellResolverTuple GetDateValue(String raw)
+        {
+            double dValue;
+            CellResolverTuple t;
+            if (double.TryParse(raw, out dValue) == true)
+            {
+                DateTime date = DateTime.FromOADate(dValue);
+                t = new CellResolverTuple(true, date, typeof(DateTime));
+            }
+            else
+            {
+                t = new CellResolverTuple(false, new DateTime(), typeof(DateTime));
+            }
+            return t;
+        }
 
-    #region subClasses
+        #endregion
 
-    class CellResolverTuple
+        #region subClasses
+
+        /// <summary>
+        /// Helper class representing a tuple of cell data and is state (valid or invalid). And additional type is also available
+        /// </summary>
+        class CellResolverTuple
         {
             /// <summary>
             /// Gets whether the cell is valid

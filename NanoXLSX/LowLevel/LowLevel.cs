@@ -1328,4 +1328,13 @@ namespace NanoXLSX.LowLevel
         #endregion
 
     }
+    #region doc
+    /// <summary>
+    /// Sub-namespace with all low-level classes and functions. This namespace is necessary to read and generate files but should not be used as pat of the API. Use the classes and functions in the namespace NanoXLSX instead
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc // This class is only for documentation purpose (Sandcastle)
+    { }
+    #endregion
+
 }
