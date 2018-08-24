@@ -1495,6 +1495,11 @@
             <param name="message">Message of the exception</param>
             <param name="title">Title of the exception</param>
         </member>
+        <member name="T:NanoXLSX.Exception.NamespaceDoc">
+            <summary>
+            Sub-namespace for exceptions
+            </summary>
+        </member>
         <member name="T:NanoXLSX.LowLevel.LowLevel">
             <summary>
             Class for low level handling (XML, formatting, packing)
@@ -1795,17 +1800,27 @@
             <param name="key">Key to check</param>
             <returns>True if the entry exists, otherwise false</returns>
         </member>
+        <member name="T:NanoXLSX.LowLevel.NamespaceDoc">
+            <summary>
+            Sub-namespace with all low-level classes and functions. This namespace is necessary to read and generate files but should not be used as pat of the API. Use the classes and functions in the namespace NanoXLSX instead
+            </summary>
+        </member>
+        <member name="T:NanoXLSX.LowLevel.Reader">
+            <summary>
+            Class representing a reader to decompile XLSX files
+            </summary>
+        </member>
         <member name="M:NanoXLSX.LowLevel.Reader.#ctor(System.String)">
             <summary>
             Constructor with file path as parameter
             </summary>
-            <param name="path">File path of the xlsx file to load</param>
+            <param name="path">File path of the XLSX file to load</param>
         </member>
         <member name="M:NanoXLSX.LowLevel.Reader.#ctor(System.IO.Stream)">
             <summary>
             Constructor with stream as parameter
             </summary>
-            <param name="stream">Stream of the xlsx file to load</param>
+            <param name="stream">Stream of the XLSX file to load</param>
         </member>
         <member name="M:NanoXLSX.LowLevel.Reader.Read">
             <summary>
@@ -1940,6 +1955,9 @@
             <summary>
             Constructor with parameters
             </summary>
+            <param name="sharedStrings">SharedStringsReader object</param>
+            <param name="name">Worksheet name</param>
+            <param name="number">Worksheet number</param>
         </member>
         <member name="M:NanoXLSX.LowLevel.WorksheetReader.HasColumn(System.String)">
             <summary>
@@ -2017,6 +2035,18 @@
             </summary>
             <param name="raw">Raw value as string</param>
             <returns>CellResolverTuple with information about the validity and resolved data</returns>
+        </member>
+        <member name="M:NanoXLSX.LowLevel.WorksheetReader.GetDateValue(System.String)">
+            <summary>
+            Parses the date (DateTime) value of a raw cell
+            </summary>
+            <param name="raw">Raw value as string</param>
+            <returns>CellResolverTuple with information about the validity and resolved data</returns>
+        </member>
+        <member name="T:NanoXLSX.LowLevel.WorksheetReader.CellResolverTuple">
+            <summary>
+            Helper class representing a tuple of cell data and is state (valid or invalid). And additional type is also available
+            </summary>
         </member>
         <member name="P:NanoXLSX.LowLevel.WorksheetReader.CellResolverTuple.IsValid">
             <summary>
@@ -2473,6 +2503,33 @@
             <returns>Workbook object</returns>
             <exception cref="T:NanoXLSX.Exception.IOException">Throws IOException in case of an error</exception>
         </member>
+        <member name="T:NanoXLSX.Style.AppendAttribute">
+            <summary>
+            Attribute designated to control the copying of style properties
+            </summary>
+            <seealso cref="T:System.Attribute" />
+        </member>
+        <member name="P:NanoXLSX.Style.AppendAttribute.Ignore">
+            <summary>
+            Indicates whether the property annotated with the attribute is ignored during the copying of properties
+            </summary>
+            <value>
+              <c>true</c> if ignored, otherwise <c>false</c>.
+            </value>
+        </member>
+        <member name="P:NanoXLSX.Style.AppendAttribute.NestedProperty">
+            <summary>
+            Indicates whether the property annotated with the attribute is a nested property. Nested properties are ignored but during the copying of properties but can be broken down to its sub-properties
+            </summary>
+            <value>
+              <c>true</c> if a nested property, otherwise <c>false</c>.
+            </value>
+        </member>
+        <member name="M:NanoXLSX.Style.AppendAttribute.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
         <member name="T:NanoXLSX.Style.StyleManager">
             <summary>
             Class representing a style manager to maintain all styles and its components of a workbook
@@ -2752,33 +2809,6 @@
             <param name="o">Value to cast</param>
             <param name="sb">StringBuilder reference to put the casted object in</param>
             <param name="delimiter">Delimiter character to append after the casted value</param>
-        </member>
-        <member name="T:NanoXLSX.Style.AbstractStyle.AppendAttribute">
-            <summary>
-            Attribute designated to control the copying of style properties
-            </summary>
-            <seealso cref="T:System.Attribute" />
-        </member>
-        <member name="P:NanoXLSX.Style.AbstractStyle.AppendAttribute.Ignore">
-            <summary>
-            Indicates whether the property annotated with the attribute is ignored during the copying of properties
-            </summary>
-            <value>
-              <c>true</c> if ignored, otherwise <c>false</c>.
-            </value>
-        </member>
-        <member name="P:NanoXLSX.Style.AbstractStyle.AppendAttribute.NestedProperty">
-            <summary>
-            Indicates whether the property annotated with the attribute is a nested property. Nested properties are ignored but during the copying of properties but can be broken down to its sub-properties
-            </summary>
-            <value>
-              <c>true</c> if a nested property, otherwise <c>false</c>.
-            </value>
-        </member>
-        <member name="M:NanoXLSX.Style.AbstractStyle.AppendAttribute.#ctor">
-            <summary>
-            Default constructor
-            </summary>
         </member>
         <member name="T:NanoXLSX.Style.Style">
             <summary>
@@ -3733,9 +3763,14 @@
             </summary>
             <returns>Copy of the current object without the internal ID</returns>
         </member>
+        <member name="T:NanoXLSX.Style.NamespaceDoc">
+            <summary>
+            Sub-namespace for style definitions, style handling and (static) basic styles
+            </summary>
+        </member>
         <member name="T:NanoXLSX.NamespaceDoc">
             <summary>
-            NanoXLSX is a library to generate and read XLSX files in an easy and native way
+            Main namespace with all high-level classes and functions to create or read workbooks and worksheets
             </summary>
         </member>
     </members>

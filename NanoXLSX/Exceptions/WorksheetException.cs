@@ -33,4 +33,14 @@ namespace NanoXLSX.Exception
             : base(title + ": " + message)
         { this.ExceptionTitle = title; }
     }
+
+    #region doc
+    /// <summary>
+    /// Sub-namespace for exceptions
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc // This class is only for documentation purpose (Sandcastle)
+    { }
+    #endregion
+
 }

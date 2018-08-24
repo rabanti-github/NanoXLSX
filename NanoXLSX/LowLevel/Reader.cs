@@ -18,6 +18,9 @@ using IOException = NanoXLSX.Exception.IOException;
 
 namespace NanoXLSX.LowLevel
 {
+    /// <summary>
+    /// Class representing a reader to decompile XLSX files
+    /// </summary>
     public class Reader
     {
 #region privateFields
@@ -32,7 +35,7 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Constructor with file path as parameter
         /// </summary>
-        /// <param name="path">File path of the xlsx file to load</param>
+        /// <param name="path">File path of the XLSX file to load</param>
         public Reader(String path)
         {
             this.filePath = path;
@@ -42,7 +45,7 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Constructor with stream as parameter
         /// </summary>
-        /// <param name="stream">Stream of the xlsx file to load</param>
+        /// <param name="stream">Stream of the XLSX file to load</param>
         public Reader(Stream stream)
         {
             this.worksheets = new Dictionary<int, WorksheetReader>();

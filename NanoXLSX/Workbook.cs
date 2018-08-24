@@ -14,14 +14,6 @@ using NanoXLSX.Style;
 
 namespace NanoXLSX
 {
-
-    /// <summary>
-    /// NanoXLSX is a library to generate and read XLSX files in an easy and native way
-    /// </summary>
-    [System.Runtime.CompilerServices.CompilerGenerated]
-    class NamespaceDoc // This class is only for documentation purpose (Sandcastle)
-    { }
-
     /// <summary>
     /// Class representing a workbook
     /// </summary>
@@ -648,4 +640,13 @@ namespace NanoXLSX
 
         #endregion
     }
+
+    #region doc
+    /// <summary>
+    /// Main namespace with all high-level classes and functions to create or read workbooks and worksheets
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc // This class is only for documentation purpose (Sandcastle)
+    { }
+    #endregion
 }

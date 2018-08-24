@@ -71,6 +71,7 @@
     <Compile Include="Metadata.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="Shortener.cs" />
+    <Compile Include="Style\AppendAttribute.cs" />
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="Style\AbstractStyle.cs" />
     <Compile Include="Style\BasicStyles.cs" />

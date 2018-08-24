@@ -261,4 +261,13 @@ namespace NanoXLSX.Style
         #endregion
 
     }
+    #region doc
+    /// <summary>
+    /// Sub-namespace for style definitions, style handling and (static) basic styles
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc // This class is only for documentation purpose (Sandcastle)
+    { }
+    #endregion
+
 }
