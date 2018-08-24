@@ -18,7 +18,7 @@ namespace NanoXLSX.Style
     /// <summary>
     /// Class represents an abstract style component
     /// </summary>
-    public abstract class AbstractStyle : IComparable<AbstractStyle>, IEquatable<AbstractStyle>
+    public abstract partial class AbstractStyle : IComparable<AbstractStyle>, IEquatable<AbstractStyle>
     {
         /// <summary>
         /// Gets the unique hash of the object
@@ -166,38 +166,6 @@ namespace NanoXLSX.Style
             if (delimiter.HasValue == true)
             {
                 sb.Append(delimiter.Value);
-            }
-        }
-
-        /// <summary>
-        /// Attribute designated to control the copying of style properties
-        /// </summary>
-        /// <seealso cref="System.Attribute" />
-        public class AppendAttribute : Attribute
-        {
-            /// <summary>
-            /// Indicates whether the property annotated with the attribute is ignored during the copying of properties
-            /// </summary>
-            /// <value>
-            ///   <c>true</c> if ignored, otherwise <c>false</c>.
-            /// </value>
-            public bool Ignore { get; set; }
-
-            /// <summary>
-            /// Indicates whether the property annotated with the attribute is a nested property. Nested properties are ignored but during the copying of properties but can be broken down to its sub-properties
-            /// </summary>
-            /// <value>
-            ///   <c>true</c> if a nested property, otherwise <c>false</c>.
-            /// </value>
-            public bool NestedProperty { get; set; }
-
-            /// <summary>
-            /// Default constructor
-            /// </summary>
-            public AppendAttribute()
-            {
-                this.Ignore = false;
-                this.NestedProperty = false;
             }
         }
     }

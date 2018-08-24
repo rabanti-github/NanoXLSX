@@ -60,6 +60,9 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Constructor with parameters
         /// </summary>
+        /// <param name="sharedStrings">SharedStringsReader object</param>
+        /// <param name="name">Worksheet name</param>
+        /// <param name="number">Worksheet number</param>
         public WorksheetReader(SharedStringsReader sharedStrings, String name, int number)
         {
             Data = new Dictionary<string, Cell>();
@@ -253,8 +256,6 @@ namespace NanoXLSX.LowLevel
         private void ResolveCellData(string address, string type, string value, string style, string formula)
         {
             address = address.ToUpper();
-            double d, b;
-            int i;
             String s;
             Cell cell;
             CellResolverTuple tuple;
@@ -400,11 +401,14 @@ namespace NanoXLSX.LowLevel
             return new CellResolverTuple(state, value, typeof(bool));
         }
 
-    #endregion
+        #endregion
 
-    #region subClasses
+        #region subClasses
 
-    class CellResolverTuple
+        /// <summary>
+        /// Helper class representing a tuple of cell data and is state (valid or invalid). And additional type is also available
+        /// </summary>
+        class CellResolverTuple
         {
             /// <summary>
             /// Gets whether the cell is valid
