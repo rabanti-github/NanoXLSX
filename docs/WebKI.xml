@@ -271,8 +271,8 @@
   <HelpKINode Title="DATE enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="dateFormat enumeration member" Url="html/ddee1092-73de-1998-f7bf-2f494233aca2.htm" />
   <HelpKINode Title="DateFormat property" Url="html/9a4ab72e-2a47-716f-f639-abe41d86b529.htm" />
-  <HelpKINode Title="DEFAULT enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="Default enumeration member" Url="html/07c2d3c9-4304-155a-86b1-7001fa87c3ea.htm" />
+  <HelpKINode Title="DEFAULT enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="DEFAULTCOLOR field" Url="html/a1b4fc86-6762-a5f0-0457-61c82580a9fd.htm" />
   <HelpKINode Title="DefaultColumnWidth property" Url="html/5443dc31-73fa-ec0c-4d1d-76999e3aea1c.htm" />
   <HelpKINode Title="DEFAULTFONT field" Url="html/bcbaf9e4-9c81-b57b-8f95-319f932cae9d.htm" />
@@ -407,6 +407,7 @@
   <HelpKINode Title="GetComponentByHash method" Url="html/3d83e897-c632-de30-0d4e-8d9ddf343160.htm" />
   <HelpKINode Title="GetCurrentColumnNumber method" Url="html/f2d9d0d4-99fa-b9f6-7169-6963277402e6.htm" />
   <HelpKINode Title="GetCurrentRowNumber method" Url="html/5b252777-7a33-4255-aecf-1b36b4255b44.htm" />
+  <HelpKINode Title="GetDateValue method" Url="html/af248e5b-242d-62c0-daa0-e82c17075262.htm" />
   <HelpKINode Title="GetEntryStream method" Url="html/787fd91d-a1a7-524d-1bb5-f56fa94f7559.htm" />
   <HelpKINode Title="GetFillByHash method" Url="html/887bb0c5-2d12-c2f8-aec6-5b364ec1d890.htm" />
   <HelpKINode Title="GetFills method" Url="html/9aa043b1-e898-60cb-3ffd-ecbf4ab37fb3.htm" />
@@ -1239,6 +1240,7 @@
   <HelpKINode Title="WorksheetReader.Data property" Url="html/4f77d43b-b2f3-fac8-329c-fc3947bd2237.htm" />
   <HelpKINode Title="WorksheetReader.GetAttribute method" Url="html/5488d28b-08ef-380f-617c-3d6c1017e2a5.htm" />
   <HelpKINode Title="WorksheetReader.GetBooleanValue method" Url="html/92704e4e-b92d-2a48-ac6e-8e86bada6134.htm" />
+  <HelpKINode Title="WorksheetReader.GetDateValue method" Url="html/af248e5b-242d-62c0-daa0-e82c17075262.htm" />
   <HelpKINode Title="WorksheetReader.GetIntValue method" Url="html/d9e0c725-ac3e-9a97-eb02-89464372f940.htm" />
   <HelpKINode Title="WorksheetReader.GetNumericValue method" Url="html/e25822f3-bf46-6f34-c716-3f0b9f1e497f.htm" />
   <HelpKINode Title="WorksheetReader.GetRow method" Url="html/f7cb0dac-2604-1f9c-0ed3-b6f468e5f580.htm" />

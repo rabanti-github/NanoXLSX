@@ -2036,6 +2036,13 @@
             <param name="raw">Raw value as string</param>
             <returns>CellResolverTuple with information about the validity and resolved data</returns>
         </member>
+        <member name="M:NanoXLSX.LowLevel.WorksheetReader.GetDateValue(System.String)">
+            <summary>
+            Parses the date (DateTime) value of a raw cell
+            </summary>
+            <param name="raw">Raw value as string</param>
+            <returns>CellResolverTuple with information about the validity and resolved data</returns>
+        </member>
         <member name="T:NanoXLSX.LowLevel.WorksheetReader.CellResolverTuple">
             <summary>
             Helper class representing a tuple of cell data and is state (valid or invalid). And additional type is also available
