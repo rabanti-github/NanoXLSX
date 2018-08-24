@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which assemblies to include from solution and
+				 project documentation sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{da885e7f-9583-4b8a-8d51-ad2b0dbac1c0}</ProjectGuid>
+    <SHFBSchemaVersion>2017.9.26.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual Studio adds them anyway -->
+    <AssemblyName>Documentation</AssemblyName>
+    <RootNamespace>Documentation</RootNamespace>
+    <Name>Documentation</Name>
+    <!-- SHFB properties -->
+    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <OutputPath>..\docs\</OutputPath>
+    <HtmlHelpName>Documentation</HtmlHelpName>
+    <Language>en-US</Language>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
+    <IndentHtml>False</IndentHtml>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CleanIntermediates>True</CleanIntermediates>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\NanoXLSX\bin\Debug\NanoXLSX.XML" />
+      <DocumentationSource sourceFile="..\NanoXLSX\bin\Debug\NanoXLSX.dll" />
+    </DocumentationSources>
+    <HelpFileVersion>1.0.0.0</HelpFileVersion>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <NamespaceGrouping>True</NamespaceGrouping>
+    <SyntaxFilters>C#</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <PresentationStyle>VS2013</PresentationStyle>
+    <Preliminary>False</Preliminary>
+    <NamingMethod>Guid</NamingMethod>
+    <HelpTitle>NanoXLSX Library Documentation</HelpTitle>
+    <ContentPlacement>BelowNamespaces</ContentPlacement>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Internals, Privates, Protected, SealedProtected, ProtectedInternalAsProtected, EditorBrowsableNever, NonBrowsable</VisibleItems>
+    <FeedbackEMailAddress>
+    </FeedbackEMailAddress>
+    <CopyrightText>Copyright Raphael Stoeckli &amp;#169%3b 2018</CopyrightText>
+    <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
+    <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
+    <ProjectSummary>&amp;lt%3bp&amp;gt%3bNanoXLSX is a small .NET / C# library to create and read XLSX files %28Microsoft Excel 2007 or newer%29 in an easy and native way&amp;lt%3b/p&amp;gt%3b
+&amp;lt%3bul&amp;gt%3b
+&amp;lt%3bli&amp;gt%3b&amp;lt%3bstrong&amp;gt%3bNo dependencies&amp;lt%3b/strong&amp;gt%3b %28%2a&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bNo need for an installation of Microsoft Office&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bNo need for Office interop libraries&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bNo need for 3rd party libraries&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bNo need for an installation of the Microsoft Open Office XML SDK %28OOXML%29&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3b/ul&amp;gt%3b
+&amp;lt%3bp&amp;gt%3bSee the &amp;lt%3bstrong&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttps://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md&amp;quot%3b&amp;gt%3bChange Log&amp;lt%3b/a&amp;gt%3b&amp;lt%3b/strong&amp;gt%3b for recent updates.&amp;lt%3b/p&amp;gt%3b
+&amp;lt%3bbr&amp;gt%3b
+&amp;lt%3bb&amp;gt%3bNote: The reader functionality is currently limited to basic workbook data, cell values and formulas in worksheets. Styles and other data is not supported yet when it comes to reading of XLSX flies. The scope of reader functionality may change with future versions.&amp;lt%3b/b&amp;gt%3b
+
+&amp;lt%3bh2&amp;gt%3bRequirements&amp;lt%3b/h2&amp;gt%3b
+
+NanoXLSX is based on PicoXLSX and was created with .NET version 4.5. Newer versions like 4.6.1 are working and tested. Older versions like 3.5 and 4.0 may also work with minor changes. Some functions introduced in .NET 4.5 were used and must be adapted in this case.
+&amp;lt%3bbr/&amp;gt%3b&amp;lt%3bbr/&amp;gt%3b%2a%29The only requirement to compile the library besides .NET is the assembly &amp;lt%3bb&amp;gt%3bWindowsBase&amp;lt%3b/b&amp;gt%3b, as well as &amp;lt%3bb&amp;gt%3bSystem.IO.Compression&amp;lt%3b/b&amp;gt%3b. These assemblies are &amp;lt%3bb&amp;gt%3bstandard components in all Microsoft Windows systems&amp;lt%3b/b&amp;gt%3b %28except Windows RT systems%29. If your IDE of choice supports referencing assemblies from the Global Assembly Cache %28&amp;lt%3bb&amp;gt%3bGAC&amp;lt%3b/b&amp;gt%3b%29 of Windows, select WindowsBase and Compression from there. If you want so select the DLLs manually and Microsoft Visual Studio is installed on your system, the DLL of WindowsBase can be found most likely under “c:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\WindowsBase.dll”, as well as System.IO.Compression under &amp;quot%3bc:\Program Files %28x86%29\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.IO.Compression.dll&amp;quot%3b. Otherwise you find them in the GAC, under “c:\Windows\Microsoft.NET\assembly\GAC_MSIL\WindowsBase” and &amp;quot%3bc:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.IO.Compression&amp;quot%3b
+&amp;lt%3bbr/&amp;gt%3b&amp;lt%3bbr/&amp;gt%3b
+
+If you want to compile the documentation project %28folder: Documentation%3b project file: shfbproj%29, you need also the &amp;lt%3bstrong&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttps://github.com/EWSoftware/SHFB&amp;quot%3b&amp;gt%3bSandcastle Help File Builder %28SHFB%29&amp;lt%3b/a&amp;gt%3b&amp;lt%3b/strong&amp;gt%3b. It is also freely available. But you don’t need the documentation project to build the NanoXLSX library.
+&amp;lt%3bbr/&amp;gt%3b
+&amp;lt%3bh2&amp;gt%3bInstallation&amp;lt%3b/h2&amp;gt%3b
+
+&amp;lt%3bh3&amp;gt%3bUsing NuGet&amp;lt%3b/h3&amp;gt%3b
+
+By Package Manager:&amp;lt%3bbr&amp;gt%3b
+&amp;lt%3bpre&amp;gt%3b&amp;lt%3bcode&amp;gt%3bInstall-Package PicoXLSX&amp;lt%3b/code&amp;gt%3b&amp;lt%3b/pre&amp;gt%3b
+&amp;lt%3bbr&amp;gt%3b
+&amp;lt%3bbr&amp;gt%3b
+By .NET CLI:&amp;lt%3bbr&amp;gt%3b
+&amp;lt%3bpre&amp;gt%3b&amp;lt%3bcode&amp;gt%3bdotnet add package PicoXLSX&amp;lt%3b/code&amp;gt%3b&amp;lt%3b/pre&amp;gt%3b
+
+&amp;lt%3bh3&amp;gt%3bAs DLL&amp;lt%3b/h3&amp;gt%3b
+
+Simply place the NanoXLSX DLL into your .NET project and add a reference to it. Please keep in mind that the .NET version of your solution must match with the runtime version of the NanoXLSX DLL %28currently compiled with 4.5%29.
+&amp;lt%3bh3&amp;gt%3bAs source files&amp;lt%3b/h3&amp;gt%3b
+
+Place all .CS files from the NanoXLSX source folder and its sub-folders into your project.
+
+
+&amp;lt%3bh2&amp;gt%3bUsage %28Quick Start%29&amp;lt%3b/h2&amp;gt%3b
+
+&amp;lt%3bh2&amp;gt%3bQuick Start %28shortened syntax%29&amp;lt%3b/h2&amp;gt%3b
+&amp;lt%3bpre&amp;gt%3b&amp;lt%3bcode&amp;gt%3b
+Workbook workbook = new Workbook%28&amp;amp%3bquot%3bmyWorkbook.xlsx&amp;amp%3bquot%3b, &amp;amp%3bquot%3bSheet1&amp;amp%3bquot%3b%29%3b         // Create new workbook with a worksheet called Sheet1
+ workbook.WS.Value%28&amp;amp%3bquot%3bSome Data&amp;amp%3bquot%3b%29%3b                                        // Add cell A1
+ workbook.WS.Formula%28&amp;amp%3bquot%3b=A1&amp;amp%3bquot%3b%29%3b                                            // Add formula to cell B1
+ workbook.WS.Down%28%29%3b                                                    // Go to row 2
+ workbook.WS.Value%28DateTime.Now, Style.BasicStyles.Bold%29%3b               // Add formatted value to cell A2
+ workbook.Save%28%29%3b                                                       // Save the workbook as myWorkbook.xlsx
+&amp;lt%3b/code&amp;gt%3b&amp;lt%3b/pre&amp;gt%3b
+&amp;lt%3bh2&amp;gt%3bQuick Start %28regular syntax%29&amp;lt%3b/h2&amp;gt%3b
+&amp;lt%3bpre&amp;gt%3b&amp;lt%3bcode&amp;gt%3b
+Workbook workbook = new Workbook%28&amp;amp%3bquot%3bmyWorkbook.xlsx&amp;amp%3bquot%3b, &amp;amp%3bquot%3bSheet1&amp;amp%3bquot%3b%29%3b         // Create new workbook with a worksheet called Sheet1
+ workbook.CurrentWorksheet.AddNextCell%28&amp;amp%3bquot%3bSome Data&amp;amp%3bquot%3b%29%3b                    // Add cell A1
+ workbook.CurrentWorksheet.AddNextCell%2842%29%3b                             // Add cell B1
+ workbook.CurrentWorksheet.GoToNextRow%28%29%3b                               // Go to row 2
+ workbook.CurrentWorksheet.AddNextCell%28DateTime.Now%29%3b                   // Add cell A2
+ workbook.Save%28%29%3b                                                       // Save the workbook as myWorkbook.xlsx
+&amp;lt%3b/code&amp;gt%3b&amp;lt%3b/pre&amp;gt%3b
+
+&amp;lt%3bh2&amp;gt%3bQuick Start %28read%29&amp;lt%3b/h2&amp;gt%3b
+&amp;lt%3bpre&amp;gt%3b&amp;lt%3bcode&amp;gt%3b 
+Workbook wb = Workbook.Load%28&amp;quot%3bbasic.xlsx&amp;quot%3b%29%3b                             // Read the workbook
+ System.Console.WriteLine%28&amp;quot%3bcontains worksheet name: &amp;quot%3b + wb.CurrentWorksheet.SheetName%29%3b
+ foreach %28KeyValuePair&amp;lt%3bstring, Cell&amp;gt%3b cell in wb.CurrentWorksheet.Cells%29
+ {
+    System.Console.WriteLine%28&amp;quot%3bCell address: &amp;quot%3b + cell.Key + &amp;quot%3b: content:&amp;#39%3b&amp;quot%3b + cell.Value.Value + &amp;quot%3b&amp;#39%3b&amp;quot%3b%29%3b
+ }
+&amp;lt%3b/code&amp;gt%3b&amp;lt%3b/pre&amp;gt%3b
+</ProjectSummary>
+    <TransformComponentArguments>
+      <Argument Key="logoFile" Value="NanoXLSX.png" />
+      <Argument Key="logoHeight" Value="72" />
+      <Argument Key="logoWidth" Value="70" />
+      <Argument Key="logoAltText" Value="NanoXLSX" />
+      <Argument Key="logoPlacement" Value="left" />
+      <Argument Key="logoAlignment" Value="left" />
+      <Argument Key="maxVersionParts" Value="" />
+      <Argument Key="defaultLanguage" Value="cs" />
+      <Argument Key="includeEnumValues" Value="true" />
+      <Argument Key="baseSourceCodeUrl" Value="" />
+      <Argument Key="requestExampleUrl" Value="" />
+    </TransformComponentArguments>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="NanoXLSX" isDocumented="True">Main namespace with all high-level classes and functions to create or read workbooks and worksheets</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NanoXLSX.Exception" isDocumented="True">Sub-namespace for exceptions</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NanoXLSX.LowLevel" isDocumented="True">Sub-namespace with all low-level classes and functions. This namespace is necessary to read and generate files but should not be used as pat of the API. Use the classes and functions in the namespace NanoXLSX instead</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NanoXLSX.Style" isDocumented="True">Sub-namespace for style definitions, style handling and (static) basic styles</NamespaceSummaryItem>
+    </NamespaceSummaries>
+    <RootNamespaceTitle>NanoXLSX</RootNamespaceTitle>
+  </PropertyGroup>
+  <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
+			 the build.  The others are optional common platform types that may appear. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
+  </PropertyGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+  <!-- The pre-build and post-build event properties must appear *after* the targets file import in order to be
+			 evaluated correctly. -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>xcopy "$(OutputPath)Documentation.chm" "$(SolutionDir)Executable" /Y
+xcopy "$(ProjectDir)icons\NanoXLSX.png" "$(OutputPath)icons" /Y /r /h /c
+xcopy "$(ProjectDir)icons\favicon.ico" "$(OutputPath)icons" /Y /r /h /c</PostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="icons" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icons\NanoXLSX.png">
+      <ImageId>NanoXLSX</ImageId>
+      <AlternateText>NanoXLSX</AlternateText>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icons\favicon.ico" />
+  </ItemGroup>
+</Project>
