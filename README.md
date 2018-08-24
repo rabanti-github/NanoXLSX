@@ -18,7 +18,7 @@ See the **[Change Log](https://github.com/rabanti-github/NanoXLSX/blob/master/Ch
 
 # Requirements
 NanoXLSX is based on PicoXLSX and was created with .NET version 4.5. Newer versions like 4.6.1 are working and tested. Older versions like 3.5 and 4.0 may also work with minor changes. Some functions introduced in .NET 4.5 were used and must be adapted in this case.
-<br/><br/>
+
 
 *)The only requirement to compile the library besides .NET is the assembly <b>WindowsBase</b>, as well as <b>System.IO.Compression</b>. These assemblies are <b>standard components in all Microsoft Windows systems</b> (except Windows RT systems). If your IDE of choice supports referencing assemblies from the Global Assembly Cache (<b>GAC</b>) of Windows, select WindowsBase and Compression from there. If you want so select the DLLs manually and Microsoft Visual Studio is installed on your system, the DLL of WindowsBase can be found most likely under “c:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\WindowsBase.dll”, as well as System.IO.Compression under "c:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.IO.Compression.dll". Otherwise you find them in the GAC, under “c:\Windows\Microsoft.NET\assembly\GAC_MSIL\WindowsBase” and "c:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.IO.Compression"
 
