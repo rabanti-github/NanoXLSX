@@ -13,7 +13,7 @@ Project website: [https://picoxlsx.rabanti.ch](https://picoxlsx.rabanti.ch)
  
 See the **[Change Log](https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md)** for recent updates.
 
-**Note: The reader functionality is currently limited to basic workbook data, cell values and formulas in worksheets. Styles and other data is not supported yet when it comes to reading of XLSX files. The scope of reader functionality may change with future versions. This version is directly derived from NanoXLSX4j and the available releasees are currently in beta state.**
+**Note: The reader functionality is currently limited to basic workbook data, cell values and formulas in worksheets. Styles and other data is not supported yet when it comes to reading of XLSX files. The scope of reader functionality may change with future versions. This version is directly derived from NanoXLSX4j and the available releases are currently in beta state.**
 
 
 # Requirements
