@@ -9,8 +9,6 @@ using System.Collections.Generic;
 
 namespace NanoXLSX.LowLevel
 {
-    partial class LowLevel
-    {
         /// <summary>
         /// Class to manage key value pairs (string / string). The entries are in the order how they were added
         /// </summary>
@@ -34,7 +32,7 @@ namespace NanoXLSX.LowLevel
             /// </summary>
             public List<string> Keys
             {
-                get { return this.keyEntries; }
+                get { return keyEntries; }
             }
 
             /// <summary>
@@ -42,7 +40,7 @@ namespace NanoXLSX.LowLevel
             /// </summary>
             public List<string> Values
             {
-                get { return this.valueEntries; }
+                get { return valueEntries; }
             }
 
             /// <summary>
@@ -50,10 +48,10 @@ namespace NanoXLSX.LowLevel
             /// </summary>
             public SortedMap()
             {
-                this.keyEntries = new List<string>();
-                this.valueEntries = new List<string>();
-                this.index = new Dictionary<string, int>();
-                this.count = 0;
+                keyEntries = new List<string>();
+                valueEntries = new List<string>();
+                index = new Dictionary<string, int>();
+                count = 0;
             }
 
 
@@ -85,14 +83,12 @@ namespace NanoXLSX.LowLevel
                 {
                     return index[key];
                 }
-                else
-                {
-                    index.Add(key, count);
-                    keyEntries.Add(key);
-                    valueEntries.Add(value);
-                    count++;
-                    return count - 1;
-                }
+
+                index.Add(key, count);
+                keyEntries.Add(key);
+                valueEntries.Add(value);
+                count++;
+                return count - 1;
             }
 
             /// <summary>
@@ -106,5 +102,4 @@ namespace NanoXLSX.LowLevel
             }
 
         }
-    }
 }

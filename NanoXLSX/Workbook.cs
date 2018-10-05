@@ -8,9 +8,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using NanoXLSX.Exception;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using NanoXLSX.Exceptions;
 using NanoXLSX.LowLevel;
-using NanoXLSX.Style;
+using Styles;
 
 namespace NanoXLSX
 {
@@ -18,7 +20,7 @@ namespace NanoXLSX
     /// Class representing a workbook
     /// </summary>
     /// 
-    public partial class Workbook
+    public class Workbook
     {
         #region privateFields
         private string filename;
@@ -136,7 +138,7 @@ namespace NanoXLSX
         public Workbook(bool createWorkSheet)
         {
             Init();
-            if (createWorkSheet == true)
+            if (createWorkSheet)
             {
                 AddWorksheet("Sheet1");
             }
@@ -187,7 +189,7 @@ namespace NanoXLSX
         /// <param name="style">Style to add</param>
         /// <returns>Returns the managed style of the style manager</returns>
 
-        public Style.Style AddStyle(Style.Style style)
+        public Style AddStyle(Style style)
         {
             return styleManager.AddStyle(style);
         }
@@ -198,28 +200,28 @@ namespace NanoXLSX
         /// <param name="baseStyle">Style to append a component</param>
         /// <param name="newComponent">Component to add to the baseStyle</param>
         /// <returns>Returns the managed style of the style manager</returns>
-        public Style.Style AddStyleComponent(Style.Style baseStyle, AbstractStyle newComponent)
+        public Style AddStyleComponent(Style baseStyle, AbstractStyle newComponent)
         {
 
-            if (newComponent.GetType() == typeof(Style.Style.Border))
+            if (newComponent.GetType() == typeof(Border))
             {
-                baseStyle.CurrentBorder = (Style.Style.Border)newComponent;
+                baseStyle.CurrentBorder = (Border)newComponent;
             }
-            else if (newComponent.GetType() == typeof(Style.Style.CellXf))
+            else if (newComponent.GetType() == typeof(CellXf))
             {
-                baseStyle.CurrentCellXf = (Style.Style.CellXf)newComponent;
+                baseStyle.CurrentCellXf = (CellXf)newComponent;
             }
-            else if (newComponent.GetType() == typeof(Style.Style.Fill))
+            else if (newComponent.GetType() == typeof(Fill))
             {
-                baseStyle.CurrentFill = (Style.Style.Fill)newComponent;
+                baseStyle.CurrentFill = (Fill)newComponent;
             }
-            else if (newComponent.GetType() == typeof(Style.Style.Font))
+            else if (newComponent.GetType() == typeof(Font))
             {
-                baseStyle.CurrentFont = (Style.Style.Font)newComponent;
+                baseStyle.CurrentFont = (Font)newComponent;
             }
-            else if (newComponent.GetType() == typeof(Style.Style.NumberFormat))
+            else if (newComponent.GetType() == typeof(NumberFormat))
             {
-                baseStyle.CurrentNumberFormat = (Style.Style.NumberFormat)newComponent;
+                baseStyle.CurrentNumberFormat = (NumberFormat)newComponent;
             }
             return styleManager.AddStyle(baseStyle);
         }
@@ -230,7 +232,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="name">Name of the new worksheet</param>
         /// <exception cref="WorksheetException">Throws a WorksheetNameAlreadxExistsException if the name of the worksheet already exists</exception>
-        /// <exception cref="NanoXLSX.Exception.FormatException">Throws a FormatException if the name contains illegal characters or is out of range (length between 1 an 31 characters)</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the name contains illegal characters or is out of range (length between 1 an 31 characters)</exception>
         public void AddWorksheet(string name)
         {
             foreach (Worksheet item in worksheets)
@@ -253,12 +255,12 @@ namespace NanoXLSX
         /// <param name="name">Name of the new worksheet</param>
         /// <param name="sanitizeSheetName">If true, the name of the worksheet will be sanitized automatically according to the specifications of Excel</param>
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists and sanitizeSheetName is false</exception>
-        /// <exception cref="NanoXLSX.Exception.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitizeSheetName is false</exception>
+        /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitizeSheetName is false</exception>
         public void AddWorksheet(String name, bool sanitizeSheetName)
         {
-            if (sanitizeSheetName == true)
+            if (sanitizeSheetName)
             {
-                String sanitized = Worksheet.SanitizeWorksheetName(name, this);
+                string sanitized = Worksheet.SanitizeWorksheetName(name, this);
                 AddWorksheet(sanitized);
             }
             else
@@ -272,7 +274,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="worksheet">Prepared worksheet object</param>
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists</exception>
-        /// <exception cref="NanoXLSX.Exception.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31</exception>
+        /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31</exception>
         public void AddWorksheet(Worksheet worksheet)
         {
             for (int i = 0; i < worksheets.Count; i++)
@@ -296,10 +298,10 @@ namespace NanoXLSX
         {
             worksheets = new List<Worksheet>();
             styleManager = new StyleManager();
-            styleManager.AddStyle(new Style.Style("default", 0, true));
-            Style.Style borderStyle = new Style.Style("default_border_style", 1, true);
-            borderStyle.CurrentBorder = Style.Style.BasicStyles.DottedFill_0_125.CurrentBorder;
-            borderStyle.CurrentFill = Style.Style.BasicStyles.DottedFill_0_125.CurrentFill;
+            styleManager.AddStyle(new Style("default", 0, true));
+            Style borderStyle = new Style("default_border_style", 1, true);
+            borderStyle.CurrentBorder = BasicStyles.DottedFill_0_125.CurrentBorder;
+            borderStyle.CurrentFill = BasicStyles.DottedFill_0_125.CurrentFill;
             styleManager.AddStyle(borderStyle);
             workbookMetadata = new Metadata();
             shortener = new Shortener();
@@ -311,7 +313,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="style">Style to remove</param>
         /// <exception cref="StyleException">Throws an StyleException if the style was not found in the style collection (could not be referenced)</exception>
-        public void RemoveStyle(Style.Style style)
+        public void RemoveStyle(Style style)
         {
             RemoveStyle(style, false);
         }
@@ -332,7 +334,7 @@ namespace NanoXLSX
         /// <param name="style">Style to remove</param>
         /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>
         /// <exception cref="StyleException">Throws an StyleException if the style was not found in the style collection (could not be referenced)</exception>
-        public void RemoveStyle(Style.Style style, bool onlyIfUnused)
+        public void RemoveStyle(Style style, bool onlyIfUnused)
         {
             if (style == null)
             {
@@ -353,7 +355,7 @@ namespace NanoXLSX
             {
                 throw new StyleException("MissingReferenceException", "The style to remove is not defined (no name specified)");
             }
-            if (onlyIfUnused == true)
+            if (onlyIfUnused)
             {
                 bool styleInUse = false;
                 for (int i = 0; i < worksheets.Count; i++)
@@ -367,7 +369,7 @@ namespace NanoXLSX
                             break;
                         }
                     }
-                    if (styleInUse == true)
+                    if (styleInUse)
                     {
                         break;
                     }
@@ -416,7 +418,7 @@ namespace NanoXLSX
                 for (int i = 0; i < worksheets.Count; i++)
                 {
                     worksheets[i].SheetID = i + 1;
-                    if (resetCurrent == true && i == 0)
+                    if (resetCurrent && i == 0)
                     {
                         currentWorksheet = worksheets[i];
                     }
@@ -438,17 +440,17 @@ namespace NanoXLSX
         /// <exception cref="StyleException">Throws an StyleException if one of the styles of the merged cells cannot be referenced or is null</exception>
         public void ResolveMergedCells()
         {
-            Style.Style mergeStyle = Style.Style.BasicStyles.MergeCellStyle;
+            Style mergeStyle = BasicStyles.MergeCellStyle;
             int pos;
-            List<Cell.Address> addresses;
+            List<Address> addresses;
             Cell cell;
             foreach (Worksheet sheet in worksheets)
             {
-                foreach (KeyValuePair<string, Cell.Range> range in sheet.MergedCells)
+                foreach (KeyValuePair<string, Range> range in sheet.MergedCells)
                 {
                     pos = 0;
                     addresses = Cell.GetCellRange(range.Value.StartAddress, range.Value.EndAddress);
-                    foreach (Cell.Address address in addresses)
+                    foreach (Address address in addresses)
                     {
                         if (sheet.Cells.ContainsKey(address.ToString()) == false)
                         {
@@ -478,45 +480,92 @@ namespace NanoXLSX
         /// <summary>
         /// Saves the workbook
         /// </summary>
-        /// <exception cref="NanoXLSX.Exception.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws an RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="NanoXLSX.Exception.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         /// <exception cref="StyleException">Throws an StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         public void Save()
         {
-            LowLevel.LowLevel l = new LowLevel.LowLevel(this);
+            XlsxWriter l = new XlsxWriter(this);
             l.Save();
+        }
+
+        /// <summary>
+        /// Saves the workbook asynchronous.
+        /// </summary>
+        /// <returns>Task object (void)</returns>
+        /// <exception cref="Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="StyleException">May throw a StyleException if one of the styles of the workbook cannot be referenced or is null. The asynchronous operation may hide the exception.</exception>
+        public async Task SaveAsync()
+        {
+            XlsxWriter l = new XlsxWriter(this);
+            await l.SaveAsync();
         }
 
         /// <summary>
         /// Saves the workbook with the defined name
         /// </summary>
         /// <param name="filename">filename of the saved workbook</param>
-        /// <exception cref="NanoXLSX.Exception.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws an RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="NanoXLSX.Exception.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         /// <exception cref="StyleException">Throws an StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         public void SaveAs(string filename)
         {
             string backup = filename;
             this.filename = filename;
-            LowLevel.LowLevel l = new LowLevel.LowLevel(this);
+            XlsxWriter l = new XlsxWriter(this);
             l.Save();
             this.filename = backup;
+        }
+
+        /// <summary>
+        /// Saves the workbook with the defined name asynchronous.
+        /// </summary>
+        /// <param name="fileName">fileName of the saved workbook</param>
+        /// <returns>Task object (void)</returns>
+        /// <exception cref="Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="StyleException">May throw a StyleException if one of the styles of the workbook cannot be referenced or is null. The asynchronous operation may hide the exception.</exception>
+        public async Task SaveAsAsync(string fileName)
+        {
+            string backup = fileName;
+            filename = fileName;
+            XlsxWriter l = new XlsxWriter(this);
+            await l.SaveAsync();
+            filename = backup;
         }
 
         /// <summary>
         /// Save the workbook to a writable stream
         /// </summary>
         /// <param name="stream">Writable stream</param>
-        /// <exception cref="NanoXLSX.Exception.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws an RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="NanoXLSX.Exception.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         /// <exception cref="StyleException">Throws an StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         public void SaveAsStream(Stream stream)
         {
-            LowLevel.LowLevel l = new LowLevel.LowLevel(this);
+            XlsxWriter l = new XlsxWriter(this);
             l.SaveAsStream(stream);
+        }
+
+        /// <summary>
+        /// Save the workbook to a writable stream asynchronous.
+        /// </summary>
+        /// <param name="stream">>Writable stream</param>
+        /// <returns>Task object (void)</returns>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="StyleException">May throw a StyleException if one of the styles of the workbook cannot be referenced or is null. The asynchronous operation may hide the exception.</exception>
+        public async Task SaveAsStreamAsync(Stream stream)
+        {
+            XlsxWriter l = new XlsxWriter(this);
+            await l.SaveAsStreamAsync(stream);
         }
 
         /// <summary>
@@ -555,7 +604,7 @@ namespace NanoXLSX
         {
             if (worksheetIndex < 0 || worksheetIndex > worksheets.Count - 1)
             {
-                throw new RangeException("OutOfRangeException", "The worksheet index " + worksheetIndex.ToString() + " is out of range");
+                throw new RangeException("OutOfRangeException", "The worksheet index " + worksheetIndex + " is out of range");
             }
             selectedWorksheet = worksheetIndex;
         }
@@ -615,10 +664,10 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="filename">Filename of the workbook</param>
         /// <returns>Workbook object</returns>
-        /// <exception cref="NanoXLSX.Exception.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static Workbook Load(String filename)
         {
-            Reader r = new Reader(filename);
+            XlsxReader r = new XlsxReader(filename);
             r.Read();
             return r.GetWorkbook();
         }
@@ -629,13 +678,21 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="stream">Stream containing the workbook</param>
         /// <returns>Workbook object</returns>
-        /// <exception cref="NanoXLSX.Exception.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static Workbook Load(Stream stream)
         {
-            Reader r = new Reader(stream);
+            XlsxReader r = new XlsxReader(stream);
             r.Read();
             return r.GetWorkbook();
         }
+
+        public static async Task<Workbook> LoadAsync(Stream stream)
+        {
+            XlsxReader r = new XlsxReader(stream);
+            await r.ReadAsync();
+            return r.GetWorkbook();
+        }
+
 
 
         #endregion
@@ -645,7 +702,7 @@ namespace NanoXLSX
     /// <summary>
     /// Main namespace with all high-level classes and functions to create or read workbooks and worksheets
     /// </summary>
-    [System.Runtime.CompilerServices.CompilerGenerated]
+    [CompilerGenerated]
     class NamespaceDoc // This class is only for documentation purpose (Sandcastle)
     { }
     #endregion

@@ -13,7 +13,7 @@ Project website: [https://picoxlsx.rabanti.ch](https://picoxlsx.rabanti.ch)
  
 See the **[Change Log](https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md)** for recent updates.
 
-**Note: The reader functionality is currently limited to basic workbook data, cell values and formulas in worksheets. Styles and other data is not supported yet when it comes to reading of XLSX files. The scope of reader functionality may change with future versions. This version is directly derived from NanoXLSX4j and the available releasees are currently in beta state.**
+**Note: The reader functionality is currently limited to basic workbook data, cell values and formulas in worksheets. Styles and other data is not supported yet when it comes to reading of XLSX files. The scope of reader functionality may change with future versions. This version is directly derived from NanoXLSX4j and the available releases are currently in beta state.**
 
 
 # Requirements
@@ -76,6 +76,6 @@ Place all .CS files from the NanoXLSX source folder and its sub-folders into you
 See the full **API-Documentation** at: [https://rabanti-github.github.io/NanoXLSX/](https://rabanti-github.github.io/NanoXLSX/).
 
 
-The [Demo project](https://github.com/rabanti-github/NanoXLSX/tree/master/Demo) contains 14 simple use cases. You can find also the full documentation in the [Documentation-Folder](https://github.com/rabanti-github/NanoXLSX/tree/master/docs) (html files or single chm file) or as C# documentation in the particular .CS files.
+The [Demo project](https://github.com/rabanti-github/NanoXLSX/tree/master/Demo) contains 15 simple use cases. You can find also the full documentation in the [Documentation-Folder](https://github.com/rabanti-github/NanoXLSX/tree/master/docs) (html files or single chm file) or as C# documentation in the particular .CS files.
 
 See also: [Getting started in the Wiki](https://github.com/rabanti-github/NanoXLSX/wiki/Getting-started)
