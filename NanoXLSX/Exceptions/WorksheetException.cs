@@ -4,15 +4,17 @@
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
-using System;
 
-namespace NanoXLSX.Exception
+using System;
+using System.Runtime.CompilerServices;
+
+namespace NanoXLSX.Exceptions
 {
     /// <summary>
     /// Class for exceptions regarding worksheet incidents
     /// </summary>
     [Serializable]
-    public class WorksheetException : System.Exception
+    public class WorksheetException : Exception
     {
         /// <summary>
         /// Gets or sets the title of the exception
@@ -22,7 +24,7 @@ namespace NanoXLSX.Exception
         /// <summary>
         /// Default constructor
         /// </summary>
-        public WorksheetException() : base()
+        public WorksheetException()
         { }
         /// <summary>
         /// Constructor with passed message
@@ -31,14 +33,14 @@ namespace NanoXLSX.Exception
         /// <param name="title">Title of the exception</param>
         public WorksheetException(string title, string message)
             : base(title + ": " + message)
-        { this.ExceptionTitle = title; }
+        { ExceptionTitle = title; }
     }
 
     #region doc
     /// <summary>
     /// Sub-namespace for exceptions
     /// </summary>
-    [System.Runtime.CompilerServices.CompilerGenerated]
+    [CompilerGenerated]
     class NamespaceDoc // This class is only for documentation purpose (Sandcastle)
     { }
     #endregion

@@ -8,11 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using IOException = NanoXLSX.Exception.IOException;
+using NanoXLSX.Exceptions;
+using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.LowLevel
 {
@@ -52,7 +50,7 @@ namespace NanoXLSX.LowLevel
         /// Reads the XML file form the passed stream and processes the workbook information
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
-        /// <exception cref="IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public void Read(MemoryStream stream)
         {
             try
@@ -69,7 +67,7 @@ namespace NanoXLSX.LowLevel
                     }
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw new IOException("XMLStreamException", "The XML entry could not be read from the input stream. Please see the inner exception:", ex);
             }
@@ -100,7 +98,7 @@ namespace NanoXLSX.LowLevel
                     }
                     WorksheetDefinitions.Add(id, sheetName);
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     throw new IOException("XMLStreamException", "The workbook information could not be resolved. Please see the inner exception:", e);
                 }

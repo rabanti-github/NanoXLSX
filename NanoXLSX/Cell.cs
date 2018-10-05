@@ -9,15 +9,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using NanoXLSX.Exception;
-using FormatException = NanoXLSX.Exception.FormatException;
+using NanoXLSX.Exceptions;
+using Styles;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX
 {
     /// <summary>
     /// Class representing a cell of a worksheet
     /// </summary>
-    public partial class Cell : IComparable<Cell>
+    public class Cell : IComparable<Cell>
     {
 
         #region enums
@@ -60,7 +61,7 @@ namespace NanoXLSX
         #endregion
 
         #region privateFileds
-        private Style.Style cellStyle;
+        private Style cellStyle;
         private int columnNumber;
         private int rowNumber;
         #endregion
@@ -90,7 +91,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the assigned style of the cell
         /// </summary>
-        public Style.Style CellStyle
+        public Style CellStyle
         {
             get { return cellStyle; }
         }
@@ -104,7 +105,7 @@ namespace NanoXLSX
             {
                 if (value < Worksheet.MIN_COLUMN_NUMBER || value > Worksheet.MAX_COLUMN_NUMBER)
                 {
-                    throw new RangeException("OutOfRangeException", "The passed column number (" + value.ToString() + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER.ToString() + " to " + Worksheet.MAX_COLUMN_NUMBER.ToString() + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1).ToString() + " rows).");
+                    throw new RangeException("OutOfRangeException", "The passed column number (" + value + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " rows).");
                 }
                 columnNumber = value;
             }
@@ -123,7 +124,7 @@ namespace NanoXLSX
             {
                 if (value < Worksheet.MIN_ROW_NUMBER || value > Worksheet.MAX_ROW_NUMBER)
                 {
-                    throw new RangeException("OutOfRangeException", "The passed row number (" + value.ToString() + ") is out of range. Range is from " + Worksheet.MIN_ROW_NUMBER.ToString() + " to " + Worksheet.MAX_ROW_NUMBER.ToString() + " (" + (Worksheet.MAX_ROW_NUMBER + 1).ToString() + " rows).");
+                    throw new RangeException("OutOfRangeException", "The passed row number (" + value + ") is out of range. Range is from " + Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
                 }
                 rowNumber = value;
             }
@@ -144,7 +145,7 @@ namespace NanoXLSX
         public Cell()
         {
             WorksheetReference = null;
-            DataType = Cell.CellType.DEFAULT;
+            DataType = CellType.DEFAULT;
         }
 
         /// <summary>
@@ -168,12 +169,12 @@ namespace NanoXLSX
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address of the cell</param>
-        public Cell(Object value, CellType type, String address)
+        public Cell(Object value, CellType type, string address)
         {
-            this.DataType = type;
-            this.Value = value;
-            this.CellAddress = address;
-            this.WorksheetReference = null;
+            DataType = type;
+            Value = value;
+            CellAddress = address;
+            WorksheetReference = null;
             if (type == CellType.DEFAULT)
             {
                 ResolveCellType();
@@ -212,10 +213,8 @@ namespace NanoXLSX
             {
                 return ColumnNumber.CompareTo(other.ColumnNumber);
             }
-            else
-            {
-                return RowNumber.CompareTo(other.RowNumber);
-            }
+
+            return RowNumber.CompareTo(other.RowNumber);
         }
 
         /// <summary>
@@ -274,10 +273,10 @@ namespace NanoXLSX
         /// <remarks>The listed exception should never happen because the mentioned style is internally generated</remarks>
         public void SetCellLockedState(bool isLocked, bool isHidden)
         {
-            Style.Style lockStyle;
+            Style lockStyle;
             if (cellStyle == null)
             {
-                lockStyle = new Style.Style();
+                lockStyle = new Style();
             }
             else
             {
@@ -294,7 +293,7 @@ namespace NanoXLSX
         /// <param name="style">Style to assign</param>
         /// <returns>If the passed style already exists in the workbook, the existing one will be returned, otherwise the passed one</returns>
         /// <exception cref="StyleException">Throws an StyleException if the style cannot be referenced or no style was defined</exception>
-        public Style.Style SetStyle(Style.Style style)
+        public Style SetStyle(Style style)
         {
             if (WorksheetReference == null)
             {
@@ -308,7 +307,7 @@ namespace NanoXLSX
             {
                 throw new StyleException("UndefinedStyleException", "No style to assign was defined");
             }
-            Style.Style s = WorksheetReference.WorkbookReference.AddStyle(style);
+            Style s = WorksheetReference.WorkbookReference.AddStyle(style);
             cellStyle = s;
             return s;
         }
@@ -360,7 +359,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="range">Range to process</param>
         /// <returns>List of cell addresses</returns>
-        /// <exception cref="FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception>
         public static List<Address> GetCellRange(string range)
         {
@@ -374,7 +373,7 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address as string in the format A1 - XFD1048576</param>
         /// <param name="endAddress">End address as string in the format A1 - XFD1048576</param>
         /// <returns>List of cell addresses</returns>
-        /// <exception cref="FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception> 
         public static List<Address> GetCellRange(string startAddress, string endAddress)
         {
@@ -405,7 +404,7 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
         /// <returns>List of cell addresses</returns>
-        /// <exception cref="FormatException">Throws a FormatException if a part of the passed addresses is malformed</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a part of the passed addresses is malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the value of one passed address is out of range (A-XFD and 1 to 1048576) </exception>
         public static List<Address> GetCellRange(Address startAddress, Address endAddress)
         {
@@ -453,21 +452,21 @@ namespace NanoXLSX
         {
             if (column > Worksheet.MAX_COLUMN_NUMBER || column < Worksheet.MIN_COLUMN_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The column number (" + column.ToString() + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER.ToString() + " to " + Worksheet.MAX_COLUMN_NUMBER.ToString() + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1).ToString() + " columns).");
+                throw new RangeException("OutOfRangeException", "The column number (" + column + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
             }
             switch (type)
             {
                 case AddressType.FixedRowAndColumn:
-                    return "$"+ ResolveColumnAddress(column) + "$" + (row + 1).ToString();
+                    return "$" + ResolveColumnAddress(column) + "$" + (row + 1);
                     //break;
                 case AddressType.FixedColumn:
-                    return "$" + ResolveColumnAddress(column) + (row + 1).ToString();
+                    return "$" + ResolveColumnAddress(column) + (row + 1);
                    // break;
                 case AddressType.FixedRow:
-                    return ResolveColumnAddress(column) + "$" + (row + 1).ToString();
+                    return ResolveColumnAddress(column) + "$" + (row + 1);
                    // break;
                 default:
-                    return ResolveColumnAddress(column) + (row + 1).ToString();
+                    return ResolveColumnAddress(column) + (row + 1);
             }
         }
 
@@ -476,7 +475,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="address">Address as string in the format A1 - XFD1048576</param>
         /// <returns>Struct with row and column</returns>
-        /// <exception cref="FormatException">Throws a FormatException if the passed address is malformed</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed address is malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the value of the passed address is out of range (A-XFD and 1 to 1048576) </exception>
         public static Address ResolveCellCoordinate(string address)
         {
@@ -491,7 +490,7 @@ namespace NanoXLSX
         /// <param name="address">Address as string in the format A1 - XFD1048576</param>
         /// <param name="column">Column number of the cell (zero-based) as out parameter</param>
         /// <param name="row">Row number of the cell (zero-based) as out parameter</param>
-        /// <exception cref="FormatException">Throws a FormatException if the range address was malformed</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the range address was malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the row or column number was out of range</exception>
         public static void ResolveCellCoordinate(string address, out int column, out int row)
         {
@@ -511,11 +510,11 @@ namespace NanoXLSX
             row = digits - 1;
             if (row > Worksheet.MAX_ROW_NUMBER || row < Worksheet.MIN_ROW_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The row number (" + row.ToString() + ") is out of range. Range is from " + Worksheet.MIN_ROW_NUMBER.ToString() + " to " + Worksheet.MAX_ROW_NUMBER.ToString() + " (" + (Worksheet.MAX_ROW_NUMBER + 1).ToString() + " rows).");
+                throw new RangeException("OutOfRangeException", "The row number (" + row + ") is out of range. Range is from " + Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
             }
             if (column > Worksheet.MAX_COLUMN_NUMBER || column < Worksheet.MIN_COLUMN_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The column number (" + column.ToString() + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER.ToString() + " to " + Worksheet.MAX_COLUMN_NUMBER.ToString() + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1).ToString() + " columns).");
+                throw new RangeException("OutOfRangeException", "The column number (" + column + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
             }
         }
 
@@ -524,7 +523,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="range">Range to process</param>
         /// <returns>Range object</returns>
-        /// <exception cref="FormatException">Throws a FormatException if the start or end address was malformed</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the start or end address was malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception>
         public static Range ResolveCellRange(string range)
         {
@@ -560,7 +559,7 @@ namespace NanoXLSX
             }
             if (result - 1 > Worksheet.MAX_COLUMN_NUMBER || result - 1 < Worksheet.MIN_COLUMN_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The column number (" + (result - 1).ToString() + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER.ToString() + " to " + Worksheet.MAX_COLUMN_NUMBER.ToString() + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1).ToString() + " columns).");
+                throw new RangeException("OutOfRangeException", "The column number (" + (result - 1) + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
             }
             return result - 1;
         }
@@ -575,7 +574,7 @@ namespace NanoXLSX
         {
             if (columnNumber > Worksheet.MAX_COLUMN_NUMBER || columnNumber < Worksheet.MIN_COLUMN_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The column number (" + columnNumber.ToString() + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER.ToString() + " to " + Worksheet.MAX_COLUMN_NUMBER.ToString() + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1).ToString() + " columns).");
+                throw new RangeException("OutOfRangeException", "The column number (" + columnNumber + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
             }
             // A - XFD
             int j = 0;
@@ -602,6 +601,7 @@ namespace NanoXLSX
             return sb.ToString();
         }
         #endregion
+
 
     }
 }

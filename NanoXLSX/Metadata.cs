@@ -7,7 +7,8 @@
 
 using System;
 using System.Globalization;
-using FormatException = NanoXLSX.Exception.FormatException;
+using System.Reflection;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX
 {
@@ -92,7 +93,7 @@ namespace NanoXLSX
         {
             UseColorMRU = false;
             Application = "NanoXLSX";
-            Version vi = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            Version vi = Assembly.GetExecutingAssembly().GetName().Version;
             ApplicationVersion = ParseVersion(vi.Major, vi.Minor, vi.Revision, vi.Build);
         }
         #endregion
@@ -101,7 +102,7 @@ namespace NanoXLSX
         /// <summary>
         /// Checks the format of the passed version string
         /// </summary>
-        /// <exception cref="FormatException">Throws a FormatException if the version string is malformed</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the version string is malformed</exception>
         private void CheckVersion()
         {
             if (string.IsNullOrEmpty(applicationVersion)) { return; }
@@ -130,7 +131,7 @@ namespace NanoXLSX
         /// <param name="build">Build number</param>
         /// <param name="revision">Revision number</param>
         /// <returns>Formatted version number (e.g. 1.0 or 55.987)</returns>
-        /// <exception cref="FormatException">Throws a FormatException if the major number is too long or one of the numbers is negative</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the major number is too long or one of the numbers is negative</exception>
         public static string ParseVersion(int major, int minor, int build, int revision)
         {
             if (major < 0 || minor < 0 || build < 0 || revision < 0)
@@ -139,7 +140,7 @@ namespace NanoXLSX
             }
             if (major > 99999)
             {
-                throw new FormatException("The major number may not be bigger than 99999. The passed value is " + major.ToString());
+                throw new FormatException("The major number may not be bigger than 99999. The passed value is " + major);
             }
             CultureInfo culture = CultureInfo.InvariantCulture;
             string leftPart = major.ToString("G", culture);

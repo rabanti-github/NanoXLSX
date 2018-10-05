@@ -7,53 +7,51 @@
 
 namespace NanoXLSX
 {
-    public partial class Cell
+    /// <summary>
+    /// Struct representing a cell range with a start and end address
+    /// </summary>
+    public struct Range
     {
         /// <summary>
-        /// Struct representing a cell range with a start and end address
+        /// End address of the range
         /// </summary>
-        public struct Range
+        public Address EndAddress;
+        /// <summary>
+        /// Start address of the range
+        /// </summary>
+        public Address StartAddress;
+
+        /// <summary>
+        /// Constructor with addresses as arguments
+        /// </summary>
+        /// <param name="start">Start address of the range</param>
+        /// <param name="end">End address of the range</param>
+        public Range(Address start, Address end)
         {
-            /// <summary>
-            /// End address of the range
-            /// </summary>
-            public Address EndAddress;
-            /// <summary>
-            /// Start address of the range
-            /// </summary>
-            public Address StartAddress;
-
-            /// <summary>
-            /// Constructor with addresses as arguments
-            /// </summary>
-            /// <param name="start">Start address of the range</param>
-            /// <param name="end">End address of the range</param>
-            public Range(Address start, Address end)
-            {
-                StartAddress = start;
-                EndAddress = end;
-            }
-
-            /// <summary>
-            /// Constructor with a range string as argument
-            /// </summary>
-            /// <param name="range">Address range (e.g. 'A1:B12')</param>
-            public Range(string range)
-            {
-                Range r = ResolveCellRange(range);
-                StartAddress = r.StartAddress;
-                EndAddress = r.EndAddress;
-            }
-
-            /// <summary>
-            /// Overwritten ToString method
-            /// </summary>
-            /// <returns>Returns the range (e.g. 'A1:B12')</returns>
-            public override string ToString()
-            {
-                return StartAddress.ToString() + ":" + EndAddress.ToString();
-            }
-
+            StartAddress = start;
+            EndAddress = end;
         }
+
+        /// <summary>
+        /// Constructor with a range string as argument
+        /// </summary>
+        /// <param name="range">Address range (e.g. 'A1:B12')</param>
+        public Range(string range)
+        {
+            Range r = Cell.ResolveCellRange(range);
+            StartAddress = r.StartAddress;
+            EndAddress = r.EndAddress;
+        }
+
+        /// <summary>
+        /// Overwritten ToString method
+        /// </summary>
+        /// <returns>Returns the range (e.g. 'A1:B12')</returns>
+        public override string ToString()
+        {
+            return StartAddress + ":" + EndAddress;
+        }
+
     }
+    
 }

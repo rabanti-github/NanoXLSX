@@ -8,11 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using IOException = NanoXLSX.Exception.IOException;
+using NanoXLSX.Exceptions;
+using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.LowLevel
 {
@@ -63,11 +61,11 @@ namespace NanoXLSX.LowLevel
         /// <param name="sharedStrings">SharedStringsReader object</param>
         /// <param name="name">Worksheet name</param>
         /// <param name="number">Worksheet number</param>
-        public WorksheetReader(SharedStringsReader sharedStrings, String name, int number)
+        public WorksheetReader(SharedStringsReader sharedStrings, string name, int number)
         {
             Data = new Dictionary<string, Cell>();
-            this.Name = name;
-            this.WorksheetNumber = number;
+            Name = name;
+            WorksheetNumber = number;
             this.sharedStrings = sharedStrings;
         }
 
@@ -166,7 +164,7 @@ namespace NanoXLSX.LowLevel
         /// Reads the XML file form the passed stream and processes the worksheet data
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
-        /// <exception cref="IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public void Read(MemoryStream stream)
         {
             try
@@ -214,7 +212,7 @@ namespace NanoXLSX.LowLevel
                     }
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw new IOException("XMLStreamException", "The XML entry could not be read from the input stream. Please see the inner exception:", ex);
             }
@@ -256,13 +254,13 @@ namespace NanoXLSX.LowLevel
         private void ResolveCellData(string address, string type, string value, string style, string formula)
         {
             address = address.ToUpper();
-            String s;
+            string s;
             Cell cell;
             CellResolverTuple tuple;
             if (style != null && style == "1") // Date must come before numeric values
             {
                 tuple = GetDateValue(value);
-                if (tuple.IsValid == true)
+                if (tuple.IsValid)
                 {
                     cell = new Cell(tuple.Data, Cell.CellType.DATE, address);
                 }
@@ -274,7 +272,7 @@ namespace NanoXLSX.LowLevel
             else if (type == null) // try numeric
             {
                 tuple = GetNumericValue(value);
-                if (tuple.IsValid == true)
+                if (tuple.IsValid)
                 {
                     cell = new Cell(tuple.Data, Cell.CellType.NUMBER, address);
                 }
@@ -286,7 +284,7 @@ namespace NanoXLSX.LowLevel
             else if (type == "b")
             {
                 tuple = GetBooleanValue(value);
-                if (tuple.IsValid == true)
+                if (tuple.IsValid)
                 {
                     cell = new Cell(tuple.Data, Cell.CellType.BOOL, address);
                 }
@@ -336,7 +334,7 @@ namespace NanoXLSX.LowLevel
         {
             double dValue;
             CellResolverTuple t;
-            if (double.TryParse(raw, out dValue) == true)
+            if (double.TryParse(raw, out dValue))
             {
                 t = new CellResolverTuple(true, dValue, typeof(double));
             }
@@ -356,7 +354,7 @@ namespace NanoXLSX.LowLevel
         {
             int iValue;
             CellResolverTuple t;
-            if (int.TryParse(raw, out iValue) == true)
+            if (int.TryParse(raw, out iValue))
             {
                 t = new CellResolverTuple(true, iValue, typeof(int));
             }
@@ -388,7 +386,7 @@ namespace NanoXLSX.LowLevel
             }
             else
             {
-                if (bool.TryParse(raw, out value) == true)
+                if (bool.TryParse(raw, out value))
                 {
                     state = true;
                 }
@@ -410,7 +408,7 @@ namespace NanoXLSX.LowLevel
         {
             double dValue;
             CellResolverTuple t;
-            if (double.TryParse(raw, out dValue) == true)
+            if (double.TryParse(raw, out dValue))
             {
                 DateTime date = DateTime.FromOADate(dValue);
                 t = new CellResolverTuple(true, date, typeof(DateTime));
@@ -463,9 +461,9 @@ namespace NanoXLSX.LowLevel
             /// <param name="type">Type of the cell</param>
             public CellResolverTuple(bool isValid, object data, Type type)
             {
-                this.Data = data;
-                this.IsValid = isValid;
-                this.DataType = type;
+                Data = data;
+                IsValid = isValid;
+                DataType = type;
             }
 
         }

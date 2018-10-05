@@ -7,13 +7,13 @@
 
 using System;
 
-namespace NanoXLSX.Exception
+namespace NanoXLSX.Exceptions
 {
     /// <summary>
     /// Class for exceptions regarding Style incidents
     /// </summary>
     [Serializable]
-    public class StyleException : System.Exception
+    public class StyleException : Exception
     {
         /// <summary>
         /// Gets or sets the title of the exception
@@ -23,7 +23,7 @@ namespace NanoXLSX.Exception
         /// <summary>
         /// Default constructor
         /// </summary>
-        public StyleException() : base()
+        public StyleException()
         { }
         /// <summary>
         /// Constructor with passed message
@@ -32,7 +32,7 @@ namespace NanoXLSX.Exception
         /// <param name="title">Title of the exception</param>
         public StyleException(string title, string message)
             : base(title + ": " + message)
-        { this.ExceptionTitle = title; }
+        { ExceptionTitle = title; }
     }
 
 }
