@@ -329,8 +329,8 @@
   <HelpKINode Title="DATE enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="dateFormat enumeration member" Url="html/e18d888e-7884-c6fd-6893-3614b727fab7.htm" />
   <HelpKINode Title="DateFormat property" Url="html/e9d7b551-01c5-640e-f629-fbda078a8660.htm" />
-  <HelpKINode Title="DEFAULT enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="Default enumeration member" Url="html/07c2d3c9-4304-155a-86b1-7001fa87c3ea.htm" />
+  <HelpKINode Title="DEFAULT enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="DEFAULTCOLOR field" Url="html/ccb32b73-7347-7565-dfc9-e64600ed5938.htm" />
   <HelpKINode Title="DefaultColumnWidth property" Url="html/5443dc31-73fa-ec0c-4d1d-76999e3aea1c.htm" />
   <HelpKINode Title="DEFAULTFONT field" Url="html/ec1377d6-d99a-5753-e2e8-8bcdda35bfbe.htm" />
@@ -831,8 +831,8 @@
   <HelpKINode Title="SetRowHiddenState method" Url="html/60623cc8-4bca-bdc1-4398-56b74652bb79.htm" />
   <HelpKINode Title="SetSelectedCells method" Url="html/d5d2533b-2454-8850-81aa-70cc88bc3a65.htm" />
   <HelpKINode Title="SetSelectedWorksheet method" Url="html/47119eee-f46d-e889-fa26-816177aebfbb.htm" />
-  <HelpKINode Title="SetSheetName method" Url="html/5df47bf5-199c-da09-b7f4-9b1f78dd725d.htm" />
   <HelpKINode Title="SetSheetname method" Url="html/5272ae10-bcd3-ddad-4946-eb7417440360.htm" />
+  <HelpKINode Title="SetSheetName method" Url="html/5df47bf5-199c-da09-b7f4-9b1f78dd725d.htm" />
   <HelpKINode Title="SetSheetProtectionPassword method" Url="html/c3d7c4f9-f49c-19ba-1f11-9e2f8c7db06e.htm" />
   <HelpKINode Title="SetStyle method" Url="html/56165b05-3b8c-f3e8-cbbb-d579b8a8e8fe.htm" />
   <HelpKINode Title="SetWorkbookProtection method" Url="html/8c8da084-2105-33e5-8740-70341ca548e2.htm" />
@@ -1213,8 +1213,8 @@
   <HelpKINode Title="XlsxReader.XlsxReader constructor" Url="html/237b0cae-94b9-be7d-7307-4d4b14a0006e.htm" />
   <HelpKINode Title="XlsxWriter class">
     <HelpKINode Title="XlsxWriter Class" Url="html/5ddfdd04-d061-802f-0cc1-faef026c925c.htm" />
-    <HelpKINode Title="constructor" Url="html/7103984e-7a20-d91d-2b4d-189ccd73f7f2.htm" />
     <HelpKINode Title="constructor" Url="html/81fcfcd2-d6c4-a393-1f11-d6fd2368451b.htm" />
+    <HelpKINode Title="constructor" Url="html/7103984e-7a20-d91d-2b4d-189ccd73f7f2.htm" />
     <HelpKINode Title="methods" Url="html/3352465c-8252-824b-55b7-2915134746ef.htm" />
     <HelpKINode Title="properties" Url="html/74f8dff5-b375-8d8f-ddba-fc4c17054009.htm" />
   </HelpKINode>
