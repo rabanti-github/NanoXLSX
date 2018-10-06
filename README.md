@@ -1,5 +1,5 @@
 # NanoXLSX
-![NanoXLSX](https://github.com/rabanti-github/NanoXLSX/blob/master/Documentation/icons/NanoXLSX.png)
+![NanoXLSX](https://rabanti-github.github.io/NanoXLSX/icons/NanoXLSX.png)
 
 
 NanoXLSX is a small .NET library written in C#, to create and read Microsoft Excel files in the XLSX format (Microsoft Excel 2007 or newer) in an easy and native way
