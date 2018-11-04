@@ -1,12 +1,20 @@
 # Change Log
 
+## v1.3.1
+
+---
+Release Date: **04.11.2018**
+
+- Fixed a bug in the style handling of merged cells. Bug fix provided by David Courtel for PicoXLSX
+
+
 ## v1.3.0
 
 ---
 Release Date: **06.10.2018**
 
 - Added missing features of PicoXLSX (synced with PicoXLSX version 2.6.1)
-- Added asynchronous methods SaveAsync, SaveAsAsync, SaveAsStreamAsync
+- Added asynchronous methods SaveAsync, SaveAsAsync, SaveAsStreamAsync and LoadAsync
 - Added a new example for the introduced async methods
 - Renamed namespace Exception to Exceptions
 - Renamed namespace Style to Styles
