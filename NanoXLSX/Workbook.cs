@@ -468,8 +468,8 @@ namespace NanoXLSX
                         if (pos != 0)
                         {
                             cell.DataType = Cell.CellType.EMPTY;
+                            cell.SetStyle(mergeStyle);
                         }
-                        cell.SetStyle(mergeStyle);
                         pos++;
                     }
 
