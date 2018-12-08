@@ -16,33 +16,6 @@ namespace Styles
     /// </summary>
     public class StyleManager
     {
-        #region constants
-        /// <summary>
-        /// Prefix for the hash calculation of border styles
-        /// </summary>
-        public const string BORDERPREFIX = "borders@";
-        /// <summary>
-        /// Prefix for the hash calculation of cellXf styles
-        /// </summary>
-        public const string CELLXFPREFIX = "/cellXf@";
-        /// <summary>
-        /// Prefix for the hash calculation of fill styles
-        /// </summary>
-        public const string FILLPREFIX = "/fill@";
-        /// <summary>
-        /// Prefix for the hash calculation of font styles
-        /// </summary>
-        public const string FONTPREFIX = "/font@";
-        /// <summary>
-        /// Prefix for the hash calculation of number format styles
-        /// </summary>
-        public const string NUMBERFORMATPREFIX = "/numberFormat@";
-        /// <summary>
-        /// Prefix for the hash calculation of styles
-        /// </summary>
-        public const string STYLEPREFIX = "style=";
-        #endregion
-
         #region privateFields
         private List<AbstractStyle> borders;
         private List<AbstractStyle> cellXfs;
@@ -77,12 +50,12 @@ namespace Styles
         /// <param name="list">List to check</param>
         /// <param name="hash">Hash of the component</param>
         /// <returns>Determined component. If not found, null will be returned</returns>
-        private AbstractStyle GetComponentByHash(ref List<AbstractStyle> list, string hash)
+        private AbstractStyle GetComponentByHash(ref List<AbstractStyle> list, int hash)
         {
             int len = list.Count;
             for (int i = 0; i < len; i++)
             {
-                if (list[i].Hash == hash)
+                if (list[i].GetHashCode() == hash)
                 {
                     return list[i];
                 }
@@ -96,7 +69,7 @@ namespace Styles
         /// <param name="hash">Hash of the border</param>
         /// <returns>Determined border</returns>
         /// <exception cref="StyleException">Throws a StyleException if the border was not found in the style manager</exception>
-        public Border GetBorderByHash(String hash)
+        public Border GetBorderByHash(int hash)
         {
             AbstractStyle component = GetComponentByHash(ref borders, hash);
             if (component == null)
@@ -132,7 +105,7 @@ namespace Styles
         /// <param name="hash">Hash of the cellXf</param>
         /// <returns>Determined cellXf</returns>
         /// <exception cref="StyleException">Throws a StyleException if the cellXf was not found in the style manager</exception>
-        public CellXf GetCellXfByHash(String hash)
+        public CellXf GetCellXfByHash(int hash)
         {
             AbstractStyle component = GetComponentByHash(ref cellXfs, hash);
             if (component == null)
@@ -168,7 +141,7 @@ namespace Styles
         /// <param name="hash">Hash of the fill</param>
         /// <returns>Determined fill</returns>
         /// <exception cref="StyleException">Throws a StyleException if the fill was not found in the style manager</exception>
-        public Fill GetFillByHash(String hash)
+        public Fill GetFillByHash(int hash)
         {
             AbstractStyle component = GetComponentByHash(ref fills, hash);
             if (component == null)
@@ -204,7 +177,7 @@ namespace Styles
         /// <param name="hash">Hash of the font</param>
         /// <returns>Determined font</returns>
         /// <exception cref="StyleException">Throws a StyleException if the font was not found in the style manager</exception>
-        public Font GetFontByHash(String hash)
+        public Font GetFontByHash(int hash)
         {
             AbstractStyle component = GetComponentByHash(ref fonts, hash);
             if (component == null)
@@ -240,7 +213,7 @@ namespace Styles
         /// <param name="hash">Hash of the numberFormat</param>
         /// <returns>Determined numberFormat</returns>
         /// <exception cref="StyleException">Throws a StyleException if the numberFormat was not found in the style manager</exception>
-        public NumberFormat GetNumberFormatByHash(String hash)
+        public NumberFormat GetNumberFormatByHash(int hash)
         {
             AbstractStyle component = GetComponentByHash(ref numberFormats, hash);
             if (component == null)
@@ -295,7 +268,7 @@ namespace Styles
         /// <param name="hash">Hash of the style</param>
         /// <returns>Determined style</returns>
         /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style manager</exception>
-        public Style GetStyleByHash(String hash)
+        public Style GetStyleByHash(int hash)
         {
             AbstractStyle component = GetComponentByHash(ref styles, hash);
             if (component == null)
@@ -333,7 +306,7 @@ namespace Styles
         /// <returns>Added or determined style in the manager</returns>
         public Style AddStyle(Style style)
         {
-            string hash = AddStyleComponent(style);
+            int hash = AddStyleComponent(style);
             return (Style)GetComponentByHash(ref styles, hash);
         }
 
@@ -343,7 +316,7 @@ namespace Styles
         /// <param name="style">Component to add</param>
         /// <param name="id">Id of the component</param>
         /// <returns>Hash of the added or determined component</returns>
-        private string AddStyleComponent(AbstractStyle style, int? id)
+        private int AddStyleComponent(AbstractStyle style, int? id)
         {
             style.InternalID = id;
             return AddStyleComponent(style);
@@ -354,9 +327,9 @@ namespace Styles
         /// </summary>
         /// <param name="style">Component to add</param>
         /// <returns>Hash of the added or determined component</returns>
-        private string AddStyleComponent(AbstractStyle style)
+        private int AddStyleComponent(AbstractStyle style)
         {
-            string hash = style.Hash;
+            int hash = style.GetHashCode();
             if (style.GetType() == typeof(Border))
             {
                 if (GetComponentByHash(ref borders, hash) == null) { borders.Add(style); }
@@ -385,7 +358,7 @@ namespace Styles
             else if (style.GetType() == typeof(Style))
             {
                 Style s = (Style)style;
-                if (styleNames.Contains(s.Name))
+                if (styleNames.Contains(s.Name) == true)
                 {
                     throw new StyleException("StyleAlreadyExistsException", "The style with the name '" + s.Name + "' already exists");
                 }
@@ -401,7 +374,7 @@ namespace Styles
                     {
                         id = s.InternalID.Value;
                     }
-                    string temp = AddStyleComponent(s.CurrentBorder, id);
+                    int temp = AddStyleComponent(s.CurrentBorder, id);
                     s.CurrentBorder = (Border)GetComponentByHash(ref borders, temp);
                     temp = AddStyleComponent(s.CurrentCellXf, id);
                     s.CurrentCellXf = (CellXf)GetComponentByHash(ref cellXfs, temp);
@@ -414,7 +387,7 @@ namespace Styles
                     styles.Add(s);
                 }
                 Reorganize(ref styles);
-                hash = s.CalculateHash();
+                hash = s.GetHashCode();
             }
             return hash;
         }
@@ -516,16 +489,16 @@ namespace Styles
         {
             Style s;
             bool match = false;
-            string hash = component.Hash;
+            int hash = component.GetHashCode();
             int len = styles.Count;
             for (int i = 0; i < len; i++)
             {
                 s = (Style)styles[i];
-                if (component.GetType() == typeof(Border)) { if (s.CurrentBorder.Hash == hash) { match = true; break; } }
-                else if (component.GetType() == typeof(CellXf)) { if (s.CurrentCellXf.Hash == hash) { match = true; break; } }
-                if (component.GetType() == typeof(Fill)) { if (s.CurrentFill.Hash == hash) { match = true; break; } }
-                if (component.GetType() == typeof(Font)) { if (s.CurrentFont.Hash == hash) { match = true; break; } }
-                if (component.GetType() == typeof(NumberFormat)) { if (s.CurrentNumberFormat.Hash == hash) { match = true; break; } }
+                if (component.GetType() == typeof(Border)) { if (s.CurrentBorder.GetHashCode() == hash) { match = true; break; } }
+                else if (component.GetType() == typeof(CellXf)) { if (s.CurrentCellXf.GetHashCode() == hash) { match = true; break; } }
+                if (component.GetType() == typeof(Fill)) { if (s.CurrentFill.GetHashCode() == hash) { match = true; break; } }
+                if (component.GetType() == typeof(Font)) { if (s.CurrentFont.GetHashCode() == hash) { match = true; break; } }
+                if (component.GetType() == typeof(NumberFormat)) { if (s.CurrentNumberFormat.GetHashCode() == hash) { match = true; break; } }
             }
             return match;
         }

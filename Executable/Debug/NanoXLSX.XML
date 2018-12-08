@@ -2594,42 +2594,12 @@
             Class representing a style manager to maintain all styles and its components of a workbook
             </summary>
         </member>
-        <member name="F:Styles.StyleManager.BORDERPREFIX">
-            <summary>
-            Prefix for the hash calculation of border styles
-            </summary>
-        </member>
-        <member name="F:Styles.StyleManager.CELLXFPREFIX">
-            <summary>
-            Prefix for the hash calculation of cellXf styles
-            </summary>
-        </member>
-        <member name="F:Styles.StyleManager.FILLPREFIX">
-            <summary>
-            Prefix for the hash calculation of fill styles
-            </summary>
-        </member>
-        <member name="F:Styles.StyleManager.FONTPREFIX">
-            <summary>
-            Prefix for the hash calculation of font styles
-            </summary>
-        </member>
-        <member name="F:Styles.StyleManager.NUMBERFORMATPREFIX">
-            <summary>
-            Prefix for the hash calculation of number format styles
-            </summary>
-        </member>
-        <member name="F:Styles.StyleManager.STYLEPREFIX">
-            <summary>
-            Prefix for the hash calculation of styles
-            </summary>
-        </member>
         <member name="M:Styles.StyleManager.#ctor">
             <summary>
             Default constructor
             </summary>
         </member>
-        <member name="M:Styles.StyleManager.GetComponentByHash(System.Collections.Generic.List{Styles.AbstractStyle}@,System.String)">
+        <member name="M:Styles.StyleManager.GetComponentByHash(System.Collections.Generic.List{Styles.AbstractStyle}@,System.Int32)">
             <summary>
             Gets a component by its hash
             </summary>
@@ -2637,7 +2607,7 @@
             <param name="hash">Hash of the component</param>
             <returns>Determined component. If not found, null will be returned</returns>
         </member>
-        <member name="M:Styles.StyleManager.GetBorderByHash(System.String)">
+        <member name="M:Styles.StyleManager.GetBorderByHash(System.Int32)">
             <summary>
             Gets a border by its hash
             </summary>
@@ -2657,7 +2627,7 @@
             </summary>
             <returns>Number of stored borders</returns>
         </member>
-        <member name="M:Styles.StyleManager.GetCellXfByHash(System.String)">
+        <member name="M:Styles.StyleManager.GetCellXfByHash(System.Int32)">
             <summary>
             Gets a cellXf by its hash
             </summary>
@@ -2677,7 +2647,7 @@
             </summary>
             <returns>Number of stored cellXfs</returns>
         </member>
-        <member name="M:Styles.StyleManager.GetFillByHash(System.String)">
+        <member name="M:Styles.StyleManager.GetFillByHash(System.Int32)">
             <summary>
             Gets a fill by its hash
             </summary>
@@ -2697,7 +2667,7 @@
             </summary>
             <returns>Number of stored fills</returns>
         </member>
-        <member name="M:Styles.StyleManager.GetFontByHash(System.String)">
+        <member name="M:Styles.StyleManager.GetFontByHash(System.Int32)">
             <summary>
             Gets a font by its hash
             </summary>
@@ -2717,7 +2687,7 @@
             </summary>
             <returns>Number of stored fonts</returns>
         </member>
-        <member name="M:Styles.StyleManager.GetNumberFormatByHash(System.String)">
+        <member name="M:Styles.StyleManager.GetNumberFormatByHash(System.Int32)">
             <summary>
             Gets a numberFormat by its hash
             </summary>
@@ -2745,7 +2715,7 @@
             <returns>Determined style</returns>
             <exception cref="T:NanoXLSX.Exceptions.StyleException">Throws a StyleException if the style was not found in the style manager</exception>
         </member>
-        <member name="M:Styles.StyleManager.GetStyleByHash(System.String)">
+        <member name="M:Styles.StyleManager.GetStyleByHash(System.Int32)">
             <summary>
             Gets a style by its hash
             </summary>
@@ -2817,21 +2787,10 @@
             Class represents an abstract style component
             </summary>
         </member>
-        <member name="P:Styles.AbstractStyle.Hash">
-            <summary>
-            Gets the unique hash of the object
-            </summary>
-        </member>
         <member name="P:Styles.AbstractStyle.InternalID">
             <summary>
             Gets or sets the internal ID for sorting purpose in the Excel style document (nullable)
             </summary>
-        </member>
-        <member name="M:Styles.AbstractStyle.CalculateHash">
-            <summary>
-            Abstract method definition to calculate the hash of the component
-            </summary>
-            <returns>Returns the hash of the component as string</returns>
         </member>
         <member name="M:Styles.AbstractStyle.Copy">
             <summary>
@@ -2868,6 +2827,33 @@
             <param name="o">Value to cast</param>
             <param name="sb">StringBuilder reference to put the casted object in</param>
             <param name="delimiter">Delimiter character to append after the casted value</param>
+        </member>
+        <member name="T:Styles.AbstractStyle.AppendAttribute">
+            <summary>
+            Attribute designated to control the copying of style properties
+            </summary>
+            <seealso cref="T:System.Attribute" />
+        </member>
+        <member name="P:Styles.AbstractStyle.AppendAttribute.Ignore">
+            <summary>
+            Indicates whether the property annotated with the attribute is ignored during the copying of properties
+            </summary>
+            <value>
+              <c>true</c> if ignored, otherwise <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Styles.AbstractStyle.AppendAttribute.NestedProperty">
+            <summary>
+            Indicates whether the property annotated with the attribute is a nested property. Nested properties are ignored but during the copying of properties but can be broken down to its sub-properties
+            </summary>
+            <value>
+              <c>true</c> if a nested property, otherwise <c>false</c>.
+            </value>
+        </member>
+        <member name="M:Styles.AbstractStyle.AppendAttribute.#ctor">
+            <summary>
+            Default constructor
+            </summary>
         </member>
         <member name="T:Styles.BasicStyles">
             <summary>
@@ -3100,11 +3086,13 @@
             Default constructor
             </summary>
         </member>
-        <member name="M:Styles.Border.CalculateHash">
+        <member name="M:Styles.Border.GetHashCode">
             <summary>
-            Override method to calculate the hash of this component (internal method)
+            Returns a hash code for this instance.
             </summary>
-            <returns>Calculated hash as string</returns>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
         </member>
         <member name="M:Styles.Border.Copy">
             <summary>
@@ -3280,11 +3268,13 @@
             </summary>
             <returns>String of a class instance</returns>
         </member>
-        <member name="M:Styles.CellXf.CalculateHash">
+        <member name="M:Styles.CellXf.GetHashCode">
             <summary>
-            Override method to calculate the hash of this component (internal method)
+            Returns a hash code for this instance.
             </summary>
-            <returns>Calculated hash as string</returns>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
         </member>
         <member name="M:Styles.CellXf.Copy">
             <summary>
@@ -3384,12 +3374,6 @@
             <param name="value">Color value</param>
             <param name="filltype">Fill type (fill or pattern)</param>
         </member>
-        <member name="M:Styles.Fill.CalculateHash">
-            <summary>
-            Override method to calculate the hash of this component
-            </summary>
-            <returns>Calculated hash as string</returns>
-        </member>
         <member name="M:Styles.Fill.ToString">
             <summary>
             Override toString method
@@ -3401,6 +3385,14 @@
             Method to copy the current object to a new one without casting
             </summary>
             <returns>Copy of the current object without the internal ID</returns>
+        </member>
+        <member name="M:Styles.Fill.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
         </member>
         <member name="M:Styles.Fill.CopyFill">
             <summary>
@@ -3541,17 +3533,19 @@
             </summary>
             <returns>String of a class</returns>
         </member>
-        <member name="M:Styles.Font.CalculateHash">
-            <summary>
-            Override method to calculate the hash of this component
-            </summary>
-            <returns>Calculated hash as string</returns>
-        </member>
         <member name="M:Styles.Font.Copy">
             <summary>
             Method to copy the current object to a new one without casting
             </summary>
             <returns>Copy of the current object without the internal ID</returns>
+        </member>
+        <member name="M:Styles.Font.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
         </member>
         <member name="M:Styles.Font.CopyFont">
             <summary>
@@ -3704,12 +3698,6 @@
             </summary>
             <returns>String of a class</returns>
         </member>
-        <member name="M:Styles.NumberFormat.CalculateHash">
-            <summary>
-            Override method to calculate the hash of this component
-            </summary>
-            <returns>Calculated hash as string</returns>
-        </member>
         <member name="M:Styles.NumberFormat.Copy">
             <summary>
             Method to copy the current object to a new one without casting
@@ -3721,6 +3709,14 @@
             Method to copy the current object to a new one with casting
             </summary>
             <returns>Copy of the current object without the internal ID</returns>
+        </member>
+        <member name="M:Styles.NumberFormat.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
         </member>
         <member name="T:Styles.Style">
             <summary>
@@ -3804,11 +3800,14 @@
             </summary>
             <returns>String of a class instance</returns>
         </member>
-        <member name="M:Styles.Style.CalculateHash">
+        <member name="M:Styles.Style.GetHashCode">
             <summary>
-            Override method to calculate the hash of this component
+            Returns a hash code for this instance.
             </summary>
-            <returns>Calculated hash as string</returns>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+            <exception cref="T:NanoXLSX.Exceptions.StyleException">MissingReferenceException - The hash of the style could not be created because one or more components are missing as references</exception>
         </member>
         <member name="M:Styles.Style.Copy">
             <summary>

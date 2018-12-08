@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Demo.Testing;
 using NanoXLSX;
 using Styles;
 
@@ -41,7 +42,7 @@ namespace Demo
             /* ### PERFORMANCE TESTS ### */
             // # Use tests in this section to test the performance of NanoXLSX
             /* ######################### */
-            // Testing.Performance.StressTest("stressTest.xlsx", "worksheet", 15000, 100);
+            //   Performance.StressTest("stressTest.xlsx", "worksheet", 1500, 2);
             /* ######################### */
             /* ###### TYPE TESTS ####### */
             // # Use tests in this section to test the type casting of NanoXLSX
