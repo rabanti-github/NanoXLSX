@@ -30,7 +30,7 @@ namespace Styles
             /// <summary>Color defines a pattern color </summary>
             patternColor,
             /// <summary>Color defines a solid fill color </summary>
-            fillColor
+            fillColor,
         }
         /// <summary>
         /// Enum for the pattern values
@@ -50,7 +50,7 @@ namespace Styles
             /// <summary>6.25% gray fill</summary>
             gray0625,
             /// <summary>12.5% gray fill</summary>
-            gray125
+            gray125,
         }
         #endregion
 
@@ -120,20 +120,6 @@ namespace Styles
         #endregion
 
         #region methods
-        /// <summary>
-        /// Override method to calculate the hash of this component
-        /// </summary>
-        /// <returns>Calculated hash as string</returns>
-        public override string CalculateHash()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(StyleManager.FILLPREFIX);
-            CastValue(IndexedColor, ref sb, ':');
-            CastValue(PatternFill, ref sb, ':');
-            CastValue(ForegroundColor, ref sb, ':');
-            CastValue(BackgroundColor, ref sb, null);
-            return sb.ToString();
-        }
 
         /// <summary>
         /// Override toString method
@@ -141,7 +127,7 @@ namespace Styles
         /// <returns>String of a class</returns>
         public override string ToString()
         {
-            return Hash;
+            return "Fill:" + this.GetHashCode();
         }
 
         /// <summary>
@@ -156,6 +142,23 @@ namespace Styles
             copy.IndexedColor = IndexedColor;
             copy.PatternFill = PatternFill;
             return copy;
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            int p = 263;
+            int r = 1;
+            r *= p + this.IndexedColor;
+            r *= p + (int)this.PatternFill;
+            r *= p + this.ForegroundColor.GetHashCode();
+            r *= p + this.BackgroundColor.GetHashCode();
+            return r;
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace Styles
             /// <summary>Distributed alignment</summary>
             distributed,
             /// <summary>No alignment. The alignment will not be used in a style</summary>
-            none
+            none,
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Styles
             /// <summary>Text will be resized to fit the cell</summary>
             shrinkToFit,
             /// <summary>Text will overflow in cell</summary>
-            none
+            none,
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Styles
             /// <summary>Text direction is horizontal (default)</summary>
             horizontal,
             /// <summary>Text direction is vertical</summary>
-            vertical
+            vertical,
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Styles
             /// <summary>Distributed alignment</summary>
             distributed,
             /// <summary>No alignment. The alignment will not be used in a style</summary>
-            none
+            none,
         }
         #endregion
 
@@ -166,19 +166,23 @@ namespace Styles
         {
             if (textRotation < -90 || textRotation > 90)
             {
-                throw new FormatException("The rotation value (" + textRotation + "°) is out of range. Range is form -90° to +90°");
+                throw new FormatException("The rotation value (" + textRotation.ToString() + "°) is out of range. Range is form -90° to +90°");
             }
             if (textDirection == TextDirectionValue.vertical)
             {
                 return 255;
             }
-
-            if (textRotation >= 0)
+            else
             {
-                return textRotation;
+                if (textRotation >= 0)
+                {
+                    return textRotation;
+                }
+                else
+                {
+                    return (90 - textRotation);
+                }
             }
-
-            return (90 - textRotation);
         }
 
         /// <summary>
@@ -187,26 +191,28 @@ namespace Styles
         /// <returns>String of a class instance</returns>
         public override string ToString()
         {
-            return Hash;
+            return "StyleXF:" + this.GetHashCode();
         }
 
         /// <summary>
-        /// Override method to calculate the hash of this component (internal method)
+        /// Returns a hash code for this instance.
         /// </summary>
-        /// <returns>Calculated hash as string</returns>
-        public override string CalculateHash()
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(StyleManager.CELLXFPREFIX);
-            CastValue(HorizontalAlign, ref sb, ':');
-            CastValue(VerticalAlign, ref sb, ':');
-            CastValue(Alignment, ref sb, ':');
-            CastValue(TextDirection, ref sb, ':');
-            CastValue(TextRotation, ref sb, ':');
-            CastValue(ForceApplyAlignment, ref sb, ':');
-            CastValue(Locked, ref sb, ':');
-            CastValue(Hidden, ref sb, null);
-            return sb.ToString();
+            int p = 269;
+            int r = 1;
+            r *= p + (int)this.HorizontalAlign;
+            r *= p + (int)this.VerticalAlign;
+            r *= p + (int)this.Alignment;
+            r *= p + (int)this.TextDirection;
+            r *= p + this.TextRotation;
+            r *= p + (this.ForceApplyAlignment ? 0 : 1);
+            r *= p + (this.Locked ? 0 : 1);
+            r *= p + (this.Hidden ? 0 : 1);
+            return r;
         }
 
         /// <summary>
@@ -239,8 +245,6 @@ namespace Styles
 
         #endregion
 
-
-
     }
-    
+
 }

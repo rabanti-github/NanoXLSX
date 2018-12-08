@@ -32,7 +32,7 @@ namespace Styles
             /// <summary>Font scheme is minor (default)</summary>
             minor,
             /// <summary>No Font scheme is used</summary>
-            none
+            none,
         }
         /// <summary>
         /// Enum for the vertical alignment of the text from base line
@@ -45,7 +45,7 @@ namespace Styles
             /// <summary>Text will be rendered as superscript</summary>
             superscript,
             /// <summary>Text will be rendered normal</summary>
-            none
+            none,
         }
         #endregion
 
@@ -153,31 +153,7 @@ namespace Styles
         /// <returns>String of a class</returns>
         public override string ToString()
         {
-            return Hash;
-        }
-
-        /// <summary>
-        /// Override method to calculate the hash of this component
-        /// </summary>
-        /// <returns>Calculated hash as string</returns>
-        public override string CalculateHash()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(StyleManager.FONTPREFIX);
-            CastValue(Bold, ref sb, ':');
-            CastValue(Italic, ref sb, ':');
-            CastValue(Underline, ref sb, ':');
-            CastValue(DoubleUnderline, ref sb, ':');
-            CastValue(Strike, ref sb, ':');
-            CastValue(ColorTheme, ref sb, ':');
-            CastValue(ColorValue, ref sb, ':');
-            CastValue(Family, ref sb, ':');
-            CastValue(Name, ref sb, ':');
-            CastValue(Scheme, ref sb, ':');
-            CastValue(VerticalAlign, ref sb, ':');
-            CastValue(Charset, ref sb, ':');
-            CastValue(size, ref sb, null);
-            return sb.ToString();
+            return "Font:" + this.GetHashCode();
         }
 
         /// <summary>
@@ -204,6 +180,32 @@ namespace Styles
         }
 
         /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            int p = 257;
+            int r = 1;
+            r *= p + (this.Bold ? 0 : 1);
+            r *= p + (this.Italic ? 0 : 1);
+            r *= p + (this.Underline ? 0 : 1);
+            r *= p + (this.DoubleUnderline ? 0 : 1);
+            r *= p + (this.Strike ? 0 : 1);
+            r *= p + this.ColorTheme;
+            r *= p + this.ColorValue.GetHashCode();
+            r *= p + this.Family.GetHashCode();
+            r *= p + this.Name.GetHashCode();
+            r *= p + this.Scheme.GetHashCode();
+            r *= p + (int)this.VerticalAlign;
+            r *= p + this.Charset.GetHashCode();
+            r *= p + this.size;
+            return r;
+        }
+
+        /// <summary>
         /// Method to copy the current object to a new one with casting
         /// </summary>
         /// <returns>Copy of the current object without the internal ID</returns>
@@ -213,5 +215,5 @@ namespace Styles
         }
 
         #endregion
-        }
+    }
 }

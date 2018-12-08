@@ -99,7 +99,7 @@ namespace Styles
             CurrentFont = new Font();
             CurrentNumberFormat = new NumberFormat();
             styleNameDefined = false;
-            name = CalculateHash();
+            name = this.GetHashCode().ToString();
         }
 
         /// <summary>
@@ -148,31 +148,31 @@ namespace Styles
         {
             if (styleToAppend.GetType() == typeof(Border))
             {
-                CurrentBorder.CopyProperties((Border)styleToAppend, new Border());
+                CurrentBorder.CopyProperties<Border>((Border)styleToAppend, new Border());
             }
             else if (styleToAppend.GetType() == typeof(CellXf))
             {
-                CurrentCellXf.CopyProperties((CellXf)styleToAppend, new CellXf());
+                CurrentCellXf.CopyProperties<CellXf>((CellXf)styleToAppend, new CellXf());
             }
             else if (styleToAppend.GetType() == typeof(Fill))
             {
-                CurrentFill.CopyProperties((Fill)styleToAppend, new Fill());
+                CurrentFill.CopyProperties<Fill>((Fill)styleToAppend, new Fill());
             }
             else if (styleToAppend.GetType() == typeof(Font))
             {
-                CurrentFont.CopyProperties((Font)styleToAppend, new Font());
+                CurrentFont.CopyProperties<Font>((Font)styleToAppend, new Font());
             }
             else if (styleToAppend.GetType() == typeof(NumberFormat))
             {
-                CurrentNumberFormat.CopyProperties((NumberFormat)styleToAppend, new NumberFormat());
+                CurrentNumberFormat.CopyProperties<NumberFormat>((NumberFormat)styleToAppend, new NumberFormat());
             }
             else if (styleToAppend.GetType() == typeof(Style))
             {
-                CurrentBorder.CopyProperties(((Style)styleToAppend).CurrentBorder, new Border());
-                CurrentCellXf.CopyProperties(((Style)styleToAppend).CurrentCellXf, new CellXf());
-                CurrentFill.CopyProperties(((Style)styleToAppend).CurrentFill, new Fill());
-                CurrentFont.CopyProperties(((Style)styleToAppend).CurrentFont, new Font());
-                CurrentNumberFormat.CopyProperties(((Style)styleToAppend).CurrentNumberFormat, new NumberFormat());
+                CurrentBorder.CopyProperties<Border>(((Style)styleToAppend).CurrentBorder, new Border());
+                CurrentCellXf.CopyProperties<CellXf>(((Style)styleToAppend).CurrentCellXf, new CellXf());
+                CurrentFill.CopyProperties<Fill>(((Style)styleToAppend).CurrentFill, new Fill());
+                CurrentFont.CopyProperties<Font>(((Style)styleToAppend).CurrentFont, new Font());
+                CurrentNumberFormat.CopyProperties<NumberFormat>(((Style)styleToAppend).CurrentNumberFormat, new NumberFormat());
             }
             return this;
         }
@@ -193,7 +193,7 @@ namespace Styles
 
             if (styleNameDefined == false)
             {
-                name = CalculateHash();
+                name = this.GetHashCode().ToString();
             }
         }
 
@@ -203,32 +203,31 @@ namespace Styles
         /// <returns>String of a class instance</returns>
         public override string ToString()
         {
-            return InternalID + "->" + Hash;
+            return InternalID.ToString() + "->" + this.GetHashCode();
         }
 
         /// <summary>
-        /// Override method to calculate the hash of this component
+        /// Returns a hash code for this instance.
         /// </summary>
-        /// <returns>Calculated hash as string</returns>
-        public sealed override string CalculateHash()
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        /// <exception cref="StyleException">MissingReferenceException - The hash of the style could not be created because one or more components are missing as references</exception>
+        public override int GetHashCode()
         {
-            StringBuilder sb = new StringBuilder();
             if (CurrentBorder == null || CurrentCellXf == null || CurrentFill == null || CurrentFont == null || CurrentNumberFormat == null)
             {
                 throw new StyleException("MissingReferenceException", "The hash of the style could not be created because one or more components are missing as references");
             }
-            sb.Append(StyleManager.STYLEPREFIX);
-            if (InternalID.HasValue)
-            {
-                sb.Append(InternalID.Value);
-                sb.Append(':');
-            }
-            sb.Append(CurrentBorder.CalculateHash());
-            sb.Append(CurrentCellXf.CalculateHash());
-            sb.Append(CurrentFill.CalculateHash());
-            sb.Append(CurrentFont.CalculateHash());
-            sb.Append(CurrentNumberFormat.CalculateHash());
-            return sb.ToString();
+
+            int p = 241;
+            int r = 1;
+            r *= p + this.CurrentBorder.GetHashCode();
+            r *= p + this.CurrentCellXf.GetHashCode();
+            r *= p + this.CurrentFill.GetHashCode();
+            r *= p + this.CurrentFont.GetHashCode();
+            r *= p + this.CurrentNumberFormat.GetHashCode();
+            return r;
         }
 
         /// <summary>
@@ -258,7 +257,6 @@ namespace Styles
         {
             return (Style)Copy();
         }
-
         #endregion
 
     }

@@ -10,8 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Testing;
 
-namespace Testing
+namespace Demo.Testing
 {
     /// <summary>
     /// Class for performance tests
@@ -61,7 +62,7 @@ namespace Testing
             {
                 for (j = 0; j < cols; j++)
                 {
-                    s.AddNextCell(field[i][j]);
+                    s.AddNextCell(field[i][j], Styles.BasicStyles.Bold);
                 }
                 s.GoToNextRow();
             }
