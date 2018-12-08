@@ -17,28 +17,14 @@ namespace Styles
     /// <summary>
     /// Class represents an abstract style component
     /// </summary>
-    public abstract class AbstractStyle : IComparable<AbstractStyle>, IEquatable<AbstractStyle>
+    public abstract class AbstractStyle : IComparable<AbstractStyle>
     {
-        /// <summary>
-        /// Gets the unique hash of the object
-        /// </summary>
-        [Append(Ignore = true)]
-        public string Hash
-        {
-            get { return CalculateHash(); }
-        }
-
         /// <summary>
         /// Gets or sets the internal ID for sorting purpose in the Excel style document (nullable)
         /// </summary>
         [Append(Ignore = true)]
         public int? InternalID { get; set; }
 
-        /// <summary>
-        /// Abstract method definition to calculate the hash of the component
-        /// </summary>
-        /// <returns>Returns the hash of the component as string</returns>
-        public abstract string CalculateHash();
 
         /// <summary>
         /// Abstract method to copy a component (dereferencing)
@@ -64,19 +50,19 @@ namespace Styles
             IEnumerable<AppendAttribute> attributes;
             foreach (PropertyInfo info in infos)
             {
-                attributes = (IEnumerable< AppendAttribute>)info.GetCustomAttributes(typeof(AppendAttribute));
+                attributes = (IEnumerable<AppendAttribute>)info.GetCustomAttributes(typeof(AppendAttribute));
                 if (attributes.Count() > 0)
                 {
                     ignore = false;
                     foreach (AppendAttribute attribute in attributes)
                     {
-                        if (attribute.Ignore || attribute.NestedProperty)
+                        if (attribute.Ignore == true || attribute.NestedProperty == true)
                         {
                             ignore = true;
                             break;
                         }
                     }
-                    if (ignore) { continue; } // skip property
+                    if (ignore == true) { continue; } // skip property
                 }
 
                 sourceInfo = source.GetType().GetProperty(info.Name);
@@ -96,10 +82,8 @@ namespace Styles
         public int CompareTo(AbstractStyle other)
         {
             if (InternalID.HasValue == false) { return -1; }
-
-            if (other.InternalID.HasValue == false) { return 1; }
-
-            return InternalID.Value.CompareTo(other.InternalID.Value);
+            else if (other.InternalID.HasValue == false) { return 1; }
+            else { return InternalID.Value.CompareTo(other.InternalID.Value); }
         }
 
         /// <summary>
@@ -109,7 +93,7 @@ namespace Styles
         /// <returns>True if both objects are equal, otherwise false</returns>
         public bool Equals(AbstractStyle other)
         {
-            return Hash.Equals(other.Hash);
+            return this.GetHashCode() == other.GetHashCode();
         }
 
         /// <summary>
@@ -126,7 +110,7 @@ namespace Styles
             }
             else if (o.GetType() == typeof(bool))
             {
-                if ((bool)o) { sb.Append(1); }
+                if ((bool)o == true) { sb.Append(1); }
                 else { sb.Append(0); }
             }
             else if (o.GetType() == typeof(int))
@@ -164,16 +148,43 @@ namespace Styles
             {
                 sb.Append(o);
             }
-            if (delimiter.HasValue)
+            if (delimiter.HasValue == true)
             {
                 sb.Append(delimiter.Value);
             }
         }
+
+        /// <summary>
+        /// Attribute designated to control the copying of style properties
+        /// </summary>
+        /// <seealso cref="System.Attribute" />
+        public class AppendAttribute : Attribute
+        {
+            /// <summary>
+            /// Indicates whether the property annotated with the attribute is ignored during the copying of properties
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if ignored, otherwise <c>false</c>.
+            /// </value>
+            public bool Ignore { get; set; }
+
+            /// <summary>
+            /// Indicates whether the property annotated with the attribute is a nested property. Nested properties are ignored but during the copying of properties but can be broken down to its sub-properties
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if a nested property, otherwise <c>false</c>.
+            /// </value>
+            public bool NestedProperty { get; set; }
+
+            /// <summary>
+            /// Default constructor
+            /// </summary>
+            public AppendAttribute()
+            {
+                Ignore = false;
+                NestedProperty = false;
+            }
+        }
     }
-
-    /*  ************************************************************************************  */
-
-
-
 
 }

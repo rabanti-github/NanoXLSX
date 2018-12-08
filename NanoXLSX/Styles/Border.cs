@@ -47,7 +47,7 @@ namespace Styles
             /// <summary>thick border</summary>
             thick,
             /// <summary>double border</summary>
-            s_double
+            s_double,
         }
         #endregion
 
@@ -125,26 +125,28 @@ namespace Styles
 
         #region methods
         /// <summary>
-        /// Override method to calculate the hash of this component (internal method)
+        /// Returns a hash code for this instance.
         /// </summary>
-        /// <returns>Calculated hash as string</returns>
-        public override string CalculateHash()
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(StyleManager.BORDERPREFIX);
-            CastValue(BottomColor, ref sb, ':');
-            CastValue(BottomStyle, ref sb, ':');
-            CastValue(DiagonalColor, ref sb, ':');
-            CastValue(DiagonalDown, ref sb, ':');
-            CastValue(DiagonalStyle, ref sb, ':');
-            CastValue(DiagonalUp, ref sb, ':');
-            CastValue(LeftColor, ref sb, ':');
-            CastValue(LeftStyle, ref sb, ':');
-            CastValue(RightColor, ref sb, ':');
-            CastValue(RightStyle, ref sb, ':');
-            CastValue(TopColor, ref sb, ':');
-            CastValue(TopStyle, ref sb, null);
-            return sb.ToString();
+            int p = 271;
+            int r = 1;
+            r *= p + (int)this.BottomStyle;
+            r *= p + (int)this.DiagonalStyle;
+            r *= p + (int)this.TopStyle;
+            r *= p + (int)this.LeftStyle;
+            r *= p + (int)this.RightStyle;
+            r *= p + this.BottomColor.GetHashCode();
+            r *= p + this.DiagonalColor.GetHashCode();
+            r *= p + this.TopColor.GetHashCode();
+            r *= p + this.LeftColor.GetHashCode();
+            r *= p + this.RightColor.GetHashCode();
+            r *= p + (this.DiagonalDown ? 0 : 1);
+            r *= p + (this.DiagonalUp ? 0 : 1);
+            return r;
         }
 
         /// <summary>
@@ -184,7 +186,7 @@ namespace Styles
         /// <returns>String of a class</returns>
         public override string ToString()
         {
-            return Hash;
+            return "Border:" + this.GetHashCode();
         }
 
         /// <summary>
@@ -204,8 +206,8 @@ namespace Styles
             if (TopStyle != StyleValue.none) { state = false; }
             if (BottomStyle != StyleValue.none) { state = false; }
             if (DiagonalStyle != StyleValue.none) { state = false; }
-            if (DiagonalDown) { state = false; }
-            if (DiagonalUp) { state = false; }
+            if (DiagonalDown != false) { state = false; }
+            if (DiagonalUp != false) { state = false; }
             return state;
         }
         #endregion

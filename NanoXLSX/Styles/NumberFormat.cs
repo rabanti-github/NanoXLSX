@@ -92,7 +92,7 @@ namespace Styles
             /// <summary>Format: #</summary>
             format_49 = 49,
             /// <summary>Custom Format (ID 164 and higher)</summary>
-            custom = 164
+            custom = 164,
         }
         #endregion
 
@@ -114,8 +114,7 @@ namespace Styles
             get
             {
                 if (Number == FormatNumber.custom) { return true; }
-
-                return false;
+                else { return false; }
             }
         }
         /// <summary>
@@ -144,21 +143,7 @@ namespace Styles
         /// <returns>String of a class</returns>
         public override string ToString()
         {
-            return Hash;
-        }
-
-        /// <summary>
-        /// Override method to calculate the hash of this component
-        /// </summary>
-        /// <returns>Calculated hash as string</returns>
-        public override string CalculateHash()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(StyleManager.NUMBERFORMATPREFIX);
-            CastValue(CustomFormatCode, ref sb, ':');
-            CastValue(CustomFormatID, ref sb, ':');
-            CastValue(Number, ref sb, null);
-            return sb.ToString();
+            return "NumberFormat:" + this.GetHashCode();
         }
 
         /// <summary>
@@ -181,6 +166,22 @@ namespace Styles
         public NumberFormat CopyNumberFormat()
         {
             return (NumberFormat)Copy();
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            int p = 251;
+            int r = 1;
+            r *= p + this.CustomFormatCode.GetHashCode();
+            r *= p + this.CustomFormatID;
+            r *= p + (int)this.Number;
+            return r;
         }
 
         #endregion
