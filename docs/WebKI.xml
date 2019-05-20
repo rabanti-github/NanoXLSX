@@ -62,8 +62,8 @@
     <HelpKINode Title="constructor" Url="html/f28a2667-06ed-d8cd-52d1-fb68335cc731.htm" />
     <HelpKINode Title="methods" Url="html/c6297fd9-31a4-ceb8-5664-bf7a98e1e30f.htm" />
     <HelpKINode Title="methods" Url="html/20033a14-f81a-fed0-064b-33dbc1217c00.htm" />
-    <HelpKINode Title="properties" Url="html/09ca8043-3447-9f3f-191d-2aa28eb87198.htm" />
     <HelpKINode Title="properties" Url="html/a5bc8715-44e0-0f92-6890-4089261041ce.htm" />
+    <HelpKINode Title="properties" Url="html/09ca8043-3447-9f3f-191d-2aa28eb87198.htm" />
   </HelpKINode>
   <HelpKINode Title="AppendAttribute.AppendAttribute constructor" Url="html/f28a2667-06ed-d8cd-52d1-fb68335cc731.htm" />
   <HelpKINode Title="AppendAttribute.Ignore property" Url="html/442b1eca-159f-3978-d095-f69fc647f29c.htm" />
@@ -325,8 +325,8 @@
   <HelpKINode Title="DATE enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="dateFormat enumeration member" Url="html/e18d888e-7884-c6fd-6893-3614b727fab7.htm" />
   <HelpKINode Title="DateFormat property" Url="html/e9d7b551-01c5-640e-f629-fbda078a8660.htm" />
-  <HelpKINode Title="DEFAULT enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="Default enumeration member" Url="html/07c2d3c9-4304-155a-86b1-7001fa87c3ea.htm" />
+  <HelpKINode Title="DEFAULT enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="DEFAULTCOLOR field" Url="html/ccb32b73-7347-7565-dfc9-e64600ed5938.htm" />
   <HelpKINode Title="DefaultColumnWidth property" Url="html/5443dc31-73fa-ec0c-4d1d-76999e3aea1c.htm" />
   <HelpKINode Title="DEFAULTFONT field" Url="html/ec1377d6-d99a-5753-e2e8-8bcdda35bfbe.htm" />
@@ -803,12 +803,12 @@
   <HelpKINode Title="SaveAs method" Url="html/90841dd3-d372-c730-ba88-ab3d9625a4e2.htm" />
   <HelpKINode Title="SaveAsAsync method" Url="html/41335a10-f52d-7188-736e-744774382bad.htm" />
   <HelpKINode Title="SaveAsStream method">
-    <HelpKINode Title="Workbook.SaveAsStream Method " Url="html/45ee7352-da3f-9427-2e35-c0f7c4f9f3ce.htm" />
-    <HelpKINode Title="XlsxWriter.SaveAsStream Method " Url="html/5429057f-0bd3-5011-fe6e-da64878e9ee6.htm" />
+    <HelpKINode Title="Workbook.SaveAsStream Method " Url="html/8054f2eb-8436-1fcb-739d-933ca4108c43.htm" />
+    <HelpKINode Title="XlsxWriter.SaveAsStream Method " Url="html/6f0e8439-00b2-0476-05ef-c9e354c4548f.htm" />
   </HelpKINode>
   <HelpKINode Title="SaveAsStreamAsync method">
-    <HelpKINode Title="Workbook.SaveAsStreamAsync Method " Url="html/b6e4d8e8-ad3c-866b-bba0-9e0e3ce09aa9.htm" />
-    <HelpKINode Title="XlsxWriter.SaveAsStreamAsync Method " Url="html/12657d26-22fb-d930-ab75-cc352c3dbcd9.htm" />
+    <HelpKINode Title="Workbook.SaveAsStreamAsync Method " Url="html/3e5ed5d1-3531-ef38-f8bb-0179f01d8f2d.htm" />
+    <HelpKINode Title="XlsxWriter.SaveAsStreamAsync Method " Url="html/d6e8f4c9-bbc8-e9c3-97e8-b771138f0c68.htm" />
   </HelpKINode>
   <HelpKINode Title="SaveAsync method">
     <HelpKINode Title="Workbook.SaveAsync Method " Url="html/42bca797-51dd-4a99-a995-a2848731ee8e.htm" />
@@ -1047,8 +1047,8 @@
   <HelpKINode Title="Workbook.Save method" Url="html/a8e58898-0005-ff70-cf2b-3cb96825a1e2.htm" />
   <HelpKINode Title="Workbook.SaveAs method" Url="html/90841dd3-d372-c730-ba88-ab3d9625a4e2.htm" />
   <HelpKINode Title="Workbook.SaveAsAsync method" Url="html/41335a10-f52d-7188-736e-744774382bad.htm" />
-  <HelpKINode Title="Workbook.SaveAsStream method" Url="html/45ee7352-da3f-9427-2e35-c0f7c4f9f3ce.htm" />
-  <HelpKINode Title="Workbook.SaveAsStreamAsync method" Url="html/b6e4d8e8-ad3c-866b-bba0-9e0e3ce09aa9.htm" />
+  <HelpKINode Title="Workbook.SaveAsStream method" Url="html/8054f2eb-8436-1fcb-739d-933ca4108c43.htm" />
+  <HelpKINode Title="Workbook.SaveAsStreamAsync method" Url="html/3e5ed5d1-3531-ef38-f8bb-0179f01d8f2d.htm" />
   <HelpKINode Title="Workbook.SaveAsync method" Url="html/42bca797-51dd-4a99-a995-a2848731ee8e.htm" />
   <HelpKINode Title="Workbook.SelectedWorksheet property" Url="html/ef55faed-1f6a-333e-8236-f9aa4c232074.htm" />
   <HelpKINode Title="Workbook.SetCurrentWorksheet method" Url="html/02f58e2b-617b-5792-cc8d-a5c60b2dcbc6.htm" />
@@ -1245,8 +1245,8 @@
   <HelpKINode Title="XlsxWriter.InterceptDocuments property" Url="html/a41c0b8a-a08c-bdc8-bf92-31abce9a0e8b.htm" />
   <HelpKINode Title="XlsxWriter.InterceptedDocuments property" Url="html/0facf76f-d62d-e2fb-4f8f-335dcdfc33da.htm" />
   <HelpKINode Title="XlsxWriter.Save method" Url="html/49245771-9887-9dd6-5d73-49692b87860b.htm" />
-  <HelpKINode Title="XlsxWriter.SaveAsStream method" Url="html/5429057f-0bd3-5011-fe6e-da64878e9ee6.htm" />
-  <HelpKINode Title="XlsxWriter.SaveAsStreamAsync method" Url="html/12657d26-22fb-d930-ab75-cc352c3dbcd9.htm" />
+  <HelpKINode Title="XlsxWriter.SaveAsStream method" Url="html/6f0e8439-00b2-0476-05ef-c9e354c4548f.htm" />
+  <HelpKINode Title="XlsxWriter.SaveAsStreamAsync method" Url="html/d6e8f4c9-bbc8-e9c3-97e8-b771138f0c68.htm" />
   <HelpKINode Title="XlsxWriter.SaveAsync method" Url="html/c7bc592c-89ad-8b7e-27ae-64673919f0f9.htm" />
   <HelpKINode Title="XlsxWriter.XlsxWriter constructor">
     <HelpKINode Title="XlsxWriter Constructor " Url="html/81fcfcd2-d6c4-a393-1f11-d6fd2368451b.htm" />

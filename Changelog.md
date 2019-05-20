@@ -1,5 +1,16 @@
 # Change Log
 
+## v1.3.3
+
+---
+Release Date: **20.05.2019**
+
+- Fixed a bug in the handling of streams (streams can be left open now)
+- Updated stream demo
+- Code Cleanup
+- Removed executable folder, since executables are available through releases, compilation or NuGet
+
+
 ## v1.3.2
 
 ---
