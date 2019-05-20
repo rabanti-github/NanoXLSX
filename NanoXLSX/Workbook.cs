@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2018
+ * Copyright Raphael Stoeckli © 2019
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -543,29 +543,31 @@ namespace NanoXLSX
         /// Save the workbook to a writable stream
         /// </summary>
         /// <param name="stream">Writable stream</param>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        /// <exception cref="StyleException">Throws an StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
-        public void SaveAsStream(Stream stream)
+        /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
+        /// <exception cref="IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
+        /// <exception cref="FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
+        public void SaveAsStream(Stream stream, bool leaveOpen = false)
         {
             XlsxWriter l = new XlsxWriter(this);
-            l.SaveAsStream(stream);
+            l.SaveAsStream(stream, leaveOpen);
         }
 
         /// <summary>
         /// Save the workbook to a writable stream asynchronous.
         /// </summary>
         /// <param name="stream">>Writable stream</param>
+        /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
         /// <returns>Task object (void)</returns>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="IOException">Throws IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="StyleException">May throw a StyleException if one of the styles of the workbook cannot be referenced or is null. The asynchronous operation may hide the exception.</exception>
-        public async Task SaveAsStreamAsync(Stream stream)
+        public async Task SaveAsStreamAsync(Stream stream, bool leaveOpen = false)
         {
             XlsxWriter l = new XlsxWriter(this);
-            await l.SaveAsStreamAsync(stream);
+            await l.SaveAsStreamAsync(stream, leaveOpen);
         }
 
         /// <summary>
