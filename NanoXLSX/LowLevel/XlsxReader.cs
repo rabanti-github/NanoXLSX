@@ -103,12 +103,12 @@ namespace NanoXLSX.LowLevel
                 WorksheetReader wr;
                 nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
                 name = "xl/worksheets/" + nameTemplate;
-                for (int i = 0; i < workbook.WorksheetDefinitions.Count; i++)
+                foreach(KeyValuePair<int, string> definition in workbook.WorksheetDefinitions)
                 {
                     ms = GetEntryStream(name, zf);
                     wr = new WorksheetReader(sharedStrings, nameTemplate, worksheetIndex);
                     wr.Read(ms);
-                    worksheets.Add(worksheetIndex - 1, wr);
+                        worksheets.Add(definition.Key, wr);
                     worksheetIndex++;
                     nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
                     name = "xl/worksheets/" + nameTemplate;
@@ -144,17 +144,17 @@ namespace NanoXLSX.LowLevel
         public Workbook GetWorkbook()
         {
             Workbook wb = new Workbook(false);
-            WorksheetReader wr;
             Worksheet ws;
-            for (int i = 0; i < worksheets.Count; i++)
+            int index = 1;
+            foreach(KeyValuePair<int, WorksheetReader> reader in worksheets)
             {
-                wr = worksheets[i];
-                ws = new Worksheet(workbook.WorksheetDefinitions[i + 1], i + 1, wb);
-                foreach (KeyValuePair<string, Cell> cell in wr.Data)
+                ws = new Worksheet(workbook.WorksheetDefinitions[reader.Key], index, wb);
+                foreach (KeyValuePair<string, Cell> cell in reader.Value.Data)
                 {
                     ws.AddCell(cell.Value, cell.Key);
                 }
                 wb.AddWorksheet(ws);
+                index++;
             }
             return wb;
         }
