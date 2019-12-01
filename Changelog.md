@@ -1,5 +1,14 @@
 # Change Log
 
+## v1.3.4
+
+---
+Release Date: **01.12.2019**
+
+- Fixed a bug of reorganized worksheets (when deleted in Excel)
+- Fixed a bug in the handling of shared strings
+
+
 ## v1.3.3
 
 ---
