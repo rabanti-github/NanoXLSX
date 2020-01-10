@@ -1,5 +1,14 @@
 # Change Log
 
+## v1.3.4
+
+---
+Release Date: **10.01.2020**
+
+- Fixed a bug in the reader regarding decimal numbers im locales where the decimal pointer is not a dot
+- Formal changes
+
+
 ## v1.3.3
 
 ---
