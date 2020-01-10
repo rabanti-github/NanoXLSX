@@ -1,12 +1,13 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2019
+ * Copyright Raphael Stoeckli © 2020
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 using NanoXLSX.Exceptions;
@@ -19,7 +20,6 @@ namespace NanoXLSX.LowLevel
     /// </summary>
     public class WorksheetReader
     {
-
         #region privateFields
 
         private SharedStringsReader sharedStrings;
@@ -334,7 +334,7 @@ namespace NanoXLSX.LowLevel
         {
             double dValue;
             CellResolverTuple t;
-            if (double.TryParse(raw, out dValue))
+            if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
             {
                 t = new CellResolverTuple(true, dValue, typeof(double));
             }
@@ -354,7 +354,7 @@ namespace NanoXLSX.LowLevel
         {
             int iValue;
             CellResolverTuple t;
-            if (int.TryParse(raw, out iValue))
+            if (int.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out iValue))
             {
                 t = new CellResolverTuple(true, iValue, typeof(int));
             }
@@ -408,7 +408,7 @@ namespace NanoXLSX.LowLevel
         {
             double dValue;
             CellResolverTuple t;
-            if (double.TryParse(raw, out dValue))
+            if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
             {
                 DateTime date = DateTime.FromOADate(dValue);
                 t = new CellResolverTuple(true, date, typeof(DateTime));

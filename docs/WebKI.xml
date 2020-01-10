@@ -62,8 +62,8 @@
     <HelpKINode Title="constructor" Url="html/f28a2667-06ed-d8cd-52d1-fb68335cc731.htm" />
     <HelpKINode Title="methods" Url="html/20033a14-f81a-fed0-064b-33dbc1217c00.htm" />
     <HelpKINode Title="methods" Url="html/c6297fd9-31a4-ceb8-5664-bf7a98e1e30f.htm" />
-    <HelpKINode Title="properties" Url="html/09ca8043-3447-9f3f-191d-2aa28eb87198.htm" />
     <HelpKINode Title="properties" Url="html/a5bc8715-44e0-0f92-6890-4089261041ce.htm" />
+    <HelpKINode Title="properties" Url="html/09ca8043-3447-9f3f-191d-2aa28eb87198.htm" />
   </HelpKINode>
   <HelpKINode Title="AppendAttribute.AppendAttribute constructor" Url="html/f28a2667-06ed-d8cd-52d1-fb68335cc731.htm" />
   <HelpKINode Title="AppendAttribute.Ignore property" Url="html/442b1eca-159f-3978-d095-f69fc647f29c.htm" />
@@ -1212,8 +1212,8 @@
   <HelpKINode Title="XlsxReader.XlsxReader constructor" Url="html/237b0cae-94b9-be7d-7307-4d4b14a0006e.htm" />
   <HelpKINode Title="XlsxWriter class">
     <HelpKINode Title="XlsxWriter Class" Url="html/5ddfdd04-d061-802f-0cc1-faef026c925c.htm" />
-    <HelpKINode Title="constructor" Url="html/7103984e-7a20-d91d-2b4d-189ccd73f7f2.htm" />
     <HelpKINode Title="constructor" Url="html/81fcfcd2-d6c4-a393-1f11-d6fd2368451b.htm" />
+    <HelpKINode Title="constructor" Url="html/7103984e-7a20-d91d-2b4d-189ccd73f7f2.htm" />
     <HelpKINode Title="methods" Url="html/3352465c-8252-824b-55b7-2915134746ef.htm" />
     <HelpKINode Title="properties" Url="html/74f8dff5-b375-8d8f-ddba-fc4c17054009.htm" />
   </HelpKINode>
@@ -1249,7 +1249,7 @@
   <HelpKINode Title="XlsxWriter.SaveAsStreamAsync method" Url="html/d6e8f4c9-bbc8-e9c3-97e8-b771138f0c68.htm" />
   <HelpKINode Title="XlsxWriter.SaveAsync method" Url="html/c7bc592c-89ad-8b7e-27ae-64673919f0f9.htm" />
   <HelpKINode Title="XlsxWriter.XlsxWriter constructor">
-    <HelpKINode Title="XlsxWriter Constructor " Url="html/7103984e-7a20-d91d-2b4d-189ccd73f7f2.htm" />
     <HelpKINode Title="XlsxWriter Constructor " Url="html/81fcfcd2-d6c4-a393-1f11-d6fd2368451b.htm" />
+    <HelpKINode Title="XlsxWriter Constructor " Url="html/7103984e-7a20-d91d-2b4d-189ccd73f7f2.htm" />
   </HelpKINode>
 </HelpKI>
