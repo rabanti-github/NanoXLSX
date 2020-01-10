@@ -1,12 +1,20 @@
 # Change Log
 
-## v1.3.4
+## v1.3.5
 
 ---
 Release Date: **10.01.2020**
 
 - Fixed a bug in the reader regarding decimal numbers (for locales where the decimal pointer is not a dot)
 - Formal changes
+
+## v1.3.4
+
+---
+Release Date: **10.01.2020**
+
+- Fixed a bug of reorganized worksheets (when deleted in Excel)
+- Fixed a bug in the handling of shared strings
 
 
 ## v1.3.3
