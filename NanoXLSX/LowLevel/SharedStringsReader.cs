@@ -99,10 +99,7 @@ namespace NanoXLSX.LowLevel
                         {
                             sb.Clear();
                             GetTextToken(node, ref sb);
-                            if (sb.Length > 0)
-                            {
-                                SharedStrings.Add(sb.ToString());
-                            }
+                            SharedStrings.Add(sb.ToString());
                         }
                     }
                 }
