@@ -11,7 +11,7 @@ Release Date: **10.01.2020**
 ## v1.3.4
 
 ---
-Release Date: **10.01.2020**
+Release Date: **01.12.2019**
 
 - Fixed a bug of reorganized worksheets (when deleted in Excel)
 - Fixed a bug in the handling of shared strings
