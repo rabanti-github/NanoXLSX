@@ -5,7 +5,7 @@
 ---
 Release Date: **10.01.2020**
 
-- Fixed a bug in the reader regarding decimal numbers im locales where the decimal pointer is not a dot
+- Fixed a bug in the reader regarding decimal numbers (for locales where the decimal pointer is not a dot)
 - Formal changes
 
 
