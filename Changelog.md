@@ -1,5 +1,15 @@
 # Change Log
 
+## v1.3.6
+
+---
+Release Date: **19.07.2020**
+
+- Fixed a bug in the reader regarding dates, times and booleans
+- Fixed a bug in the method AddNextCellFormula
+
+Note: Fixes provided by Silvio Burger and Thiago Souza. The fix for the reader bug is currently a work-around
+
 ## v1.3.5
 
 ---
