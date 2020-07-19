@@ -188,9 +188,9 @@ namespace NanoXLSX.LowLevel
                                 formula = null;
                                 if (rowChild.LocalName.ToLower() == "c")
                                 {
-                                    address = GetAttribute("r", rowChild, null); // Mandatory
-                                    type = GetAttribute("t", rowChild, null); // can be null if not existing
-                                    style = GetAttribute("s", rowChild, null); // can be null; if "1" then date
+                                    address = ReaderUtils.GetAttribute("r", rowChild); // Mandatory
+                                    type = ReaderUtils.GetAttribute("t", rowChild); // can be null if not existing
+                                    style = ReaderUtils.GetAttribute("s", rowChild); // can be null; if "1" then date
                                     if (rowChild.HasChildNodes)
                                     {
                                         foreach (XmlNode valueNode in rowChild.ChildNodes)
@@ -217,7 +217,7 @@ namespace NanoXLSX.LowLevel
                 throw new IOException("XMLStreamException", "The XML entry could not be read from the input stream. Please see the inner exception:", ex);
             }
         }
-
+        /*
         /// <summary>
         /// Gets the attribute with the passed name.
         /// </summary>
@@ -242,6 +242,7 @@ namespace NanoXLSX.LowLevel
 
             return defaultValue;
         }
+        */
 
         /// <summary>
         /// Resolves the data of a read cell, transforms it into a cell object and adds it to the data

@@ -27,6 +27,7 @@ namespace NanoXLSX.LowLevel
         private Dictionary<int, WorksheetReader> worksheets;
         private MemoryStream memoryStream;
         private WorkbookReader workbook;
+        private StyleReaderContainer styleReaderContainer;
 #endregion
 
 #region constructors
@@ -90,9 +91,18 @@ namespace NanoXLSX.LowLevel
                 memoryStream.Position = 0;
                 zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
                 MemoryStream ms;
+
                 SharedStringsReader sharedStrings = new SharedStringsReader();
                 ms = GetEntryStream("xl/sharedStrings.xml", zf);
-                sharedStrings.Read(ms);
+                if (ms.Length > 0) // If lengt == 0, no shared strings are defined (no text in file)
+                {
+                    sharedStrings.Read(ms);
+                }
+
+                StyleReader styleReader = new StyleReader();
+                ms = GetEntryStream("xl/styles.xml", zf);
+                styleReader.Read(ms);
+                styleReaderContainer = styleReader.StyleReaderContainer;
 
                 workbook = new WorkbookReader();
                 ms = GetEntryStream("xl/workbook.xml", zf);

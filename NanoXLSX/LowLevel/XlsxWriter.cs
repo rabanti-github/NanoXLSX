@@ -1071,6 +1071,7 @@ namespace NanoXLSX.LowLevel
                     formatNumber = (int)item.CurrentNumberFormat.Number;
                     sb.Append(formatNumber.ToString("G", culture));
                 }
+               
                 sb.Append("\" borderId=\"").Append(item.CurrentBorder.InternalID.Value.ToString("G", culture));
                 sb.Append("\" fillId=\"").Append(item.CurrentFill.InternalID.Value.ToString("G", culture));
                 sb.Append("\" fontId=\"").Append(item.CurrentFont.InternalID.Value.ToString("G", culture));

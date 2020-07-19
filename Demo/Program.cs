@@ -23,6 +23,7 @@ namespace Demo
         /// <param name="args">Not used</param>
         static void Main(string[] args)
         {
+            //NumFmtTest();
             BasicDemo();
             Read();
             ShortenerDemo();
@@ -51,6 +52,24 @@ namespace Demo
             /* ######################### */
         }
 
+        /*
+        private static void NumFmtTest()
+        {
+           
+            Workbook workbook = new Workbook("numFmtTest.xlsx", "Sheet1");
+            for (int i = 0; i < 164; i++)
+            {
+                Style s = new Style("s:" + i.ToString(), i, false);
+                s.CurrentNumberFormat.CustomFormatID = i;
+                workbook.CurrentWorksheet.AddCell(0.5f, 0, i, s);
+                workbook.CurrentWorksheet.AddCell(1f, 1, i, s);
+                workbook.CurrentWorksheet.AddCell(0f, 2, i, s);
+                workbook.CurrentWorksheet.AddCell("Format number: " + i.ToString(), 3, i);
+                workbook.CurrentWorksheet.AddCell(Enum.IsDefined(typeof(NumberFormat.FormatNumber), i), 4, i);
+            }
+            workbook.Save();
+        }
+        */
 
         /// <summary>
         /// This is a very basic demo (adding three values and save the workbook)
@@ -69,6 +88,18 @@ namespace Demo
         /// </summary>
         private static void Read()
         {
+
+
+            //Workbook wbx = Workbook.Load(@"C:\temp\DataErr.xlsx");
+            Workbook wbx = Workbook.Load(@"C:\temp\DateTest.xlsx");
+            Worksheet wsx = wbx.Worksheets[0];
+            Dictionary<string, Cell> Cx = wsx.Cells;
+            Console.WriteLine(Cx["A1"].Value);
+            Console.WriteLine(Cx["A2"].Value);
+            Console.WriteLine(Cx["A3"].Value);
+            Console.WriteLine(Cx["A4"].Value);
+            Console.WriteLine(Cx["A5"].Value);
+
             Workbook wb = Workbook.Load("basic.xlsx");
             System.Console.WriteLine("contains worksheet name: " + wb.CurrentWorksheet.SheetName);
             foreach (KeyValuePair<string, Cell> cell in wb.CurrentWorksheet.Cells)

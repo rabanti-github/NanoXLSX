@@ -25,6 +25,7 @@ namespace Styles
         /// <summary>
         /// Enum for predefined number formats
         /// </summary>
+        /// <remarks>There are other predefined formats (e.g. 43 and 44) that are not listed. The declaration of such formats is done in the number formats section of the style document, whereas the officially listed ones are implicitly used and not declared in the style document</remarks>
         public enum FormatNumber
         {
             /// <summary>No format / Default</summary>
