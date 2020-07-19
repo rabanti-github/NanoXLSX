@@ -583,7 +583,7 @@ namespace NanoXLSX
         public void AddNextCellFormula(string formula, Style style)
         {
             Cell c = new Cell(formula, Cell.CellType.FORMULA, currentColumnNumber, currentRowNumber, this);
-            AddNextCell(c, true, null);
+            AddNextCell(c, true, style);
         }
 
         #endregion

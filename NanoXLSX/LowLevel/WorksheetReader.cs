@@ -257,31 +257,7 @@ namespace NanoXLSX.LowLevel
             string s;
             Cell cell;
             CellResolverTuple tuple;
-            if (style != null && style == "1") // Date must come before numeric values
-            {
-                tuple = GetDateValue(value);
-                if (tuple.IsValid)
-                {
-                    cell = new Cell(tuple.Data, Cell.CellType.DATE, address);
-                }
-                else
-                {
-                    cell = new Cell(value, Cell.CellType.STRING, address);
-                }
-            }
-            else if (type == null) // try numeric
-            {
-                tuple = GetNumericValue(value);
-                if (tuple.IsValid)
-                {
-                    cell = new Cell(tuple.Data, Cell.CellType.NUMBER, address);
-                }
-                else
-                {
-                    cell = new Cell(value, Cell.CellType.STRING, address);
-                }
-            }
-            else if (type == "b")
+           if (type == "b") // boolean
             {
                 tuple = GetBooleanValue(value);
                 if (tuple.IsValid)
@@ -293,11 +269,47 @@ namespace NanoXLSX.LowLevel
                     cell = new Cell(value, Cell.CellType.STRING, address);
                 }
             }
+            else if (style != null && style == "1") // Date must come before numeric values
+            {
+                tuple = GetDateValue(value);
+                if (tuple.IsValid)
+                {
+                    cell = new Cell(tuple.Data, Cell.CellType.DATE, address);
+                }
+                else
+                {
+                    cell = new Cell(value, Cell.CellType.STRING, address);
+                }
+            }
+            else if (type == null && style != null && style == "3") // Try parse time (default style 3)
+            {
+                tuple = GetDateValue(value);
+                if (tuple.IsValid)
+                {
+                    cell = new Cell(((DateTime)tuple.Data).TimeOfDay, Cell.CellType.DATE, address);
+                }
+                else
+                {
+                    cell = new Cell(value, Cell.CellType.STRING, address); // fall back to string
+                }
+            }
+            else if (type == null) // try numeric if not parsed as date or time
+            {
+                tuple = GetNumericValue(value);
+                if (tuple.IsValid)
+                {
+                    cell = new Cell(tuple.Data, Cell.CellType.NUMBER, address);
+                }
+                else
+                {
+                    cell = new Cell(value, Cell.CellType.STRING, address);
+                }
+            }
             else if (formula != null) // formula before string
             {
                 cell = new Cell(formula, Cell.CellType.FORMULA, address);
             }
-            else if (type == "s")
+            else if (type == "s") // string (declared)
             {
                 tuple = GetIntValue(value);
                 if (tuple.IsValid == false)
@@ -316,8 +328,8 @@ namespace NanoXLSX.LowLevel
                         cell = new Cell(value, Cell.CellType.STRING, address);
                     }
                 }
-            }
-            else
+            } 
+            else // fall back to sting
             {
                 cell = new Cell(value, Cell.CellType.STRING, address);
             }
