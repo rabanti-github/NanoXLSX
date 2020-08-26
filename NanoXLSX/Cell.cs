@@ -164,7 +164,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Constructor with value, cell type and address. The worksheet reference is set to null and must be assigned later
+        /// Constructor with value, cell type and address as string. The worksheet reference is set to null and must be assigned later
         /// </summary>
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
@@ -174,6 +174,25 @@ namespace NanoXLSX
             DataType = type;
             Value = value;
             CellAddress = address;
+            WorksheetReference = null;
+            if (type == CellType.DEFAULT)
+            {
+                ResolveCellType();
+            }
+        }
+
+        /// <summary>
+        /// Constructor with value, cell type and address as struct. The worksheet reference is set to null and must be assigned later
+        /// </summary>
+        /// <param name="value">Value of the cell</param>
+        /// <param name="type">Type of the cell</param>
+        /// <param name="address">Address struct of the cell</param>
+        public Cell(Object value, CellType type, Address address)
+        {
+            DataType = type;
+            Value = value;
+            columnNumber = address.Column;
+            rowNumber = address.Row;
             WorksheetReference = null;
             if (type == CellType.DEFAULT)
             {

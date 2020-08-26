@@ -27,25 +27,30 @@ namespace NanoXLSX.LowLevel
         private Dictionary<int, WorksheetReader> worksheets;
         private MemoryStream memoryStream;
         private WorkbookReader workbook;
-#endregion
+        private ImportOptions importOptions;
+        #endregion
 
-#region constructors
+        #region constructors
         /// <summary>
         /// Constructor with file path as parameter
         /// </summary>
+        /// <param name="options">Import options to override the automatic approach of the reader. <see cref="ImportOptions"/> for information about import options.</param>
         /// <param name="path">File path of the XLSX file to load</param>
-        public XlsxReader(String path)
+        public XlsxReader(String path, ImportOptions options = null)
         {
             filePath = path;
+            importOptions = options;
             worksheets = new Dictionary<int, WorksheetReader>();
         }
 
         /// <summary>
         /// Constructor with stream as parameter
         /// </summary>
+        /// <param name="options">Import options to override the automatic approach of the reader. <see cref="ImportOptions"/> for information about import options.</param>
         /// <param name="stream">Stream of the XLSX file to load</param>
-        public XlsxReader(Stream stream)
+        public XlsxReader(Stream stream, ImportOptions options = null)
         {
+            importOptions = options;
             worksheets = new Dictionary<int, WorksheetReader>();
             inputStream = stream;
         }
@@ -106,7 +111,7 @@ namespace NanoXLSX.LowLevel
                 foreach(KeyValuePair<int, string> definition in workbook.WorksheetDefinitions)
                 {
                     ms = GetEntryStream(name, zf);
-                    wr = new WorksheetReader(sharedStrings, nameTemplate, worksheetIndex);
+                    wr = new WorksheetReader(sharedStrings, nameTemplate, worksheetIndex, importOptions);
                     wr.Read(ms);
                         worksheets.Add(definition.Key, wr);
                     worksheetIndex++;

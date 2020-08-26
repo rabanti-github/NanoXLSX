@@ -665,32 +665,40 @@ namespace NanoXLSX
         /// Loads a workbook from a file
         /// </summary>
         /// <param name="filename">Filename of the workbook</param>
+        /// <param name="options">Import options to override the data types of columns. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
-        public static Workbook Load(String filename)
+        public static Workbook Load(String filename, ImportOptions options = null)
         {
-            XlsxReader r = new XlsxReader(filename);
+            XlsxReader r = new XlsxReader(filename, options);
             r.Read();
             return r.GetWorkbook();
         }
-
-
+        
         /// <summary>
         /// Loads a workbook from a stream
         /// </summary>
         /// <param name="stream">Stream containing the workbook</param>
+        /// /// <param name="options">Import options to override the data types of columns. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
-        public static Workbook Load(Stream stream)
+        public static Workbook Load(Stream stream, ImportOptions options = null)
         {
-            XlsxReader r = new XlsxReader(stream);
+            XlsxReader r = new XlsxReader(stream, options);
             r.Read();
             return r.GetWorkbook();
         }
 
-        public static async Task<Workbook> LoadAsync(Stream stream)
+        /// <summary>
+        /// Loads a workbook from a stream asynchronously
+        /// </summary>
+        /// <param name="stream">Stream containing the workbook</param>
+        /// /// <param name="options">Import options to override the data types of columns. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
+        /// <returns>Workbook object</returns>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        public static async Task<Workbook> LoadAsync(Stream stream, ImportOptions options = null)
         {
-            XlsxReader r = new XlsxReader(stream);
+            XlsxReader r = new XlsxReader(stream, options);
             await r.ReadAsync();
             return r.GetWorkbook();
         }

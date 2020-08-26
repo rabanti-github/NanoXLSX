@@ -36,6 +36,17 @@ namespace NanoXLSX.LowLevel
         private static DocumentPath SHARED_STRINGS = new DocumentPath("sharedStrings.xml", "xl/");
         #endregion
 
+        #region constants
+        /// <summary>
+        /// Minimum valid OAdate value (1900-01-01)
+        /// </summary>
+        public const double MIN_OADATE_VALUE = 0f;
+        /// <summary>
+        /// Maximum valid OAdate value (9999-12-31)
+        /// </summary>
+        public const double MAX_OADATE_VALUE = 2958465.9999f;
+        #endregion
+
         #region privateFields
         private CultureInfo culture;
         private Workbook workbook;
@@ -1324,9 +1335,9 @@ namespace NanoXLSX.LowLevel
             try
             {
                 double d = date.ToOADate();
-                if (d < 0)
+                if (d < MIN_OADATE_VALUE || d > MAX_OADATE_VALUE)
                 {
-                    throw new FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 are not allowed.");
+                    throw new FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 or after 999-12-31 are not allowed.");
                 }
                 return d.ToString("G", culture); //worksheet.DefaultRowHeight.ToString("G", culture) 
             }
