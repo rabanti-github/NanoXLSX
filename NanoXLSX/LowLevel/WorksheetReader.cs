@@ -381,7 +381,7 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Parses the string value of a raw cell. may be take the value from the shared string table
+        /// Parses the string value of a raw cell. May take the value from the shared string table, if available
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <param name="address">Address of the cell</param>
@@ -463,7 +463,7 @@ namespace NanoXLSX.LowLevel
                         case "1": // Possibly a Date
                             return new Cell(date, Cell.CellType.DATE, address);
                         case "3": // Possibly a Time
-                            return new Cell(date.TimeOfDay, Cell.CellType.DATE, address); // TODO: Define TIME as type (must be implemented in the writer as well)
+                            return new Cell(date.TimeOfDay, Cell.CellType.TIME, address);
                         default:
                             return new Cell(date, Cell.CellType.DATE, address); // Currently duplicate of "1", as long no style reader is implemented
                     }

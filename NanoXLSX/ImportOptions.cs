@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NanoXLSX.LowLevel
+namespace NanoXLSX
 {
     /// <summary>
     /// The import options define global rules to import worksheets

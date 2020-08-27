@@ -11,7 +11,6 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
-using NanoXLSX.Exceptions;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.LowLevel

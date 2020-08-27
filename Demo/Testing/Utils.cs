@@ -104,7 +104,7 @@ namespace Testing
         /// <param name="minLength">Minimum date</param>
         /// <param name="maxLength">Maximum date</param>
         /// <returns>Randomly generated DateTime</returns>
-        /// <remarks>Excel, respectively its OADate function does not support a dates before 30th December 1899. Such dates will cause an exception in NanoXLSX</remarks>
+        /// <remarks>Excel, respectively its OAdate function does not support a dates before January 1st 1900 and after December 31 9999. Such dates will cause an exception in NanoXLSX</remarks>
         public static DateTime PseduoRandomDate(DateTime min, DateTime max)
         {
             long ticks = PseudoRandomLong(min.Ticks, max.Ticks);

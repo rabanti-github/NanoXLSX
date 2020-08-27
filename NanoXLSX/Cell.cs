@@ -31,8 +31,10 @@ namespace NanoXLSX
             STRING,
             /// <summary>Type for all numeric types (long, integer and float and double)</summary>
             NUMBER,
-            /// <summary>Type for dates and times (Note: Dates before 1900-01-01 are not allowed)</summary>
+            /// <summary>Type for dates(Note: Dates before 1900-01-01 and after 9999-12-31 are not allowed)</summary>
             DATE,
+            /// <summary>Type for times (Note: Internally handled as OAdate, represented by <see cref="TimeSpan"/>)</summary>
+            TIME,
             /// <summary>Type for boolean</summary>
             BOOL,
             /// <summary>Type for Formulas (The cell will be handled differently)</summary>
@@ -280,6 +282,7 @@ namespace NanoXLSX
             else if (t == typeof(long) || t == typeof(ulong)) { DataType = CellType.NUMBER; }
             else if (t == typeof(short) || t == typeof(ushort)) { DataType = CellType.NUMBER; }
             else if (t == typeof(DateTime)) { DataType = CellType.DATE; } // Not native but standard
+            else if (t == typeof(TimeSpan)) { DataType = CellType.TIME; } // Not native but standard
             else { DataType = CellType.STRING; } // Default (char, string, object)
         }
 
@@ -363,6 +366,7 @@ namespace NanoXLSX
                 else if (t == typeof(short))   { c = new Cell((short)o, CellType.NUMBER); }
                 else if (t == typeof(ushort))  { c = new Cell((ushort)o, CellType.NUMBER); }
                 else if (t == typeof(DateTime)){ c = new Cell((DateTime)o, CellType.DATE); }
+                else if (t == typeof(TimeSpan)){ c = new Cell((TimeSpan)o, CellType.TIME); }
                 else if (t == typeof(string))  { c = new Cell((string)o, CellType.STRING); }
                 else // Default = unspecified object
                 {
