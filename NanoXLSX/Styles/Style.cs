@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using NanoXLSX.Exceptions;
 
-namespace Styles
+namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Class representing a Style with sub classes within a style sheet. An instance of this class is only a container for the different sub-classes. These sub-classes contain the actual styling information.

@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using NanoXLSX.Exceptions;
+using NanoXLSX.Styles;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.LowLevel
@@ -24,6 +25,8 @@ namespace NanoXLSX.LowLevel
 
         private SharedStringsReader sharedStrings;
         private ImportOptions importOptions;
+        private List<string> dateStyles;
+        private List<string> timeStyles;
         #endregion
 
         #region properties
@@ -52,6 +55,12 @@ namespace NanoXLSX.LowLevel
         /// </value>
         public Dictionary<string, Cell> Data { get; private set; }
 
+        /// <summary>
+        /// Gets the assignment of resolved styles to cell addresses
+        /// </summary>
+        /// <value>Dictionary of cell address-style number tuples</value>
+        public Dictionary<string, string> StyleAssignment { get; private set; } = new Dictionary<string, string>();
+
         #endregion
 
         #region constructors
@@ -62,19 +71,44 @@ namespace NanoXLSX.LowLevel
         /// <param name="sharedStrings">SharedStringsReader object</param>
         /// <param name="name">Worksheet name</param>
         /// <param name="number">Worksheet number</param>
+        /// <param name="styleReaderContainer">resolved styles, used to determine dates or times</param>
         /// <param name="options">Import options to override the automatic approach of the reader. <see cref="ImportOptions"/> for information about import options.</param>
-        public WorksheetReader(SharedStringsReader sharedStrings, string name, int number, ImportOptions options = null)
+        public WorksheetReader(SharedStringsReader sharedStrings, string name, int number, StyleReaderContainer styleReaderContainer, ImportOptions options = null)
         {
             importOptions = options;
             Data = new Dictionary<string, Cell>();
             Name = name;
             WorksheetNumber = number;
             this.sharedStrings = sharedStrings;
+            processStyles(styleReaderContainer);
         }
 
         #endregion
 
         #region functions
+
+        /// <summary>
+        /// Determine which of the resolved styles are either to define a time or a date. Stores also the styles into a dictionary 
+        /// </summary>
+        /// <param name="styleReaderContainer">Resolved styles from the style reader</param>
+        private void processStyles(StyleReaderContainer styleReaderContainer)
+        {
+            dateStyles = new List<string>();
+            timeStyles = new List<string>();
+            for (int i = 0; i < styleReaderContainer.StyleCount; i++)
+            {
+                bool isDate, isTime;
+                Style style = styleReaderContainer.GetStyle(i, out isDate, out isTime, true);
+                if (isDate)
+                {
+                    dateStyles.Add(i.ToString("G", CultureInfo.InvariantCulture));
+                }
+                if (isTime)
+                {
+                    timeStyles.Add(i.ToString("G", CultureInfo.InvariantCulture));
+                }
+            }
+        }
 
         /// <summary>
         /// Gets whether the specified column exists in the data
@@ -174,7 +208,7 @@ namespace NanoXLSX.LowLevel
             {
                 using (stream) // Close after processing
                 {
-                    string type, style, address, value, formula;
+                    string type, styleNumber, address, value, formula;
                     XmlDocument xr = new XmlDocument();
                     xr.Load(stream);
                     XmlNodeList rows = xr.GetElementsByTagName("row");
@@ -185,15 +219,15 @@ namespace NanoXLSX.LowLevel
                             foreach (XmlNode rowChild in row.ChildNodes)
                             {
                                 type = "s";
-                                style = "";
+                                styleNumber = "";
                                 address = "A1";
                                 value = "";
                                 formula = null;
                                 if (rowChild.LocalName.ToLower() == "c")
                                 {
-                                    address = GetAttribute("r", rowChild, null); // Mandatory
-                                    type = GetAttribute("t", rowChild, null); // can be null if not existing
-                                    style = GetAttribute("s", rowChild, null); // can be null; if "1" then date
+                                    address = ReaderUtils.GetAttribute("r", rowChild); // Mandatory
+                                    type = ReaderUtils.GetAttribute("t", rowChild); // can be null if not existing
+                                    styleNumber = ReaderUtils.GetAttribute("s", rowChild); // can be null
                                     if (rowChild.HasChildNodes)
                                     {
                                         foreach (XmlNode valueNode in rowChild.ChildNodes)
@@ -209,7 +243,7 @@ namespace NanoXLSX.LowLevel
                                         }
                                     }
                                 }
-                                ResolveCellData(address, type, value, style, formula);
+                                ResolveCellData(address, type, value, styleNumber, formula);
                             }
                         }
                     }
@@ -222,50 +256,25 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Gets the attribute with the passed name.
-        /// </summary>
-        /// <param name="targetName">Name of the target attribute</param>
-        /// <param name="node">XML node that contains the attribute</param>
-        /// <param name="defaultValue">Default value if the attribute was not found</param>
-        /// <returns>Attribute value as string or default value if not found (can be null)</returns>
-        private string GetAttribute(string targetName, XmlNode node, string defaultValue)
-        {
-            if (node.Attributes == null || node.Attributes.Count == 0)
-            {
-                return defaultValue;
-            }
-
-            foreach (XmlAttribute attribute in node.Attributes)
-            {
-                if (attribute.Name == targetName)
-                {
-                    return attribute.Value;
-                }
-            }
-
-            return defaultValue;
-        }
-
-
-        /// <summary>
         /// Resolves the data of a read cell either automatically or conditionally  (import options), transforms it into a cell object and adds it to the data
         /// </summary>
         /// <param name="addressString">Address of the cell</param>
         /// <param name="type">Expected data type</param>
         /// <param name="value">Raw value as string</param>
-        /// <param name="style">Style definition as string (can be null)</param>
+        /// <param name="styleNumber">Style number as string (can be null)</param>
         /// <param name="formula"> Formula as string (can be null; data type determines whether value or formula is used)</param>
-        private void ResolveCellData(string addressString, string type, string value, string style, string formula)
+        private void ResolveCellData(string addressString, string type, string value, string styleNumber, string formula)
         {
             Address address = new Address(addressString);
             string key = addressString.ToUpper();
+            StyleAssignment[key] = styleNumber;
             if (importOptions == null)
             {
-                Data.Add(key, AutoResolveCellData(address, type, value, style, formula));
+                Data.Add(key, AutoResolveCellData(address, type, value, styleNumber, formula));
             }
             else
             {
-                Data.Add(key, AutoResolveCellDataConditionally(address, type, value, style, formula));
+                Data.Add(key, ResolveCellDataConditionally(address, type, value, styleNumber, formula));
             }
         }
 
@@ -275,14 +284,14 @@ namespace NanoXLSX.LowLevel
         /// <param name="address">Address of the cell</param>
         /// <param name="type">Expected data type</param>
         /// <param name="value">Raw value as string</param>
-        /// <param name="style">Style definition as string (can be null)</param>
+        /// <param name="styleNumber">Style number as string (can be null)</param>
         /// <param name="formula"> Formula as string (can be null; data type determines whether value or formula is used)</param>
         /// <returns>The resolved Cell</returns>
-        private Cell AutoResolveCellDataConditionally(Address address, string type, string value, string style, string formula)
+        private Cell ResolveCellDataConditionally(Address address, string type, string value, string styleNumber, string formula)
         {
             if (address.Row < importOptions.EnforcingStartRowNumber)
             {
-                return AutoResolveCellData(address, type, value, style, formula); // Skip enforcing
+                return AutoResolveCellData(address, type, value, styleNumber, formula); // Skip enforcing
             }
             if (importOptions.EnforcedColumnTypes.ContainsKey(address.Column))
             {
@@ -298,7 +307,7 @@ namespace NanoXLSX.LowLevel
                         }
                         else
                         {
-                            return GetDateValue(value, address, "1"); // TODO: Hack; This is a workaround until a style reader is implemented
+                            return GetDateTimeValue(value, address, Cell.CellType.DATE);
                         }
                     case ImportOptions.ColumnType.Time:
                         if (importOptions.EnforceDateTimesAsNumbers)
@@ -307,19 +316,19 @@ namespace NanoXLSX.LowLevel
                         }
                         else
                         {
-                            return GetDateValue(value, address, "3"); // TODO: Hack; This is a workaround until a style reader is implemented
+                            return GetDateTimeValue(value, address, Cell.CellType.TIME);
                         }
                     case ImportOptions.ColumnType.Numeric:
                         return GetNumericValue(value, address);
                     case ImportOptions.ColumnType.String:
-                        return GetStringValue(value, address, sharedStrings);
+                        return GetStringValue(value, address);
                     default:
-                        return AutoResolveCellData(address, type, value, style, formula);
+                        return AutoResolveCellData(address, type, value, styleNumber, formula);
                 }
             }
             else
             {
-                return AutoResolveCellData(address, type, value, style, formula);
+                return AutoResolveCellData(address, type, value, styleNumber, formula);
             }
         }
 
@@ -329,19 +338,26 @@ namespace NanoXLSX.LowLevel
         /// <param name="address">Address of the cell</param>
         /// <param name="type">Expected data type</param>
         /// <param name="value">Raw value as string</param>
-        /// <param name="style">Style definition as string (can be null)</param>
+        /// <param name="styleNumber">Style number as string (can be null)</param>
         /// <param name="formula"> Formula as string (can be null; data type determines whether value or formula is used)</param>
         /// <returns>The resolved Cell</returns>
-        private Cell AutoResolveCellData(Address address, string type, string value, string style, string formula)
+        private Cell AutoResolveCellData(Address address, string type, string value, string styleNumber, string formula)
         {
-            if (type == "b") // boolean
+            if (type == "s") // string (declared)
+            {
+                return GetStringValue(value, address);
+            }
+            else if (type == "b") // boolean
             {
                 return GetBooleanValue(value, address);
             }
-            // TODO: Hack; This is a workaround until a style reader is implemented
-            else if (style == "1" || style == "3")  // Try to resolve dates or times before numeric values (if a style is defined)
+            else if (dateStyles.Contains(styleNumber))  // date (priority)
             {
-                return GetDateValue(value, address, style); 
+                return GetDateTimeValue(value, address, Cell.CellType.DATE);
+            }
+            else if (timeStyles.Contains(styleNumber)) // time
+            {
+                return GetDateTimeValue(value, address, Cell.CellType.TIME);
             }
             else if (type == null) // try numeric if not parsed as date or time, before numeric
             {
@@ -351,13 +367,9 @@ namespace NanoXLSX.LowLevel
             {
                 return new Cell(formula, Cell.CellType.FORMULA, address);
             }
-            else if (type == "s") // string (declared)
-            {
-                return GetStringValue(value, address, sharedStrings);
-            }
             else // fall back to sting
             {
-                return GetStringValue(value, address, sharedStrings);
+                return GetStringValue(value, address);
             }
         }
 
@@ -367,7 +379,7 @@ namespace NanoXLSX.LowLevel
         /// <param name="raw">Raw value as string</param>
         /// <param name="address">Address of the cell</param>
         /// <returns>Cell of the type double or the defined fall-back type</returns>
-        private static Cell GetNumericValue(string raw, Address address)
+        private Cell GetNumericValue(string raw, Address address)
         {
             double dValue;
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
@@ -385,9 +397,8 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <param name="address">Address of the cell</param>
-        /// <param name="sharedStrings">Shared string table</param>
         /// <returns>Cell of the type string</returns>
-        private static Cell GetStringValue(string raw, Address address, SharedStringsReader sharedStrings)
+        private Cell GetStringValue(string raw, Address address)
         {
             int stringId;
             if (int.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out stringId))
@@ -414,7 +425,7 @@ namespace NanoXLSX.LowLevel
         /// <param name="raw">Raw value as string</param>
         /// <param name="address">Address of the cell</param>
         /// <returns>Cell of the type bool or the defined fall-back type</returns>
-        private static Cell GetBooleanValue(String raw, Address address)
+        private Cell GetBooleanValue(String raw, Address address)
         {
             if (raw == "0")
             {
@@ -440,13 +451,13 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Parses the date (DateTime) value of a raw cell. If the value is numeric, but out of range of a OAdate, a numeric value will be returned
+        /// Parses the date (DateTime) or time (TimeSpan) value of a raw cell. If the value is numeric, but out of range of a OAdate, a numeric value will be returned instead. If invalid, the string representation will be returned.
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <param name="address">Address of the cell</param>
-        /// <param name="styleNumber">Raw style number that may indicate whether the cell represents a date or time value</param>
-        /// <returns>Cell of the type DateTime or the defined fall-back type</returns>
-        private static Cell GetDateValue(String raw, Address address, string styleNumber)
+        /// <param name="type">Type of the value zu be converted: Valid values are DATE and TIME</param>
+        /// <returns>Cell of the type TimeSpan or the defined fall-back type</returns>
+        private Cell GetDateTimeValue(String raw, Address address, Cell.CellType type)
         {
             double dValue;
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
@@ -457,15 +468,16 @@ namespace NanoXLSX.LowLevel
                 }
                 else
                 {
-                    DateTime date = DateTime.FromOADate(dValue);
-                    switch (styleNumber)
+                    switch (type)
                     {
-                        case "1": // Possibly a Date
+                        case Cell.CellType.DATE:
+                            DateTime date = DateTime.FromOADate(dValue);
                             return new Cell(date, Cell.CellType.DATE, address);
-                        case "3": // Possibly a Time
-                            return new Cell(date.TimeOfDay, Cell.CellType.TIME, address);
+                        case Cell.CellType.TIME:
+                            TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);
+                            return new Cell(time, Cell.CellType.TIME, address);
                         default:
-                            return new Cell(date, Cell.CellType.DATE, address); // Currently duplicate of "1", as long no style reader is implemented
+                            throw new ArgumentException("The defined type is not supported to be uses as date or time");
                     }
                 }
             }
@@ -474,6 +486,7 @@ namespace NanoXLSX.LowLevel
                 return new Cell(raw, Cell.CellType.STRING, address);
             }
         }
+
         #endregion
 
     }

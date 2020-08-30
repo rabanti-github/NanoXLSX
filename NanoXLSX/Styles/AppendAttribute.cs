@@ -7,7 +7,7 @@
 
 using System;
 
-namespace Styles
+namespace NanoXLSX.Styles
 { 
 
     /// <summary>

@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using NanoXLSX.Exceptions;
 using NanoXLSX.LowLevel;
-using Styles;
+using NanoXLSX.Styles;
 
 namespace NanoXLSX
 {
@@ -702,8 +702,6 @@ namespace NanoXLSX
             await r.ReadAsync();
             return r.GetWorkbook();
         }
-
-
 
         #endregion
     }

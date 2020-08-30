@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -20,13 +21,15 @@ namespace NanoXLSX.LowLevel
     /// </summary>
     public class XlsxReader
     {
-#region privateFields
+
+        #region privateFields
         private string filePath;
         private Stream inputStream;
         private Dictionary<int, WorksheetReader> worksheets;
         private MemoryStream memoryStream;
         private WorkbookReader workbook;
         private ImportOptions importOptions;
+        private StyleReaderContainer styleReaderContainer;
         #endregion
 
         #region constructors
@@ -57,7 +60,6 @@ namespace NanoXLSX.LowLevel
 
         #region methods
 
-
         /// <summary>
         /// Reads the XLSX file from a file path or a file stream
         /// </summary>
@@ -65,66 +67,75 @@ namespace NanoXLSX.LowLevel
         /// Throws IOException in case of an error
         /// </exception>
         public void Read()
-    {
-        try
         {
-            using (memoryStream = new MemoryStream())
+            try
             {
-
-                ZipArchive zf;
-                if (inputStream == null || string.IsNullOrEmpty(filePath) == false)
+                using (memoryStream = new MemoryStream())
                 {
-                    using (FileStream fs = new FileStream(filePath, FileMode.Open))
+
+                    ZipArchive zf;
+                    if (inputStream == null || string.IsNullOrEmpty(filePath) == false)
                     {
-                        fs.CopyTo(memoryStream);
+                        using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                        {
+                            fs.CopyTo(memoryStream);
+                        }
                     }
-                }
-                else if (inputStream != null)
-                {
-                    using (inputStream)
+                    else if (inputStream != null)
                     {
-                        inputStream.CopyTo(memoryStream);
+                        using (inputStream)
+                        {
+                            inputStream.CopyTo(memoryStream);
+                        }
                     }
-                }
-                else
-                {
-                    throw new IOException("LoadException", "No valid stream or file path was provided to open");
-                }
+                    else
+                    {
+                        throw new IOException("LoadException", "No valid stream or file path was provided to open");
+                    }
 
-                memoryStream.Position = 0;
-                zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
-                MemoryStream ms;
-                SharedStringsReader sharedStrings = new SharedStringsReader();
-                ms = GetEntryStream("xl/sharedStrings.xml", zf);
-                sharedStrings.Read(ms);
+                    memoryStream.Position = 0;
+                    zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
+                    MemoryStream ms;
 
-                workbook = new WorkbookReader();
-                ms = GetEntryStream("xl/workbook.xml", zf);
-                workbook.Read(ms);
+                    SharedStringsReader sharedStrings = new SharedStringsReader();
+                    ms = GetEntryStream("xl/sharedStrings.xml", zf);
+                    if (ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
+                    {
+                        sharedStrings.Read(ms);
+                    }
 
-                int worksheetIndex = 1;
-                string name, nameTemplate;
-                WorksheetReader wr;
-                nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
-                name = "xl/worksheets/" + nameTemplate;
-                foreach(KeyValuePair<int, string> definition in workbook.WorksheetDefinitions)
-                {
-                    ms = GetEntryStream(name, zf);
-                    wr = new WorksheetReader(sharedStrings, nameTemplate, worksheetIndex, importOptions);
-                    wr.Read(ms);
-                        worksheets.Add(definition.Key, wr);
-                    worksheetIndex++;
+                    StyleReader styleReader = new StyleReader();
+                    ms = GetEntryStream("xl/styles.xml", zf);
+                    styleReader.Read(ms);
+                    styleReaderContainer = styleReader.StyleReaderContainer;
+
+                    workbook = new WorkbookReader();
+                    ms = GetEntryStream("xl/workbook.xml", zf);
+                    workbook.Read(ms);
+
+                    int worksheetIndex = 1;
+                    string name, nameTemplate;
+                    WorksheetReader wr;
                     nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
                     name = "xl/worksheets/" + nameTemplate;
-                }
+                    foreach (KeyValuePair<int, string> definition in workbook.WorksheetDefinitions)
+                    {
+                        ms = GetEntryStream(name, zf);
+                        wr = new WorksheetReader(sharedStrings, nameTemplate, worksheetIndex, styleReaderContainer, importOptions);
+                        wr.Read(ms);
+                        worksheets.Add(definition.Key, wr);
+                        worksheetIndex++;
+                        nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
+                        name = "xl/worksheets/" + nameTemplate;
+                    }
 
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new IOException("LoadException", "There was an error while reading an XLSX file. Please see the inner exception:", ex);
             }
         }
-        catch (Exception ex)
-        {
-            throw new IOException("LoadException", "There was an error while reading an XLSX file. Please see the inner exception:", ex);
-        }
-    }
 
         /// <summary>
         /// Reads the XLSX file from a file path or a file stream asynchronous
@@ -150,11 +161,20 @@ namespace NanoXLSX.LowLevel
             Workbook wb = new Workbook(false);
             Worksheet ws;
             int index = 1;
-            foreach(KeyValuePair<int, WorksheetReader> reader in worksheets)
+            foreach (KeyValuePair<int, WorksheetReader> reader in worksheets)
             {
                 ws = new Worksheet(workbook.WorksheetDefinitions[reader.Key], index, wb);
                 foreach (KeyValuePair<string, Cell> cell in reader.Value.Data)
                 {
+                    cell.Value.WorksheetReference = ws;
+                    if (reader.Value.StyleAssignment.ContainsKey(cell.Key))
+                    {
+                        Style style = styleReaderContainer.GetStyle(reader.Value.StyleAssignment[cell.Key], true);
+                        if (style != null)
+                        {
+                            cell.Value.SetStyle(style);
+                        }
+                    }
                     ws.AddCell(cell.Value, cell.Key);
                 }
                 wb.AddWorksheet(ws);
@@ -181,12 +201,10 @@ namespace NanoXLSX.LowLevel
                     return ms;
                 }
             }
-
             return new MemoryStream();
         }
 
-#endregion
-
+        #endregion
 
     }
 }

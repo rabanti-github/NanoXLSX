@@ -6,7 +6,7 @@
  */
 
 using NanoXLSX.Exceptions;
-using Styles;
+using NanoXLSX.Styles;
 
 namespace NanoXLSX
 {

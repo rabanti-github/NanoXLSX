@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace NanoXLSX
 {
     /// <summary>
-    /// The import options define global rules to import worksheets
+    /// The import options define global rules to import worksheets. The options are mainly to override particular cell types (e.g. interpretation of dates as numbers)
     /// </summary>
     public class ImportOptions
     {
@@ -77,7 +77,5 @@ namespace NanoXLSX
         {
             this.EnforcedColumnTypes.Add(columnNumber, type);
         }
-
-
     }
 }

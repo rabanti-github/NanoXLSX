@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using NanoXLSX.Exceptions;
-using Styles;
+using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 using IOException = NanoXLSX.Exceptions.IOException;
 
@@ -1004,7 +1004,7 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Method to create the XML string for the Xf part of the style sheet document
+        /// Method to create the XML string for the XF part of the style sheet document
         /// </summary>
         /// <returns>String with formatted XML data</returns>
         private string CreateStyleXfsString()
@@ -1089,6 +1089,7 @@ namespace NanoXLSX.LowLevel
                     formatNumber = (int)item.CurrentNumberFormat.Number;
                     sb.Append(formatNumber.ToString("G", culture));
                 }
+               
                 sb.Append("\" borderId=\"").Append(item.CurrentBorder.InternalID.Value.ToString("G", culture));
                 sb.Append("\" fillId=\"").Append(item.CurrentFill.InternalID.Value.ToString("G", culture));
                 sb.Append("\" fontId=\"").Append(item.CurrentFont.InternalID.Value.ToString("G", culture));

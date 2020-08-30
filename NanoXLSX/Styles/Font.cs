@@ -7,7 +7,7 @@
 
 using System.Text;
 
-namespace Styles
+namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Class representing a Font entry. The Font entry is used to define text formatting

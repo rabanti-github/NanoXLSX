@@ -33,6 +33,16 @@ namespace NanoXLSX.Exceptions
         public StyleException(string title, string message)
             : base(title + ": " + message)
         { ExceptionTitle = title; }
+
+        /// <summary>
+        /// Constructor with passed message and inner exception
+        /// </summary>
+        /// <param name="message">Message of the exception</param>
+        /// <param name="inner">Inner exception</param>
+        /// <param name="title">Title of the exception</param>
+        public StyleException(string title, string message, Exception inner)
+            : base(message, inner)
+        { ExceptionTitle = title; }
     }
 
 }

@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using NanoXLSX.Exceptions;
 
-namespace Styles
+namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Class representing a style manager to maintain all styles and its components of a workbook

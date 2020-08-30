@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Text;
 using NanoXLSX.Exceptions;
 
-namespace Styles
+namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Class represents an abstract style component

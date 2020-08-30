@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using NanoXLSX.Exceptions;
-using Styles;
+using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX

@@ -1,5 +1,22 @@
 # Change Log
 
+## v1.4.0
+
+---
+Release Date: **30.08.2020**
+
+- Added style reader to resolve dates and times properly
+- Added new data type TIME, represented by TimeSpan objects in reader and writer
+- Changed namespace from 'Styles' to 'NanoXLSX.Styles'
+- Added time (TimeSpan) examples to the demos
+- Updated documentation
+- Fixed some code formatting issues
+
+### Notes:
+ * To be consistent, the namespace of 'Styles' was changed to 'NanoXLSX.Styles'. Minor changes may be necessary in existing code if styles were used
+ * Currently, the style reader resolves only number formats to determine dates and times, as well as custom formats. Other components like fonts, borders or fills are neglected at the moment
+
+
 ## v1.3.6
 
 ---

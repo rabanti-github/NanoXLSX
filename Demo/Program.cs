@@ -11,7 +11,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Demo.Testing;
 using NanoXLSX;
-using Styles;
+using NanoXLSX.Styles;
 
 namespace Demo
 {
@@ -39,6 +39,7 @@ namespace Demo
             Demo9();
             Demo10();
 
+
             /* ### PERFORMANCE TESTS ### */
             // # Use tests in this section to test the performance of NanoXLSX
             /* ######################### */
@@ -51,7 +52,6 @@ namespace Demo
             /* ######################### */
         }
 
-
         /// <summary>
         /// This is a very basic demo (adding three values and save the workbook)
         /// </summary>
@@ -59,8 +59,8 @@ namespace Demo
         {
             Workbook workbook = new Workbook("basic.xlsx", "Sheet1");   // Create new workbook
             workbook.CurrentWorksheet.AddNextCell("Test");              // Add cell A1
-            workbook.CurrentWorksheet.AddNextCell("Test2");             // Add cell B1
-            workbook.CurrentWorksheet.AddNextCell("Test3");             // Add cell C1
+            workbook.CurrentWorksheet.AddNextCell(55.2);                // Add cell B1
+            workbook.CurrentWorksheet.AddNextCell(DateTime.Now);        // Add cell C1
             workbook.Save();
         }
 
@@ -69,23 +69,22 @@ namespace Demo
         /// </summary>
         private static void Read()
         {
-            Workbook wb = Workbook.Load("basic.xlsx");
-            System.Console.WriteLine("contains worksheet name: " + wb.CurrentWorksheet.SheetName);
-            foreach (KeyValuePair<string, Cell> cell in wb.CurrentWorksheet.Cells)
+            Workbook wb = Workbook.Load("basic.xlsx");                                          // Load the workbook 'basic.xlsx' from file 
+            Console.WriteLine("contains worksheet name: " + wb.CurrentWorksheet.SheetName);
+            foreach (KeyValuePair<string, Cell> cell in wb.CurrentWorksheet.Cells)              // Cycle through cells of loaded workbook (first worksheet)
             {
-                System.Console.WriteLine("Cell address: " + cell.Key + ": content:'" + cell.Value.Value + "'");
+                PrintCellInfo(cell.Value);                                                      // Show information about the loaded cell (helper function; not part of the API)
             }
 
             // The same as stream
-            Workbook wb2 = null;
-            using (FileStream fs = new FileStream("basic.xlsx", FileMode.Open))
+            using (FileStream fs = new FileStream("basic.xlsx", FileMode.Open))                 // Open the 'basic.xlsx' as file stream  
             {
-                wb2 = Workbook.Load(fs);
-            }
-            System.Console.WriteLine("contains worksheet name: " + wb2.CurrentWorksheet.SheetName);
-            foreach (KeyValuePair<string, Cell> cell in wb2.CurrentWorksheet.Cells)
-            {
-                System.Console.WriteLine("Cell address: " + cell.Key + ": content:'" + cell.Value.Value + "'");
+                Workbook wb2 = Workbook.Load(fs);                                               // Read the file stream
+                Console.WriteLine("contains worksheet name: " + wb2.CurrentWorksheet.SheetName);
+                foreach (KeyValuePair<string, Cell> cell in wb2.CurrentWorksheet.Cells)         // Cycle through cells of loaded workbook (first worksheet)
+                {
+                    PrintCellInfo(cell.Value);                                                  // Show information about the loaded cell (helper function; not part of the API)
+                }
             }
         }
 
@@ -101,7 +100,7 @@ namespace Demo
             wb.WS.Right(2);                                             // Move to cell E1   
             wb.WS.Value(true);                                          // Add cell E1
             wb.AddWorksheet("Sheet2");                                  // Add a new worksheet
-            wb.CurrentWorksheet.CurrentCellDirection = Worksheet.CellDirection.RowToRow;    // Change the cell direction
+            wb.CurrentWorksheet.CurrentCellDirection = Worksheet.CellDirection.RowToRow; // Change the cell direction
             wb.WS.Value("This is another text");                        // Add cell A1
             wb.WS.Formula("=A1");                                       // Add a formula in Cell A2
             wb.WS.Down();                                               // Go to cell A4
@@ -131,17 +130,16 @@ namespace Demo
             }
             using (FileStream fs = new FileStream("stream.xlsx", FileMode.Create)) // Create a FileStream
             {
-                workbook.SaveAsStream(fs);                            // Save the workbook into the FileStream and close the stream after writing
+                workbook.SaveAsStream(fs);                                  // Save the workbook into the FileStream and close the stream after writing
             }
         }
-
 
         /// <summary>
         /// This method shows how to save a workbook asynchronous
         /// </summary>
         private static async Task AsyncDemo()
         {
-            Workbook workbook = new Workbook("async.xlsx", "shet1");       // Create new workbook with file name
+            Workbook workbook = new Workbook("async.xlsx", "shet1");        // Create new workbook with file name
             workbook.WS.Value("Some text");                                 // Add cell A1
             workbook.WS.Value(222);                                         // Add cell B1
             workbook.WS.Formula("=A2");                                     // Add cell C1
@@ -153,18 +151,19 @@ namespace Demo
         /// </summary>
         private static void Demo1()
         {
-            Workbook workbook = new Workbook("test1.xlsx", "Sheet1");   // Create new workbook
-            workbook.CurrentWorksheet.AddNextCell("Test");              // Add cell A1
-            workbook.CurrentWorksheet.AddNextCell(123);                 // Add cell B1
-            workbook.CurrentWorksheet.AddNextCell(true);                // Add cell C1
-            workbook.CurrentWorksheet.GoToNextRow();                    // Go to Row 2
-            workbook.CurrentWorksheet.AddNextCell(123.456d);            // Add cell A2
-            workbook.CurrentWorksheet.AddNextCell(123.789f);            // Add cell B2
-            workbook.CurrentWorksheet.AddNextCell(DateTime.Now);        // Add cell C2
-            workbook.CurrentWorksheet.GoToNextRow();                    // Go to Row 3
-            workbook.CurrentWorksheet.AddNextCellFormula("B1*22");      // Add cell A3 as formula (B1 times 22)
+            Workbook workbook = new Workbook("test1.xlsx", "Sheet1");        // Create new workbook
+            workbook.CurrentWorksheet.AddNextCell("Test");                   // Add cell A1
+            workbook.CurrentWorksheet.AddNextCell(123);                      // Add cell B1
+            workbook.CurrentWorksheet.AddNextCell(true);                     // Add cell C1
+            workbook.CurrentWorksheet.GoToNextRow();                         // Go to Row 2
+            workbook.CurrentWorksheet.AddNextCell(123.456d);                 // Add cell A2
+            workbook.CurrentWorksheet.AddNextCell(123.789f);                 // Add cell B2
+            workbook.CurrentWorksheet.AddNextCell(DateTime.Now);             // Add cell C2
+            workbook.CurrentWorksheet.AddNextCell(new TimeSpan(12, 50, 30)); // Add cell D2
+            workbook.CurrentWorksheet.GoToNextRow();                         // Go to Row 3
+            workbook.CurrentWorksheet.AddNextCellFormula("B1*22");           // Add cell A3 as formula (B1 times 22)
             workbook.CurrentWorksheet.AddNextCellFormula("ROUNDDOWN(A2,1)"); // Add cell B3 as formula (Floor A2 with one decimal place)
-            workbook.CurrentWorksheet.AddNextCellFormula("PI()");       // Add cell C3 as formula (Pi = 3.14.... )
+            workbook.CurrentWorksheet.AddNextCellFormula("PI()");            // Add cell C3 as formula (Pi = 3.14.... )
             workbook.AddWorksheet("Addresses");                                                 // Add new worksheet
             workbook.CurrentWorksheet.CurrentCellDirection = Worksheet.CellDirection.Disabled;  // Disable automatic addressing
             workbook.CurrentWorksheet.AddCell("Default", 0, 0);                                 // Add a value
@@ -196,6 +195,7 @@ namespace Demo
             workbook.CurrentWorksheet.AddNextCell(-123.456d);           // Add cell A2
             workbook.CurrentWorksheet.AddNextCell(-123.789f);           // Add cell B2
             workbook.CurrentWorksheet.AddNextCell(DateTime.Now);        // Add cell C3
+            workbook.CurrentWorksheet.AddNextCell(new TimeSpan(23, 59, 59)); // Add cell D3
             workbook.AddWorksheet("Sheet2");                            // Add a new Worksheet and set it as current sheet
             workbook.CurrentWorksheet.AddCell("ABC", "A1");             // Add cell A1
             workbook.CurrentWorksheet.AddCell(779, 2, 1);               // Add cell C2 (zero based addresses: column 2=C, row 1=2)
@@ -211,24 +211,24 @@ namespace Demo
         /// </summary>
         private static void Demo3()
         {
-            Workbook workbook = new Workbook("test3.xlsx", "Sheet1");   // Create new workbook
+            Workbook workbook = new Workbook("test3.xlsx", "Sheet1");       // Create new workbook
             workbook.CurrentWorksheet.CurrentCellDirection = Worksheet.CellDirection.RowToRow;  // Change the cell direction
-            workbook.CurrentWorksheet.AddNextCell(1);                   // Add cell A1
-            workbook.CurrentWorksheet.AddNextCell(2);                   // Add cell A2
-            workbook.CurrentWorksheet.AddNextCell(3);                   // Add cell A3
-            workbook.CurrentWorksheet.AddNextCell(4);                   // Add cell A4
-            int row = workbook.CurrentWorksheet.GetCurrentRowNumber(); // Get the row number (will be 4 = row 5)
-            int col = workbook.CurrentWorksheet.GetCurrentColumnNumber(); // Get the column number (will be 0 = column A)
+            workbook.CurrentWorksheet.AddNextCell(1);                       // Add cell A1
+            workbook.CurrentWorksheet.AddNextCell(2);                       // Add cell A2
+            workbook.CurrentWorksheet.AddNextCell(3);                       // Add cell A3
+            workbook.CurrentWorksheet.AddNextCell(4);                       // Add cell A4
+            int row = workbook.CurrentWorksheet.GetCurrentRowNumber();      // Get the row number (will be 4 = row 5)
+            int col = workbook.CurrentWorksheet.GetCurrentColumnNumber();   // Get the column number (will be 0 = column A)
             workbook.CurrentWorksheet.AddNextCell("This cell has the row number " + (row + 1) + " and column number " + (col + 1));
-            workbook.CurrentWorksheet.GoToNextColumn();                 // Go to Column B
-            workbook.CurrentWorksheet.AddNextCell("A");                 // Add cell B1
-            workbook.CurrentWorksheet.AddNextCell("B");                 // Add cell B2
-            workbook.CurrentWorksheet.AddNextCell("C");                 // Add cell B3
-            workbook.CurrentWorksheet.AddNextCell("D");                 // Add cell B4
-            workbook.CurrentWorksheet.RemoveCell("A2");                 // Delete cell A2
-            workbook.CurrentWorksheet.RemoveCell(1, 1);                  // Delete cell B2
-            workbook.CurrentWorksheet.GoToNextRow(3);                   // Move 3 rows down
-            object value = workbook.CurrentWorksheet.GetCell(1, 2).Value;  // Gets the value of cell B3
+            workbook.CurrentWorksheet.GoToNextColumn();                     // Go to Column B
+            workbook.CurrentWorksheet.AddNextCell("A");                     // Add cell B1
+            workbook.CurrentWorksheet.AddNextCell("B");                     // Add cell B2
+            workbook.CurrentWorksheet.AddNextCell("C");                     // Add cell B3
+            workbook.CurrentWorksheet.AddNextCell("D");                     // Add cell B4
+            workbook.CurrentWorksheet.RemoveCell("A2");                     // Delete cell A2
+            workbook.CurrentWorksheet.RemoveCell(1, 1);                     // Delete cell B2
+            workbook.CurrentWorksheet.GoToNextRow(3);                       // Move 3 rows down
+            object value = workbook.CurrentWorksheet.GetCell(1, 2).Value;   // Gets the value of cell B3
             workbook.CurrentWorksheet.AddNextCell("Value of B3 is: " + value);
             workbook.CurrentWorksheet.CurrentCellDirection = Worksheet.CellDirection.Disabled;   // Disable automatic cell addressing
             workbook.CurrentWorksheet.AddCell("Text A", 3, 0);          // Add manually placed value
@@ -242,25 +242,25 @@ namespace Demo
         /// </summary>
         private static void Demo4()
         {
-            Workbook workbook = new Workbook("test4.xlsx", "Sheet1");                                        // Create new workbook
-            List<object> values = new List<object>() { "Header1", "Header2", "Header3" };                    // Create a List of values
-            workbook.CurrentWorksheet.AddCellRange(values, new Address(0, 0), new Address(2, 0));    // Add a cell range to A4 - C4
-            workbook.CurrentWorksheet.Cells["A1"].SetStyle(BasicStyles.Bold);                          // Assign predefined basic style to cell
-            workbook.CurrentWorksheet.Cells["B1"].SetStyle(BasicStyles.Bold);                          // Assign predefined basic style to cell
-            workbook.CurrentWorksheet.Cells["C1"].SetStyle(BasicStyles.Bold);                          // Assign predefined basic style to cell
-            workbook.CurrentWorksheet.GoToNextRow();                                                         // Go to Row 2
-            workbook.CurrentWorksheet.AddNextCell(DateTime.Now);                                             // Add cell A2
-            workbook.CurrentWorksheet.AddNextCell(2);                                                        // Add cell B2
-            workbook.CurrentWorksheet.AddNextCell(3);                                                        // Add cell B2
-            workbook.CurrentWorksheet.GoToNextRow();                                                         // Go to Row 3
-            workbook.CurrentWorksheet.AddNextCell(DateTime.Now.AddDays(1));                                  // Add cell B1
-            workbook.CurrentWorksheet.AddNextCell("B");                                                      // Add cell B2
-            workbook.CurrentWorksheet.AddNextCell("C");                                                      // Add cell B3
+            Workbook workbook = new Workbook("test4.xlsx", "Sheet1");                                       // Create new workbook
+            List<object> values = new List<object>() { "Header1", "Header2", "Header3" };                   // Create a List of values
+            workbook.CurrentWorksheet.AddCellRange(values, new Address(0, 0), new Address(2, 0));           // Add a cell range to A4 - C4
+            workbook.CurrentWorksheet.Cells["A1"].SetStyle(BasicStyles.Bold);                               // Assign predefined basic style to cell
+            workbook.CurrentWorksheet.Cells["B1"].SetStyle(BasicStyles.Bold);                               // Assign predefined basic style to cell
+            workbook.CurrentWorksheet.Cells["C1"].SetStyle(BasicStyles.Bold);                               // Assign predefined basic style to cell
+            workbook.CurrentWorksheet.GoToNextRow();                                                        // Go to Row 2
+            workbook.CurrentWorksheet.AddNextCell(DateTime.Now);                                            // Add cell A2
+            workbook.CurrentWorksheet.AddNextCell(2);                                                       // Add cell B2
+            workbook.CurrentWorksheet.AddNextCell(3);                                                       // Add cell B2
+            workbook.CurrentWorksheet.GoToNextRow();                                                        // Go to Row 3
+            workbook.CurrentWorksheet.AddNextCell(DateTime.Now.AddDays(1));                                 // Add cell B1
+            workbook.CurrentWorksheet.AddNextCell("B");                                                     // Add cell B2
+            workbook.CurrentWorksheet.AddNextCell("C");                                                     // Add cell B3
 
             Style s = new Style();                                                                          // Create new style
-            s.CurrentFill.SetColor("FF22FF11", Fill.FillType.fillColor);                              // Set fill color
+            s.CurrentFill.SetColor("FF22FF11", Fill.FillType.fillColor);                                    // Set fill color
             s.CurrentFont.DoubleUnderline = true;                                                           // Set double underline
-            s.CurrentCellXf.HorizontalAlign = CellXf.HorizontalAlignValue.center;                     // Set alignment
+            s.CurrentCellXf.HorizontalAlign = CellXf.HorizontalAlignValue.center;                           // Set alignment
 
             Style s2 = s.CopyStyle();                                                                       // Copy the previously defined style
             s2.CurrentFont.Italic = true;                                                                   // Change an attribute of the copied style
@@ -270,21 +270,21 @@ namespace Demo
             workbook.CurrentWorksheet.AddNextCell(DateTime.Now.AddDays(2));                                 // Add cell B1
             workbook.CurrentWorksheet.AddNextCell(true);                                                    // Add cell B2
             workbook.CurrentWorksheet.AddNextCell(false, s2);                                               // Add cell B3 with style in the same step 
-            workbook.CurrentWorksheet.Cells["C2"].SetStyle(BasicStyles.BorderFrame);                  // Assign predefined basic style to cell
+            workbook.CurrentWorksheet.Cells["C2"].SetStyle(BasicStyles.BorderFrame);                        // Assign predefined basic style to cell
 
-            Style s3 = BasicStyles.Strike;                                                            // Create a style from a predefined style
+            Style s3 = BasicStyles.Strike;                                                                  // Create a style from a predefined style
             s3.CurrentCellXf.TextRotation = 45;                                                             // Set text rotation
-            s3.CurrentCellXf.VerticalAlign = CellXf.VerticalAlignValue.center;                        // Set alignment
+            s3.CurrentCellXf.VerticalAlign = CellXf.VerticalAlignValue.center;                              // Set alignment
 
             workbook.CurrentWorksheet.Cells["B4"].SetStyle(s3);                                             // Assign style to cell
 
             workbook.CurrentWorksheet.SetColumnWidth(0, 20f);                                               // Set column width
             workbook.CurrentWorksheet.SetColumnWidth(1, 15f);                                               // Set column width
             workbook.CurrentWorksheet.SetColumnWidth(2, 25f);                                               // Set column width
-            workbook.CurrentWorksheet.SetRowHeight(0, 20);                                                 // Set row height
-            workbook.CurrentWorksheet.SetRowHeight(1, 30);                                                 // Set row height
+            workbook.CurrentWorksheet.SetRowHeight(0, 20);                                                  // Set row height
+            workbook.CurrentWorksheet.SetRowHeight(1, 30);                                                  // Set row height
 
-            workbook.Save();                                                                               // Save the workbook
+            workbook.Save();                                                                                // Save the workbook
         }
 
         /// <summary>
@@ -294,11 +294,11 @@ namespace Demo
         {
             Workbook workbook = new Workbook("test5.xlsx", "Sheet1");                                   // Create new workbook
             List<object> values = new List<object>() { "Header1", "Header2", "Header3" };               // Create a List of values
-            workbook.CurrentWorksheet.SetActiveStyle(BasicStyles.BorderFrameHeader);              // Assign predefined basic style as active style
+            workbook.CurrentWorksheet.SetActiveStyle(BasicStyles.BorderFrameHeader);                    // Assign predefined basic style as active style
             workbook.CurrentWorksheet.AddCellRange(values, "A1:C1");                                    // Add cell range
 
             values = new List<object>() { "Cell A2", "Cell B2", "Cell C2" };                            // Create a List of values
-            workbook.CurrentWorksheet.SetActiveStyle(BasicStyles.BorderFrame);                    // Assign predefined basic style as active style
+            workbook.CurrentWorksheet.SetActiveStyle(BasicStyles.BorderFrame);                          // Assign predefined basic style as active style
             workbook.CurrentWorksheet.AddCellRange(values, "A2:C2");                                    // Add cell range (using active style)
 
             values = new List<object>() { "Cell A3", "Cell B3", "Cell C3" };                            // Create a List of values
@@ -377,11 +377,11 @@ namespace Demo
             workbook.CurrentWorksheet.SetSelectedCells("A5:B10");										// Set the selection to the range A5:B10
             workbook.AddWorksheet("Sheet2");															// Create new worksheet
             workbook.CurrentWorksheet.AddNextCell("Test2");              								// Add cell A1
-            Range range = new Range(new Address(1, 1), new Address(3, 3));			// Create a cell range for the selection B2:D4
+            Range range = new Range(new Address(1, 1), new Address(3, 3));			                    // Create a cell range for the selection B2:D4
             workbook.CurrentWorksheet.SetSelectedCells(range);											// Set the selection to the range
-            workbook.AddWorksheet("Sheet2", true);							// Create new worksheet with already existing name; The name will be changed to Sheet21 due to auto-sanitizing (appending of 1)
+            workbook.AddWorksheet("Sheet2", true);							                            // Create new worksheet with already existing name; The name will be changed to Sheet21 due to auto-sanitizing (appending of 1)
             workbook.CurrentWorksheet.AddNextCell("Test3");              								// Add cell A1
-            workbook.CurrentWorksheet.SetSelectedCells(new Address(2, 2), new Address(4, 4));	// Set the selection to the range C3:E5
+            workbook.CurrentWorksheet.SetSelectedCells(new Address(2, 2), new Address(4, 4));	        // Set the selection to the range C3:E5
             workbook.SetSelectedWorksheet(1);															// Set the second Tab as selected (zero-based: 1)
             workbook.Save();                                            								// Save the workbook
         }
@@ -404,39 +404,39 @@ namespace Demo
 
             workbook.CurrentWorksheet.SetCurrentCellAddress("D2");                                      // Set the "cursor" to D2
             Cell c;                                                                                     // Create an empty cell object (reusable)
-            c = BasicFormulas.Average(new Range("A2:A10"));                                   // Define an average formula
+            c = BasicFormulas.Average(new Range("A2:A10"));                                             // Define an average formula
             workbook.CurrentWorksheet.AddCell("Average", "C2");                                         // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D2");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.Ceil(new Address("A2"), 0);                                     // Define a ceil formula
-            workbook.CurrentWorksheet.AddCell("Ceil", "C3");                                           // Add the description of the formula to the worksheet
+            c = BasicFormulas.Ceil(new Address("A2"), 0);                                               // Define a ceil formula
+            workbook.CurrentWorksheet.AddCell("Ceil", "C3");                                            // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D3");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.Floor(new Address("A2"), 0);                                    // Define a floor formula
+            c = BasicFormulas.Floor(new Address("A2"), 0);                                              // Define a floor formula
             workbook.CurrentWorksheet.AddCell("Floor", "C4");                                           // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D4");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.Round(new Address("A3"), 1);                                    // Define a round formula with one digit after the comma
+            c = BasicFormulas.Round(new Address("A3"), 1);                                              // Define a round formula with one digit after the comma
             workbook.CurrentWorksheet.AddCell("Round", "C5");                                           // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D5");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.Max(new Range("A2:A10"));                                       // Define a max formula
+            c = BasicFormulas.Max(new Range("A2:A10"));                                                 // Define a max formula
             workbook.CurrentWorksheet.AddCell("Max", "C6");                                             // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D6");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.Min(new Range("A2:A10"));                                       // Define a min formula
+            c = BasicFormulas.Min(new Range("A2:A10"));                                                 // Define a min formula
             workbook.CurrentWorksheet.AddCell("Min", "C7");                                             // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D7");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.Median(new Range("A2:A10"));                                    // Define a median formula
+            c = BasicFormulas.Median(new Range("A2:A10"));                                              // Define a median formula
             workbook.CurrentWorksheet.AddCell("Median", "C8");                                          // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D8");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.Sum(new Range("A2:A10"));                                       // Define a sum formula
+            c = BasicFormulas.Sum(new Range("A2:A10"));                                                 // Define a sum formula
             workbook.CurrentWorksheet.AddCell("Sum", "C9");                                             // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D9");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.VLookup(13.8d, new Range("A2:B10"), 2, true);                   // Define a vlookup formula (look for the value of the number 13.8) 
+            c = BasicFormulas.VLookup(13.8d, new Range("A2:B10"), 2, true);                             // Define a vlookup formula (look for the value of the number 13.8) 
             workbook.CurrentWorksheet.AddCell("Vlookup", "C10");                                        // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D10");                                                // Add the formula to the worksheet
 
@@ -444,7 +444,7 @@ namespace Demo
             c = BasicFormulas.VLookup(workbook.Worksheets[0], new Address("B4"), workbook.Worksheets[0], new Range("B2:C10"), 2, true); // Define a vlookup formula in worksheet1 (look for the text right of the (value of) cell B4) 
             workbook.WS.Value(c);                                                                       // Add the formula to the worksheet
 
-            c = BasicFormulas.Median(workbook.Worksheets[0], new Range("A2:A10"));            // Define a median formula in worksheet1
+            c = BasicFormulas.Median(workbook.Worksheets[0], new Range("A2:A10"));                      // Define a median formula in worksheet1
             workbook.WS.Value(c);                                                                       // Add the formula to the worksheet
 
             workbook.Save();                                                                            // Save the workbook
@@ -455,25 +455,47 @@ namespace Demo
         /// </summary>
         private static void Demo10()
         {
-            Workbook wb = new Workbook("demo10.xlsx", "styleAppending");                                // Create a new workbook
+            Workbook wb = new Workbook("demo10.xlsx", "styleAppending");                          // Create a new workbook
 
-            Style style = new Style();                                                                  // Create a new style
+            Style style = new Style();                                                            // Create a new style
             style.Append(BasicStyles.Bold);                                                       // Append a basic style (bold) 
             style.Append(BasicStyles.Underline);                                                  // Append a basic style (underline) 
             style.Append(BasicStyles.Font("Arial Black", 20));                                    // Append a basic style (custom font) 
 
-            wb.WS.Value("THIS IS A TEST", style);                                                       // Add text and the appended style
-            wb.WS.Down();                                                                               // Go to a new row
+            wb.WS.Value("THIS IS A TEST", style);                                                 // Add text and the appended style
+            wb.WS.Down();                                                                         // Go to a new row
 
-            Style chainedStyle = new Style()                                                            // Create a new style...
+            Style chainedStyle = new Style()                                                      // Create a new style...
                 .Append(BasicStyles.Underline)                                                    // ... and append another part (chaining underline)
                 .Append(BasicStyles.ColorizedText("FF00FF"))                                      // ... and append another part (chaining colorized text)
                 .Append(BasicStyles.ColorizedBackground("AAFFAA"));                               // ... and append another part (chaining colorized background)
 
-            wb.WS.Value("Another test", chainedStyle);                                                  // Add text and the appended style
+            wb.WS.Value("Another test", chainedStyle);                                            // Add text and the appended style
 
-            wb.Save();                                                                                  // Save the workbook
+            wb.Save();                                                                            // Save the workbook
         }
+
+        #region Utils
+        /// <summary>
+        /// Prints information about the passed cell
+        /// </summary>
+        /// <param name="cell">Cell to examine</param>
+        private static void PrintCellInfo(Cell cell)
+        {
+            Console.Write("Cell address: " + cell.CellAddress);
+            Console.Write(" - content: '" + cell.Value + "'");
+            Console.Write(" (Type of: " + cell.DataType);
+            Console.Write(" / Has style: ");
+            if (cell.CellStyle == null)
+            {
+                Console.Write("none)\n");
+            }
+            else
+            {
+                Console.Write(cell.CellStyle.CurrentNumberFormat.Number + ")\n");
+            }
+        }
+        # endregion
 
     }
 }
