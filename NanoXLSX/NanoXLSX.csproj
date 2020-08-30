@@ -61,7 +61,10 @@
     <Compile Include="Exceptions\RangeException.cs" />
     <Compile Include="Exceptions\StyleException.cs" />
     <Compile Include="Exceptions\WorksheetException.cs" />
+    <Compile Include="ImportOptions.cs" />
     <Compile Include="LowLevel\DocumentPath.cs" />
+    <Compile Include="LowLevel\ReaderUtils.cs" />
+    <Compile Include="LowLevel\StyleReader.cs" />
     <Compile Include="LowLevel\XlsxWriter.cs" />
     <Compile Include="LowLevel\XlsxReader.cs" />
     <Compile Include="LowLevel\SharedStringsReader.cs" />
@@ -81,6 +84,7 @@
     <Compile Include="Styles\Font.cs" />
     <Compile Include="Styles\NumberFormat.cs" />
     <Compile Include="Styles\Style.cs" />
+    <Compile Include="LowLevel\StyleReaderContainer.cs" />
     <Compile Include="Workbook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Worksheet.cs" />

@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using NanoXLSX.Exceptions;
+using NanoXLSX.Styles;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.LowLevel
@@ -23,6 +24,9 @@ namespace NanoXLSX.LowLevel
         #region privateFields
 
         private SharedStringsReader sharedStrings;
+        private ImportOptions importOptions;
+        private List<string> dateStyles;
+        private List<string> timeStyles;
         #endregion
 
         #region properties
@@ -51,6 +55,12 @@ namespace NanoXLSX.LowLevel
         /// </value>
         public Dictionary<string, Cell> Data { get; private set; }
 
+        /// <summary>
+        /// Gets the assignment of resolved styles to cell addresses
+        /// </summary>
+        /// <value>Dictionary of cell address-style number tuples</value>
+        public Dictionary<string, string> StyleAssignment { get; private set; } = new Dictionary<string, string>();
+
         #endregion
 
         #region constructors
@@ -61,17 +71,44 @@ namespace NanoXLSX.LowLevel
         /// <param name="sharedStrings">SharedStringsReader object</param>
         /// <param name="name">Worksheet name</param>
         /// <param name="number">Worksheet number</param>
-        public WorksheetReader(SharedStringsReader sharedStrings, string name, int number)
+        /// <param name="styleReaderContainer">resolved styles, used to determine dates or times</param>
+        /// <param name="options">Import options to override the automatic approach of the reader. <see cref="ImportOptions"/> for information about import options.</param>
+        public WorksheetReader(SharedStringsReader sharedStrings, string name, int number, StyleReaderContainer styleReaderContainer, ImportOptions options = null)
         {
+            importOptions = options;
             Data = new Dictionary<string, Cell>();
             Name = name;
             WorksheetNumber = number;
             this.sharedStrings = sharedStrings;
+            processStyles(styleReaderContainer);
         }
 
         #endregion
 
         #region functions
+
+        /// <summary>
+        /// Determine which of the resolved styles are either to define a time or a date. Stores also the styles into a dictionary 
+        /// </summary>
+        /// <param name="styleReaderContainer">Resolved styles from the style reader</param>
+        private void processStyles(StyleReaderContainer styleReaderContainer)
+        {
+            dateStyles = new List<string>();
+            timeStyles = new List<string>();
+            for (int i = 0; i < styleReaderContainer.StyleCount; i++)
+            {
+                bool isDate, isTime;
+                Style style = styleReaderContainer.GetStyle(i, out isDate, out isTime, true);
+                if (isDate)
+                {
+                    dateStyles.Add(i.ToString("G", CultureInfo.InvariantCulture));
+                }
+                if (isTime)
+                {
+                    timeStyles.Add(i.ToString("G", CultureInfo.InvariantCulture));
+                }
+            }
+        }
 
         /// <summary>
         /// Gets whether the specified column exists in the data
@@ -171,7 +208,7 @@ namespace NanoXLSX.LowLevel
             {
                 using (stream) // Close after processing
                 {
-                    string type, style, address, value, formula;
+                    string type, styleNumber, address, value, formula;
                     XmlDocument xr = new XmlDocument();
                     xr.Load(stream);
                     XmlNodeList rows = xr.GetElementsByTagName("row");
@@ -182,15 +219,15 @@ namespace NanoXLSX.LowLevel
                             foreach (XmlNode rowChild in row.ChildNodes)
                             {
                                 type = "s";
-                                style = "";
+                                styleNumber = "";
                                 address = "A1";
                                 value = "";
                                 formula = null;
                                 if (rowChild.LocalName.ToLower() == "c")
                                 {
-                                    address = GetAttribute("r", rowChild, null); // Mandatory
-                                    type = GetAttribute("t", rowChild, null); // can be null if not existing
-                                    style = GetAttribute("s", rowChild, null); // can be null; if "1" then date
+                                    address = ReaderUtils.GetAttribute("r", rowChild); // Mandatory
+                                    type = ReaderUtils.GetAttribute("t", rowChild); // can be null if not existing
+                                    styleNumber = ReaderUtils.GetAttribute("s", rowChild); // can be null
                                     if (rowChild.HasChildNodes)
                                     {
                                         foreach (XmlNode valueNode in rowChild.ChildNodes)
@@ -206,7 +243,7 @@ namespace NanoXLSX.LowLevel
                                         }
                                     }
                                 }
-                                ResolveCellData(address, type, value, style, formula);
+                                ResolveCellData(address, type, value, styleNumber, formula);
                             }
                         }
                     }
@@ -219,265 +256,235 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Gets the attribute with the passed name.
+        /// Resolves the data of a read cell either automatically or conditionally  (import options), transforms it into a cell object and adds it to the data
         /// </summary>
-        /// <param name="targetName">Name of the target attribute</param>
-        /// <param name="node">XML node that contains the attribute</param>
-        /// <param name="defaultValue">Default value if the attribute was not found</param>
-        /// <returns>Attribute value as string or default value if not found (can be null)</returns>
-        private string GetAttribute(string targetName, XmlNode node, string defaultValue)
+        /// <param name="addressString">Address of the cell</param>
+        /// <param name="type">Expected data type</param>
+        /// <param name="value">Raw value as string</param>
+        /// <param name="styleNumber">Style number as string (can be null)</param>
+        /// <param name="formula"> Formula as string (can be null; data type determines whether value or formula is used)</param>
+        private void ResolveCellData(string addressString, string type, string value, string styleNumber, string formula)
         {
-            if (node.Attributes == null || node.Attributes.Count == 0)
+            Address address = new Address(addressString);
+            string key = addressString.ToUpper();
+            StyleAssignment[key] = styleNumber;
+            if (importOptions == null)
             {
-                return defaultValue;
+                Data.Add(key, AutoResolveCellData(address, type, value, styleNumber, formula));
             }
-
-            foreach (XmlAttribute attribute in node.Attributes)
+            else
             {
-                if (attribute.Name == targetName)
-                {
-                    return attribute.Value;
-                }
+                Data.Add(key, ResolveCellDataConditionally(address, type, value, styleNumber, formula));
             }
-
-            return defaultValue;
         }
 
         /// <summary>
-        /// Resolves the data of a read cell, transforms it into a cell object and adds it to the data
+        /// Resolves the data of a read cell with conditions of import options, transforms it into a cell object
         /// </summary>
         /// <param name="address">Address of the cell</param>
         /// <param name="type">Expected data type</param>
         /// <param name="value">Raw value as string</param>
-        /// <param name="style">Style definition as string (can be null)</param>
+        /// <param name="styleNumber">Style number as string (can be null)</param>
         /// <param name="formula"> Formula as string (can be null; data type determines whether value or formula is used)</param>
-        private void ResolveCellData(string address, string type, string value, string style, string formula)
+        /// <returns>The resolved Cell</returns>
+        private Cell ResolveCellDataConditionally(Address address, string type, string value, string styleNumber, string formula)
         {
-            address = address.ToUpper();
-            string s;
-            Cell cell;
-            CellResolverTuple tuple;
-           if (type == "b") // boolean
+            if (address.Row < importOptions.EnforcingStartRowNumber)
             {
-                tuple = GetBooleanValue(value);
-                if (tuple.IsValid)
+                return AutoResolveCellData(address, type, value, styleNumber, formula); // Skip enforcing
+            }
+            if (importOptions.EnforcedColumnTypes.ContainsKey(address.Column))
+            {
+                ImportOptions.ColumnType importType = importOptions.EnforcedColumnTypes[address.Column];
+                switch (importType)
                 {
-                    cell = new Cell(tuple.Data, Cell.CellType.BOOL, address);
-                }
-                else
-                {
-                    cell = new Cell(value, Cell.CellType.STRING, address);
+                    case ImportOptions.ColumnType.Bool:
+                        return GetBooleanValue(value, address);
+                    case ImportOptions.ColumnType.Date:
+                        if (importOptions.EnforceDateTimesAsNumbers)
+                        {
+                            return GetNumericValue(value, address);
+                        }
+                        else
+                        {
+                            return GetDateTimeValue(value, address, Cell.CellType.DATE);
+                        }
+                    case ImportOptions.ColumnType.Time:
+                        if (importOptions.EnforceDateTimesAsNumbers)
+                        {
+                            return GetNumericValue(value, address);
+                        }
+                        else
+                        {
+                            return GetDateTimeValue(value, address, Cell.CellType.TIME);
+                        }
+                    case ImportOptions.ColumnType.Numeric:
+                        return GetNumericValue(value, address);
+                    case ImportOptions.ColumnType.String:
+                        return GetStringValue(value, address);
+                    default:
+                        return AutoResolveCellData(address, type, value, styleNumber, formula);
                 }
             }
-            else if (style != null && style == "1") // Date must come before numeric values
+            else
             {
-                tuple = GetDateValue(value);
-                if (tuple.IsValid)
-                {
-                    cell = new Cell(tuple.Data, Cell.CellType.DATE, address);
-                }
-                else
-                {
-                    cell = new Cell(value, Cell.CellType.STRING, address);
-                }
+                return AutoResolveCellData(address, type, value, styleNumber, formula);
             }
-            else if (type == null && style != null && style == "3") // Try parse time (default style 3)
+        }
+
+        /// <summary>
+        /// Resolves the data of a read cell automatically, transforms it into a cell object
+        /// </summary>
+        /// <param name="address">Address of the cell</param>
+        /// <param name="type">Expected data type</param>
+        /// <param name="value">Raw value as string</param>
+        /// <param name="styleNumber">Style number as string (can be null)</param>
+        /// <param name="formula"> Formula as string (can be null; data type determines whether value or formula is used)</param>
+        /// <returns>The resolved Cell</returns>
+        private Cell AutoResolveCellData(Address address, string type, string value, string styleNumber, string formula)
+        {
+            if (type == "s") // string (declared)
             {
-                tuple = GetDateValue(value);
-                if (tuple.IsValid)
-                {
-                    cell = new Cell(((DateTime)tuple.Data).TimeOfDay, Cell.CellType.DATE, address);
-                }
-                else
-                {
-                    cell = new Cell(value, Cell.CellType.STRING, address); // fall back to string
-                }
+                return GetStringValue(value, address);
             }
-            else if (type == null) // try numeric if not parsed as date or time
+            else if (type == "b") // boolean
             {
-                tuple = GetNumericValue(value);
-                if (tuple.IsValid)
-                {
-                    cell = new Cell(tuple.Data, Cell.CellType.NUMBER, address);
-                }
-                else
-                {
-                    cell = new Cell(value, Cell.CellType.STRING, address);
-                }
+                return GetBooleanValue(value, address);
+            }
+            else if (dateStyles.Contains(styleNumber))  // date (priority)
+            {
+                return GetDateTimeValue(value, address, Cell.CellType.DATE);
+            }
+            else if (timeStyles.Contains(styleNumber)) // time
+            {
+                return GetDateTimeValue(value, address, Cell.CellType.TIME);
+            }
+            else if (type == null) // try numeric if not parsed as date or time, before numeric
+            {
+                return GetNumericValue(value, address);
             }
             else if (formula != null) // formula before string
             {
-                cell = new Cell(formula, Cell.CellType.FORMULA, address);
+                return new Cell(formula, Cell.CellType.FORMULA, address);
             }
-            else if (type == "s") // string (declared)
-            {
-                tuple = GetIntValue(value);
-                if (tuple.IsValid == false)
-                {
-                    cell = new Cell(value, Cell.CellType.STRING, address);
-                }
-                else
-                {
-                    s = sharedStrings.GetString((int)tuple.Data);
-                    if (s != null)
-                    {
-                        cell = new Cell(s, Cell.CellType.STRING, address);
-                    }
-                    else
-                    {
-                        cell = new Cell(value, Cell.CellType.STRING, address);
-                    }
-                }
-            } 
             else // fall back to sting
             {
-                cell = new Cell(value, Cell.CellType.STRING, address);
+                return GetStringValue(value, address);
             }
-            Data.Add(address, cell);
         }
-
 
         /// <summary>
         /// Parses the numeric (double) value of a raw cell
         /// </summary>
         /// <param name="raw">Raw value as string</param>
-        /// <returns>CellResolverTuple with information about the validity and resolved data</returns>
-        private static CellResolverTuple GetNumericValue(string raw)
+        /// <param name="address">Address of the cell</param>
+        /// <returns>Cell of the type double or the defined fall-back type</returns>
+        private Cell GetNumericValue(string raw, Address address)
         {
             double dValue;
-            CellResolverTuple t;
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
             {
-                t = new CellResolverTuple(true, dValue, typeof(double));
+                return new Cell(dValue, Cell.CellType.NUMBER, address);
             }
             else
             {
-                t = new CellResolverTuple(false, 0, typeof(double));
+                return new Cell(raw, Cell.CellType.STRING, address);
             }
-            return t;
         }
 
         /// <summary>
-        /// Parses the integer value of a raw cell
+        /// Parses the string value of a raw cell. May take the value from the shared string table, if available
         /// </summary>
         /// <param name="raw">Raw value as string</param>
-        /// <returns>CellResolverTuple with information about the validity and resolved data</returns>
-        private static CellResolverTuple GetIntValue(string raw)
+        /// <param name="address">Address of the cell</param>
+        /// <returns>Cell of the type string</returns>
+        private Cell GetStringValue(string raw, Address address)
         {
-            int iValue;
-            CellResolverTuple t;
-            if (int.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out iValue))
+            int stringId;
+            if (int.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out stringId))
             {
-                t = new CellResolverTuple(true, iValue, typeof(int));
+                string resolvedString = sharedStrings.GetString(stringId);
+                if (resolvedString == null)
+                {
+                    return new Cell(raw, Cell.CellType.STRING, address);
+                }
+                else
+                {
+                    return new Cell(resolvedString, Cell.CellType.STRING, address);
+                }
             }
             else
             {
-                t = new CellResolverTuple(false, 0, typeof(int));
+                return new Cell(raw, Cell.CellType.STRING, address);
             }
-            return t;
         }
 
         /// <summary>
         /// Parses the boolean value of a raw cell
         /// </summary>
         /// <param name="raw">Raw value as string</param>
-        /// <returns>CellResolverTuple with information about the validity and resolved data</returns>
-        private static CellResolverTuple GetBooleanValue(String raw)
+        /// <param name="address">Address of the cell</param>
+        /// <returns>Cell of the type bool or the defined fall-back type</returns>
+        private Cell GetBooleanValue(String raw, Address address)
         {
-            bool value;
-            bool state;
             if (raw == "0")
             {
-                value = false;
-                state = true;
+                return new Cell(false, Cell.CellType.BOOL, address);
             }
             else if (raw == "1")
             {
-                value = true;
-                state = true;
+                return new Cell(true, Cell.CellType.BOOL, address);
             }
             else
             {
+                bool value;
                 if (bool.TryParse(raw, out value))
                 {
-                    state = true;
+                    return new Cell(value, Cell.CellType.BOOL, address);
                 }
                 else
                 {
-                    state = false;
-                    value = false;
+                    return new Cell(raw, Cell.CellType.STRING, address);
+
                 }
             }
-            return new CellResolverTuple(state, value, typeof(bool));
         }
 
         /// <summary>
-        /// Parses the date (DateTime) value of a raw cell
+        /// Parses the date (DateTime) or time (TimeSpan) value of a raw cell. If the value is numeric, but out of range of a OAdate, a numeric value will be returned instead. If invalid, the string representation will be returned.
         /// </summary>
         /// <param name="raw">Raw value as string</param>
-        /// <returns>CellResolverTuple with information about the validity and resolved data</returns>
-        private static CellResolverTuple GetDateValue(String raw)
+        /// <param name="address">Address of the cell</param>
+        /// <param name="type">Type of the value zu be converted: Valid values are DATE and TIME</param>
+        /// <returns>Cell of the type TimeSpan or the defined fall-back type</returns>
+        private Cell GetDateTimeValue(String raw, Address address, Cell.CellType type)
         {
             double dValue;
-            CellResolverTuple t;
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
             {
-                DateTime date = DateTime.FromOADate(dValue);
-                t = new CellResolverTuple(true, date, typeof(DateTime));
+                if (dValue < XlsxWriter.MIN_OADATE_VALUE || dValue > XlsxWriter.MAX_OADATE_VALUE)
+                {
+                    return new Cell(dValue, Cell.CellType.NUMBER, address); // Invalid OAdate == plain number
+                }
+                else
+                {
+                    switch (type)
+                    {
+                        case Cell.CellType.DATE:
+                            DateTime date = DateTime.FromOADate(dValue);
+                            return new Cell(date, Cell.CellType.DATE, address);
+                        case Cell.CellType.TIME:
+                            TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);
+                            return new Cell(time, Cell.CellType.TIME, address);
+                        default:
+                            throw new ArgumentException("The defined type is not supported to be uses as date or time");
+                    }
+                }
             }
             else
             {
-                t = new CellResolverTuple(false, new DateTime(), typeof(DateTime));
+                return new Cell(raw, Cell.CellType.STRING, address);
             }
-            return t;
-        }
-
-        #endregion
-
-        #region subClasses
-
-        /// <summary>
-        /// Helper class representing a tuple of cell data and is state (valid or invalid). And additional type is also available
-        /// </summary>
-        class CellResolverTuple
-        {
-            /// <summary>
-            /// Gets whether the cell is valid
-            /// </summary>
-            /// <value>
-            ///   True if valid, otherwise false
-            /// </value>
-            public bool IsValid { get; private set; }
-
-            /// <summary>
-            /// Gets the data as object
-            /// </summary>
-            /// <value>
-            /// Generic object
-            /// </value>
-            public object Data { get; private set; }
-
-            /// <summary>
-            /// Gets the type of the cell
-            /// </summary>
-            /// <value>
-            /// Data type
-            /// </value>
-            public Type DataType { get; private set; }
-
-            /// <summary>
-            /// Default constructor with parameters
-            /// </summary>
-            /// <param name="isValid">If true, the resolved cell contains valid data</param>
-            /// <param name="data">Data object.</param>
-            /// <param name="type">Type of the cell</param>
-            public CellResolverTuple(bool isValid, object data, Type type)
-            {
-                Data = data;
-                IsValid = isValid;
-                DataType = type;
-            }
-
         }
 
         #endregion

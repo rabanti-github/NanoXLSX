@@ -7,7 +7,7 @@
 
 using System.Text;
 
-namespace Styles
+namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Class representing a Border entry. The Border entry is used to define frames and cell borders

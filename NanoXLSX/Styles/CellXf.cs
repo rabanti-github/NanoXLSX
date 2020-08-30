@@ -8,7 +8,7 @@
 using System.Text;
 using NanoXLSX.Exceptions;
 
-namespace Styles
+namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Class representing an XF entry. The XF entry is used to make reference to other style instances like Border or Fill and for the positioning of the cell content

@@ -7,7 +7,7 @@
 
 using System.Text;
 
-namespace Styles
+namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Class representing a Fill (background) entry. The Fill entry is used to define background colors and fill patterns

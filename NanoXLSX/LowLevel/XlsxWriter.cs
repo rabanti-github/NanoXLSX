@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using NanoXLSX.Exceptions;
-using Styles;
+using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 using IOException = NanoXLSX.Exceptions.IOException;
 
@@ -34,6 +34,17 @@ namespace NanoXLSX.LowLevel
         private static DocumentPath APP_PROPERTIES = new DocumentPath("app.xml", "docProps/");
         private static DocumentPath CORE_PROPERTIES = new DocumentPath("core.xml", "docProps/");
         private static DocumentPath SHARED_STRINGS = new DocumentPath("sharedStrings.xml", "xl/");
+        #endregion
+
+        #region constants
+        /// <summary>
+        /// Minimum valid OAdate value (1900-01-01)
+        /// </summary>
+        public const double MIN_OADATE_VALUE = 0f;
+        /// <summary>
+        /// Maximum valid OAdate value (9999-12-31)
+        /// </summary>
+        public const double MAX_OADATE_VALUE = 2958465.9999f;
         #endregion
 
         #region privateFields
@@ -637,7 +648,6 @@ namespace NanoXLSX.LowLevel
             string value = "";
             bool bVal;
 
-            DateTime dVal;
             int col = 0;
             foreach (Cell item in columnFields)
             {
@@ -683,8 +693,16 @@ namespace NanoXLSX.LowLevel
                 else if (item.DataType == Cell.CellType.DATE)
                 {
                     typeAttribute = "d";
-                    dVal = (DateTime)item.Value;
-                    value = GetOADateTimeString(dVal, culture);
+                    DateTime date = (DateTime)item.Value;
+                    value = GetOADateTimeString(date, culture);
+                }
+                // Time parsing
+                else if (item.DataType == Cell.CellType.TIME)
+                {
+                    typeAttribute = "d";
+                    // TODO: 'd' is probably an outdated attribute (to be checked for dates and times)
+                    TimeSpan time = (TimeSpan)item.Value;
+                    value = GetOATimeString(time, culture);
                 }
                 else
                 {
@@ -986,7 +1004,7 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Method to create the XML string for the Xf part of the style sheet document
+        /// Method to create the XML string for the XF part of the style sheet document
         /// </summary>
         /// <returns>String with formatted XML data</returns>
         private string CreateStyleXfsString()
@@ -1071,6 +1089,7 @@ namespace NanoXLSX.LowLevel
                     formatNumber = (int)item.CurrentNumberFormat.Number;
                     sb.Append(formatNumber.ToString("G", culture));
                 }
+               
                 sb.Append("\" borderId=\"").Append(item.CurrentBorder.InternalID.Value.ToString("G", culture));
                 sb.Append("\" fillId=\"").Append(item.CurrentFill.InternalID.Value.ToString("G", culture));
                 sb.Append("\" fontId=\"").Append(item.CurrentFont.InternalID.Value.ToString("G", culture));
@@ -1316,23 +1335,45 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="date">Date to process</param>
         /// <param name="culture">CultureInfo for proper formatting of the decimal point</param>
-        /// <returns>Date or date and time as Number</returns>
+        /// <returns>Date or date and time as number</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
-        /// <remarks>OA Date format starts at January 1st 1900 (actually 00.01.1900). Dates beyond this date cannot be handled by Excel under normal circumstances and will throw a FormatException</remarks>
+        /// <remarks>OAdate format starts at January 1st 1900 (actually 00.01.1900) and ends at December 31 9999. Values beyond these dates cannot be handled by Excel under normal circumstances and will throw a FormatException</remarks>
         public static string GetOADateTimeString(DateTime date, CultureInfo culture)
         {
             try
             {
                 double d = date.ToOADate();
-                if (d < 0)
+                if (d < MIN_OADATE_VALUE || d > MAX_OADATE_VALUE)
                 {
-                    throw new FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 are not allowed.");
+                    throw new FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 or after 9999-12-31 are not allowed.");
                 }
-                return d.ToString("G", culture); //worksheet.DefaultRowHeight.ToString("G", culture) 
+                return d.ToString("G", culture);
             }
             catch (Exception e)
             {
                 throw new FormatException("ConversionException", "The date could not be transformed into Excel format (OADate).", e);
+            }
+        }
+
+        /// <summary>
+        /// Method to convert a time into the internal Excel time format (OAdate without days)
+        /// </summary>
+        /// <param name="time">Time to process. The date component of the timespan is neglected</param>
+        /// <param name="culture">CultureInfo for proper formatting of the decimal point</param>
+        /// <returns>Time as number</returns>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed timespan is invalid</exception>
+        /// <remarks>The time is represented by a OAdate without the date component. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
+        public static string GetOATimeString(TimeSpan time, CultureInfo culture)
+        {
+            try
+            {
+                int seconds = time.Seconds + time.Minutes * 60 + time.Hours * 3600;
+                double d = (double)seconds / 86400d;
+                return d.ToString("G", culture);
+            }
+            catch (Exception e)
+            {
+                throw new FormatException("ConversionException", "The time could not be transformed into Excel format (OADate).", e);
             }
         }
 

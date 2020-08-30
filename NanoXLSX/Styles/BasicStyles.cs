@@ -5,7 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-namespace Styles
+namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Factory class with the most important predefined styles
@@ -32,6 +32,8 @@ namespace Styles
             strike,
             /// <summary>Format number as date</summary>
             dateFormat,
+            /// <summary>Format number as time</summary>
+            timeFormat,
             /// <summary>Rounds number as an integer</summary>
             roundFormat,
             /// <summary>Format cell with a thin border</summary>
@@ -46,7 +48,7 @@ namespace Styles
         #endregion
 
         #region staticFields
-        private static Style bold, italic, boldItalic, underline, doubleUnderline, strike, dateFormat, roundFormat, borderFrame, borderFrameHeader, dottedFill_0_125, mergeCellStyle;
+        private static Style bold, italic, boldItalic, underline, doubleUnderline, strike, dateFormat, timeFormat, roundFormat, borderFrame, borderFrameHeader, dottedFill_0_125, mergeCellStyle;
         #endregion
 
         #region staticProperties
@@ -65,6 +67,9 @@ namespace Styles
         /// <summary>Gets the date format style</summary>
         public static Style DateFormat
         { get { return GetStyle(StyleEnum.dateFormat); } }
+        /// <summary>Gets the time format style</summary>
+        public static Style TimeFormat
+        { get { return GetStyle(StyleEnum.timeFormat); } }
         /// <summary>Gets the double underline style</summary>
         public static Style DoubleUnderline
         { get { return GetStyle(StyleEnum.doubleUnderline); } }
@@ -155,6 +160,14 @@ namespace Styles
                         dateFormat.CurrentNumberFormat.Number = NumberFormat.FormatNumber.format_14;
                     }
                     s = dateFormat;
+                    break;
+                case StyleEnum.timeFormat:
+                    if (timeFormat == null)
+                    {
+                        timeFormat = new Style();
+                        timeFormat.CurrentNumberFormat.Number = NumberFormat.FormatNumber.format_21;
+                    }
+                    s = timeFormat;
                     break;
                 case StyleEnum.roundFormat:
                     if (roundFormat == null)

@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,7 +63,7 @@ namespace Demo.Testing
             {
                 for (j = 0; j < cols; j++)
                 {
-                    s.AddNextCell(field[i][j], Styles.BasicStyles.Bold);
+                    s.AddNextCell(field[i][j], BasicStyles.Bold);
                 }
                 s.GoToNextRow();
             }

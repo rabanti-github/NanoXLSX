@@ -82,21 +82,10 @@ namespace NanoXLSX.LowLevel
         {
             if (node.LocalName.ToLower() == "sheet")
             {
-                int id = -1;
-                string sheetName = "";
                 try
                 {
-                    foreach (XmlAttribute attribute in node.Attributes)
-                    {
-                        if (attribute.LocalName == "name")
-                        {
-                            sheetName = attribute.Value;
-                        }
-                        else if (attribute.LocalName == "sheetId")
-                        {
-                            id = int.Parse(attribute.Value, CultureInfo.InvariantCulture);
-                        }
-                    }
+                    string sheetName =  ReaderUtils.GetAttribute("name", node, "worksheet1");
+                    int id = int.Parse(ReaderUtils.GetAttribute("sheetId", node), CultureInfo.InvariantCulture); // Default will rightly throw an exception
                     WorksheetDefinitions.Add(id, sheetName);
                 }
                 catch (Exception e)

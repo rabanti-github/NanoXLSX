@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using NanoXLSX.Exceptions;
-using Styles;
+using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX
@@ -31,8 +31,10 @@ namespace NanoXLSX
             STRING,
             /// <summary>Type for all numeric types (long, integer and float and double)</summary>
             NUMBER,
-            /// <summary>Type for dates and times (Note: Dates before 1900-01-01 are not allowed)</summary>
+            /// <summary>Type for dates(Note: Dates before 1900-01-01 and after 9999-12-31 are not allowed)</summary>
             DATE,
+            /// <summary>Type for times (Note: Internally handled as OAdate, represented by <see cref="TimeSpan"/>)</summary>
+            TIME,
             /// <summary>Type for boolean</summary>
             BOOL,
             /// <summary>Type for Formulas (The cell will be handled differently)</summary>
@@ -164,7 +166,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Constructor with value, cell type and address. The worksheet reference is set to null and must be assigned later
+        /// Constructor with value, cell type and address as string. The worksheet reference is set to null and must be assigned later
         /// </summary>
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
@@ -174,6 +176,25 @@ namespace NanoXLSX
             DataType = type;
             Value = value;
             CellAddress = address;
+            WorksheetReference = null;
+            if (type == CellType.DEFAULT)
+            {
+                ResolveCellType();
+            }
+        }
+
+        /// <summary>
+        /// Constructor with value, cell type and address as struct. The worksheet reference is set to null and must be assigned later
+        /// </summary>
+        /// <param name="value">Value of the cell</param>
+        /// <param name="type">Type of the cell</param>
+        /// <param name="address">Address struct of the cell</param>
+        public Cell(Object value, CellType type, Address address)
+        {
+            DataType = type;
+            Value = value;
+            columnNumber = address.Column;
+            rowNumber = address.Row;
             WorksheetReference = null;
             if (type == CellType.DEFAULT)
             {
@@ -261,6 +282,7 @@ namespace NanoXLSX
             else if (t == typeof(long) || t == typeof(ulong)) { DataType = CellType.NUMBER; }
             else if (t == typeof(short) || t == typeof(ushort)) { DataType = CellType.NUMBER; }
             else if (t == typeof(DateTime)) { DataType = CellType.DATE; } // Not native but standard
+            else if (t == typeof(TimeSpan)) { DataType = CellType.TIME; } // Not native but standard
             else { DataType = CellType.STRING; } // Default (char, string, object)
         }
 
@@ -344,6 +366,7 @@ namespace NanoXLSX
                 else if (t == typeof(short))   { c = new Cell((short)o, CellType.NUMBER); }
                 else if (t == typeof(ushort))  { c = new Cell((ushort)o, CellType.NUMBER); }
                 else if (t == typeof(DateTime)){ c = new Cell((DateTime)o, CellType.DATE); }
+                else if (t == typeof(TimeSpan)){ c = new Cell((TimeSpan)o, CellType.TIME); }
                 else if (t == typeof(string))  { c = new Cell((string)o, CellType.STRING); }
                 else // Default = unspecified object
                 {
