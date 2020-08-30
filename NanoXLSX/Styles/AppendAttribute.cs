@@ -8,7 +8,7 @@
 using System;
 
 namespace NanoXLSX.Styles
-{ 
+{
 
     /// <summary>
     /// Attribute designated to control the copying of style properties

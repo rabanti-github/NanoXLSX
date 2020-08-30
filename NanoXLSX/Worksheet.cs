@@ -21,7 +21,7 @@ namespace NanoXLSX
     public class Worksheet
     {
 
-#region constants
+        #region constants
         /// <summary>
         /// Default column width as constant
         /// </summary>
@@ -62,9 +62,9 @@ namespace NanoXLSX
         /// Maximum row height as constant
         /// </summary>
         public const float MAX_ROW_HEIGHT = 409.5f;
-#endregion
+        #endregion
 
-#region enums
+        #region enums
         /// <summary>
         /// Enum to define the direction when using AddNextCell method
         /// </summary>
@@ -83,7 +83,7 @@ namespace NanoXLSX
         /// </summary>
         public enum SheetProtectionValue
         {
-           // sheet, // Is always on 1 if protected
+            // sheet, // Is always on 1 if protected
             /// <summary>If selected, the user can edit objects if the worksheets is protected</summary>
             objects,
             /// <summary>If selected, the user can edit scenarios if the worksheets is protected</summary>
@@ -113,11 +113,11 @@ namespace NanoXLSX
             /// <summary>If selected, the user can use pivot tables if the worksheets is protected</summary>
             pivotTables,
             /// <summary>If selected, the user can select unlocked cells if the worksheets is protected</summary>
-            selectUnlockedCells 
+            selectUnlockedCells
         }
-#endregion
+        #endregion
 
-#region privateFields
+        #region privateFields
         private Style activeStyle;
         private Range? autoFilterRange;
         private Dictionary<string, Cell> cells;
@@ -133,11 +133,11 @@ namespace NanoXLSX
         private List<SheetProtectionValue> sheetProtectionValues;
         private bool useActiveStyle;
         private string sheetProtectionPassword;
-        
-        private Range? selectedCells;
-#endregion
 
-#region properties
+        private Range? selectedCells;
+        #endregion
+
+        #region properties
         /// <summary>
         /// Gets the range of the auto-filter. Wrapped to Nullable to provide null as value. If null, no auto-filter is applied
         /// </summary>
@@ -273,11 +273,11 @@ namespace NanoXLSX
         /// <summary>
         /// Gets or sets the Reference to the parent Workbook
         /// </summary>
-        public Workbook WorkbookReference { get; set; } 
-#endregion
+        public Workbook WorkbookReference { get; set; }
+        #endregion
 
 
-#region constructors
+        #region constructors
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -499,9 +499,9 @@ namespace NanoXLSX
             AddCell(value, column, row, style);
         }
 
-#endregion
+        #endregion
 
-#region methods_AddCellFormula
+        #region methods_AddCellFormula
 
         /// <summary>
         /// Adds a cell formula as string to the defined cell address
@@ -674,7 +674,7 @@ namespace NanoXLSX
             }
             List<Cell> list = Cell.ConvertArray(values);
             int len = values.Count;
-            for(int i = 0; i < len; i++)
+            for (int i = 0; i < len; i++)
             {
                 list[i].RowNumber = addresses[i].Row;
                 list[i].ColumnNumber = addresses[i].Column;
@@ -682,9 +682,9 @@ namespace NanoXLSX
                 AddNextCell(list[i], false, style);
             }
         }
-#endregion
+        #endregion
 
-#region methods_RemoveCell
+        #region methods_RemoveCell
         /// <summary>
         /// Removes a previous inserted cell at the defined address
         /// </summary>
@@ -711,9 +711,9 @@ namespace NanoXLSX
             Cell.ResolveCellCoordinate(address, out column, out row);
             return RemoveCell(column, row);
         }
-#endregion
+        #endregion
 
-#region common_methods
+        #region common_methods
 
         /// <summary>
         /// Method to add allowed actions if the worksheet is protected. If one or more values are added, UseSheetProtection will be set to true
@@ -1403,7 +1403,7 @@ namespace NanoXLSX
             sheetName = SanitizeWorksheetName(name, WorkbookReference);
         }
 
-#region static_methods
+        #region static_methods
 
         /// <summary>
         /// Sanitizes a worksheet name
@@ -1438,7 +1438,7 @@ namespace NanoXLSX
                 if (WorksheetExists(name, workbook) == false) { break; } // OK
                 if (originalName.Length + (number / 10) >= 31)
                 {
-                    name = originalName.Substring(0, 30 - number / 10) +  number;
+                    name = originalName.Substring(0, 30 - number / 10) + number;
                 }
                 else
                 {
@@ -1466,9 +1466,9 @@ namespace NanoXLSX
                 }
             }
             return false;
-        }    
+        }
 
-#endregion
+        #endregion
 
 
         #endregion

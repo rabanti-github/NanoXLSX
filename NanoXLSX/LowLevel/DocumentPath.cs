@@ -56,5 +56,5 @@ namespace NanoXLSX.LowLevel
         }
 
     }
-    
+
 }

@@ -227,16 +227,16 @@ namespace NanoXLSX
             if (numericLookup)
             {
                 Type t = number.GetType();
-                if (t == typeof(byte))          { arg1 = ((byte)number).ToString("G", culture); }
-                else if (t == typeof(sbyte))    { arg1 = ((sbyte)number).ToString("G", culture); }
-                else if (t == typeof(decimal))  { arg1 = ((decimal)number).ToString("G", culture); }
-                else if (t == typeof(double))   { arg1 = ((double)number).ToString("G", culture); }
-                else if (t == typeof(float))    { arg1 = ((float)number).ToString("G", culture); }
-                else if (t == typeof(int))      { arg1 = ((int)number).ToString("G", culture); }
-                else if (t == typeof(long))     { arg1 = ((long)number).ToString("G", culture); }
-                else if (t == typeof(ulong))    { arg1 = ((ulong)number).ToString("G", culture); }
-                else if (t == typeof(short))    { arg1 = ((short)number).ToString("G", culture); }
-                else if (t == typeof(ushort))   { arg1 = ((ushort)number).ToString("G", culture); }
+                if (t == typeof(byte)) { arg1 = ((byte)number).ToString("G", culture); }
+                else if (t == typeof(sbyte)) { arg1 = ((sbyte)number).ToString("G", culture); }
+                else if (t == typeof(decimal)) { arg1 = ((decimal)number).ToString("G", culture); }
+                else if (t == typeof(double)) { arg1 = ((double)number).ToString("G", culture); }
+                else if (t == typeof(float)) { arg1 = ((float)number).ToString("G", culture); }
+                else if (t == typeof(int)) { arg1 = ((int)number).ToString("G", culture); }
+                else if (t == typeof(long)) { arg1 = ((long)number).ToString("G", culture); }
+                else if (t == typeof(ulong)) { arg1 = ((ulong)number).ToString("G", culture); }
+                else if (t == typeof(short)) { arg1 = ((short)number).ToString("G", culture); }
+                else if (t == typeof(ushort)) { arg1 = ((ushort)number).ToString("G", culture); }
                 else
                 {
                     throw new FormatException("InvalidLookupType", "The lookup variable can only be a cell address or a numeric value. The value '" + number + "' is invalid.");
@@ -276,5 +276,5 @@ namespace NanoXLSX
             return new Cell(functionName + "(" + arg1 + arg2 + ")", Cell.CellType.FORMULA);
         }
     }
-    
+
 }

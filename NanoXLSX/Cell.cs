@@ -353,21 +353,21 @@ namespace NanoXLSX
                 o = item; // intermediate object is necessary to cast the types below
                 t = item.GetType();
 
-                if (t == typeof(bool))         {c = new Cell((bool)o, CellType.BOOL); }
-                else if (t == typeof(byte))    { c = new Cell((byte)o, CellType.NUMBER); }
-                else if (t == typeof(sbyte))   { c = new Cell((sbyte)o, CellType.NUMBER); }
+                if (t == typeof(bool)) { c = new Cell((bool)o, CellType.BOOL); }
+                else if (t == typeof(byte)) { c = new Cell((byte)o, CellType.NUMBER); }
+                else if (t == typeof(sbyte)) { c = new Cell((sbyte)o, CellType.NUMBER); }
                 else if (t == typeof(decimal)) { c = new Cell((decimal)o, CellType.NUMBER); }
-                else if (t == typeof(double))  { c = new Cell((double)o, CellType.NUMBER); }
-                else if (t == typeof(float))   { c = new Cell((float)o, CellType.NUMBER); }
-                else if (t == typeof(int))     { c = new Cell((int)o, CellType.NUMBER); }
-                else if (t == typeof(uint))    { c = new Cell((uint)o, CellType.NUMBER); }
-                else if (t == typeof(long))    { c = new Cell((long)o, CellType.NUMBER); }
-                else if (t == typeof(ulong))   { c = new Cell((ulong)o, CellType.NUMBER); }
-                else if (t == typeof(short))   { c = new Cell((short)o, CellType.NUMBER); }
-                else if (t == typeof(ushort))  { c = new Cell((ushort)o, CellType.NUMBER); }
-                else if (t == typeof(DateTime)){ c = new Cell((DateTime)o, CellType.DATE); }
-                else if (t == typeof(TimeSpan)){ c = new Cell((TimeSpan)o, CellType.TIME); }
-                else if (t == typeof(string))  { c = new Cell((string)o, CellType.STRING); }
+                else if (t == typeof(double)) { c = new Cell((double)o, CellType.NUMBER); }
+                else if (t == typeof(float)) { c = new Cell((float)o, CellType.NUMBER); }
+                else if (t == typeof(int)) { c = new Cell((int)o, CellType.NUMBER); }
+                else if (t == typeof(uint)) { c = new Cell((uint)o, CellType.NUMBER); }
+                else if (t == typeof(long)) { c = new Cell((long)o, CellType.NUMBER); }
+                else if (t == typeof(ulong)) { c = new Cell((ulong)o, CellType.NUMBER); }
+                else if (t == typeof(short)) { c = new Cell((short)o, CellType.NUMBER); }
+                else if (t == typeof(ushort)) { c = new Cell((ushort)o, CellType.NUMBER); }
+                else if (t == typeof(DateTime)) { c = new Cell((DateTime)o, CellType.DATE); }
+                else if (t == typeof(TimeSpan)) { c = new Cell((TimeSpan)o, CellType.TIME); }
+                else if (t == typeof(string)) { c = new Cell((string)o, CellType.STRING); }
                 else // Default = unspecified object
                 {
                     c = new Cell((string)o, CellType.DEFAULT);
@@ -481,13 +481,13 @@ namespace NanoXLSX
             {
                 case AddressType.FixedRowAndColumn:
                     return "$" + ResolveColumnAddress(column) + "$" + (row + 1);
-                    //break;
+                //break;
                 case AddressType.FixedColumn:
                     return "$" + ResolveColumnAddress(column) + (row + 1);
-                   // break;
+                // break;
                 case AddressType.FixedRow:
                     return ResolveColumnAddress(column) + "$" + (row + 1);
-                   // break;
+                // break;
                 default:
                     return ResolveColumnAddress(column) + (row + 1);
             }

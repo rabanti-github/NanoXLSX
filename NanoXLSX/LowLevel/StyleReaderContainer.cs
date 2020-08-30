@@ -273,7 +273,7 @@ namespace NanoXLSX.LowLevel
                     NumberFormat numberFormat = numberFormats.Find(x => x.InternalID == index);
                     if (numberFormat == null)
                     {
-                        throw new StyleException("StyleException",  "The number format with the numFmtId: " + index + " was not found");
+                        throw new StyleException("StyleException", "The number format with the numFmtId: " + index + " was not found");
                     }
                     return numberFormat;
                 }

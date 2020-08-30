@@ -29,7 +29,7 @@ namespace NanoXLSX.LowLevel
         /// <value>
         /// Dictionary with worksheet definitions
         /// </value>
-        public Dictionary<int,string> WorksheetDefinitions { get; private set; }
+        public Dictionary<int, string> WorksheetDefinitions { get; private set; }
 
         #endregion
 
@@ -84,7 +84,7 @@ namespace NanoXLSX.LowLevel
             {
                 try
                 {
-                    string sheetName =  ReaderUtils.GetAttribute("name", node, "worksheet1");
+                    string sheetName = ReaderUtils.GetAttribute("name", node, "worksheet1");
                     int id = int.Parse(ReaderUtils.GetAttribute("sheetId", node), CultureInfo.InvariantCulture); // Default will rightly throw an exception
                     WorksheetDefinitions.Add(id, sheetName);
                 }

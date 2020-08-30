@@ -154,7 +154,7 @@ namespace NanoXLSX.LowLevel
                         // TODO: Implement other style information
                         style.CurrentNumberFormat = format;
                         style.InternalID = StyleReaderContainer.GetNextStyleId();
-                        
+
                         StyleReaderContainer.AddStyleComponent(style);
                     }
                 }

@@ -12,10 +12,10 @@ Release Date: **30.08.2020**
 - Updated documentation
 - Fixed some code formatting issues
 
-### Notes:
- * To be consistent, the namespace of 'Styles' was changed to 'NanoXLSX.Styles'. Minor changes may be necessary in existing code if styles were used
- * Currently, the style reader resolves only number formats to determine dates and times, as well as custom formats. Other components like fonts, borders or fills are neglected at the moment
+### Notes
 
+- To be consistent, the namespace of 'Styles' was changed to 'NanoXLSX.Styles'. Minor changes may be necessary in existing code if styles were used
+- Currently, the style reader resolves only number formats to determine dates and times, as well as custom formats. Other components like fonts, borders or fills are neglected at the moment
 
 ## v1.3.6
 
@@ -43,7 +43,6 @@ Release Date: **01.12.2019**
 - Fixed a bug of reorganized worksheets (when deleted in Excel)
 - Fixed a bug in the handling of shared strings
 
-
 ## v1.3.3
 
 ---
@@ -54,7 +53,6 @@ Release Date: **20.05.2019**
 - Code Cleanup
 - Removed executable folder, since executables are available through releases, compilation or NuGet
 
-
 ## v1.3.2
 
 ---
@@ -62,15 +60,12 @@ Release Date: **08.12.2018**
 
 - Improved the performance of adding stylized cells by factor 10 to 100
 
-
-
 ## v1.3.1
 
 ---
 Release Date: **04.11.2018**
 
 - Fixed a bug in the style handling of merged cells. Bug fix provided by David Courtel for PicoXLSX
-
 
 ## v1.3.0
 
@@ -96,10 +91,9 @@ Release Date: **24.08.2018**
 - Added support for dates in the reader
 - Documentation Update
 
-
 ## v1.2.3
+
 ---
 Release Date: **24.08.2018**
 
 - Initial Release (synced to v 1.2.3 of NanoXLSX4j for Java)
-

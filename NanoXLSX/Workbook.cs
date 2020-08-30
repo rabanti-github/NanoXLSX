@@ -674,7 +674,7 @@ namespace NanoXLSX
             r.Read();
             return r.GetWorkbook();
         }
-        
+
         /// <summary>
         /// Loads a workbook from a stream
         /// </summary>

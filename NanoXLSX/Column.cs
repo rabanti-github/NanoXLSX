@@ -46,7 +46,7 @@ namespace NanoXLSX
             set
             {
                 columnAddress = Cell.ResolveColumnAddress(value);
-                number = value; 
+                number = value;
             }
         }
 
@@ -76,9 +76,9 @@ namespace NanoXLSX
         /// Constructor with column address
         /// </summary>
         /// <param name="columnAddress">Column address (A to XFD)</param>
-        public Column (string columnAddress) : this()
+        public Column(string columnAddress) : this()
         {
-            ColumnAddress = columnAddress; 
+            ColumnAddress = columnAddress;
         }
 
     }

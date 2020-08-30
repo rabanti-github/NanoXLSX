@@ -677,18 +677,18 @@ namespace NanoXLSX.LowLevel
                     tValue = " t=\"" + typeAttribute + "\" ";
                     Type t = item.Value.GetType();
 
-                    if (t == typeof(byte))         { value = ((byte)item.Value).ToString("G", culture); }
-                    else if (t == typeof(sbyte))   { value = ((sbyte)item.Value).ToString("G", culture); }
+                    if (t == typeof(byte)) { value = ((byte)item.Value).ToString("G", culture); }
+                    else if (t == typeof(sbyte)) { value = ((sbyte)item.Value).ToString("G", culture); }
                     else if (t == typeof(decimal)) { value = ((decimal)item.Value).ToString("G", culture); }
-                    else if (t == typeof(double))  { value = ((double)item.Value).ToString("G", culture); }
-                    else if (t == typeof(float))   { value = ((float)item.Value).ToString("G", culture); }
-                    else if (t == typeof(int))     { value = ((int)item.Value).ToString("G", culture); }
-                    else if (t == typeof(uint))    { value = ((uint)item.Value).ToString("G", culture); }
-                    else if (t == typeof(long))    { value = ((long)item.Value).ToString("G", culture); }
-                    else if (t == typeof(ulong))   { value = ((ulong)item.Value).ToString("G", culture); }
-                    else if (t == typeof(short))   { value = ((short)item.Value).ToString("G", culture); }
-                    else if (t == typeof(ushort))  { value = ((ushort)item.Value).ToString("G", culture); }
-                 }
+                    else if (t == typeof(double)) { value = ((double)item.Value).ToString("G", culture); }
+                    else if (t == typeof(float)) { value = ((float)item.Value).ToString("G", culture); }
+                    else if (t == typeof(int)) { value = ((int)item.Value).ToString("G", culture); }
+                    else if (t == typeof(uint)) { value = ((uint)item.Value).ToString("G", culture); }
+                    else if (t == typeof(long)) { value = ((long)item.Value).ToString("G", culture); }
+                    else if (t == typeof(ulong)) { value = ((ulong)item.Value).ToString("G", culture); }
+                    else if (t == typeof(short)) { value = ((short)item.Value).ToString("G", culture); }
+                    else if (t == typeof(ushort)) { value = ((ushort)item.Value).ToString("G", culture); }
+                }
                 // Date parsing
                 else if (item.DataType == Cell.CellType.DATE)
                 {
@@ -1089,7 +1089,7 @@ namespace NanoXLSX.LowLevel
                     formatNumber = (int)item.CurrentNumberFormat.Number;
                     sb.Append(formatNumber.ToString("G", culture));
                 }
-               
+
                 sb.Append("\" borderId=\"").Append(item.CurrentBorder.InternalID.Value.ToString("G", culture));
                 sb.Append("\" fillId=\"").Append(item.CurrentFill.InternalID.Value.ToString("G", culture));
                 sb.Append("\" fontId=\"").Append(item.CurrentFont.InternalID.Value.ToString("G", culture));

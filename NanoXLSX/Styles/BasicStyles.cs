@@ -243,7 +243,7 @@ namespace NanoXLSX.Styles
         {
             Style s = new Style();
             s.CurrentFill.SetColor("FF" + rgb.ToUpper(), Fill.FillType.fillColor);
-            
+
             return s;
         }
 
