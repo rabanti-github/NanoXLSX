@@ -25,7 +25,8 @@ namespace NanoXLSX.Styles
         public bool Ignore { get; set; }
 
         /// <summary>
-        /// Indicates whether the property annotated with the attribute is a nested property. Nested properties are ignored but during the copying of properties but can be broken down to its sub-properties
+        /// Indicates whether the property annotated with the attribute is a nested property. 
+        /// Nested properties are ignored but during the copying of properties but can be broken down to its sub-properties
         /// </summary>
         /// <value>
         ///   <c>true</c> if a nested property, otherwise <c>false</c>.

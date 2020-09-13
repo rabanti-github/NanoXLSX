@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using NanoXLSX.Exceptions;
@@ -20,6 +21,10 @@ namespace NanoXLSX
     /// </summary>
     public class Cell : IComparable<Cell>
     {
+        #region constants
+        private const int ASCII_OFFSET = 64;
+        #endregion
+
 
         #region enums
         /// <summary>
@@ -107,7 +112,8 @@ namespace NanoXLSX
             {
                 if (value < Worksheet.MIN_COLUMN_NUMBER || value > Worksheet.MAX_COLUMN_NUMBER)
                 {
-                    throw new RangeException("OutOfRangeException", "The passed column number (" + value + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " rows).");
+                    throw new RangeException(RangeException.GENERAL, "The passed column number (" + value + ") is out of range. Range is from " + 
+                        Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " rows).");
                 }
                 columnNumber = value;
             }
@@ -126,7 +132,8 @@ namespace NanoXLSX
             {
                 if (value < Worksheet.MIN_ROW_NUMBER || value > Worksheet.MAX_ROW_NUMBER)
                 {
-                    throw new RangeException("OutOfRangeException", "The passed row number (" + value + ") is out of range. Range is from " + Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
+                    throw new RangeException(RangeException.GENERAL, "The passed row number (" + value + ") is out of range. Range is from " + 
+                        Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
                 }
                 rowNumber = value;
             }
@@ -230,6 +237,10 @@ namespace NanoXLSX
         /// <returns>0 if values are the same, -1 if this object is smaller, 1 if it is bigger</returns>
         public int CompareTo(Cell other)
         {
+            if (other == null)
+            {
+                return -1;
+            }
             if (RowNumber == other.RowNumber)
             {
                 return ColumnNumber.CompareTo(other.ColumnNumber);
@@ -246,11 +257,11 @@ namespace NanoXLSX
         {
             if (WorksheetReference == null)
             {
-                throw new StyleException("UndefinedStyleException", "No worksheet reference was defined while trying to remove a style from a cell");
+                throw new StyleException(StyleException.MISSING_REFERENCE, "No worksheet reference was defined while trying to remove a style from a cell");
             }
             if (WorksheetReference.WorkbookReference == null)
             {
-                throw new StyleException("UndefinedStyleException", "No workbook reference was defined on the worksheet while trying to remove a style from a cell");
+                throw new StyleException(StyleException.MISSING_REFERENCE, "No workbook reference was defined on the worksheet while trying to remove a style from a cell");
             }
             if (cellStyle != null)
             {
@@ -271,18 +282,29 @@ namespace NanoXLSX
                 Value = "";
                 return;
             }
-            if (DataType == CellType.FORMULA || DataType == CellType.EMPTY) { return; }
+            if (DataType == CellType.FORMULA || DataType == CellType.EMPTY)
+            { return; }
             Type t = Value.GetType();
-            if (t == typeof(bool)) { DataType = CellType.BOOL; }
-            else if (t == typeof(byte) || t == typeof(sbyte)) { DataType = CellType.NUMBER; }
-            else if (t == typeof(decimal)) { DataType = CellType.NUMBER; }
-            else if (t == typeof(double)) { DataType = CellType.NUMBER; }
-            else if (t == typeof(float)) { DataType = CellType.NUMBER; }
-            else if (t == typeof(int) || t == typeof(uint)) { DataType = CellType.NUMBER; }
-            else if (t == typeof(long) || t == typeof(ulong)) { DataType = CellType.NUMBER; }
-            else if (t == typeof(short) || t == typeof(ushort)) { DataType = CellType.NUMBER; }
-            else if (t == typeof(DateTime)) { DataType = CellType.DATE; } // Not native but standard
-            else if (t == typeof(TimeSpan)) { DataType = CellType.TIME; } // Not native but standard
+            if (t == typeof(bool))
+            { DataType = CellType.BOOL; }
+            else if (t == typeof(byte) || t == typeof(sbyte))
+            { DataType = CellType.NUMBER; }
+            else if (t == typeof(decimal))
+            { DataType = CellType.NUMBER; }
+            else if (t == typeof(double))
+            { DataType = CellType.NUMBER; }
+            else if (t == typeof(float))
+            { DataType = CellType.NUMBER; }
+            else if (t == typeof(int) || t == typeof(uint))
+            { DataType = CellType.NUMBER; }
+            else if (t == typeof(long) || t == typeof(ulong))
+            { DataType = CellType.NUMBER; }
+            else if (t == typeof(short) || t == typeof(ushort))
+            { DataType = CellType.NUMBER; }
+            else if (t == typeof(DateTime))
+            { DataType = CellType.DATE; } // Not native but standard
+            else if (t == typeof(TimeSpan))
+            { DataType = CellType.TIME; } // Not native but standard
             else { DataType = CellType.STRING; } // Default (char, string, object)
         }
 
@@ -319,15 +341,15 @@ namespace NanoXLSX
         {
             if (WorksheetReference == null)
             {
-                throw new StyleException("UndefinedStyleException", "No worksheet reference was defined while trying to set a style to a cell");
+                throw new StyleException(StyleException.MISSING_REFERENCE, "No worksheet reference was defined while trying to set a style to a cell");
             }
             if (WorksheetReference.WorkbookReference == null)
             {
-                throw new StyleException("UndefinedStyleException", "No workbook reference was defined on the worksheet while trying to set a style to a cell");
+                throw new StyleException(StyleException.MISSING_REFERENCE, "No workbook reference was defined on the worksheet while trying to set a style to a cell");
             }
             if (style == null)
             {
-                throw new StyleException("UndefinedStyleException", "No style to assign was defined");
+                throw new StyleException(StyleException.MISSING_REFERENCE, "No style to assign was defined");
             }
             Style s = WorksheetReference.WorkbookReference.AddStyle(style);
             cellStyle = s;
@@ -342,9 +364,13 @@ namespace NanoXLSX
         /// <typeparam name="T">Generic data type</typeparam>
         /// <param name="list">List of generic objects</param>
         /// <returns>List of cells</returns>
-        public static List<Cell> ConvertArray<T>(List<T> list)
+        public static IEnumerable<Cell> ConvertArray<T>(IEnumerable<T> list)
         {
             List<Cell> output = new List<Cell>();
+            if (list == null)
+            {
+                return output;
+            }
             Cell c;
             object o;
             Type t;
@@ -353,21 +379,36 @@ namespace NanoXLSX
                 o = item; // intermediate object is necessary to cast the types below
                 t = item.GetType();
 
-                if (t == typeof(bool)) { c = new Cell((bool)o, CellType.BOOL); }
-                else if (t == typeof(byte)) { c = new Cell((byte)o, CellType.NUMBER); }
-                else if (t == typeof(sbyte)) { c = new Cell((sbyte)o, CellType.NUMBER); }
-                else if (t == typeof(decimal)) { c = new Cell((decimal)o, CellType.NUMBER); }
-                else if (t == typeof(double)) { c = new Cell((double)o, CellType.NUMBER); }
-                else if (t == typeof(float)) { c = new Cell((float)o, CellType.NUMBER); }
-                else if (t == typeof(int)) { c = new Cell((int)o, CellType.NUMBER); }
-                else if (t == typeof(uint)) { c = new Cell((uint)o, CellType.NUMBER); }
-                else if (t == typeof(long)) { c = new Cell((long)o, CellType.NUMBER); }
-                else if (t == typeof(ulong)) { c = new Cell((ulong)o, CellType.NUMBER); }
-                else if (t == typeof(short)) { c = new Cell((short)o, CellType.NUMBER); }
-                else if (t == typeof(ushort)) { c = new Cell((ushort)o, CellType.NUMBER); }
-                else if (t == typeof(DateTime)) { c = new Cell((DateTime)o, CellType.DATE); }
-                else if (t == typeof(TimeSpan)) { c = new Cell((TimeSpan)o, CellType.TIME); }
-                else if (t == typeof(string)) { c = new Cell((string)o, CellType.STRING); }
+                if (t == typeof(bool))
+                { c = new Cell((bool)o, CellType.BOOL); }
+                else if (t == typeof(byte))
+                { c = new Cell((byte)o, CellType.NUMBER); }
+                else if (t == typeof(sbyte))
+                { c = new Cell((sbyte)o, CellType.NUMBER); }
+                else if (t == typeof(decimal))
+                { c = new Cell((decimal)o, CellType.NUMBER); }
+                else if (t == typeof(double))
+                { c = new Cell((double)o, CellType.NUMBER); }
+                else if (t == typeof(float))
+                { c = new Cell((float)o, CellType.NUMBER); }
+                else if (t == typeof(int))
+                { c = new Cell((int)o, CellType.NUMBER); }
+                else if (t == typeof(uint))
+                { c = new Cell((uint)o, CellType.NUMBER); }
+                else if (t == typeof(long))
+                { c = new Cell((long)o, CellType.NUMBER); }
+                else if (t == typeof(ulong))
+                { c = new Cell((ulong)o, CellType.NUMBER); }
+                else if (t == typeof(short))
+                { c = new Cell((short)o, CellType.NUMBER); }
+                else if (t == typeof(ushort))
+                { c = new Cell((ushort)o, CellType.NUMBER); }
+                else if (t == typeof(DateTime))
+                { c = new Cell((DateTime)o, CellType.DATE); }
+                else if (t == typeof(TimeSpan))
+                { c = new Cell((TimeSpan)o, CellType.TIME); }
+                else if (t == typeof(string))
+                { c = new Cell((string)o, CellType.STRING); }
                 else // Default = unspecified object
                 {
                     c = new Cell((string)o, CellType.DEFAULT);
@@ -384,7 +425,7 @@ namespace NanoXLSX
         /// <returns>List of cell addresses</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception>
-        public static List<Address> GetCellRange(string range)
+        public static IEnumerable<Address> GetCellRange(string range)
         {
             Range range2 = ResolveCellRange(range);
             return GetCellRange(range2.StartAddress, range2.EndAddress);
@@ -398,7 +439,7 @@ namespace NanoXLSX
         /// <returns>List of cell addresses</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception> 
-        public static List<Address> GetCellRange(string startAddress, string endAddress)
+        public static IEnumerable<Address> GetCellRange(string startAddress, string endAddress)
         {
             Address start = ResolveCellCoordinate(startAddress);
             Address end = ResolveCellCoordinate(endAddress);
@@ -414,7 +455,7 @@ namespace NanoXLSX
         /// <param name="endRow">End row (zero based)</param>
         /// <returns>List of cell addresses</returns>
         /// <exception cref="RangeException">Throws an RangeException if the value of one passed address parts is out of range (A-XFD and 1 to 1048576) </exception>
-        public static List<Address> GetCellRange(int startColumn, int startRow, int endColumn, int endRow)
+        public static IEnumerable<Address> GetCellRange(int startColumn, int startRow, int endColumn, int endRow)
         {
             Address start = new Address(startColumn, startRow);
             Address end = new Address(endColumn, endRow);
@@ -429,9 +470,12 @@ namespace NanoXLSX
         /// <returns>List of cell addresses</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a part of the passed addresses is malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the value of one passed address is out of range (A-XFD and 1 to 1048576) </exception>
-        public static List<Address> GetCellRange(Address startAddress, Address endAddress)
+        public static IEnumerable<Address> GetCellRange(Address startAddress, Address endAddress)
         {
-            int startColumn, endColumn, startRow, endRow;
+            int startColumn;
+            int endColumn;
+            int startRow;
+            int endRow;
             if (startAddress.Column < endAddress.Column)
             {
                 startColumn = startAddress.Column;
@@ -475,19 +519,17 @@ namespace NanoXLSX
         {
             if (column > Worksheet.MAX_COLUMN_NUMBER || column < Worksheet.MIN_COLUMN_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The column number (" + column + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
+                throw new RangeException(RangeException.GENERAL, "The column number (" + column + ") is out of range. Range is from " + 
+                    Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
             }
             switch (type)
             {
                 case AddressType.FixedRowAndColumn:
                     return "$" + ResolveColumnAddress(column) + "$" + (row + 1);
-                //break;
                 case AddressType.FixedColumn:
                     return "$" + ResolveColumnAddress(column) + (row + 1);
-                // break;
                 case AddressType.FixedRow:
                     return ResolveColumnAddress(column) + "$" + (row + 1);
-                // break;
                 default:
                     return ResolveColumnAddress(column) + (row + 1);
             }
@@ -502,7 +544,8 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException if the value of the passed address is out of range (A-XFD and 1 to 1048576) </exception>
         public static Address ResolveCellCoordinate(string address)
         {
-            int row, column;
+            int row;
+            int column;
             ResolveCellCoordinate(address, out column, out row);
             return new Address(column, row);
         }
@@ -521,23 +564,25 @@ namespace NanoXLSX
             {
                 throw new FormatException("The cell address is null or empty and could not be resolved");
             }
-            address = address.ToUpper();
+            address =  Utils.ToUpper(address);
             Regex rx = new Regex("([A-Z]{1,3})([0-9]{1,7})");
             Match mx = rx.Match(address);
             if (mx.Groups.Count != 3)
             {
                 throw new FormatException("The format of the cell address (" + address + ") is malformed");
             }
-            int digits = int.Parse(mx.Groups[2].Value);
+            int digits = int.Parse(mx.Groups[2].Value, CultureInfo.InvariantCulture);
             column = ResolveColumn(mx.Groups[1].Value);
             row = digits - 1;
             if (row > Worksheet.MAX_ROW_NUMBER || row < Worksheet.MIN_ROW_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The row number (" + row + ") is out of range. Range is from " + Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
+                throw new RangeException(RangeException.GENERAL, "The row number (" + row + ") is out of range. Range is from " + 
+                    Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
             }
             if (column > Worksheet.MAX_COLUMN_NUMBER || column < Worksheet.MIN_COLUMN_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The column number (" + column + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
+                throw new RangeException(RangeException.GENERAL, "The column number (" + column + ") is out of range. Range is from " + 
+                    Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
             }
         }
 
@@ -570,19 +615,24 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException if the passed address was out of range</exception>
         public static int ResolveColumn(string columnAddress)
         {
+            if (columnAddress == null)
+            {
+                throw new RangeException(RangeException.GENERAL, "The passed address was null");
+            }
             int chr;
             int result = 0;
             int multiplier = 1;
             for (int i = columnAddress.Length - 1; i >= 0; i--)
             {
                 chr = columnAddress[i];
-                chr = chr - 64;
+                chr = chr - ASCII_OFFSET;
                 result = result + (chr * multiplier);
                 multiplier = multiplier * 26;
             }
             if (result - 1 > Worksheet.MAX_COLUMN_NUMBER || result - 1 < Worksheet.MIN_COLUMN_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The column number (" + (result - 1) + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
+                throw new RangeException(RangeException.GENERAL, "The column number (" + (result - 1) + ") is out of range. Range is from " + 
+                    Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
             }
             return result - 1;
         }
@@ -597,7 +647,8 @@ namespace NanoXLSX
         {
             if (columnNumber > Worksheet.MAX_COLUMN_NUMBER || columnNumber < Worksheet.MIN_COLUMN_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The column number (" + columnNumber + ") is out of range. Range is from " + Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
+                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " + 
+                    Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
             }
             // A - XFD
             int j = 0;
@@ -618,9 +669,11 @@ namespace NanoXLSX
                 }
                 j++;
             }
-            if (l > 0) { sb.Append((char)(l + 64)); }
-            if (k > 0) { sb.Append((char)(k + 64)); }
-            sb.Append((char)(j + 64));
+            if (l > 0)
+            { sb.Append((char)(l + ASCII_OFFSET)); }
+            if (k > 0)
+            { sb.Append((char)(k + ASCII_OFFSET)); }
+            sb.Append((char)(j + ASCII_OFFSET));
             return sb.ToString();
         }
         #endregion

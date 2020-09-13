@@ -5,7 +5,6 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
 using System.Collections.Generic;
 
 namespace NanoXLSX
@@ -43,9 +42,10 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// If true, date or time values (default style number 1 or 3) will be interpreted as numeric values globally. This option overrules possible column options, defined by <see cref="AddEnforcedColumn(int, ColumnType)"/>.
+        /// If true, date or time values (default format number 14 or 21) will be interpreted as numeric values globally. 
+        /// This option overrules possible column options, defined by <see cref="AddEnforcedColumn(int, ColumnType)"/>.
         /// </summary>
-        public bool EnforceDateTimesAsNumbers { get; set; } = false;
+        public bool EnforceDateTimesAsNumbers { get; set; }
 
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace NanoXLSX
         /// <summary>
         /// The row number (zero-based) where enforcing rules are started to be applied. This is, for instance, to prevent enforcing in a header row
         /// </summary>
-        public int EnforcingStartRowNumber { get; set; } = 0;
+        public int EnforcingStartRowNumber { get; set; }
 
         /// <summary>
         /// Adds a type enforcing rule to the passed column address

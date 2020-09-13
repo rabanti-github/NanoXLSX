@@ -46,32 +46,35 @@ namespace NanoXLSX.Styles
             }
             bool ignore;
             PropertyInfo[] infos = GetType().GetProperties();
-            PropertyInfo sourceInfo, referenceInfo;
+            PropertyInfo sourceInfo;
+            PropertyInfo referenceInfo;
             IEnumerable<AppendAttribute> attributes;
             foreach (PropertyInfo info in infos)
             {
                 attributes = (IEnumerable<AppendAttribute>)info.GetCustomAttributes(typeof(AppendAttribute));
-                if (attributes.Count() > 0)
+                if (attributes.Any() && !HandleProperties(attributes))
                 {
-                    ignore = false;
-                    foreach (AppendAttribute attribute in attributes)
-                    {
-                        if (attribute.Ignore == true || attribute.NestedProperty == true)
-                        {
-                            ignore = true;
-                            break;
-                        }
-                    }
-                    if (ignore == true) { continue; } // skip property
+                    continue;
                 }
-
                 sourceInfo = source.GetType().GetProperty(info.Name);
                 referenceInfo = reference.GetType().GetProperty(info.Name);
-                if (sourceInfo.GetValue(source).Equals(referenceInfo.GetValue(reference)) == false)
+                if (!sourceInfo.GetValue(source).Equals(referenceInfo.GetValue(reference)))
                 {
                     info.SetValue(this, sourceInfo.GetValue(source));
                 }
             }
+        }
+
+        private static bool HandleProperties(IEnumerable<AppendAttribute> attributes)
+        {
+            foreach (AppendAttribute attribute in attributes)
+            {
+                if (attribute.Ignore || attribute.NestedProperty)
+                {
+                    return false; // skip property
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -81,9 +84,18 @@ namespace NanoXLSX.Styles
         /// <returns>-1 if the other object is bigger. 0 if both objects are equal. 1 if the other object is smaller.</returns>
         public int CompareTo(AbstractStyle other)
         {
-            if (InternalID.HasValue == false) { return -1; }
-            else if (other.InternalID.HasValue == false) { return 1; }
-            else { return InternalID.Value.CompareTo(other.InternalID.Value); }
+            if (!InternalID.HasValue)
+            {
+                return -1;
+            }
+            else if (!other.InternalID.HasValue)
+            {
+                return 1;
+            }
+            else
+            {
+                return InternalID.Value.CompareTo(other.InternalID.Value);
+            }
         }
 
         /// <summary>
@@ -104,28 +116,31 @@ namespace NanoXLSX.Styles
         /// <param name="delimiter">Delimiter character to append after the casted value</param>
         protected static void CastValue(object o, ref StringBuilder sb, char? delimiter)
         {
+            if (sb == null)
+            {
+                throw new StyleException(StyleException.MISSING_REFERENCE, "The string builder to cats values is not defined");
+            }
             if (o == null)
             {
                 sb.Append('#');
             }
-            else if (o.GetType() == typeof(bool))
+            else if (o is bool)
             {
-                if ((bool)o == true) { sb.Append(1); }
-                else { sb.Append(0); }
+                sb.Append((bool)o ? 1 : 0);
             }
-            else if (o.GetType() == typeof(int))
+            else if (o is int)
             {
                 sb.Append((int)o);
             }
-            else if (o.GetType() == typeof(double))
+            else if (o is double)
             {
                 sb.Append((double)o);
             }
-            else if (o.GetType() == typeof(float))
+            else if (o is float)
             {
                 sb.Append((float)o);
             }
-            else if (o.GetType() == typeof(string))
+            else if (o is string)
             {
                 if (o.ToString() == "#")
                 {
@@ -136,11 +151,11 @@ namespace NanoXLSX.Styles
                     sb.Append((string)o);
                 }
             }
-            else if (o.GetType() == typeof(long))
+            else if (o is long)
             {
                 sb.Append((long)o);
             }
-            else if (o.GetType() == typeof(char))
+            else if (o is char)
             {
                 sb.Append((char)o);
             }
@@ -148,7 +163,7 @@ namespace NanoXLSX.Styles
             {
                 sb.Append(o);
             }
-            if (delimiter.HasValue == true)
+            if (delimiter.HasValue)
             {
                 sb.Append(delimiter.Value);
             }
@@ -169,7 +184,8 @@ namespace NanoXLSX.Styles
             public bool Ignore { get; set; }
 
             /// <summary>
-            /// Indicates whether the property annotated with the attribute is a nested property. Nested properties are ignored but during the copying of properties but can be broken down to its sub-properties
+            /// Indicates whether the property annotated with the attribute is a nested property. 
+            /// Nested properties are ignored but during the copying of properties but can be broken down to its sub-properties
             /// </summary>
             /// <value>
             ///   <c>true</c> if a nested property, otherwise <c>false</c>.

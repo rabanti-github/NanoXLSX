@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Demo.Testing;
 using NanoXLSX;
 using NanoXLSX.Styles;
 
@@ -17,6 +16,12 @@ namespace Demo
 {
     class Program
     {
+
+        private Program()
+        {
+            // Do not instantiate
+        }
+
         /// <summary>
         /// Method to run all demos / testing scenarios (currently disabled)
         /// </summary>

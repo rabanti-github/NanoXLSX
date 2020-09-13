@@ -23,7 +23,7 @@ namespace NanoXLSX.Styles
         private List<AbstractStyle> fonts;
         private List<AbstractStyle> numberFormats;
         private List<AbstractStyle> styles;
-        private List<string> styleNames;
+        private readonly List<string> styleNames;
         #endregion
 
         #region constructors
@@ -50,7 +50,7 @@ namespace NanoXLSX.Styles
         /// <param name="list">List to check</param>
         /// <param name="hash">Hash of the component</param>
         /// <returns>Determined component. If not found, null will be returned</returns>
-        private AbstractStyle GetComponentByHash(ref List<AbstractStyle> list, int hash)
+        private static AbstractStyle GetComponentByHash(ref List<AbstractStyle> list, int hash)
         {
             int len = list.Count;
             for (int i = 0; i < len; i++)
@@ -74,7 +74,7 @@ namespace NanoXLSX.Styles
             AbstractStyle component = GetComponentByHash(ref borders, hash);
             if (component == null)
             {
-                throw new StyleException("MissingReferenceException", "The style component with the hash '" + hash + "' was not found");
+                throw new StyleException(StyleException.MISSING_REFERENCE, "The style component with the hash '" + hash + "' was not found");
             }
             return (Border)component;
         }
@@ -110,7 +110,7 @@ namespace NanoXLSX.Styles
             AbstractStyle component = GetComponentByHash(ref cellXfs, hash);
             if (component == null)
             {
-                throw new StyleException("MissingReferenceException", "The style component with the hash '" + hash + "' was not found");
+                throw new StyleException(StyleException.MISSING_REFERENCE, "The style component with the hash '" + hash + "' was not found");
             }
             return (CellXf)component;
         }
@@ -146,7 +146,7 @@ namespace NanoXLSX.Styles
             AbstractStyle component = GetComponentByHash(ref fills, hash);
             if (component == null)
             {
-                throw new StyleException("MissingReferenceException", "The style component with the hash '" + hash + "' was not found");
+                throw new StyleException(StyleException.MISSING_REFERENCE, "The style component with the hash '" + hash + "' was not found");
             }
             return (Fill)component;
         }
@@ -182,7 +182,7 @@ namespace NanoXLSX.Styles
             AbstractStyle component = GetComponentByHash(ref fonts, hash);
             if (component == null)
             {
-                throw new StyleException("MissingReferenceException", "The style component with the hash '" + hash + "' was not found");
+                throw new StyleException(StyleException.MISSING_REFERENCE, "The style component with the hash '" + hash + "' was not found");
             }
             return (Font)component;
         }
@@ -218,7 +218,7 @@ namespace NanoXLSX.Styles
             AbstractStyle component = GetComponentByHash(ref numberFormats, hash);
             if (component == null)
             {
-                throw new StyleException("MissingReferenceException", "The style component with the hash '" + hash + "' was not found");
+                throw new StyleException(StyleException.MISSING_REFERENCE, "The style component with the hash '" + hash + "' was not found");
             }
             return (NumberFormat)component;
         }
@@ -259,7 +259,7 @@ namespace NanoXLSX.Styles
                     return (Style)styles[i];
                 }
             }
-            throw new StyleException("MissingReferenceException", "The style with the name '" + name + "' was not found");
+            throw new StyleException(StyleException.MISSING_REFERENCE, "The style with the name '" + name + "' was not found");
         }
 
         /// <summary>
@@ -332,40 +332,45 @@ namespace NanoXLSX.Styles
             int hash = style.GetHashCode();
             if (style.GetType() == typeof(Border))
             {
-                if (GetComponentByHash(ref borders, hash) == null) { borders.Add(style); }
+                if (GetComponentByHash(ref borders, hash) == null)
+                { borders.Add(style); }
                 Reorganize(ref borders);
             }
             else if (style.GetType() == typeof(CellXf))
             {
-                if (GetComponentByHash(ref cellXfs, hash) == null) { cellXfs.Add(style); }
+                if (GetComponentByHash(ref cellXfs, hash) == null)
+                { cellXfs.Add(style); }
                 Reorganize(ref cellXfs);
             }
             else if (style.GetType() == typeof(Fill))
             {
-                if (GetComponentByHash(ref fills, hash) == null) { fills.Add(style); }
+                if (GetComponentByHash(ref fills, hash) == null)
+                { fills.Add(style); }
                 Reorganize(ref fills);
             }
             else if (style.GetType() == typeof(Font))
             {
-                if (GetComponentByHash(ref fonts, hash) == null) { fonts.Add(style); }
+                if (GetComponentByHash(ref fonts, hash) == null)
+                { fonts.Add(style); }
                 Reorganize(ref fonts);
             }
             else if (style.GetType() == typeof(NumberFormat))
             {
-                if (GetComponentByHash(ref numberFormats, hash) == null) { numberFormats.Add(style); }
+                if (GetComponentByHash(ref numberFormats, hash) == null)
+                { numberFormats.Add(style); }
                 Reorganize(ref numberFormats);
             }
             else if (style.GetType() == typeof(Style))
             {
                 Style s = (Style)style;
-                if (styleNames.Contains(s.Name) == true)
+                if (styleNames.Contains(s.Name))
                 {
                     throw new StyleException("StyleAlreadyExistsException", "The style with the name '" + s.Name + "' already exists");
                 }
                 if (GetComponentByHash(ref styles, hash) == null)
                 {
                     int? id;
-                    if (s.InternalID.HasValue == false)
+                    if (!s.InternalID.HasValue)
                     {
                         id = int.MaxValue;
                         s.InternalID = id;
@@ -389,6 +394,10 @@ namespace NanoXLSX.Styles
                 Reorganize(ref styles);
                 hash = s.GetHashCode();
             }
+            else
+            {
+                throw new StyleException("UnsupportedComponent", "The component ' " + nameof(style) + "' is not implemented yet");
+            }
             return hash;
         }
 
@@ -399,7 +408,6 @@ namespace NanoXLSX.Styles
         /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style manager</exception>
         public void RemoveStyle(string styleName)
         {
-            //            string hash = null;
             bool match = false;
             int len = styles.Count;
             int index = -1;
@@ -408,12 +416,11 @@ namespace NanoXLSX.Styles
                 if (((Style)styles[i]).Name == styleName)
                 {
                     match = true;
-                    //                    hash = ((Style)styles[i]).Hash;
                     index = i;
                     break;
                 }
             }
-            if (match == false)
+            if (!match)
             {
                 throw new StyleException("MissingReferenceException", "The style with the name '" + styleName + "' was not found in the style manager");
             }
@@ -425,7 +432,7 @@ namespace NanoXLSX.Styles
         /// Method to reorganize / reorder a list of style components
         /// </summary>
         /// <param name="list">List to reorganize as reference</param>
-        private void Reorganize(ref List<AbstractStyle> list)
+        private static void Reorganize(ref List<AbstractStyle> list)
         {
             int len = list.Count;
             list.Sort();
@@ -452,31 +459,36 @@ namespace NanoXLSX.Styles
             for (i = len; i >= 0; i--)
             {
                 border = (Border)borders[i];
-                if (IsUsedByStyle(border) == false) { borders.RemoveAt(i); }
+                if (!IsUsedByStyle(border))
+                { borders.RemoveAt(i); }
             }
             len = cellXfs.Count;
             for (i = len; i >= 0; i--)
             {
                 cellXf = (CellXf)cellXfs[i];
-                if (IsUsedByStyle(cellXf) == false) { cellXfs.RemoveAt(i); }
+                if (!IsUsedByStyle(cellXf))
+                { cellXfs.RemoveAt(i); }
             }
             len = fills.Count;
             for (i = len; i >= 0; i--)
             {
                 fill = (Fill)fills[i];
-                if (IsUsedByStyle(fill) == false) { fills.RemoveAt(i); }
+                if (!IsUsedByStyle(fill))
+                { fills.RemoveAt(i); }
             }
             len = fonts.Count;
             for (i = len; i >= 0; i--)
             {
                 font = (Font)fonts[i];
-                if (IsUsedByStyle(font) == false) { fonts.RemoveAt(i); }
+                if (!IsUsedByStyle(font))
+                { fonts.RemoveAt(i); }
             }
             len = numberFormats.Count;
             for (i = len; i >= 0; i--)
             {
                 numberFormat = (NumberFormat)numberFormats[i];
-                if (IsUsedByStyle(numberFormat) == false) { numberFormats.RemoveAt(i); }
+                if (!IsUsedByStyle(numberFormat))
+                { numberFormats.RemoveAt(i); }
             }
         }
 
@@ -488,19 +500,52 @@ namespace NanoXLSX.Styles
         private bool IsUsedByStyle(AbstractStyle component)
         {
             Style s;
-            bool match = false;
             int hash = component.GetHashCode();
             int len = styles.Count;
             for (int i = 0; i < len; i++)
             {
                 s = (Style)styles[i];
-                if (component.GetType() == typeof(Border)) { if (s.CurrentBorder.GetHashCode() == hash) { match = true; break; } }
-                else if (component.GetType() == typeof(CellXf)) { if (s.CurrentCellXf.GetHashCode() == hash) { match = true; break; } }
-                if (component.GetType() == typeof(Fill)) { if (s.CurrentFill.GetHashCode() == hash) { match = true; break; } }
-                if (component.GetType() == typeof(Font)) { if (s.CurrentFont.GetHashCode() == hash) { match = true; break; } }
-                if (component.GetType() == typeof(NumberFormat)) { if (s.CurrentNumberFormat.GetHashCode() == hash) { match = true; break; } }
+                if (component.GetType() == typeof(Border))
+                {
+                    if (s.CurrentBorder.GetHashCode() == hash)
+                    {
+                        return true;
+                    }
+                }
+                else if (component.GetType() == typeof(CellXf))
+                {
+                    if (s.CurrentCellXf.GetHashCode() == hash)
+                    {
+                        return true;
+                    }
+                }
+                else if (component.GetType() == typeof(Fill))
+                {
+                    if (s.CurrentFill.GetHashCode() == hash)
+                    {
+                        return true;
+                    }
+                }
+                else if (component.GetType() == typeof(Font))
+                {
+                    if (s.CurrentFont.GetHashCode() == hash)
+                    {
+                        return true;
+                    }
+                }
+                else if (component.GetType() == typeof(NumberFormat))
+                {
+                    if (s.CurrentNumberFormat.GetHashCode() == hash)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    throw new StyleException(StyleException.NOT_SUPPORTED, "The component '" + nameof(component) + "' is not implemented yet");
+                }
             }
-            return match;
+            return false;
         }
 
 

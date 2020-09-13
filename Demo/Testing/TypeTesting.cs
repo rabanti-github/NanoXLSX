@@ -6,10 +6,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NanoXLSX;
 
 namespace Demo.Testing
@@ -19,6 +15,10 @@ namespace Demo.Testing
     /// </summary>
     public class TypeTesting
     {
+        private TypeTesting()
+        {
+            // Do not instantiate
+        }
 
         public static void NumericTypeTesting(string fileName)
         {

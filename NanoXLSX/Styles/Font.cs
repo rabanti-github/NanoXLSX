@@ -5,8 +5,6 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System.Text;
-
 namespace NanoXLSX.Styles
 {
     /// <summary>
@@ -18,7 +16,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default font family as constant
         /// </summary>
-        public const string DEFAULTFONT = "Calibri";
+        public static readonly string DEFAULTFONT = "Calibri";
         #endregion
 
         #region enums
@@ -110,8 +108,10 @@ namespace NanoXLSX.Styles
             get { return size; }
             set
             {
-                if (value < 8) { size = 8; }
-                else if (value > 75) { size = 72; }
+                if (value < 8)
+                { size = 8; }
+                else if (value > 75)
+                { size = 72; }
                 else { size = value; }
             }
         }
@@ -187,7 +187,7 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            int p = 257;
+            const int p = 257;
             int r = 1;
             r *= p + (this.Bold ? 0 : 1);
             r *= p + (this.Italic ? 0 : 1);

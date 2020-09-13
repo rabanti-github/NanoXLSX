@@ -5,8 +5,6 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System.Text;
-
 namespace NanoXLSX.Styles
 {
     /// <summary>
@@ -18,14 +16,15 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Start ID for custom number formats as constant
         /// </summary>
-        public const int CUSTOMFORMAT_START_NUMBER = 164;
+        public static readonly int CUSTOMFORMAT_START_NUMBER = 164;
         #endregion
 
         #region enums
         /// <summary>
         /// Enum for predefined number formats
         /// </summary>
-        /// <remarks>There are other predefined formats (e.g. 43 and 44) that are not listed. The declaration of such formats is done in the number formats section of the style document, whereas the officially listed ones are implicitly used and not declared in the style document</remarks>
+        /// <remarks>There are other predefined formats (e.g. 43 and 44) that are not listed. The declaration of such formats is done in the number formats section of the style document, 
+        /// whereas the officially listed ones are implicitly used and not declared in the style document</remarks>
         public enum FormatNumber
         {
             /// <summary>No format / Default</summary>
@@ -137,7 +136,8 @@ namespace NanoXLSX.Styles
         {
             get
             {
-                if (Number == FormatNumber.custom) { return true; }
+                if (Number == FormatNumber.custom)
+                { return true; }
                 else { return false; }
             }
         }
@@ -225,7 +225,7 @@ namespace NanoXLSX.Styles
                     formatNumber = FormatNumber.none;
                     return FormatRange.invalid;
                 }
-                else if (number > 0 && number < 164)
+                else if (number > 0 && number < CUSTOMFORMAT_START_NUMBER)
                 {
                     formatNumber = FormatNumber.none;
                     return FormatRange.undefined;
@@ -277,7 +277,7 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            int p = 251;
+            const int p = 251;
             int r = 1;
             r *= p + this.CustomFormatCode.GetHashCode();
             r *= p + this.CustomFormatID;

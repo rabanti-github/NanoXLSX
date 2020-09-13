@@ -53,7 +53,7 @@ namespace NanoXLSX
         public string ContentStatus { get; set; }
         /// <summary>
         /// Gets or sets the creator of the workbook. Add more than one creator by using the semicolon (;) between the authors
-        /// </summary>	
+        /// </summary>
         public string Creator { get; set; }
         /// <summary>
         /// Gets or sets the description of the document or comment about it
@@ -105,16 +105,20 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the version string is malformed</exception>
         private void CheckVersion()
         {
-            if (string.IsNullOrEmpty(applicationVersion)) { return; }
+            if (string.IsNullOrEmpty(applicationVersion))
+            { return; }
             string[] split = applicationVersion.Split('.');
             bool state = true;
-            if (split.Length != 2) { state = false; }
+            if (split.Length != 2)
+            { state = false; }
             else
             {
-                if (split[1].Length < 1 || split[1].Length > 5) { state = false; }
-                if (split[0].Length < 1 || split[0].Length > 5) { state = false; }
+                if (split[1].Length < 1 || split[1].Length > 5)
+                { state = false; }
+                if (split[0].Length < 1 || split[0].Length > 5)
+                { state = false; }
             }
-            if (state == false)
+            if (!state)
             {
                 throw new FormatException("The format of the version in the meta data is wrong (" + applicationVersion + "). Should be in the format and a range from '0.0' to '99999.99999'");
             }
@@ -124,7 +128,8 @@ namespace NanoXLSX
         #region staticMethods
         /// <summary>
         /// Method to parse a common version (major.minor.revision.build) into the compatible format (major.minor). The minimum value is 0.0 and the maximum value is 99999.99999<br></br>
-        /// The minor, revision and build number are joined if possible. If the number is too long, the additional characters will be removed from the right side down to five characters (e.g. 785563 will be 78556)
+        /// The minor, revision and build number are joined if possible. If the number is too long, 
+        /// the additional characters will be removed from the right side down to five characters (e.g. 785563 will be 78556)
         /// </summary>
         /// <param name="major">Major number from 0 to 99999</param>
         /// <param name="minor">Minor number</param>
@@ -142,11 +147,11 @@ namespace NanoXLSX
             {
                 throw new FormatException("The major number may not be bigger than 99999. The passed value is " + major);
             }
-            CultureInfo culture = CultureInfo.InvariantCulture;
-            string leftPart = major.ToString("G", culture);
-            string rightPart = minor.ToString("G", culture) + build.ToString("G", culture) + revision.ToString("G", culture);
+            string leftPart = Utils.ToString(major);
+            string rightPart = Utils.ToString(minor) + Utils.ToString(build) + Utils.ToString(revision);
             rightPart = rightPart.TrimEnd('0');
-            if (rightPart == "") { rightPart = "0"; }
+            if (rightPart == "")
+            { rightPart = "0"; }
             else
             {
                 if (rightPart.Length > 5)

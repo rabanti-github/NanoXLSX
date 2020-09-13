@@ -5,12 +5,14 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using System;
+
 namespace NanoXLSX
 {
     /// <summary>
     /// Struct representing the cell address as column and row (zero based)
     /// </summary>
-    public struct Address
+    public struct Address : IEquatable<Address>
     {
         /// <summary>
         /// Column number (zero based)
@@ -84,7 +86,8 @@ namespace NanoXLSX
         /// <returns>True if equal</returns>
         public bool Equals(Address o)
         {
-            if (Row == o.Row && Column == o.Column) { return true; }
+            if (Row == o.Row && Column == o.Column)
+            { return true; }
 
             return false;
         }

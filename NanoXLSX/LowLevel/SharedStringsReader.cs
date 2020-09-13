@@ -57,7 +57,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Determined shared string value. Returns null in case of a invalid index</returns>
         public string GetString(int index)
         {
-            if (HasElements == false || index > SharedStrings.Count - 1)
+            if (!HasElements || index > SharedStrings.Count - 1)
             {
                 return null;
             }
@@ -83,19 +83,19 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
-        public void Read(MemoryStream stream)
+        public void Read(Stream stream)
         {
             try
             {
                 using (stream) // Close after processing
                 {
                     XmlDocument xr = new XmlDocument();
+                    xr.XmlResolver = null;
                     xr.Load(stream);
                     StringBuilder sb = new StringBuilder();
-                    XmlNodeList nodes = xr.DocumentElement.ChildNodes;
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                     {
-                        if (node.LocalName.ToLower() == "si")
+                        if (node.LocalName.Equals("si", StringComparison.InvariantCultureIgnoreCase))
                         {
                             sb.Clear();
                             GetTextToken(node, ref sb);
@@ -106,10 +106,8 @@ namespace NanoXLSX.LowLevel
             }
             catch (Exception ex)
             {
-                throw new IOException("XMLStreamException", "The XML entry could not be read from the input stream. Please see the inner exception:", ex);
+                throw new IOException("XMLStreamException", "The XML entry could not be read from the " + nameof(stream) +  ". Please see the inner exception:", ex);
             }
-
-
         }
 
         /// <summary>
@@ -119,11 +117,10 @@ namespace NanoXLSX.LowLevel
         /// <param name="sb">StringBuilder reference</param>
         private void GetTextToken(XmlNode node, ref StringBuilder sb)
         {
-            if (node.LocalName.ToLower() == "t" && string.IsNullOrEmpty(node.InnerText) == false)
+            if (node.LocalName.Equals("t", StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(node.InnerText))
             {
                 sb.Append(node.InnerText);
             }
-
             if (node.HasChildNodes)
             {
                 foreach (XmlNode childNode in node.ChildNodes)

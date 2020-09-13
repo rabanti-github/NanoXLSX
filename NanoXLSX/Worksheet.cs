@@ -23,45 +23,49 @@ namespace NanoXLSX
 
         #region constants
         /// <summary>
+        /// Threshold, using when floats are compared
+        /// </summary>
+        private const float FLOAT_TRESHOLD = 0.0001f;
+        /// <summary>
         /// Default column width as constant
         /// </summary>
-        public const float DEFAULT_COLUMN_WIDTH = 10f;
+        public static readonly float DEFAULT_COLUMN_WIDTH = 10f;
         /// <summary>
         /// Default row height as constant
         /// </summary>
-        public const float DEFAULT_ROW_HEIGHT = 15f;
+        public static readonly float DEFAULT_ROW_HEIGHT = 15f;
         /// <summary>
         /// Maximum column number (zero-based) as constant
         /// </summary>
-        public const int MAX_COLUMN_NUMBER = 16383;
+        public static readonly int MAX_COLUMN_NUMBER = 16383;
         /// <summary>
         /// Minimum column number (zero-based) as constant
         /// </summary>
-        public const int MIN_COLUMN_NUMBER = 0;
+        public static readonly int MIN_COLUMN_NUMBER = 0;
         /// <summary>
         /// Minimum column width as constant
         /// </summary>
-        public const float MIN_COLUMN_WIDTH = 0f;
+        public static readonly float MIN_COLUMN_WIDTH = 0f;
         /// <summary>
         /// Minimum row height as constant
         /// </summary>
-        public const float MIN_ROW_HEIGHT = 0f;
+        public static readonly float MIN_ROW_HEIGHT = 0f;
         /// <summary>
         /// Maximum column width as constant
         /// </summary>
-        public const float MAX_COLUMN_WIDTH = 255f;
+        public static readonly float MAX_COLUMN_WIDTH = 255f;
         /// <summary>
         /// Maximum row number (zero-based) as constant
         /// </summary>
-        public const int MAX_ROW_NUMBER = 1048575;
+        public static readonly int MAX_ROW_NUMBER = 1048575;
         /// <summary>
         /// Minimum row number (zero-based) as constant
         /// </summary>
-        public const int MIN_ROW_NUMBER = 0;
+        public static readonly int MIN_ROW_NUMBER = 0;
         /// <summary>
         /// Maximum row height as constant
         /// </summary>
-        public const float MAX_ROW_HEIGHT = 409.5f;
+        public static readonly float MAX_ROW_HEIGHT = 409.5f;
         #endregion
 
         #region enums
@@ -120,17 +124,17 @@ namespace NanoXLSX
         #region privateFields
         private Style activeStyle;
         private Range? autoFilterRange;
-        private Dictionary<string, Cell> cells;
-        private Dictionary<int, Column> columns;
+        private readonly Dictionary<string, Cell> cells;
+        private readonly Dictionary<int, Column> columns;
         private string sheetName;
         private int currentRowNumber;
         private int currentColumnNumber;
         private float defaultRowHeight;
         private float defaultColumnWidth;
-        private Dictionary<int, float> rowHeights;
-        private Dictionary<int, bool> hiddenRows;
-        private Dictionary<string, Range> mergedCells;
-        private List<SheetProtectionValue> sheetProtectionValues;
+        private readonly Dictionary<int, float> rowHeights;
+        private readonly Dictionary<int, bool> hiddenRows;
+        private readonly Dictionary<string, Range> mergedCells;
+        private readonly List<SheetProtectionValue> sheetProtectionValues;
         private bool useActiveStyle;
         private string sheetProtectionPassword;
 
@@ -178,7 +182,7 @@ namespace NanoXLSX
             {
                 if (value < MIN_COLUMN_WIDTH || value > MAX_COLUMN_WIDTH)
                 {
-                    throw new RangeException("OutOfRangeException", "The passed default column width is out of range (" + MIN_COLUMN_WIDTH + " to " + MAX_COLUMN_WIDTH + ")");
+                    throw new RangeException(RangeException.GENERAL, "The passed default column width is out of range (" + MIN_COLUMN_WIDTH + " to " + MAX_COLUMN_WIDTH + ")");
                 }
                 defaultColumnWidth = value;
             }
@@ -195,7 +199,7 @@ namespace NanoXLSX
             {
                 if (value < MIN_ROW_HEIGHT || value > MAX_ROW_HEIGHT)
                 {
-                    throw new RangeException("OutOfRangeException", "The passed default row height is out of range (" + MIN_ROW_HEIGHT + " to " + MAX_ROW_HEIGHT + ")");
+                    throw new RangeException(RangeException.GENERAL, "The passed default row height is out of range (" + MIN_ROW_HEIGHT + " to " + MAX_ROW_HEIGHT + ")");
                 }
                 defaultRowHeight = value;
             }
@@ -319,9 +323,11 @@ namespace NanoXLSX
         #region methods_AddNextCell
 
         /// <summary>
-        /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be casted to a String. A prepared object of the type Cell will not be casted but adjusted
+        /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be casted to a String. 
+        /// A prepared object of the type Cell will not be casted but adjusted
         /// </summary>
-        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <param name="value">Unspecified value to insert</param>
         /// <exception cref="RangeException">Throws a RangeException if the next cell is out of range (on row or column)</exception>
         public void AddNextCell(object value)
@@ -331,9 +337,11 @@ namespace NanoXLSX
 
 
         /// <summary>
-        /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be casted to a String. A prepared object of the type Cell will not be casted but adjusted
+        /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be casted to a String. 
+        /// A prepared object of the type Cell will not be casted but adjusted
         /// </summary>
-        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="style">Style object to apply on this cell</param>
         /// <exception cref="RangeException">Throws a RangeException if the next cell is out of range (on row or column)</exception>
@@ -350,7 +358,8 @@ namespace NanoXLSX
         /// <param name="cell">Cell object to insert</param>
         /// <param name="incremental">If true, the address value (row or column) will be incremented, otherwise not</param>
         /// <param name="style">If not null, the defined style will be applied to the cell, otherwise no style or the default style will be applied</param>
-        /// <remarks>Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="StyleException">Throws a StyleException if the default style was malformed or if the active style cannot be referenced</exception>
         private void AddNextCell(Cell cell, bool incremental, Style style)
         {
@@ -363,13 +372,16 @@ namespace NanoXLSX
             {
                 cell.SetStyle(style);
             }
-            else if (style == null && cell.DataType == Cell.CellType.DATE)
+            else if (cell.DataType == Cell.CellType.DATE)
             {
                 cell.SetStyle(BasicStyles.DateFormat);
             }
-            else if (style == null && cell.DataType == Cell.CellType.TIME)
+            else
             {
-                cell.SetStyle(BasicStyles.TimeFormat);
+                if (cell.DataType == Cell.CellType.TIME)
+                {
+                    cell.SetStyle(BasicStyles.TimeFormat);
+                }
             }
             string address = cell.CellAddress;
             if (cells.ContainsKey(address))
@@ -390,7 +402,10 @@ namespace NanoXLSX
                 {
                     currentRowNumber++;
                 }
-                // else = disabled
+                else
+                {
+                    // disabled / no-op
+                }
             }
             else
             {
@@ -404,7 +419,10 @@ namespace NanoXLSX
                     currentColumnNumber = cell.ColumnNumber;
                     currentRowNumber = cell.RowNumber + 1;
                 }
-                // else = Disabled
+                else
+                {
+                    // disabled / no-op
+                }
             }
         }
 
@@ -437,12 +455,14 @@ namespace NanoXLSX
         #region methods_AddCell
 
         /// <summary>
-        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be casted to a String. A prepared object of the type Cell will not be casted but adjusted
+        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be casted to a String. 
+        /// A prepared object of the type Cell will not be casted but adjusted
         /// </summary>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="columnAddress">Column number (zero based)</param>
         /// <param name="rowAddress">Row number (zero based)</param>
-        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cell</exception>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
         public void AddCell(object value, int columnAddress, int rowAddress)
@@ -451,13 +471,15 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be casted to a String. A prepared object of the type Cell will not be casted but adjusted
+        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be casted to a String. 
+        /// A prepared object of the type Cell will not be casted but adjusted
         /// </summary>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="columnAddress">Column number (zero based)</param>
         /// <param name="rowAddress">Row number (zero based)</param>
         /// <param name="style">Style to apply on the cell</param>
-        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the passed style is malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
         public void AddCell(object value, int columnAddress, int rowAddress, Style style)
@@ -467,34 +489,40 @@ namespace NanoXLSX
 
 
         /// <summary>
-        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be casted to a String. A prepared object of the type Cell will not be casted but adjusted
+        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be casted to a String. 
+        /// A prepared object of the type Cell will not be casted but adjusted
         /// </summary>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
-        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cell</exception>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCell(object value, string address)
         {
-            int column, row;
+            int column;
+            int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
             AddCell(value, column, row);
         }
 
         /// <summary>
-        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be casted to a String. A prepared object of the type Cell will not be casted but adjusted
+        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be casted to a String. 
+        /// A prepared object of the type Cell will not be casted but adjusted
         /// </summary>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <param name="style">Style to apply on the cell</param>
-        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, 
+        /// bool. All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the passed style is malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCell(object value, string address, Style style)
         {
-            int column, row;
+            int column;
+            int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
             AddCell(value, column, row, style);
         }
@@ -513,7 +541,8 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCellFormula(string formula, string address)
         {
-            int column, row;
+            int column;
+            int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
             Cell c = new Cell(formula, Cell.CellType.FORMULA, column, row, this);
             AddNextCell(c, false, null);
@@ -530,7 +559,8 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCellFormula(string formula, string address, Style style)
         {
-            int column, row;
+            int column;
+            int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
             Cell c = new Cell(formula, Cell.CellType.FORMULA, column, row, this);
             AddNextCell(c, false, style);
@@ -595,63 +625,71 @@ namespace NanoXLSX
         #region methods_AddCellRange
 
         /// <summary>
-        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be casted to a String. Prepared objects of the type Cell will not be casted but adjusted
+        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be casted to a String. 
+        /// Prepared objects of the type Cell will not be casted but adjusted
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
-        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cells</exception>
-        public void AddCellRange(List<object> values, Address startAddress, Address endAddress)
+        public void AddCellRange(IEnumerable<object> values, Address startAddress, Address endAddress)
         {
-            AddCellRangeInternal(values, startAddress, endAddress, null);
+            AddCellRangeInternal(values as List<object>, startAddress, endAddress, null);
         }
 
         /// <summary>
-        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be casted to a String. Prepared objects of the type Cell will not be casted but adjusted
+        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be casted to a String. 
+        /// Prepared objects of the type Cell will not be casted but adjusted
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
-        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the passed style is malformed</exception>
-        public void AddCellRange(List<object> values, Address startAddress, Address endAddress, Style style)
+        public void AddCellRange(IEnumerable<object> values, Address startAddress, Address endAddress, Style style)
         {
-            AddCellRangeInternal(values, startAddress, endAddress, style);
+            AddCellRangeInternal(values as List<object>, startAddress, endAddress, style);
         }
 
         /// <summary>
-        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be casted to a String. Prepared objects of the type Cell will not be casted but adjusted
+        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be casted to a String. 
+        /// Prepared objects of the type Cell will not be casted but adjusted
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="cellRange">Cell range as string in the format like A1:D1 or X10:X22</param>
-        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cells</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
-        public void AddCellRange(List<object> values, string cellRange)
+        public void AddCellRange(IEnumerable<object> values, string cellRange)
         {
             Range range = Cell.ResolveCellRange(cellRange);
-            AddCellRangeInternal(values, range.StartAddress, range.EndAddress, null);
+            AddCellRangeInternal(values as List<object>, range.StartAddress, range.EndAddress, null);
         }
 
         /// <summary>
-        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be casted to a String. Prepared objects of the type Cell will not be casted but adjusted
+        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be casted to a String. 
+        /// Prepared objects of the type Cell will not be casted but adjusted
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="cellRange">Cell range as string in the format like A1:D1 or X10:X22</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
-        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the passed style is malformed</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
-        public void AddCellRange(List<object> values, string cellRange, Style style)
+        public void AddCellRange(IEnumerable<object> values, string cellRange, Style style)
         {
             Range range = Cell.ResolveCellRange(cellRange);
-            AddCellRangeInternal(values, range.StartAddress, range.EndAddress, style);
+            AddCellRangeInternal(values as List<object>, range.StartAddress, range.EndAddress, style);
         }
 
         /// <summary>
@@ -662,17 +700,18 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
-        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws an RangeException if the number of cells differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws an StyleException if the active style cannot be referenced while creating the cells</exception>
         private void AddCellRangeInternal<T>(List<T> values, Address startAddress, Address endAddress, Style style)
         {
-            List<Address> addresses = Cell.GetCellRange(startAddress, endAddress);
+            List<Address> addresses = Cell.GetCellRange(startAddress, endAddress) as List<Address>;
             if (values.Count != addresses.Count)
             {
-                throw new RangeException("OutOfRangeException", "The number of passed values (" + values.Count + ") differs from the number of cells within the range (" + addresses.Count + ")");
+                throw new RangeException(RangeException.GENERAL, "The number of passed values (" + values.Count + ") differs from the number of cells within the range (" + addresses.Count + ")");
             }
-            List<Cell> list = Cell.ConvertArray(values);
+            List<Cell> list = Cell.ConvertArray(values) as List<Cell>;
             int len = values.Count;
             for (int i = 0; i < len; i++)
             {
@@ -707,7 +746,8 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public bool RemoveCell(string address)
         {
-            int row, column;
+            int row;
+            int column;
             Cell.ResolveCellCoordinate(address, out column, out row);
             return RemoveCell(column, row);
         }
@@ -721,9 +761,9 @@ namespace NanoXLSX
         /// <param name="typeOfProtection">Allowed action on the worksheet or cells</param>
         public void AddAllowedActionOnSheetProtection(SheetProtectionValue typeOfProtection)
         {
-            if (sheetProtectionValues.Contains(typeOfProtection) == false)
+            if (!sheetProtectionValues.Contains(typeOfProtection))
             {
-                if (typeOfProtection == SheetProtectionValue.selectLockedCells && sheetProtectionValues.Contains(SheetProtectionValue.selectUnlockedCells) == false)
+                if (typeOfProtection == SheetProtectionValue.selectLockedCells && !sheetProtectionValues.Contains(SheetProtectionValue.selectUnlockedCells))
                 {
                     sheetProtectionValues.Add(SheetProtectionValue.selectUnlockedCells);
                 }
@@ -779,7 +819,7 @@ namespace NanoXLSX
         /// <exception cref="WorksheetException">Trows a WorksheetException if the cell was not found on the cell table of this worksheet</exception>
         public Cell GetCell(Address address)
         {
-            if (cells.ContainsKey(address.GetAddress()) == false)
+            if (!cells.ContainsKey(address.GetAddress()))
             {
                 throw new WorksheetException("CellNotFoundException", "The cell with the address " + address.GetAddress() + " does not exist in this worksheet");
             }
@@ -962,11 +1002,9 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException if one of the passed cell addresses is out of range</exception>
         public string MergeCells(Address startAddress, Address endAddress)
         {
-
-            //List<Address> addresses = Cell.GetCellRange(startAddress, endAddress);
             string key = startAddress + ":" + endAddress;
             Range value = new Range(startAddress, endAddress);
-            if (mergedCells.ContainsKey(key) == false)
+            if (!mergedCells.ContainsKey(key))
             {
                 mergedCells.Add(key, value);
             }
@@ -978,19 +1016,22 @@ namespace NanoXLSX
         /// </summary>
         public void RecalculateAutoFilter()
         {
-            if (autoFilterRange == null) { return; }
+            if (autoFilterRange == null)
+            { return; }
             int start = autoFilterRange.Value.StartAddress.Column;
             int end = autoFilterRange.Value.EndAddress.Column;
             int endRow = 0;
             foreach (KeyValuePair<string, Cell> item in Cells)
             {
-                if (item.Value.ColumnNumber < start || item.Value.ColumnNumber > end) { continue; }
-                if (item.Value.RowNumber > endRow) { endRow = item.Value.RowNumber; }
+                if (item.Value.ColumnNumber < start || item.Value.ColumnNumber > end)
+                { continue; }
+                if (item.Value.RowNumber > endRow)
+                { endRow = item.Value.RowNumber; }
             }
             Column c;
             for (int i = start; i <= end; i++)
             {
-                if (columns.ContainsKey(i) == false)
+                if (!columns.ContainsKey(i))
                 {
                     c = new Column(i);
                     c.HasAutoFilter = true;
@@ -1015,7 +1056,12 @@ namespace NanoXLSX
             List<int> columnsToDelete = new List<int>();
             foreach (KeyValuePair<int, Column> col in columns)
             {
-                if (col.Value.HasAutoFilter == false && col.Value.IsHidden == false && col.Value.Width == DEFAULT_COLUMN_WIDTH)
+                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_TRESHOLD)
+                {
+                    columnsToDelete.Add(col.Key);
+                }
+
+                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_TRESHOLD)
                 {
                     columnsToDelete.Add(col.Key);
                 }
@@ -1072,13 +1118,13 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws a UnkownRangeException if the passed cell range was not merged earlier</exception>
         public void RemoveMergedCells(string range)
         {
-            range = range.ToUpper();
-            if (mergedCells.ContainsKey(range) == false)
+            range = Utils.ToUpper(range);
+            if (!mergedCells.ContainsKey(range))
             {
                 throw new RangeException("UnknownRangeException", "The cell range " + range + " was not found in the list of merged cell ranges");
             }
 
-            List<Address> addresses = Cell.GetCellRange(range);
+            List<Address> addresses = Cell.GetCellRange(range) as List<Address>;
             Cell cell;
             foreach (Address address in addresses)
             {
@@ -1156,7 +1202,8 @@ namespace NanoXLSX
         {
             if (columnNumber > MAX_COLUMN_NUMBER || columnNumber < MIN_COLUMN_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The column number (" + columnNumber + ") is out of range. Range is from " + MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
+                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " + 
+                    MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
             }
             if (columns.ContainsKey(columnNumber) && state)
             {
@@ -1167,6 +1214,10 @@ namespace NanoXLSX
                 Column c = new Column(columnNumber);
                 c.IsHidden = true;
                 columns.Add(columnNumber, c);
+            }
+            else
+            {
+                // no-op
             }
         }
 
@@ -1192,11 +1243,12 @@ namespace NanoXLSX
         {
             if (columnNumber > MAX_COLUMN_NUMBER || columnNumber < MIN_COLUMN_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The column number (" + columnNumber + ") is out of range. Range is from " + MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
+                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " + 
+                    MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
             }
             if (width < MIN_COLUMN_WIDTH || width > MAX_COLUMN_WIDTH)
             {
-                throw new RangeException("OutOfRangeException", "The column width (" + width + ") is out of range. Range is from " + MIN_COLUMN_WIDTH + " to " + MAX_COLUMN_WIDTH + " (chars).");
+                throw new RangeException(RangeException.GENERAL, "The column width (" + width + ") is out of range. Range is from " + MIN_COLUMN_WIDTH + " to " + MAX_COLUMN_WIDTH + " (chars).");
             }
             if (columns.ContainsKey(columnNumber))
             {
@@ -1230,7 +1282,8 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void SetCurrentCellAddress(string address)
         {
-            int row, column;
+            int row;
+            int column;
             Cell.ResolveCellCoordinate(address, out column, out row);
             SetCurrentCellAddress(column, row);
         }
@@ -1244,7 +1297,8 @@ namespace NanoXLSX
         {
             if (columnNumber > MAX_COLUMN_NUMBER || columnNumber < MIN_COLUMN_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The column number (" + columnNumber + ") is out of range. Range is from " + MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
+                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " + 
+                    MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
             }
             currentColumnNumber = columnNumber;
         }
@@ -1258,7 +1312,7 @@ namespace NanoXLSX
         {
             if (rowNumber > MAX_ROW_NUMBER || rowNumber < 0)
             {
-                throw new RangeException("OutOfRangeException", "The row number (" + rowNumber + ") is out of range. Range is from 0 to " + MAX_ROW_NUMBER + " (" + (MAX_ROW_NUMBER + 1) + " rows).");
+                throw new RangeException(RangeException.GENERAL, "The row number (" + rowNumber + ") is out of range. Range is from 0 to " + MAX_ROW_NUMBER + " (" + (MAX_ROW_NUMBER + 1) + " rows).");
             }
             currentRowNumber = rowNumber;
         }
@@ -1318,11 +1372,12 @@ namespace NanoXLSX
         {
             if (rowNumber > MAX_ROW_NUMBER || rowNumber < MIN_ROW_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The row number (" + rowNumber + ") is out of range. Range is from " + MIN_ROW_NUMBER + " to " + MAX_ROW_NUMBER + " (" + (MAX_ROW_NUMBER + 1) + " rows).");
+                throw new RangeException(RangeException.GENERAL, "The row number (" + rowNumber + ") is out of range. Range is from " + 
+                    MIN_ROW_NUMBER + " to " + MAX_ROW_NUMBER + " (" + (MAX_ROW_NUMBER + 1) + " rows).");
             }
             if (height < MIN_ROW_HEIGHT || height > MAX_ROW_HEIGHT)
             {
-                throw new RangeException("OutOfRangeException", "The row height (" + height + ") is out of range. Range is from " + MIN_ROW_HEIGHT + " to " + MAX_ROW_HEIGHT + " (equals 546px).");
+                throw new RangeException(RangeException.GENERAL, "The row height (" + height + ") is out of range. Range is from " + MIN_ROW_HEIGHT + " to " + MAX_ROW_HEIGHT + " (equals 546px).");
             }
             if (rowHeights.ContainsKey(rowNumber))
             {
@@ -1344,7 +1399,8 @@ namespace NanoXLSX
         {
             if (rowNumber > MAX_ROW_NUMBER || rowNumber < MIN_ROW_NUMBER)
             {
-                throw new RangeException("OutOfRangeException", "The row number (" + rowNumber + ") is out of range. Range is from " + MIN_ROW_NUMBER + " to " + MAX_ROW_NUMBER + " (" + (MAX_ROW_NUMBER + 1) + " rows).");
+                throw new RangeException(RangeException.GENERAL, "The row number (" + rowNumber + ") is out of range. Range is from " + 
+                    MIN_ROW_NUMBER + " to " + MAX_ROW_NUMBER + " (" + (MAX_ROW_NUMBER + 1) + " rows).");
             }
             if (hiddenRows.ContainsKey(rowNumber))
             {
@@ -1360,6 +1416,10 @@ namespace NanoXLSX
             else if (state)
             {
                 hiddenRows.Add(rowNumber, true);
+            }
+            else
+            {
+                // no-op
             }
         }
 
@@ -1413,12 +1473,22 @@ namespace NanoXLSX
         /// <returns>Name of the sanitized worksheet</returns>
         public static string SanitizeWorksheetName(string input, Workbook workbook)
         {
-            if (input == null) { input = "Sheet1"; }
+            if (input == null)
+            {
+                input = "Sheet1";
+            }
             int len = input.Length;
-            if (len > 31) { len = 31; }
+            if (len > 31)
+            {
+                len = 31;
+            }
             else if (len == 0)
             {
                 input = "Sheet1";
+            }
+            else
+            {
+                // no-op
             }
             StringBuilder sb = new StringBuilder(31);
             char c;
@@ -1435,7 +1505,8 @@ namespace NanoXLSX
             int number = 1;
             while (true)
             {
-                if (WorksheetExists(name, workbook) == false) { break; } // OK
+                if (!WorksheetExists(name, workbook))
+                { break; } // OK
                 if (originalName.Length + (number / 10) >= 31)
                 {
                     name = originalName.Substring(0, 30 - number / 10) + number;

@@ -60,8 +60,8 @@ namespace NanoXLSX.LowLevel
                 {
 
                     XmlDocument xr = new XmlDocument();
+                    xr.XmlResolver = null;
                     xr.Load(stream);
-                    XmlNodeList nodes = xr.DocumentElement.ChildNodes;
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                     {
                         GetWorkbookInformation(node);
@@ -80,7 +80,7 @@ namespace NanoXLSX.LowLevel
         /// <param name="node">Root node to check</param>
         private void GetWorkbookInformation(XmlNode node)
         {
-            if (node.LocalName.ToLower() == "sheet")
+            if (node.LocalName.Equals("sheet", StringComparison.InvariantCultureIgnoreCase))
             {
                 try
                 {

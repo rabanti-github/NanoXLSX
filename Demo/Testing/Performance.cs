@@ -8,9 +8,6 @@
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Testing;
 
 namespace Demo.Testing
@@ -20,6 +17,12 @@ namespace Demo.Testing
     /// </summary>
     public class Performance
     {
+
+        private Performance()
+        {
+            // Do not instantiate
+        }
+
         /// <summary>
         /// Method to perform a stress test on NanoXLSX with a high amount of random data
         /// </summary>

@@ -312,7 +312,7 @@ namespace NanoXLSX
         /// Removes the passed style from the style sheet
         /// </summary>
         /// <param name="style">Style to remove</param>
-        /// <exception cref="StyleException">Throws an StyleException if the style was not found in the style collection (could not be referenced)</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style collection (could not be referenced)</exception>
         public void RemoveStyle(Style style)
         {
             RemoveStyle(style, false);
@@ -322,7 +322,7 @@ namespace NanoXLSX
         /// Removes the defined style from the style sheet of the workbook
         /// </summary>
         /// <param name="styleName">Name of the style to be removed</param>
-        /// <exception cref="StyleException">Throws an StyleException if the style was not found in the style collection (could not be referenced)</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style collection (could not be referenced)</exception>
         public void RemoveStyle(string styleName)
         {
             RemoveStyle(styleName, false);
@@ -333,7 +333,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="style">Style to remove</param>
         /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>
-        /// <exception cref="StyleException">Throws an StyleException if the style was not found in the style collection (could not be referenced)</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style collection (could not be referenced)</exception>
         public void RemoveStyle(Style style, bool onlyIfUnused)
         {
             if (style == null)
@@ -374,7 +374,7 @@ namespace NanoXLSX
                         break;
                     }
                 }
-                if (styleInUse == false)
+                if (!styleInUse)
                 {
                     styleManager.RemoveStyle(styleName);
                 }
@@ -404,7 +404,7 @@ namespace NanoXLSX
                     break;
                 }
             }
-            if (exists == false)
+            if (!exists)
             {
                 throw new WorksheetException("UnknownWorksheetException", "The worksheet with the name '" + name + "' does not exist.");
             }
@@ -437,7 +437,7 @@ namespace NanoXLSX
         /// <summary>
         /// Method to resolve all merged cells in all worksheets. Only the value of the very first cell of the locked cells range will be visible. The other values are still present (set to EMPTY) but will not be stored in the worksheet.
         /// </summary>
-        /// <exception cref="StyleException">Throws an StyleException if one of the styles of the merged cells cannot be referenced or is null</exception>
+        /// <exception cref="StyleException">Throws a StyleException if one of the styles of the merged cells cannot be referenced or is null</exception>
         public void ResolveMergedCells()
         {
             Style mergeStyle = BasicStyles.MergeCellStyle;
@@ -449,10 +449,10 @@ namespace NanoXLSX
                 foreach (KeyValuePair<string, Range> range in sheet.MergedCells)
                 {
                     pos = 0;
-                    addresses = Cell.GetCellRange(range.Value.StartAddress, range.Value.EndAddress);
+                    addresses = Cell.GetCellRange(range.Value.StartAddress, range.Value.EndAddress) as List<Address>;
                     foreach (Address address in addresses)
                     {
-                        if (sheet.Cells.ContainsKey(address.ToString()) == false)
+                        if (!sheet.Cells.ContainsKey(address.ToString()))
                         {
                             cell = new Cell();
                             cell.DataType = Cell.CellType.EMPTY;
@@ -481,9 +481,9 @@ namespace NanoXLSX
         /// Saves the workbook
         /// </summary>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the start or end address of a handled cell range was out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        /// <exception cref="StyleException">Throws an StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
+        /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         public void Save()
         {
             XlsxWriter l = new XlsxWriter(this);
@@ -509,9 +509,9 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="filename">filename of the saved workbook</param>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the start or end address of a handled cell range was out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        /// <exception cref="StyleException">Throws an StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
+        /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         public void SaveAs(string filename)
         {
             string backup = filename;
@@ -524,7 +524,7 @@ namespace NanoXLSX
         /// <summary>
         /// Saves the workbook with the defined name asynchronous.
         /// </summary>
-        /// <param name="fileName">fileName of the saved workbook</param>
+        /// <param name="fileName">filename of the saved workbook</param>
         /// <returns>Task object (void)</returns>
         /// <exception cref="Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
@@ -588,7 +588,7 @@ namespace NanoXLSX
                     break;
                 }
             }
-            if (exists == false)
+            if (!exists)
             {
                 throw new WorksheetException("MissingReferenceException", "The worksheet with the name '" + name + "' does not exist.");
             }
@@ -606,7 +606,7 @@ namespace NanoXLSX
         {
             if (worksheetIndex < 0 || worksheetIndex > worksheets.Count - 1)
             {
-                throw new RangeException("OutOfRangeException", "The worksheet index " + worksheetIndex + " is out of range");
+                throw new RangeException(RangeException.GENERAL, "The worksheet index " + worksheetIndex + " is out of range");
             }
             selectedWorksheet = worksheetIndex;
         }
@@ -623,7 +623,7 @@ namespace NanoXLSX
             lockWindowsIfProtected = protectWindows;
             lockStructureIfProtected = protectStructure;
             workbookProtectionPassword = password;
-            if (protectWindows == false && protectStructure == false)
+            if (!protectWindows && !protectStructure)
             {
                 UseWorkbookProtection = false;
             }
@@ -651,7 +651,7 @@ namespace NanoXLSX
                     break;
                 }
             }
-            if (check == false)
+            if (!check)
             {
                 throw new WorksheetException("UnknownWorksheetException", "The passed worksheet object is not in the worksheet collection.");
             }

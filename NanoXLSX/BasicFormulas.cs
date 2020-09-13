@@ -50,7 +50,7 @@ namespace NanoXLSX
         /// <param name="decimals">Number of decimals (digits)</param>
         /// <returns>Prepared Cell object, ready to be added to a worksheet</returns>
         public static Cell Ceil(Worksheet target, Address address, int decimals)
-        { return GetBasicFormula(target, new Range(address, address), "ROUNDUP", decimals.ToString()); }
+        { return GetBasicFormula(target, new Range(address, address), "ROUNDUP", decimals.ToString(CultureInfo.InvariantCulture)); }
 
         /// <summary>
         /// Returns a cell with a floor formula
@@ -69,7 +69,7 @@ namespace NanoXLSX
         /// <param name="decimals">Number of decimals (digits)</param>
         /// <returns>Prepared Cell object, ready to be added to a worksheet</returns>
         public static Cell Floor(Worksheet target, Address address, int decimals)
-        { return GetBasicFormula(target, new Range(address, address), "ROUNDDOWN", decimals.ToString()); }
+        { return GetBasicFormula(target, new Range(address, address), "ROUNDDOWN", decimals.ToString(CultureInfo.InvariantCulture)); }
 
         /// <summary>
         /// Returns a cell with a max formula
@@ -139,7 +139,7 @@ namespace NanoXLSX
         /// <param name="decimals">Number of decimals (digits)</param>
         /// <returns>Prepared Cell object, ready to be added to a worksheet</returns>
         public static Cell Round(Worksheet target, Address address, int decimals)
-        { return GetBasicFormula(target, new Range(address, address), "ROUND", decimals.ToString()); }
+        { return GetBasicFormula(target, new Range(address, address), "ROUND", decimals.ToString(CultureInfo.InvariantCulture)); }
 
         /// <summary>
         /// Returns a cell with a sum formula
@@ -223,20 +223,33 @@ namespace NanoXLSX
         private static Cell GetVLookup(Worksheet queryTarget, Address address, object number, Worksheet rangeTarget, Range range, int columnIndex, bool exactMatch, bool numericLookup)
         {
             CultureInfo culture = CultureInfo.InvariantCulture;
-            string arg1, arg2, arg3, arg4;
+            string arg1;
+            string arg2;
+            string arg3;
+            string arg4;
             if (numericLookup)
             {
                 Type t = number.GetType();
-                if (t == typeof(byte)) { arg1 = ((byte)number).ToString("G", culture); }
-                else if (t == typeof(sbyte)) { arg1 = ((sbyte)number).ToString("G", culture); }
-                else if (t == typeof(decimal)) { arg1 = ((decimal)number).ToString("G", culture); }
-                else if (t == typeof(double)) { arg1 = ((double)number).ToString("G", culture); }
-                else if (t == typeof(float)) { arg1 = ((float)number).ToString("G", culture); }
-                else if (t == typeof(int)) { arg1 = ((int)number).ToString("G", culture); }
-                else if (t == typeof(long)) { arg1 = ((long)number).ToString("G", culture); }
-                else if (t == typeof(ulong)) { arg1 = ((ulong)number).ToString("G", culture); }
-                else if (t == typeof(short)) { arg1 = ((short)number).ToString("G", culture); }
-                else if (t == typeof(ushort)) { arg1 = ((ushort)number).ToString("G", culture); }
+                if (t == typeof(byte))
+                { arg1 = ((byte)number).ToString("G", culture); }
+                else if (t == typeof(sbyte))
+                { arg1 = ((sbyte)number).ToString("G", culture); }
+                else if (t == typeof(decimal))
+                { arg1 = ((decimal)number).ToString("G", culture); }
+                else if (t == typeof(double))
+                { arg1 = ((double)number).ToString("G", culture); }
+                else if (t == typeof(float))
+                { arg1 = ((float)number).ToString("G", culture); }
+                else if (t == typeof(int))
+                { arg1 = ((int)number).ToString("G", culture); }
+                else if (t == typeof(long))
+                { arg1 = ((long)number).ToString("G", culture); }
+                else if (t == typeof(ulong))
+                { arg1 = ((ulong)number).ToString("G", culture); }
+                else if (t == typeof(short))
+                { arg1 = ((short)number).ToString("G", culture); }
+                else if (t == typeof(ushort))
+                { arg1 = ((ushort)number).ToString("G", culture); }
                 else
                 {
                     throw new FormatException("InvalidLookupType", "The lookup variable can only be a cell address or a numeric value. The value '" + number + "' is invalid.");
@@ -244,13 +257,16 @@ namespace NanoXLSX
             }
             else
             {
-                if (queryTarget != null) { arg1 = queryTarget.SheetName + "!" + address; }
+                if (queryTarget != null)
+                { arg1 = queryTarget.SheetName + "!" + address; }
                 else { arg1 = address.ToString(); }
             }
-            if (rangeTarget != null) { arg2 = rangeTarget.SheetName + "!" + range; }
+            if (rangeTarget != null)
+            { arg2 = rangeTarget.SheetName + "!" + range; }
             else { arg2 = range.ToString(); }
             arg3 = columnIndex.ToString("G", culture);
-            if (exactMatch) { arg4 = "TRUE"; }
+            if (exactMatch)
+            { arg4 = "TRUE"; }
             else { arg4 = "FALSE"; }
             return new Cell("VLOOKUP(" + arg1 + "," + arg2 + "," + arg3 + "," + arg4 + ")", Cell.CellType.FORMULA);
         }
@@ -266,12 +282,17 @@ namespace NanoXLSX
         /// <returns>Prepared Cell object, ready to be added to a worksheet</returns>
         private static Cell GetBasicFormula(Worksheet target, Range range, string functionName, string postArg)
         {
-            string arg1, arg2, prefix;
-            if (postArg == null) { arg2 = ""; }
+            string arg1;
+            string arg2;
+            string prefix;
+            if (postArg == null)
+            { arg2 = ""; }
             else { arg2 = "," + postArg; }
-            if (target != null) { prefix = target.SheetName + "!"; }
+            if (target != null)
+            { prefix = target.SheetName + "!"; }
             else { prefix = ""; }
-            if (range.StartAddress.Equals(range.EndAddress)) { arg1 = prefix + range.StartAddress; }
+            if (range.StartAddress.Equals(range.EndAddress))
+            { arg1 = prefix + range.StartAddress; }
             else { arg1 = prefix + range; }
             return new Cell(functionName + "(" + arg1 + arg2 + ")", Cell.CellType.FORMULA);
         }

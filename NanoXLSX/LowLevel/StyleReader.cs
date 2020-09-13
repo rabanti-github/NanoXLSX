@@ -6,7 +6,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using NanoXLSX.Exceptions;
@@ -55,12 +54,11 @@ namespace NanoXLSX.LowLevel
                 using (stream) // Close after processing
                 {
                     XmlDocument xr = new XmlDocument();
+                    xr.XmlResolver = null;
                     xr.Load(stream);
-                    XmlNodeList nodes = xr.DocumentElement.ChildNodes;
-
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                     {
-                        if (node.LocalName.ToLower() == "numfmts") // Handles custom number formats
+                        if (node.LocalName.Equals("numfmts", StringComparison.InvariantCultureIgnoreCase)) // Handles custom number formats
                         {
                             GetNumberFormats(node);
                         }
@@ -68,7 +66,7 @@ namespace NanoXLSX.LowLevel
                     }
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes) // Redo for composition after all style parts are gathered; standard number formats
                     {
-                        if (node.LocalName.ToLower() == "cellxfs")
+                        if (node.LocalName.Equals("cellxfs", StringComparison.InvariantCultureIgnoreCase))
                         {
                             GetCellXfs(node);
                         }
@@ -85,13 +83,14 @@ namespace NanoXLSX.LowLevel
         /// Determines the number formats in a XML node of the style document
         /// </summary>
         /// <param name="node">Number formats root node</param>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         private void GetNumberFormats(XmlNode node)
         {
             try
             {
                 foreach (XmlNode childNode in node.ChildNodes)
                 {
-                    if (childNode.LocalName.ToLower() == "numfmt")
+                    if (childNode.LocalName.Equals("numfmt", StringComparison.InvariantCultureIgnoreCase))
                     {
                         NumberFormat numberFormat = new NumberFormat();
                         int id = int.Parse(ReaderUtils.GetAttribute("numFmtId", childNode)); // Default will (justified) throw an exception
@@ -114,8 +113,7 @@ namespace NanoXLSX.LowLevel
                             numberFormat.CustomFormatID = id;
                             numberFormat.Number = NumberFormat.FormatNumber.custom;
                         }
-                        numberFormat.InternalID = StyleReaderContainer.GetNextNumberFormatId();
-                        numberFormat.InternalID = id; // StyleReaderContainer.GetNextNumberFormatId();
+                        numberFormat.InternalID = id;
                         numberFormat.CustomFormatCode = code;
                         StyleReaderContainer.AddStyleComponent(numberFormat);
                     }
@@ -137,7 +135,7 @@ namespace NanoXLSX.LowLevel
             {
                 foreach (XmlNode childNode in node.ChildNodes)
                 {
-                    if (childNode.LocalName.ToLower() == "xf")
+                    if (childNode.LocalName.Equals("xf", StringComparison.InvariantCultureIgnoreCase))
                     {
                         Style style = new Style();
                         int id = int.Parse(ReaderUtils.GetAttribute("numFmtId", childNode));
@@ -145,7 +143,9 @@ namespace NanoXLSX.LowLevel
                         if (format == null)
                         {
                             NumberFormat.FormatNumber formatNumber;
-                            NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'                                          // Invalid values should not occur at all (malformed Excel files); Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 
+                            NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'
+                            // Invalid values should not occur at all (malformed Excel files). 
+                            //Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 
                             format = new NumberFormat();
                             format.Number = formatNumber;
                             format.InternalID = StyleReaderContainer.GetNextNumberFormatId();

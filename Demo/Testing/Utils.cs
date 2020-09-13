@@ -6,17 +6,14 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Testing
 {
     /// <summary>
     /// Utils class for demos and tests
     /// </summary>
-    public class Utils
+    public static class Utils
     {
 
         private static Random rnd;

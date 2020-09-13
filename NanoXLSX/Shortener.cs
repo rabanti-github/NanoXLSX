@@ -11,7 +11,8 @@ using NanoXLSX.Styles;
 namespace NanoXLSX
 {
     /// <summary>
-    /// Class to provide access to the current worksheet with a shortened syntax. Note: The WS object can be null if the workbook was created without a worksheet. The object will be available as soon as the current worksheet is defined
+    /// Class to provide access to the current worksheet with a shortened syntax. Note: The WS object can be null if the workbook was created without a worksheet. 
+    /// The object will be available as soon as the current worksheet is defined
     /// </summary>
     public class Shortener
     {
@@ -30,46 +31,46 @@ namespace NanoXLSX
         /// Sets a value into the current cell and moves the cursor to the next cell (column or row depending on the defined cell direction)
         /// </summary>
         /// <exception cref="WorksheetException">Throws a WorksheetException if no worksheet was defined</exception>
-        /// <param name="value">Value to set</param>
-        public void Value(object value)
+        /// <param name="cellValue">Value to set</param>
+        public void Value(object cellValue)
         {
             NullCheck();
-            currentWorksheet.AddNextCell(value);
+            currentWorksheet.AddNextCell(cellValue);
         }
 
         /// <summary>
         /// Sets a value with style into the current cell and moves the cursor to the next cell (column or row depending on the defined cell direction)
         /// </summary>
         /// <exception cref="WorksheetException">Throws a WorksheetException if no worksheet was defined</exception>
-        /// <param name="value">Value to set</param>
+        /// <param name="cellValue">Value to set</param>
         /// <param name="style">Style to apply</param>
-        public void Value(object value, Style style)
+        public void Value(object cellValue, Style style)
         {
             NullCheck();
-            currentWorksheet.AddNextCell(value, style);
+            currentWorksheet.AddNextCell(cellValue, style);
         }
 
         /// <summary>
         /// Sets a formula into the current cell and moves the cursor to the next cell (column or row depending on the defined cell direction)
         /// </summary>
         /// <exception cref="WorksheetException">Throws a WorksheetException if no worksheet was defined</exception>
-        /// <param name="formula">Formula to set</param>
-        public void Formula(string formula)
+        /// <param name="cellFormula">Formula to set</param>
+        public void Formula(string cellFormula)
         {
             NullCheck();
-            currentWorksheet.AddNextCellFormula(formula);
+            currentWorksheet.AddNextCellFormula(cellFormula);
         }
 
         /// <summary>
         /// Sets a formula with style into the current cell and moves the cursor to the next cell (column or row depending on the defined cell direction)
         /// </summary>
         /// <exception cref="WorksheetException">Throws a WorksheetException if no worksheet was defined</exception>
-        /// <param name="formula">Formula to set</param>
+        /// <param name="cellFormula">Formula to set</param>
         /// <param name="style">Style to apply</param>
-        public void Formula(string formula, Style style)
+        public void Formula(string cellFormula, Style style)
         {
             NullCheck();
-            currentWorksheet.AddNextCellFormula(formula, style);
+            currentWorksheet.AddNextCellFormula(cellFormula, style);
         }
 
         /// <summary>

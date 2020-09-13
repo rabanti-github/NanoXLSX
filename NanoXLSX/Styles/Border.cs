@@ -5,8 +5,6 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System.Text;
-
 namespace NanoXLSX.Styles
 {
     /// <summary>
@@ -132,7 +130,7 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            int p = 271;
+            const int p = 271;
             int r = 1;
             r *= p + (int)this.BottomStyle;
             r *= p + (int)this.DiagonalStyle;
@@ -196,18 +194,30 @@ namespace NanoXLSX.Styles
         public bool IsEmpty()
         {
             bool state = true;
-            if (BottomColor != string.Empty) { state = false; }
-            if (TopColor != string.Empty) { state = false; }
-            if (LeftColor != string.Empty) { state = false; }
-            if (RightColor != string.Empty) { state = false; }
-            if (DiagonalColor != string.Empty) { state = false; }
-            if (LeftStyle != StyleValue.none) { state = false; }
-            if (RightStyle != StyleValue.none) { state = false; }
-            if (TopStyle != StyleValue.none) { state = false; }
-            if (BottomStyle != StyleValue.none) { state = false; }
-            if (DiagonalStyle != StyleValue.none) { state = false; }
-            if (DiagonalDown != false) { state = false; }
-            if (DiagonalUp != false) { state = false; }
+            if (BottomColor != string.Empty)
+            { state = false; }
+            if (TopColor != string.Empty)
+            { state = false; }
+            if (LeftColor != string.Empty)
+            { state = false; }
+            if (RightColor != string.Empty)
+            { state = false; }
+            if (DiagonalColor != string.Empty)
+            { state = false; }
+            if (LeftStyle != StyleValue.none)
+            { state = false; }
+            if (RightStyle != StyleValue.none)
+            { state = false; }
+            if (TopStyle != StyleValue.none)
+            { state = false; }
+            if (BottomStyle != StyleValue.none)
+            { state = false; }
+            if (DiagonalStyle != StyleValue.none)
+            { state = false; }
+            if (DiagonalDown)
+            { state = false; }
+            if (DiagonalUp)
+            { state = false; }
             return state;
         }
         #endregion

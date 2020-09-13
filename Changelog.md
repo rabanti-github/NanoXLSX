@@ -9,6 +9,7 @@ Release Date: **30.08.2020**
 - Added new data type TIME, represented by TimeSpan objects in reader and writer
 - Changed namespace from 'Styles' to 'NanoXLSX.Styles'
 - Added time (TimeSpan) examples to the demos
+- Added a check to ensure dates are not set beyond 9999-12-31 (limitation of OAdate)
 - Updated documentation
 - Fixed some code formatting issues
 

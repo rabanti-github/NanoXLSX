@@ -5,6 +5,8 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
+
 namespace NanoXLSX.Styles
 {
     /// <summary>
@@ -48,7 +50,19 @@ namespace NanoXLSX.Styles
         #endregion
 
         #region staticFields
-        private static Style bold, italic, boldItalic, underline, doubleUnderline, strike, dateFormat, timeFormat, roundFormat, borderFrame, borderFrameHeader, dottedFill_0_125, mergeCellStyle;
+        private static Style bold;
+        private static Style italic;
+        private static Style boldItalic;
+        private static Style underline;
+        private static Style doubleUnderline;
+        private static Style strike;
+        private static Style dateFormat;
+        private static Style timeFormat;
+        private static Style roundFormat;
+        private static Style borderFrame;
+        private static Style borderFrameHeader;
+        private static Style dottedFill_0_125;
+        private static Style mergeCellStyle;
         #endregion
 
         #region staticProperties
@@ -217,7 +231,8 @@ namespace NanoXLSX.Styles
                     s = mergeCellStyle;
                     break;
                 default:
-                    break;
+                    throw new StyleException(StyleException.GENERAL, "The enum value '" + value + "' is not supported yet");
+                    
             }
             return s.CopyStyle(); // Copy makes basic styles immutable
         }
@@ -230,7 +245,7 @@ namespace NanoXLSX.Styles
         public static Style ColorizedText(string rgb)
         {
             Style s = new Style();
-            s.CurrentFont.ColorValue = "FF" + rgb.ToUpper();
+            s.CurrentFont.ColorValue = Utils.ToUpper("FF" + rgb);
             return s;
         }
 
@@ -242,7 +257,7 @@ namespace NanoXLSX.Styles
         public static Style ColorizedBackground(string rgb)
         {
             Style s = new Style();
-            s.CurrentFill.SetColor("FF" + rgb.ToUpper(), Fill.FillType.fillColor);
+            s.CurrentFill.SetColor(Utils.ToUpper("FF" + rgb), Fill.FillType.fillColor);
 
             return s;
         }
@@ -255,7 +270,8 @@ namespace NanoXLSX.Styles
         /// <param name="isBold">If true, the font will be bold (optional; default false)</param>
         /// <param name="isItalic">If true, the font will be italic (optional; default false)</param>
         /// <returns>Style with font definition</returns>
-        /// <remarks>The font name as well as the availability of bold and italic on the font cannot be validated by NanoXLSX. The generated file may be corrupt or rendered with a fall-back font in case of an error</remarks>
+        /// <remarks>The font name as well as the availability of bold and italic on the font cannot be validated by NanoXLSX. 
+        /// The generated file may be corrupt or rendered with a fall-back font in case of an error</remarks>
         public static Style Font(string fontName, int fontSize = 11, bool isBold = false, bool isItalic = false)
         {
             Style s = new Style();

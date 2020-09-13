@@ -191,7 +191,7 @@ namespace NanoXLSX.Styles
             CurrentFont = newStyle.CurrentFont;
             CurrentNumberFormat = newStyle.CurrentNumberFormat;
 
-            if (styleNameDefined == false)
+            if (!styleNameDefined)
             {
                 name = this.GetHashCode().ToString();
             }

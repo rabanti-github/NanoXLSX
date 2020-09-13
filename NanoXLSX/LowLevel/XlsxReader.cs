@@ -72,9 +72,8 @@ namespace NanoXLSX.LowLevel
             {
                 using (memoryStream = new MemoryStream())
                 {
-
                     ZipArchive zf;
-                    if (inputStream == null || string.IsNullOrEmpty(filePath) == false)
+                    if (inputStream == null && !string.IsNullOrEmpty(filePath))
                     {
                         using (FileStream fs = new FileStream(filePath, FileMode.Open))
                         {
@@ -114,7 +113,8 @@ namespace NanoXLSX.LowLevel
                     workbook.Read(ms);
 
                     int worksheetIndex = 1;
-                    string name, nameTemplate;
+                    string name;
+                    string nameTemplate;
                     WorksheetReader wr;
                     nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
                     name = "xl/worksheets/" + nameTemplate;
@@ -128,7 +128,6 @@ namespace NanoXLSX.LowLevel
                         nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
                         name = "xl/worksheets/" + nameTemplate;
                     }
-
                 }
             }
             catch (Exception ex)

@@ -5,8 +5,6 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System.Text;
-
 namespace NanoXLSX.Styles
 {
     /// <summary>
@@ -18,7 +16,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default Color (foreground or background) as constant
         /// </summary>
-        public const string DEFAULTCOLOR = "FF000000";
+        public static readonly string DEFAULTCOLOR = "FF000000";
         #endregion
 
         #region enums
@@ -152,7 +150,7 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            int p = 263;
+            const int p = 263;
             int r = 1;
             r *= p + this.IndexedColor;
             r *= p + (int)this.PatternFill;

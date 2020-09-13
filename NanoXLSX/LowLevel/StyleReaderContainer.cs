@@ -47,6 +47,8 @@ namespace NanoXLSX.LowLevel
         /// Adds a style component and determines the appropriate type of it automatically
         /// </summary>
         /// <param name="component">Style component to add to the collections</param>
+        /// <exception cref="StyleException">Throws a StyleException if an unknown style component type was passed</exception>
+
         public void AddStyleComponent(AbstractStyle component)
         {
             Type t = component.GetType();
@@ -76,7 +78,7 @@ namespace NanoXLSX.LowLevel
             }
             else
             {
-                throw new StyleException("StyleException", "The style definition of the type '" + t.ToString() + "' is unknown or not implemented yet");
+                throw new StyleException(StyleException.GENERAL, "The style definition of the type '" + t.ToString() + "' is unknown or not implemented yet");
             }
         }
 
@@ -92,7 +94,7 @@ namespace NanoXLSX.LowLevel
             int number;
             if (int.TryParse(index, out number))
             {
-                return GetComponnet(typeof(Style), number, returnNullOnFail) as Style;
+                return GetComponent(typeof(Style), number, returnNullOnFail) as Style;
             }
             else if (returnNullOnFail)
             {
@@ -100,7 +102,7 @@ namespace NanoXLSX.LowLevel
             }
             else
             {
-                throw new StyleException("StyleException", "The style definition could not be retrieved, because of the invalid style index '" + index + "'");
+                throw new StyleException(StyleException.GENERAL, "The style definition could not be retrieved, because of the invalid style index '" + index + "'");
             }
         }
 
@@ -115,7 +117,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Style object or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
         public Style GetStyle(int index, out bool isDateStyle, out bool isTimeStyle, bool returnNullOnFail = false)
         {
-            Style style = GetComponnet(typeof(Style), index, returnNullOnFail) as Style;
+            Style style = GetComponent(typeof(Style), index, returnNullOnFail) as Style;
             if (style != null)
             {
                 isDateStyle = NumberFormat.IsDateFormat(style.CurrentNumberFormat.Number);
@@ -139,7 +141,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Style component or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
         public CellXf GetCellXF(int index, bool returnNullOnFail = false)
         {
-            return GetComponnet(typeof(CellXf), index, returnNullOnFail) as CellXf;
+            return GetComponent(typeof(CellXf), index, returnNullOnFail) as CellXf;
         }
 
         /// <summary>
@@ -151,7 +153,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Style component or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
         public NumberFormat GetNumberFormat(int index, bool returnNullOnFail = false)
         {
-            return GetComponnet(typeof(NumberFormat), index, returnNullOnFail) as NumberFormat;
+            return GetComponent(typeof(NumberFormat), index, returnNullOnFail) as NumberFormat;
         }
 
         /// <summary>
@@ -164,7 +166,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Style component or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
         public Border GetBorder(int index, bool returnNullOnFail = false)
         {
-            return GetComponnet(typeof(Border), index, returnNullOnFail) as Border;
+            return GetComponent(typeof(Border), index, returnNullOnFail) as Border;
         }
 
         /// <summary>
@@ -177,7 +179,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Style component or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
         public Fill GetFill(int index, bool returnNullOnFail = false)
         {
-            return GetComponnet(typeof(Fill), index, returnNullOnFail) as Fill;
+            return GetComponent(typeof(Fill), index, returnNullOnFail) as Fill;
         }
 
         /// <summary>
@@ -190,7 +192,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Style component or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
         public Font GetFont(int index, bool returnNullOnFail = false)
         {
-            return GetComponnet(typeof(Font), index, returnNullOnFail) as Font;
+            return GetComponent(typeof(Font), index, returnNullOnFail) as Font;
         }
 
         /// <summary>
@@ -259,7 +261,7 @@ namespace NanoXLSX.LowLevel
         /// <param name="returnNullOnFail">If true, null will be returned if the component could not be retrieved. Otherwise an exception will be thrown</param>
         /// <exception cref="StyleException">Throws a StyleException if the component was not found and the parameter returnNullOnFail was set to false</exception>
         /// <returns>Style component or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
-        private AbstractStyle GetComponnet(Type type, int index, bool returnNullOnFail)
+        private AbstractStyle GetComponent(Type type, int index, bool returnNullOnFail)
         {
             try
             {
@@ -273,7 +275,7 @@ namespace NanoXLSX.LowLevel
                     NumberFormat numberFormat = numberFormats.Find(x => x.InternalID == index);
                     if (numberFormat == null)
                     {
-                        throw new StyleException("StyleException", "The number format with the numFmtId: " + index + " was not found");
+                        throw new StyleException(StyleException.GENERAL, "The number format with the numFmtId: " + index + " was not found");
                     }
                     return numberFormat;
                 }
@@ -295,7 +297,7 @@ namespace NanoXLSX.LowLevel
                 }
                 else
                 {
-                    throw new StyleException("StyleException", "The style definition of the type '" + type.ToString() + "' is unknown or not implemented yet");
+                    throw new StyleException(StyleException.GENERAL, "The style definition of the type '" + type.ToString() + "' is unknown or not implemented yet");
                 }
             }
             catch (Exception ex)
@@ -306,7 +308,7 @@ namespace NanoXLSX.LowLevel
                 }
                 else
                 {
-                    throw new StyleException("StyleException", "The style definition could not be retrieved. Please see inner exception:", ex);
+                    throw new StyleException(StyleException.GENERAL, "The style definition could not be retrieved. Please see inner exception:", ex);
                 }
             }
         }

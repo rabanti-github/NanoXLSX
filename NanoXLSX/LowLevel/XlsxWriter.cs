@@ -36,17 +36,6 @@ namespace NanoXLSX.LowLevel
         private static DocumentPath SHARED_STRINGS = new DocumentPath("sharedStrings.xml", "xl/");
         #endregion
 
-        #region constants
-        /// <summary>
-        /// Minimum valid OAdate value (1900-01-01)
-        /// </summary>
-        public const double MIN_OADATE_VALUE = 0f;
-        /// <summary>
-        /// Maximum valid OAdate value (9999-12-31)
-        /// </summary>
-        public const double MAX_OADATE_VALUE = 2958465.9999f;
-        #endregion
-
         #region privateFields
         private CultureInfo culture;
         private Workbook workbook;
@@ -70,7 +59,7 @@ namespace NanoXLSX.LowLevel
                 {
                     interceptedDocuments = new Dictionary<string, XmlDocument>();
                 }
-                else if (interceptDocuments == false)
+                else if (!interceptDocuments)
                 {
                     interceptedDocuments = null;
                 }
@@ -190,7 +179,7 @@ namespace NanoXLSX.LowLevel
             sb.Append(xfsStings).Append("</cellXfs>");
             if (workbook.WorkbookMetadata != null)
             {
-                if (string.IsNullOrEmpty(mruColorString) == false && workbook.WorkbookMetadata.UseColorMRU)
+                if (!string.IsNullOrEmpty(mruColorString) && workbook.WorkbookMetadata.UseColorMRU)
                 {
                     sb.Append("<colors>");
                     sb.Append(mruColorString);
@@ -210,7 +199,7 @@ namespace NanoXLSX.LowLevel
         {
             if (workbook.Worksheets.Count == 0)
             {
-                throw new RangeException("OutOfRangeException", "The workbook can not be created because no worksheet was defined.");
+                throw new RangeException(RangeException.GENERAL, "The workbook can not be created because no worksheet was defined.");
             }
             StringBuilder sb = new StringBuilder();
             sb.Append("<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">");
@@ -231,7 +220,7 @@ namespace NanoXLSX.LowLevel
                 {
                     sb.Append(" lockStructure=\"1\"");
                 }
-                if (string.IsNullOrEmpty(workbook.WorkbookProtectionPassword) == false)
+                if (!string.IsNullOrEmpty(workbook.WorkbookProtectionPassword))
                 {
                     sb.Append("workbookPassword=\"");
                     sb.Append(GeneratePasswordHash(workbook.WorkbookProtectionPassword));
@@ -281,7 +270,7 @@ namespace NanoXLSX.LowLevel
             sb.Append("<sheetFormatPr x14ac:dyDescent=\"0.25\" defaultRowHeight=\"").Append(worksheet.DefaultRowHeight.ToString("G", culture)).Append("\" baseColWidth=\"").Append(worksheet.DefaultColumnWidth.ToString("G", culture)).Append("\"/>");
 
             string colWidths = CreateColsString(worksheet);
-            if (string.IsNullOrEmpty(colWidths) == false)
+            if (!string.IsNullOrEmpty(colWidths))
             {
                 sb.Append("<cols>");
                 sb.Append(colWidths);
@@ -403,7 +392,7 @@ namespace NanoXLSX.LowLevel
                     }
                     p.Flush();
                     p.Close();
-                    if (leaveOpen == false)
+                    if (!leaveOpen)
                     {
                         stream.Close();
                     }
@@ -438,14 +427,13 @@ namespace NanoXLSX.LowLevel
         /// <param name="value">Value of the XML element</param>
         /// <param name="tagName">Tag name of the XML element</param>
         /// <param name="nameSpace">Optional XML name space. Can be empty or null</param>
-        /// <returns>Returns false if no tag was appended, because the value or tag name was null or empty</returns>
-        private bool AppendXmlTag(StringBuilder sb, string value, string tagName, string nameSpace)
+        private void AppendXmlTag(StringBuilder sb, string value, string tagName, string nameSpace)
         {
-            if (string.IsNullOrEmpty(value)) { return false; }
-            if (sb == null || string.IsNullOrEmpty(tagName)) { return false; }
+            if (string.IsNullOrEmpty(value)) { return; }
+            if (sb == null || string.IsNullOrEmpty(tagName)) { return; }
             bool hasNoNs = string.IsNullOrEmpty(nameSpace);
             sb.Append('<');
-            if (hasNoNs == false)
+            if (!hasNoNs)
             {
                 sb.Append(nameSpace);
                 sb.Append(':');
@@ -453,14 +441,13 @@ namespace NanoXLSX.LowLevel
             sb.Append(tagName).Append(">");
             sb.Append(EscapeXmlChars(value));
             sb.Append("</");
-            if (hasNoNs == false)
+            if (!hasNoNs)
             {
                 sb.Append(nameSpace);
                 sb.Append(':');
             }
             sb.Append(tagName);
             sb.Append('>');
-            return true;
         }
 
         /// <summary>
@@ -482,7 +469,7 @@ namespace NanoXLSX.LowLevel
                 }
                 using (MemoryStream ms = new MemoryStream()) // Write workbook.xml
                 {
-                    if (ms.CanWrite == false) { return; }
+                    if (!ms.CanWrite) { return; }
                     using (XmlWriter writer = XmlWriter.Create(ms))
                     {
                         //doc.WriteTo(writer);
@@ -538,7 +525,7 @@ namespace NanoXLSX.LowLevel
                 StringBuilder sb = new StringBuilder();
                 foreach (KeyValuePair<int, Column> column in worksheet.Columns)
                 {
-                    if (column.Value.Width == worksheet.DefaultColumnWidth && column.Value.IsHidden == false) { continue; }
+                    if (column.Value.Width == worksheet.DefaultColumnWidth && !column.Value.IsHidden) { continue; }
                     if (worksheet.Columns.ContainsKey(column.Key))
                     {
                         if (worksheet.Columns[column.Key].IsHidden)
@@ -694,7 +681,7 @@ namespace NanoXLSX.LowLevel
                 {
                     typeAttribute = "d";
                     DateTime date = (DateTime)item.Value;
-                    value = GetOADateTimeString(date, culture);
+                    value = Utils.GetOADateTimeString(date, culture);
                 }
                 // Time parsing
                 else if (item.DataType == Cell.CellType.TIME)
@@ -702,7 +689,7 @@ namespace NanoXLSX.LowLevel
                     typeAttribute = "d";
                     // TODO: 'd' is probably an outdated attribute (to be checked for dates and times)
                     TimeSpan time = (TimeSpan)item.Value;
-                    value = GetOATimeString(time, culture);
+                    value = Utils.GetOATimeString(time, culture);
                 }
                 else
                 {
@@ -722,7 +709,7 @@ namespace NanoXLSX.LowLevel
                         {
                             typeAttribute = "s";
                             value = item.Value.ToString();
-                            if (sharedStrings.ContainsKey(value) == false)
+                            if (!sharedStrings.ContainsKey(value))
                             {
                                 sharedStrings.Add(value, sharedStrings.Count.ToString("G", culture));
                             }
@@ -762,7 +749,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Formatted string with protection statement of the worksheet</returns>
         private string CreateSheetProtectionString(Worksheet sheet)
         {
-            if (sheet.UseSheetProtection == false)
+            if (!sheet.UseSheetProtection)
             {
                 return string.Empty;
             }
@@ -772,24 +759,24 @@ namespace NanoXLSX.LowLevel
                 actualLockingValues.Add(Worksheet.SheetProtectionValue.selectLockedCells, 1);
                 actualLockingValues.Add(Worksheet.SheetProtectionValue.selectUnlockedCells, 1);
             }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.objects) == false)
+            if (!sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.objects))
             {
                 actualLockingValues.Add(Worksheet.SheetProtectionValue.objects, 1);
             }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.scenarios) == false)
+            if (!sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.scenarios))
             {
                 actualLockingValues.Add(Worksheet.SheetProtectionValue.scenarios, 1);
             }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectLockedCells) == false)
+            if (!sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectLockedCells))
             {
-                if (actualLockingValues.ContainsKey(Worksheet.SheetProtectionValue.selectLockedCells) == false)
+                if (!actualLockingValues.ContainsKey(Worksheet.SheetProtectionValue.selectLockedCells))
                 {
                     actualLockingValues.Add(Worksheet.SheetProtectionValue.selectLockedCells, 1);
                 }
             }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectUnlockedCells) == false || sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectLockedCells) == false)
+            if (!sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectUnlockedCells) || !sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectLockedCells))
             {
-                if (actualLockingValues.ContainsKey(Worksheet.SheetProtectionValue.selectUnlockedCells) == false)
+                if (!actualLockingValues.ContainsKey(Worksheet.SheetProtectionValue.selectUnlockedCells))
                 {
                     actualLockingValues.Add(Worksheet.SheetProtectionValue.selectUnlockedCells, 1);
                 }
@@ -817,7 +804,7 @@ namespace NanoXLSX.LowLevel
                 }
                 catch { }
             }
-            if (string.IsNullOrEmpty(sheet.SheetProtectionPassword) == false)
+            if (!string.IsNullOrEmpty(sheet.SheetProtectionPassword))
             {
                 string hash = GeneratePasswordHash(sheet.SheetProtectionPassword);
                 sb.Append(" password=\"").Append(hash).Append("\"");
@@ -836,8 +823,8 @@ namespace NanoXLSX.LowLevel
             StringBuilder sb = new StringBuilder();
             foreach (Border item in borderStyles)
             {
-                if (item.DiagonalDown && item.DiagonalUp == false) { sb.Append("<border diagonalDown=\"1\">"); }
-                else if (item.DiagonalDown == false && item.DiagonalUp) { sb.Append("<border diagonalUp=\"1\">"); }
+                if (!item.DiagonalDown && item.DiagonalUp) { sb.Append("<border diagonalDown=\"1\">"); }
+                else if (!item.DiagonalDown && item.DiagonalUp) { sb.Append("<border diagonalUp=\"1\">"); }
                 else if (item.DiagonalDown && item.DiagonalUp) { sb.Append("<border diagonalDown=\"1\" diagonalUp=\"1\">"); }
                 else { sb.Append("<border>"); }
 
@@ -938,7 +925,7 @@ namespace NanoXLSX.LowLevel
                     else if (item.Scheme == Font.SchemeValue.minor)
                     { sb.Append("<scheme val=\"minor\"/>"); }
                 }
-                if (string.IsNullOrEmpty(item.Charset) == false)
+                if (!string.IsNullOrEmpty(item.Charset))
                 {
                     sb.Append("<charset val=\"").Append(item.Charset).Append("\"/>");
                 }
@@ -970,7 +957,7 @@ namespace NanoXLSX.LowLevel
                 {
                     sb.Append(">");
                     sb.Append("<fgColor rgb=\"").Append(item.ForegroundColor).Append("\"/>");
-                    if (string.IsNullOrEmpty(item.BackgroundColor) == false)
+                    if (!string.IsNullOrEmpty(item.BackgroundColor))
                     {
                         sb.Append("<bgColor rgb=\"").Append(item.BackgroundColor).Append("\"/>");
                     }
@@ -1069,7 +1056,7 @@ namespace NanoXLSX.LowLevel
                     {
                         protectionString = "<protection locked=\"1\" hidden=\"1\"/>";
                     }
-                    else if (item.CurrentCellXf.Hidden && item.CurrentCellXf.Locked == false)
+                    else if (!item.CurrentCellXf.Hidden && item.CurrentCellXf.Locked)
                     {
                         protectionString = "<protection hidden=\"1\" locked=\"0\"/>";
                     }
@@ -1093,7 +1080,7 @@ namespace NanoXLSX.LowLevel
                 sb.Append("\" borderId=\"").Append(item.CurrentBorder.InternalID.Value.ToString("G", culture));
                 sb.Append("\" fillId=\"").Append(item.CurrentFill.InternalID.Value.ToString("G", culture));
                 sb.Append("\" fontId=\"").Append(item.CurrentFont.InternalID.Value.ToString("G", culture));
-                if (item.CurrentFont.IsDefaultFont == false)
+                if (!item.CurrentFont.IsDefaultFont)
                 {
                     sb.Append("\" applyFont=\"1");
                 }
@@ -1101,7 +1088,7 @@ namespace NanoXLSX.LowLevel
                 {
                     sb.Append("\" applyFill=\"1");
                 }
-                if (item.CurrentBorder.IsEmpty() == false)
+                if (!item.CurrentBorder.IsEmpty())
                 {
                     sb.Append("\" applyBorder=\"1");
                 }
@@ -1150,22 +1137,22 @@ namespace NanoXLSX.LowLevel
             {
                 if (string.IsNullOrEmpty(item.ColorValue)) { continue; }
                 if (item.ColorValue == Fill.DEFAULTCOLOR) { continue; }
-                if (tempColors.Contains(item.ColorValue) == false) { tempColors.Add(item.ColorValue); }
+                if (!tempColors.Contains(item.ColorValue)) { tempColors.Add(item.ColorValue); }
             }
             foreach (Fill item in fills)
             {
-                if (string.IsNullOrEmpty(item.BackgroundColor) == false)
+                if (!string.IsNullOrEmpty(item.BackgroundColor))
                 {
                     if (item.BackgroundColor != Fill.DEFAULTCOLOR)
                     {
-                        if (tempColors.Contains(item.BackgroundColor) == false) { tempColors.Add(item.BackgroundColor); }
+                        if (!tempColors.Contains(item.BackgroundColor)) { tempColors.Add(item.BackgroundColor); }
                     }
                 }
-                if (string.IsNullOrEmpty(item.ForegroundColor) == false)
+                if (!string.IsNullOrEmpty(item.ForegroundColor))
                 {
                     if (item.ForegroundColor != Fill.DEFAULTCOLOR)
                     {
-                        if (tempColors.Contains(item.ForegroundColor) == false) { tempColors.Add(item.ForegroundColor); }
+                        if (!tempColors.Contains(item.ForegroundColor)) { tempColors.Add(item.ForegroundColor); }
                     }
                 }
             }
@@ -1330,52 +1317,7 @@ namespace NanoXLSX.LowLevel
             return passwordHash.ToString("X");
         }
 
-        /// <summary>
-        /// Method to convert a date or date and time into the internal Excel time format (OAdate)
-        /// </summary>
-        /// <param name="date">Date to process</param>
-        /// <param name="culture">CultureInfo for proper formatting of the decimal point</param>
-        /// <returns>Date or date and time as number</returns>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
-        /// <remarks>OAdate format starts at January 1st 1900 (actually 00.01.1900) and ends at December 31 9999. Values beyond these dates cannot be handled by Excel under normal circumstances and will throw a FormatException</remarks>
-        public static string GetOADateTimeString(DateTime date, CultureInfo culture)
-        {
-            try
-            {
-                double d = date.ToOADate();
-                if (d < MIN_OADATE_VALUE || d > MAX_OADATE_VALUE)
-                {
-                    throw new FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 or after 9999-12-31 are not allowed.");
-                }
-                return d.ToString("G", culture);
-            }
-            catch (Exception e)
-            {
-                throw new FormatException("ConversionException", "The date could not be transformed into Excel format (OADate).", e);
-            }
-        }
 
-        /// <summary>
-        /// Method to convert a time into the internal Excel time format (OAdate without days)
-        /// </summary>
-        /// <param name="time">Time to process. The date component of the timespan is neglected</param>
-        /// <param name="culture">CultureInfo for proper formatting of the decimal point</param>
-        /// <returns>Time as number</returns>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed timespan is invalid</exception>
-        /// <remarks>The time is represented by a OAdate without the date component. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
-        public static string GetOATimeString(TimeSpan time, CultureInfo culture)
-        {
-            try
-            {
-                int seconds = time.Seconds + time.Minutes * 60 + time.Hours * 3600;
-                double d = (double)seconds / 86400d;
-                return d.ToString("G", culture);
-            }
-            catch (Exception e)
-            {
-                throw new FormatException("ConversionException", "The time could not be transformed into Excel format (OADate).", e);
-            }
-        }
 
         #endregion
 
