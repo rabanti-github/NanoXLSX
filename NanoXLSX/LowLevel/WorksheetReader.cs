@@ -359,7 +359,7 @@ namespace NanoXLSX.LowLevel
             {
                 return GetDateTimeValue(value, address, Cell.CellType.TIME);
             }
-            else if (type == null) // try numeric if not parsed as date or time, before numeric
+            else if (type == null || type == "n") // try numeric if not parsed as date or time, before numeric
             {
                 return GetNumericValue(value, address);
             }
