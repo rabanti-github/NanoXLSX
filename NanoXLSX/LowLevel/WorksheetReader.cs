@@ -156,7 +156,7 @@ namespace NanoXLSX.LowLevel
                         break;
                     }
                 }
-                if (match == false) { return false; }
+                if (!match) { return false; }
             }
             return true;
         }

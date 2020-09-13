@@ -374,7 +374,7 @@ namespace NanoXLSX
                         break;
                     }
                 }
-                if (styleInUse == false)
+                if (!styleInUse)
                 {
                     styleManager.RemoveStyle(styleName);
                 }
@@ -404,7 +404,7 @@ namespace NanoXLSX
                     break;
                 }
             }
-            if (exists == false)
+            if (!exists)
             {
                 throw new WorksheetException("UnknownWorksheetException", "The worksheet with the name '" + name + "' does not exist.");
             }
@@ -452,7 +452,7 @@ namespace NanoXLSX
                     addresses = Cell.GetCellRange(range.Value.StartAddress, range.Value.EndAddress);
                     foreach (Address address in addresses)
                     {
-                        if (sheet.Cells.ContainsKey(address.ToString()) == false)
+                        if (!sheet.Cells.ContainsKey(address.ToString()))
                         {
                             cell = new Cell();
                             cell.DataType = Cell.CellType.EMPTY;
@@ -588,7 +588,7 @@ namespace NanoXLSX
                     break;
                 }
             }
-            if (exists == false)
+            if (!exists)
             {
                 throw new WorksheetException("MissingReferenceException", "The worksheet with the name '" + name + "' does not exist.");
             }
@@ -623,7 +623,7 @@ namespace NanoXLSX
             lockWindowsIfProtected = protectWindows;
             lockStructureIfProtected = protectStructure;
             workbookProtectionPassword = password;
-            if (protectWindows == false && protectStructure == false)
+            if (!protectWindows && !protectStructure)
             {
                 UseWorkbookProtection = false;
             }
@@ -651,7 +651,7 @@ namespace NanoXLSX
                     break;
                 }
             }
-            if (check == false)
+            if (!check)
             {
                 throw new WorksheetException("UnknownWorksheetException", "The passed worksheet object is not in the worksheet collection.");
             }

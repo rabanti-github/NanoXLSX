@@ -20,7 +20,10 @@ namespace NanoXLSX
     /// </summary>
     public class Worksheet
     {
-
+        /// <summary>
+        /// Threshold, using when floats are compared
+        /// </summary>
+        private const float FLOAT_TRESHOLD = 0.0001f;
         #region constants
         /// <summary>
         /// Default column width as constant
@@ -721,9 +724,9 @@ namespace NanoXLSX
         /// <param name="typeOfProtection">Allowed action on the worksheet or cells</param>
         public void AddAllowedActionOnSheetProtection(SheetProtectionValue typeOfProtection)
         {
-            if (sheetProtectionValues.Contains(typeOfProtection) == false)
+            if (!sheetProtectionValues.Contains(typeOfProtection))
             {
-                if (typeOfProtection == SheetProtectionValue.selectLockedCells && sheetProtectionValues.Contains(SheetProtectionValue.selectUnlockedCells) == false)
+                if (typeOfProtection == SheetProtectionValue.selectLockedCells && !sheetProtectionValues.Contains(SheetProtectionValue.selectUnlockedCells))
                 {
                     sheetProtectionValues.Add(SheetProtectionValue.selectUnlockedCells);
                 }
@@ -779,7 +782,7 @@ namespace NanoXLSX
         /// <exception cref="WorksheetException">Trows a WorksheetException if the cell was not found on the cell table of this worksheet</exception>
         public Cell GetCell(Address address)
         {
-            if (cells.ContainsKey(address.GetAddress()) == false)
+            if (!cells.ContainsKey(address.GetAddress()))
             {
                 throw new WorksheetException("CellNotFoundException", "The cell with the address " + address.GetAddress() + " does not exist in this worksheet");
             }
@@ -966,7 +969,7 @@ namespace NanoXLSX
             //List<Address> addresses = Cell.GetCellRange(startAddress, endAddress);
             string key = startAddress + ":" + endAddress;
             Range value = new Range(startAddress, endAddress);
-            if (mergedCells.ContainsKey(key) == false)
+            if (!mergedCells.ContainsKey(key))
             {
                 mergedCells.Add(key, value);
             }
@@ -990,7 +993,7 @@ namespace NanoXLSX
             Column c;
             for (int i = start; i <= end; i++)
             {
-                if (columns.ContainsKey(i) == false)
+                if (!columns.ContainsKey(i))
                 {
                     c = new Column(i);
                     c.HasAutoFilter = true;
@@ -1015,7 +1018,7 @@ namespace NanoXLSX
             List<int> columnsToDelete = new List<int>();
             foreach (KeyValuePair<int, Column> col in columns)
             {
-                if (col.Value.HasAutoFilter == false && col.Value.IsHidden == false && col.Value.Width == DEFAULT_COLUMN_WIDTH)
+                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_TRESHOLD)
                 {
                     columnsToDelete.Add(col.Key);
                 }
@@ -1073,7 +1076,7 @@ namespace NanoXLSX
         public void RemoveMergedCells(string range)
         {
             range = range.ToUpper();
-            if (mergedCells.ContainsKey(range) == false)
+            if (!mergedCells.ContainsKey(range))
             {
                 throw new RangeException("UnknownRangeException", "The cell range " + range + " was not found in the list of merged cell ranges");
             }
@@ -1435,7 +1438,7 @@ namespace NanoXLSX
             int number = 1;
             while (true)
             {
-                if (WorksheetExists(name, workbook) == false) { break; } // OK
+                if (!WorksheetExists(name, workbook)) { break; } // OK
                 if (originalName.Length + (number / 10) >= 31)
                 {
                     name = originalName.Substring(0, 30 - number / 10) + number;

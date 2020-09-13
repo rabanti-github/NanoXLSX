@@ -74,7 +74,7 @@ namespace NanoXLSX.LowLevel
                 {
 
                     ZipArchive zf;
-                    if (inputStream == null || string.IsNullOrEmpty(filePath) == false)
+                    if (inputStream == null || !string.IsNullOrEmpty(filePath))
                     {
                         using (FileStream fs = new FileStream(filePath, FileMode.Open))
                         {

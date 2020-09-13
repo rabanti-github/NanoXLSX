@@ -1,5 +1,14 @@
 # Change Log
 
+## v1.4.1
+
+---
+Release Date: **13.09.2020**
+
+- Fixed a bug regarding numeric cells in the worksheet reader. Bug fix provided by John Lenz
+- Minor code maintenance
+- Updated readme and documentation
+
 ## v1.4.0
 
 ---
@@ -9,6 +18,7 @@ Release Date: **30.08.2020**
 - Added new data type TIME, represented by TimeSpan objects in reader and writer
 - Changed namespace from 'Styles' to 'NanoXLSX.Styles'
 - Added time (TimeSpan) examples to the demos
+- Added a check to ensure dates are not set beyond 9999-12-31 (limitation of OAdate)
 - Updated documentation
 - Fixed some code formatting issues
 

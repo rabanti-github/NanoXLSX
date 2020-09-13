@@ -14,7 +14,16 @@ Project website: [https://picoxlsx.rabanti.ch](https://picoxlsx.rabanti.ch)
 
 See the **[Change Log](https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md)** for recent updates.
 
-**Note: The reader functionality is currently limited to basic workbook data, cell values and formulas in worksheets. Reading styles and other data is only partially supported yet. Styles in loaded files are only considering number formats (to determine date and time values), as well as custom formats. The scope of reader functionality may change with future versions.**
+## Reader Support
+
+Currently, only basic reader functionality is available:
+
+* Reading and casting of cell values into the appropriate data types
+* Reading of several worksheets in on workbook with names
+* Limited processing of styles (when reading) at the moment
+* No support of other objects than spreadsheet data at the moment
+
+**Note: Styles in loaded files are only considering number formats (to determine date and time values), as well as custom formats. The scope of reader functionality may change with future versions.**
 
 ## Requirements
 

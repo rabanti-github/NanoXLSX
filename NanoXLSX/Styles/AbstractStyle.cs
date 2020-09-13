@@ -56,18 +56,18 @@ namespace NanoXLSX.Styles
                     ignore = false;
                     foreach (AppendAttribute attribute in attributes)
                     {
-                        if (attribute.Ignore == true || attribute.NestedProperty == true)
+                        if (attribute.Ignore || attribute.NestedProperty)
                         {
                             ignore = true;
                             break;
                         }
                     }
-                    if (ignore == true) { continue; } // skip property
+                    if (ignore) { continue; } // skip property
                 }
 
                 sourceInfo = source.GetType().GetProperty(info.Name);
                 referenceInfo = reference.GetType().GetProperty(info.Name);
-                if (sourceInfo.GetValue(source).Equals(referenceInfo.GetValue(reference)) == false)
+                if (!sourceInfo.GetValue(source).Equals(referenceInfo.GetValue(reference)))
                 {
                     info.SetValue(this, sourceInfo.GetValue(source));
                 }
@@ -81,8 +81,8 @@ namespace NanoXLSX.Styles
         /// <returns>-1 if the other object is bigger. 0 if both objects are equal. 1 if the other object is smaller.</returns>
         public int CompareTo(AbstractStyle other)
         {
-            if (InternalID.HasValue == false) { return -1; }
-            else if (other.InternalID.HasValue == false) { return 1; }
+            if (!InternalID.HasValue) { return -1; }
+            else if (!other.InternalID.HasValue) { return 1; }
             else { return InternalID.Value.CompareTo(other.InternalID.Value); }
         }
 

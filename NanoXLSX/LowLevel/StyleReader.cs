@@ -6,7 +6,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using NanoXLSX.Exceptions;
@@ -56,9 +55,7 @@ namespace NanoXLSX.LowLevel
                 {
                     XmlDocument xr = new XmlDocument();
                     xr.Load(stream);
-                    XmlNodeList nodes = xr.DocumentElement.ChildNodes;
-
-                    foreach (XmlNode node in xr.DocumentElement.ChildNodes)
+                     foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                     {
                         if (node.LocalName.ToLower() == "numfmts") // Handles custom number formats
                         {
@@ -115,7 +112,7 @@ namespace NanoXLSX.LowLevel
                             numberFormat.Number = NumberFormat.FormatNumber.custom;
                         }
                         numberFormat.InternalID = StyleReaderContainer.GetNextNumberFormatId();
-                        numberFormat.InternalID = id; // StyleReaderContainer.GetNextNumberFormatId();
+                        numberFormat.InternalID = id;
                         numberFormat.CustomFormatCode = code;
                         StyleReaderContainer.AddStyleComponent(numberFormat);
                     }
@@ -145,7 +142,8 @@ namespace NanoXLSX.LowLevel
                         if (format == null)
                         {
                             NumberFormat.FormatNumber formatNumber;
-                            NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'                                          // Invalid values should not occur at all (malformed Excel files); Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 
+                            NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'                                          
+                            // Invalid values should not occur at all (malformed Excel files); Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 
                             format = new NumberFormat();
                             format.Number = formatNumber;
                             format.InternalID = StyleReaderContainer.GetNextNumberFormatId();

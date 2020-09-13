@@ -57,7 +57,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Determined shared string value. Returns null in case of a invalid index</returns>
         public string GetString(int index)
         {
-            if (HasElements == false || index > SharedStrings.Count - 1)
+            if (!HasElements || index > SharedStrings.Count - 1)
             {
                 return null;
             }
@@ -119,7 +119,7 @@ namespace NanoXLSX.LowLevel
         /// <param name="sb">StringBuilder reference</param>
         private void GetTextToken(XmlNode node, ref StringBuilder sb)
         {
-            if (node.LocalName.ToLower() == "t" && string.IsNullOrEmpty(node.InnerText) == false)
+            if (node.LocalName.ToLower() == "t" && !string.IsNullOrEmpty(node.InnerText))
             {
                 sb.Append(node.InnerText);
             }

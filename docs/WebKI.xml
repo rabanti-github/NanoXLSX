@@ -62,8 +62,8 @@
   <HelpKINode Title="AppendAttribute class">
     <HelpKINode Title="AppendAttribute Class" Url="html/ea75b367-da85-91d6-38c8-b1f523a5025a.htm" />
     <HelpKINode Title="constructor" Url="html/b26e9619-7ee5-faad-f730-79a6e095b424.htm" />
-    <HelpKINode Title="methods" Url="html/1bd58858-f26f-b78e-a0dd-3b571eff9bf1.htm" />
     <HelpKINode Title="methods" Url="html/66d64aaf-5765-20dd-485c-813e94551bcc.htm" />
+    <HelpKINode Title="methods" Url="html/1bd58858-f26f-b78e-a0dd-3b571eff9bf1.htm" />
     <HelpKINode Title="properties" Url="html/0d50a191-149f-ed6c-ff81-5ca4dd870123.htm" />
     <HelpKINode Title="properties" Url="html/f0558657-c1ce-057e-44c2-f047dfa118b9.htm" />
   </HelpKINode>
@@ -124,8 +124,8 @@
   </HelpKINode>
   <HelpKINode Title="boldItalic enumeration member" Url="html/49013955-f400-723f-a314-5dfd363548b6.htm" />
   <HelpKINode Title="BoldItalic property" Url="html/c48184a8-7f85-c7dc-3115-83e2537f2882.htm" />
-  <HelpKINode Title="BOOL enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="Bool enumeration member" Url="html/e5539731-091d-204e-2ad7-e580023a502e.htm" />
+  <HelpKINode Title="BOOL enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="Border class">
     <HelpKINode Title="Border Class" Url="html/db3c5542-7154-6a5b-c6bb-74380091a741.htm" />
     <HelpKINode Title="constructor" Url="html/a94abe8a-1b35-2613-6dd5-6e1b424a5d67.htm" />
@@ -322,8 +322,8 @@
   <HelpKINode Title="DATE enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="dateFormat enumeration member" Url="html/49013955-f400-723f-a314-5dfd363548b6.htm" />
   <HelpKINode Title="DateFormat property" Url="html/ba2d51b2-fea3-5d6d-79d6-a48e1124c8bc.htm" />
-  <HelpKINode Title="DEFAULT enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="Default enumeration member" Url="html/07c2d3c9-4304-155a-86b1-7001fa87c3ea.htm" />
+  <HelpKINode Title="DEFAULT enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="DEFAULTCOLOR field" Url="html/60d97dcf-d66b-e235-1bc2-f64948dc54a8.htm" />
   <HelpKINode Title="DefaultColumnWidth property" Url="html/5443dc31-73fa-ec0c-4d1d-76999e3aea1c.htm" />
   <HelpKINode Title="DEFAULTFONT field" Url="html/91a7da98-e223-bbcd-757e-db6e4bd82fd3.htm" />
@@ -509,8 +509,8 @@
   </HelpKINode>
   <HelpKINode Title="GetCellXfStyleNumber method" Url="html/3bd331f6-cdd1-852e-71fb-5d80400eb9ec.htm" />
   <HelpKINode Title="GetColumn method" Url="html/0910f8bb-9122-f77c-2cc1-ca2bd83b4608.htm" />
+  <HelpKINode Title="GetComponent method" Url="html/93734eaa-cf5f-a047-8537-ab25f619ae68.htm" />
   <HelpKINode Title="GetComponentByHash method" Url="html/6031275e-310a-b5d5-47c5-f530ff998903.htm" />
-  <HelpKINode Title="GetComponnet method" Url="html/af2aa104-8765-3021-3e76-2866b1e2b07a.htm" />
   <HelpKINode Title="GetCurrentColumnNumber method" Url="html/f2d9d0d4-99fa-b9f6-7169-6963277402e6.htm" />
   <HelpKINode Title="GetCurrentRowNumber method" Url="html/5b252777-7a33-4255-aecf-1b36b4255b44.htm" />
   <HelpKINode Title="GetDateTimeValue method" Url="html/ca2aaa45-eb34-9152-680c-1810e1128423.htm" />
@@ -917,8 +917,8 @@
   <HelpKINode Title="SetRowHiddenState method" Url="html/60623cc8-4bca-bdc1-4398-56b74652bb79.htm" />
   <HelpKINode Title="SetSelectedCells method" Url="html/d5d2533b-2454-8850-81aa-70cc88bc3a65.htm" />
   <HelpKINode Title="SetSelectedWorksheet method" Url="html/47119eee-f46d-e889-fa26-816177aebfbb.htm" />
-  <HelpKINode Title="SetSheetName method" Url="html/5df47bf5-199c-da09-b7f4-9b1f78dd725d.htm" />
   <HelpKINode Title="SetSheetname method" Url="html/5272ae10-bcd3-ddad-4946-eb7417440360.htm" />
+  <HelpKINode Title="SetSheetName method" Url="html/5df47bf5-199c-da09-b7f4-9b1f78dd725d.htm" />
   <HelpKINode Title="SetSheetProtectionPassword method" Url="html/c3d7c4f9-f49c-19ba-1f11-9e2f8c7db06e.htm" />
   <HelpKINode Title="SetStyle method" Url="html/9da59669-5743-be77-7986-52511f85ce96.htm" />
   <HelpKINode Title="SetWorkbookProtection method" Url="html/8c8da084-2105-33e5-8740-70341ca548e2.htm" />
@@ -1063,7 +1063,7 @@
   <HelpKINode Title="StyleReaderContainer.AddStyleComponent method" Url="html/827545b6-512e-af13-0f67-401c4e6e23fa.htm" />
   <HelpKINode Title="StyleReaderContainer.GetBorder method" Url="html/af441380-c3c4-d99c-c94e-699ed2a80dfb.htm" />
   <HelpKINode Title="StyleReaderContainer.GetCellXF method" Url="html/2b3d0511-2345-1362-cc70-50db98940458.htm" />
-  <HelpKINode Title="StyleReaderContainer.GetComponnet method" Url="html/af2aa104-8765-3021-3e76-2866b1e2b07a.htm" />
+  <HelpKINode Title="StyleReaderContainer.GetComponent method" Url="html/93734eaa-cf5f-a047-8537-ab25f619ae68.htm" />
   <HelpKINode Title="StyleReaderContainer.GetFill method" Url="html/b3055cb8-fd71-5a01-c681-16e78d3d4b2b.htm" />
   <HelpKINode Title="StyleReaderContainer.GetFont method" Url="html/8af76035-5ac7-bbbf-ed64-b6b3401cc68d.htm" />
   <HelpKINode Title="StyleReaderContainer.GetNextBorderId method" Url="html/ada17ee1-ec9a-8e6a-b30e-6393d1179cef.htm" />
@@ -1086,8 +1086,8 @@
   <HelpKINode Title="TextRotation property" Url="html/ba150d55-20b1-8f89-4608-8c2287218aba.htm" />
   <HelpKINode Title="thick enumeration member" Url="html/d997c7a5-936f-72b2-23f8-e04c4f9541f0.htm" />
   <HelpKINode Title="thin enumeration member" Url="html/d997c7a5-936f-72b2-23f8-e04c4f9541f0.htm" />
-  <HelpKINode Title="TIME enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="Time enumeration member" Url="html/e5539731-091d-204e-2ad7-e580023a502e.htm" />
+  <HelpKINode Title="TIME enumeration member" Url="html/b2de4222-97f9-84c2-4ed5-dd32744a483e.htm" />
   <HelpKINode Title="timeFormat enumeration member" Url="html/49013955-f400-723f-a314-5dfd363548b6.htm" />
   <HelpKINode Title="TimeFormat property" Url="html/5c075881-9b1f-22a5-f7d6-3fd3c228ad5f.htm" />
   <HelpKINode Title="Title property" Url="html/725a0b0e-5e3a-1fe6-b595-a268022b7b0c.htm" />

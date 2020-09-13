@@ -114,7 +114,7 @@ namespace NanoXLSX
                 if (split[1].Length < 1 || split[1].Length > 5) { state = false; }
                 if (split[0].Length < 1 || split[0].Length > 5) { state = false; }
             }
-            if (state == false)
+            if (!state)
             {
                 throw new FormatException("The format of the version in the meta data is wrong (" + applicationVersion + "). Should be in the format and a range from '0.0' to '99999.99999'");
             }

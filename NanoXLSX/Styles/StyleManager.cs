@@ -358,14 +358,14 @@ namespace NanoXLSX.Styles
             else if (style.GetType() == typeof(Style))
             {
                 Style s = (Style)style;
-                if (styleNames.Contains(s.Name) == true)
+                if (styleNames.Contains(s.Name))
                 {
                     throw new StyleException("StyleAlreadyExistsException", "The style with the name '" + s.Name + "' already exists");
                 }
                 if (GetComponentByHash(ref styles, hash) == null)
                 {
                     int? id;
-                    if (s.InternalID.HasValue == false)
+                    if (!s.InternalID.HasValue)
                     {
                         id = int.MaxValue;
                         s.InternalID = id;
@@ -399,7 +399,6 @@ namespace NanoXLSX.Styles
         /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style manager</exception>
         public void RemoveStyle(string styleName)
         {
-            //            string hash = null;
             bool match = false;
             int len = styles.Count;
             int index = -1;
@@ -408,12 +407,11 @@ namespace NanoXLSX.Styles
                 if (((Style)styles[i]).Name == styleName)
                 {
                     match = true;
-                    //                    hash = ((Style)styles[i]).Hash;
                     index = i;
                     break;
                 }
             }
-            if (match == false)
+            if (!match)
             {
                 throw new StyleException("MissingReferenceException", "The style with the name '" + styleName + "' was not found in the style manager");
             }
@@ -452,31 +450,31 @@ namespace NanoXLSX.Styles
             for (i = len; i >= 0; i--)
             {
                 border = (Border)borders[i];
-                if (IsUsedByStyle(border) == false) { borders.RemoveAt(i); }
+                if (!IsUsedByStyle(border)) { borders.RemoveAt(i); }
             }
             len = cellXfs.Count;
             for (i = len; i >= 0; i--)
             {
                 cellXf = (CellXf)cellXfs[i];
-                if (IsUsedByStyle(cellXf) == false) { cellXfs.RemoveAt(i); }
+                if (!IsUsedByStyle(cellXf)) { cellXfs.RemoveAt(i); }
             }
             len = fills.Count;
             for (i = len; i >= 0; i--)
             {
                 fill = (Fill)fills[i];
-                if (IsUsedByStyle(fill) == false) { fills.RemoveAt(i); }
+                if (!IsUsedByStyle(fill)) { fills.RemoveAt(i); }
             }
             len = fonts.Count;
             for (i = len; i >= 0; i--)
             {
                 font = (Font)fonts[i];
-                if (IsUsedByStyle(font) == false) { fonts.RemoveAt(i); }
+                if (!IsUsedByStyle(font)) { fonts.RemoveAt(i); }
             }
             len = numberFormats.Count;
             for (i = len; i >= 0; i--)
             {
                 numberFormat = (NumberFormat)numberFormats[i];
-                if (IsUsedByStyle(numberFormat) == false) { numberFormats.RemoveAt(i); }
+                if (!IsUsedByStyle(numberFormat) ) { numberFormats.RemoveAt(i); }
             }
         }
 
