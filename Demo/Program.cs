@@ -278,6 +278,11 @@ namespace Demo
 
             workbook.CurrentWorksheet.Cells["B4"].SetStyle(s3);                                             // Assign style to cell
 
+            Style s4 = BasicStyles.BoldItalic;                                                              // Create a style from a predefined style
+            s4.CurrentCellXf.HorizontalAlign = CellXf.HorizontalAlignValue.right;                           // Set text alignment
+            s4.CurrentCellXf.Indent = 4;                                                                    // Set indentation
+            workbook.CurrentWorksheet.AddCell("Text", 1, 4, s4);                                            // Assign style to cell B5
+
             workbook.CurrentWorksheet.SetColumnWidth(0, 20f);                                               // Set column width
             workbook.CurrentWorksheet.SetColumnWidth(1, 15f);                                               // Set column width
             workbook.CurrentWorksheet.SetColumnWidth(2, 25f);                                               // Set column width
