@@ -139,6 +139,12 @@ namespace NanoXLSX.Styles
         /// Gets or sets the vertical alignment of the style
         /// </summary>
         public VerticalAlignValue VerticalAlign { get; set; }
+
+        /// <summary>
+        /// Gets or sets the indentation in case of left, right or distributed alignment. If 0, no alignment is applied
+        /// </summary>
+        public int Indent { get; set; }
+
         #endregion
 
         #region constructors
@@ -152,6 +158,7 @@ namespace NanoXLSX.Styles
             textDirection = TextDirectionValue.horizontal;
             VerticalAlign = VerticalAlignValue.none;
             textRotation = 0;
+            Indent = 0;
         }
         #endregion
 
@@ -207,6 +214,7 @@ namespace NanoXLSX.Styles
             r *= p + (int)this.VerticalAlign;
             r *= p + (int)this.Alignment;
             r *= p + (int)this.TextDirection;
+            r *= p + this.Indent;
             r *= p + this.TextRotation;
             r *= p + (this.ForceApplyAlignment ? 0 : 1);
             r *= p + (this.Locked ? 0 : 1);
@@ -229,6 +237,7 @@ namespace NanoXLSX.Styles
             copy.ForceApplyAlignment = ForceApplyAlignment;
             copy.Locked = Locked;
             copy.Hidden = Hidden;
+            copy.Indent = Indent;
             return copy;
         }
 

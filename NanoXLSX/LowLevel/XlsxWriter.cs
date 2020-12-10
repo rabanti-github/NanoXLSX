@@ -1042,7 +1042,6 @@ namespace NanoXLSX.LowLevel
                         sb2.Append(item.CurrentCellXf.Indent.ToString("G", culture));
                         sb2.Append("\"");
                     }
-
                     if (item.CurrentCellXf.Alignment != CellXf.TextBreakValue.none)
                     {
                         if (item.CurrentCellXf.Alignment == CellXf.TextBreakValue.shrinkToFit) { sb2.Append(" shrinkToFit=\"1"); }
