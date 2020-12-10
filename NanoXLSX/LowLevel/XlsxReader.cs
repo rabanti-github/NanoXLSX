@@ -148,7 +148,7 @@ namespace NanoXLSX.LowLevel
             await Task.Run(() =>
             {
                 Read();
-            });
+            }).ConfigureAwait(false);
         }
 
         /// <summary>

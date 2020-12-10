@@ -1,5 +1,14 @@
 # Change Log
 
+## v1.4.1
+
+---
+Release Date: **13.09.2020**
+
+- Fixed a bug regarding numeric cells in the worksheet reader. Bug fix provided by John Lenz
+- Minor code maintenance
+- Updated readme and documentation
+
 ## v1.4.0
 
 ---

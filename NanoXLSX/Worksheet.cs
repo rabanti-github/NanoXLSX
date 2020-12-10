@@ -20,12 +20,15 @@ namespace NanoXLSX
     /// </summary>
     public class Worksheet
     {
-
         #region constants
         /// <summary>
         /// Threshold, using when floats are compared
         /// </summary>
         private const float FLOAT_TRESHOLD = 0.0001f;
+        /// <summary>
+        /// Maximum number of characters a worksheet name can have
+        /// </summary>
+        public static readonly int MAX_WORKSHEER_NAME_LENGTH = 31;
         /// <summary>
         /// Default column width as constant
         /// </summary>
@@ -1432,11 +1435,11 @@ namespace NanoXLSX
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new FormatException("The sheet name must be between 1 and 31 characters");
+                throw new FormatException("The sheet name must be between 1 and " + MAX_WORKSHEER_NAME_LENGTH + " characters");
             }
-            if (name.Length > 31)
+            if (name.Length > MAX_WORKSHEER_NAME_LENGTH)
             {
-                throw new FormatException("The sheet name must be between 1 and 31 characters");
+                throw new FormatException("The sheet name must be between 1 and " + MAX_WORKSHEER_NAME_LENGTH + " characters");
             }
             Regex rx = new Regex(@"[\[\]\*\?/\\]");
             Match mx = rx.Match(name);
@@ -1473,24 +1476,21 @@ namespace NanoXLSX
         /// <returns>Name of the sanitized worksheet</returns>
         public static string SanitizeWorksheetName(string input, Workbook workbook)
         {
-            if (input == null)
+            
+            if (string.IsNullOrEmpty(input))
             {
                 input = "Sheet1";
             }
-            int len = input.Length;
-            if (len > 31)
+            int len;
+            if (input.Length > MAX_WORKSHEER_NAME_LENGTH)
             {
-                len = 31;
-            }
-            else if (len == 0)
-            {
-                input = "Sheet1";
+                len = MAX_WORKSHEER_NAME_LENGTH;
             }
             else
             {
-                // no-op
+                len = input.Length;
             }
-            StringBuilder sb = new StringBuilder(31);
+            StringBuilder sb = new StringBuilder(MAX_WORKSHEER_NAME_LENGTH);
             char c;
             for (int i = 0; i < len; i++)
             {
@@ -1500,24 +1500,37 @@ namespace NanoXLSX
                 else
                 { sb.Append(c); }
             }
-            string name = sb.ToString();
+
+            return GetUnusedWorksheetName(sb.ToString(), workbook);
+        }
+
+        /// <summary>
+        /// Determines the next unused worksheet name in the passed workbook
+        /// </summary>
+        /// <param name="name">Original name to start the check</param>
+        /// <param name="workbook">Workbook to look for existing worksheets</param>
+        /// <returns>Not yet used worksheet name</returns>
+        /// <remarks>The 'rare' case where 10^31 Worksheets exists (leads to a crash) is deliberately not handled, 
+        /// since such a number of sheets would consume at least a quintillion bytes of RAM... what is vastly out of the 64 bit range</remarks>
+        private static string GetUnusedWorksheetName(string name, Workbook workbook)
+        {
             string originalName = name;
-            int number = 1;
+            int number = 0;
             while (true)
             {
                 if (!WorksheetExists(name, workbook))
-                { break; } // OK
-                if (originalName.Length + (number / 10) >= 31)
+                { return name; }
+                string numberString = Utils.ToString(number);
+                if (originalName.Length + numberString.Length > MAX_WORKSHEER_NAME_LENGTH)
                 {
-                    name = originalName.Substring(0, 30 - number / 10) + number;
+                    name = originalName.Substring(0, MAX_WORKSHEER_NAME_LENGTH - numberString.Length - 1) + numberString;
                 }
                 else
                 {
-                    name = originalName + number;
+                    name = originalName + numberString;
                 }
                 number++;
             }
-            return name;
         }
 
         /// <summary>

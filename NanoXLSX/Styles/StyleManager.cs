@@ -547,9 +547,6 @@ namespace NanoXLSX.Styles
             }
             return false;
         }
-
-
-
         #endregion
     }
 
