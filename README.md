@@ -14,11 +14,7 @@ Project website: [https://picoxlsx.rabanti.ch](https://picoxlsx.rabanti.ch)
 
 See the **[Change Log](https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md)** for recent updates.
 
-<<<<<<< HEAD
-# Reader Support
-=======
 ## Reader Support
->>>>>>> dev
 
 Currently, only basic reader functionality is available:
 

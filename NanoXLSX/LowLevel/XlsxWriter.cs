@@ -1033,6 +1033,15 @@ namespace NanoXLSX.LowLevel
                         else { sb2.Append("bottom"); }
                         sb2.Append("\"");
                     }
+                    if (item.CurrentCellXf.Indent > 0 &&
+                        (item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.left
+                        || item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.right
+                        || item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.distributed))
+                    {
+                        sb2.Append(" indent=\"");
+                        sb2.Append(item.CurrentCellXf.Indent.ToString("G", culture));
+                        sb2.Append("\"");
+                    }
 
                     if (item.CurrentCellXf.Alignment != CellXf.TextBreakValue.none)
                     {
