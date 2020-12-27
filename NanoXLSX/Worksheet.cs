@@ -638,9 +638,9 @@ namespace NanoXLSX
         /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cells</exception>
-        public void AddCellRange(IEnumerable<object> values, Address startAddress, Address endAddress)
+        public void AddCellRange(IReadOnlyList<object> values, Address startAddress, Address endAddress)
         {
-            AddCellRangeInternal(values as List<object>, startAddress, endAddress, null);
+            AddCellRangeInternal(values, startAddress, endAddress, null);
         }
 
         /// <summary>
@@ -655,9 +655,9 @@ namespace NanoXLSX
         /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the passed style is malformed</exception>
-        public void AddCellRange(IEnumerable<object> values, Address startAddress, Address endAddress, Style style)
+        public void AddCellRange(IReadOnlyList<object> values, Address startAddress, Address endAddress, Style style)
         {
-            AddCellRangeInternal(values as List<object>, startAddress, endAddress, style);
+            AddCellRangeInternal(values, startAddress, endAddress, style);
         }
 
         /// <summary>
@@ -671,10 +671,10 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cells</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
-        public void AddCellRange(IEnumerable<object> values, string cellRange)
+        public void AddCellRange(IReadOnlyList<object> values, string cellRange)
         {
             Range range = Cell.ResolveCellRange(cellRange);
-            AddCellRangeInternal(values as List<object>, range.StartAddress, range.EndAddress, null);
+            AddCellRangeInternal(values, range.StartAddress, range.EndAddress, null);
         }
 
         /// <summary>
@@ -689,10 +689,10 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the passed style is malformed</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
-        public void AddCellRange(IEnumerable<object> values, string cellRange, Style style)
+        public void AddCellRange(IReadOnlyList<object> values, string cellRange, Style style)
         {
             Range range = Cell.ResolveCellRange(cellRange);
-            AddCellRangeInternal(values as List<object>, range.StartAddress, range.EndAddress, style);
+            AddCellRangeInternal(values, range.StartAddress, range.EndAddress, style);
         }
 
         /// <summary>
@@ -707,7 +707,7 @@ namespace NanoXLSX
         /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws an RangeException if the number of cells differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws an StyleException if the active style cannot be referenced while creating the cells</exception>
-        private void AddCellRangeInternal<T>(List<T> values, Address startAddress, Address endAddress, Style style)
+        private void AddCellRangeInternal<T>(IReadOnlyList<T> values, Address startAddress, Address endAddress, Style style)
         {
             List<Address> addresses = Cell.GetCellRange(startAddress, endAddress) as List<Address>;
             if (values.Count != addresses.Count)
