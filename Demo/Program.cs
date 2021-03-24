@@ -32,7 +32,9 @@ namespace Demo
             Read();
             ShortenerDemo();
             StreamDemo();
+            #pragma warning disable CS4014
             AsyncDemo(); // Normally, this method should be called with the await keyword (what is not possible here). Usually, async methods are called along the call stack with await until a terminal element (like a WPF button) is reached
+            #pragma warning restore CS4014
             Demo1();
             Demo2();
             Demo3();
@@ -74,7 +76,7 @@ namespace Demo
         /// </summary>
         private static void Read()
         {
-            Workbook wb = Workbook.Load("basic.xlsx");                                          // Load the workbook 'basic.xlsx' from file 
+            Workbook wb = Workbook.Load("basic.xlsx");                                          // Load the workbook 'basic.xlsx' from file
             Console.WriteLine("contains worksheet name: " + wb.CurrentWorksheet.SheetName);
             foreach (KeyValuePair<string, Cell> cell in wb.CurrentWorksheet.Cells)              // Cycle through cells of loaded workbook (first worksheet)
             {
@@ -82,7 +84,7 @@ namespace Demo
             }
 
             // The same as stream
-            using (FileStream fs = new FileStream("basic.xlsx", FileMode.Open))                 // Open the 'basic.xlsx' as file stream  
+            using (FileStream fs = new FileStream("basic.xlsx", FileMode.Open))                 // Open the 'basic.xlsx' as file stream
             {
                 Workbook wb2 = Workbook.Load(fs);                                               // Read the file stream
                 Console.WriteLine("contains worksheet name: " + wb2.CurrentWorksheet.SheetName);
@@ -99,10 +101,10 @@ namespace Demo
         /// </summary>
         private static void ShortenerDemo()
         {
-            Workbook wb = new Workbook("shortenerDemo.xlsx", "Sheet1"); // Create a workbook (important: A worksheet must be created as well) 
+            Workbook wb = new Workbook("shortenerDemo.xlsx", "Sheet1"); // Create a workbook (important: A worksheet must be created as well)
             wb.WS.Value("Some Text");                                   // Add cell A1
             wb.WS.Value(58.55, BasicStyles.DoubleUnderline);            // Add a formatted value to cell B1
-            wb.WS.Right(2);                                             // Move to cell E1   
+            wb.WS.Right(2);                                             // Move to cell E1
             wb.WS.Value(true);                                          // Add cell E1
             wb.AddWorksheet("Sheet2");                                  // Add a new worksheet
             wb.CurrentWorksheet.CurrentCellDirection = Worksheet.CellDirection.RowToRow; // Change the cell direction
@@ -114,7 +116,7 @@ namespace Demo
         }
 
         /// <summary>
-        /// This method shows how to save a workbook as stream 
+        /// This method shows how to save a workbook as stream
         /// </summary>
         private static void StreamDemo()
         {
@@ -129,7 +131,7 @@ namespace Demo
                 ms.Position = 0;                                            // Reset the stream position
                 using (StreamReader sr = new StreamReader(ms))              // Pass MemoryStream to StreamReader
                 {
-                    string binaryData = sr.ReadToEnd();                      // Write Stream to a string 
+                    string binaryData = sr.ReadToEnd();                      // Write Stream to a string
                     Console.WriteLine("Number of symbols: " + binaryData.Length); // Write some "useful" data
                 }
             }
@@ -274,7 +276,7 @@ namespace Demo
             workbook.CurrentWorksheet.GoToNextRow();                                                        // Go to Row 3
             workbook.CurrentWorksheet.AddNextCell(DateTime.Now.AddDays(2));                                 // Add cell B1
             workbook.CurrentWorksheet.AddNextCell(true);                                                    // Add cell B2
-            workbook.CurrentWorksheet.AddNextCell(false, s2);                                               // Add cell B3 with style in the same step 
+            workbook.CurrentWorksheet.AddNextCell(false, s2);                                               // Add cell B3 with style in the same step
             workbook.CurrentWorksheet.Cells["C2"].SetStyle(BasicStyles.BorderFrame);                        // Assign predefined basic style to cell
 
             Style s3 = BasicStyles.Strike;                                                                  // Create a style from a predefined style
@@ -298,7 +300,7 @@ namespace Demo
         }
 
         /// <summary>
-        /// This demo shows the usage of cell ranges, adding and removing styles, and meta data 
+        /// This demo shows the usage of cell ranges, adding and removing styles, and meta data
         /// </summary>
         private static void Demo5()
         {
@@ -315,7 +317,7 @@ namespace Demo
             workbook.CurrentWorksheet.AddCellRange(values, "A3:C3");                                    // Add cell range (using active style)
 
             values = new List<object>() { "Cell A4", "Cell B4", "Cell C4" };                            // Create a List of values
-            workbook.CurrentWorksheet.ClearActiveStyle();                                               // Clear the active style 
+            workbook.CurrentWorksheet.ClearActiveStyle();                                               // Clear the active style
             workbook.CurrentWorksheet.AddCellRange(values, "A4:C4");                                    // Add cell range (without style)
 
             workbook.WorkbookMetadata.Title = "Test 5";                                                 // Add meta data to workbook
@@ -387,7 +389,7 @@ namespace Demo
             workbook.CurrentWorksheet.SetSelectedCells("A5:B10");										// Set the selection to the range A5:B10
             workbook.AddWorksheet("Sheet2");															// Create new worksheet
             workbook.CurrentWorksheet.AddNextCell("Test2");              								// Add cell A1
-            Range range = new Range(new Address(1, 1), new Address(3, 3));			                    // Create a cell range for the selection B2:D4
+            var range = new NanoXLSX.Range(new Address(1, 1), new Address(3, 3));			                    // Create a cell range for the selection B2:D4
             workbook.CurrentWorksheet.SetSelectedCells(range);											// Set the selection to the range
             workbook.AddWorksheet("Sheet2", true);							                            // Create new worksheet with already existing name; The name will be changed to Sheet21 due to auto-sanitizing (appending of 1)
             workbook.CurrentWorksheet.AddNextCell("Test3");              								// Add cell A1
@@ -401,7 +403,7 @@ namespace Demo
         /// </summary>
         private static void Demo9()
         {
-            Workbook workbook = new Workbook("test9.xlsx", "sheet1");                                   // Create a new workbook 
+            Workbook workbook = new Workbook("test9.xlsx", "sheet1");                                   // Create a new workbook
             List<object> numbers = new List<object> { 1.15d, 2.225d, 13.8d, 15d, 15.1d, 17.22d, 22d, 107.5d, 128d }; // Create a list of numbers
             List<object> texts = new List<object>() { "value 1", "value 2", "value 3", "value 4", "value 5", "value 6", "value 7", "value 8", "value 9" }; // Create a list of strings (for vlookup)
             workbook.WS.Value("Numbers", BasicStyles.Bold);                                       // Add a header with a basic style
@@ -414,7 +416,7 @@ namespace Demo
 
             workbook.CurrentWorksheet.SetCurrentCellAddress("D2");                                      // Set the "cursor" to D2
             Cell c;                                                                                     // Create an empty cell object (reusable)
-            c = BasicFormulas.Average(new Range("A2:A10"));                                             // Define an average formula
+            c = BasicFormulas.Average(new NanoXLSX.Range("A2:A10"));                                             // Define an average formula
             workbook.CurrentWorksheet.AddCell("Average", "C2");                                         // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D2");                                                 // Add the formula to the worksheet
 
@@ -430,31 +432,31 @@ namespace Demo
             workbook.CurrentWorksheet.AddCell("Round", "C5");                                           // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D5");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.Max(new Range("A2:A10"));                                                 // Define a max formula
+            c = BasicFormulas.Max(new NanoXLSX.Range("A2:A10"));                                                 // Define a max formula
             workbook.CurrentWorksheet.AddCell("Max", "C6");                                             // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D6");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.Min(new Range("A2:A10"));                                                 // Define a min formula
+            c = BasicFormulas.Min(new NanoXLSX.Range("A2:A10"));                                                 // Define a min formula
             workbook.CurrentWorksheet.AddCell("Min", "C7");                                             // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D7");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.Median(new Range("A2:A10"));                                              // Define a median formula
+            c = BasicFormulas.Median(new NanoXLSX.Range("A2:A10"));                                              // Define a median formula
             workbook.CurrentWorksheet.AddCell("Median", "C8");                                          // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D8");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.Sum(new Range("A2:A10"));                                                 // Define a sum formula
+            c = BasicFormulas.Sum(new NanoXLSX.Range("A2:A10"));                                                 // Define a sum formula
             workbook.CurrentWorksheet.AddCell("Sum", "C9");                                             // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D9");                                                 // Add the formula to the worksheet
 
-            c = BasicFormulas.VLookup(13.8d, new Range("A2:B10"), 2, true);                             // Define a vlookup formula (look for the value of the number 13.8) 
+            c = BasicFormulas.VLookup(13.8d, new NanoXLSX.Range("A2:B10"), 2, true);                             // Define a vlookup formula (look for the value of the number 13.8)
             workbook.CurrentWorksheet.AddCell("Vlookup", "C10");                                        // Add the description of the formula to the worksheet
             workbook.CurrentWorksheet.AddCell(c, "D10");                                                // Add the formula to the worksheet
 
             workbook.AddWorksheet("sheet2");                                                            // Create a new worksheet
-            c = BasicFormulas.VLookup(workbook.Worksheets[0], new Address("B4"), workbook.Worksheets[0], new Range("B2:C10"), 2, true); // Define a vlookup formula in worksheet1 (look for the text right of the (value of) cell B4) 
+            c = BasicFormulas.VLookup(workbook.Worksheets[0], new Address("B4"), workbook.Worksheets[0], new NanoXLSX.Range("B2:C10"), 2, true); // Define a vlookup formula in worksheet1 (look for the text right of the (value of) cell B4)
             workbook.WS.Value(c);                                                                       // Add the formula to the worksheet
 
-            c = BasicFormulas.Median(workbook.Worksheets[0], new Range("A2:A10"));                      // Define a median formula in worksheet1
+            c = BasicFormulas.Median(workbook.Worksheets[0], new NanoXLSX.Range("A2:A10"));                      // Define a median formula in worksheet1
             workbook.WS.Value(c);                                                                       // Add the formula to the worksheet
 
             workbook.Save();                                                                            // Save the workbook
@@ -468,9 +470,9 @@ namespace Demo
             Workbook wb = new Workbook("demo10.xlsx", "styleAppending");                          // Create a new workbook
 
             Style style = new Style();                                                            // Create a new style
-            style.Append(BasicStyles.Bold);                                                       // Append a basic style (bold) 
-            style.Append(BasicStyles.Underline);                                                  // Append a basic style (underline) 
-            style.Append(BasicStyles.Font("Arial Black", 20));                                    // Append a basic style (custom font) 
+            style.Append(BasicStyles.Bold);                                                       // Append a basic style (bold)
+            style.Append(BasicStyles.Underline);                                                  // Append a basic style (underline)
+            style.Append(BasicStyles.Font("Arial Black", 20));                                    // Append a basic style (custom font)
 
             wb.WS.Value("THIS IS A TEST", style);                                                 // Add text and the appended style
             wb.WS.Down();                                                                         // Go to a new row
