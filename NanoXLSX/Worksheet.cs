@@ -696,6 +696,17 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Applies a style to a defined cell range.
+        /// </summary>
+        /// <param name="cellRange"></param>
+        /// <param name="style"></param>
+        public void AddCellRange(string cellRange, Style style)
+        {
+            Range range = Cell.ResolveCellRange(cellRange);
+            AddCellRangeInternal(range.StartAddress, range.EndAddress, style);
+        }
+
+        /// <summary>
         /// Internal function to add a generic list of value to the defined cell range
         /// </summary>
         /// <typeparam name="T">Data type of the generic value list</typeparam>
@@ -722,6 +733,35 @@ namespace NanoXLSX
                 list[i].ColumnNumber = addresses[i].Column;
                 list[i].WorksheetReference = this;
                 AddNextCell(list[i], false, style);
+            }
+        }
+
+        /// <summary>
+        /// Internal function to add an empty list and mantain existing values to the defined cell range.
+        /// </summary>
+        /// <param name="startAddress"></param>
+        /// <param name="endAddress"></param>
+        /// <param name="style"></param>
+        private void AddCellRangeInternal(Address startAddress, Address endAddress, Style style)
+        {
+            List<Address> addresses = Cell.GetCellRange(startAddress, endAddress) as List<Address>;
+            List<string> values = new List<string>(addresses.Count);
+            for (int i = 0; i < addresses.Count; i++) values.Add("");
+            List<Cell> list = Cell.ConvertArray(values) as List<Cell>;
+            int len = values.Count;
+            for (int i = 0; i < len; i++)
+            {
+                list[i].RowNumber = addresses[i].Row;
+                list[i].ColumnNumber = addresses[i].Column;
+                list[i].WorksheetReference = this;
+                if (cells.ContainsKey(new Address(addresses[i].Column, addresses[i].Row).ToString()))
+                {
+                    GetCell(new Address(addresses[i].Column, addresses[i].Row)).SetStyle(style);
+                }
+                else
+                {
+                    AddNextCell(list[i], false, style);
+                }
             }
         }
         #endregion
