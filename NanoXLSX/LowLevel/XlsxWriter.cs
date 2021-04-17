@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2020
+ * Copyright Raphael Stoeckli © 2021
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -630,58 +630,58 @@ namespace NanoXLSX.LowLevel
                 sb.Append("<row").Append(height).Append(">");
             }
             string typeAttribute;
-            string sValue = "";
-            string tValue = "";
-            string value = "";
-            bool bVal;
+            string styleDef = "";
+            string typeDef = "";
+            string valueDef = "";
+            bool boolValue;
 
             int col = 0;
             foreach (Cell item in columnFields)
             {
-                tValue = " ";
+                typeDef = " ";
                 if (item.CellStyle != null)
                 {
-                    sValue = " s=\"" + item.CellStyle.InternalID.Value.ToString("G", culture) + "\" ";
+                    styleDef = " s=\"" + item.CellStyle.InternalID.Value.ToString("G", culture) + "\" ";
                 }
                 else
                 {
-                    sValue = "";
+                    styleDef = "";
                 }
                 item.ResolveCellType(); // Recalculate the type (for handling DEFAULT)
                 if (item.DataType == Cell.CellType.BOOL)
                 {
                     typeAttribute = "b";
-                    tValue = " t=\"" + typeAttribute + "\" ";
-                    bVal = (bool)item.Value;
-                    if (bVal) { value = "1"; }
-                    else { value = "0"; }
+                    typeDef = " t=\"" + typeAttribute + "\" ";
+                    boolValue = (bool)item.Value;
+                    if (boolValue) { valueDef = "1"; }
+                    else { valueDef = "0"; }
 
                 }
                 // Number casting
                 else if (item.DataType == Cell.CellType.NUMBER)
                 {
                     typeAttribute = "n";
-                    tValue = " t=\"" + typeAttribute + "\" ";
+                    typeDef = " t=\"" + typeAttribute + "\" ";
                     Type t = item.Value.GetType();
 
-                    if (t == typeof(byte)) { value = ((byte)item.Value).ToString("G", culture); }
-                    else if (t == typeof(sbyte)) { value = ((sbyte)item.Value).ToString("G", culture); }
-                    else if (t == typeof(decimal)) { value = ((decimal)item.Value).ToString("G", culture); }
-                    else if (t == typeof(double)) { value = ((double)item.Value).ToString("G", culture); }
-                    else if (t == typeof(float)) { value = ((float)item.Value).ToString("G", culture); }
-                    else if (t == typeof(int)) { value = ((int)item.Value).ToString("G", culture); }
-                    else if (t == typeof(uint)) { value = ((uint)item.Value).ToString("G", culture); }
-                    else if (t == typeof(long)) { value = ((long)item.Value).ToString("G", culture); }
-                    else if (t == typeof(ulong)) { value = ((ulong)item.Value).ToString("G", culture); }
-                    else if (t == typeof(short)) { value = ((short)item.Value).ToString("G", culture); }
-                    else if (t == typeof(ushort)) { value = ((ushort)item.Value).ToString("G", culture); }
+                    if (t == typeof(byte)) { valueDef = ((byte)item.Value).ToString("G", culture); }
+                    else if (t == typeof(sbyte)) { valueDef = ((sbyte)item.Value).ToString("G", culture); }
+                    else if (t == typeof(decimal)) { valueDef = ((decimal)item.Value).ToString("G", culture); }
+                    else if (t == typeof(double)) { valueDef = ((double)item.Value).ToString("G", culture); }
+                    else if (t == typeof(float)) { valueDef = ((float)item.Value).ToString("G", culture); }
+                    else if (t == typeof(int)) { valueDef = ((int)item.Value).ToString("G", culture); }
+                    else if (t == typeof(uint)) { valueDef = ((uint)item.Value).ToString("G", culture); }
+                    else if (t == typeof(long)) { valueDef = ((long)item.Value).ToString("G", culture); }
+                    else if (t == typeof(ulong)) { valueDef = ((ulong)item.Value).ToString("G", culture); }
+                    else if (t == typeof(short)) { valueDef = ((short)item.Value).ToString("G", culture); }
+                    else if (t == typeof(ushort)) { valueDef = ((ushort)item.Value).ToString("G", culture); }
                 }
                 // Date parsing
                 else if (item.DataType == Cell.CellType.DATE)
                 {
                     typeAttribute = "d";
                     DateTime date = (DateTime)item.Value;
-                    value = Utils.GetOADateTimeString(date, culture);
+                    valueDef = Utils.GetOADateTimeString(date, culture);
                 }
                 // Time parsing
                 else if (item.DataType == Cell.CellType.TIME)
@@ -689,52 +689,57 @@ namespace NanoXLSX.LowLevel
                     typeAttribute = "d";
                     // TODO: 'd' is probably an outdated attribute (to be checked for dates and times)
                     TimeSpan time = (TimeSpan)item.Value;
-                    value = Utils.GetOATimeString(time, culture);
+                    valueDef = Utils.GetOATimeString(time, culture);
                 }
                 else
                 {
                     if (item.Value == null)
                     {
-                        typeAttribute = "str";
-                        value = string.Empty;
+                       typeAttribute = null;
+                       typeDef = null;
+                       valueDef = null;
                     }
                     else // Handle sharedStrings
                     {
                         if (item.DataType == Cell.CellType.FORMULA)
                         {
                             typeAttribute = "str";
-                            value = item.Value.ToString();
+                            valueDef = item.Value.ToString();
                         }
                         else
                         {
                             typeAttribute = "s";
-                            value = item.Value.ToString();
-                            if (!sharedStrings.ContainsKey(value))
+                            valueDef = item.Value.ToString();
+                            if (!sharedStrings.ContainsKey(valueDef))
                             {
-                                sharedStrings.Add(value, sharedStrings.Count.ToString("G", culture));
+                                sharedStrings.Add(valueDef, sharedStrings.Count.ToString("G", culture));
                             }
-                            value = sharedStrings[value];
+                            valueDef = sharedStrings[valueDef];
                             sharedStringsTotalCount++;
                         }
                     }
-                    tValue = " t=\"" + typeAttribute + "\" ";
+                    typeDef = " t=\"" + typeAttribute + "\" ";
                 }
                 if (item.DataType != Cell.CellType.EMPTY)
                 {
-                    sb.Append("<c").Append(tValue).Append("r=\"").Append(item.CellAddress).Append("\"").Append(sValue).Append(">");
+                    sb.Append("<c").Append(typeDef).Append("r=\"").Append(item.CellAddress).Append("\"").Append(styleDef).Append(">");
                     if (item.DataType == Cell.CellType.FORMULA)
                     {
                         sb.Append("<f>").Append(EscapeXmlChars(item.Value.ToString())).Append("</f>");
                     }
                     else
                     {
-                        sb.Append("<v>").Append(EscapeXmlChars(value)).Append("</v>");
+                        sb.Append("<v>").Append(EscapeXmlChars(valueDef)).Append("</v>");
                     }
                     sb.Append("</c>");
                 }
-                else // Empty cell
+                else if (valueDef == null || item.DataType == Cell.CellType.EMPTY) // Empty cell
                 {
-                    sb.Append("<c").Append(tValue).Append("r=\"").Append(item.CellAddress).Append("\"").Append(sValue).Append("/>");
+                    sb.Append("<c").Append("r=\"").Append(item.CellAddress).Append("\"").Append(styleDef).Append("/>");
+                }
+                else // All other, unexpected cases
+                {
+                    sb.Append("<c").Append(typeDef).Append("r=\"").Append(item.CellAddress).Append("\"").Append(styleDef).Append("/>");
                 }
                 col++;
             }

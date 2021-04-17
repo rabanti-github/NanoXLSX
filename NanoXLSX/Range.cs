@@ -1,9 +1,11 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2020
+ * Copyright Raphael Stoeckli © 2021
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
+
+using System.Collections.Generic;
 
 namespace NanoXLSX
 {
@@ -41,6 +43,44 @@ namespace NanoXLSX
             Range r = Cell.ResolveCellRange(range);
             StartAddress = r.StartAddress;
             EndAddress = r.EndAddress;
+        }
+
+        /// <summary>
+        /// Gets a list of all addresses between the start and end address
+        /// </summary>
+        /// <returns>List of Addresses</returns>
+        public IReadOnlyList<Address> ResolveEnclosedAddresses()
+        {
+            int startColumn, endColumn, startRow, endRow;
+            if (StartAddress.Column <= EndAddress.Column)
+            {
+                startColumn = this.StartAddress.Column;
+                endColumn = this.EndAddress.Column;
+            }
+            else
+            {
+                endColumn = this.StartAddress.Column;
+                startColumn = this.EndAddress.Column;
+            }
+            if (StartAddress.Row <= EndAddress.Row)
+            {
+                startRow = this.StartAddress.Row;
+                endRow = this.EndAddress.Row;
+            }
+            else
+            {
+                endRow = this.StartAddress.Row;
+                startRow = this.EndAddress.Row;
+            }
+            List<Address> addresses = new List<Address>();
+            for(int r = startRow; r <= endRow; r++)
+            {
+                for(int c = startColumn; c <= endColumn; c++)
+                {
+                    addresses.Add(new Address(c, r));
+                }
+            }
+            return addresses;
         }
 
         /// <summary>

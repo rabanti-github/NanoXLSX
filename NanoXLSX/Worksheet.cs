@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2020
+ * Copyright Raphael Stoeckli © 2021
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -754,6 +754,84 @@ namespace NanoXLSX
             Cell.ResolveCellCoordinate(address, out column, out row);
             return RemoveCell(column, row);
         }
+        #endregion
+
+        #region methods_setStyle
+
+        /// <summary>
+        /// Sets the passed style on the passed cell range. If cells are already existing, the style will be added or replaced. Otherwise, an empty (numeric) cell will be added with the assigned style
+        /// </summary>
+        /// <param name="cellRange">Cell range to apply the style</param>
+        /// <param name="style">Style to apply</param>
+        /// <remarks>Note: This method may invalidate an existing date value since dates are defined by specific style. The result of a redefinition will be a number, instead of a date</remarks>
+        public void SetStyle(Range cellRange, Style style)
+        {
+            IReadOnlyList<Address> addresses = cellRange.ResolveEnclosedAddresses();
+            foreach(Address address in addresses)
+            {
+                String key = address.GetAddress();
+                if (this.cells.ContainsKey(key))
+                {
+                    cells[key].SetStyle(style);
+                }
+                else
+                {
+                    AddCell(null, address.Column, address.Row, style);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the passed style on the passed cell range, derived from a start and end address. If cells are already existing, the style will be added or replaced. 
+        /// Otherwise, an empty (numeric) cell will be added with the assigned style
+        /// </summary>
+        /// <param name="startAddress">Start address of the cell range</param>
+        /// <param name="endAddress">End address of the cell range</param>
+        /// <param name="style">Style to apply</param>
+        /// <remarks>Note: This method may invalidate an existing date value since dates are defined by specific style. The result of a redefinition will be a number, instead of a date</remarks>
+        public void SetStyle(Address startAddress, Address endAddress, Style style)
+        {
+            SetStyle(new Range(startAddress, endAddress), style);
+        }
+
+        /// <summary>
+        /// Sets the passed style on the passed (singular) cell address. If the cell is already existing, the style will be added or replaced.
+        /// Otherwise, an empty (numeric) cell will be added with the assigned style
+        /// </summary>
+        /// <param name="address">Cell address to apply the style</param>
+        /// <param name="style">Style to apply</param>
+        /// <remarks>Note: This method may invalidate an existing date value since dates are defined by specific style. The result of a redefinition will be a number, instead of a date</remarks>
+        public void SetStyle(Address address, Style style)
+        {
+            SetStyle(address, address, style);
+        }
+
+        /// <summary>
+        /// Sets the passed style on the passed address expression. Such an expression may be a single cell or a cell range.
+        /// If the cell is already existing, the style will be added or replaced. Otherwise, an empty (numeric) cell or cell range will be added with the assigned style
+        /// </summary>
+        /// <param name="addressExpression">Expression of a cell address or range of addresses</param>
+        /// <param name="style">Style to apply</param>
+        /// <remarks>Note: This method may invalidate an existing date value since dates are defined by specific style. The result of a redefinition will be a number, instead of a date</remarks>
+        public void SetStyle(string addressExpression, Style style)
+        {
+            Cell.AddressScope scope = Cell.GetAddressScope(addressExpression);
+            if (scope == Cell.AddressScope.SingleAddress)
+            {
+                Address address = new Address(addressExpression);
+                SetStyle(address, style);
+            }
+            else if (scope == Cell.AddressScope.Range)
+            {
+                Range range = new Range(addressExpression);
+                SetStyle(range, style);
+            }
+            else
+            {
+                throw new RangeException(RangeException.GENERAL, "The passed address'" + addressExpression + "' is neither a cell address, nor a range");
+            }
+        }
+
         #endregion
 
         #region common_methods
