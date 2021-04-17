@@ -119,7 +119,10 @@ namespace NanoXLSX.LowLevel
         /// </returns>
         public bool HasColumn(string columnAddress)
         {
-            if (string.IsNullOrEmpty(columnAddress)) { return false; }
+            if (string.IsNullOrEmpty(columnAddress))
+            {
+                return false;
+            }
             int columnNumber = Cell.ResolveColumn(columnAddress);
             foreach (KeyValuePair<string, Cell> cell in Data)
             {
@@ -186,7 +189,7 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="rowNumber">Row number</param>
         /// <returns>List of cell objects</returns>
-        public List<Cell> GetRow(int rowNumber)
+        public IReadOnlyList<Cell> GetRow(int rowNumber)
         {
             List<Cell> list = new List<Cell>();
             foreach (KeyValuePair<string, Cell> cell in Data)
