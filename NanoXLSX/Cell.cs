@@ -292,7 +292,7 @@ namespace NanoXLSX
             if (Value == null)
             {
                 DataType = CellType.EMPTY;
-                Value = "";
+                Value = null;
                 return;
             }
             if (DataType == CellType.FORMULA || DataType == CellType.EMPTY)
@@ -578,7 +578,7 @@ namespace NanoXLSX
                 throw new FormatException("The cell address is null or empty and could not be resolved");
             }
             address =  Utils.ToUpper(address);
-            Regex rx = new Regex("([A-Z]{1,3})([0-9]{1,7})");
+            Regex rx = new Regex("^([A-Z]{1,3})([0-9]{1,7})$");
             Match mx = rx.Match(address);
             if (mx.Groups.Count != 3)
             {
@@ -709,9 +709,12 @@ namespace NanoXLSX
                     ResolveCellRange(addressExpression);
                     return AddressScope.Range;
                 }
-                catch { /* NoOp*/ }
+                catch
+                {
+                    return AddressScope.Invalid;
+                }
             }
-            return AddressScope.Invalid;
+            
         }
         #endregion
 

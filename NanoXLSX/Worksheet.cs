@@ -439,7 +439,7 @@ namespace NanoXLSX
         private Cell CastValue(object value, int column, int row)
         {
             Cell c;
-            if (value.GetType() == typeof(Cell))
+            if (value != null && value.GetType() == typeof(Cell))
             {
                 c = (Cell)value;
                 c.WorksheetReference = this;
@@ -828,7 +828,7 @@ namespace NanoXLSX
             }
             else
             {
-                throw new RangeException(RangeException.GENERAL, "The passed address'" + addressExpression + "' is neither a cell address, nor a range");
+                throw new FormatException("InvalidAddressExpression", "The passed address'" + addressExpression + "' is neither a cell address, nor a range");
             }
         }
 

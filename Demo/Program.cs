@@ -43,6 +43,7 @@ namespace Demo
             Demo8();
             Demo9();
             Demo10();
+            Demo11();
 
 
             /* ### PERFORMANCE TESTS ### */
@@ -481,6 +482,27 @@ namespace Demo
                 .Append(BasicStyles.ColorizedBackground("AAFFAA"));                               // ... and append another part (chaining colorized background)
 
             wb.WS.Value("Another test", chainedStyle);                                            // Add text and the appended style
+
+            wb.Save();                                                                            // Save the workbook
+        }
+
+        /// <summary>
+        /// This demo shows the usage of the SetStyle methods on worksheets
+        /// </summary>
+        private static void Demo11()
+        {
+            Workbook wb = new Workbook("demo11.xlsx", "setStyles");                               // Create a new workbook
+
+            Style style = new Style();                                                            // Create a new style
+            style.Append(BasicStyles.ColorizedBackground("FF0000"));                              // Append a visible style component
+
+            wb.CurrentWorksheet.AddCell("Test", "C3", BasicStyles.Bold);                          // Define a cell with a style (will be replaced)
+            
+            wb.CurrentWorksheet.SetStyle("A1", style);                                            // Set style based on a string address
+            wb.CurrentWorksheet.SetStyle("A3:B6", style);                                         // Set style based on a string address range
+            wb.CurrentWorksheet.SetStyle(new Address(0, 7), style);                               // Set style based on a address object
+            wb.CurrentWorksheet.SetStyle(new Range(new Address("C1"), new Address(4,8)), style);  // Set style based on a range object (overwrites style on C3)
+            wb.CurrentWorksheet.SetStyle(new Address("F6"), new Address("F10"), style);           // Set style based on a two address objects as range
 
             wb.Save();                                                                            // Save the workbook
         }

@@ -696,7 +696,6 @@ namespace NanoXLSX.LowLevel
                     if (item.Value == null)
                     {
                        typeAttribute = null;
-                       typeDef = null;
                        valueDef = null;
                     }
                     else // Handle sharedStrings
@@ -735,7 +734,7 @@ namespace NanoXLSX.LowLevel
                 }
                 else if (valueDef == null || item.DataType == Cell.CellType.EMPTY) // Empty cell
                 {
-                    sb.Append("<c").Append("r=\"").Append(item.CellAddress).Append("\"").Append(styleDef).Append("/>");
+                    sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(styleDef).Append("/>");
                 }
                 else // All other, unexpected cases
                 {

@@ -73,9 +73,9 @@ namespace NanoXLSX
                 startRow = this.EndAddress.Row;
             }
             List<Address> addresses = new List<Address>();
-            for(int r = startRow; r <= endRow; r++)
+            for(int c = startColumn; c <= endColumn; c++)
             {
-                for(int c = startColumn; c <= endColumn; c++)
+                for (int r = startRow; r <= endRow; r++)
                 {
                     addresses.Add(new Address(c, r));
                 }
