@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2020
+ * Copyright Raphael Stoeckli © 2021
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -11,6 +11,8 @@ using System.IO;
 using System.Threading.Tasks;
 using NanoXLSX;
 using NanoXLSX.Styles;
+// Note: In .NET Standard, Range is already defined as Class in the System namespace. The following line clarifies the appropriate using
+using Range = NanoXLSX.Range;
 
 namespace Demo
 {
@@ -32,7 +34,9 @@ namespace Demo
             Read();
             ShortenerDemo();
             StreamDemo();
+            #pragma warning disable CS4014
             AsyncDemo(); // Normally, this method should be called with the await keyword (what is not possible here). Usually, async methods are called along the call stack with await until a terminal element (like a WPF button) is reached
+            #pragma warning restore CS4014
             Demo1();
             Demo2();
             Demo3();

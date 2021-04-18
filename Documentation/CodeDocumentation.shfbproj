@@ -13,7 +13,7 @@
     <RootNamespace>Documentation</RootNamespace>
     <Name>Documentation</Name>
     <!-- SHFB properties -->
-    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.5.2</FrameworkVersion>
     <OutputPath>..\docs\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
@@ -46,10 +46,10 @@
     <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
     <ProjectSummary>&amp;lt%3bp&amp;gt%3bNanoXLSX is a small .NET / C# library to create and read XLSX files %28Microsoft Excel 2007 or newer%29 in an easy and native way&amp;lt%3b/p&amp;gt%3b
 &amp;lt%3bul&amp;gt%3b
-&amp;lt%3bli&amp;gt%3b&amp;lt%3bstrong&amp;gt%3bNo dependencies&amp;lt%3b/strong&amp;gt%3b %28%2a&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3b&amp;lt%3bstrong&amp;gt%3bMinimum of dependencies&amp;lt%3b/strong&amp;gt%3b %28%2a&amp;lt%3b/li&amp;gt%3b
 &amp;lt%3bli&amp;gt%3bNo need for an installation of Microsoft Office&amp;lt%3b/li&amp;gt%3b
 &amp;lt%3bli&amp;gt%3bNo need for Office interop libraries&amp;lt%3b/li&amp;gt%3b
-&amp;lt%3bli&amp;gt%3bNo need for 3rd party libraries&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bNo need for proprietary 3rd party libraries&amp;lt%3b/li&amp;gt%3b
 &amp;lt%3bli&amp;gt%3bNo need for an installation of the Microsoft Open Office XML SDK %28OOXML%29&amp;lt%3b/li&amp;gt%3b
 &amp;lt%3b/ul&amp;gt%3b
 &amp;lt%3bp&amp;gt%3bSee the &amp;lt%3bstrong&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttps://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md&amp;quot%3b&amp;gt%3bChange Log&amp;lt%3b/a&amp;gt%3b&amp;lt%3b/strong&amp;gt%3b for recent updates.&amp;lt%3b/p&amp;gt%3b
@@ -69,10 +69,24 @@ Currently, only basic reader functionality is available:
 &amp;lt%3bh2&amp;gt%3bRequirements&amp;lt%3b/h2&amp;gt%3b
 
 NanoXLSX is based on PicoXLSX and was created with .NET version 4.5. Newer versions like 4.6 are working and tested. Older versions like 3.5 and 4.0 may also work with minor changes. Some functions introduced in .NET 4.5 were used and must be adapted in this case.
-&amp;lt%3bbr/&amp;gt%3b&amp;lt%3bbr/&amp;gt%3b%2a%29The only requirement to compile the library besides .NET is the assembly &amp;lt%3bb&amp;gt%3bWindowsBase&amp;lt%3b/b&amp;gt%3b, as well as &amp;lt%3bb&amp;gt%3bSystem.IO.Compression&amp;lt%3b/b&amp;gt%3b. These assemblies are &amp;lt%3bb&amp;gt%3bstandard components in all Microsoft Windows systems&amp;lt%3b/b&amp;gt%3b %28except Windows RT systems%29. If your IDE of choice supports referencing assemblies from the Global Assembly Cache %28&amp;lt%3bb&amp;gt%3bGAC&amp;lt%3b/b&amp;gt%3b%29 of Windows, select WindowsBase and Compression from there. If you want so select the DLLs manually and Microsoft Visual Studio is installed on your system, the DLL of WindowsBase can be found most likely under “c:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\WindowsBase.dll”, as well as System.IO.Compression under &amp;quot%3bc:\Program Files %28x86%29\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.IO.Compression.dll&amp;quot%3b. Otherwise you find them in the GAC, under “c:\Windows\Microsoft.NET\assembly\GAC_MSIL\WindowsBase” and &amp;quot%3bc:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.IO.Compression&amp;quot%3b
-&amp;lt%3bbr/&amp;gt%3b&amp;lt%3bbr/&amp;gt%3b
+&amp;lt%3bbr/&amp;gt%3b
 
-If you want to compile the documentation project %28folder: Documentation%3b project file: shfbproj%29, you need also the &amp;lt%3bstrong&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttps://github.com/EWSoftware/SHFB&amp;quot%3b&amp;gt%3bSandcastle Help File Builder %28SHFB%29&amp;lt%3b/a&amp;gt%3b&amp;lt%3b/strong&amp;gt%3b. It is also freely available. But you don’t need the documentation project to build the NanoXLSX library.
+&amp;lt%3bh3&amp;gt%3b.NET 4.5 or newer&amp;lt%3b/h3&amp;gt%3b
+
+%2a%29The only requirement to compile the library besides .NET %28v4.5 or newer%29 is the assembly &amp;lt%3bb&amp;gt%3bWindowsBase&amp;lt%3b/b&amp;gt%3b, as well as &amp;lt%3bb&amp;gt%3bSystem.IO.Compression&amp;lt%3b/b&amp;gt%3b. These assemblies are &amp;lt%3bb&amp;gt%3bstandard components in all Microsoft Windows systems&amp;lt%3b/b&amp;gt%3b %28except Windows RT systems%29. If your IDE of choice supports referencing assemblies from the Global Assembly Cache %28&amp;lt%3bb&amp;gt%3bGAC&amp;lt%3b/b&amp;gt%3b%29 of Windows, select WindowsBase and Compression from there. If you want so select the DLLs manually and Microsoft Visual Studio is installed on your system, the DLL of WindowsBase can be found most likely under “c:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\WindowsBase.dll”, as well as System.IO.Compression under &amp;quot%3bc:\Program Files %28x86%29\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.IO.Compression.dll&amp;quot%3b. Otherwise you find them in the GAC, under “c:\Windows\Microsoft.NET\assembly\GAC_MSIL\WindowsBase” and &amp;quot%3bc:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.IO.Compression&amp;quot%3b
+&amp;lt%3bbr/&amp;gt%3b
+The NuGet package &amp;lt%3bb&amp;gt%3bdoes not require dependencies&amp;lt%3b/b&amp;gt%3b
+&amp;lt%3bbr/&amp;gt%3b
+
+&amp;lt%3bh3&amp;gt%3b.NET Standard&amp;lt%3b/h3&amp;gt%3b
+.NET Standard v2.0 resolves the dependency System.IO.Compression automatically, using NuGet and does not rely anymore on WindowsBase in the development environment. In contrast to the .NET &amp;amp%3bgt%3b=4.5 version, &amp;lt%3bb&amp;gt%3bno manually added dependencies necessary&amp;lt%3b/b&amp;gt%3b %28as assembly references%29 to compile the library.&amp;lt%3bbr/&amp;gt%3b
+
+Please note that the demo project of the .NET Standard version will not work in Visual Studio 2017. To get the build working, unload the demo project of the .NET Standard version.
+&amp;lt%3bbr/&amp;gt%3b
+
+&amp;lt%3bh3&amp;gt%3bDocumentation project&amp;lt%3b/h3&amp;gt%3b
+If you want to compile the documentation project %28folder: Documentation%3b project file: shfbproj%29, you need also the &amp;lt%3bstrong&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttps://github.com/EWSoftware/SHFB&amp;quot%3b&amp;gt%3bSandcastle Help File Builder %28SHFB%29&amp;lt%3b/a&amp;gt%3b&amp;lt%3b/strong&amp;gt%3b. It is also freely available. But you don’t need the documentation project to build the NanoXLSX library.&amp;lt%3bbr/&amp;gt%3b
+The .NET version of the documentation may vary, based on the installation. If v4.5 is not available, upgrade to target to a newer version, like v4.6
 &amp;lt%3bbr/&amp;gt%3b
 &amp;lt%3bh2&amp;gt%3bInstallation&amp;lt%3b/h2&amp;gt%3b
 
@@ -87,10 +101,10 @@ By .NET CLI:&amp;lt%3bbr&amp;gt%3b
 
 &amp;lt%3bh3&amp;gt%3bAs DLL&amp;lt%3b/h3&amp;gt%3b
 
-Simply place the NanoXLSX DLL into your .NET project and add a reference to it. Please keep in mind that the .NET version of your solution must match with the runtime version of the NanoXLSX DLL %28currently compiled with 4.5%29.
+Simply place the NanoXLSX DLL into your .NET project and add a reference to it. Please keep in mind that the .NET version of your solution must match with the runtime version of the NanoXLSX DLL %28currently compiled with 4.5 and .NET Standard 2.0%29.
 &amp;lt%3bh3&amp;gt%3bAs source files&amp;lt%3b/h3&amp;gt%3b
 
-Place all .CS files from the NanoXLSX source folder and its sub-folders into your project.
+Place all .CS files from the NanoXLSX source folder and its sub-folders into your project.  In case of the .NET &amp;amp%3bgt%3b=4.5 version, the necessary dependencies have to be referenced as well.
 
 
 &amp;lt%3bh2&amp;gt%3bUsage %28Quick Start%29&amp;lt%3b/h2&amp;gt%3b
@@ -186,5 +200,12 @@ xcopy "$(ProjectDir)icons\favicon.ico" "$(OutputPath)icons" /Y /r /h /c</PostBui
   </ItemGroup>
   <ItemGroup>
     <Content Include="icons\favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NanoXLSX\NanoXLSX.csproj">
+      <Name>NanoXLSX</Name>
+      <Project>{a70e40aa-98c1-453a-8030-b4798a89ebfc}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
 </Project>

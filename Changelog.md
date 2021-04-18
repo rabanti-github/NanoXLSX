@@ -1,5 +1,27 @@
 # Change Log
 
+## v1.6.0
+
+---
+Release Date: **18.04.2021**
+
+- Introduced library version for .NET Standard 2.0 (and assigned demos)
+- Updated project structure (two projects for .NET >=4.5 and two for .NET Standard 2.0)
+- Added function SetStyle in the Worksheet class
+- Added demo for the new SetStyle function
+- Changed behavior of empty cells. They are now not string but implicit numeric cells
+- Added new function ResolveEnclosedAddresses in Range class
+- Added new function GetAddressScope in Cell class
+- Fixed the validation of cell addresses (single cell)
+- Defined several immutable lists as return values to IReadOnlyList
+- Minor code maintenance
+
+Thanks to the following people (in the order of contribution date):
+
+- Shobb for the introduction of IReadOnlyList
+- John Lenz for the port to .NET Standard
+- Ned Marinov for the proposal of the new SetStyle function
+
 ## v1.5.0
 
 ---
