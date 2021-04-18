@@ -68,7 +68,7 @@ Currently, only basic reader functionality is available:
 
 &amp;lt%3bh2&amp;gt%3bRequirements&amp;lt%3b/h2&amp;gt%3b
 
-NanoXLSX is based on PicoXLSX and was created with .NET version 4.5. Newer versions like 4.6 are working and tested. Older versions like 3.5 and 4.0 may also work with minor changes. Some functions introduced in .NET 4.5 were used and must be adapted in this case.
+NanoXLSX is based on PicoXLSX and was created with .NET version 4.5. Newer versions like 4.6 are working and tested. Furthermore, .NET Standard 2.0 is supported since v2.6. Older versions of.NET like 3.5 and 4.0 may also work with minor changes. Some functions introduced in .NET 4.5 were used and must be adapted in this case.
 &amp;lt%3bbr/&amp;gt%3b
 
 &amp;lt%3bh3&amp;gt%3b.NET 4.5 or newer&amp;lt%3b/h3&amp;gt%3b
