@@ -691,7 +691,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the scope of the passed address (string expression). Scope means either single cell adress or range
+        /// Gets the scope of the passed address (string expression). Scope means either single cell address or range
         /// </summary>
         /// <param name="addressExpression">Address expression</param>
         /// <returns>Scope of the address expression</returns>
