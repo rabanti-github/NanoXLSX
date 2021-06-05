@@ -92,11 +92,11 @@ The .NET version of the documentation may vary, based on the installation. If v4
 
 &amp;lt%3bh3&amp;gt%3bUsing NuGet&amp;lt%3b/h3&amp;gt%3b
 
-By Package Manager:&amp;lt%3bbr&amp;gt%3b
+By Package Manager:&amp;lt%3bbr/&amp;gt%3b
 &amp;lt%3bpre&amp;gt%3b&amp;lt%3bcode&amp;gt%3bInstall-Package PicoXLSX&amp;lt%3b/code&amp;gt%3b&amp;lt%3b/pre&amp;gt%3b
-&amp;lt%3bbr&amp;gt%3b
-&amp;lt%3bbr&amp;gt%3b
-By .NET CLI:&amp;lt%3bbr&amp;gt%3b
+&amp;lt%3bbr/&amp;gt%3b
+&amp;lt%3bbr/&amp;gt%3b
+By .NET CLI:&amp;lt%3bbr/&amp;gt%3b
 &amp;lt%3bpre&amp;gt%3b&amp;lt%3bcode&amp;gt%3bdotnet add package PicoXLSX&amp;lt%3b/code&amp;gt%3b&amp;lt%3b/pre&amp;gt%3b
 
 &amp;lt%3bh3&amp;gt%3bAs DLL&amp;lt%3b/h3&amp;gt%3b
@@ -153,11 +153,12 @@ Workbook wb = Workbook.Load%28&amp;quot%3bbasic.xlsx&amp;quot%3b%29%3b          
     </TransformComponentArguments>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="NanoXLSX" isDocumented="True">Main namespace with all high-level classes and functions to create or read workbooks and worksheets</NamespaceSummaryItem>
-<NamespaceSummaryItem name="NanoXLSX.Exception" isDocumented="True">Sub-namespace for exceptions</NamespaceSummaryItem>
-<NamespaceSummaryItem name="NanoXLSX.LowLevel" isDocumented="True">Sub-namespace with all low-level classes and functions. This namespace is necessary to read and generate files but should not be used as pat of the API. Use the classes and functions in the namespace NanoXLSX instead</NamespaceSummaryItem>
-<NamespaceSummaryItem name="NanoXLSX.Style" isDocumented="True">Sub-namespace for style definitions, style handling and (static) basic styles</NamespaceSummaryItem>
-<NamespaceSummaryItem name="NanoXLSX.Exceptions" isDocumented="True">Sub-namespace for exceptions</NamespaceSummaryItem>
-<NamespaceSummaryItem name="NanoXLSX.Styles" isDocumented="True">Sub-namespace for style definitions, style handling and (static) basic styles</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="NanoXLSX.Exception" isDocumented="True">Sub-namespace for exceptions</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NanoXLSX.LowLevel" isDocumented="True">Sub-namespace with all low-level classes and functions. This namespace is necessary to read and generate files but should not be used as pat of the API. Use the classes and functions in the namespace NanoXLSX instead</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NanoXLSX.Style" isDocumented="True">Sub-namespace for style definitions, style handling and (static) basic styles</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NanoXLSX.Exceptions" isDocumented="True">Sub-namespace for exceptions</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NanoXLSX.Styles" isDocumented="True">Sub-namespace for style definitions, style handling and (static) basic styles</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <RootNamespaceTitle>NanoXLSX</RootNamespaceTitle>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
