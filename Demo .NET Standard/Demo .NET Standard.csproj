@@ -20,6 +20,12 @@
     <TargetFramework>net5.0</TargetFramework>
 
     <StartupObject>Demo.Program</StartupObject>
+
+    <Version>1.7.0</Version>
+
+    <AssemblyVersion>1.7.0.0</AssemblyVersion>
+
+    <FileVersion>1.7.0.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>

@@ -1,5 +1,13 @@
 # Change Log
 
+## v1.7.0
+
+---
+Release Date: **05.06.2021**
+
+- Added functions to determine the last row, column or cell with data
+- Updated readme and documentation
+
 ## v1.6.0
 
 ---

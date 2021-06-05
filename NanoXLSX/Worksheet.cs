@@ -948,26 +948,76 @@ namespace NanoXLSX
         /// Gets the last existing column number in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based column number. In case of a empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, GetLastColumnNumber() will return the column number of this empty cell. Use <see cref="GetLastDataColumnNumber"/> in this case.</remarks>
         public int GetLastColumnNumber()
         {
-            return GetLastAddress(true);
+            return GetLastAddress(true, false);
+        }
+
+        /// <summary>
+        /// Gets the last existing column number with data in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based column number. In case of a empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetLastDataColumnNumber() will ignore formatted but empty cells beyond the last column with data. If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
+        public int GetLastDataColumnNumber()
+        {
+            return GetLastAddress(true, true);
         }
 
         /// <summary>
         /// Gets the last existing row number in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based row number. In case of a empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetLastRowNumber() will not return the last row with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, GetLastRowNumber() will return the row number of this empty cell. Use <see cref="GetLastDataRowNumber"/> in this case.</remarks>
         public int GetLastRowNumber()
         {
-            return GetLastAddress(false);
+            return GetLastAddress(false, false);
+        }
+
+
+        /// <summary>
+        /// Gets the last existing row number with data in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based row number. In case of a empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetLastDataColumnNumber() will ignore formatted but empty cells beyond the last column with data. If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
+        public int GetLastDataRowNumber()
+        {
+            return GetLastAddress(false, true);
+        }
+
+        /// <summary>
+        ///  Gets the last existing cell in the current worksheet (bottom right)
+        /// </summary>
+        /// <returns>Cell Address</returns>
+        /// <remarks>GetLastCellAddress() will not return the last cell with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, GetLastCellAddress() will return the address of this empty cell. Use <see cref="GetLastDataCellAddress"/> in this case.</remarks>
+
+        public Address GetLastCellAddress()
+        {
+            int lastRow = GetLastRowNumber();
+            int lastColumn = GetLastColumnNumber();
+            return new Address(lastColumn, lastRow);
+        }
+
+        /// <summary>
+        ///  Gets the last existing cell with data in the current worksheet (bottom right)
+        /// </summary>
+        /// <returns>Cell Address</returns>
+        /// <remarks>GetLastDataCellAddress() will ignore formatted but empty cells beyond the last cell with data. If you want the last defined cell, use <see cref="GetLastCellAddress"/> instead.</remarks>
+
+        public Address GetLastDataCellAddress()
+        {
+            int lastRow = GetLastDataRowNumber();
+            int lastColumn = GetLastDataColumnNumber();
+            return new Address(lastColumn, lastRow);
         }
 
         /// <summary>
         /// Gets the last existing row or column number of the current worksheet (zero-based)
         /// </summary>
         /// <param name="column">If true, the output will be the last column, otherwise the last row</param>
+        /// <param name="ignoreEmpty">If true, empty cells are ignored and the last column or row is this one with a value</param>
         /// <returns>Last row or column number (zero-based)</returns>
-        private int GetLastAddress(bool column)
+        private int GetLastAddress(bool column, bool ignoreEmpty)
         {
             int max = -1;
             int number;
@@ -981,7 +1031,11 @@ namespace NanoXLSX
                 {
                     number = cell.Value.RowNumber;
                 }
-                if (number > max)
+                if (ignoreEmpty && cell.Value.Value != null && cell.Value.Value.ToString() != String.Empty && number > max)
+                {
+                    max = number;
+                }
+                else if (!ignoreEmpty && number > max)
                 {
                     max = number;
                 }
