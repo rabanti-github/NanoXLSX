@@ -5,10 +5,12 @@
 ---
 Release Date: **06.07.2021**
 
-- Added functions split (and freeze) a worksheet horizontally and vertically into panes
+- Added functions to split (and freeze) a worksheet horizontally and vertically into panes
 - Added a property to set the visibility of a workbook
 - Added a property to set the visibility of worksheets
 - Added two examples in the demo for the introduced split, freeze and visibility functionalities
+
+Note: The column widths may change slightly with this release, since now the actual (internal) column width is applied when setting a non-standard column width
 
 ## v1.7.0
 
