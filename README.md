@@ -110,7 +110,7 @@ Place all .CS files from the NanoXLSX source folder and its sub-folders into you
 
 See the full **API-Documentation** at: [https://rabanti-github.github.io/NanoXLSX/](https://rabanti-github.github.io/NanoXLSX/).
 
-The [demo project](https://github.com/rabanti-github/NanoXLSX/tree/master/Demo) contains 16 simple use cases. You can find also the full documentation in the [Documentation-Folder](https://github.com/rabanti-github/NanoXLSX/tree/master/docs) (html files or single chm file) or as C# documentation in the particular .CS files.
+The [demo project](https://github.com/rabanti-github/NanoXLSX/tree/master/Demo) contains 18 simple use cases. You can find also the full documentation in the [Documentation-Folder](https://github.com/rabanti-github/NanoXLSX/tree/master/docs) (html files or single chm file) or as C# documentation in the particular .CS files.
 
 Note: The demo project of the .NET Standard version is identical and only links to the .NET >=4.5 version files.
 

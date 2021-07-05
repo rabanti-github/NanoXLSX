@@ -128,6 +128,14 @@ namespace NanoXLSX
         {
             get { return worksheets; }
         }
+
+
+        /// <summary>
+        /// Gets or sets whether the whole workbook is hidden
+        /// </summary>
+        /// <remarks>A hidden workbook can only be made visible, using another, already visible Excel window</remarks>
+        public bool Hidden { get; set; }
+
         #endregion
 
         #region constructors
@@ -596,7 +604,7 @@ namespace NanoXLSX
             return currentWorksheet;
         }
 
-        /// <summary>
+        /// <summary>SetSelectedWorksheet
         /// Sets the selected worksheet in the output workbook
         /// </summary>
         /// <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>

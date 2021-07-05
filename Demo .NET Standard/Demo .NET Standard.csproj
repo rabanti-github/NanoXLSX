@@ -23,9 +23,9 @@
 
     <Version>1.7.0</Version>
 
-    <AssemblyVersion>1.7.0.0</AssemblyVersion>
+    <AssemblyVersion>1.8.0.0</AssemblyVersion>
 
-    <FileVersion>1.7.0.0</FileVersion>
+    <FileVersion>1.8.0.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>

@@ -203,12 +203,41 @@ namespace NanoXLSX.LowLevel
             }
             StringBuilder sb = new StringBuilder();
             sb.Append("<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">");
-            if (workbook.SelectedWorksheet > 0)
+            if (workbook.SelectedWorksheet > 0 || workbook.Hidden)
             {
-                sb.Append("<bookViews><workbookView activeTab=\"");
-                sb.Append(workbook.SelectedWorksheet.ToString("G", culture));
-                sb.Append("\"/></bookViews>");
+                sb.Append("<bookViews><workbookView ");
+                if (workbook.Hidden)
+                {
+                    sb.Append("visibility=\"hidden\"");
+                }
+                else
+                {
+                    sb.Append("activeTab=\"").Append(workbook.SelectedWorksheet.ToString("G", culture)).Append("\"");
+                }
+                sb.Append("/></bookViews>");
             }
+            CreateWorkbookProtectionString(sb);
+            sb.Append("<sheets>");
+            foreach (Worksheet item in workbook.Worksheets)
+            {
+                sb.Append("<sheet r:id=\"rId").Append(item.SheetID.ToString()).Append("\" sheetId=\"").Append(item.SheetID.ToString()).Append("\" name=\"").Append(EscapeXmlAttributeChars(item.SheetName)).Append("\"");
+                if (item.Hidden)
+                {
+                    sb.Append(" state=\"hidden\"");
+                }
+                sb.Append("/>");
+            }
+            sb.Append("</sheets>");
+            sb.Append("</workbook>");
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Method to create the (sub) part of the workbook protection within the workbook XML document
+        /// </summary>
+        /// <param name="sb">reference to the stringbuilder</param>
+        private void CreateWorkbookProtectionString(StringBuilder sb)
+        {
             if (workbook.UseWorkbookProtection)
             {
                 sb.Append("<workbookProtection");
@@ -228,14 +257,6 @@ namespace NanoXLSX.LowLevel
                 }
                 sb.Append("/>");
             }
-            sb.Append("<sheets>");
-            foreach (Worksheet item in workbook.Worksheets)
-            {
-                sb.Append("<sheet r:id=\"rId").Append(item.SheetID.ToString()).Append("\" sheetId=\"").Append(item.SheetID.ToString()).Append("\" name=\"").Append(EscapeXmlAttributeChars(item.SheetName)).Append("\"/>");
-            }
-            sb.Append("</sheets>");
-            sb.Append("</workbook>");
-            return sb.ToString();
         }
 
         /// <summary>
@@ -252,21 +273,10 @@ namespace NanoXLSX.LowLevel
             StringBuilder sb = new StringBuilder();
             string line;
             sb.Append("<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">");
-
-            if (worksheet.SelectedCells != null)
+            if (worksheet.SelectedCells != null || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null)
             {
-                sb.Append("<sheetViews><sheetView workbookViewId=\"0\"");
-                if (workbook.SelectedWorksheet == worksheet.SheetID - 1)
-                {
-                    sb.Append(" tabSelected=\"1\"");
-                }
-                sb.Append("><selection sqref=\"");
-                sb.Append(worksheet.SelectedCells.ToString());
-                sb.Append("\" activeCell=\"");
-                sb.Append(worksheet.SelectedCells.Value.StartAddress.ToString());
-                sb.Append("\"/></sheetView></sheetViews>");
+                createSheetViewString(worksheet, sb);
             }
-
             sb.Append("<sheetFormatPr x14ac:dyDescent=\"0.25\" defaultRowHeight=\"").Append(worksheet.DefaultRowHeight.ToString("G", culture)).Append("\" baseColWidth=\"").Append(worksheet.DefaultColumnWidth.ToString("G", culture)).Append("\"/>");
 
             string colWidths = CreateColsString(worksheet);
@@ -293,6 +303,178 @@ namespace NanoXLSX.LowLevel
 
             sb.Append("</worksheet>");
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Method to create the (sub) part of the sheet view (selected cells and panes) within the worksheet XML document
+        /// </summary>
+        /// <param name="worksheet">worksheet object to process</param>
+        /// <param name="sb">reference to the stringbuilder</param>
+        private void createSheetViewString(Worksheet worksheet, StringBuilder sb)
+        {
+            sb.Append("<sheetViews><sheetView workbookViewId=\"0\"");
+            if (workbook.SelectedWorksheet == worksheet.SheetID - 1)
+            {
+                sb.Append(" tabSelected=\"1\"");
+            }
+            sb.Append(">");
+            CreatePaneString(worksheet, sb);
+            if (worksheet.SelectedCells != null)
+            {
+                sb.Append("<selection sqref=\"");
+                sb.Append(worksheet.SelectedCells.Value.ToString());
+                sb.Append("\" activeCell=\"");
+                sb.Append(worksheet.SelectedCells.Value.StartAddress.ToString());
+                sb.Append("\"/>");
+            }
+            sb.Append("</sheetView></sheetViews>");
+        }
+
+        /// <summary>
+        /// Method to create the (sub) part of the pane (splitting and freezing) within the worksheet XML document
+        /// </summary>
+        /// <param name="worksheet">worksheet object to process</param>
+        /// <param name="sb">reference to the stringbuilder</param>
+        private void CreatePaneString(Worksheet worksheet, StringBuilder sb)
+        {
+            if (worksheet.PaneSplitLeftWidth == null && worksheet.PaneSplitTopHeight == null && worksheet.PaneSplitAddress == null)
+            {
+                return;
+            }
+            sb.Append("<pane");
+            bool applyXSplit = false;
+            bool applyYSplit = false;
+            if (worksheet.PaneSplitAddress != null)
+            {
+                bool freeze = worksheet.FreezeSplitPanes != null && worksheet.FreezeSplitPanes.Value;
+                int xSplit = worksheet.PaneSplitAddress.Value.Column;
+                int ySplit = worksheet.PaneSplitAddress.Value.Row;
+                if (xSplit > 0 )
+                {
+                    if (freeze)
+                    {
+                        sb.Append(" xSplit=\"").Append(Utils.ToString(xSplit)).Append("\"");
+                    }
+                    else
+                    {
+                        sb.Append(" xSplit=\"").Append(CalculatePaneWidth(worksheet, xSplit).ToString("G", culture)).Append("\"");
+                    }
+                    applyXSplit = true;
+                }
+                if (ySplit > 0)
+                {
+                    if (freeze)
+                    {
+                        sb.Append(" ySplit=\"").Append(Utils.ToString(ySplit)).Append("\"");
+                    }
+                    else
+                    {
+                        sb.Append(" ySplit=\"").Append(CalculatePaneHeight(worksheet, ySplit).ToString("G", culture)).Append("\"");
+                    }
+                    applyYSplit = true;
+                }
+                if (freeze && applyXSplit && applyYSplit)
+                {
+                    sb.Append(" state=\"frozenSplit\"");
+                }
+               else if (freeze)
+                {
+                    sb.Append(" state=\"frozen\"");
+                }
+            }
+            else
+            {
+                if (worksheet.PaneSplitLeftWidth != null)
+                {
+                    sb.Append(" xSplit=\"").Append(Utils.GetInternalPaneSplitWidth(worksheet.PaneSplitLeftWidth.Value).ToString("G", culture)).Append("\"");
+                    applyXSplit = true;
+                }
+                if (worksheet.PaneSplitTopHeight != null)
+                {
+                    sb.Append(" ySplit=\"").Append(Utils.GetInternalPaneSplitHeight(worksheet.PaneSplitTopHeight.Value).ToString("G", culture)).Append("\"");
+                    applyYSplit = true;
+                }
+            }
+            if (applyXSplit && applyYSplit)
+            {
+                switch (worksheet.ActivePane.Value)
+                {
+                    case Worksheet.WorksheetPane.bottomLeft:
+                        sb.Append(" activePane=\"bottomLeft\"");
+                        break;
+                    case Worksheet.WorksheetPane.bottomRight:
+                        sb.Append(" activePane=\"bottomRight\"");
+                        break;
+                    case Worksheet.WorksheetPane.topLeft:
+                        sb.Append(" activePane=\"topLeft\"");
+                        break;
+                    case Worksheet.WorksheetPane.topRight:
+                        sb.Append(" activePane=\"topRight\"");
+                        break;
+                }
+            }
+            String topLeftCell = worksheet.PaneSplitTopLeftCell.Value.GetAddress();
+            sb.Append(" topLeftCell=\"").Append(topLeftCell).Append("\" ");
+            sb.Append("/>");
+            if (applyXSplit && !applyYSplit)
+            {
+                sb.Append("<selection pane=\"topRight\" activeCell=\"" + topLeftCell + "\"  sqref=\"" + topLeftCell + "\" />");
+            }
+            else if (applyYSplit && !applyXSplit)
+            {
+                sb.Append("<selection pane=\"bottomLeft\" activeCell=\""+ topLeftCell + "\"  sqref=\"" + topLeftCell + "\" />");
+            }
+            else if (applyYSplit && applyXSplit)
+            {
+                sb.Append("<selection activeCell=\"" + topLeftCell + "\"  sqref=\"" + topLeftCell + "\" />");
+            }
+        }
+
+        /// <summary>
+        /// Method to calculate the pane height, based on the number of rows
+        /// </summary>
+        /// <param name="worksheet">worksheet object to get the row definitions from</param>
+        /// <param name="numberOfRows">Number of rows from the top to the split position</param>
+        /// <returns>Internal height from the top of the worksheet to the pane split position</returns>
+        private float CalculatePaneHeight(Worksheet worksheet, int numberOfRows)
+        {
+            float height = 0;
+            for(int i = 0; i < numberOfRows; i++)
+            {
+                if (worksheet.RowHeights.ContainsKey(i))
+                {
+                    height += worksheet.RowHeights[i];
+                }
+                else
+                {
+                    height += Worksheet.DEFAULT_ROW_HEIGHT;
+                }
+            }
+            return Utils.GetInternalPaneSplitHeight(height);
+        }
+
+        /// <summary>
+        /// Method to calculate the pane width, based on the number of columns
+        /// </summary>
+        /// <param name="worksheet">worksheet object to get the column definitions from</param>
+        /// <param name="numberOfColumns">Number of columns from the left to the split position</param>
+        /// <returns>Internal width from the left of the worksheet to the pane split position</returns>
+        private float CalculatePaneWidth(Worksheet worksheet, int numberOfColumns)
+        {
+            float width = 0;
+            for (int i = 0; i < numberOfColumns; i++)
+            {
+                if (worksheet.Columns.ContainsKey(i))
+                {
+                    width += Utils.GetInternalColumnWidth(worksheet.Columns[i].Width);
+                }
+                else
+                {
+                   width += Utils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
+                }
+            }
+            // Add padding of 75 per column
+            return Utils.GetInternalPaneSplitWidth(width) + ((numberOfColumns - 1) * 75f);
         }
 
         /// <summary>

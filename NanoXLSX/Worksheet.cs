@@ -122,6 +122,21 @@ namespace NanoXLSX
             /// <summary>If selected, the user can select unlocked cells if the worksheets is protected</summary>
             selectUnlockedCells
         }
+
+        /// <summary>
+        /// Enum to define the pane position or active pane in a slip worksheet
+        /// </summary>
+        public enum WorksheetPane
+        {
+            /// <summary>The pane is located in the bottom right of the split worksheet</summary>
+            bottomRight,
+            /// <summary>The pane is located in the top right of the split worksheet</summary>
+            topRight,
+            /// <summary>The pane is located in the bottom left of the split worksheet</summary>
+            bottomLeft,
+            /// <summary>The pane is located in the top left of the split worksheet</summary>
+            topLeft
+        }
         #endregion
 
         #region privateFields
@@ -140,8 +155,13 @@ namespace NanoXLSX
         private readonly List<SheetProtectionValue> sheetProtectionValues;
         private bool useActiveStyle;
         private string sheetProtectionPassword;
-
         private Range? selectedCells;
+        private bool? freezeSplitPanes;
+        private float? paneSplitLeftWidth;
+        private float? paneSplitTopHeight;
+        private Address? paneSplitTopLeftCell;
+        private Address? paneSplitAddress;
+        private WorksheetPane? activePane;
         #endregion
 
         #region properties
@@ -281,6 +301,81 @@ namespace NanoXLSX
         /// Gets or sets the Reference to the parent Workbook
         /// </summary>
         public Workbook WorkbookReference { get; set; }
+
+        /// <summary>
+        /// gets or sets whether the worksheet is hidden. If true, the worksheet is not listed in the worksheet tabs of the workbook
+        /// </summary>
+        public bool Hidden { get; set; }
+
+        /// <summary>
+        /// Gets the height of the upper, horizontal split pane, measured from the top of the window.<br/>
+        /// The value is nullable. If null, no horizontal split of the worksheet is applied.<br/>
+        /// The value is only applicable to split the worksheet into panes, but not to freeze them.<br/>
+        /// See also: <see cref="PaneSplitAddress"/>
+        /// </summary>
+        /// <remarks>Note: This value will be modified to the Excel-internal representation, 
+        /// calculated by <see cref="Utils.GetInternalPaneSplitHeight(float)"/>.</remarks>
+        public float? PaneSplitTopHeight
+        {
+            get { return paneSplitTopHeight; }
+        }
+
+        /// <summary>
+        /// Gets the width of the left, vertical split pane, measured from the left of the window.<br/>
+        /// The value is nullable. If null, no vertical split of the worksheet is applied<br/>
+        /// The value is only applicable to split the worksheet into panes, but not to freeze them.<br/>
+        /// See also: <see cref="PaneSplitAddress"/>
+        /// </summary>
+        /// <remarks>Note: This value will be modified to the Excel-internal representation, 
+        /// calculated by <see cref="Utils.GetInternalColumnWidth(float, float, float)"/>.</remarks>
+        public float? PaneSplitLeftWidth
+        {
+            get { return paneSplitLeftWidth; }
+        }
+
+
+
+        /// <summary>
+        /// Gets whether split panes are frozen.<br/>
+        /// The value is nullable. If null, no freezing is applied. This property also does not apply if <see cref="PaneSplitAddress"/> is null
+        /// </summary>
+        public bool? FreezeSplitPanes
+        {
+            get { return freezeSplitPanes; }
+        }
+
+        /// <summary>
+        /// Gets the Top Left cell address of the bottom right pane if applicable and splitting is applied.<br/>
+        /// The column is only relevant for vertical split, whereas the row component is only relevant for a horizontal split.<br/>
+        /// The value is nullable. If null, no splitting was defined.
+        /// </summary>
+        public Address? PaneSplitTopLeftCell
+        {
+            get { return paneSplitTopLeftCell; }
+        }
+
+        /// <summary>
+        /// Gets the split address for frozen panes or if pane split was defined in number of columns and / or rows.<br/> 
+        /// For vertical splits, only the column component is considered. For horizontal splits, only the row component is considered.<br/>
+        /// The value is nullable. If null, no frozen panes or split by columns / rows are applied to the worksheet. 
+        /// However, splitting can still be applied, if the value is defined in characters.<br/>
+        /// See also: <see cref="PaneSplitLeftWidth"/> and <see cref="PaneSplitTopHeight"/> for splitting in characters (without freezing)
+        /// </summary>
+        public Address? PaneSplitAddress
+        {
+            get { return paneSplitAddress; }
+        }
+
+
+        /// <summary>
+        /// Gets the active Pane is splitting is applied.<br/>
+        /// The value is nullable. If null, no splitting was defined
+        /// </summary>
+        public WorksheetPane? ActivePane
+        {
+            get { return activePane; }
+        }
+
         #endregion
 
 
@@ -1597,6 +1692,123 @@ namespace NanoXLSX
             sheetName = ""; // Empty name (temporary) to prevent conflicts during sanitizing
             sheetName = SanitizeWorksheetName(name, WorkbookReference);
         }
+
+        /// <summary>
+        /// Sets the horizontal split of the worksheet into two panes. The measurement in characters cannot be used to freeze panes
+        /// </summary>
+        /// <param name="topPaneHeight">Height (similar to row height) from top of the worksheet to the split line in characters</param>
+        /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the row component is important in a horizontal split</param>
+        /// <param name="activePane">Active pane in the split window</param>
+        public void SetHorizontalSplit(float topPaneHeight, Address topLeftCell, WorksheetPane activePane)
+        {
+            SetSplit(null, topPaneHeight, topLeftCell, activePane);
+        }
+
+        /// <summary>
+        /// Sets the horizontal split of the worksheet into two panes. The measurement in rows can be used to split and freeze panes
+        /// </summary>
+        /// <param name="numberOfRowsFromTop">Number of rows from top of the worksheet to the split line. The particular row heights are considered</param>
+        /// <param name="freeze">If true, all panes are frozen, otherwise remains movable</param>
+        /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the row component is important in a horizontal split</param>
+        /// <param name="activePane">Active pane in the split window</param>
+        /// <exception cref="WorksheetException">WorksheetException Thrown if the row number of the top left cell is smaller the split panes number of rows from top, if freeze is applied</exception>
+        public void SetHorizontalSplit(int numberOfRowsFromTop, bool freeze, Address topLeftCell, WorksheetPane activePane)
+        {
+            SetSplit(null, numberOfRowsFromTop, freeze, topLeftCell, activePane);
+        }
+
+        /// <summary>
+        /// Sets the vertical split of the worksheet into two panes. The measurement in characters cannot be used to freeze panes
+        /// </summary>
+        /// <param name="leftPaneWidth">Width (similar to column width) from left of the worksheet to the split line in characters</param>
+        /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the column component is important in a vertical split</param>
+        /// <param name="activePane">Active pane in the split window</param>
+        public void SetVerticalSplit(float leftPaneWidth, Address topLeftCell, WorksheetPane activePane)
+        {
+            SetSplit(leftPaneWidth, null, topLeftCell, activePane);
+        }
+
+        /// <summary>
+        /// Sets the vertical split of the worksheet into two panes. The measurement in columns can be used to split and freeze panes
+        /// </summary>
+        /// <param name="numberOfColumnsFromLeft">Number of columns from left of the worksheet to the split line. The particular column widths are considered</param>
+        /// <param name="freeze">If true, all panes are frozen, otherwise remains movable</param>
+        /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the column component is important in a vertical split</param>
+        /// <param name="activePane">Active pane in the split window</param>
+        /// <exception cref="WorksheetException">WorksheetException Thrown if the column number of the top left cell is smaller the split panes number of columns from left, if freeze is applied</exception>
+        public void SetVerticalSplit(int numberOfColumnsFromLeft, bool freeze, Address topLeftCell, WorksheetPane activePane)
+        {
+            SetSplit(numberOfColumnsFromLeft, null, freeze, topLeftCell, activePane);
+        }
+
+        /// <summary>
+        /// Sets the horizontal and vertical split of the worksheet into four panes. The measurement in rows and columns can be used to split and freeze panes
+        /// </summary>
+        /// <param name="numberOfColumnsFromLeft">Number of columns from left of the worksheet to the split line. The particular column widths are considered.<br/>
+        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetHorizontalSplit(int, bool)"/></param>
+        /// <param name="numberOfRowsFromTop">Number of rows from top of the worksheet to the split line. The particular row heights are considered.<br/>
+        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetVerticalSplit(int, bool)"/></param>
+        /// <param name="freeze">If true, all panes are frozen, otherwise remains movable</param>
+        /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable)</param>
+        /// <param name="activePane">Active pane in the split window</param>
+        /// <exception cref="WorksheetException">WorksheetException Thrown if the address of the top left cell is smaller the split panes address, if freeze is applied</exception>
+        public void SetSplit(int? numberOfColumnsFromLeft, int? numberOfRowsFromTop, bool freeze, Address topLeftCell, WorksheetPane activePane)
+        {
+            if (freeze)
+            {
+                if (numberOfColumnsFromLeft != null && topLeftCell.Column < numberOfColumnsFromLeft.Value)
+                {
+                    throw new WorksheetException("InvalidTopLeftCellException", "The column number " + topLeftCell.Column + 
+                        " is not valid for a frozen, vertical split with the split pane column number " + numberOfColumnsFromLeft.Value);
+                }
+                if (numberOfRowsFromTop != null && topLeftCell.Row < numberOfRowsFromTop.Value)
+                {
+                    throw new WorksheetException("InvalidTopLeftCellException", "The row number " + topLeftCell.Row +
+                        " is not valid for a frozen, horizontal split height the split pane row number " + numberOfRowsFromTop.Value);
+                }
+            }
+            this.paneSplitLeftWidth = null;
+            this.paneSplitTopHeight = null;
+            this.freezeSplitPanes = freeze;
+            int row = numberOfRowsFromTop != null ? numberOfRowsFromTop.Value : 0;
+            int column = numberOfColumnsFromLeft != null ? numberOfColumnsFromLeft.Value : 0;
+            this.paneSplitAddress = new Address(column, row);
+            this.paneSplitTopLeftCell = topLeftCell;
+            this.activePane = activePane;
+        }
+
+        /// <summary>
+        /// Sets the horizontal and vertical split of the worksheet into four panes. The measurement in characters cannot be used to freeze panes
+        /// </summary>
+        /// <param name="leftPaneWidth">Width (similar to column width) from left of the worksheet to the split line in characters.<br/>
+        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetHorizontalSplit(float, bool)"/></param>
+        /// <param name="topPaneHeight">Height (similar to row height) from top of the worksheet to the split line in characters.<br/>
+        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetVerticalSplit(float, bool)"/></param>
+        /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable)</param>
+        /// <param name="activePane">Active pane in the split window</param>
+        public void SetSplit(float? leftPaneWidth, float? topPaneHeight, Address topLeftCell, WorksheetPane activePane)
+        {
+            this.paneSplitLeftWidth = leftPaneWidth;
+            this.paneSplitTopHeight = topPaneHeight;
+            this.freezeSplitPanes = null;
+            this.paneSplitAddress = null;
+            this.paneSplitTopLeftCell = topLeftCell;
+            this.activePane = activePane;
+        }
+
+        /// <summary>
+        /// Resets splitting of the worksheet into panes, as well as their freezing 
+        /// </summary>
+        public void ResetSplit()
+        {
+            this.paneSplitLeftWidth = null;
+            this.paneSplitTopHeight = null;
+            this.freezeSplitPanes = null;
+            this.paneSplitAddress = null;
+            this.paneSplitTopLeftCell = null;
+            this.activePane = null;
+        }
+
 
         #region static_methods
 

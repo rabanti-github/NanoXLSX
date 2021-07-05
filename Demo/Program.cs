@@ -30,6 +30,7 @@ namespace Demo
         /// <param name="args">Not used</param>
         static void Main(string[] args)
         {
+
             BasicDemo();
             Read();
             ShortenerDemo();
@@ -48,7 +49,8 @@ namespace Demo
             Demo9();
             Demo10();
             Demo11();
-
+            Demo12();
+            Demo13();
 
             /* ### PERFORMANCE TESTS ### */
             // # Use tests in this section to test the performance of NanoXLSX
@@ -514,6 +516,50 @@ namespace Demo
             wb.CurrentWorksheet.SetStyle(new Address("F6"), new Address("F10"), style);           // Set style based on a two address objects as range
 
             wb.Save();                                                                            // Save the workbook
+        }
+
+        /// <summary>
+        /// This demo shows the usage of splitting and freezing a worksheet into several panes
+        /// </summary>
+        private static void Demo12()
+        {
+            Workbook wb = new Workbook("demo12.xlsx", "splitXchars");                                               // Create a new workbook
+            wb.CurrentWorksheet.SetVerticalSplit(30f, new Address("D1"), Worksheet.WorksheetPane.topRight);         // Split worksheet vertically by characters
+            wb.AddWorksheet("SplitXcols");                                                                          // Create new worksheet
+            wb.CurrentWorksheet.SetVerticalSplit(4, false, new Address("E1"), Worksheet.WorksheetPane.topRight);    // Split worksheet vertically by columns
+            wb.AddWorksheet("SplitYchars");                                                                         // Create new worksheet
+            wb.CurrentWorksheet.SetHorizontalSplit(20f, new Address("C1"), Worksheet.WorksheetPane.bottomLeft);     // Split worksheet horizontally by characters
+            wb.AddWorksheet("SplitYcols");                                                                          // Create new worksheet
+            wb.CurrentWorksheet.SetHorizontalSplit(5, false, new Address("A6"), Worksheet.WorksheetPane.bottomLeft);// Split worksheet horizontally by rows
+            wb.AddWorksheet("SplitXYchars");                                                                        // Create new worksheet
+            wb.CurrentWorksheet.SetSplit(30f, 20f, new Address("D3"), Worksheet.WorksheetPane.bottomRight);         // Split worksheet horizontally and vertically by characters
+            wb.AddWorksheet("SplitXYColRow");                                                                       // Create new worksheet
+            wb.CurrentWorksheet.SetSplit(3, 10, false, new Address("D11"), Worksheet.WorksheetPane.bottomRight);    // Split worksheet horizontally and vertically by rows and columns
+            wb.AddWorksheet("FreezeXcols");                                                                         // Create new worksheet
+            wb.CurrentWorksheet.SetVerticalSplit(4, true, new Address("E1"), Worksheet.WorksheetPane.topRight);     // Split and freeze worksheet vertically by columns
+            wb.AddWorksheet("FreezeYcols");                                                                         // Create new worksheet
+            wb.CurrentWorksheet.SetHorizontalSplit(5, true, new Address("A6"), Worksheet.WorksheetPane.bottomLeft); // Split and freeze worksheet horizontally by rows
+            wb.AddWorksheet("FreezeXYColRow");                                                                      // Create new worksheet
+            wb.CurrentWorksheet.SetSplit(3, 10, true, new Address("D11"), Worksheet.WorksheetPane.bottomRight);     // Split and freeze worksheet horizontally and vertically by rows and columns
+            wb.Save();                                                                                              // Save the workbook
+        }
+
+        /// <summary>
+        /// This demo shows the usage of hiding workbooks and worksheets
+        /// </summary>
+        private static void Demo13()
+        {
+            Workbook wb = new Workbook("demo13(hidden_workbook).xlsx", "hiddenWB");         // Create a new workbook
+            wb.CurrentWorksheet.AddNextCell("Hidden Workbook");
+            wb.Hidden = true;                                                               // Set the workbook hidden (Set visible again in another, visible workbook)
+            wb.Save();                                                                      // Save the workbook
+
+            Workbook wb2 = new Workbook("demo13(hidden:worksheet).xlsx", "visible");       // Create a new workbook
+            wb2.CurrentWorksheet.AddNextCell("Visible Worksheet");
+            wb.AddWorksheet("hidden");                                                     // Create new worksheet
+            wb.CurrentWorksheet.AddNextCell("Hidden Worksheet");
+            wb.CurrentWorksheet.Hidden = true;                                             // Set the current worksheet hidden
+            wb2.Save();                                                                    // Save the workbook
         }
 
         #region Utils
