@@ -474,7 +474,7 @@ namespace NanoXLSX.LowLevel
                 }
             }
             // Add padding of 75 per column
-            return Utils.GetInternalPaneSplitWidth(width) + ((numberOfColumns - 1) * 75f);
+            return Utils.GetInternalPaneSplitWidth(width) + ((numberOfColumns - 1) * 0f);
         }
 
         /// <summary>
@@ -716,7 +716,8 @@ namespace NanoXLSX.LowLevel
                         }
                     }
                     col = (column.Key + 1).ToString("G", culture); // Add 1 for Address
-                    sb.Append("<col customWidth=\"1\" width=\"").Append(column.Value.Width.ToString("G", culture)).Append("\" max=\"").Append(col).Append("\" min=\"").Append(col).Append("\"").Append(hidden).Append("/>");
+                    float width = Utils.GetInternalColumnWidth(column.Value.Width);
+                    sb.Append("<col customWidth=\"1\" width=\"").Append(width.ToString("G", culture)).Append("\" max=\"").Append(col).Append("\" min=\"").Append(col).Append("\"").Append(hidden).Append("/>");
                 }
                 string value = sb.ToString();
                 if (value.Length > 0)

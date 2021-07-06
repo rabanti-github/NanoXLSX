@@ -7,11 +7,15 @@
 
 using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using NanoXLSX.Exceptions;
 
 
 namespace NanoXLSX
 {
+    /// <summary>
+    /// General Utils class with static methods
+    /// </summary>
     public static class Utils
     {
         #region constants
@@ -24,15 +28,17 @@ namespace NanoXLSX
         /// </summary>
         public static readonly double MAX_OADATE_VALUE = 2958465.9999d;
         /// <summary>
-        /// All dates before this date are shifted in Excel by -1.0, since Excel assumes wrongly that the year 1900 is a leap year
+        /// All dates before this date are shifted in Excel by -1.0, since Excel assumes wrongly that the year 1900 is a leap year.<br/>
+        /// See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
+        /// https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a>
         /// </summary>
-        /// <seealso cref="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year"/>
         public static readonly DateTime FIRST_VALID_EXCEL_DATE = new DateTime(1900, 3, 1);
 
         /// <summary>
         /// Constant for number conversion. The invariant culture (represents mostly the US numbering scheme) ensures that no culture-specific 
         /// punctuations are used when converting numbers to strings, This is especially important for OOXML number values.
-        /// See also: <see cref="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture?view=net-5.0"/>
+        /// See also: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture?view=net-5.0">
+        /// https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture?view=net-5.0</a>
         /// </summary>
         public static readonly CultureInfo INVARIANT_CULTURE = CultureInfo.InvariantCulture;
 
@@ -54,9 +60,12 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
         /// <remarks>Excel assumes wrongly that the year 1900 is a leap year. There is a gap of 1.0 between 1900-02-28 and 1900-03-01. This method corrects all dates
         /// from the first valid date (1900-01-01) to 1900-03-01. However, Excel displays the minimum valid date as 1900-01-00, although 0 is not a valid description for a day of month.
-        /// In conformance to the OAdate specifications, the maximum valid date is 9999-12-31 23:59:59 (plus 999 milliseconds)</remarks>
-        /// <seealso cref="https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1"/>
-        /// <seealso cref="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year"/>
+        /// In conformance to the OAdate specifications, the maximum valid date is 9999-12-31 23:59:59 (plus 999 milliseconds).<br/>
+        ///See also: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1">
+        ///https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1</a><br/>
+        ///See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
+        ///https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a>
+        /// </remarks>
         public static string GetOADateTimeString(DateTime date, IFormatProvider culture)
         {
             try
