@@ -42,13 +42,14 @@ namespace NanoXLSX
         /// </summary>
         public static readonly CultureInfo INVARIANT_CULTURE = CultureInfo.InvariantCulture;
 
-        private static readonly float COLUMN_WIDTH_ROUNDING_MODIFIER = 256f;
-        private static readonly float SPLIT_WIDTH_MULTIPLIER = 12f;
-        private static readonly float SPLIT_WIDTH_OFFSET = 0.5f;
-        private static readonly float SPLIT_WIDTH_POINT_MULTIPLIER = 3f / 4f;
-        private static readonly float SPLIT_POINT_DIVIDER = 20f;
-        private static readonly float SPLIT_WIDTH_POINT_OFFSET = 390f;
-        private static readonly float SPLIT_HEIGHT_POINT_OFFSET = 300f;
+        private const float COLUMN_WIDTH_ROUNDING_MODIFIER = 256f;
+        private const float SPLIT_WIDTH_MULTIPLIER = 12f;
+        private const float SPLIT_WIDTH_OFFSET = 0.5f;
+        private const float SPLIT_WIDTH_POINT_MULTIPLIER = 3f / 4f;
+        private const float SPLIT_POINT_DIVIDER = 20f;
+        private const float SPLIT_WIDTH_POINT_OFFSET = 390f;
+        private const float SPLIT_HEIGHT_POINT_OFFSET = 300f;
+        private const float ROW_HEIGHT_POINT_MULTIPLIER = 1f / 3f + 1f;
 
         #endregion
 
@@ -117,15 +118,7 @@ namespace NanoXLSX
         /// <returns>Upper case string</returns>
         public static string ToUpper(string input)
         {
-            if (!string.IsNullOrEmpty(input))
-            {
-                return input.ToUpper(INVARIANT_CULTURE);
-            }
-            else
-            {
-                return input;
-            }
-            
+            return !string.IsNullOrEmpty(input) ? input.ToUpper(INVARIANT_CULTURE) : input;
         }
 
         /// <summary>
@@ -168,6 +161,24 @@ namespace NanoXLSX
             {
                 return (float)Math.Floor((columnWidth * maxDigitWidth + textPadding) / maxDigitWidth * COLUMN_WIDTH_ROUNDING_MODIFIER) / COLUMN_WIDTH_ROUNDING_MODIFIER;
             }
+        }
+
+        /// <summary>
+        /// Calculates the internal height of a row. This height is used only in the XML documents of worksheets and is usually not exposed to the (Excel) end user
+        /// </summary>
+        /// <remarks>The height is based on the calculated amount of pixels. One point are ~1.333 (1+1/3) pixels. 
+        /// After the conversion, the number of pixels is rounded to the nearest integer and calculated back to points.<br/>
+        /// Therefore, the originally defined row height will slightly deviate, based on this pixel snap</remarks>
+        /// <param name="rowHeight">Target row height (displayed in Excel)</param>
+        /// <returns>The internal row height which snaps to the nearest pixel</returns>
+        public static float GetInternalRowHeight(float rowHeight)
+        {
+            if (rowHeight <= 0f)
+            {
+                return 0f;
+            }
+            double heightInPixel = Math.Round(rowHeight * ROW_HEIGHT_POINT_MULTIPLIER);
+            return (float)heightInPixel / ROW_HEIGHT_POINT_MULTIPLIER;
         }
 
         /// <summary>

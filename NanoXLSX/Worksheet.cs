@@ -1043,7 +1043,8 @@ namespace NanoXLSX
         /// Gets the last existing column number in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based column number. In case of a empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, GetLastColumnNumber() will return the column number of this empty cell. Use <see cref="GetLastDataColumnNumber"/> in this case.</remarks>
+        /// <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, 
+        /// GetLastColumnNumber() will return the column number of this empty cell. Use <see cref="GetLastDataColumnNumber"/> in this case.</remarks>
         public int GetLastColumnNumber()
         {
             return GetLastAddress(true, false);
@@ -1053,7 +1054,8 @@ namespace NanoXLSX
         /// Gets the last existing column number with data in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based column number. In case of a empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastDataColumnNumber() will ignore formatted but empty cells beyond the last column with data. If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
+        /// <remarks>GetLastDataColumnNumber() will ignore formatted but empty cells beyond the last column with data. 
+        /// If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
         public int GetLastDataColumnNumber()
         {
             return GetLastAddress(true, true);
@@ -1063,7 +1065,8 @@ namespace NanoXLSX
         /// Gets the last existing row number in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based row number. In case of a empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastRowNumber() will not return the last row with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, GetLastRowNumber() will return the row number of this empty cell. Use <see cref="GetLastDataRowNumber"/> in this case.</remarks>
+        /// <remarks>GetLastRowNumber() will not return the last row with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, 
+        /// GetLastRowNumber() will return the row number of this empty cell. Use <see cref="GetLastDataRowNumber"/> in this case.</remarks>
         public int GetLastRowNumber()
         {
             return GetLastAddress(false, false);
@@ -1074,7 +1077,8 @@ namespace NanoXLSX
         /// Gets the last existing row number with data in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based row number. In case of a empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastDataColumnNumber() will ignore formatted but empty cells beyond the last column with data. If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
+        /// <remarks>GetLastDataColumnNumber() will ignore formatted but empty cells beyond the last column with data. 
+        /// If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
         public int GetLastDataRowNumber()
         {
             return GetLastAddress(false, true);
@@ -1084,7 +1088,8 @@ namespace NanoXLSX
         ///  Gets the last existing cell in the current worksheet (bottom right)
         /// </summary>
         /// <returns>Cell Address</returns>
-        /// <remarks>GetLastCellAddress() will not return the last cell with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, GetLastCellAddress() will return the address of this empty cell. Use <see cref="GetLastDataCellAddress"/> in this case.</remarks>
+        /// <remarks>GetLastCellAddress() will not return the last cell with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, 
+        /// GetLastCellAddress() will return the address of this empty cell. Use <see cref="GetLastDataCellAddress"/> in this case.</remarks>
 
         public Address GetLastCellAddress()
         {
@@ -1097,7 +1102,8 @@ namespace NanoXLSX
         ///  Gets the last existing cell with data in the current worksheet (bottom right)
         /// </summary>
         /// <returns>Cell Address</returns>
-        /// <remarks>GetLastDataCellAddress() will ignore formatted but empty cells beyond the last cell with data. If you want the last defined cell, use <see cref="GetLastCellAddress"/> instead.</remarks>
+        /// <remarks>GetLastDataCellAddress() will ignore formatted but empty cells beyond the last cell with data. 
+        /// If you want the last defined cell, use <see cref="GetLastCellAddress"/> instead.</remarks>
 
         public Address GetLastDataCellAddress()
         {
@@ -1118,14 +1124,7 @@ namespace NanoXLSX
             int number;
             foreach (KeyValuePair<string, Cell> cell in cells)
             {
-                if (column)
-                {
-                    number = cell.Value.ColumnNumber;
-                }
-                else
-                {
-                    number = cell.Value.RowNumber;
-                }
+                number = column ? cell.Value.ColumnNumber : cell.Value.RowNumber;
                 if (ignoreEmpty && cell.Value.Value != null && cell.Value.Value.ToString() != String.Empty && number > max)
                 {
                     max = number;
@@ -1735,7 +1734,8 @@ namespace NanoXLSX
         /// <param name="freeze">If true, all panes are frozen, otherwise remains movable</param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the column component is important in a vertical split</param>
         /// <param name="activePane">Active pane in the split window</param>
-        /// <exception cref="WorksheetException">WorksheetException Thrown if the column number of the top left cell is smaller the split panes number of columns from left, if freeze is applied</exception>
+        /// <exception cref="WorksheetException">WorksheetException Thrown if the column number of the top left cell is smaller the split panes number of columns from left, 
+        /// if freeze is applied</exception>
         public void SetVerticalSplit(int numberOfColumnsFromLeft, bool freeze, Address topLeftCell, WorksheetPane activePane)
         {
             SetSplit(numberOfColumnsFromLeft, null, freeze, topLeftCell, activePane);
@@ -1745,9 +1745,9 @@ namespace NanoXLSX
         /// Sets the horizontal and vertical split of the worksheet into four panes. The measurement in rows and columns can be used to split and freeze panes
         /// </summary>
         /// <param name="numberOfColumnsFromLeft">Number of columns from left of the worksheet to the split line. The particular column widths are considered.<br/>
-        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetHorizontalSplit(int, bool)"/></param>
+        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetHorizontalSplit(int, bool, Address, WorksheetPane)"/></param>
         /// <param name="numberOfRowsFromTop">Number of rows from top of the worksheet to the split line. The particular row heights are considered.<br/>
-        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetVerticalSplit(int, bool)"/></param>
+        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetVerticalSplit(int, bool, Address, WorksheetPane)"/></param>
         /// <param name="freeze">If true, all panes are frozen, otherwise remains movable</param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable)</param>
         /// <param name="activePane">Active pane in the split window</param>
@@ -1781,9 +1781,9 @@ namespace NanoXLSX
         /// Sets the horizontal and vertical split of the worksheet into four panes. The measurement in characters cannot be used to freeze panes
         /// </summary>
         /// <param name="leftPaneWidth">Width (similar to column width) from left of the worksheet to the split line in characters.<br/>
-        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetHorizontalSplit(float, bool)"/></param>
+        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetHorizontalSplit(float, Address, WorksheetPane)"/></param>
         /// <param name="topPaneHeight">Height (similar to row height) from top of the worksheet to the split line in characters.<br/>
-        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetVerticalSplit(float, bool)"/></param>
+        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetVerticalSplit(float, Address, WorksheetPane)"/></param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable)</param>
         /// <param name="activePane">Active pane in the split window</param>
         public void SetSplit(float? leftPaneWidth, float? topPaneHeight, Address topLeftCell, WorksheetPane activePane)

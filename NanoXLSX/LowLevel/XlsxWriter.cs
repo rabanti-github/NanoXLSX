@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Packaging;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -269,9 +270,7 @@ namespace NanoXLSX.LowLevel
         {
             worksheet.RecalculateAutoFilter();
             worksheet.RecalculateColumns();
-            List<List<Cell>> celldata = GetSortedSheetData(worksheet);
             StringBuilder sb = new StringBuilder();
-            string line;
             sb.Append("<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">");
             if (worksheet.SelectedCells != null || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null)
             {
@@ -287,11 +286,7 @@ namespace NanoXLSX.LowLevel
                 sb.Append("</cols>");
             }
             sb.Append("<sheetData>");
-            foreach (List<Cell> item in celldata)
-            {
-                line = CreateRowString(item, worksheet);
-                sb.Append(line);
-            }
+            CreateRowsString(worksheet, sb);
             sb.Append("</sheetData>");
             sb.Append(CreateMergedCellsString(worksheet));
             sb.Append(CreateSheetProtectionString(worksheet));
@@ -303,6 +298,17 @@ namespace NanoXLSX.LowLevel
 
             sb.Append("</worksheet>");
             return sb.ToString();
+        }
+
+        private void CreateRowsString(Worksheet worksheet, StringBuilder sb)
+        {
+            List<DynamicRow> cellData = GetSortedSheetData(worksheet);
+            String line;
+            foreach(DynamicRow row in cellData)
+            {
+                line = CreateRowString(row, worksheet);
+                sb.Append(line);
+            }
         }
 
         /// <summary>
@@ -443,11 +449,11 @@ namespace NanoXLSX.LowLevel
             {
                 if (worksheet.RowHeights.ContainsKey(i))
                 {
-                    height += worksheet.RowHeights[i];
+                    height +=  Utils.GetInternalRowHeight(worksheet.RowHeights[i]);
                 }
                 else
                 {
-                    height += Worksheet.DEFAULT_ROW_HEIGHT;
+                    height += Utils.GetInternalRowHeight(Worksheet.DEFAULT_ROW_HEIGHT);
                 }
             }
             return Utils.GetInternalPaneSplitHeight(height);
@@ -780,20 +786,20 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Method to create a row string
         /// </summary>
-        /// <param name="columnFields">List of cells</param>
+        /// <param name="dynamicRow">Dynamic row with List of cells, heights and hidden states</param>
         /// <param name="worksheet">Worksheet to process</param>
         /// <returns>Formatted row string</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        private string CreateRowString(List<Cell> columnFields, Worksheet worksheet)
+        private string CreateRowString(DynamicRow dynamicRow, Worksheet worksheet)
         {
-            int rowNumber = columnFields[0].RowNumber;
+            int rowNumber = dynamicRow.RowNumber;
             string height = "";
             string hidden = "";
             if (worksheet.RowHeights.ContainsKey(rowNumber))
             {
                 if (worksheet.RowHeights[rowNumber] != worksheet.DefaultRowHeight)
                 {
-                    height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + worksheet.RowHeights[rowNumber].ToString("G", culture) + "\"";
+                    height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + Utils.GetInternalRowHeight(worksheet.RowHeights[rowNumber]).ToString("G", culture) + "\"";
                 }
             }
             if (worksheet.HiddenRows.ContainsKey(rowNumber))
@@ -804,14 +810,7 @@ namespace NanoXLSX.LowLevel
                 }
             }
             StringBuilder sb = new StringBuilder();
-            if (columnFields.Count > 0)
-            {
-                sb.Append("<row r=\"").Append((rowNumber + 1).ToString()).Append("\"").Append(height).Append(hidden).Append(">");
-            }
-            else
-            {
-                sb.Append("<row").Append(height).Append(">");
-            }
+            sb.Append("<row r=\"").Append((rowNumber + 1).ToString()).Append("\"").Append(height).Append(hidden).Append(">");
             string typeAttribute;
             string styleDef = "";
             string typeDef = "";
@@ -819,7 +818,7 @@ namespace NanoXLSX.LowLevel
             bool boolValue;
 
             int col = 0;
-            foreach (Cell item in columnFields)
+            foreach (Cell item in dynamicRow.CellDefinitions)
             {
                 typeDef = " ";
                 if (item.CellStyle != null)
@@ -1369,8 +1368,8 @@ namespace NanoXLSX.LowLevel
         /// Method to sort the cells of a worksheet as preparation for the XML document
         /// </summary>
         /// <param name="sheet">Worksheet to process</param>
-        /// <returns>Two dimensional array of Cell objects</returns>
-        private List<List<Cell>> GetSortedSheetData(Worksheet sheet)
+        /// <returns>Sorted list of dynamic rows that are either defined by cells or row widths / hidden states. The list is sorted by row numbers (zero-based)</returns>
+        private List<DynamicRow> GetSortedSheetData(Worksheet sheet)
         {
             List<Cell> temp = new List<Cell>();
             foreach (KeyValuePair<string, Cell> item in sheet.Cells)
@@ -1378,28 +1377,52 @@ namespace NanoXLSX.LowLevel
                 temp.Add(item.Value);
             }
             temp.Sort();
-            List<Cell> line = new List<Cell>();
-            List<List<Cell>> output = new List<List<Cell>>();
+            DynamicRow row = new DynamicRow(); ;
+            Dictionary<int, DynamicRow> rows = new Dictionary<int, DynamicRow>();
+            int rowNumber;
             if (temp.Count > 0)
             {
-                int rowNumber = temp[0].RowNumber;
-                foreach (Cell item in temp)
+                rowNumber = temp[0].RowNumber;
+                row.RowNumber = rowNumber;
+                foreach (Cell cell in temp)
                 {
-                    if (item.RowNumber != rowNumber)
+                    if (cell.RowNumber != rowNumber)
                     {
-                        output.Add(line);
-                        line = new List<Cell>();
-                        rowNumber = item.RowNumber;
+                        rows.Add(rowNumber, row);
+                        row = new DynamicRow();
+                        row.RowNumber = cell.RowNumber;
+                        rowNumber = cell.RowNumber;
                     }
-                    line.Add(item);
+                    row.CellDefinitions.Add(cell);
                 }
-                if (line.Count > 0)
+                if (row.CellDefinitions.Count > 0)
                 {
-                    output.Add(line);
+                    rows.Add(rowNumber, row);
                 }
             }
+            foreach (KeyValuePair<int, float> rowHeight in sheet.RowHeights)
+            {
+                if (!rows.ContainsKey(rowHeight.Key))
+                {
+                    row = new DynamicRow();
+                    row.RowNumber = rowHeight.Key;
+                    rows.Add(rowHeight.Key, row);
+                }
+            }
+            foreach(KeyValuePair<int, bool> hiddenRow in sheet.HiddenRows)
+            {
+               if (!rows.ContainsKey(hiddenRow.Key))
+               {
+                    row = new DynamicRow();
+                    row.RowNumber = hiddenRow.Key;
+                    rows.Add(hiddenRow.Key, row);
+                }
+            }
+            List<DynamicRow> output = rows.Values.ToList();
+            output.Sort((r1, r2) => (r1.RowNumber.CompareTo(r2.RowNumber))); // Lambda sort
             return output;
         }
+
 
 
         #endregion
@@ -1512,8 +1535,33 @@ namespace NanoXLSX.LowLevel
             return passwordHash.ToString("X");
         }
 
+        #endregion
 
+        #region helperClasses
+        /// <summary>
+        /// Class representing a row that is either empty or containing cells. Empty rows can also carry information about height or visibility
+        /// </summary>
+        private class DynamicRow
+        {
+            private List<Cell> cellDefinitions;
+            public int RowNumber { get; set; }
 
+            /// <summary>
+            /// Gets the List of cells if not empty
+            /// </summary>
+            public List<Cell> CellDefinitions
+            {
+                get { return cellDefinitions; }
+            }
+
+            /// <summary>
+            /// Default constructor. Defines an empty row if no additional operations are made on the object
+            /// </summary>
+            public DynamicRow()
+            {
+                this.cellDefinitions = new List<Cell>();
+            }
+        }
         #endregion
 
     }

@@ -44,7 +44,6 @@ namespace NanoXLSX.Styles
             {
                 throw new StyleException("CopyPropertyException", "The objects of the source, target and reference for style appending are not of the same type");
             }
-            bool ignore;
             PropertyInfo[] infos = GetType().GetProperties();
             PropertyInfo sourceInfo;
             PropertyInfo referenceInfo;
@@ -88,7 +87,7 @@ namespace NanoXLSX.Styles
             {
                 return -1;
             }
-            else if (!other.InternalID.HasValue)
+            else if (other == null || !other.InternalID.HasValue)
             {
                 return 1;
             }
@@ -105,6 +104,10 @@ namespace NanoXLSX.Styles
         /// <returns>True if both objects are equal, otherwise false</returns>
         public bool Equals(AbstractStyle other)
         {
+            if (other == null)
+            {
+                return false;
+            }
             return this.GetHashCode() == other.GetHashCode();
         }
 
@@ -142,14 +145,7 @@ namespace NanoXLSX.Styles
             }
             else if (o is string)
             {
-                if (o.ToString() == "#")
-                {
-                    sb.Append("_#_");
-                }
-                else
-                {
-                    sb.Append((string)o);
-                }
+                sb.Append(o.ToString() == "#" ? "_#_" : (string)o);
             }
             else if (o is long)
             {

@@ -31,14 +31,14 @@ namespace Demo
         static void Main(string[] args)
         {
 
-           // BasicDemo();
-          //  Read();
-          //  ShortenerDemo();
-          //  StreamDemo();
+            BasicDemo();
+            Read();
+            ShortenerDemo();
+            StreamDemo();
             #pragma warning disable CS4014
-          //  AsyncDemo(); // Normally, this method should be called with the await keyword (what is not possible here). Usually, async methods are called along the call stack with await until a terminal element (like a WPF button) is reached
+            AsyncDemo(); // Normally, this method should be called with the await keyword (what is not possible here). Usually, async methods are called along the call stack with await until a terminal element (like a WPF button) is reached
             #pragma warning restore CS4014
-            /*
+
             Demo1();
             Demo2();
             Demo3();
@@ -50,9 +50,8 @@ namespace Demo
             Demo9();
             Demo10();
             Demo11();
-            */
             Demo12();
-            //Demo13();
+            Demo13();
 
             /* ### PERFORMANCE TESTS ### */
             // # Use tests in this section to test the performance of NanoXLSX
@@ -529,30 +528,33 @@ namespace Demo
             wb.CurrentWorksheet.SetVerticalSplit(30f, new Address("D1"), Worksheet.WorksheetPane.topRight);         // Split worksheet vertically by characters
             wb.AddWorksheet("SplitXcols");                                                                          // Create new worksheet
             wb.CurrentWorksheet.SetVerticalSplit(4, false, new Address("E1"), Worksheet.WorksheetPane.topRight);    // Split worksheet vertically by columns
-            wb.CurrentWorksheet.SetColumnWidth(0, 15f);
-            wb.CurrentWorksheet.SetColumnWidth(1, 20f);
-            wb.CurrentWorksheet.SetColumnWidth(2, 35f);
-            
-            //wb.AddWorksheet("SplitYchars");                                                                         // Create new worksheet
-            //wb.CurrentWorksheet.SetHorizontalSplit(20f, new Address("C1"), Worksheet.WorksheetPane.bottomLeft);     // Split worksheet horizontally by characters
+            wb.CurrentWorksheet.SetColumnWidth(0, 15f);                                                             // Define column width
+            wb.CurrentWorksheet.SetColumnWidth(1, 20f);                                                             // Define column width
+            wb.CurrentWorksheet.SetColumnWidth(2, 35f);                                                             // Define column width
+
+            wb.AddWorksheet("SplitYchars");                                                                         // Create new worksheet
+            wb.CurrentWorksheet.SetHorizontalSplit(20f, new Address("C1"), Worksheet.WorksheetPane.bottomLeft);     // Split worksheet horizontally by characters
             wb.AddWorksheet("SplitYcols");                                                                          // Create new worksheet
             wb.CurrentWorksheet.SetHorizontalSplit(5, false, new Address("A6"), Worksheet.WorksheetPane.bottomLeft);// Split worksheet horizontally by rows
-            wb.CurrentWorksheet.SetRowHeight(0, 10f);
-            wb.CurrentWorksheet.SetRowHeight(3, 15f);
-            wb.CurrentWorksheet.SetRowHeight(2, 25f);
+            wb.CurrentWorksheet.SetRowHeight(0, 10f);                                                               // Define row height
+            wb.CurrentWorksheet.SetRowHeight(3, 35f);                                                               // Define row height
+            wb.CurrentWorksheet.SetRowHeight(2, 25f);                                                               // Define row height
 
-            /*
             wb.AddWorksheet("SplitXYchars");                                                                        // Create new worksheet
             wb.CurrentWorksheet.SetSplit(30f, 20f, new Address("D3"), Worksheet.WorksheetPane.bottomRight);         // Split worksheet horizontally and vertically by characters
+
             wb.AddWorksheet("SplitXYColRow");                                                                       // Create new worksheet
             wb.CurrentWorksheet.SetSplit(3, 10, false, new Address("D11"), Worksheet.WorksheetPane.bottomRight);    // Split worksheet horizontally and vertically by rows and columns
+
             wb.AddWorksheet("FreezeXcols");                                                                         // Create new worksheet
             wb.CurrentWorksheet.SetVerticalSplit(4, true, new Address("E1"), Worksheet.WorksheetPane.topRight);     // Split and freeze worksheet vertically by columns
+
             wb.AddWorksheet("FreezeYcols");                                                                         // Create new worksheet
             wb.CurrentWorksheet.SetHorizontalSplit(5, true, new Address("A6"), Worksheet.WorksheetPane.bottomLeft); // Split and freeze worksheet horizontally by rows
+
             wb.AddWorksheet("FreezeXYColRow");                                                                      // Create new worksheet
             wb.CurrentWorksheet.SetSplit(3, 10, true, new Address("D11"), Worksheet.WorksheetPane.bottomRight);     // Split and freeze worksheet horizontally and vertically by rows and columns
-            */
+
             wb.Save();                                                                                              // Save the workbook
         }
 
@@ -566,11 +568,11 @@ namespace Demo
             wb.Hidden = true;                                                               // Set the workbook hidden (Set visible again in another, visible workbook)
             wb.Save();                                                                      // Save the workbook
 
-            Workbook wb2 = new Workbook("demo13(hidden:worksheet).xlsx", "visible");       // Create a new workbook
+            Workbook wb2 = new Workbook("demo13(hidden_worksheet).xlsx", "visible");       // Create a new workbook
             wb2.CurrentWorksheet.AddNextCell("Visible Worksheet");
-            wb.AddWorksheet("hidden");                                                     // Create new worksheet
-            wb.CurrentWorksheet.AddNextCell("Hidden Worksheet");
-            wb.CurrentWorksheet.Hidden = true;                                             // Set the current worksheet hidden
+            wb2.AddWorksheet("hidden");                                                     // Create new worksheet
+            wb2.CurrentWorksheet.AddNextCell("Hidden Worksheet");
+            wb2.CurrentWorksheet.Hidden = true;                                             // Set the current worksheet hidden
             wb2.Save();                                                                    // Save the workbook
         }
 
