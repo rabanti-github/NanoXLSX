@@ -123,11 +123,7 @@ namespace NanoXLSX
             get { return columnNumber; }
             set
             {
-                if (value < Worksheet.MIN_COLUMN_NUMBER || value > Worksheet.MAX_COLUMN_NUMBER)
-                {
-                    throw new RangeException(RangeException.GENERAL, "The passed column number (" + value + ") is out of range. Range is from " + 
-                        Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " rows).");
-                }
+                ValidateColumnNumber(value);
                 columnNumber = value;
             }
         }
@@ -143,11 +139,7 @@ namespace NanoXLSX
             get { return rowNumber; }
             set
             {
-                if (value < Worksheet.MIN_ROW_NUMBER || value > Worksheet.MAX_ROW_NUMBER)
-                {
-                    throw new RangeException(RangeException.GENERAL, "The passed row number (" + value + ") is out of range. Range is from " + 
-                        Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
-                }
+                ValidateRowNumber(value);
                 rowNumber = value;
             }
         }
@@ -530,11 +522,8 @@ namespace NanoXLSX
         /// <returns>Cell Address as string in the format A1 - XFD1048576. Depending on the type, Addresses like '$A55', 'B$2' or '$A$5' are possible outputs</returns>
         public static string ResolveCellAddress(int column, int row, AddressType type = AddressType.Default)
         {
-            if (column > Worksheet.MAX_COLUMN_NUMBER || column < Worksheet.MIN_COLUMN_NUMBER)
-            {
-                throw new RangeException(RangeException.GENERAL, "The column number (" + column + ") is out of range. Range is from " + 
-                    Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
-            }
+            ValidateColumnNumber(column);
+            ValidateRowNumber(row);
             switch (type)
             {
                 case AddressType.FixedRowAndColumn:
@@ -573,29 +562,53 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException if the row or column number was out of range</exception>
         public static void ResolveCellCoordinate(string address, out int column, out int row)
         {
+            AddressType dummy;
+            ResolveCellCoordinate(address, out column, out row, out dummy);
+        }
+
+
+        /// <summary>
+        /// Gets the column and row number (zero based) of a cell by the address
+        /// </summary>
+        /// <param name="address">Address as string in the format A1 - XFD1048576</param>
+        /// <param name="column">Column number of the cell (zero-based) as out parameter</param>
+        /// <param name="row">Row number of the cell (zero-based) as out parameter</param>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the range address was malformed</exception>
+        /// <exception cref="RangeException">Throws an RangeException if the row or column number was out of range</exception>
+        public static void ResolveCellCoordinate(string address, out int column, out int row, out AddressType addressType)
+        {
             if (string.IsNullOrEmpty(address))
             {
                 throw new FormatException("The cell address is null or empty and could not be resolved");
             }
-            address =  Utils.ToUpper(address);
-            Regex rx = new Regex("^([A-Z]{1,3})([0-9]{1,7})$");
-            Match mx = rx.Match(address);
-            if (mx.Groups.Count != 3)
+            address = Utils.ToUpper(address);
+            Regex pattern = new Regex("(^(\\$?)([A-Z]{1,3})(\\$?)([0-9]{1,7})$)");
+            Match matcher = pattern.Match(address);
+            if (matcher.Groups.Count != 6)
             {
                 throw new FormatException("The format of the cell address (" + address + ") is malformed");
             }
-            int digits = int.Parse(mx.Groups[2].Value, CultureInfo.InvariantCulture);
-            column = ResolveColumn(mx.Groups[1].Value);
+            int digits = int.Parse(matcher.Groups[5].Value, CultureInfo.InvariantCulture);
+            column = ResolveColumn(matcher.Groups[3].Value);
             row = digits - 1;
-            if (row > Worksheet.MAX_ROW_NUMBER || row < Worksheet.MIN_ROW_NUMBER)
+            ValidateRowNumber(row);
+            ValidateColumnNumber(column);
+            if (!String.IsNullOrEmpty(matcher.Groups[2].Value) && !String.IsNullOrEmpty(matcher.Groups[4].Value))
             {
-                throw new RangeException(RangeException.GENERAL, "The row number (" + row + ") is out of range. Range is from " + 
-                    Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
+                addressType = AddressType.FixedRowAndColumn;
             }
-            if (column > Worksheet.MAX_COLUMN_NUMBER || column < Worksheet.MIN_COLUMN_NUMBER)
+            else if (!String.IsNullOrEmpty(matcher.Groups[2].Value) && String.IsNullOrEmpty(matcher.Groups[4].Value))
             {
-                throw new RangeException(RangeException.GENERAL, "The column number (" + column + ") is out of range. Range is from " + 
-                    Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
+                addressType = AddressType.FixedColumn;
+            }
+            // else if (matcher.group(2).isEmpty() && !matcher.group(4).isEmpty())
+            else if (String.IsNullOrEmpty(matcher.Groups[2].Value) && !String.IsNullOrEmpty(matcher.Groups[4].Value))
+            {
+                addressType = AddressType.FixedRow;
+            }
+            else
+            {
+                addressType = AddressType.Default;
             }
         }
 
@@ -638,15 +651,11 @@ namespace NanoXLSX
             for (int i = columnAddress.Length - 1; i >= 0; i--)
             {
                 chr = columnAddress[i];
-                chr = chr - ASCII_OFFSET;
-                result = result + (chr * multiplier);
-                multiplier = multiplier * 26;
+                chr -= ASCII_OFFSET;
+                result += (chr * multiplier);
+                multiplier *= 26;
             }
-            if (result - 1 > Worksheet.MAX_COLUMN_NUMBER || result - 1 < Worksheet.MIN_COLUMN_NUMBER)
-            {
-                throw new RangeException(RangeException.GENERAL, "The column number (" + (result - 1) + ") is out of range. Range is from " + 
-                    Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
-            }
+            ValidateColumnNumber(result - 1);
             return result - 1;
         }
 
@@ -658,11 +667,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException if the passed column number was out of range</exception>
         public static string ResolveColumnAddress(int columnNumber)
         {
-            if (columnNumber > Worksheet.MAX_COLUMN_NUMBER || columnNumber < Worksheet.MIN_COLUMN_NUMBER)
-            {
-                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " + 
-                    Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
-            }
+            ValidateColumnNumber(columnNumber);
             // A - XFD
             int j = 0;
             int k = 0;
@@ -715,6 +720,34 @@ namespace NanoXLSX
                 }
             }
             
+        }
+
+        /// <summary>
+        /// Validates the passed (zero-based) column number. an exception will be thrown if the column is invalid
+        /// </summary>
+        /// <param name="column">Number to check</param>
+        /// <exception cref="RangeException">Thrown if the passed column number is out of range</exception>
+        public static void ValidateColumnNumber(int column)
+        {
+            if (column > Worksheet.MAX_COLUMN_NUMBER || column < Worksheet.MIN_COLUMN_NUMBER)
+            {
+                throw new RangeException(RangeException.GENERAL, "The column number (" + column + ") is out of range. Range is from " +
+                    Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
+            }
+        }
+
+        /// <summary>
+        /// Validates the passed (zero-based) row number. an exception will be thrown if the row is invalid
+        /// </summary>
+        /// <param name="row">Number to check</param>
+        /// <exception cref="RangeException">Thrown if the passed row number is out of range</exception>
+        public static void ValidateRowNumber(int row)
+        {
+            if (row > Worksheet.MAX_ROW_NUMBER || row < Worksheet.MIN_ROW_NUMBER)
+            {
+                throw new RangeException(RangeException.GENERAL, "The row number (" + row + ") is out of range. Range is from " +
+                    Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
+            }
         }
         #endregion
 

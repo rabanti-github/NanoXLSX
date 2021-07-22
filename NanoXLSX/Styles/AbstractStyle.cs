@@ -64,6 +64,11 @@ namespace NanoXLSX.Styles
             }
         }
 
+        /// <summary>
+        /// Method to check whether a property is considered or skipped 
+        /// </summary>
+        /// <param name="attributes">Collection of attributes to check</param>
+        /// <returns>Returns false as soon a property of the collection is marked as ignored or nested</returns>
         private static bool HandleProperties(IEnumerable<AppendAttribute> attributes)
         {
             foreach (AppendAttribute attribute in attributes)

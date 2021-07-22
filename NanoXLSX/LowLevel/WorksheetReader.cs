@@ -79,7 +79,7 @@ namespace NanoXLSX.LowLevel
             Name = name;
             WorksheetNumber = number;
             this.sharedStrings = sharedStrings;
-            processStyles(styleReaderContainer);
+            ProcessStyles(styleReaderContainer);
         }
 
         #endregion
@@ -90,7 +90,7 @@ namespace NanoXLSX.LowLevel
         /// Determine which of the resolved styles are either to define a time or a date. Stores also the styles into a dictionary 
         /// </summary>
         /// <param name="styleReaderContainer">Resolved styles from the style reader</param>
-        private void processStyles(StyleReaderContainer styleReaderContainer)
+        private void ProcessStyles(StyleReaderContainer styleReaderContainer)
         {
             dateStyles = new List<string>();
             timeStyles = new List<string>();

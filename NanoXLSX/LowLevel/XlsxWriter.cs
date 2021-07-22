@@ -274,7 +274,7 @@ namespace NanoXLSX.LowLevel
             sb.Append("<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">");
             if (worksheet.SelectedCells != null || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null)
             {
-                createSheetViewString(worksheet, sb);
+                CreateSheetViewString(worksheet, sb);
             }
             sb.Append("<sheetFormatPr x14ac:dyDescent=\"0.25\" defaultRowHeight=\"").Append(worksheet.DefaultRowHeight.ToString("G", culture)).Append("\" baseColWidth=\"").Append(worksheet.DefaultColumnWidth.ToString("G", culture)).Append("\"/>");
 
@@ -300,6 +300,11 @@ namespace NanoXLSX.LowLevel
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Method to create the enclosing part of the rows
+        /// </summary>
+        /// <param name="worksheet">worksheet object to process</param>
+        /// <param name="sb">reference to the stringbuilder</param>
         private void CreateRowsString(Worksheet worksheet, StringBuilder sb)
         {
             List<DynamicRow> cellData = GetSortedSheetData(worksheet);
@@ -316,7 +321,7 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="worksheet">worksheet object to process</param>
         /// <param name="sb">reference to the stringbuilder</param>
-        private void createSheetViewString(Worksheet worksheet, StringBuilder sb)
+        private void CreateSheetViewString(Worksheet worksheet, StringBuilder sb)
         {
             sb.Append("<sheetViews><sheetView workbookViewId=\"0\"");
             if (workbook.SelectedWorksheet == worksheet.SheetID - 1)
@@ -730,10 +735,8 @@ namespace NanoXLSX.LowLevel
                 {
                     return value;
                 }
-
                 return string.Empty;
             }
-
             return string.Empty;
         }
 

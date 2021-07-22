@@ -29,27 +29,49 @@ namespace NanoXLSX
         public Cell.AddressType Type;
 
         /// <summary>
-        /// Constructor with row and column as arguments
+        /// Constructor with row and column as arguments.  The referencing type of the address is default (e.g. 'C20')
         /// </summary>
         /// <param name="column">Column number (zero based)</param>
         /// <param name="row">Row number (zero based)</param>
-        /// <param name="type">Optional referencing type of the address</param>
-        public Address(int column, int row, Cell.AddressType type = Cell.AddressType.Default)
+        /// <param name="type">Referencing type of the address</param>
+        public Address(int column, int row) : this(column, row, Cell.AddressType.Default)
         {
+            // No actions
+        }
+
+        /// <summary>
+        /// Constructor with row and column as arguments. All referencing modifiers ($) are ignored and only the defined referencing type considered
+        /// </summary>
+        /// <param name="column">Column number (zero based)</param>
+        /// <param name="row">Row number (zero based)</param>
+        /// <param name="type">Referencing type of the address</param>
+        public Address(int column, int row, Cell.AddressType type)
+        {
+            Cell.ValidateColumnNumber(column);
+            Cell.ValidateRowNumber(row);
             Column = column;
             Row = row;
             Type = type;
         }
 
         /// <summary>
-        /// Constructor with address as string
+        /// Constructor with address as string. All referencing modifiers ($) are ignored and only the defined referencing type considered
         /// </summary>
-        /// <param name="address">Address string (e.g. 'A1:B12')</param>
-        /// <param name="type">Optional referencing type of the address</param>
-        public Address(string address, Cell.AddressType type = Cell.AddressType.Default)
+        /// <param name="address">Address string (e.g. 'B12')</param>
+        /// <param name="type">Referencing type of the address</param>
+        public Address(string address, Cell.AddressType type)
         {
             Type = type;
             Cell.ResolveCellCoordinate(address, out Column, out Row);
+        }
+
+        /// <summary>
+        /// Constructor with address as string. If no referencing modifiers ($) are defined, the address is of referencing type default (e.g. 'C23')
+        /// </summary>
+        /// <param name="address">Address string (e.g. '$B$12')</param>
+        public Address(string address)
+        {
+            Cell.ResolveCellCoordinate(address, out Column, out Row, out Type);
         }
 
         /// <summary>
@@ -86,7 +108,7 @@ namespace NanoXLSX
         /// <returns>True if equal</returns>
         public bool Equals(Address o)
         {
-            if (Row == o.Row && Column == o.Column)
+            if (Row == o.Row && Column == o.Column && Type == o.Type)
             { return true; }
 
             return false;

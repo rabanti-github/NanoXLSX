@@ -604,7 +604,7 @@ namespace NanoXLSX
             return currentWorksheet;
         }
 
-        /// <summary>SetSelectedWorksheet
+        /// <summary>
         /// Sets the selected worksheet in the output workbook
         /// </summary>
         /// <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>

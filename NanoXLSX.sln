@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1500
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoXLSX", "NanoXLSX\NanoXLSX.csproj", "{A70E40AA-98C1-453A-8030-B4798A89EBFC}"
 EndProject
@@ -18,7 +18,9 @@ Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "CodeDocumentation", "Docume
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX .NET Standard", "NanoXLSX .NET Standard\NanoXLSX .NET Standard.csproj", "{E9EC78D7-1DB9-420C-A113-B31FC2ECDBCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo .NET Standard", "Demo .NET Standard\Demo .NET Standard.csproj", "{68FC6B6C-3B78-43C1-A195-893BD09913AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo .NET Standard", "Demo .NET Standard\Demo .NET Standard.csproj", "{68FC6B6C-3B78-43C1-A195-893BD09913AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoXLSX Test", "NanoXLSX Test\NanoXLSX Test.csproj", "{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,10 @@ Global
 		{68FC6B6C-3B78-43C1-A195-893BD09913AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68FC6B6C-3B78-43C1-A195-893BD09913AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68FC6B6C-3B78-43C1-A195-893BD09913AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

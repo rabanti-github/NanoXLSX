@@ -15,9 +15,9 @@ namespace NanoXLSX.LowLevel
     public class SortedMap
     {
         private int count;
-        private List<string> keyEntries;
-        private List<string> valueEntries;
-        private Dictionary<string, int> index;
+        private readonly List<string> keyEntries;
+        private readonly List<string> valueEntries;
+        private readonly Dictionary<string, int> index;
 
         /// <summary>
         /// Number of map entries
