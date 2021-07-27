@@ -89,22 +89,27 @@ namespace NanoXLSX
         #region properties
 
         /// <summary>
-        /// Gets or sets the combined cell Address as string in the format A1 - XFD1048576
+        /// Gets or sets the combined cell Address as string in the format A1 - XFD1048576. The address may contain a <see cref="Cell.AddressType"/> modifier (e.g. C$50)
         /// </summary>
         public string CellAddress
         {
-            get { return ResolveCellAddress(ColumnNumber, RowNumber); }
-            set { ResolveCellCoordinate(value, out columnNumber, out rowNumber); }
+            get { return ResolveCellAddress(ColumnNumber, RowNumber, CellAddressType); }
+            set {
+                AddressType addressType;
+                ResolveCellCoordinate(value, out columnNumber, out rowNumber, out addressType);
+                CellAddressType = addressType;
+            }
         }
 
         /// <summary>Gets or sets the combined cell Address as Address object</summary>
         public Address CellAddress2
         {
-            get { return new Address(ColumnNumber, RowNumber); }
+            get { return new Address(ColumnNumber, RowNumber, CellAddressType); }
             set
             {
                 ColumnNumber = value.Column;
                 RowNumber = value.Row;
+                CellAddressType = value.Type;
             }
         }
 
@@ -143,6 +148,12 @@ namespace NanoXLSX
                 rowNumber = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the optional address type that can be part of the cell address. 
+        /// </summary>
+        /// <remarks>The type has no influence on the behavior of the cell, though. It is preserved to avoid losing information on the address object of the cell</remarks>
+        public AddressType CellAddressType { get; set; }
 
         /// <summary>Gets or sets the value of the cell (generic object type)</summary>
         public object Value { get; set; }
@@ -207,6 +218,7 @@ namespace NanoXLSX
             Value = value;
             columnNumber = address.Column;
             rowNumber = address.Row;
+            CellAddressType = address.Type;
             WorksheetReference = null;
             if (type == CellType.DEFAULT)
             {
@@ -226,6 +238,7 @@ namespace NanoXLSX
         {
             ColumnNumber = column;
             RowNumber = row;
+            CellAddressType = AddressType.Default;
             WorksheetReference = reference;
             if (type == CellType.DEFAULT)
             {
@@ -240,6 +253,9 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="other">Object to compare</param>
         /// <returns>0 if values are the same, -1 if this object is smaller, 1 if it is bigger</returns>
+        /// <remarks>Note that this method only compares the row and column numbers, 
+        /// since the values or styles may completely different types, and therefore hard to compare at all.<br/>
+        /// The <see cref="Equals(object)"/> method considers values and style, though.</remarks>
         public int CompareTo(Cell other)
         {
             if (other == null)
@@ -252,6 +268,33 @@ namespace NanoXLSX
             }
 
             return RowNumber.CompareTo(other.RowNumber);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(Cell))
+            {
+                return false;
+            }
+            Cell other = (Cell)obj;
+            if (!this.CellAddress2.Equals(other.CellAddress2))
+            {
+                return false;
+            }
+            if (this.cellStyle != null && other.CellStyle != null && !this.CellStyle.Equals(other.CellStyle))
+            {
+                return false;
+            }
+            if (this.DataType != other.DataType)
+            {
+                return false;
+            }
+            if (this.Value != null && other.Value != null && !this.Value.Equals(other.Value))
+            {
+                return false;
+            }
+            // Workbook / worksheet references are not considered
+            return true;
         }
 
         /// <summary>
@@ -360,6 +403,9 @@ namespace NanoXLSX
             cellStyle = s;
             return s;
         }
+
+
+
         #endregion
 
         #region staticMethods
@@ -592,7 +638,6 @@ namespace NanoXLSX
             column = ResolveColumn(matcher.Groups[3].Value);
             row = digits - 1;
             ValidateRowNumber(row);
-            ValidateColumnNumber(column);
             if (!String.IsNullOrEmpty(matcher.Groups[2].Value) && !String.IsNullOrEmpty(matcher.Groups[4].Value))
             {
                 addressType = AddressType.FixedRowAndColumn;

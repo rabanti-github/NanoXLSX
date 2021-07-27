@@ -454,7 +454,7 @@ namespace NanoXLSX.Styles
             Fill fill;
             Font font;
             NumberFormat numberFormat;
-            int len = borders.Count;
+            int len = borders.Count - 1;
             int i;
             for (i = len; i >= 0; i--)
             {
@@ -462,28 +462,28 @@ namespace NanoXLSX.Styles
                 if (!IsUsedByStyle(border))
                 { borders.RemoveAt(i); }
             }
-            len = cellXfs.Count;
+            len = cellXfs.Count - 1;
             for (i = len; i >= 0; i--)
             {
                 cellXf = (CellXf)cellXfs[i];
                 if (!IsUsedByStyle(cellXf))
                 { cellXfs.RemoveAt(i); }
             }
-            len = fills.Count;
+            len = fills.Count - 1;
             for (i = len; i >= 0; i--)
             {
                 fill = (Fill)fills[i];
                 if (!IsUsedByStyle(fill))
                 { fills.RemoveAt(i); }
             }
-            len = fonts.Count;
+            len = fonts.Count - 1;
             for (i = len; i >= 0; i--)
             {
                 font = (Font)fonts[i];
                 if (!IsUsedByStyle(font))
                 { fonts.RemoveAt(i); }
             }
-            len = numberFormats.Count;
+            len = numberFormats.Count - 1;
             for (i = len; i >= 0; i--)
             {
                 numberFormat = (NumberFormat)numberFormats[i];

@@ -55,6 +55,15 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Constructor with address as string. If no referencing modifiers ($) are defined, the address is of referencing type default (e.g. 'C23')
+        /// </summary>
+        /// <param name="address">Address string (e.g. '$B$12')</param>
+        public Address(string address)
+        {
+            Cell.ResolveCellCoordinate(address, out Column, out Row, out Type);
+        }
+
+        /// <summary>
         /// Constructor with address as string. All referencing modifiers ($) are ignored and only the defined referencing type considered
         /// </summary>
         /// <param name="address">Address string (e.g. 'B12')</param>
@@ -63,15 +72,6 @@ namespace NanoXLSX
         {
             Type = type;
             Cell.ResolveCellCoordinate(address, out Column, out Row);
-        }
-
-        /// <summary>
-        /// Constructor with address as string. If no referencing modifiers ($) are defined, the address is of referencing type default (e.g. 'C23')
-        /// </summary>
-        /// <param name="address">Address string (e.g. '$B$12')</param>
-        public Address(string address)
-        {
-            Cell.ResolveCellCoordinate(address, out Column, out Row, out Type);
         }
 
         /// <summary>

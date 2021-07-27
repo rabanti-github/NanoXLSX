@@ -17,7 +17,7 @@ namespace NanoXLSX_Test.Cells
 
         #region passingTests
 
-        [Theory(DisplayName = "Constructor call with string as parameters")]
+        [Theory(DisplayName = "Constructor call with string as parameter")]
         [InlineData("A1", 0, 0, AddressType.Default)]
         [InlineData("b10", 1, 9, AddressType.Default)]
         [InlineData("$A1", 0, 0, AddressType.FixedColumn)]
@@ -25,10 +25,10 @@ namespace NanoXLSX_Test.Cells
         [InlineData("$xFd$1", 16383, 0, AddressType.FixedRowAndColumn)]
         public void AddressConstructorTest(string address, int expectedColumn, int expectedRow, AddressType expectedType)
         {
-            Address actaulAddress = new Address(address);
-            Assert.Equal(expectedRow, actaulAddress.Row);
-            Assert.Equal(expectedColumn, actaulAddress.Column);
-            Assert.Equal(expectedType, actaulAddress.Type);
+            Address actualAddress = new Address(address);
+            Assert.Equal(expectedRow, actualAddress.Row);
+            Assert.Equal(expectedColumn, actualAddress.Column);
+            Assert.Equal(expectedType, actualAddress.Type);
         }
 
         [Theory(DisplayName = "Constructor call with row and column as parameters")]
@@ -38,9 +38,9 @@ namespace NanoXLSX_Test.Cells
         [InlineData(2, 99, "C100")]
         public void AddressConstructorTest2(int column, int row, string expectedAddress)
         {
-            Address actaulAddress = new Address(column, row);
-            Assert.Equal(expectedAddress, actaulAddress.ToString());
-            Assert.Equal(Cell.AddressType.Default, actaulAddress.Type);
+            Address actualAddress = new Address(column, row);
+            Assert.Equal(expectedAddress, actualAddress.ToString());
+            Assert.Equal(Cell.AddressType.Default, actualAddress.Type);
         }
 
         [Theory(DisplayName = "Constructor call with all parameters")]
@@ -50,8 +50,8 @@ namespace NanoXLSX_Test.Cells
         [InlineData(2, 99, AddressType.FixedRowAndColumn, "$C$100")]
         public void AddressConstructorTest3(int column, int row, AddressType type, string expectedAddress)
         {
-            Address actaulAddress = new Address(column, row, type);
-            Assert.Equal(expectedAddress, actaulAddress.ToString());
+            Address actualAddress = new Address(column, row, type);
+            Assert.Equal(expectedAddress, actualAddress.ToString());
         }
 
         [Theory(DisplayName = "Constructor call with string and type as parameters")]
@@ -64,8 +64,8 @@ namespace NanoXLSX_Test.Cells
         [InlineData("$A$1", AddressType.Default, "A1")]
         public void AddressConstructorTest4(string address, AddressType type, string expectedAddress)
         {
-            Address actaulAddress = new Address(address, type);
-            Assert.Equal(expectedAddress, actaulAddress.ToString());
+            Address actualAddress = new Address(address, type);
+            Assert.Equal(expectedAddress, actualAddress.ToString());
         }
 
         [Theory(DisplayName = "Test of Equals() implementation")]
@@ -96,7 +96,6 @@ namespace NanoXLSX_Test.Cells
             Assert.Equal(expectedEquality, actualEquality);
         }
 
-
         [Theory(DisplayName = "Test of the GetAddress method (string output)")]
         [InlineData(0, 0, AddressType.Default, "A1")]
         [InlineData(4, 9, AddressType.FixedColumn, "$E10")]
@@ -104,26 +103,19 @@ namespace NanoXLSX_Test.Cells
         [InlineData(2, 99, AddressType.FixedRowAndColumn, "$C$100")]
         public void GetAddressTest(int column, int row, AddressType type, string expectedAddress)
         {
-            Address actaulAddress = new Address(column, row, type);
-            Assert.Equal(expectedAddress, actaulAddress.GetAddress());
+            Address actualAddress = new Address(column, row, type);
+            Assert.Equal(expectedAddress, actualAddress.GetAddress());
         }
 
-        [Theory(DisplayName = "Test of the Equals method (override)")]
-        [InlineData("A1", "A1", true)]
-        [InlineData("$E10", "$E10", true)]
-        [InlineData("XFD$1048576", "XFD$1048576", true)]
-        [InlineData("$C$100", "$C$100", true)]
-        [InlineData("A1", "$A1", false)]
-        [InlineData("A1", "A$1", false)]
-        [InlineData("A1", "$A$1", false)]
-        [InlineData("$A1", "A$1", false)]
-        [InlineData("$A$1", "$A1", false)]
-        [InlineData("$A$1", "A$1", false)]
-        public void EqualsTest(string addressString1, string addressString2, bool expectedEqual)
+        [Theory(DisplayName = "Test of the GetColumn function")]
+        [InlineData(0,0, AddressType.Default, "A")]
+        [InlineData(5, 100, AddressType.FixedColumn, "F")]
+        [InlineData(26, 100, AddressType.FixedRow, "AA")]
+        [InlineData(1, 5, AddressType.FixedRowAndColumn, "B")]
+        public void GetColumnTest(int columnNumber, int rowNumber, AddressType type, String expectedColumn)
         {
-            Address address1 = new Address(addressString1);
-            Address address2 = new Address(addressString2);
-            Assert.Equal(address1.Equals(address2), expectedEqual);
+            Address address = new Address(columnNumber, rowNumber, type);
+            Assert.Equal(expectedColumn, address.GetColumn());
         }
 
         #endregion
@@ -173,9 +165,6 @@ namespace NanoXLSX_Test.Cells
         {
             throw new NotImplementedException();
         }
-
-
-
         #endregion
 
     }
