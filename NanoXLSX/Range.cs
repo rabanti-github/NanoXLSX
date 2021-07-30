@@ -24,25 +24,41 @@ namespace NanoXLSX
         public Address StartAddress;
 
         /// <summary>
-        /// Constructor with addresses as arguments
+        /// Constructor with addresses as arguments. The addresses are automatically swapped if the start address is greater than the end address
         /// </summary>
         /// <param name="start">Start address of the range</param>
         /// <param name="end">End address of the range</param>
         public Range(Address start, Address end)
         {
-            StartAddress = start;
-            EndAddress = end;
+            if (start.CompareTo(end) < 0)
+            {
+                StartAddress = start;
+                EndAddress = end;
+            }
+            else
+            {
+                StartAddress = end;
+                EndAddress = start;
+            }
         }
 
         /// <summary>
-        /// Constructor with a range string as argument
+        /// Constructor with a range string as argument. The addresses are automatically swapped if the start address is greater than the end address
         /// </summary>
         /// <param name="range">Address range (e.g. 'A1:B12')</param>
         public Range(string range)
         {
             Range r = Cell.ResolveCellRange(range);
-            StartAddress = r.StartAddress;
-            EndAddress = r.EndAddress;
+            if (r.StartAddress.CompareTo(r.EndAddress) < 0)
+            {
+                StartAddress = r.StartAddress;
+                EndAddress = r.EndAddress;
+            }
+            else
+            {
+                StartAddress = r.EndAddress;
+                EndAddress = r.StartAddress;
+            }
         }
 
         /// <summary>

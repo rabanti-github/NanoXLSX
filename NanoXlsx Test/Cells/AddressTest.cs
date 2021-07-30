@@ -161,6 +161,21 @@ namespace NanoXLSX_Test.Cells
             Assert.Throws<RangeException>(() => new Address(column, row, AddressType.Default));
         }
 
+        [Theory(DisplayName = "Test of the CompareTo function")]
+        [InlineData("A1", "A1", 0)]
+        [InlineData("A10", "A2", 1)]
+        [InlineData("B2", "D4", -1)]
+        [InlineData("$X$99", "X99", 0)] // $ Should have no influence
+        [InlineData("A100", "A$20", 1)] // $ Should have no influence
+        [InlineData("$C$2", "$D$4", -1)] // $ Should have no influence
+        public void CompareToTest(string address1, string address2, int expectedResult)
+        {
+            Address address = new Address(address1);
+            Address otherAddress = new Address(address2);
+            int result = address.CompareTo(otherAddress);
+            Assert.Equal(expectedResult, result);
+        }
+
         private static object SequentialCollection()
         {
             throw new NotImplementedException();

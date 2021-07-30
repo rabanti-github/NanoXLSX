@@ -165,7 +165,6 @@ namespace NanoXLSX.LowLevel
                 ws = new Worksheet(workbook.WorksheetDefinitions[reader.Key], index, wb);
                 foreach (KeyValuePair<string, Cell> cell in reader.Value.Data)
                 {
-                    cell.Value.WorksheetReference = ws;
                     if (reader.Value.StyleAssignment.ContainsKey(cell.Key))
                     {
                         Style style = styleReaderContainer.GetStyle(reader.Value.StyleAssignment[cell.Key], true);

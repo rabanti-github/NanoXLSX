@@ -88,6 +88,7 @@
     <Compile Include="Styles\NumberFormat.cs" />
     <Compile Include="Styles\Style.cs" />
     <Compile Include="LowLevel\StyleReaderContainer.cs" />
+    <Compile Include="Styles\StyleRepository.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Workbook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

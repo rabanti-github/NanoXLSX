@@ -458,10 +458,9 @@ namespace NanoXLSX
         /// <param name="style">If not null, the defined style will be applied to the cell, otherwise no style or the default style will be applied</param>
         /// <remarks>Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
-        /// <exception cref="StyleException">Throws a StyleException if the default style was malformed or if the active style cannot be referenced</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the default style was malformed</exception>
         private void AddNextCell(Cell cell, bool incremental, Style style)
         {
-            cell.WorksheetReference = this;
             if (activeStyle != null && useActiveStyle && style == null)
             {
                 cell.SetStyle(activeStyle);
@@ -470,13 +469,13 @@ namespace NanoXLSX
             {
                 cell.SetStyle(style);
             }
-            else if (cell.DataType == Cell.CellType.DATE)
+            else if (cell.DataType == Cell.CellType.DATE && cell.CellStyle == null)
             {
                 cell.SetStyle(BasicStyles.DateFormat);
             }
             else
             {
-                if (cell.DataType == Cell.CellType.TIME)
+                if (cell.DataType == Cell.CellType.TIME && cell.CellStyle == null)
                 {
                     cell.SetStyle(BasicStyles.TimeFormat);
                 }
@@ -537,12 +536,11 @@ namespace NanoXLSX
             if (value != null && value.GetType() == typeof(Cell))
             {
                 c = (Cell)value;
-                c.WorksheetReference = this;
                 c.CellAddress2 = new Address(column, row);
             }
             else
             {
-                c = new Cell(value, Cell.CellType.DEFAULT, column, row, this);
+                c = new Cell(value, Cell.CellType.DEFAULT, column, row);
             }
             return c;
         }
@@ -561,7 +559,6 @@ namespace NanoXLSX
         /// <param name="rowAddress">Row number (zero based)</param>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cell</exception>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
         public void AddCell(object value, int columnAddress, int rowAddress)
         {
@@ -594,7 +591,6 @@ namespace NanoXLSX
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cell</exception>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCell(object value, string address)
@@ -634,7 +630,6 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="formula">Formula to insert</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cell</exception>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCellFormula(string formula, string address)
@@ -642,7 +637,7 @@ namespace NanoXLSX
             int column;
             int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, column, row, this);
+            Cell c = new Cell(formula, Cell.CellType.FORMULA, column, row);
             AddNextCell(c, false, null);
         }
 
@@ -660,7 +655,7 @@ namespace NanoXLSX
             int column;
             int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, column, row, this);
+            Cell c = new Cell(formula, Cell.CellType.FORMULA, column, row);
             AddNextCell(c, false, style);
         }
 
@@ -670,11 +665,10 @@ namespace NanoXLSX
         /// <param name="formula">Formula to insert</param>
         /// <param name="columnAddress">Column number (zero based)</param>
         /// <param name="rowAddress">Row number (zero based)</param>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cell</exception>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
         public void AddCellFormula(string formula, int columnAddress, int rowAddress)
         {
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, columnAddress, rowAddress, this);
+            Cell c = new Cell(formula, Cell.CellType.FORMULA, columnAddress, rowAddress);
             AddNextCell(c, false, null);
         }
 
@@ -685,11 +679,10 @@ namespace NanoXLSX
         /// <param name="columnAddress">Column number (zero based)</param>
         /// <param name="rowAddress">Row number (zero based)</param>
         /// <param name="style">Style to apply on the cell</param>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cell</exception>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
         public void AddCellFormula(string formula, int columnAddress, int rowAddress, Style style)
         {
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, columnAddress, rowAddress, this);
+            Cell c = new Cell(formula, Cell.CellType.FORMULA, columnAddress, rowAddress);
             AddNextCell(c, false, style);
         }
 
@@ -697,11 +690,10 @@ namespace NanoXLSX
         /// Adds a formula as string to the next cell position
         /// </summary>
         /// <param name="formula">Formula to insert</param>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cell</exception>
         /// <exception cref="RangeException">Trows a RangeException if the next cell is out of range (on row or column)</exception>
         public void AddNextCellFormula(string formula)
         {
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, currentColumnNumber, currentRowNumber, this);
+            Cell c = new Cell(formula, Cell.CellType.FORMULA, currentColumnNumber, currentRowNumber);
             AddNextCell(c, true, null);
         }
 
@@ -710,11 +702,10 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="formula">Formula to insert</param>
         /// <param name="style">Style to apply on the cell</param>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cell</exception>
         /// <exception cref="RangeException">Trows a RangeException if the next cell is out of range (on row or column)</exception>
         public void AddNextCellFormula(string formula, Style style)
         {
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, currentColumnNumber, currentRowNumber, this);
+            Cell c = new Cell(formula, Cell.CellType.FORMULA, currentColumnNumber, currentRowNumber);
             AddNextCell(c, true, style);
         }
 
@@ -732,7 +723,6 @@ namespace NanoXLSX
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cells</exception>
         public void AddCellRange(IReadOnlyList<object> values, Address startAddress, Address endAddress)
         {
             AddCellRangeInternal(values, startAddress, endAddress, null);
@@ -764,7 +754,6 @@ namespace NanoXLSX
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the active style cannot be referenced while creating the cells</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
         public void AddCellRange(IReadOnlyList<object> values, string cellRange)
         {
@@ -801,7 +790,6 @@ namespace NanoXLSX
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws an RangeException if the number of cells differs from the number of passed values</exception>
-        /// <exception cref="StyleException">Throws an StyleException if the active style cannot be referenced while creating the cells</exception>
         private void AddCellRangeInternal<T>(IReadOnlyList<T> values, Address startAddress, Address endAddress, Style style)
         {
             List<Address> addresses = Cell.GetCellRange(startAddress, endAddress) as List<Address>;
@@ -815,7 +803,6 @@ namespace NanoXLSX
             {
                 list[i].RowNumber = addresses[i].Row;
                 list[i].ColumnNumber = addresses[i].Column;
-                list[i].WorksheetReference = this;
                 AddNextCell(list[i], false, style);
             }
         }

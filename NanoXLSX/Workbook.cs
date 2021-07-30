@@ -26,7 +26,6 @@ namespace NanoXLSX
         private string filename;
         private List<Worksheet> worksheets;
         private Worksheet currentWorksheet;
-        private StyleManager styleManager;
         private Metadata workbookMetadata;
         private string workbookProtectionPassword;
         private bool lockWindowsIfProtected;
@@ -97,14 +96,6 @@ namespace NanoXLSX
         public int SelectedWorksheet
         {
             get { return selectedWorksheet; }
-        }
-
-        /// <summary>
-        /// Gets the style manager of this workbook
-        /// </summary>
-        public StyleManager Styles
-        {
-            get { return styleManager; }
         }
 
         /// <summary>
@@ -192,22 +183,24 @@ namespace NanoXLSX
         #region methods_PICO
 
         /// <summary>
-        /// Adds a style to the style manager
+        /// Adds a style to the style repository. This method is deprecated since it ha no direct impact on the generated file.
         /// </summary>
         /// <param name="style">Style to add</param>
-        /// <returns>Returns the managed style of the style manager</returns>
-
+        /// <returns>Returns the managed style of the style repository</returns>
+        /// 
+        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public Style AddStyle(Style style)
         {
-            return styleManager.AddStyle(style);
+            return StyleRepository.Instance.AddStyle(style);
         }
 
         /// <summary>
-        /// Adds a style component to a style
+        /// Adds a style component to a style. This method is deprecated since it ha no direct impact on the generated file.
         /// </summary>
         /// <param name="baseStyle">Style to append a component</param>
         /// <param name="newComponent">Component to add to the baseStyle</param>
-        /// <returns>Returns the managed style of the style manager</returns>
+        /// <returns>Returns the modified style of the style repository</returns>
+        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public Style AddStyleComponent(Style baseStyle, AbstractStyle newComponent)
         {
 
@@ -231,7 +224,7 @@ namespace NanoXLSX
             {
                 baseStyle.CurrentNumberFormat = (NumberFormat)newComponent;
             }
-            return styleManager.AddStyle(baseStyle);
+            return StyleRepository.Instance.AddStyle(baseStyle);
         }
 
 
@@ -305,32 +298,53 @@ namespace NanoXLSX
         private void Init()
         {
             worksheets = new List<Worksheet>();
-            styleManager = new StyleManager();
+            workbookMetadata = new Metadata();
+            shortener = new Shortener();
+        }
+
+        /// <summary>
+        /// Method to gather all styles of the cells in all worksheets
+        /// </summary>
+        /// <returns>StyleManager object, to be processed by the save methods</returns>
+        internal StyleManager ManageStyles()
+        {
+            StyleManager styleManager = new StyleManager();
             styleManager.AddStyle(new Style("default", 0, true));
             Style borderStyle = new Style("default_border_style", 1, true);
             borderStyle.CurrentBorder = BasicStyles.DottedFill_0_125.CurrentBorder;
             borderStyle.CurrentFill = BasicStyles.DottedFill_0_125.CurrentFill;
             styleManager.AddStyle(borderStyle);
-            workbookMetadata = new Metadata();
-            shortener = new Shortener();
+
+            for (int i = 0; i < worksheets.Count; i++)
+            {
+                foreach (KeyValuePair<String, Cell> cell in worksheets[i].Cells)
+                {
+                    if (cell.Value.CellStyle != null)
+                    {
+                        Style resolvedStyle = styleManager.AddStyle(cell.Value.CellStyle);
+                        worksheets[i].Cells[cell.Key].SetStyle(resolvedStyle, true);
+                    }
+                }
+            }
+            return styleManager;
         }
 
 
         /// <summary>
-        /// Removes the passed style from the style sheet
+        /// Removes the passed style from the style sheet. This method is deprecated since it ha no direct impact on the generated file.
         /// </summary>
         /// <param name="style">Style to remove</param>
-        /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style collection (could not be referenced)</exception>
+        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(Style style)
         {
             RemoveStyle(style, false);
         }
 
         /// <summary>
-        /// Removes the defined style from the style sheet of the workbook
+        /// Removes the defined style from the style sheet of the workbook. This method is deprecated since it ha no direct impact on the generated file.
         /// </summary>
         /// <param name="styleName">Name of the style to be removed</param>
-        /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style collection (could not be referenced)</exception>
+        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(string styleName)
         {
             RemoveStyle(styleName, false);
@@ -341,56 +355,25 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="style">Style to remove</param>
         /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>
-        /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style collection (could not be referenced)</exception>
+        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(Style style, bool onlyIfUnused)
         {
-            if (style == null)
-            {
-                throw new StyleException("UndefinedStyleException", "The style to remove is not defined");
-            }
             RemoveStyle(style.Name, onlyIfUnused);
         }
 
         /// <summary>
-        /// Removes the defined style from the style sheet of the workbook
+        /// Removes the defined style from the style sheet of the workbook. This method is deprecated since it ha no direct impact on the generated file.
         /// </summary>
         /// <param name="styleName">Name of the style to be removed</param>
         /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the style was not found in the style collection (could not be referenced)</exception>
+        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(string styleName, bool onlyIfUnused)
         {
             if (string.IsNullOrEmpty(styleName))
             {
                 throw new StyleException("MissingReferenceException", "The style to remove is not defined (no name specified)");
             }
-            if (onlyIfUnused)
-            {
-                bool styleInUse = false;
-                for (int i = 0; i < worksheets.Count; i++)
-                {
-                    foreach (KeyValuePair<string, Cell> cell in worksheets[i].Cells)
-                    {
-                        if (cell.Value.CellStyle == null) { continue; }
-                        if (cell.Value.CellStyle.Name == styleName)
-                        {
-                            styleInUse = true;
-                            break;
-                        }
-                    }
-                    if (styleInUse)
-                    {
-                        break;
-                    }
-                }
-                if (!styleInUse)
-                {
-                    styleManager.RemoveStyle(styleName);
-                }
-            }
-            else
-            {
-                styleManager.RemoveStyle(styleName);
-            }
+            // noOp / deprecated
         }
 
         /// <summary>
@@ -466,7 +449,6 @@ namespace NanoXLSX
                             cell.DataType = Cell.CellType.EMPTY;
                             cell.RowNumber = address.Row;
                             cell.ColumnNumber = address.Column;
-                            cell.WorksheetReference = sheet;
                             sheet.AddCell(cell, cell.ColumnNumber, cell.RowNumber);
                         }
                         else
@@ -491,7 +473,6 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         public void Save()
         {
             XlsxWriter l = new XlsxWriter(this);
@@ -505,7 +486,6 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="StyleException">May throw a StyleException if one of the styles of the workbook cannot be referenced or is null. The asynchronous operation may hide the exception.</exception>
         public async Task SaveAsync()
         {
             XlsxWriter l = new XlsxWriter(this);
@@ -519,7 +499,6 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         public void SaveAs(string filename)
         {
             string backup = filename;
@@ -537,7 +516,6 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="StyleException">May throw a StyleException if one of the styles of the workbook cannot be referenced or is null. The asynchronous operation may hide the exception.</exception>
         public async Task SaveAsAsync(string fileName)
         {
             string backup = fileName;
@@ -555,7 +533,6 @@ namespace NanoXLSX
         /// <exception cref="IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
         /// <exception cref="FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         public void SaveAsStream(Stream stream, bool leaveOpen = false)
         {
             XlsxWriter l = new XlsxWriter(this);
@@ -571,7 +548,6 @@ namespace NanoXLSX
         /// <exception cref="IOException">Throws IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="StyleException">May throw a StyleException if one of the styles of the workbook cannot be referenced or is null. The asynchronous operation may hide the exception.</exception>
         public async Task SaveAsStreamAsync(Stream stream, bool leaveOpen = false)
         {
             XlsxWriter l = new XlsxWriter(this);

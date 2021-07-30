@@ -40,6 +40,7 @@ namespace NanoXLSX.LowLevel
         #region privateFields
         private CultureInfo culture;
         private Workbook workbook;
+        private StyleManager styles;
         private SortedMap sharedStrings;
         private int sharedStringsTotalCount;
         private Dictionary<string, XmlDocument> interceptedDocuments;
@@ -84,15 +85,13 @@ namespace NanoXLSX.LowLevel
         /// <param name="workbook">Workbook to process</param>
         public XlsxWriter(Workbook workbook)
         {
+            styles = workbook.ManageStyles();
             culture = CultureInfo.InvariantCulture;
             this.workbook = workbook;
             sharedStrings = new SortedMap();
             sharedStringsTotalCount = 0;
         }
         #endregion
-
-
-
 
         #region documentCreation_methods
 
@@ -158,13 +157,13 @@ namespace NanoXLSX.LowLevel
             string numberFormatsString = CreateStyleNumberFormatString();
             string xfsStings = CreateStyleXfsString();
             string mruColorString = CreateMruColorsString();
-            int fontCount = workbook.Styles.GetFontStyleNumber();
-            int fillCount = workbook.Styles.GetFillStyleNumber();
-            int styleCount = workbook.Styles.GetStyleNumber();
-            int borderCount = workbook.Styles.GetBorderStyleNumber();
+            int fontCount = styles.GetFontStyleNumber();
+            int fillCount = styles.GetFillStyleNumber();
+            int styleCount = styles.GetStyleNumber();
+            int borderCount = styles.GetBorderStyleNumber();
             StringBuilder sb = new StringBuilder();
             sb.Append("<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">");
-            int numFormatCount = workbook.Styles.GetNumberFormatStyleNumber();
+            int numFormatCount = styles.GetNumberFormatStyleNumber();
             if (numFormatCount > 0)
             {
                 sb.Append("<numFmts count=\"").Append(numFormatCount.ToString("G", culture)).Append("\">");
@@ -832,7 +831,10 @@ namespace NanoXLSX.LowLevel
                 {
                     styleDef = "";
                 }
-                item.ResolveCellType(); // Recalculate the type (for handling DEFAULT)
+                if (item.DataType == Cell.CellType.DEFAULT)
+                {
+                    item.ResolveCellType(); // Recalculate the type (for handling DEFAULT)
+                }
                 if (item.DataType == Cell.CellType.BOOL)
                 {
                     typeAttribute = "b";
@@ -1008,7 +1010,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>String with formatted XML data</returns>
         private string CreateStyleBorderString()
         {
-            Border[] borderStyles = workbook.Styles.GetBorders();
+            Border[] borderStyles = styles.GetBorders();
             StringBuilder sb = new StringBuilder();
             foreach (Border item in borderStyles)
             {
@@ -1084,7 +1086,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>String with formatted XML data</returns>
         private string CreateStyleFontString()
         {
-            Font[] fontStyles = workbook.Styles.GetFonts();
+            Font[] fontStyles = styles.GetFonts();
             StringBuilder sb = new StringBuilder();
             foreach (Font item in fontStyles)
             {
@@ -1129,7 +1131,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>String with formatted XML data</returns>
         private string CreateStyleFillString()
         {
-            Fill[] fillStyles = workbook.Styles.GetFills();
+            Fill[] fillStyles = styles.GetFills();
             StringBuilder sb = new StringBuilder();
             foreach (Fill item in fillStyles)
             {
@@ -1167,7 +1169,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>String with formatted XML data</returns>
         private string CreateStyleNumberFormatString()
         {
-            NumberFormat[] numberFormatStyles = workbook.Styles.GetNumberFormats();
+            NumberFormat[] numberFormatStyles = styles.GetNumberFormats();
             StringBuilder sb = new StringBuilder();
             foreach (NumberFormat item in numberFormatStyles)
             {
@@ -1185,7 +1187,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>String with formatted XML data</returns>
         private string CreateStyleXfsString()
         {
-            Style[] styles = workbook.Styles.GetStyles();
+            Style[] styles = this.styles.GetStyles();
             StringBuilder sb = new StringBuilder();
             StringBuilder sb2 = new StringBuilder();
             string alignmentString, protectionString;
@@ -1326,8 +1328,8 @@ namespace NanoXLSX.LowLevel
         /// <returns>String with formatted XML data</returns>
         private string CreateMruColorsString()
         {
-            Font[] fonts = workbook.Styles.GetFonts();
-            Fill[] fills = workbook.Styles.GetFills();
+            Font[] fonts = styles.GetFonts();
+            Fill[] fills = styles.GetFills();
             StringBuilder sb = new StringBuilder();
             List<string> tempColors = new List<string>();
             foreach (Font item in fonts)

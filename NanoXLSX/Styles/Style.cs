@@ -20,7 +20,6 @@ namespace NanoXLSX.Styles
         private string name;
         private bool internalStyle;
         private bool styleNameDefined;
-        private StyleManager styleManagerReference;
         #endregion
 
         #region properties
@@ -60,19 +59,6 @@ namespace NanoXLSX.Styles
             {
                 name = value;
                 styleNameDefined = true;
-            }
-        }
-
-        /// <summary>
-        /// Sets the reference of the style manager
-        /// </summary>
-        [Append(Ignore = true)]
-        public StyleManager StyleManagerReference
-        {
-            set
-            {
-                styleManagerReference = value;
-                ReorganizeStyle();
             }
         }
 
@@ -175,26 +161,6 @@ namespace NanoXLSX.Styles
                 CurrentNumberFormat.CopyProperties<NumberFormat>(((Style)styleToAppend).CurrentNumberFormat, new NumberFormat());
             }
             return this;
-        }
-
-        /// <summary>
-        /// Method to reorganize / synchronize the components of this style
-        /// </summary>
-        private void ReorganizeStyle()
-        {
-            if (styleManagerReference == null) { return; }
-
-            Style newStyle = styleManagerReference.AddStyle(this);
-            CurrentBorder = newStyle.CurrentBorder;
-            CurrentCellXf = newStyle.CurrentCellXf;
-            CurrentFill = newStyle.CurrentFill;
-            CurrentFont = newStyle.CurrentFont;
-            CurrentNumberFormat = newStyle.CurrentNumberFormat;
-
-            if (!styleNameDefined)
-            {
-                name = this.GetHashCode().ToString();
-            }
         }
 
         /// <summary>

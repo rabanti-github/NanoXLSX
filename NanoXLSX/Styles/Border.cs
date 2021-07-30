@@ -143,7 +143,7 @@ namespace NanoXLSX.Styles
             r *= p + this.LeftColor.GetHashCode();
             r *= p + this.RightColor.GetHashCode();
             r *= p + (this.DiagonalDown ? 0 : 1);
-            r *= p + (this.DiagonalUp ? 0 : 1);
+            r *= p + (this.DiagonalUp ? 0 : 2);
             return r;
         }
 

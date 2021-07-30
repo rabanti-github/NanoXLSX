@@ -217,8 +217,8 @@ namespace NanoXLSX.Styles
             r *= p + this.Indent;
             r *= p + this.TextRotation;
             r *= p + (this.ForceApplyAlignment ? 0 : 1);
-            r *= p + (this.Locked ? 0 : 1);
-            r *= p + (this.Hidden ? 0 : 1);
+            r *= p + (this.Locked ? 0 : 2);
+            r *= p + (this.Hidden ? 0 : 4);
             return r;
         }
 
@@ -249,14 +249,6 @@ namespace NanoXLSX.Styles
         {
             return (CellXf)Copy();
         }
-
- 
-
-
-
-
-
-
 
         #endregion
 

@@ -49,7 +49,6 @@ namespace NanoXLSX_Test.Cells.Types
             Cell actualCell = new Cell(initialValue, Cell.CellType.DEFAULT, this.cellAddress);
             if (style != null)
             {
-                actualCell.WorksheetReference = worksheet;
                 actualCell.SetStyle(style);
             }
             Assert.True(comparer.Invoke(initialValue, (T)actualCell.Value));
@@ -61,18 +60,15 @@ namespace NanoXLSX_Test.Cells.Types
             {
                 // Note: Date and Time styles are set internally and are not asserted if style is null.
                 // The same applies to merged styles. These must be asserted separately
-                Assert.Equal(style, actualCell.CellStyle);
+                // Assert.Equals may fail here because of object reference comparison and not value comparison
+                Assert.True(style.Equals(actualCell.CellStyle));
             }
 
         }
 
-        public Cell CreateVariantCell<T>(T value, Address cellAddress, bool referenceWorksheet = false, Style style = null)
+        public Cell CreateVariantCell<T>(T value, Address cellAddress, Style style = null)
         {
             Cell givenCell = new Cell(value, CellType.DEFAULT, cellAddress);
-            if (style != null || referenceWorksheet)
-            {
-                givenCell.WorksheetReference = worksheet;
-            }
             if (style != null)
             {
                 givenCell.SetStyle(style);

@@ -12,9 +12,10 @@ using NanoXLSX.Exceptions;
 namespace NanoXLSX.Styles
 {
     /// <summary>
-    /// Class representing a style manager to maintain all styles and its components of a workbook
+    /// Class representing a style manager to maintain all styles and its components of a workbook. 
+    /// This class is only internally used to compose the style environment right before saving an XLSX file
     /// </summary>
-    public class StyleManager
+    internal class StyleManager
     {
         #region privateFields
         private List<AbstractStyle> borders;

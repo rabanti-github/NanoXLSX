@@ -158,18 +158,12 @@ namespace NanoXLSX
         /// <summary>Gets or sets the value of the cell (generic object type)</summary>
         public object Value { get; set; }
 
-        /// <summary>
-        /// Gets or sets the parent worksheet reference
-        /// </summary>
-        public Worksheet WorksheetReference { get; set; }
-
         #endregion
 
         #region constructors
         /// <summary>Default constructor. Cells created with this constructor do not have a link to a worksheet initially</summary>
         public Cell()
         {
-            WorksheetReference = null;
             DataType = CellType.DEFAULT;
         }
 
@@ -199,7 +193,6 @@ namespace NanoXLSX
             DataType = type;
             Value = value;
             CellAddress = address;
-            WorksheetReference = null;
             if (type == CellType.DEFAULT)
             {
                 ResolveCellType();
@@ -219,7 +212,6 @@ namespace NanoXLSX
             columnNumber = address.Column;
             rowNumber = address.Row;
             CellAddressType = address.Type;
-            WorksheetReference = null;
             if (type == CellType.DEFAULT)
             {
                 ResolveCellType();
@@ -227,19 +219,17 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Constructor with value, cell type, row number, column number and the link to a worksheet
+        /// Constructor with value, cell type, row number and column number
         /// </summary>
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
         /// <param name="column">Column number of the cell (zero-based)</param>
         /// <param name="row">Row number of the cell (zero-based)</param>
-        /// <param name="reference">Referenced worksheet which contains the cell</param>
-        public Cell(object value, CellType type, int column, int row, Worksheet reference) : this(value, type)
+        public Cell(object value, CellType type, int column, int row) : this(value, type)
         {
             ColumnNumber = column;
             RowNumber = row;
             CellAddressType = AddressType.Default;
-            WorksheetReference = reference;
             if (type == CellType.DEFAULT)
             {
                 ResolveCellType();
@@ -300,23 +290,9 @@ namespace NanoXLSX
         /// <summary>
         /// Removes the assigned style from the cell
         /// </summary>
-        /// <exception cref="StyleException">Throws an StyleException if the style cannot be referenced</exception>
         public void RemoveStyle()
         {
-            if (WorksheetReference == null)
-            {
-                throw new StyleException(StyleException.MISSING_REFERENCE, "No worksheet reference was defined while trying to remove a style from a cell");
-            }
-            if (WorksheetReference.WorkbookReference == null)
-            {
-                throw new StyleException(StyleException.MISSING_REFERENCE, "No workbook reference was defined on the worksheet while trying to remove a style from a cell");
-            }
-            if (cellStyle != null)
-            {
-                string styleName = cellStyle.Name;
                 cellStyle = null;
-                WorksheetReference.WorkbookReference.RemoveStyle(styleName, true);
-            }
         }
 
         /// <summary>
@@ -349,10 +325,17 @@ namespace NanoXLSX
             { DataType = CellType.NUMBER; }
             else if (t == typeof(short) || t == typeof(ushort))
             { DataType = CellType.NUMBER; }
-            else if (t == typeof(DateTime))
-            { DataType = CellType.DATE; } // Not native but standard
-            else if (t == typeof(TimeSpan))
-            { DataType = CellType.TIME; } // Not native but standard
+            else if (t == typeof(DateTime)) // Not native but standard
+            {
+                DataType = CellType.DATE;
+                SetStyle(BasicStyles.DateFormat);
+            }
+           
+            else if (t == typeof(TimeSpan)) // Not native but standard
+            { 
+                DataType = CellType.TIME;
+                SetStyle(BasicStyles.TimeFormat);
+            } 
             else { DataType = CellType.STRING; } // Default (char, string, object)
         }
 
@@ -383,27 +366,17 @@ namespace NanoXLSX
         /// Sets the style of the cell
         /// </summary>
         /// <param name="style">Style to assign</param>
-        /// <returns>If the passed style already exists in the workbook, the existing one will be returned, otherwise the passed one</returns>
-        /// <exception cref="StyleException">Throws an StyleException if the style cannot be referenced or no style was defined</exception>
-        public Style SetStyle(Style style)
+        /// <param name="unmanaged">Internally used: If true, the style repository is not invoked and only the style object of the cell is updated. Do not use!</param>
+        /// <returns>If the passed style already exists in the repository, the existing one will be returned, otherwise the passed one</returns>
+        public Style SetStyle(Style style, bool unmanaged = false)
         {
-            if (WorksheetReference == null)
-            {
-                throw new StyleException(StyleException.MISSING_REFERENCE, "No worksheet reference was defined while trying to set a style to a cell");
-            }
-            if (WorksheetReference.WorkbookReference == null)
-            {
-                throw new StyleException(StyleException.MISSING_REFERENCE, "No workbook reference was defined on the worksheet while trying to set a style to a cell");
-            }
             if (style == null)
             {
                 throw new StyleException(StyleException.MISSING_REFERENCE, "No style to assign was defined");
             }
-            Style s = WorksheetReference.WorkbookReference.AddStyle(style);
-            cellStyle = s;
-            return s;
+            cellStyle = unmanaged ? style : StyleRepository.Instance.AddStyle(style);
+            return cellStyle;
         }
-
 
 
         #endregion
@@ -427,9 +400,14 @@ namespace NanoXLSX
             Type t;
             foreach (T item in list)
             {
+                if (item == null)
+                { 
+                    c = new Cell(null, CellType.EMPTY);
+                    output.Add(c);
+                    continue;
+                }
                 o = item; // intermediate object is necessary to cast the types below
                 t = item.GetType();
-
                 if (t == typeof(bool))
                 { c = new Cell((bool)o, CellType.BOOL); }
                 else if (t == typeof(byte))
@@ -462,7 +440,7 @@ namespace NanoXLSX
                 { c = new Cell((string)o, CellType.STRING); }
                 else // Default = unspecified object
                 {
-                    c = new Cell((string)o, CellType.DEFAULT);
+                     c = new Cell(o.ToString(), CellType.DEFAULT); 
                 }
                 output.Add(c);
             }
@@ -548,11 +526,11 @@ namespace NanoXLSX
                 endRow = startAddress.Row;
             }
             List<Address> output = new List<Address>();
-            for (int i = startRow; i <= endRow; i++)
+            for (int column = startColumn; column <= endColumn; column++)
             {
-                for (int j = startColumn; j <= endColumn; j++)
+                for (int row = startRow; row <= endRow; row++)
                 {
-                    output.Add(new Address(j, i));
+                    output.Add(new Address(column, row));
                 }
             }
             return output;
@@ -594,8 +572,9 @@ namespace NanoXLSX
         {
             int row;
             int column;
-            ResolveCellCoordinate(address, out column, out row);
-            return new Address(column, row);
+            AddressType type;
+            ResolveCellCoordinate(address, out column, out row, out type);
+            return new Address(column, row, type);
         }
 
         /// <summary>
@@ -619,6 +598,7 @@ namespace NanoXLSX
         /// <param name="address">Address as string in the format A1 - XFD1048576</param>
         /// <param name="column">Column number of the cell (zero-based) as out parameter</param>
         /// <param name="row">Row number of the cell (zero-based) as out parameter</param>
+        /// <param name="addressType">Address type of the cell (if defined as modifiers in the address string)</param>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the range address was malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the row or column number was out of range</exception>
         public static void ResolveCellCoordinate(string address, out int column, out int row, out AddressType addressType)
@@ -646,7 +626,6 @@ namespace NanoXLSX
             {
                 addressType = AddressType.FixedColumn;
             }
-            // else if (matcher.group(2).isEmpty() && !matcher.group(4).isEmpty())
             else if (String.IsNullOrEmpty(matcher.Groups[2].Value) && !String.IsNullOrEmpty(matcher.Groups[4].Value))
             {
                 addressType = AddressType.FixedRow;
@@ -690,6 +669,7 @@ namespace NanoXLSX
             {
                 throw new RangeException(RangeException.GENERAL, "The passed address was null");
             }
+            columnAddress = columnAddress.ToUpper();
             int chr;
             int result = 0;
             int multiplier = 1;

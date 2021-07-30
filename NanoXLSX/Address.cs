@@ -12,7 +12,7 @@ namespace NanoXLSX
     /// <summary>
     /// Struct representing the cell address as column and row (zero based)
     /// </summary>
-    public struct Address : IEquatable<Address>
+    public struct Address : IEquatable<Address>, IComparable<Address>
     {
         /// <summary>
         /// Column number (zero based)
@@ -112,6 +112,18 @@ namespace NanoXLSX
             { return true; }
 
             return false;
+        }
+
+        /// <summary>
+        /// Compares two addresses using the column and row numbers
+        /// </summary>
+        /// <param name="other"> Other address</param>
+        /// <returns>-1 if the other address is greater, 0 if equal and 1 if smaller</returns>
+        public int CompareTo(Address other)
+        {
+            long thisCoordinate = Column * Worksheet.MAX_ROW_NUMBER + Row;
+            long otherCoordinate = other.Column * Worksheet.MAX_ROW_NUMBER + other.Row;
+            return thisCoordinate.CompareTo(otherCoordinate);
         }
 
     }
