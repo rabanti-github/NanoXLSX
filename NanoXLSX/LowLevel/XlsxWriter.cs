@@ -85,7 +85,6 @@ namespace NanoXLSX.LowLevel
         /// <param name="workbook">Workbook to process</param>
         public XlsxWriter(Workbook workbook)
         {
-            styles = workbook.ManageStyles();
             culture = CultureInfo.InvariantCulture;
             this.workbook = workbook;
             sharedStrings = new SortedMap();
@@ -532,6 +531,7 @@ namespace NanoXLSX.LowLevel
         public void SaveAsStream(Stream stream, bool leaveOpen = false)
         {
             workbook.ResolveMergedCells();
+            this.styles = workbook.ManageStyles(); // After this point, styles must not be changed anymore
             DocumentPath sheetPath;
             List<Uri> sheetURIs = new List<Uri>();
             try

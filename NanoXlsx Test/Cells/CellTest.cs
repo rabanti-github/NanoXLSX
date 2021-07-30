@@ -106,7 +106,7 @@ namespace NanoXLSX_Test.Cells
         [InlineData(null, null, CellType.DEFAULT, CellType.EMPTY, 27, 998, "AB999")]
         [InlineData("", "", CellType.EMPTY, CellType.EMPTY, 2, 89999, "C90000")]
         [InlineData(11, 11, CellType.EMPTY, CellType.EMPTY, 0, 16, "A17")]
-        public void CellConstructortest4(object givenValue, object expectedValue, CellType givenType, CellType expectedType, int givenColumn, int givenRow, string expectedAddress)
+        public void CellConstructorTest4(object givenValue, object expectedValue, CellType givenType, CellType expectedType, int givenColumn, int givenRow, string expectedAddress)
         {
             Address address = new Address(givenColumn, givenRow);
             Cell cell = new Cell(givenValue, givenType, address);
@@ -121,15 +121,13 @@ namespace NanoXLSX_Test.Cells
             Assert.Equal(expectedAddress, cell2.CellAddress);
         }
 
-
-
-        [Theory(DisplayName = "Test of the set function of the CellAdress property")]
+        [Theory(DisplayName = "Test of the set function of the CellAdrdess property")]
         [InlineData("A1", 0, 0, AddressType.Default)]
         [InlineData("J100", 9, 99, AddressType.Default)]
         [InlineData("$B2", 1, 1, AddressType.FixedColumn)]
         [InlineData("B$2", 1, 1, AddressType.FixedRow)]
         [InlineData("$B$2", 1, 1, AddressType.FixedRowAndColumn)]
-        public void SetAdressStringPropertyTest(string givenAddress, int expectedColumn, int expectedRow, Cell.AddressType expectedType)
+        public void SetAddressStringPropertyTest(string givenAddress, int expectedColumn, int expectedRow, Cell.AddressType expectedType)
         {
             this.cell.CellAddress = givenAddress;
             Assert.Equal(this.cell.CellAddress2.Column, expectedColumn);
@@ -137,27 +135,27 @@ namespace NanoXLSX_Test.Cells
             Assert.Equal(this.cell.CellAddress2.Type, expectedType);
         }
 
-        [Theory(DisplayName = "Test of the get function of the CellAdressString property")]
+        [Theory(DisplayName = "Test of the get function of the CellAddressString property")]
         [InlineData(0, 0, AddressType.Default, "A1")]
         [InlineData(9, 99, AddressType.Default, "J100")]
         [InlineData(1, 1, AddressType.FixedColumn, "$B2")]
         [InlineData(1, 1, AddressType.FixedRow, "B$2")]
         [InlineData(1, 1, AddressType.FixedRowAndColumn, "$B$2")]
-        public void GetAddressStringPropertyTest(int givendColumn, int givenRow, Cell.AddressType givenTyp, string expectedAddress)
+        public void GetAddressStringPropertyTest(int givenColumn, int givenRow, Cell.AddressType givenTyp, string expectedAddress)
         {
             this.cell.CellAddressType = givenTyp;
-            this.cell.ColumnNumber = givendColumn;
+            this.cell.ColumnNumber = givenColumn;
             this.cell.RowNumber = givenRow;
             Assert.Equal(this.cell.CellAddress, expectedAddress);
         }
 
-        [Theory(DisplayName = "Test of the set function of the CellAdress property, as well as get functions of columnNumber, RowNumber and AddressType")]
+        [Theory(DisplayName = "Test of the set function of the CellAddress property, as well as get functions of columnNumber, RowNumber and AddressType")]
         [InlineData("A1", 0, 0, AddressType.Default)]
         [InlineData("XFD1048576", 16383, 1048575, AddressType.Default)]
         [InlineData("$B2", 1, 1, AddressType.FixedColumn)]
         [InlineData("B$2", 1, 1, AddressType.FixedRow)]
         [InlineData("$B$2", 1, 1, AddressType.FixedRowAndColumn)]
-        public void SetAdressPropertyTest(string givenAddress, int expectedColumn, int expectedRow, Cell.AddressType expectedType)
+        public void SetAddressPropertyTest(string givenAddress, int expectedColumn, int expectedRow, Cell.AddressType expectedType)
         {
             Address given = new Address(givenAddress);
             this.cell.CellAddress2 = given;
@@ -166,15 +164,15 @@ namespace NanoXLSX_Test.Cells
             Assert.Equal(this.cell.CellAddressType, expectedType);
         }
 
-        [Theory(DisplayName = "Test of the get function of the CellAdress property, as well as set functions of columnNumber, RowNumber and AddressType")]
+        [Theory(DisplayName = "Test of the get function of the CellAddress property, as well as set functions of columnNumber, RowNumber and AddressType")]
         [InlineData(0, 0, AddressType.Default, "A1")]
         [InlineData(16383, 1048575, AddressType.Default, "XFD1048576")]
         [InlineData(1, 1, AddressType.FixedColumn, "$B2")]
         [InlineData(1, 1, AddressType.FixedRow, "B$2")]
         [InlineData(1, 1, AddressType.FixedRowAndColumn, "$B$2")]
-        public void GetAdressPropertyTest(int givendColumn, int givenRow, Cell.AddressType givenTyp, string expectedAddress)
+        public void GetAddressPropertyTest(int givenColumn, int givenRow, Cell.AddressType givenTyp, string expectedAddress)
         {
-            this.cell.ColumnNumber = givendColumn;
+            this.cell.ColumnNumber = givenColumn;
             this.cell.RowNumber = givenRow;
             this.cell.CellAddressType = givenTyp;
             Address expected = new Address(expectedAddress);
@@ -281,7 +279,7 @@ namespace NanoXLSX_Test.Cells
         [Fact(DisplayName = "Test failing of the Equals method, when other cell is null (simplified use cases)")]
         public void EqualsFailTest()
         {
-            Cell cell1 = utils.CreateVariantCell<String>("test", this.cellAddress, BasicStyles.BoldItalic);
+            Cell cell1 = utils.CreateVariantCell<string>("test", this.cellAddress, BasicStyles.BoldItalic);
             Cell cell2 = null;
             Assert.False(cell1.Equals(cell2));
         }
@@ -289,16 +287,16 @@ namespace NanoXLSX_Test.Cells
         [Fact(DisplayName = "Test failing of the Equals method, when the address of the other cell is different (simplified use cases)")]
         public void EqualsFailTest2()
         {
-            Cell cell1 = utils.CreateVariantCell<String>("test", this.cellAddress, BasicStyles.BoldItalic);
-            Cell cell2 = utils.CreateVariantCell<String>("test", new Address(99, 99), BasicStyles.BoldItalic);
+            Cell cell1 = utils.CreateVariantCell<string>("test", this.cellAddress, BasicStyles.BoldItalic);
+            Cell cell2 = utils.CreateVariantCell<string>("test", new Address(99, 99), BasicStyles.BoldItalic);
             Assert.False(cell1.Equals(cell2));
         }
 
         [Fact(DisplayName = "Test failing of the Equals method, when the style of the other cell is different (simplified use cases)")]
         public void EqualsFailTest4()
         {
-            Cell cell1 = utils.CreateVariantCell<String>("test", this.cellAddress, BasicStyles.BoldItalic);
-            Cell cell2 = utils.CreateVariantCell<String>("test", this.cellAddress, BasicStyles.Italic);
+            Cell cell1 = utils.CreateVariantCell<string>("test", this.cellAddress, BasicStyles.BoldItalic);
+            Cell cell2 = utils.CreateVariantCell<string>("test", this.cellAddress, BasicStyles.Italic);
             Assert.False(cell1.Equals(cell2));
         }
         
@@ -307,11 +305,11 @@ namespace NanoXLSX_Test.Cells
         {
             Workbook workbook1 = new Workbook(true);
             Workbook workbook2 = new Workbook(true);
-            Cell cell1 = utils.CreateVariantCell<String>("test", this.cellAddress, BasicStyles.BoldItalic);
+            Cell cell1 = utils.CreateVariantCell<string>("test", this.cellAddress, BasicStyles.BoldItalic);
             workbook1.CurrentWorksheet.AddCell(cell1, this.cellAddress.GetAddress());
-            Cell cell2 = utils.CreateVariantCell<String>("test", this.cellAddress, BasicStyles.BoldItalic);
+            Cell cell2 = utils.CreateVariantCell<string>("test", this.cellAddress, BasicStyles.BoldItalic);
             workbook2.CurrentWorksheet.AddCell(cell2, this.cellAddress.GetAddress());
-            Cell cell3 = utils.CreateVariantCell<String>("test", this.cellAddress, BasicStyles.BoldItalic);
+            Cell cell3 = utils.CreateVariantCell<string>("test", this.cellAddress, BasicStyles.BoldItalic);
             workbook2.AddWorksheet("2nd");
             workbook2.Worksheets[1].AddCell(cell3, this.cellAddress.GetAddress());
             Assert.True(cell1.Equals(cell2));
@@ -366,7 +364,7 @@ namespace NanoXLSX_Test.Cells
         [InlineData(false, false)]
         public void SetCellLockedState(bool isLocked, bool isHidden)
         {
-            Cell cell = utils.CreateVariantCell<String>("test", this.cellAddress);
+            Cell cell = utils.CreateVariantCell<string>("test", this.cellAddress);
             cell.SetCellLockedState(isLocked, isHidden);
             Assert.Equal(isLocked, cell.CellStyle.CurrentCellXf.Locked);
             Assert.Equal(isHidden, cell.CellStyle.CurrentCellXf.Hidden);
@@ -382,7 +380,7 @@ namespace NanoXLSX_Test.Cells
             Style style = new Style();
             style.CurrentFont.Italic = true;
             style.CurrentCellXf.HorizontalAlign = CellXf.HorizontalAlignValue.justify;
-            Cell cell = utils.CreateVariantCell<String>("test", this.cellAddress, style);
+            Cell cell = utils.CreateVariantCell<string>("test", this.cellAddress, style);
             cell.SetCellLockedState(isLocked, isHidden);
             Assert.Equal(isLocked, cell.CellStyle.CurrentCellXf.Locked);
             Assert.Equal(isHidden, cell.CellStyle.CurrentCellXf.Hidden);
