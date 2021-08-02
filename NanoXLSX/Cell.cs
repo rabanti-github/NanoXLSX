@@ -283,7 +283,6 @@ namespace NanoXLSX
             {
                 return false;
             }
-            // Workbook / worksheet references are not considered
             return true;
         }
 
@@ -665,9 +664,9 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException if the passed address was out of range</exception>
         public static int ResolveColumn(string columnAddress)
         {
-            if (columnAddress == null)
+            if (String.IsNullOrEmpty(columnAddress))
             {
-                throw new RangeException(RangeException.GENERAL, "The passed address was null");
+                throw new RangeException(RangeException.GENERAL, "The passed address was null or empty");
             }
             columnAddress = columnAddress.ToUpper();
             int chr;
@@ -748,7 +747,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Validates the passed (zero-based) column number. an exception will be thrown if the column is invalid
+        /// Validates the passed (zero-based) column number. An exception will be thrown if the column is invalid
         /// </summary>
         /// <param name="column">Number to check</param>
         /// <exception cref="RangeException">Thrown if the passed column number is out of range</exception>
@@ -762,7 +761,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Validates the passed (zero-based) row number. an exception will be thrown if the row is invalid
+        /// Validates the passed (zero-based) row number. An exception will be thrown if the row is invalid
         /// </summary>
         /// <param name="row">Number to check</param>
         /// <exception cref="RangeException">Thrown if the passed row number is out of range</exception>
@@ -774,6 +773,7 @@ namespace NanoXLSX
                     Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
             }
         }
+
         #endregion
 
 

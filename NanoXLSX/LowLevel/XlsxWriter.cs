@@ -531,7 +531,7 @@ namespace NanoXLSX.LowLevel
         public void SaveAsStream(Stream stream, bool leaveOpen = false)
         {
             workbook.ResolveMergedCells();
-            this.styles = workbook.ManageStyles(); // After this point, styles must not be changed anymore
+            this.styles = StyleManager.GetManagedStyles(workbook); // After this point, styles must not be changed anymore
             DocumentPath sheetPath;
             List<Uri> sheetURIs = new List<Uri>();
             try

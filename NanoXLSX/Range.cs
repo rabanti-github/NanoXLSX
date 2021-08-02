@@ -67,36 +67,8 @@ namespace NanoXLSX
         /// <returns>List of Addresses</returns>
         public IReadOnlyList<Address> ResolveEnclosedAddresses()
         {
-            int startColumn, endColumn, startRow, endRow;
-            if (StartAddress.Column <= EndAddress.Column)
-            {
-                startColumn = this.StartAddress.Column;
-                endColumn = this.EndAddress.Column;
-            }
-            else
-            {
-                endColumn = this.StartAddress.Column;
-                startColumn = this.EndAddress.Column;
-            }
-            if (StartAddress.Row <= EndAddress.Row)
-            {
-                startRow = this.StartAddress.Row;
-                endRow = this.EndAddress.Row;
-            }
-            else
-            {
-                endRow = this.StartAddress.Row;
-                startRow = this.EndAddress.Row;
-            }
-            List<Address> addresses = new List<Address>();
-            for(int c = startColumn; c <= endColumn; c++)
-            {
-                for (int r = startRow; r <= endRow; r++)
-                {
-                    addresses.Add(new Address(c, r));
-                }
-            }
-            return addresses;
+            IEnumerable<Address> range = Cell.GetCellRange(this.StartAddress, this.EndAddress);
+            return new List<Address>(range);
         }
 
         /// <summary>
@@ -106,6 +78,16 @@ namespace NanoXLSX
         public override string ToString()
         {
             return StartAddress + ":" + EndAddress;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is Range))
+            {
+                return false;
+            }
+            Range other = (Range)obj;
+            return this.StartAddress.Equals(other.StartAddress) && this.EndAddress.Equals(other.EndAddress);
         }
 
     }

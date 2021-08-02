@@ -12,7 +12,7 @@ using static NanoXLSX.Cell;
 
 namespace NanoXLSX_Test.Cells
 {
-    // Ensure that these tests are executed sequentially, since static repository methods are called 
+    // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]
     public class CellTest
     {
@@ -266,14 +266,14 @@ namespace NanoXLSX_Test.Cells
         [Fact(DisplayName = "Test of the Equals method (simplified use cases)")]
         public void EqualsTest()
         {
-            AssertEquals<object>(null, null, "Data");
-            AssertEquals<int>(27, 27, 28);
-            AssertEquals<float>(0.27778f, 0.27778f, 0.27777f);
-            AssertEquals<string>("ABC", "ABC", "abc");
-            AssertEquals<string>("", "", " ");
-            AssertEquals<bool>(true, true, false);
-            AssertEquals<bool>(false, false, true);
-            AssertEquals<DateTime>(new DateTime(11, 10, 9, 8, 7, 6), new DateTime(11, 10, 9, 8, 7, 6), new DateTime(11, 10, 9, 8, 7, 5));
+            TestUtils.AssertEquals<object>(null, null, "Data", this.cellAddress);
+            TestUtils.AssertEquals<int>(27, 27, 28, this.cellAddress);
+            TestUtils.AssertEquals<float>(0.27778f, 0.27778f, 0.27777f, this.cellAddress);
+            TestUtils.AssertEquals<string>("ABC", "ABC", "abc", this.cellAddress);
+            TestUtils.AssertEquals<string>("", "", " ", this.cellAddress);
+            TestUtils.AssertEquals<bool>(true, true, false, this.cellAddress);
+            TestUtils.AssertEquals<bool>(false, false, true, this.cellAddress);
+            TestUtils.AssertEquals<DateTime>(new DateTime(2020, 10, 9, 8, 7, 6), new DateTime(2020, 10, 9, 8, 7, 6), new DateTime(2020, 10, 9, 8, 7, 5), this.cellAddress);
         }
 
         [Fact(DisplayName = "Test failing of the Equals method, when other cell is null (simplified use cases)")]
@@ -293,7 +293,7 @@ namespace NanoXLSX_Test.Cells
         }
 
         [Fact(DisplayName = "Test failing of the Equals method, when the style of the other cell is different (simplified use cases)")]
-        public void EqualsFailTest4()
+        public void EqualsFailTest3()
         {
             Cell cell1 = utils.CreateVariantCell<string>("test", this.cellAddress, BasicStyles.BoldItalic);
             Cell cell2 = utils.CreateVariantCell<string>("test", this.cellAddress, BasicStyles.Italic);
@@ -301,7 +301,7 @@ namespace NanoXLSX_Test.Cells
         }
         
         [Fact(DisplayName = "Test of the Equals method, when two identical cells occur in different workbooks and worksheets (simplified use cases)")]
-        public void EqualsFailTest5()
+        public void EqualsFailTest4()
         {
             Workbook workbook1 = new Workbook(true);
             Workbook workbook2 = new Workbook(true);
@@ -396,7 +396,7 @@ namespace NanoXLSX_Test.Cells
         public void GetCellRangeTest(string range, string expectedAddresses)
         {
             List<Address> addresses = Cell.GetCellRange(range).ToList();
-            AssertCellRange(expectedAddresses, addresses);
+            TestUtils.AssertCellRange(expectedAddresses, addresses);
         }
 
         [Theory(DisplayName = "Test of the GetCellRange method with start and end address objects or strings as range")]
@@ -409,9 +409,9 @@ namespace NanoXLSX_Test.Cells
             Address start = new Address(startAddress);
             Address end = new Address(endAddress);
             List<Address> addresses = Cell.GetCellRange(startAddress, endAddress).ToList();
-            AssertCellRange(expectedAddresses, addresses);
+            TestUtils.AssertCellRange(expectedAddresses, addresses);
             addresses = Cell.GetCellRange(start, end).ToList();
-            AssertCellRange(expectedAddresses, addresses);
+            TestUtils.AssertCellRange(expectedAddresses, addresses);
         }
 
         [Theory(DisplayName = "Test of the GetCellRange method with start/end row and column numbers as range")]
@@ -422,7 +422,7 @@ namespace NanoXLSX_Test.Cells
         public void GetCellRangeTest3(int startColumn, int startRow, int endColumn, int endRow, string expectedAddresses)
         {
             List<Address> addresses = Cell.GetCellRange(startColumn, startRow, endColumn, endRow).ToList();
-            AssertCellRange(expectedAddresses, addresses);
+            TestUtils.AssertCellRange(expectedAddresses, addresses);
         }
 
         [Theory(DisplayName = "Test of the ResolveCellAddress method")]
@@ -577,31 +577,6 @@ namespace NanoXLSX_Test.Cells
             Assert.Equal(expectedScope, scope);
         }
 
-
-        private void AssertEquals<T>(T value1, T value2, T inequalValue)
-        {
-            Cell cell1 = new Cell(value1, CellType.DEFAULT, this.cellAddress);
-            Cell cell2 = new Cell(value2, CellType.DEFAULT, this.cellAddress);
-            Cell cell3 = new Cell(inequalValue, CellType.DEFAULT, this.cellAddress);
-            cell1.Equals(cell2);
-            Assert.True(cell1.Equals(cell2));
-            Assert.False(cell1.Equals(cell3));
-        }
-
-        private void AssertCellRange(string expectedAddresses, List<Address> addresses)
-        {
-            string[] addressStrings = expectedAddresses.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            List<Address> expected = new List<Address>();
-            foreach (string address in addressStrings)
-            {
-                expected.Add(new Address(address));
-            }
-            Assert.Equal(expected.Count, addresses.Count);
-            for (int i = 0; i < expected.Count; i++)
-            {
-                Assert.Equal(expected[i], addresses[i]);
-            }
-        }
 
     }
 }

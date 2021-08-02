@@ -9,7 +9,7 @@ using static NanoXLSX.Cell;
 
 namespace NanoXLSX_Test.Cells.Types
 {
-    // Ensure that these tests are executed sequentially, since static repository methods are called 
+    // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]
     public class StringCellTest
     {

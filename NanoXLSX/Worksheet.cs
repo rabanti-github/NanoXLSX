@@ -162,6 +162,7 @@ namespace NanoXLSX
         private Address? paneSplitTopLeftCell;
         private Address? paneSplitAddress;
         private WorksheetPane? activePane;
+        private int sheetID;
         #endregion
 
         #region properties
@@ -262,9 +263,18 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets or sets the internal ID of the sheet
+        /// Gets or sets the internal ID of the worksheet
         /// </summary>
-        public int SheetID { get; set; }
+        public int SheetID { get => sheetID;
+            set
+            {
+                if (value < 1)
+                {
+                    throw new FormatException("InvalidIDException", "The ID " + value + " is invalid. Worksheet IDs must be >0");
+                }
+                sheetID = value;
+            } 
+        }
 
         /// <summary>
         /// Gets or sets the name of the worksheet
@@ -276,9 +286,8 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the password used for sheet protection
+        /// Gets the password used for sheet protection. See <see cref="SetSheetProtectionPassword"/> to set the password
         /// </summary>
-        /// <see cref="SetSheetProtectionPassword"/>
         public string SheetProtectionPassword
         {
             get { return sheetProtectionPassword; }
@@ -333,8 +342,6 @@ namespace NanoXLSX
             get { return paneSplitLeftWidth; }
         }
 
-
-
         /// <summary>
         /// Gets whether split panes are frozen.<br/>
         /// The value is nullable. If null, no freezing is applied. This property also does not apply if <see cref="PaneSplitAddress"/> is null
@@ -376,6 +383,14 @@ namespace NanoXLSX
             get { return activePane; }
         }
 
+        /// <summary>
+        /// Gets the active Style of the worksheet. If null, no style is defined as active
+        /// </summary>
+        public Style ActiveStyle
+        {
+            get { return activeStyle; }
+        }
+
         #endregion
 
 
@@ -415,8 +430,6 @@ namespace NanoXLSX
         }
 
         #endregion
-
-
 
         #region methods_AddNextCell
 
@@ -849,7 +862,7 @@ namespace NanoXLSX
         public void SetStyle(Range cellRange, Style style)
         {
             IReadOnlyList<Address> addresses = cellRange.ResolveEnclosedAddresses();
-            foreach(Address address in addresses)
+            foreach (Address address in addresses)
             {
                 String key = address.GetAddress();
                 if (this.cells.ContainsKey(key))
@@ -1366,6 +1379,29 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Removes the defined, non-standard row height
+        /// </summary>
+        /// <param name="rowNumber">Row number (zero-based)</param>
+        public void RemoveRowHeight(int rowNumber)
+        {
+            if (rowHeights.ContainsKey(rowNumber))
+            {
+                rowHeights.Remove(rowNumber);
+            }
+        }
+
+        /// <summary>
+        /// Removes an allowed action on the current worksheet or its cells
+        /// </summary>
+        /// <param name="value">Allowed action on the worksheet or cells</param>
+        public void RemoveAllowedActionOnSheetProtection(SheetProtectionValue value)
+        {
+            if (sheetProtectionValues.Contains(value)){
+                sheetProtectionValues.Remove(value);
+            }
+        }
+
+        /// <summary>
         /// Sets the active style of the worksheet. This style will be assigned to all later added cells
         /// </summary>
         /// <param name="style">Style to set as active style</param>
@@ -1418,7 +1454,7 @@ namespace NanoXLSX
         {
             if (columnNumber > MAX_COLUMN_NUMBER || columnNumber < MIN_COLUMN_NUMBER)
             {
-                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " + 
+                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " +
                     MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
             }
             if (columns.ContainsKey(columnNumber) && state)
@@ -1459,7 +1495,7 @@ namespace NanoXLSX
         {
             if (columnNumber > MAX_COLUMN_NUMBER || columnNumber < MIN_COLUMN_NUMBER)
             {
-                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " + 
+                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " +
                     MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
             }
             if (width < MIN_COLUMN_WIDTH || width > MAX_COLUMN_WIDTH)
@@ -1513,7 +1549,7 @@ namespace NanoXLSX
         {
             if (columnNumber > MAX_COLUMN_NUMBER || columnNumber < MIN_COLUMN_NUMBER)
             {
-                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " + 
+                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " +
                     MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
             }
             currentColumnNumber = columnNumber;
@@ -1588,7 +1624,7 @@ namespace NanoXLSX
         {
             if (rowNumber > MAX_ROW_NUMBER || rowNumber < MIN_ROW_NUMBER)
             {
-                throw new RangeException(RangeException.GENERAL, "The row number (" + rowNumber + ") is out of range. Range is from " + 
+                throw new RangeException(RangeException.GENERAL, "The row number (" + rowNumber + ") is out of range. Range is from " +
                     MIN_ROW_NUMBER + " to " + MAX_ROW_NUMBER + " (" + (MAX_ROW_NUMBER + 1) + " rows).");
             }
             if (height < MIN_ROW_HEIGHT || height > MAX_ROW_HEIGHT)
@@ -1615,7 +1651,7 @@ namespace NanoXLSX
         {
             if (rowNumber > MAX_ROW_NUMBER || rowNumber < MIN_ROW_NUMBER)
             {
-                throw new RangeException(RangeException.GENERAL, "The row number (" + rowNumber + ") is out of range. Range is from " + 
+                throw new RangeException(RangeException.GENERAL, "The row number (" + rowNumber + ") is out of range. Range is from " +
                     MIN_ROW_NUMBER + " to " + MAX_ROW_NUMBER + " (" + (MAX_ROW_NUMBER + 1) + " rows).");
             }
             if (hiddenRows.ContainsKey(rowNumber))
@@ -1643,30 +1679,30 @@ namespace NanoXLSX
         /// Validates and sets the worksheet name
         /// </summary>
         /// <param name="name">Name to set</param>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the sheet name is too long (max. 31) or contains illegal characters [  ]  * ? / \</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the worksheet name is too long (max. 31) or contains illegal characters [  ]  * ? / \</exception>
         public void SetSheetname(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new FormatException("The sheet name must be between 1 and " + MAX_WORKSHEER_NAME_LENGTH + " characters");
+                throw new FormatException("the worksheet name must be between 1 and " + MAX_WORKSHEER_NAME_LENGTH + " characters");
             }
             if (name.Length > MAX_WORKSHEER_NAME_LENGTH)
             {
-                throw new FormatException("The sheet name must be between 1 and " + MAX_WORKSHEER_NAME_LENGTH + " characters");
+                throw new FormatException("the worksheet name must be between 1 and " + MAX_WORKSHEER_NAME_LENGTH + " characters");
             }
             Regex rx = new Regex(@"[\[\]\*\?/\\]");
             Match mx = rx.Match(name);
             if (mx.Captures.Count > 0)
             {
-                throw new FormatException(@"The sheet name must not contain the characters [  ]  * ? / \ ");
+                throw new FormatException(@"the worksheet name must not contain the characters [  ]  * ? / \ ");
             }
             sheetName = name;
         }
 
         /// <summary>
-        /// Sets the name of the sheet
+        /// Sets the name of the worksheet
         /// </summary>
-        /// <param name="name">Name of the sheet</param>
+        /// <param name="name">Name of the worksheet</param>
         /// <param name="sanitize">If true, the filename will be sanitized automatically according to the specifications of Excel</param>
         /// <exception cref="WorksheetException">WorksheetException Thrown if no workbook is referenced. This information is necessary to determine whether the name already exists</exception>
         public void SetSheetName(string name, bool sanitize)
@@ -1745,7 +1781,7 @@ namespace NanoXLSX
             {
                 if (numberOfColumnsFromLeft != null && topLeftCell.Column < numberOfColumnsFromLeft.Value)
                 {
-                    throw new WorksheetException("InvalidTopLeftCellException", "The column number " + topLeftCell.Column + 
+                    throw new WorksheetException("InvalidTopLeftCellException", "The column number " + topLeftCell.Column +
                         " is not valid for a frozen, vertical split with the split pane column number " + numberOfColumnsFromLeft.Value);
                 }
                 if (numberOfRowsFromTop != null && topLeftCell.Row < numberOfRowsFromTop.Value)
@@ -1807,7 +1843,7 @@ namespace NanoXLSX
         /// <returns>Name of the sanitized worksheet</returns>
         public static string SanitizeWorksheetName(string input, Workbook workbook)
         {
-            
+
             if (string.IsNullOrEmpty(input))
             {
                 input = "Sheet1";

@@ -430,6 +430,34 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
+        /// Method to gather all styles of the cells in all worksheets
+        /// </summary>
+        /// <param name="workbook">Workbook to get all cells with possible style definitions</param>
+        /// <returns>StyleManager object, to be processed by the save methods</returns>
+        internal static StyleManager GetManagedStyles(Workbook workbook)
+        {
+            StyleManager styleManager = new StyleManager();
+            styleManager.AddStyle(new Style("default", 0, true));
+            Style borderStyle = new Style("default_border_style", 1, true);
+            borderStyle.CurrentBorder = BasicStyles.DottedFill_0_125.CurrentBorder;
+            borderStyle.CurrentFill = BasicStyles.DottedFill_0_125.CurrentFill;
+            styleManager.AddStyle(borderStyle);
+
+            for (int i = 0; i < workbook.Worksheets.Count; i++)
+            {
+                foreach (KeyValuePair<String, Cell> cell in workbook.Worksheets[i].Cells)
+                {
+                    if (cell.Value.CellStyle != null)
+                    {
+                        Style resolvedStyle = styleManager.AddStyle(cell.Value.CellStyle);
+                        workbook.Worksheets[i].Cells[cell.Key].SetStyle(resolvedStyle, true);
+                    }
+                }
+            }
+            return styleManager;
+        }
+
+        /// <summary>
         /// Method to reorganize / reorder a list of style components
         /// </summary>
         /// <param name="list">List to reorganize as reference</param>
