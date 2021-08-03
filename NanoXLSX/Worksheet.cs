@@ -312,7 +312,7 @@ namespace NanoXLSX
         public Workbook WorkbookReference { get; set; }
 
         /// <summary>
-        /// gets or sets whether the worksheet is hidden. If true, the worksheet is not listed in the worksheet tabs of the workbook
+        /// Gets or sets whether the worksheet is hidden. If true, the worksheet is not listed in the worksheet tabs of the workbook
         /// </summary>
         public bool Hidden { get; set; }
 
@@ -985,6 +985,7 @@ namespace NanoXLSX
         public void ClearActiveStyle()
         {
             useActiveStyle = false;
+            activeStyle = null;
         }
 
         /// <summary>
@@ -1037,6 +1038,24 @@ namespace NanoXLSX
         public bool HasCell(int columnNumber, int rowNumber)
         {
             return HasCell(new Address(columnNumber, rowNumber));
+        }
+
+        /// <summary>
+        /// Resets the defined column, if existing. The corresponding instance will be removed from <see cref="Columns"/>.
+        /// </summary>
+        /// <remarks>If the column is inside an autoFilter-Range, the column cannot be entirely removed from <see cref="Columns"/>. The hidden state will be set to false and width to default, in this case.</remarks>
+        /// <param name="columnNumber">Column number to reset (zero-based)</param>
+        public void ResetColumn(int columnNumber)
+        {
+            if (columns.ContainsKey(columnNumber) && !columns[columnNumber].HasAutoFilter) // AutoFilters cannot have gaps 
+            {
+                columns.Remove(columnNumber);
+            }
+            else
+            {
+                columns[columnNumber].IsHidden = false;
+                columns[columnNumber].Width = DEFAULT_COLUMN_WIDTH;
+            }
         }
 
         /// <summary>
@@ -1154,7 +1173,6 @@ namespace NanoXLSX
         {
             return currentRowNumber;
         }
-
 
         /// <summary>
         /// Moves the current position to the next column

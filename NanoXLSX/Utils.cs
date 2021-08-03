@@ -138,7 +138,7 @@ namespace NanoXLSX
         /// The internal width deviates slightly from the column width, entered in Excel. Although internal, the default column width of 10 characters is visible in Excel as 10.71.
         /// The deviation depends on the maximum digit width of the default font, as well as its text padding and various constants.<br/>
         /// In case of the width 10.0 and the default digit width 7.0, as well as the padding 5.0 of the default font Calibri (size 11), 
-        /// the internal width is approximately 10.7142857 (rounded to 10.71).<br/> Note that the column hight is not affected by this consideration. 
+        /// the internal width is approximately 10.7142857 (rounded to 10.71).<br/> Note that the column height is not affected by this consideration. 
         /// The entered height in Excel is the actual height in the worksheet XML documents.<br/> 
         /// This method is derived from the Perl implementation by John McNamara (<a href="https://stackoverflow.com/a/5010899">https://stackoverflow.com/a/5010899</a>)<br/>
         /// See also: <a href="https://www.ecma-international.org/publications-and-standards/standards/ecma-376/">ECMA-376, Part 1, Chapter 18.3.1.13</a>
@@ -190,7 +190,7 @@ namespace NanoXLSX
         /// See also <see cref="GetInternalColumnWidth(float, float, float)"/> for additional details.<br/>
         /// This method is derived from the Perl implementation by John McNamara (<a href="https://stackoverflow.com/a/5010899">https://stackoverflow.com/a/5010899</a>)<br/>
         /// See also: <a href="https://www.ecma-international.org/publications-and-standards/standards/ecma-376/">ECMA-376, Part 1, Chapter 18.3.1.13</a><br/>
-        /// The three optional parameters maxDigitWidth and textPadding probably don't have to be changed ever.
+        /// The two optional parameters maxDigitWidth and textPadding probably don't have to be changed ever.
         /// </remarks>
         /// <param name="width">Target column(s) width (one or more columns, displayed in Excel)</param>
         /// <param name="maxDigitWidth">Maximum digit with of the default font (default is 7.0 for Calibri, size 11)</param>

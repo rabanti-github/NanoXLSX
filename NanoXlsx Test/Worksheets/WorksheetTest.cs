@@ -1,4 +1,5 @@
 ﻿using NanoXLSX;
+using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => new Worksheet(name, id, workbook));
         }
 
-        [Fact(DisplayName = "Test of the get functions of the AutoFilterRang property")]
+        [Fact(DisplayName = "Test of the get function of the AutoFilterRang property")]
         public void AutoFilterRangTest()
         {
             Worksheet worksheet = new Worksheet();
@@ -58,6 +59,54 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(ExpectedRange, worksheet.AutoFilterRange);
             worksheet.RemoveAutoFilter();
             Assert.Null(worksheet.AutoFilterRange);
+        }
+
+        [Fact(DisplayName = "Test of the get function of the Cells property")]
+        public void CellsTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.NotNull(worksheet.Cells);
+            Assert.Empty(worksheet.Cells);
+            worksheet.AddCell("test", "C3");
+            worksheet.AddCell(22, "D4");
+            Assert.Equal(2, worksheet.Cells.Count);
+            Assert.Contains(worksheet.Cells, item => (item.Key.Equals("C3") && item.Value.Value.Equals("test")));
+            Assert.Contains(worksheet.Cells, item => (item.Key.Equals("D4") && item.Value.Value.Equals(22)));
+            worksheet.RemoveCell("C3");
+            Assert.Single(worksheet.Cells);
+            Assert.Contains(worksheet.Cells, item => (item.Key.Equals("D4") && item.Value.Value.Equals(22)));
+        }
+
+        [Fact(DisplayName = "Test of the get function of the Columns property")]
+        public void ColumnsTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.NotNull(worksheet.Columns);
+            Assert.Empty(worksheet.Columns);
+            worksheet.SetColumnWidth("B", 11f);
+            worksheet.SetColumnWidth("C", 0.7f);
+            Assert.Equal(2, worksheet.Columns.Count);
+            Assert.Contains(worksheet.Columns, item => (item.Key.Equals(1) && item.Value.Width.Equals(11f)));
+            Assert.Contains(worksheet.Columns, item => (item.Key.Equals(2) && item.Value.Width.Equals(0.7f)));
+            worksheet.ResetColumn(1);
+            Assert.Single(worksheet.Columns);
+            Assert.Contains(worksheet.Columns, item => (item.Key.Equals(2) && item.Value.Width.Equals(0.7f)));
+        }
+
+        [Theory(DisplayName = "Test of the CurrentCellDirection property")]
+        [InlineData(Worksheet.CellDirection.ColumnToColumn, 2, 7, 3, 7)]
+        [InlineData(Worksheet.CellDirection.RowToRow, 2, 7, 2, 8)]
+        [InlineData(Worksheet.CellDirection.Disabled, 2, 7, 2, 7)]
+        public void CurrentCellDirectionTest(Worksheet.CellDirection direction, int givenInitialColumn, int givenInitialRow, int expectedColumn, int expectedRow )
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.CurrentCellDirection = direction;
+            worksheet.SetCurrentCellAddress(givenInitialColumn, givenInitialRow);
+            Assert.Equal(givenInitialRow, worksheet.GetCurrentRowNumber());
+            Assert.Equal(givenInitialColumn, worksheet.GetCurrentColumnNumber());
+            worksheet.AddNextCell("test");
+            Assert.Equal(expectedRow, worksheet.GetCurrentRowNumber());
+            Assert.Equal(expectedColumn, worksheet.GetCurrentColumnNumber());
         }
 
         [Theory(DisplayName = "Test of the DefaultColumnWidth property")]
@@ -104,7 +153,7 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Throws<NanoXLSX.Exceptions.RangeException>(() => worksheet.DefaultRowHeight = value);
         }
 
-        [Fact(DisplayName = "Test of the get functions of the HiddenRows property")]
+        [Fact(DisplayName = "Test of the get function of the HiddenRows property")]
         public void HiddenRowsTest()
         {
             Worksheet worksheet = new Worksheet();
@@ -120,7 +169,7 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Contains(worksheet.HiddenRows, item => (item.Key.Equals(5) && item.Value.Equals(true)));
         }
 
-        [Fact(DisplayName = "Test of the get functions of the MergedCells property")]
+        [Fact(DisplayName = "Test of the get function of the MergedCells property")]
         public void MergedCellsTest()
         {
             Worksheet worksheet = new Worksheet();
@@ -139,7 +188,7 @@ namespace NanoXLSX_Test.Worksheets
         }
 
 
-        [Fact(DisplayName = "Test of the get functions of the RowHeights property")]
+        [Fact(DisplayName = "Test of the get function of the RowHeights property")]
         public void RowHeightsTest()
         {
             Worksheet worksheet = new Worksheet();
@@ -155,7 +204,7 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Contains(worksheet.RowHeights, item => (item.Key.Equals(5) && item.Value.Equals(100f)));
         }
 
-        [Fact(DisplayName = "Test of the get functions of the SelectedCells property")]
+        [Fact(DisplayName = "Test of the get function of the SelectedCells property")]
         public void SelectedCellsTest()
         {
             Worksheet worksheet = new Worksheet();
@@ -208,7 +257,7 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(typeof(NanoXLSX.Exceptions.FormatException), ex.GetType());
         }
 
-        [Theory(DisplayName = "Test of the get functions of the SheetProtectionPassword property")]
+        [Theory(DisplayName = "Test of the get function of the SheetProtectionPassword property")]
         [InlineData(null, null)]
         [InlineData("", null)]
         [InlineData(" ", " ")]
@@ -239,6 +288,144 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Contains(worksheet.SheetProtectionValues, item => (item.Equals(Worksheet.SheetProtectionValue.formatRows)));
         }
 
+        [Fact(DisplayName = "Test of the UseSheetProtection property")]
+        public void UseSheetProtectionTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.False(worksheet.UseSheetProtection);
+            worksheet.UseSheetProtection = true;
+            Assert.True(worksheet.UseSheetProtection);
+        }
+
+        [Fact(DisplayName = "Test of the WorkbookReference property")]
+        public void WorkbookReferenceTest()
+        {
+            Workbook workbook = new Workbook("test.xlsx", "test");
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.WorkbookReference);
+            worksheet.WorkbookReference = workbook;
+            Assert.NotNull(worksheet.WorkbookReference);
+            Assert.Equal("test.xlsx", worksheet.WorkbookReference.Filename);
+        }
+
+        [Fact(DisplayName = "Test of the Hidden property")]
+        public void HiddenTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.False(worksheet.Hidden);
+            worksheet.Hidden = true;
+            Assert.True(worksheet.Hidden);
+        }
+
+        [Fact(DisplayName = "Test of the get function of the PaneSplitTopHeight property")]
+        public void PaneSplitTopHeightTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.PaneSplitTopHeight);
+            worksheet.SetSplit(10f, 22.2f, new Address("A2"), Worksheet.WorksheetPane.bottomLeft);
+            Assert.NotNull(worksheet.PaneSplitTopHeight);
+            Assert.Equal(22.2f, worksheet.PaneSplitTopHeight);
+            worksheet.ResetSplit();
+            Assert.Null(worksheet.PaneSplitTopHeight);
+        }
+
+        [Fact(DisplayName = "Test of the get function of the PaneSplitLeftWidth property")]
+        public void PaneSplitLeftWidthTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.PaneSplitLeftWidth);
+            worksheet.SetSplit(11.1f, 20f, new Address("A2"), Worksheet.WorksheetPane.bottomLeft);
+            Assert.NotNull(worksheet.PaneSplitLeftWidth);
+            Assert.Equal(11.1f, worksheet.PaneSplitLeftWidth);
+            worksheet.ResetSplit();
+            Assert.Null(worksheet.PaneSplitLeftWidth);
+        }
+
+        [Fact(DisplayName = "Test of the get function of the FreezeSplitPanes property")]
+        public void FreezeSplitPanesTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.FreezeSplitPanes);
+            worksheet.SetSplit(2,2,true, new Address("D4"), Worksheet.WorksheetPane.bottomRight);
+            Assert.NotNull(worksheet.FreezeSplitPanes);
+            Assert.Equal(true, worksheet.FreezeSplitPanes);
+            worksheet.ResetSplit();
+            Assert.Null(worksheet.FreezeSplitPanes);
+        }
+
+        [Fact(DisplayName = "Test of the get function of the PaneSplitTopLeftCell property")]
+        public void PaneSplitTopLeftCellTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.PaneSplitTopLeftCell);
+            worksheet.SetSplit(10f, 22.2f, new Address("C4"), Worksheet.WorksheetPane.bottomLeft);
+            Assert.NotNull(worksheet.PaneSplitTopLeftCell);
+            Assert.Equal("C4", worksheet.PaneSplitTopLeftCell.Value.GetAddress());
+            worksheet.ResetSplit();
+            Assert.Null(worksheet.PaneSplitTopLeftCell);
+        }
+
+        [Fact(DisplayName = "Test of the get function of the PaneSplitAddress property")]
+        public void PaneSplitAddressTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.PaneSplitAddress);
+            worksheet.SetSplit(2, 2, true, new Address("D4"), Worksheet.WorksheetPane.bottomRight);
+            Assert.NotNull(worksheet.PaneSplitAddress);
+            Assert.Equal("C3", worksheet.PaneSplitAddress.Value.GetAddress());
+            worksheet.ResetSplit();
+            Assert.Null(worksheet.PaneSplitAddress);
+        }
+
+        [Fact(DisplayName = "Test of the get function of the ActivePane property")]
+        public void ActivePaneTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.ActivePane);
+            worksheet.SetSplit(2, 2, true, new Address("D4"), Worksheet.WorksheetPane.bottomRight);
+            Assert.NotNull(worksheet.ActivePane);
+            Assert.Equal(Worksheet.WorksheetPane.bottomRight, worksheet.ActivePane);
+            worksheet.ResetSplit();
+            Assert.Null(worksheet.ActivePane);
+        }
+
+        [Fact(DisplayName = "Test of the get function of the ActiveStyle property")]
+        public void ActiveStyleTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.ActiveStyle);
+            worksheet.SetActiveStyle(BasicStyles.DottedFill_0_125);
+            Assert.NotNull(worksheet.ActiveStyle);
+            Assert.True(BasicStyles.DottedFill_0_125.Equals(worksheet.ActiveStyle));
+            worksheet.ClearActiveStyle();
+            Assert.Null(worksheet.ActiveStyle);
+        }
+
+        [Theory(DisplayName = "Test of theAddNextCell function with only the value")]
+        [InlineData(null, Cell.CellType.EMPTY)]
+        [InlineData("", Cell.CellType.STRING)]
+        [InlineData("test",  Cell.CellType.STRING)]
+        [InlineData(17l, Cell.CellType.NUMBER)]
+        [InlineData(1.02d, Cell.CellType.NUMBER)]
+        [InlineData(-22.3f, Cell.CellType.NUMBER)]
+        [InlineData(0, Cell.CellType.NUMBER)]
+        [InlineData((byte)128, Cell.CellType.NUMBER)]
+        [InlineData(true, Cell.CellType.BOOL)]
+        [InlineData(false, Cell.CellType.BOOL)]
+        public void AddNextCell(object value, Cell.CellType expectedType)
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.SetCurrentCellAddress("D2");
+            worksheet.CurrentCellDirection = Worksheet.CellDirection.RowToRow;
+            Assert.Empty(worksheet.Cells);
+            worksheet.AddNextCell(value);
+            Assert.Single(worksheet.Cells);
+            Assert.Contains(worksheet.Cells, cell => cell.Key.Equals("D2"));
+            Assert.Equal(expectedType, worksheet.Cells["D2"].DataType);
+            Assert.Equal(value, worksheet.Cells["D2"].Value);
+            Assert.Equal(3, worksheet.GetCurrentColumnNumber());
+            Assert.Equal(2, worksheet.GetCurrentRowNumber()); // D3
+        }
 
         private void AssertConstructorBasics(Worksheet worksheet)
         {
