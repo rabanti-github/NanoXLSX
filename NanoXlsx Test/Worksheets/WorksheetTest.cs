@@ -9,6 +9,8 @@ using Xunit;
 
 namespace NanoXLSX_Test.Worksheets
 {
+    // Ensure that these tests are executed sequentially, since static repository methods may be called 
+    [Collection(nameof(SequentialCollection))]
     public class WorksheetTest
     {
 
@@ -401,30 +403,37 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Null(worksheet.ActiveStyle);
         }
 
-        [Theory(DisplayName = "Test of theAddNextCell function with only the value")]
-        [InlineData(null, Cell.CellType.EMPTY)]
-        [InlineData("", Cell.CellType.STRING)]
-        [InlineData("test",  Cell.CellType.STRING)]
-        [InlineData(17l, Cell.CellType.NUMBER)]
-        [InlineData(1.02d, Cell.CellType.NUMBER)]
-        [InlineData(-22.3f, Cell.CellType.NUMBER)]
-        [InlineData(0, Cell.CellType.NUMBER)]
-        [InlineData((byte)128, Cell.CellType.NUMBER)]
-        [InlineData(true, Cell.CellType.BOOL)]
-        [InlineData(false, Cell.CellType.BOOL)]
-        public void AddNextCell(object value, Cell.CellType expectedType)
+        public static Worksheet InitWorksheet(Worksheet worksheet, string address, Worksheet.CellDirection direction, Style style = null)
         {
-            Worksheet worksheet = new Worksheet();
-            worksheet.SetCurrentCellAddress("D2");
-            worksheet.CurrentCellDirection = Worksheet.CellDirection.RowToRow;
-            Assert.Empty(worksheet.Cells);
-            worksheet.AddNextCell(value);
-            Assert.Single(worksheet.Cells);
-            Assert.Contains(worksheet.Cells, cell => cell.Key.Equals("D2"));
-            Assert.Equal(expectedType, worksheet.Cells["D2"].DataType);
-            Assert.Equal(value, worksheet.Cells["D2"].Value);
-            Assert.Equal(3, worksheet.GetCurrentColumnNumber());
-            Assert.Equal(2, worksheet.GetCurrentRowNumber()); // D3
+            if (worksheet == null)
+            {
+                worksheet = new Worksheet();
+            }
+            worksheet.SetCurrentCellAddress(address);
+            worksheet.CurrentCellDirection = direction;
+            if (style != null)
+            {
+                worksheet.SetActiveStyle(style);
+            }
+            return worksheet;
+        }
+
+        public static void AssertAddedCell(Worksheet worksheet, int numberOfEntries, string expectedAddress, Cell.CellType expectedType, Style expectedStyle, object expectedValue, int nextColumn, int nextRow)
+        {
+            Assert.Equal(numberOfEntries, worksheet.Cells.Count);
+            Assert.Contains(worksheet.Cells, cell => cell.Key.Equals(expectedAddress));
+            Assert.Equal(expectedType, worksheet.Cells[expectedAddress].DataType);
+            Assert.Equal(expectedValue, worksheet.Cells[expectedAddress].Value);
+            if (expectedStyle == null)
+            {
+                Assert.Null(worksheet.Cells[expectedAddress].CellStyle);
+            }
+            else
+            {
+                Assert.True(expectedStyle.Equals(worksheet.Cells[expectedAddress].CellStyle));
+            }
+            Assert.Equal(nextColumn, worksheet.GetCurrentColumnNumber());
+            Assert.Equal(nextRow, worksheet.GetCurrentRowNumber());
         }
 
         private void AssertConstructorBasics(Worksheet worksheet)

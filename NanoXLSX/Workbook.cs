@@ -183,7 +183,7 @@ namespace NanoXLSX
         #region methods_PICO
 
         /// <summary>
-        /// Adds a style to the style repository. This method is deprecated since it ha no direct impact on the generated file.
+        /// Adds a style to the style repository. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="style">Style to add</param>
         /// <returns>Returns the managed style of the style repository</returns>
@@ -195,7 +195,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Adds a style component to a style. This method is deprecated since it ha no direct impact on the generated file.
+        /// Adds a style component to a style. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="baseStyle">Style to append a component</param>
         /// <param name="newComponent">Component to add to the baseStyle</param>
@@ -303,7 +303,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Removes the passed style from the style sheet. This method is deprecated since it ha no direct impact on the generated file.
+        /// Removes the passed style from the style sheet. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="style">Style to remove</param>
         [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
@@ -313,7 +313,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Removes the defined style from the style sheet of the workbook. This method is deprecated since it ha no direct impact on the generated file.
+        /// Removes the defined style from the style sheet of the workbook. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="styleName">Name of the style to be removed</param>
         [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
@@ -334,7 +334,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Removes the defined style from the style sheet of the workbook. This method is deprecated since it ha no direct impact on the generated file.
+        /// Removes the defined style from the style sheet of the workbook. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="styleName">Name of the style to be removed</param>
         /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>

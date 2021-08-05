@@ -185,7 +185,6 @@ namespace NanoXLSX.Styles
             {
                 throw new StyleException("MissingReferenceException", "The hash of the style could not be created because one or more components are missing as references");
             }
-
             int p = 241;
             int r = 1;
             r *= p + this.CurrentBorder.GetHashCode();

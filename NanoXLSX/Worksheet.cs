@@ -469,28 +469,33 @@ namespace NanoXLSX
         /// <param name="cell">Cell object to insert</param>
         /// <param name="incremental">If true, the address value (row or column) will be incremented, otherwise not</param>
         /// <param name="style">If not null, the defined style will be applied to the cell, otherwise no style or the default style will be applied</param>
-        /// <remarks>Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. 
-        /// All other types will be casted into a string using the default ToString() method</remarks>
+        /// <remarks>Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method.<br/>
+        /// If the cell object already has a style definition, and a style or active style is defined, the cell style will be merged, otherwise just set</remarks>
         /// <exception cref="StyleException">Throws a StyleException if the default style was malformed</exception>
         private void AddNextCell(Cell cell, bool incremental, Style style)
         {
-            if (activeStyle != null && useActiveStyle && style == null)
+            // date and time styles are already defined by the passed cell object
+            if (style != null || (activeStyle != null && useActiveStyle))
             {
-                cell.SetStyle(activeStyle);
-            }
-            else if (style != null)
-            {
-                cell.SetStyle(style);
-            }
-            else if (cell.DataType == Cell.CellType.DATE && cell.CellStyle == null)
-            {
-                cell.SetStyle(BasicStyles.DateFormat);
-            }
-            else
-            {
-                if (cell.DataType == Cell.CellType.TIME && cell.CellStyle == null)
+                if (cell.CellStyle == null && useActiveStyle)
                 {
-                    cell.SetStyle(BasicStyles.TimeFormat);
+                    cell.SetStyle(activeStyle);
+                }
+                else if (cell.CellStyle == null && style != null)
+                {
+                    cell.SetStyle(style);
+                }
+                else if (cell.CellStyle != null && useActiveStyle)
+                {
+                    Style mixedStyle = (Style)cell.CellStyle.Copy();
+                    mixedStyle.Append(activeStyle);
+                    cell.SetStyle(mixedStyle);
+                }
+                else if (cell.CellStyle != null && style != null)
+                {
+                    Style mixedStyle = (Style)cell.CellStyle.Copy();
+                    mixedStyle.Append(style);
+                    cell.SetStyle(mixedStyle);
                 }
             }
             string address = cell.CellAddress;
@@ -531,6 +536,7 @@ namespace NanoXLSX
                 }
                 else
                 {
+
                     // disabled / no-op
                 }
             }
@@ -568,14 +574,14 @@ namespace NanoXLSX
         /// A prepared object of the type Cell will not be casted but adjusted
         /// </summary>
         /// <param name="value">Unspecified value to insert</param>
-        /// <param name="columnAddress">Column number (zero based)</param>
-        /// <param name="rowAddress">Row number (zero based)</param>
+        /// <param name="columnNumber">Column number (zero based)</param>
+        /// <param name="rowNumber">Row number (zero based)</param>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
-        public void AddCell(object value, int columnAddress, int rowAddress)
+        public void AddCell(object value, int columnNumber, int rowNumber)
         {
-            AddNextCell(CastValue(value, columnAddress, rowAddress), false, null);
+            AddNextCell(CastValue(value, columnNumber, rowNumber), false, null);
         }
 
         /// <summary>
@@ -583,16 +589,16 @@ namespace NanoXLSX
         /// A prepared object of the type Cell will not be casted but adjusted
         /// </summary>
         /// <param name="value">Unspecified value to insert</param>
-        /// <param name="columnAddress">Column number (zero based)</param>
-        /// <param name="rowAddress">Row number (zero based)</param>
+        /// <param name="columnNumber">Column number (zero based)</param>
+        /// <param name="rowNumber">Row number (zero based)</param>
         /// <param name="style">Style to apply on the cell</param>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
         /// <exception cref="StyleException">Throws an UndefinedStyleException if the passed style is malformed</exception>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
-        public void AddCell(object value, int columnAddress, int rowAddress, Style style)
+        public void AddCell(object value, int columnNumber, int rowNumber, Style style)
         {
-            AddNextCell(CastValue(value, columnAddress, rowAddress), false, style);
+            AddNextCell(CastValue(value, columnNumber, rowNumber), false, style);
         }
 
 
@@ -676,12 +682,12 @@ namespace NanoXLSX
         /// Adds a cell formula as string to the defined cell address
         /// </summary>
         /// <param name="formula">Formula to insert</param>
-        /// <param name="columnAddress">Column number (zero based)</param>
-        /// <param name="rowAddress">Row number (zero based)</param>
+        /// <param name="columnNumber">Column number (zero based)</param>
+        /// <param name="rowNumber">Row number (zero based)</param>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
-        public void AddCellFormula(string formula, int columnAddress, int rowAddress)
+        public void AddCellFormula(string formula, int columnNumber, int rowNumber)
         {
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, columnAddress, rowAddress);
+            Cell c = new Cell(formula, Cell.CellType.FORMULA, columnNumber, rowNumber);
             AddNextCell(c, false, null);
         }
 
@@ -689,13 +695,13 @@ namespace NanoXLSX
         /// Adds a cell formula as string to the defined cell address
         /// </summary>
         /// <param name="formula">Formula to insert</param>
-        /// <param name="columnAddress">Column number (zero based)</param>
-        /// <param name="rowAddress">Row number (zero based)</param>
+        /// <param name="columnNumber">Column number (zero based)</param>
+        /// <param name="rowNumber">Row number (zero based)</param>
         /// <param name="style">Style to apply on the cell</param>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
-        public void AddCellFormula(string formula, int columnAddress, int rowAddress, Style style)
+        public void AddCellFormula(string formula, int columnNumber, int rowNumber, Style style)
         {
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, columnAddress, rowAddress);
+            Cell c = new Cell(formula, Cell.CellType.FORMULA, columnNumber, rowNumber);
             AddNextCell(c, false, style);
         }
 
@@ -825,13 +831,13 @@ namespace NanoXLSX
         /// <summary>
         /// Removes a previous inserted cell at the defined address
         /// </summary>
-        /// <param name="columnAddress">Column number (zero based)</param>
-        /// <param name="rowAddress">Row number (zero based)</param>
+        /// <param name="columnNumber">Column number (zero based)</param>
+        /// <param name="rowNumber">Row number (zero based)</param>
         /// <returns>Returns true if the cell could be removed (existed), otherwise false (did not exist)</returns>
         /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
-        public bool RemoveCell(int columnAddress, int rowAddress)
+        public bool RemoveCell(int columnNumber, int rowNumber)
         {
-            string address = Cell.ResolveCellAddress(columnAddress, rowAddress);
+            string address = Cell.ResolveCellAddress(columnNumber, rowNumber);
             return cells.Remove(address);
         }
 
@@ -1535,13 +1541,13 @@ namespace NanoXLSX
         /// <summary>
         /// Set the current cell address
         /// </summary>
-        /// <param name="columnAddress">Column number (zero based)</param>
-        /// <param name="rowAddress">Row number (zero based)</param>
+        /// <param name="columnNumber">Column number (zero based)</param>
+        /// <param name="rowNumber">Row number (zero based)</param>
         /// <exception cref="RangeException">Throws an RangeException if one of the passed cell addresses is out of range</exception>
-        public void SetCurrentCellAddress(int columnAddress, int rowAddress)
+        public void SetCurrentCellAddress(int columnNumber, int rowNumber)
         {
-            SetCurrentColumnNumber(columnAddress);
-            SetCurrentRowNumber(rowAddress);
+            SetCurrentColumnNumber(columnNumber);
+            SetCurrentRowNumber(rowNumber);
         }
 
         /// <summary>

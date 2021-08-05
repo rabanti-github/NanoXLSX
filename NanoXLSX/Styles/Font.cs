@@ -77,7 +77,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         public string Family { get; set; }
         /// <summary>
-        /// Gets whether the font is equals the default font
+        /// Gets whether the font is equal to the default font
         /// </summary>
         [Append(Ignore = true)]
         public bool IsDefaultFont
@@ -199,7 +199,7 @@ namespace NanoXLSX.Styles
             r *= p + this.Family.GetHashCode();
             r *= p + this.Name.GetHashCode();
             r *= p + this.Scheme.GetHashCode();
-            r *= p + (int)this.VerticalAlign;
+            r *= p + this.VerticalAlign.GetHashCode();
             r *= p + this.Charset.GetHashCode();
             r *= p + this.size;
             return r;

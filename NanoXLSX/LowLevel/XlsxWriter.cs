@@ -1187,55 +1187,55 @@ namespace NanoXLSX.LowLevel
         /// <returns>String with formatted XML data</returns>
         private string CreateStyleXfsString()
         {
-            Style[] styles = this.styles.GetStyles();
+            Style[] styleItems = this.styles.GetStyles();
             StringBuilder sb = new StringBuilder();
             StringBuilder sb2 = new StringBuilder();
             string alignmentString, protectionString;
             int formatNumber, textRotation;
-            foreach (Style item in styles)
+            foreach (Style style in styleItems)
             {
-                textRotation = item.CurrentCellXf.CalculateInternalRotation();
+                textRotation = style.CurrentCellXf.CalculateInternalRotation();
                 alignmentString = string.Empty;
                 protectionString = string.Empty;
-                if (item.CurrentCellXf.HorizontalAlign != CellXf.HorizontalAlignValue.none || item.CurrentCellXf.VerticalAlign != CellXf.VerticalAlignValue.none || item.CurrentCellXf.Alignment != CellXf.TextBreakValue.none || textRotation != 0)
+                if (style.CurrentCellXf.HorizontalAlign != CellXf.HorizontalAlignValue.none || style.CurrentCellXf.VerticalAlign != CellXf.VerticalAlignValue.none || style.CurrentCellXf.Alignment != CellXf.TextBreakValue.none || textRotation != 0)
                 {
                     sb2.Clear();
                     sb2.Append("<alignment");
-                    if (item.CurrentCellXf.HorizontalAlign != CellXf.HorizontalAlignValue.none)
+                    if (style.CurrentCellXf.HorizontalAlign != CellXf.HorizontalAlignValue.none)
                     {
                         sb2.Append(" horizontal=\"");
-                        if (item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.center) { sb2.Append("center"); }
-                        else if (item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.right) { sb2.Append("right"); }
-                        else if (item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.centerContinuous) { sb2.Append("centerContinuous"); }
-                        else if (item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.distributed) { sb2.Append("distributed"); }
-                        else if (item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.fill) { sb2.Append("fill"); }
-                        else if (item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.general) { sb2.Append("general"); }
-                        else if (item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.justify) { sb2.Append("justify"); }
+                        if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.center) { sb2.Append("center"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.right) { sb2.Append("right"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.centerContinuous) { sb2.Append("centerContinuous"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.distributed) { sb2.Append("distributed"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.fill) { sb2.Append("fill"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.general) { sb2.Append("general"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.justify) { sb2.Append("justify"); }
                         else { sb2.Append("left"); }
                         sb2.Append("\"");
                     }
-                    if (item.CurrentCellXf.VerticalAlign != CellXf.VerticalAlignValue.none)
+                    if (style.CurrentCellXf.VerticalAlign != CellXf.VerticalAlignValue.none)
                     {
                         sb2.Append(" vertical=\"");
-                        if (item.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.center) { sb2.Append("center"); }
-                        else if (item.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.distributed) { sb2.Append("distributed"); }
-                        else if (item.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.justify) { sb2.Append("justify"); }
-                        else if (item.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.top) { sb2.Append("top"); }
+                        if (style.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.center) { sb2.Append("center"); }
+                        else if (style.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.distributed) { sb2.Append("distributed"); }
+                        else if (style.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.justify) { sb2.Append("justify"); }
+                        else if (style.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.top) { sb2.Append("top"); }
                         else { sb2.Append("bottom"); }
                         sb2.Append("\"");
                     }
-                    if (item.CurrentCellXf.Indent > 0 &&
-                        (item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.left
-                        || item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.right
-                        || item.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.distributed))
+                    if (style.CurrentCellXf.Indent > 0 &&
+                        (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.left
+                        || style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.right
+                        || style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.distributed))
                     {
                         sb2.Append(" indent=\"");
-                        sb2.Append(item.CurrentCellXf.Indent.ToString("G", culture));
+                        sb2.Append(style.CurrentCellXf.Indent.ToString("G", culture));
                         sb2.Append("\"");
                     }
-                    if (item.CurrentCellXf.Alignment != CellXf.TextBreakValue.none)
+                    if (style.CurrentCellXf.Alignment != CellXf.TextBreakValue.none)
                     {
-                        if (item.CurrentCellXf.Alignment == CellXf.TextBreakValue.shrinkToFit) { sb2.Append(" shrinkToFit=\"1"); }
+                        if (style.CurrentCellXf.Alignment == CellXf.TextBreakValue.shrinkToFit) { sb2.Append(" shrinkToFit=\"1"); }
                         else { sb2.Append(" wrapText=\"1"); }
                         sb2.Append("\"");
                     }
@@ -1249,13 +1249,13 @@ namespace NanoXLSX.LowLevel
                     alignmentString = sb2.ToString();
                 }
 
-                if (item.CurrentCellXf.Hidden || item.CurrentCellXf.Locked)
+                if (style.CurrentCellXf.Hidden || style.CurrentCellXf.Locked)
                 {
-                    if (item.CurrentCellXf.Hidden && item.CurrentCellXf.Locked)
+                    if (style.CurrentCellXf.Hidden && style.CurrentCellXf.Locked)
                     {
                         protectionString = "<protection locked=\"1\" hidden=\"1\"/>";
                     }
-                    else if (!item.CurrentCellXf.Hidden && item.CurrentCellXf.Locked)
+                    else if (!style.CurrentCellXf.Hidden && style.CurrentCellXf.Locked)
                     {
                         protectionString = "<protection hidden=\"1\" locked=\"0\"/>";
                     }
@@ -1266,32 +1266,32 @@ namespace NanoXLSX.LowLevel
                 }
 
                 sb.Append("<xf numFmtId=\"");
-                if (item.CurrentNumberFormat.IsCustomFormat)
+                if (style.CurrentNumberFormat.IsCustomFormat)
                 {
-                    sb.Append(item.CurrentNumberFormat.CustomFormatID.ToString("G", culture));
+                    sb.Append(style.CurrentNumberFormat.CustomFormatID.ToString("G", culture));
                 }
                 else
                 {
-                    formatNumber = (int)item.CurrentNumberFormat.Number;
+                    formatNumber = (int)style.CurrentNumberFormat.Number;
                     sb.Append(formatNumber.ToString("G", culture));
                 }
 
-                sb.Append("\" borderId=\"").Append(item.CurrentBorder.InternalID.Value.ToString("G", culture));
-                sb.Append("\" fillId=\"").Append(item.CurrentFill.InternalID.Value.ToString("G", culture));
-                sb.Append("\" fontId=\"").Append(item.CurrentFont.InternalID.Value.ToString("G", culture));
-                if (!item.CurrentFont.IsDefaultFont)
+                sb.Append("\" borderId=\"").Append(style.CurrentBorder.InternalID.Value.ToString("G", culture));
+                sb.Append("\" fillId=\"").Append(style.CurrentFill.InternalID.Value.ToString("G", culture));
+                sb.Append("\" fontId=\"").Append(style.CurrentFont.InternalID.Value.ToString("G", culture));
+                if (!style.CurrentFont.IsDefaultFont)
                 {
                     sb.Append("\" applyFont=\"1");
                 }
-                if (item.CurrentFill.PatternFill != Fill.PatternValue.none)
+                if (style.CurrentFill.PatternFill != Fill.PatternValue.none)
                 {
                     sb.Append("\" applyFill=\"1");
                 }
-                if (!item.CurrentBorder.IsEmpty())
+                if (!style.CurrentBorder.IsEmpty())
                 {
                     sb.Append("\" applyBorder=\"1");
                 }
-                if (alignmentString != string.Empty || item.CurrentCellXf.ForceApplyAlignment)
+                if (alignmentString != string.Empty || style.CurrentCellXf.ForceApplyAlignment)
                 {
                     sb.Append("\" applyAlignment=\"1");
                 }
@@ -1299,7 +1299,7 @@ namespace NanoXLSX.LowLevel
                 {
                     sb.Append("\" applyProtection=\"1");
                 }
-                if (item.CurrentNumberFormat.Number != NumberFormat.FormatNumber.none)
+                if (style.CurrentNumberFormat.Number != NumberFormat.FormatNumber.none)
                 {
                     sb.Append("\" applyNumberFormat=\"1\"");
                 }
