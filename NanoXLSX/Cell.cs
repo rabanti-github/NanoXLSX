@@ -432,9 +432,15 @@ namespace NanoXLSX
                 else if (t == typeof(ushort))
                 { c = new Cell((ushort)o, CellType.NUMBER); }
                 else if (t == typeof(DateTime))
-                { c = new Cell((DateTime)o, CellType.DATE); }
+                { 
+                    c = new Cell((DateTime)o, CellType.DATE);
+                    c.SetStyle(BasicStyles.DateFormat);
+                }
                 else if (t == typeof(TimeSpan))
-                { c = new Cell((TimeSpan)o, CellType.TIME); }
+                { 
+                    c = new Cell((TimeSpan)o, CellType.TIME);
+                    c.SetStyle(BasicStyles.TimeFormat);
+                }
                 else if (t == typeof(string))
                 { c = new Cell((string)o, CellType.STRING); }
                 else // Default = unspecified object
