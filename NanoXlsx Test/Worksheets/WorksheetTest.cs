@@ -403,6 +403,49 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Null(worksheet.ActiveStyle);
         }
 
+        [Fact(DisplayName = "Test of the RemoveCell function with column and row")]
+        public void RemoveCelltest()
+        {
+            Worksheet worksheet = new Worksheet();
+            List<string> values = new List<string> { "test1", "test2", "test3" };
+            worksheet.AddCellRange(values, "A1:A3");
+            Assert.Equal(3, worksheet.Cells.Count);
+            bool result = worksheet.RemoveCell(0, 1);
+            Assert.True(result);
+            Assert.Equal(2, worksheet.Cells.Count);
+            Assert.DoesNotContain(worksheet.Cells, cell => cell.Key.Equals("A2"));
+            result = worksheet.RemoveCell(0, 1); // re-test
+            Assert.False(result);
+            Assert.Equal(2, worksheet.Cells.Count);
+        }
+
+        [Fact(DisplayName = "Test of the RemoveCell function with address")]
+        public void RemoveCellTest2()
+        {
+            Worksheet worksheet = new Worksheet();
+            List<string> values = new List<string> { "test1", "test2", "test3" };
+            worksheet.AddCellRange(values, "A1:A3");
+            Assert.Equal(3, worksheet.Cells.Count);
+            bool result = worksheet.RemoveCell("A3");
+            Assert.True(result);
+            Assert.Equal(2, worksheet.Cells.Count);
+            Assert.DoesNotContain(worksheet.Cells, cell => cell.Key.Equals("A3"));
+            result = worksheet.RemoveCell("A3"); // re-test
+            Assert.False(result);
+            Assert.Equal(2, worksheet.Cells.Count);
+        }
+
+        [Fact(DisplayName = "Test of the RemoveCell function when no cells are defined")]
+        public void RemoveCellTest3()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Empty(worksheet.Cells);
+            bool result = worksheet.RemoveCell(2,5);
+            Assert.False(result);
+            result = worksheet.RemoveCell("A3");
+            Assert.False(result);
+        }
+
         public static Worksheet InitWorksheet(Worksheet worksheet, string address, Worksheet.CellDirection direction, Style style = null)
         {
             if (worksheet == null)

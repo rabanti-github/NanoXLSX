@@ -21,7 +21,7 @@ namespace NanoXLSX_Test.Cells
         }
         public static void AssertCellRange(string expectedAddresses, List<Address> addresses)
         {
-            string[] addressStrings = expectedAddresses.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] addressStrings = SplitValues(expectedAddresses);
             List<Address> expected = new List<Address>();
             foreach (string address in addressStrings)
             {
@@ -32,6 +32,20 @@ namespace NanoXLSX_Test.Cells
             {
                 Assert.Equal(expected[i], addresses[i]);
             }
+        }
+
+        public static List<string> SplitValuesAsList(string valueString)
+        {
+            return new List<string>(SplitValues(valueString));
+        }
+
+            public static string[] SplitValues(string valueString)
+        {
+            if (valueString == null || valueString == "")
+            {
+                return new string[0];
+            }
+            return valueString.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

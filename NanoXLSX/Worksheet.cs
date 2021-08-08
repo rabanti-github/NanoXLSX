@@ -536,7 +536,6 @@ namespace NanoXLSX
                 }
                 else
                 {
-
                     // disabled / no-op
                 }
             }
@@ -860,11 +859,12 @@ namespace NanoXLSX
         #region methods_setStyle
 
         /// <summary>
-        /// Sets the passed style on the passed cell range. If cells are already existing, the style will be added or replaced. Otherwise, an empty (numeric) cell will be added with the assigned style
+        /// Sets the passed style on the passed cell range. If cells are already existing, the style will be added or replaced.
+        /// Otherwise, an empty cell will be added with the assigned style. If the passed style is null, all styles will be removed on existing cells and no additional (empty) cells are added to the worksheet
         /// </summary>
         /// <param name="cellRange">Cell range to apply the style</param>
         /// <param name="style">Style to apply</param>
-        /// <remarks>Note: This method may invalidate an existing date value since dates are defined by specific style. The result of a redefinition will be a number, instead of a date</remarks>
+        /// <remarks>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</remarks>
         public void SetStyle(Range cellRange, Style style)
         {
             IReadOnlyList<Address> addresses = cellRange.ResolveEnclosedAddresses();
@@ -873,23 +873,33 @@ namespace NanoXLSX
                 String key = address.GetAddress();
                 if (this.cells.ContainsKey(key))
                 {
-                    cells[key].SetStyle(style);
+                    if (style == null)
+                    {
+                        cells[key].RemoveStyle();
+                    }
+                    else
+                    {
+                        cells[key].SetStyle(style);
+                    }
                 }
                 else
                 {
-                    AddCell(null, address.Column, address.Row, style);
+                    if (style != null)
+                    {
+                        AddCell(null, address.Column, address.Row, style);
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// Sets the passed style on the passed cell range, derived from a start and end address. If cells are already existing, the style will be added or replaced. 
-        /// Otherwise, an empty (numeric) cell will be added with the assigned style
+        /// Sets the passed style on the passed cell range, derived from a start and end address. If cells are already existing, the style will be added or replaced.
+        /// Otherwise, an empty cell will be added with the assigned style. If the passed style is null, all styles will be removed on existing cells and no additional (empty) cells are added to the worksheet
         /// </summary>
         /// <param name="startAddress">Start address of the cell range</param>
         /// <param name="endAddress">End address of the cell range</param>
-        /// <param name="style">Style to apply</param>
-        /// <remarks>Note: This method may invalidate an existing date value since dates are defined by specific style. The result of a redefinition will be a number, instead of a date</remarks>
+        /// <param name="style">Style to apply or null to clear the range</param>
+        /// <remarks>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</remarks>
         public void SetStyle(Address startAddress, Address endAddress, Style style)
         {
             SetStyle(new Range(startAddress, endAddress), style);
@@ -897,11 +907,11 @@ namespace NanoXLSX
 
         /// <summary>
         /// Sets the passed style on the passed (singular) cell address. If the cell is already existing, the style will be added or replaced.
-        /// Otherwise, an empty (numeric) cell will be added with the assigned style
+        /// Otherwise, an empty cell will be added with the assigned style. If the passed style is null, all styles will be removed on existing cells and no additional (empty) cells are added to the worksheet
         /// </summary>
         /// <param name="address">Cell address to apply the style</param>
-        /// <param name="style">Style to apply</param>
-        /// <remarks>Note: This method may invalidate an existing date value since dates are defined by specific style. The result of a redefinition will be a number, instead of a date</remarks>
+        /// <param name="style">Style to apply or null to clear the range</param>
+        /// <remarks>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</remarks>
         public void SetStyle(Address address, Style style)
         {
             SetStyle(address, address, style);
@@ -909,11 +919,12 @@ namespace NanoXLSX
 
         /// <summary>
         /// Sets the passed style on the passed address expression. Such an expression may be a single cell or a cell range.
-        /// If the cell is already existing, the style will be added or replaced. Otherwise, an empty (numeric) cell or cell range will be added with the assigned style
+        /// If the cell is already existing, the style will be added or replaced.
+        /// Otherwise, an empty cell will be added with the assigned style. If the passed style is null, all styles will be removed on existing cells and no additional (empty) cells are added to the worksheet
         /// </summary>
         /// <param name="addressExpression">Expression of a cell address or range of addresses</param>
-        /// <param name="style">Style to apply</param>
-        /// <remarks>Note: This method may invalidate an existing date value since dates are defined by specific style. The result of a redefinition will be a number, instead of a date</remarks>
+        /// <param name="style">Style to apply or null to clear the range</param>
+        /// <remarks>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</remarks>
         public void SetStyle(string addressExpression, Style style)
         {
             Cell.AddressScope scope = Cell.GetAddressScope(addressExpression);

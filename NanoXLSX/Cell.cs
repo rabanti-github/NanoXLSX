@@ -407,7 +407,9 @@ namespace NanoXLSX
                 }
                 o = item; // intermediate object is necessary to cast the types below
                 t = item.GetType();
-                if (t == typeof(bool))
+                if (t == typeof(Cell))
+                {  c = item as Cell; }
+                else if (t == typeof(bool))
                 { c = new Cell((bool)o, CellType.BOOL); }
                 else if (t == typeof(byte))
                 { c = new Cell((byte)o, CellType.NUMBER); }
