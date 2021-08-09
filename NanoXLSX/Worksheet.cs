@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NanoXLSX.Exceptions;
@@ -952,6 +953,7 @@ namespace NanoXLSX
         /// Method to add allowed actions if the worksheet is protected. If one or more values are added, UseSheetProtection will be set to true
         /// </summary>
         /// <param name="typeOfProtection">Allowed action on the worksheet or cells</param>
+        /// <remarks>If <see cref="SheetProtectionValue.selectLockedCells"/> is added, <see cref="SheetProtectionValue.selectUnlockedCells"/> is added automatically</remarks>
         public void AddAllowedActionOnSheetProtection(SheetProtectionValue typeOfProtection)
         {
             if (!sheetProtectionValues.Contains(typeOfProtection))
@@ -1052,6 +1054,7 @@ namespace NanoXLSX
         /// <returns>
         ///   <c>true</c> if the cell exists, otherwise <c>false</c>.
         /// </returns>
+        /// <exception cref="RangeException">A RangeException is thrown if the column or row number is invalid</exception>
         public bool HasCell(int columnNumber, int rowNumber)
         {
             return HasCell(new Address(columnNumber, rowNumber));
@@ -1068,7 +1071,7 @@ namespace NanoXLSX
             {
                 columns.Remove(columnNumber);
             }
-            else
+            else if (columns.ContainsKey(columnNumber))
             {
                 columns[columnNumber].IsHidden = false;
                 columns[columnNumber].Width = DEFAULT_COLUMN_WIDTH;
@@ -1078,8 +1081,9 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the last existing column number in the current worksheet (zero-based)
         /// </summary>
-        /// <returns>Zero-based column number. In case of a empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, 
+        /// <returns>Zero-based column number. In case of an empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formatted (or with the definition of AutoFilter, 
+        /// column width or hidden state) but empty cell (or many) beyond the last cell with data, 
         /// GetLastColumnNumber() will return the column number of this empty cell. Use <see cref="GetLastDataColumnNumber"/> in this case.</remarks>
         public int GetLastColumnNumber()
         {
@@ -1089,8 +1093,8 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the last existing column number with data in the current worksheet (zero-based)
         /// </summary>
-        /// <returns>Zero-based column number. In case of a empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastDataColumnNumber() will ignore formatted but empty cells beyond the last column with data. 
+        /// <returns>Zero-based column number. in case of an empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetLastDataColumnNumber() will ignore formatted (or with the definition of AutoFilter, column width or hidden state) but empty cells beyond the last column with data. 
         /// If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
         public int GetLastDataColumnNumber()
         {
@@ -1100,8 +1104,9 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the last existing row number in the current worksheet (zero-based)
         /// </summary>
-        /// <returns>Zero-based row number. In case of a empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastRowNumber() will not return the last row with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, 
+        /// <returns>Zero-based row number. In case of an empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetLastRowNumber() will not return the last row with data in any case. If there is a formatted (or with the definition of row height or hidden state) 
+        /// but empty cell (or many) beyond the last cell with data, 
         /// GetLastRowNumber() will return the row number of this empty cell. Use <see cref="GetLastDataRowNumber"/> in this case.</remarks>
         public int GetLastRowNumber()
         {
@@ -1112,9 +1117,9 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the last existing row number with data in the current worksheet (zero-based)
         /// </summary>
-        /// <returns>Zero-based row number. In case of a empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastDataColumnNumber() will ignore formatted but empty cells beyond the last column with data. 
-        /// If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
+        /// <returns>Zero-based row number. in case of an empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetLastDataColumnNumber() will ignore formatted (or with the definition of row height or hidden state) but empty cells beyond the last column with data. 
+        /// If you want the last defined column, use <see cref="GetLastRowNumber"/> instead.</remarks>
         public int GetLastDataRowNumber()
         {
             return GetLastAddress(false, true);
@@ -1124,7 +1129,8 @@ namespace NanoXLSX
         ///  Gets the last existing cell in the current worksheet (bottom right)
         /// </summary>
         /// <returns>Cell Address</returns>
-        /// <remarks>GetLastCellAddress() will not return the last cell with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, 
+        /// <remarks>GetLastCellAddress() will not return the last cell with data in any case. If there is a formatted (or with definitions of hidden states, AutoFilters, heights or widths) 
+        /// but empty cell (or many) beyond the last cell with data, 
         /// GetLastCellAddress() will return the address of this empty cell. Use <see cref="GetLastDataCellAddress"/> in this case.</remarks>
 
         public Address GetLastCellAddress()
@@ -1138,7 +1144,7 @@ namespace NanoXLSX
         ///  Gets the last existing cell with data in the current worksheet (bottom right)
         /// </summary>
         /// <returns>Cell Address</returns>
-        /// <remarks>GetLastDataCellAddress() will ignore formatted but empty cells beyond the last cell with data. 
+        /// <remarks>GetLastDataCellAddress() will ignore formatted (or with definitions of hidden states, AutoFilters, heights or widths) but empty cells beyond the last cell with data. 
         /// If you want the last defined cell, use <see cref="GetLastCellAddress"/> instead.</remarks>
 
         public Address GetLastDataCellAddress()
@@ -1170,6 +1176,33 @@ namespace NanoXLSX
                     max = number;
                 }
             }
+            if (column && !ignoreEmpty && columns.Count > 0)
+            {
+                int maxColumnDefinition = columns.Max(c => c.Value.Number);
+                if (maxColumnDefinition > max)
+                {
+                    max = maxColumnDefinition;
+                }
+            }
+            else if (!column && !ignoreEmpty && (hiddenRows.Count > 0 || rowHeights.Count > 0))
+            {
+                if (hiddenRows.Count > 0)
+                {
+                    int maxHiddenRowItem = hiddenRows.Max(r => r.Key);
+                    if (maxHiddenRowItem > max)
+                    {
+                        max = maxHiddenRowItem; 
+                    }
+                }
+                if (rowHeights.Count > 0)
+                {
+                   int maxRowHeightItem = rowHeights.Max(r => r.Key);
+                    if (maxRowHeightItem > max)
+                    {
+                        max = maxRowHeightItem;
+                    }
+                }
+            } 
             return max;
         }
 
@@ -1693,7 +1726,7 @@ namespace NanoXLSX
             {
                 if (state)
                 {
-                    hiddenRows.Add(rowNumber, true);
+                    hiddenRows[rowNumber] = true;
                 }
                 else
                 {

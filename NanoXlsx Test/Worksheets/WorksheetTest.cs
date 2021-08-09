@@ -1,11 +1,14 @@
 ﻿using NanoXLSX;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
+using NanoXLSX_Test.Cells;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using static NanoXLSX.Worksheet;
 
 namespace NanoXLSX_Test.Worksheets
 {
@@ -444,6 +447,167 @@ namespace NanoXLSX_Test.Worksheets
             Assert.False(result);
             result = worksheet.RemoveCell("A3");
             Assert.False(result);
+        }
+
+        [Theory(DisplayName = "Test of the AddAllowedActionOnSheetProtection function")]
+        [InlineData(SheetProtectionValue.deleteRows, 1, null)]
+        [InlineData(SheetProtectionValue.formatRows, 1, null)]
+        [InlineData(SheetProtectionValue.selectLockedCells, 2, SheetProtectionValue.selectUnlockedCells)]
+        [InlineData(SheetProtectionValue.selectUnlockedCells, 1, null)]
+        [InlineData(SheetProtectionValue.autoFilter, 1, null)]
+        [InlineData(SheetProtectionValue.sort, 1, null)]
+        [InlineData(SheetProtectionValue.insertRows, 1, null)]
+        [InlineData(SheetProtectionValue.deleteColumns, 1, null)]
+        [InlineData(SheetProtectionValue.formatCells, 1, null)]
+        [InlineData(SheetProtectionValue.formatColumns, 1, null)]
+        [InlineData(SheetProtectionValue.insertHyperlinks, 1, null)]
+        [InlineData(SheetProtectionValue.insertColumns, 1, null)]
+        [InlineData(SheetProtectionValue.objects, 1, null)]
+        [InlineData(SheetProtectionValue.pivotTables, 1, null)]
+        [InlineData(SheetProtectionValue.scenarios, 1, null)]
+
+        public void AddAllowedActionOnSheetProtectionTest(SheetProtectionValue typeOfProtection, int expectedSize, SheetProtectionValue? additionalExpectedValue)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.False(worksheet.UseSheetProtection);
+            Assert.Empty(worksheet.SheetProtectionValues);
+            worksheet.AddAllowedActionOnSheetProtection(typeOfProtection);
+            Assert.Contains(worksheet.SheetProtectionValues, item => item == typeOfProtection);
+            if (additionalExpectedValue != null)
+            {
+                Assert.Contains(worksheet.SheetProtectionValues, item => item == additionalExpectedValue);
+            }
+            Assert.Equal(expectedSize, worksheet.SheetProtectionValues.Count);
+            worksheet.AddAllowedActionOnSheetProtection(typeOfProtection); // Should not lead to an additional value
+            Assert.Equal(expectedSize, worksheet.SheetProtectionValues.Count);
+            SheetProtectionValue additionalValue;
+            if (typeOfProtection == SheetProtectionValue.objects)
+            {
+                additionalValue = SheetProtectionValue.sort;
+            }
+            else
+            {
+                additionalValue = SheetProtectionValue.objects;
+            }
+            worksheet.AddAllowedActionOnSheetProtection(additionalValue);
+            Assert.Contains(worksheet.SheetProtectionValues, item => item == additionalValue);
+            Assert.Equal(expectedSize + 1, worksheet.SheetProtectionValues.Count);
+            Assert.True(worksheet.UseSheetProtection);
+        }
+
+        [Theory(DisplayName = "Test of the GetCell function with an Address object")]
+        [InlineData("C2", "test", "C2")]
+        [InlineData("C1,C2,C3", 22, "C2")]
+        [InlineData("A1,B1,C1,D1", true, "C1")]
+        public void GetCellTest(string definedCells, object definedSample, string expectedAddress)
+        {
+            List<string> addresses = TestUtils.SplitValuesAsList(definedCells);
+            Worksheet worksheet = new Worksheet();
+            foreach(string address in addresses)
+            {
+                worksheet.AddCell(definedSample, address);
+            }
+            Cell cell = worksheet.GetCell(new Address(expectedAddress));
+            Assert.NotNull(cell);
+            Assert.Equal(definedSample, cell.Value);
+            Assert.Equal(expectedAddress, cell.CellAddress);
+        }
+
+        [Theory(DisplayName = "Test of the GetCell function with column and row")]
+        [InlineData("C2", "test", 2,1)]
+        [InlineData("C1,C2,C3", 22, 2,1)]
+        [InlineData("A1,B1,C1,D1", true, 2,0)]
+        public void GetCellTest2(string definedCells, object definedSample, int expectedColumn, int expectedRow)
+        {
+            List<string> addresses = TestUtils.SplitValuesAsList(definedCells);
+            Worksheet worksheet = new Worksheet();
+            foreach (string address in addresses)
+            {
+                worksheet.AddCell(definedSample, address);
+            }
+            Cell cell = worksheet.GetCell(expectedColumn, expectedRow);
+            Assert.NotNull(cell);
+            Assert.Equal(definedSample, cell.Value);
+            Assert.Equal(new Address(expectedColumn, expectedRow), cell.CellAddress2);
+        }
+
+        [Theory(DisplayName = "Test of the failing GetCell function with an Address object")]
+        [InlineData("", null, "C2")]
+        [InlineData("C1,C2,C3", 22, "D2")]
+        public void GetCellFailTest(string definedCells, object definedSample, string expectedAddress)
+        {
+            List<string> addresses = TestUtils.SplitValuesAsList(definedCells);
+            Worksheet worksheet = new Worksheet();
+            foreach (string address in addresses)
+            {
+                worksheet.AddCell(definedSample, address);
+            }
+           Assert.Throws<WorksheetException>(() => worksheet.GetCell(new Address(expectedAddress)));
+        }
+
+        [Theory(DisplayName = "Test of the failing GetCell function with a column and row")]
+        [InlineData("", null, 2, 1, typeof(WorksheetException))]
+        [InlineData("C1,C2,C3", 22,3,1, typeof(WorksheetException))]
+        [InlineData("C1,C2,C3", 22, -1, 2, typeof(RangeException))]
+        [InlineData("C1,C2,C3", 22, 2, -1, typeof(RangeException))]
+        [InlineData("C1,C2,C3", 22, 16384, 2, typeof(RangeException))]
+        [InlineData("C1,C2,C3", 22, 2, 1048576, typeof(RangeException))]
+        public void GetCellFailTest2(string definedCells, object definedSample, int expectedColumn, int expectedRow, Type exceptionType)
+        {
+            List<string> addresses = TestUtils.SplitValuesAsList(definedCells);
+            Worksheet worksheet = new Worksheet();
+            foreach (string address in addresses)
+            {
+                worksheet.AddCell(definedSample, address);
+            }
+            Exception exception = Assert.ThrowsAny<Exception>(() => worksheet.GetCell(expectedColumn, expectedRow));
+            Assert.Equal(exceptionType, exception.GetType());
+        }
+
+        [Theory(DisplayName = "Test of the HasCell function with an Address object")]
+        [InlineData("C2", "C2", true)]
+        [InlineData("C2", "C3", false)]
+        [InlineData("", "C2", false)]
+        [InlineData("C2,C3,C4", "C2", true)]
+        [InlineData("C2,C3,C4", "D2", false)]
+        public void HasCellTest(string definedCells, string givenAddress, bool expectedResult)
+        {
+            List<string> addresses = TestUtils.SplitValuesAsList(definedCells);
+            Worksheet worksheet = new Worksheet();
+            foreach (string address in addresses)
+            {
+                worksheet.AddCell("test", address);
+            }
+            Assert.Equal(expectedResult, worksheet.HasCell(new Address(givenAddress)));
+        }
+
+        [Theory(DisplayName = "Test of the HasCell function with a column and row")]
+        [InlineData("C2", 2,1, true)]
+        [InlineData("C2", 2,2, false)]
+        [InlineData("", 2,1, false)]
+        [InlineData("C2,C3,C4", 2,1, true)]
+        [InlineData("C2,C3,C4", 3,1, false)]
+        public void HasCellTest2(string definedCells, int givenColumn, int givenRow, bool expectedResult)
+        {
+            List<string> addresses = TestUtils.SplitValuesAsList(definedCells);
+            Worksheet worksheet = new Worksheet();
+            foreach (string address in addresses)
+            {
+                worksheet.AddCell("test", address);
+            }
+            Assert.Equal(expectedResult, worksheet.HasCell(givenColumn, givenRow));
+        }
+
+        [Theory(DisplayName = "Test of the failing HasCell function with a column and row")]
+        [InlineData(-1, 2)]
+        [InlineData(2, -1)]
+        [InlineData(16384, 2)]
+        [InlineData(2, 1048576)]
+        public void HasCellFailTest(int givenColumn, int givenRow)
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddCell("test", "C3");
+            Assert.Throws<RangeException>(() => worksheet.GetCell(givenColumn, givenRow));
         }
 
         public static Worksheet InitWorksheet(Worksheet worksheet, string address, Worksheet.CellDirection direction, Style style = null)
