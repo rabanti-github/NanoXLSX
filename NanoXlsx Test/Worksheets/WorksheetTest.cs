@@ -4,11 +4,14 @@ using NanoXLSX.Styles;
 using NanoXLSX_Test.Cells;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using static NanoXLSX.Worksheet;
+using FormatException = NanoXLSX.Exceptions.FormatException;
+using Range = NanoXLSX.Range;
 
 namespace NanoXLSX_Test.Worksheets
 {
@@ -16,6 +19,12 @@ namespace NanoXLSX_Test.Worksheets
     [Collection(nameof(SequentialCollection))]
     public class WorksheetTest
     {
+        public enum RangeRepresentation
+        {
+            StringExpression,
+            RangeObject,
+            Addresses
+        }
 
         [Fact(DisplayName = "Test of the default constructor")]
         public void ConstructorTest()
@@ -608,6 +617,474 @@ namespace NanoXLSX_Test.Worksheets
             Worksheet worksheet = new Worksheet();
             worksheet.AddCell("test", "C3");
             Assert.Throws<RangeException>(() => worksheet.GetCell(givenColumn, givenRow));
+        }
+
+        [Theory(DisplayName = "Test of the GetLastCellAddress function with an empty worksheet")]
+        [InlineData(false, false, false)]
+        [InlineData(false, false, true)]
+        [InlineData(false, true, true)]
+        [InlineData(false, true, false)]
+        [InlineData(true, false, false)]
+        public void GetLastCellAddressTest(bool hasColumns, bool hasHiddenRows, bool hasRowHeights)
+        {
+            Worksheet worksheet = new Worksheet();
+            if (hasColumns)
+            {
+                worksheet.AddHiddenColumn(0);
+                worksheet.AddHiddenColumn(1);
+                worksheet.AddHiddenColumn(2);
+            }
+            if (hasHiddenRows)
+            {
+                worksheet.AddHiddenRow(0);
+                worksheet.AddHiddenRow(1);
+                worksheet.AddHiddenRow(2);
+            }
+            if (hasRowHeights)
+            {
+                worksheet.SetRowHeight(0, 22.2f);
+                worksheet.SetRowHeight(1, 22.2f);
+                worksheet.SetRowHeight(2, 22.2f);
+            }
+            Address? address = worksheet.GetLastCellAddress();
+            Assert.Null(address);
+        }
+
+        [Fact(DisplayName = "Test of the GetLastCellAddress function with an empty worksheet but defined columns and rows")]
+        public void GetLastCellAddressTest2()
+        {
+            Worksheet worksheet = new Worksheet();
+                worksheet.AddHiddenColumn(0);
+                worksheet.AddHiddenColumn(1);
+                worksheet.AddHiddenColumn(2);
+                worksheet.AddHiddenRow(0);
+                worksheet.AddHiddenRow(1);
+            Address? address = worksheet.GetLastCellAddress();
+            Assert.NotNull(address);
+            Assert.Equal("C2", address.Value.GetAddress());
+        }
+
+        [Fact(DisplayName = "Test of the GetLastCellAddress function with an empty worksheet but defined columns and rows with gaps")]
+        public void GetLastCellAddressTest3()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddHiddenColumn(0);
+            worksheet.AddHiddenColumn(1);
+            worksheet.AddHiddenColumn(10);
+            worksheet.AddHiddenRow(0);
+            worksheet.AddHiddenRow(1);
+            worksheet.SetRowHeight(10, 22.2f);
+            Address? address = worksheet.GetLastCellAddress();
+            Assert.NotNull(address);
+            Assert.Equal("K11", address.Value.GetAddress());
+        }
+
+        [Fact(DisplayName = "Test of the GetLastCellAddress function with defined columns and rows where cells are defined below the last column and row")]
+        public void GetLastCellAddressTest4()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddHiddenColumn(0);
+            worksheet.AddHiddenColumn(1);
+            worksheet.AddHiddenColumn(10);
+            worksheet.AddHiddenRow(0);
+            worksheet.AddHiddenRow(1);
+            worksheet.SetRowHeight(10, 22.2f);
+            worksheet.AddCell("test", "E5");
+            Address? address = worksheet.GetLastCellAddress();
+            Assert.NotNull(address);
+            Assert.Equal("K11", address.Value.GetAddress());
+        }
+
+        [Fact(DisplayName = "Test of the GetLastCellAddress function with defined columns and rows where cells are defined above the last column and row")]
+        public void GetLastCellAddressTest5()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddHiddenColumn(0);
+            worksheet.AddHiddenColumn(1);
+            worksheet.AddHiddenColumn(10);
+            worksheet.AddHiddenRow(0);
+            worksheet.AddHiddenRow(1);
+            worksheet.SetRowHeight(10, 22.2f);
+            worksheet.AddCell("test", "L12");
+            Address? address = worksheet.GetLastCellAddress();
+            Assert.NotNull(address);
+            Assert.Equal("L12", address.Value.GetAddress());
+        }
+
+        [Theory(DisplayName = "Test of the GetLastDataCellAddress function with an empty worksheet")]
+        [InlineData(false, false, false)]
+        [InlineData(false, false, true)]
+        [InlineData(false, true, true)]
+        [InlineData(false, true, false)]
+        [InlineData(true, false, false)]
+        [InlineData(true, true, false)]
+        [InlineData(true, false, true)]
+        [InlineData(true, true, true)]
+        public void GetLastdataCellAddressTest(bool hasColumns, bool hasHiddenRows, bool hasRowHeights)
+        {
+            Worksheet worksheet = new Worksheet();
+            if (hasColumns)
+            {
+                worksheet.AddHiddenColumn(0);
+                worksheet.AddHiddenColumn(1);
+                worksheet.AddHiddenColumn(2);
+            }
+            if (hasHiddenRows)
+            {
+                worksheet.AddHiddenRow(0);
+                worksheet.AddHiddenRow(1);
+                worksheet.AddHiddenRow(2);
+            }
+            if (hasRowHeights)
+            {
+                worksheet.SetRowHeight(0, 22.2f);
+                worksheet.SetRowHeight(1, 22.2f);
+                worksheet.SetRowHeight(2, 22.2f);
+            }
+            Address? address = worksheet.GetLastDataCellAddress();
+            Assert.Null(address);
+        }
+
+        [Fact(DisplayName = "Test of the GetLastDataCellAddress function with defined columns and rows where cells are defined below the last column and row")]
+        public void GetLastDataCellAddressTest2()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddHiddenColumn(0);
+            worksheet.AddHiddenColumn(1);
+            worksheet.AddHiddenColumn(10);
+            worksheet.AddHiddenRow(0);
+            worksheet.AddHiddenRow(1);
+            worksheet.SetRowHeight(10, 22.2f);
+            worksheet.AddCell("test", "E5");
+            Address? address = worksheet.GetLastDataCellAddress();
+            Assert.NotNull(address);
+            Assert.Equal("E5", address.Value.GetAddress());
+        }
+
+        [Fact(DisplayName = "Test of the GetLastDataCellAddress function with defined columns and rows where cells are defined above the last column and row")]
+        public void GetLastDataCellAddressTest3()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddHiddenColumn(0);
+            worksheet.AddHiddenColumn(1);
+            worksheet.AddHiddenColumn(10);
+            worksheet.AddHiddenRow(0);
+            worksheet.AddHiddenRow(1);
+            worksheet.SetRowHeight(10, 22.2f);
+            worksheet.AddCell("test", "L12");
+            Address? address = worksheet.GetLastDataCellAddress();
+            Assert.NotNull(address);
+            Assert.Equal("L12", address.Value.GetAddress());
+        }
+
+        [Theory(DisplayName = "Test of the MergeCells function")]
+        [InlineData(RangeRepresentation.Addresses, 0,0,0,0, "A1:A1", 1)]
+        [InlineData(RangeRepresentation.RangeObject, 1, 1, 1, 1, "B2:B2", 1)]
+        [InlineData(RangeRepresentation.StringExpression, 2, 2, 2, 2, "C3:C3", 1)]
+        [InlineData(RangeRepresentation.Addresses, 0, 0, 2, 2, "A1:C3", 9)]
+        [InlineData(RangeRepresentation.RangeObject, 1, 1, 3, 1, "B2:D2", 3)]
+        [InlineData(RangeRepresentation.StringExpression, 2, 2, 2, 4, "C3:C5", 3)]
+        [InlineData(RangeRepresentation.Addresses, 2, 2, 0, 0, "C3:A1", 9)]
+        [InlineData(RangeRepresentation.StringExpression, 2, 4, 2, 2, "C3:C5", 3)] // String expression is reordered by the test method
+        public void MergeCellsTest(RangeRepresentation representation, int givenStartColumn, int givenStartRow, int givenEndColumn, int givenEndRow, string expectedMergedCells, int expectedCount)
+        {
+            Worksheet worksheet = new Worksheet();
+            Address startAddress = new Address(givenStartColumn, givenStartRow);
+            Address endAddress = new Address(givenEndColumn, givenEndRow);
+            Range range = new Range(startAddress, endAddress);
+            Assert.Empty(worksheet.MergedCells);
+            string returnedAddress;
+            if (representation == RangeRepresentation.Addresses)
+            {
+               returnedAddress = worksheet.MergeCells(startAddress, endAddress);
+            }
+            else if (representation == RangeRepresentation.StringExpression)
+            {
+                returnedAddress = worksheet.MergeCells(range.ToString());
+            }
+            else
+            {
+                returnedAddress = worksheet.MergeCells(range);
+            }
+             
+            Assert.Single(worksheet.MergedCells);
+            Assert.Equal(expectedMergedCells, returnedAddress);
+            Assert.Contains(worksheet.MergedCells, item => item.Key == expectedMergedCells);
+            Assert.Equal(expectedCount, worksheet.MergedCells[expectedMergedCells].ResolveEnclosedAddresses().Count);
+        }
+
+        [Theory(DisplayName = "Test of the MergeCells function with more than one range")]
+        [InlineData(RangeRepresentation.Addresses, 0, 0, 0, 0, "A1:A1", 1)]
+        [InlineData(RangeRepresentation.RangeObject, 1, 1, 1, 1, "B2:B2", 1)]
+        [InlineData(RangeRepresentation.StringExpression, 2, 2, 2, 2, "C3:C3", 1)]
+        [InlineData(RangeRepresentation.Addresses, 0, 0, 2, 2, "A1:C3", 9)]
+        [InlineData(RangeRepresentation.RangeObject, 1, 1, 3, 1, "B2:D2", 3)]
+        [InlineData(RangeRepresentation.StringExpression, 2, 2, 2, 4, "C3:C5", 3)]
+        [InlineData(RangeRepresentation.Addresses, 2, 2, 0, 0, "C3:A1", 9)]
+        [InlineData(RangeRepresentation.StringExpression, 2, 4, 2, 2, "C3:C5", 3)] // String expression is reordered by the test method
+        public void MergeCellsTest2(RangeRepresentation representation, int givenStartColumn, int givenStartRow, int givenEndColumn, int givenEndRow, string expectedMergedCells, int expectedCount)
+        {
+            Worksheet worksheet = new Worksheet();
+            Address startAddress = new Address(givenStartColumn, givenStartRow);
+            Address endAddress = new Address(givenEndColumn, givenEndRow);
+            Range range = new Range(startAddress, endAddress);
+            Assert.Empty(worksheet.MergedCells);
+            string returnedAddress;
+            if (representation == RangeRepresentation.Addresses)
+            {
+                returnedAddress = worksheet.MergeCells(startAddress, endAddress);
+            }
+            else if (representation == RangeRepresentation.StringExpression)
+            {
+                returnedAddress = worksheet.MergeCells(range.ToString());
+            }
+            else
+            {
+                returnedAddress = worksheet.MergeCells(range);
+            }
+            string returnedAddress2 = worksheet.MergeCells("X1:X2");
+            Assert.Equal(2, worksheet.MergedCells.Count);
+            Assert.Equal(expectedMergedCells, returnedAddress);
+            Assert.Contains(worksheet.MergedCells, item => item.Key == expectedMergedCells);
+            Assert.Equal(expectedCount, worksheet.MergedCells[expectedMergedCells].ResolveEnclosedAddresses().Count);
+            Assert.Contains(worksheet.MergedCells, item => item.Key == returnedAddress2);
+            Assert.Equal(2, worksheet.MergedCells[returnedAddress2].ResolveEnclosedAddresses().Count);
+        }
+
+        [Fact(DisplayName ="Test of the failing MergeCells function if cell addresses are colliding")]
+        public void MergeCellsFailTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.MergeCells("A1:D4");
+            Assert.Throws<RangeException>(() => worksheet.MergeCells("B4:E4"));
+        }
+
+        [Fact(DisplayName = "Test of the failing MergeCells function if the merge range already exists (full intersection)")]
+        public void MergeCellsFailTest2()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.MergeCells("A1:D4");
+            Assert.Throws<RangeException>(() => worksheet.MergeCells("D4:A1")); // Flip addresses
+        }
+
+        [Fact(DisplayName = "Test of the failing MergeCells function if the merge range is invalid (string)")]
+        public void MergeCellsFailTest3()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Throws<FormatException>(() => worksheet.MergeCells(""));
+            Assert.Throws<FormatException>(() => worksheet.MergeCells(null));
+            Assert.Throws<FormatException>(() => worksheet.MergeCells("A1"));
+        }
+
+        [Fact(DisplayName ="Test of the internal RecalculateAutoFilter function")]
+        public void RecalculateAutoFilterTest()
+        {
+            Workbook workbook = new Workbook(true);
+            Worksheet worksheet = workbook.CurrentWorksheet;
+            workbook.SaveAsStream(new MemoryStream()); // Dummy call to invoke recalculation
+            Assert.Null(worksheet.AutoFilterRange);
+            worksheet.AddCell("test", "A100");
+            worksheet.AddCell("test", "D50"); // Will expand the range to row 50
+            worksheet.AddCell("test", "F2");
+            worksheet.SetAutoFilter("B1:E1");
+            worksheet.Columns[2].HasAutoFilter = false;
+            worksheet.ResetColumn(2);
+            workbook.SaveAsStream(new MemoryStream()); // Dummy call to invoke recalculation
+            Assert.True(worksheet.Columns[2].HasAutoFilter);
+            Assert.Equal("B1:E50", worksheet.AutoFilterRange.ToString());
+        }
+
+
+        [Fact(DisplayName = "Test of the internal RecalculateColumns function")]
+        public void RecalculateColumnsTest()
+        {
+            Workbook workbook = new Workbook(true);
+            Worksheet worksheet = workbook.CurrentWorksheet;
+            worksheet.SetColumnWidth(1, 22.5f);
+            worksheet.SetColumnWidth(2, 22.8f);
+            worksheet.AddHiddenColumn(3);
+            worksheet.SetColumnWidth(1, Worksheet.DEFAULT_COLUMN_WIDTH); // should not remove the column
+            Assert.Equal(3, worksheet.Columns.Count);
+            workbook.SaveAsStream(new MemoryStream()); // Dummy call to invoke recalculation
+            Assert.Equal(2, worksheet.Columns.Count);
+            Assert.False(worksheet.Columns.ContainsKey(1));
+        }
+
+        [Fact(DisplayName = "Test of the internal ResolveMergedCells function")]
+        public void ResolveMergedCellsTest()
+        {
+            Workbook workbook = new Workbook(true);
+            Worksheet worksheet = workbook.CurrentWorksheet;
+            worksheet.AddCell("test", "B1");
+            worksheet.AddCell(22.2f, "C1");
+            Assert.Equal(2, worksheet.Cells.Count);
+            worksheet.MergeCells("B1:D1");
+            workbook.SaveAsStream(new MemoryStream()); // Dummy call to invoke resolution
+            Assert.Equal(3, worksheet.Cells.Count);
+            Assert.Null(worksheet.Cells["B1"].CellStyle);
+            Assert.Equal(Cell.CellType.EMPTY, worksheet.Cells["C1"].DataType);
+            Assert.True(BasicStyles.MergeCellStyle.Equals(worksheet.Cells["C1"].CellStyle));
+            Assert.Equal(22.2f, worksheet.Cells["C1"].Value);
+            Assert.True(BasicStyles.MergeCellStyle.Equals(worksheet.Cells["D1"].CellStyle));
+            Assert.Equal(Cell.CellType.EMPTY, worksheet.Cells["D1"].DataType);
+        }
+
+        [Fact(DisplayName = "Test of the RemoveAutoFilter function")]
+        public void RemoveAutoFilterTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.SetAutoFilter(1, 5);
+            Assert.NotNull(worksheet.AutoFilterRange);
+            Assert.Equal("B1:F1", worksheet.AutoFilterRange.Value.ToString());
+            worksheet.RemoveAutoFilter();
+            Assert.Null(worksheet.AutoFilterRange);
+        }
+
+        [Fact(DisplayName = "Test of the RemoveHiddenColumn function")]
+        public void RemoveHiddenColumnTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddHiddenColumn(1);
+            worksheet.AddHiddenColumn(2);
+            worksheet.AddHiddenColumn(3);
+            worksheet.SetColumnWidth(2, 22.2f);
+            Assert.Equal(3, worksheet.Columns.Count);
+            worksheet.RemoveHiddenColumn(2);
+            worksheet.RemoveHiddenColumn(3);
+            Assert.Equal(2, worksheet.Columns.Count);
+            Assert.False(worksheet.Columns[2].IsHidden);
+        }
+
+        [Fact(DisplayName = "Test of the RemoveHiddenColumn function with a string as column expression")]
+        public void RemoveHiddenColumnTest2()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddHiddenColumn("B");
+            worksheet.AddHiddenColumn("C");
+            worksheet.AddHiddenColumn("D");
+            worksheet.SetColumnWidth(2, 22.2f);
+            Assert.Equal(3, worksheet.Columns.Count);
+            worksheet.RemoveHiddenColumn("C");
+            worksheet.RemoveHiddenColumn("D");
+            Assert.Equal(2, worksheet.Columns.Count);
+            Assert.False(worksheet.Columns[2].IsHidden);
+        }
+
+        [Fact(DisplayName = "Test of the RemoveHiddenRow function")]
+        public void RemoveHiddenRowTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddHiddenRow(1);
+            worksheet.AddHiddenRow(2);
+            worksheet.AddHiddenRow(3);
+            Assert.Equal(3, worksheet.HiddenRows.Count);
+            worksheet.RemoveHiddenRow(2);
+            Assert.Equal(2, worksheet.HiddenRows.Count);
+            Assert.False(worksheet.HiddenRows.ContainsKey(2));
+        }
+
+        [Fact(DisplayName = "Test of the RemoveMergedCells function")]
+        public void RemoveMergedCellsTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddCell("test", "B2");
+            worksheet.AddCell(22, "B3");
+            worksheet.MergeCells("B1:B4");
+            Assert.True(worksheet.MergedCells.ContainsKey("B1:B4"));
+            worksheet.RemoveMergedCells("B1:B4");
+            Assert.Empty(worksheet.MergedCells);
+        }
+
+        [Fact(DisplayName = "Test of the RemoveMergedCells function after resolution of merged cells (on save)")]
+        public void RemoveMergedCellsTest2()
+        {
+            Workbook workbook = new Workbook(true);
+            Worksheet worksheet = workbook.CurrentWorksheet;
+            worksheet.AddCell("test", "B2");
+            worksheet.AddCell(22, "B3");
+            worksheet.MergeCells("B1:B4");
+            Assert.True(worksheet.MergedCells.ContainsKey("B1:B4"));
+            workbook.SaveAsStream(new MemoryStream()); // Dummy call to invoke recalculation
+            worksheet.RemoveMergedCells("B1:B4");
+            Assert.Empty(worksheet.MergedCells);
+            Assert.False(BasicStyles.MergeCellStyle.Equals(worksheet.Cells["B2"].CellStyle));
+            Assert.False(BasicStyles.MergeCellStyle.Equals(worksheet.Cells["B3"].CellStyle));
+            Assert.Equal("test", worksheet.Cells["B2"].Value);
+            Assert.Equal(22, worksheet.Cells["B3"].Value);
+        }
+
+        [Theory(DisplayName = "Test of the failing RemoveMergedCells function on an invalid range")]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("B1")]
+        [InlineData("B1:B5")]
+        public void RemoveMergedCellsFailTest(string range)
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddCell("test", "B2");
+            worksheet.AddCell(22, "B3");
+            worksheet.MergeCells("B1:B4");
+            Assert.True(worksheet.MergedCells.ContainsKey("B1:B4"));
+            Assert.Throws<RangeException>(() => worksheet.RemoveMergedCells(range));
+        }
+
+        [Fact(DisplayName = "Test of the RemoveSelectedCells function")]
+        public void RemoveSelectedCellsTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.SelectedCells);
+            worksheet.SetSelectedCells("B2:D3");
+            Assert.Equal("B2:D3", worksheet.SelectedCells.Value.ToString());
+            worksheet.RemoveSelectedCells();
+            Assert.Null(worksheet.SelectedCells);
+        }
+
+        [Theory(DisplayName = "Test of the RemoveAllowedActionOnSheetProtection function")]
+        [InlineData(SheetProtectionValue.deleteRows, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.formatRows, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.selectLockedCells, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.selectUnlockedCells, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.autoFilter, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.sort, SheetProtectionValue.objects, SheetProtectionValue.formatRows)]
+        [InlineData(SheetProtectionValue.insertRows, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.deleteColumns, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.formatCells, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.formatColumns, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.insertHyperlinks, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.insertColumns, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.objects, SheetProtectionValue.formatColumns, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.pivotTables, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.scenarios, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        public void RemoveAllowedActionOnSheetProtectionTest(SheetProtectionValue typeOfProtection, SheetProtectionValue additionalValue, SheetProtectionValue notPresentValue)
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddAllowedActionOnSheetProtection(typeOfProtection);
+            worksheet.AddAllowedActionOnSheetProtection(additionalValue);
+            int count = worksheet.SheetProtectionValues.Count;
+            Assert.True(count >= 2);
+            worksheet.RemoveAllowedActionOnSheetProtection(typeOfProtection);
+            Assert.Equal(count - 1, worksheet.SheetProtectionValues.Count);
+            Assert.DoesNotContain(worksheet.SheetProtectionValues, item => item == typeOfProtection);
+            worksheet.RemoveAllowedActionOnSheetProtection(notPresentValue); // should not cause anything
+            Assert.Equal(count - 1, worksheet.SheetProtectionValues.Count);
+        }
+
+        [Fact(DisplayName = "Test of the SetActiveStyle function")]
+        public void SetActiveStyleTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.ActiveStyle);
+            worksheet.SetActiveStyle(BasicStyles.Bold);
+            Assert.True(BasicStyles.Bold.Equals(worksheet.ActiveStyle));
+        }
+
+        [Fact(DisplayName = "Test of the SetActiveStyle function on null")]
+        public void SetActiveStyleTest2()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.ActiveStyle);
+            worksheet.SetActiveStyle(null);
+            Assert.Null(worksheet.ActiveStyle);
         }
 
         public static Worksheet InitWorksheet(Worksheet worksheet, string address, Worksheet.CellDirection direction, Style style = null)

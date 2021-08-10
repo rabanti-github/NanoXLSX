@@ -1128,29 +1128,37 @@ namespace NanoXLSX
         /// <summary>
         ///  Gets the last existing cell in the current worksheet (bottom right)
         /// </summary>
-        /// <returns>Cell Address</returns>
+        /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
         /// <remarks>GetLastCellAddress() will not return the last cell with data in any case. If there is a formatted (or with definitions of hidden states, AutoFilters, heights or widths) 
         /// but empty cell (or many) beyond the last cell with data, 
         /// GetLastCellAddress() will return the address of this empty cell. Use <see cref="GetLastDataCellAddress"/> in this case.</remarks>
 
-        public Address GetLastCellAddress()
+        public Address? GetLastCellAddress()
         {
             int lastRow = GetLastRowNumber();
             int lastColumn = GetLastColumnNumber();
+            if (lastRow < 0 || lastColumn < 0)
+            {
+                return null;
+            }
             return new Address(lastColumn, lastRow);
         }
 
         /// <summary>
         ///  Gets the last existing cell with data in the current worksheet (bottom right)
         /// </summary>
-        /// <returns>Cell Address</returns>
+        /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
         /// <remarks>GetLastDataCellAddress() will ignore formatted (or with definitions of hidden states, AutoFilters, heights or widths) but empty cells beyond the last cell with data. 
         /// If you want the last defined cell, use <see cref="GetLastCellAddress"/> instead.</remarks>
 
-        public Address GetLastDataCellAddress()
+        public Address? GetLastDataCellAddress()
         {
             int lastRow = GetLastDataRowNumber();
             int lastColumn = GetLastDataColumnNumber();
+            if (lastRow < 0 || lastColumn < 0)
+            {
+                return null;
+            }
             return new Address(lastColumn, lastRow);
         }
 
@@ -1231,18 +1239,19 @@ namespace NanoXLSX
         {
             currentColumnNumber++;
             currentRowNumber = 0;
+            Cell.ValidateColumnNumber(currentColumnNumber);
         }
 
         /// <summary>
         /// Moves the current position to the next column with the number of cells to move
         /// </summary>
         /// <param name="numberOfColumns">Number of columns to move</param>
+        /// <remarks>The value can also be negative. However, resulting column numbers below 0 or above 16383 will cause an exception</remarks>
         public void GoToNextColumn(int numberOfColumns)
         {
-            for (int i = 0; i < numberOfColumns; i++)
-            {
-                GoToNextColumn();
-            }
+            currentColumnNumber += numberOfColumns;
+            currentRowNumber = 0;
+            Cell.ValidateColumnNumber(currentColumnNumber);
         }
 
         /// <summary>
@@ -1252,18 +1261,19 @@ namespace NanoXLSX
         {
             currentRowNumber++;
             currentColumnNumber = 0;
+            Cell.ValidateRowNumber(currentRowNumber);
         }
 
         /// <summary>
         /// Moves the current position to the next row with the number of cells to move (use for a new line)
         /// </summary>
         /// <param name="numberOfRows">Number of rows to move</param>
+        /// <remarks>The value can also be negative. However, resulting row numbers below 0 or above 1048575 will cause an exception</remarks>
         public void GoToNextRow(int numberOfRows)
         {
-            for (int i = 0; i < numberOfRows; i++)
-            {
-                GoToNextRow();
-            }
+            currentRowNumber += numberOfRows;
+            currentColumnNumber = 0;
+            Cell.ValidateRowNumber(currentRowNumber);
         }
 
         /// <summary>
@@ -1296,22 +1306,27 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address of the merged cell range</param>
         /// <param name="endAddress">End address of the merged cell range</param>
         /// <returns>Returns the validated range of the merged cells (e.g. 'A1:B12')</returns>
-        /// <exception cref="RangeException">Throws an RangeException if one of the passed cell addresses is out of range</exception>
+        /// <exception cref="RangeException">Throws an RangeException if one of the passed cell addresses is out of range or if one or more cell addresses are already occupied in another merge range</exception>
         public string MergeCells(Address startAddress, Address endAddress)
         {
             string key = startAddress + ":" + endAddress;
             Range value = new Range(startAddress, endAddress);
-            if (!mergedCells.ContainsKey(key))
+            IReadOnlyList<Address> cells = value.ResolveEnclosedAddresses();
+            foreach(KeyValuePair<string, Range>item in mergedCells)
             {
-                mergedCells.Add(key, value);
+                if (item.Value.ResolveEnclosedAddresses().Intersect(cells).Any())
+                {
+                    throw new RangeException("ConflictingRangeException", "The passed range: " + value.ToString() + " contains cells that are already in the defined merge range: " + item.Key);
+                }
             }
+            mergedCells.Add(key, value);
             return key;
         }
 
         /// <summary>
-        /// Method to recalculate the auto filter (columns) of this worksheet. This is an internal method. There is no need to use it. It must be public to require access from the LowLevel class
+        /// Method to recalculate the auto filter (columns) of this worksheet. This is an internal method. There is no need to use it
         /// </summary>
-        public void RecalculateAutoFilter()
+        internal void RecalculateAutoFilter()
         {
             if (autoFilterRange == null)
             { return; }
@@ -1346,9 +1361,9 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Method to recalculate the collection of columns of this worksheet. This is an internal method. There is no need to use it. It must be public to require access from the LowLevel class
+        /// Method to recalculate the collection of columns of this worksheet. This is an internal method. There is no need to use it
         /// </summary>
-        public void RecalculateColumns()
+        internal void RecalculateColumns()
         {
             List<int> columnsToDelete = new List<int>();
             foreach (KeyValuePair<int, Column> col in columns)
@@ -1357,7 +1372,6 @@ namespace NanoXLSX
                 {
                     columnsToDelete.Add(col.Key);
                 }
-
                 if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_TRESHOLD)
                 {
                     columnsToDelete.Add(col.Key);
@@ -1367,6 +1381,43 @@ namespace NanoXLSX
             {
                 columns.Remove(index);
             }
+        }
+
+        /// <summary>
+        /// Method to resolve all merged cells of the worksheet. Only the value of the very first cell of the locked cells range will be visible. The other values are still present (set to EMPTY) but will not be stored in the worksheet.<br/>
+        /// This is an internal method. There is no need to use it
+        /// </summary>
+        /// <exception cref="StyleException">Throws a StyleException if one of the styles of the merged cells cannot be referenced or is null</exception>
+        internal void ResolveMergedCells()
+        {
+            Style mergeStyle = BasicStyles.MergeCellStyle;
+            Cell cell;
+                foreach (KeyValuePair<string, Range> range in MergedCells)
+                {
+                    int pos = 0;
+                    List<Address> addresses = Cell.GetCellRange(range.Value.StartAddress, range.Value.EndAddress) as List<Address>;
+                    foreach (Address address in addresses)
+                    {
+                        if (!Cells.ContainsKey(address.GetAddress()))
+                        {
+                            cell = new Cell();
+                            cell.DataType = Cell.CellType.EMPTY;
+                            cell.RowNumber = address.Row;
+                            cell.ColumnNumber = address.Column;
+                            AddCell(cell, cell.ColumnNumber, cell.RowNumber);
+                        }
+                        else
+                        {
+                            cell = Cells[address.GetAddress()];
+                        }
+                        if (pos != 0)
+                        {
+                            cell.DataType = Cell.CellType.EMPTY;
+                            cell.SetStyle(mergeStyle);
+                        }
+                        pos++;
+                    }
+                }
         }
 
         /// <summary>
@@ -1416,23 +1467,22 @@ namespace NanoXLSX
         public void RemoveMergedCells(string range)
         {
             range = Utils.ToUpper(range);
-            if (!mergedCells.ContainsKey(range))
+            if (range == null || !mergedCells.ContainsKey(range))
             {
                 throw new RangeException("UnknownRangeException", "The cell range " + range + " was not found in the list of merged cell ranges");
             }
 
             List<Address> addresses = Cell.GetCellRange(range) as List<Address>;
-            Cell cell;
             foreach (Address address in addresses)
             {
-                if (cells.ContainsKey(address.ToString()))
+                if (cells.ContainsKey(address.GetAddress()))
                 {
-                    cell = cells[address.ToString()];
-                    cell.DataType = Cell.CellType.DEFAULT; // resets the type
-                    if (cell.Value == null)
+                    Cell cell = cells[address.GetAddress()];
+                    if (BasicStyles.MergeCellStyle.Equals(cell.CellStyle))
                     {
-                        cell.Value = string.Empty;
+                        cell.RemoveStyle();
                     }
+                    cell.ResolveCellType(); // resets the type
                 }
             }
             mergedCells.Remove(range);
@@ -1475,7 +1525,14 @@ namespace NanoXLSX
         /// <param name="style">Style to set as active style</param>
         public void SetActiveStyle(Style style)
         {
-            useActiveStyle = true;
+            if (style == null)
+            {
+                useActiveStyle = false;
+            }
+            else
+            {
+                useActiveStyle = true;
+            }
             activeStyle = style;
         }
 
@@ -1525,9 +1582,9 @@ namespace NanoXLSX
                 throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " +
                     MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
             }
-            if (columns.ContainsKey(columnNumber) && state)
+            if (columns.ContainsKey(columnNumber))
             {
-                columns[columnNumber].IsHidden = true;
+                columns[columnNumber].IsHidden = state;
             }
             else if (state)
             {
@@ -1535,9 +1592,9 @@ namespace NanoXLSX
                 c.IsHidden = true;
                 columns.Add(columnNumber, c);
             }
-            else
+            if (!columns[columnNumber].IsHidden && Math.Abs(columns[columnNumber].Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_TRESHOLD && !columns[columnNumber].HasAutoFilter)
             {
-                // no-op
+                columns.Remove(columnNumber);
             }
         }
 
@@ -1736,10 +1793,6 @@ namespace NanoXLSX
             else if (state)
             {
                 hiddenRows.Add(rowNumber, true);
-            }
-            else
-            {
-                // no-op
             }
         }
 

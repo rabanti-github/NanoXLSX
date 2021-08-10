@@ -216,10 +216,68 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(4, row);
         }
 
+        [Fact(DisplayName = "Test of the GetCurrentColumnNumber function")]
+        public void GetCurrentRowNumberTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Equal(0, worksheet.GetCurrentRowNumber());
+            worksheet.CurrentCellDirection = Worksheet.CellDirection.RowToRow;
+            worksheet.AddNextCell("test");
+            worksheet.AddNextCell("test");
+            Assert.Equal(2, worksheet.GetCurrentRowNumber());
+            worksheet.CurrentCellDirection = Worksheet.CellDirection.ColumnToColumn;
+            worksheet.AddNextCell("test");
+            worksheet.AddNextCell("test");
+            Assert.Equal(2, worksheet.GetCurrentRowNumber()); // should not change
+            worksheet.GoToNextRow();
+            Assert.Equal(3, worksheet.GetCurrentRowNumber());
+            worksheet.GoToNextRow(2);
+            Assert.Equal(5, worksheet.GetCurrentRowNumber());
+            worksheet.GoToNextColumn(2);
+            Assert.Equal(0, worksheet.GetCurrentRowNumber()); // should reset
+        }
 
+        [Fact(DisplayName = "Test of the GoToNextRow function")]
+        public void GoToNextRowTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Equal(0, worksheet.GetCurrentRowNumber());
+            worksheet.GoToNextRow();
+            Assert.Equal(1, worksheet.GetCurrentRowNumber());
+            worksheet.GoToNextRow(5);
+            Assert.Equal(6, worksheet.GetCurrentRowNumber());
+            worksheet.GoToNextRow(-2);
+            Assert.Equal(4, worksheet.GetCurrentRowNumber());
+            worksheet.GoToNextRow(0);
+            Assert.Equal(4, worksheet.GetCurrentRowNumber());
+        }
 
+        [Theory(DisplayName = "Test of the failing GoToNextRow function on invalid values")]
+        [InlineData(0, -1)]
+        [InlineData(10, -12)]
+        [InlineData(0, 1048576)]
+        [InlineData(0, 1248575)]
+        public void GoToNextRowTest2(int initialValue, int value)
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.SetCurrentRowNumber(initialValue);
+            Assert.Equal(initialValue, worksheet.GetCurrentRowNumber());
+            Assert.Throws<RangeException>(() => worksheet.GoToNextRow(value));
+        }
 
-
+        [Fact(DisplayName = "Test of the RemoveRowHeight function")]
+        public void RemoveRowHeightTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.SetRowHeight(2, 22.2f);
+            worksheet.SetRowHeight(4, 33.3f);
+            Assert.Equal(2, worksheet.RowHeights.Count);
+            worksheet.RemoveRowHeight(2);
+            Assert.Single(worksheet.RowHeights);
+            worksheet.RemoveRowHeight(3); // Should not cause anything
+            worksheet.RemoveRowHeight(-1); // Should not cause anything
+            Assert.Single(worksheet.RowHeights);
+        }
 
     }
 }

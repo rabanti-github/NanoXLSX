@@ -89,9 +89,9 @@ namespace Demo
                 PrintCellInfo(cell.Value);                                                      // Show information about the loaded cell (helper function; not part of the API)
             }
 
-            Address lastAddress = wb.CurrentWorksheet.GetLastCellAddress();                     // Determine the last cell of the current worksheet
+            Address? lastAddress = wb.CurrentWorksheet.GetLastCellAddress();                     // Determine the last cell of the current worksheet
             Console.WriteLine("The last cell in the current worksheet is: " + lastAddress.ToString());
-            Address lastdataAddress = wb.CurrentWorksheet.GetLastDataCellAddress();             // Determine the last cell with data of the current worksheet
+            Address? lastdataAddress = wb.CurrentWorksheet.GetLastDataCellAddress();             // Determine the last cell with data of the current worksheet
             Console.WriteLine("The last cell with data in the current worksheet is: " + lastdataAddress.ToString());
 
             // The same as stream

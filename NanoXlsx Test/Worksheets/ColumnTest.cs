@@ -208,5 +208,52 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(5, column);
         }
 
+        [Fact(DisplayName ="Test of the GetCurrentColumnNumber function")]
+        public void GetCurrentColumnNumberTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Equal(0, worksheet.GetCurrentColumnNumber());
+            worksheet.CurrentCellDirection = Worksheet.CellDirection.ColumnToColumn;
+            worksheet.AddNextCell("test");
+            worksheet.AddNextCell("test");
+            Assert.Equal(2, worksheet.GetCurrentColumnNumber());
+            worksheet.CurrentCellDirection = Worksheet.CellDirection.RowToRow;
+            worksheet.AddNextCell("test");
+            worksheet.AddNextCell("test");
+            Assert.Equal(2, worksheet.GetCurrentColumnNumber()); // should not change
+            worksheet.GoToNextColumn();
+            Assert.Equal(3, worksheet.GetCurrentColumnNumber());
+            worksheet.GoToNextColumn(2);
+            Assert.Equal(5, worksheet.GetCurrentColumnNumber());
+            worksheet.GoToNextRow(2);
+            Assert.Equal(0, worksheet.GetCurrentColumnNumber()); // should reset
+        }
+
+        [Fact(DisplayName = "Test of the GoToNextColumn function")]
+        public void GoToNextColumnTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Equal(0, worksheet.GetCurrentColumnNumber());
+            worksheet.GoToNextColumn();
+            Assert.Equal(1, worksheet.GetCurrentColumnNumber());
+            worksheet.GoToNextColumn(5);
+            Assert.Equal(6, worksheet.GetCurrentColumnNumber());
+            worksheet.GoToNextColumn(-2);
+            Assert.Equal(4, worksheet.GetCurrentColumnNumber());
+        }
+
+        [Theory(DisplayName = "Test of the failing GoToNextColumn function on invalid values")]
+        [InlineData(0, -1)]
+        [InlineData(10, -12)]
+        [InlineData(0, 16384)]
+        [InlineData(0, 20383)]
+        public void GoToNextColumnTest2(int initialValue, int value)
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.SetCurrentColumnNumber(initialValue);
+            Assert.Equal(initialValue, worksheet.GetCurrentColumnNumber());
+            Assert.Throws<RangeException>(() => worksheet.GoToNextColumn(value));
+        }
+
     }
 }

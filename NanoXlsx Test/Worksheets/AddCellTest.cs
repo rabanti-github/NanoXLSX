@@ -214,7 +214,45 @@ namespace NanoXLSX_Test.Worksheets
             worksheet = WorksheetTest.InitWorksheet(worksheet, worksheetAddress, cellDirection);
             InvokeAddCellTest<string>("test", initialAddress.GetAddress(), worksheet.AddCell, Cell.CellType.STRING, initialAddress.GetAddress(), expectedNextColumn, expectedNextRow);
         }
-        
+
+        [Fact(DisplayName = "Test of the AddCell function where an existing cell is overwritten")]
+        public void AddCellOverwriteTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddCell("test", "C2");
+            Assert.Equal(Cell.CellType.STRING, worksheet.Cells["C2"].DataType);
+            Assert.Equal("test", worksheet.Cells["C2"].Value);
+            worksheet.AddCell(22, "C2");
+            Assert.Equal(Cell.CellType.NUMBER, worksheet.Cells["C2"].DataType);
+            Assert.Equal(22, worksheet.Cells["C2"].Value);
+            Assert.Single(worksheet.Cells);
+        }
+
+        [Fact(DisplayName = "Test of the AddCell function where existing cells are overwritten and the old cells where dates and times")]
+        public void AddCellOverwriteTest2()
+        {
+            Worksheet worksheet = new Worksheet();
+            DateTime date = new DateTime(2020, 10, 5, 4, 11, 12);
+            TimeSpan time = new TimeSpan(11, 12, 13);
+            worksheet.AddCell(date, "C2");
+            worksheet.AddCell(time, "C3");
+            Assert.Equal(Cell.CellType.DATE, worksheet.Cells["C2"].DataType);
+            Assert.Equal(date, worksheet.Cells["C2"].Value);
+            Assert.True(BasicStyles.DateFormat.Equals(worksheet.Cells["C2"].CellStyle));
+            Assert.Equal(Cell.CellType.TIME, worksheet.Cells["C3"].DataType);
+            Assert.Equal(time, worksheet.Cells["C3"].Value);
+            Assert.True(BasicStyles.TimeFormat.Equals(worksheet.Cells["C3"].CellStyle));
+            worksheet.AddCell(22, "C2");
+            worksheet.AddCell("test", "C3");
+            Assert.Equal(Cell.CellType.NUMBER, worksheet.Cells["C2"].DataType);
+            Assert.Equal(22, worksheet.Cells["C2"].Value);
+            Assert.Null(worksheet.Cells["C2"].CellStyle);
+            Assert.Equal(Cell.CellType.STRING, worksheet.Cells["C3"].DataType);
+            Assert.Equal("test", worksheet.Cells["C3"].Value);
+            Assert.Null(worksheet.Cells["C3"].CellStyle);
+            Assert.Equal(2, worksheet.Cells.Count);
+        }
+
 
         private void InvokeAddCellTest<T1>(object value, T1 parameter1, Action<object, T1> action, Cell.CellType expectedType, string expectedAddress, int expectedNextColumn, int expectedNextRow, Style expectedStyle = null)
         {

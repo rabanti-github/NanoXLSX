@@ -398,44 +398,15 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Method to resolve all merged cells in all worksheets. Only the value of the very first cell of the locked cells range will be visible. The other values are still present (set to EMPTY) but will not be stored in the worksheet.
+        /// Method to resolve all merged cells in all worksheets. Only the value of the very first cell of the locked cells range will be visible. The other values are still present (set to EMPTY) but will not be stored in the worksheet.<br/>
+        /// This is an internal method. There is no need to use it
         /// </summary>
         /// <exception cref="StyleException">Throws a StyleException if one of the styles of the merged cells cannot be referenced or is null</exception>
-        public void ResolveMergedCells()
+        internal void ResolveMergedCells()
         {
-            Style mergeStyle = BasicStyles.MergeCellStyle;
-            int pos;
-            List<Address> addresses;
-            Cell cell;
-            foreach (Worksheet sheet in worksheets)
+            foreach (Worksheet worksheet in worksheets)
             {
-                foreach (KeyValuePair<string, Range> range in sheet.MergedCells)
-                {
-                    pos = 0;
-                    addresses = Cell.GetCellRange(range.Value.StartAddress, range.Value.EndAddress) as List<Address>;
-                    foreach (Address address in addresses)
-                    {
-                        if (!sheet.Cells.ContainsKey(address.ToString()))
-                        {
-                            cell = new Cell();
-                            cell.DataType = Cell.CellType.EMPTY;
-                            cell.RowNumber = address.Row;
-                            cell.ColumnNumber = address.Column;
-                            sheet.AddCell(cell, cell.ColumnNumber, cell.RowNumber);
-                        }
-                        else
-                        {
-                            cell = sheet.Cells[address.ToString()];
-                        }
-                        if (pos != 0)
-                        {
-                            cell.DataType = Cell.CellType.EMPTY;
-                            cell.SetStyle(mergeStyle);
-                        }
-                        pos++;
-                    }
-
-                }
+                worksheet.ResolveMergedCells();
             }
         }
 
