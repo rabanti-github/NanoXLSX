@@ -331,78 +331,6 @@ namespace NanoXLSX_Test.Worksheets
             Assert.True(worksheet.Hidden);
         }
 
-        [Fact(DisplayName = "Test of the get function of the PaneSplitTopHeight property")]
-        public void PaneSplitTopHeightTest()
-        {
-            Worksheet worksheet = new Worksheet();
-            Assert.Null(worksheet.PaneSplitTopHeight);
-            worksheet.SetSplit(10f, 22.2f, new Address("A2"), Worksheet.WorksheetPane.bottomLeft);
-            Assert.NotNull(worksheet.PaneSplitTopHeight);
-            Assert.Equal(22.2f, worksheet.PaneSplitTopHeight);
-            worksheet.ResetSplit();
-            Assert.Null(worksheet.PaneSplitTopHeight);
-        }
-
-        [Fact(DisplayName = "Test of the get function of the PaneSplitLeftWidth property")]
-        public void PaneSplitLeftWidthTest()
-        {
-            Worksheet worksheet = new Worksheet();
-            Assert.Null(worksheet.PaneSplitLeftWidth);
-            worksheet.SetSplit(11.1f, 20f, new Address("A2"), Worksheet.WorksheetPane.bottomLeft);
-            Assert.NotNull(worksheet.PaneSplitLeftWidth);
-            Assert.Equal(11.1f, worksheet.PaneSplitLeftWidth);
-            worksheet.ResetSplit();
-            Assert.Null(worksheet.PaneSplitLeftWidth);
-        }
-
-        [Fact(DisplayName = "Test of the get function of the FreezeSplitPanes property")]
-        public void FreezeSplitPanesTest()
-        {
-            Worksheet worksheet = new Worksheet();
-            Assert.Null(worksheet.FreezeSplitPanes);
-            worksheet.SetSplit(2,2,true, new Address("D4"), Worksheet.WorksheetPane.bottomRight);
-            Assert.NotNull(worksheet.FreezeSplitPanes);
-            Assert.Equal(true, worksheet.FreezeSplitPanes);
-            worksheet.ResetSplit();
-            Assert.Null(worksheet.FreezeSplitPanes);
-        }
-
-        [Fact(DisplayName = "Test of the get function of the PaneSplitTopLeftCell property")]
-        public void PaneSplitTopLeftCellTest()
-        {
-            Worksheet worksheet = new Worksheet();
-            Assert.Null(worksheet.PaneSplitTopLeftCell);
-            worksheet.SetSplit(10f, 22.2f, new Address("C4"), Worksheet.WorksheetPane.bottomLeft);
-            Assert.NotNull(worksheet.PaneSplitTopLeftCell);
-            Assert.Equal("C4", worksheet.PaneSplitTopLeftCell.Value.GetAddress());
-            worksheet.ResetSplit();
-            Assert.Null(worksheet.PaneSplitTopLeftCell);
-        }
-
-        [Fact(DisplayName = "Test of the get function of the PaneSplitAddress property")]
-        public void PaneSplitAddressTest()
-        {
-            Worksheet worksheet = new Worksheet();
-            Assert.Null(worksheet.PaneSplitAddress);
-            worksheet.SetSplit(2, 2, true, new Address("D4"), Worksheet.WorksheetPane.bottomRight);
-            Assert.NotNull(worksheet.PaneSplitAddress);
-            Assert.Equal("C3", worksheet.PaneSplitAddress.Value.GetAddress());
-            worksheet.ResetSplit();
-            Assert.Null(worksheet.PaneSplitAddress);
-        }
-
-        [Fact(DisplayName = "Test of the get function of the ActivePane property")]
-        public void ActivePaneTest()
-        {
-            Worksheet worksheet = new Worksheet();
-            Assert.Null(worksheet.ActivePane);
-            worksheet.SetSplit(2, 2, true, new Address("D4"), Worksheet.WorksheetPane.bottomRight);
-            Assert.NotNull(worksheet.ActivePane);
-            Assert.Equal(Worksheet.WorksheetPane.bottomRight, worksheet.ActivePane);
-            worksheet.ResetSplit();
-            Assert.Null(worksheet.ActivePane);
-        }
-
         [Fact(DisplayName = "Test of the get function of the ActiveStyle property")]
         public void ActiveStyleTest()
         {
@@ -1086,6 +1014,226 @@ namespace NanoXLSX_Test.Worksheets
             worksheet.SetActiveStyle(null);
             Assert.Null(worksheet.ActiveStyle);
         }
+
+        [Theory(DisplayName = "Test of the SetCurrentCellAddress function with column and row numbers")]
+        [InlineData(0, 0)]
+        [InlineData(5, 0)]
+        [InlineData(0, 5)]
+        [InlineData(16383, 1048575)]
+        public void SetCurrentCellAddressTest(int column, int row)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Equal(0, worksheet.GetCurrentColumnNumber());
+            Assert.Equal(0, worksheet.GetCurrentRowNumber());
+            worksheet.GoToNextRow();
+            worksheet.GoToNextColumn();
+            worksheet.SetCurrentCellAddress(column, row);
+            Assert.Equal(column, worksheet.GetCurrentColumnNumber());
+            Assert.Equal(row, worksheet.GetCurrentRowNumber());
+        }
+
+
+        [Theory(DisplayName = "Test of the SetCurrentCellAddress function")]
+        [InlineData("A1")]
+        [InlineData("$A$1")]
+        [InlineData("C$5")]
+        [InlineData("$XFD1")]
+        [InlineData("A$1048575")]
+        [InlineData("XFD1048575")]
+        public void SetCurrentCellAddressTest2(String address)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Equal(0, worksheet.GetCurrentColumnNumber());
+            Assert.Equal(0, worksheet.GetCurrentRowNumber());
+            worksheet.GoToNextRow();
+            worksheet.GoToNextColumn();
+            worksheet.SetCurrentCellAddress(address);
+            Address addr = new Address(address);
+            Assert.Equal(addr.Column, worksheet.GetCurrentColumnNumber());
+            Assert.Equal(addr.Row, worksheet.GetCurrentRowNumber());
+        }
+
+        [Theory(DisplayName = "Test of the failing SetCurrentCellAddress function on invalid columns or rows")]
+        [InlineData(-1, 0)]
+        [InlineData(0, -1)]
+        [InlineData(-10, -10)]
+        [InlineData(16384, 1048575)]
+        [InlineData(16383, 1048576)]
+        public void SetCurrentCellAddressFailTest(int column, int row)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Throws<RangeException>(() => worksheet.SetCurrentCellAddress(column, row));
+        }
+
+        [Theory(DisplayName = "Test of the failing SetCurrentCellAddress function on an invalid address as string")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(":")]
+        [InlineData("XFE1")]
+        [InlineData("A1:A1")]
+        [InlineData("A0")]
+        [InlineData("A1048577")]
+        public void SetCurrentCellAddressFailTest2(String address)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.ThrowsAny<Exception>(() => worksheet.SetCurrentCellAddress(address));
+        }
+
+
+        [Theory(DisplayName = "Test of the SetSelectedCells function with range objects")]
+        [InlineData("A1:A1")]
+        [InlineData("B2:C10")]
+        [InlineData("A1:A10")]
+        [InlineData("A1:R1")]
+        [InlineData("$A$1:$R$1")]
+        [InlineData("A1:XFD1048575")]
+        public void SetSelectedCellsTest(String addressExpression)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.SelectedCells);
+            Range range = new Range(addressExpression);
+            worksheet.SetSelectedCells(range);
+            Assert.Equal(range.ToString(), worksheet.SelectedCells.Value.ToString());
+        }
+
+        [Theory(DisplayName = "Test of the SetSelectedCells function with strings")]
+        [InlineData("A1:A1")]
+        [InlineData("B2:C10")]
+        [InlineData("C10:B5")]
+        [InlineData("A1:A10")]
+        [InlineData("A1:R1")]
+        [InlineData("$A$1:$R$1")]
+        [InlineData("A1:XFD1048575")]
+        [InlineData(null)]
+        public void SetSelectedCellsTest2(String addressExpression)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.SelectedCells);
+            worksheet.SetSelectedCells(addressExpression);
+            if (addressExpression == null)
+            {
+                Assert.Null(worksheet.SelectedCells);
+            }
+            else
+            {
+                Range range = new Range(addressExpression);
+                Assert.Equal(range.ToString(), worksheet.SelectedCells.Value.ToString());
+            }
+        }
+
+
+        [Theory(DisplayName = "Test of the SetSelectedCells function with address objects")]
+        [InlineData("A1", "A1")]
+        [InlineData("B2", "C10")]
+        [InlineData("C10", "B5")]
+        [InlineData("A1", "A10")]
+        [InlineData("A1", "R1")]
+        [InlineData("$A$1", "$R$1")]
+        [InlineData("A1", "XFD1048575")]
+        public void SetSelectedCellsTest3(String startAddress, string endAddress)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.SelectedCells);
+            Address start = new Address(startAddress);
+            Address end = new Address(endAddress);
+            Range range = new Range(start, end);
+            worksheet.SetSelectedCells(start, end);
+            Assert.Equal(range.StartAddress.GetAddress(), worksheet.SelectedCells.Value.StartAddress.GetAddress());
+            Assert.Equal(range.EndAddress.GetAddress(), worksheet.SelectedCells.Value.EndAddress.GetAddress());
+        }
+
+        [Theory(DisplayName = "Test of the SetSheetProtectionPassword function")]
+        [InlineData(null, null, false)]
+        [InlineData("", null, false)]
+        [InlineData("x", "x", true)]
+        [InlineData("***", "***", true)]
+        public void SetSheetProtectionPasswordTest(String password, String expectedPassword, bool expectedUsage)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.False(worksheet.UseSheetProtection);
+            Assert.Null(worksheet.SheetProtectionPassword);
+            worksheet.SetSheetProtectionPassword(password);
+            Assert.Equal(expectedUsage, worksheet.UseSheetProtection);
+            Assert.Equal(expectedPassword, worksheet.SheetProtectionPassword);
+        }
+
+        [Theory(DisplayName = "Test of the SetSheetname function")]
+        [InlineData("1", true, "1")]
+        [InlineData("test", true, "test")]
+        [InlineData("test-test", true, "test-test")]
+        [InlineData("$$$", true, "$$$")]
+        [InlineData("a b", true, "a b")]
+        [InlineData("a\tb", true, "a\tb")]
+        [InlineData("-------------------------------", true, "-------------------------------")]
+        [InlineData("", false, null)]
+        [InlineData(null, false, null)]
+        [InlineData("a[b", false, null)]
+        [InlineData("a]b", false, null)]
+        [InlineData("a*b", false, null)]
+        [InlineData("a?b", false, null)]
+        [InlineData("a/b", false, null)]
+        [InlineData("a\\b", false, null)]
+        [InlineData("--------------------------------", false, null)]
+        public void SetSheetnameTest(String name, bool expectedValid, string expectedName)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.SheetName);
+            if (expectedValid)
+            {
+                worksheet.SetSheetName(name);
+                Assert.Equal(expectedName, worksheet.SheetName);
+            }
+            else
+            {
+                Assert.Throws<FormatException>(() => worksheet.SetSheetName(name));
+            }
+        }
+
+        [Theory(DisplayName = "Test of the SetSheetName function with sanitation when one worksheet already exists")]
+        [InlineData(false, "test", true, "test")]
+        [InlineData(false, "", false, null)]
+        [InlineData(false, null, false, null)]
+        [InlineData(false, "a[b", false, null)]
+        [InlineData(false, "a]b", false, null)]
+        [InlineData(false, "a*b", false, null)]
+        [InlineData(false, "a?b", false, null)]
+        [InlineData(false, "a/b", false, null)]
+        [InlineData(false, "a\\b", false, null)]
+        [InlineData(false, "--------------------------------", false, null)]
+        [InlineData(true, "test", true, "test")]
+        [InlineData(true, "", true, "Sheet2")]
+        [InlineData(true, null, true, "Sheet2" )]
+        [InlineData(true, "a[b", true, "a_b")]
+        [InlineData(true, "a]b", true, "a_b")]
+        [InlineData(true, "a*b", true, "a_b")]
+        [InlineData(true, "a?b", true, "a_b")]
+        [InlineData(true, "a/b", true, "a_b")]
+        [InlineData(true, "a\\b", true, "a_b")]
+        [InlineData(true, "--------------------------------", true, "-------------------------------")]
+        public void SetSheetNameTest2(bool useSanitation, String name, bool expectedValid, string expectedName)
+        {
+            Workbook workbook = new Workbook("Sheet1");
+            workbook.AddWorksheet("test");
+            Worksheet worksheet = workbook.CurrentWorksheet;
+            Assert.Equal("test", worksheet.SheetName);
+            if (expectedValid)
+            {
+                worksheet.SetSheetName(name, useSanitation);
+                Assert.Equal(expectedName, worksheet.SheetName);
+            }
+            else
+            {
+                Assert.Throws<FormatException>(() => worksheet.SetSheetName(name, useSanitation));
+            }
+        }
+
+        [Fact(DisplayName = "Test of the failing SetSheetName function with sanitizing on a missing Workbook reference")]
+        public void SetSheetNameFailingTest()
+        {
+            Worksheet worksheet = new Worksheet(); // Worksheet was not created over a workbook
+            Assert.Throws<WorksheetException>(() => worksheet.SetSheetName("test", true));
+        }
+
 
         public static Worksheet InitWorksheet(Worksheet worksheet, string address, Worksheet.CellDirection direction, Style style = null)
         {

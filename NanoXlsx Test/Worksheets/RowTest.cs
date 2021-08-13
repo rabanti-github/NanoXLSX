@@ -279,5 +279,58 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Single(worksheet.RowHeights);
         }
 
+        [Theory(DisplayName = "Test of the SetCurrentRowNumber function")]
+        [InlineData(0)]
+        [InlineData(3)]
+        [InlineData(1048575)]
+        public void SetCurrentRowNumberTest(int row)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Equal(0, worksheet.GetCurrentRowNumber());
+            worksheet.GoToNextRow();
+            worksheet.SetCurrentRowNumber(row);
+            Assert.Equal(row, worksheet.GetCurrentRowNumber());
+        }
+
+        [Theory(DisplayName = "Test of the failing SetCurrentRowNumber function")]
+        [InlineData(-1)]
+        [InlineData(-10)]
+        [InlineData(1048576)]
+        public void SetCurrentRowNumberFailTest(int row)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Throws<RangeException>(() => worksheet.SetCurrentRowNumber(row));
+        }
+
+        [Theory(DisplayName = "Test of the SetRowHeight function")]
+        [InlineData(0f)]
+        [InlineData(0.1f)]
+        [InlineData(10f)]
+        [InlineData(255f)]
+        public void SetRowHeightTest(float height)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Empty(worksheet.RowHeights);
+            worksheet.SetRowHeight(0, height);
+            Assert.Single(worksheet.RowHeights);
+            Assert.Equal(height, worksheet.RowHeights[0]);
+            worksheet.SetRowHeight(0, Worksheet.DEFAULT_ROW_HEIGHT);
+            Assert.Single(worksheet.RowHeights); // No removal so far
+            Assert.Equal(Worksheet.DEFAULT_ROW_HEIGHT, worksheet.RowHeights[0]);
+        }
+
+        [Theory(DisplayName = "Test of the failing SetRowHeight function")]
+        [InlineData(-1, 0f)]
+        [InlineData(1048576, 0.0f)]
+        [InlineData(0, -10f)]
+        [InlineData(0, 409.51f)]
+        [InlineData(0, 500f)]
+        public void SetRowHeightFailTest(int rowNumber, float height)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Throws<RangeException>(() => worksheet.SetRowHeight(rowNumber, height));
+        }
+
+
     }
 }

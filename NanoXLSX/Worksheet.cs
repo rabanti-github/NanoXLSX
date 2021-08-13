@@ -25,11 +25,11 @@ namespace NanoXLSX
         /// <summary>
         /// Threshold, using when floats are compared
         /// </summary>
-        private const float FLOAT_TRESHOLD = 0.0001f;
+        private const float FLOAT_THRESHOLD = 0.0001f;
         /// <summary>
         /// Maximum number of characters a worksheet name can have
         /// </summary>
-        public static readonly int MAX_WORKSHEER_NAME_LENGTH = 31;
+        public static readonly int MAX_WORKSHEET_NAME_LENGTH = 31;
         /// <summary>
         /// Default column width as constant
         /// </summary>
@@ -283,7 +283,7 @@ namespace NanoXLSX
         public string SheetName
         {
             get { return sheetName; }
-            set { SetSheetname(value); }
+            set { SetSheetName(value); }
         }
 
         /// <summary>
@@ -425,7 +425,7 @@ namespace NanoXLSX
         public Worksheet(string name, int id, Workbook reference)
             : this()
         {
-            SetSheetname(name);
+            SetSheetName(name);
             SheetID = id;
             WorkbookReference = reference;
         }
@@ -1368,11 +1368,11 @@ namespace NanoXLSX
             List<int> columnsToDelete = new List<int>();
             foreach (KeyValuePair<int, Column> col in columns)
             {
-                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_TRESHOLD)
+                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_THRESHOLD)
                 {
                     columnsToDelete.Add(col.Key);
                 }
-                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_TRESHOLD)
+                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_THRESHOLD)
                 {
                     columnsToDelete.Add(col.Key);
                 }
@@ -1577,11 +1577,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException if the column number out of range</exception>
         private void SetColumnHiddenState(int columnNumber, bool state)
         {
-            if (columnNumber > MAX_COLUMN_NUMBER || columnNumber < MIN_COLUMN_NUMBER)
-            {
-                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " +
-                    MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
-            }
+            Cell.ValidateColumnNumber(columnNumber);
             if (columns.ContainsKey(columnNumber))
             {
                 columns[columnNumber].IsHidden = state;
@@ -1592,7 +1588,7 @@ namespace NanoXLSX
                 c.IsHidden = true;
                 columns.Add(columnNumber, c);
             }
-            if (!columns[columnNumber].IsHidden && Math.Abs(columns[columnNumber].Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_TRESHOLD && !columns[columnNumber].HasAutoFilter)
+            if (!columns[columnNumber].IsHidden && Math.Abs(columns[columnNumber].Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_THRESHOLD && !columns[columnNumber].HasAutoFilter)
             {
                 columns.Remove(columnNumber);
             }
@@ -1618,11 +1614,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException:<br></br>a) If the passed column number is out of range<br></br>b) if the column width is out of range (0 - 255.0)</exception>
         public void SetColumnWidth(int columnNumber, float width)
         {
-            if (columnNumber > MAX_COLUMN_NUMBER || columnNumber < MIN_COLUMN_NUMBER)
-            {
-                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " +
-                    MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
-            }
+            Cell.ValidateColumnNumber(columnNumber);
             if (width < MIN_COLUMN_WIDTH || width > MAX_COLUMN_WIDTH)
             {
                 throw new RangeException(RangeException.GENERAL, "The column width (" + width + ") is out of range. Range is from " + MIN_COLUMN_WIDTH + " to " + MAX_COLUMN_WIDTH + " (chars).");
@@ -1672,11 +1664,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException if the number is out of the valid range. Range is from 0 to 16383 (16384 columns)</exception>
         public void SetCurrentColumnNumber(int columnNumber)
         {
-            if (columnNumber > MAX_COLUMN_NUMBER || columnNumber < MIN_COLUMN_NUMBER)
-            {
-                throw new RangeException(RangeException.GENERAL, "The column number (" + columnNumber + ") is out of range. Range is from " +
-                    MIN_COLUMN_NUMBER + " to " + MAX_COLUMN_NUMBER + " (" + (MAX_COLUMN_NUMBER + 1) + " columns).");
-            }
+            Cell.ValidateColumnNumber(columnNumber);
             currentColumnNumber = columnNumber;
         }
 
@@ -1687,10 +1675,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException if the number is out of the valid range. Range is from 0 to 1048575 (1048576 rows)</exception>
         public void SetCurrentRowNumber(int rowNumber)
         {
-            if (rowNumber > MAX_ROW_NUMBER || rowNumber < 0)
-            {
-                throw new RangeException(RangeException.GENERAL, "The row number (" + rowNumber + ") is out of range. Range is from 0 to " + MAX_ROW_NUMBER + " (" + (MAX_ROW_NUMBER + 1) + " rows).");
-            }
+            Cell.ValidateRowNumber(rowNumber);
             currentRowNumber = rowNumber;
         }
 
@@ -1714,12 +1699,19 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Sets the selected cells on this worksheet
+        /// Sets the selected cells on this worksheet. Null removes the selected cell range
         /// </summary>
         /// <param name="range">Cell range to select</param>
         public void SetSelectedCells(string range)
         {
-            selectedCells = Cell.ResolveCellRange(range);
+            if (range == null)
+            {
+                selectedCells = null;
+            }
+            else
+            {
+                selectedCells = Cell.ResolveCellRange(range);
+            }
         }
 
         /// <summary>
@@ -1731,6 +1723,7 @@ namespace NanoXLSX
             if (string.IsNullOrEmpty(password))
             {
                 sheetProtectionPassword = null;
+                UseSheetProtection = false;
             }
             else
             {
@@ -1747,11 +1740,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException:<br></br>a) If the passed row number is out of range<br></br>b) if the row height is out of range (0 - 409.5)</exception>
         public void SetRowHeight(int rowNumber, float height)
         {
-            if (rowNumber > MAX_ROW_NUMBER || rowNumber < MIN_ROW_NUMBER)
-            {
-                throw new RangeException(RangeException.GENERAL, "The row number (" + rowNumber + ") is out of range. Range is from " +
-                    MIN_ROW_NUMBER + " to " + MAX_ROW_NUMBER + " (" + (MAX_ROW_NUMBER + 1) + " rows).");
-            }
+            Cell.ValidateRowNumber(rowNumber);
             if (height < MIN_ROW_HEIGHT || height > MAX_ROW_HEIGHT)
             {
                 throw new RangeException(RangeException.GENERAL, "The row height (" + height + ") is out of range. Range is from " + MIN_ROW_HEIGHT + " to " + MAX_ROW_HEIGHT + " (equals 546px).");
@@ -1774,11 +1763,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws an RangeException if the passed row number was out of range</exception>
         private void SetRowHiddenState(int rowNumber, bool state)
         {
-            if (rowNumber > MAX_ROW_NUMBER || rowNumber < MIN_ROW_NUMBER)
-            {
-                throw new RangeException(RangeException.GENERAL, "The row number (" + rowNumber + ") is out of range. Range is from " +
-                    MIN_ROW_NUMBER + " to " + MAX_ROW_NUMBER + " (" + (MAX_ROW_NUMBER + 1) + " rows).");
-            }
+            Cell.ValidateRowNumber(rowNumber);
             if (hiddenRows.ContainsKey(rowNumber))
             {
                 if (state)
@@ -1801,19 +1786,19 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="name">Name to set</param>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the worksheet name is too long (max. 31) or contains illegal characters [  ]  * ? / \</exception>
-        public void SetSheetname(string name)
+        public void SetSheetName(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new FormatException("the worksheet name must be between 1 and " + MAX_WORKSHEER_NAME_LENGTH + " characters");
+                throw new FormatException("the worksheet name must be between 1 and " + MAX_WORKSHEET_NAME_LENGTH + " characters");
             }
-            if (name.Length > MAX_WORKSHEER_NAME_LENGTH)
+            if (name.Length > MAX_WORKSHEET_NAME_LENGTH)
             {
-                throw new FormatException("the worksheet name must be between 1 and " + MAX_WORKSHEER_NAME_LENGTH + " characters");
+                throw new FormatException("the worksheet name must be between 1 and " + MAX_WORKSHEET_NAME_LENGTH + " characters");
             }
-            Regex rx = new Regex(@"[\[\]\*\?/\\]");
-            Match mx = rx.Match(name);
-            if (mx.Captures.Count > 0)
+            Regex regex = new Regex(@"[\[\]\*\?/\\]");
+            Match match = regex.Match(name);
+            if (match.Captures.Count > 0)
             {
                 throw new FormatException(@"the worksheet name must not contain the characters [  ]  * ? / \ ");
             }
@@ -1828,12 +1813,15 @@ namespace NanoXLSX
         /// <exception cref="WorksheetException">WorksheetException Thrown if no workbook is referenced. This information is necessary to determine whether the name already exists</exception>
         public void SetSheetName(string name, bool sanitize)
         {
-            if (WorkbookReference == null)
+            if (sanitize)
             {
-                throw new WorksheetException("MissingReferenceException", "The worksheet name cannot be sanitized because no workbook is referenced");
+                sheetName = ""; // Empty name (temporary) to prevent conflicts during sanitizing
+                sheetName = SanitizeWorksheetName(name, WorkbookReference);
             }
-            sheetName = ""; // Empty name (temporary) to prevent conflicts during sanitizing
-            sheetName = SanitizeWorksheetName(name, WorkbookReference);
+            else
+            {
+                SetSheetName(name);
+            }
         }
 
         /// <summary>
@@ -1961,24 +1949,24 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="input">Name to sanitize</param>
         /// <param name="workbook">Workbook reference</param>
+        /// <exception cref="WorksheetException">A WorksheetException is thrown if the workbook reference is null, since all worksheets have to be considered during sanitation</exception>
         /// <returns>Name of the sanitized worksheet</returns>
         public static string SanitizeWorksheetName(string input, Workbook workbook)
         {
-
             if (string.IsNullOrEmpty(input))
             {
                 input = "Sheet1";
             }
             int len;
-            if (input.Length > MAX_WORKSHEER_NAME_LENGTH)
+            if (input.Length > MAX_WORKSHEET_NAME_LENGTH)
             {
-                len = MAX_WORKSHEER_NAME_LENGTH;
+                len = MAX_WORKSHEET_NAME_LENGTH;
             }
             else
             {
                 len = input.Length;
             }
-            StringBuilder sb = new StringBuilder(MAX_WORKSHEER_NAME_LENGTH);
+            StringBuilder sb = new StringBuilder(MAX_WORKSHEET_NAME_LENGTH);
             char c;
             for (int i = 0; i < len; i++)
             {
@@ -1988,7 +1976,6 @@ namespace NanoXLSX
                 else
                 { sb.Append(c); }
             }
-
             return GetUnusedWorksheetName(sb.ToString(), workbook);
         }
 
@@ -1998,25 +1985,37 @@ namespace NanoXLSX
         /// <param name="name">Original name to start the check</param>
         /// <param name="workbook">Workbook to look for existing worksheets</param>
         /// <returns>Not yet used worksheet name</returns>
+        /// <exception cref="WorksheetException">A WorksheetException is thrown if the workbook reference is null, since all worksheets have to be considered during sanitation</exception>
         /// <remarks>The 'rare' case where 10^31 Worksheets exists (leads to a crash) is deliberately not handled, 
-        /// since such a number of sheets would consume at least a quintillion bytes of RAM... what is vastly out of the 64 bit range</remarks>
+        /// since such a number of sheets would consume at least one quintillion bytes of RAM... what is vastly out of the 64 bit range</remarks>
         private static string GetUnusedWorksheetName(string name, Workbook workbook)
         {
-            string originalName = name;
-            int number = 0;
+            if (workbook == null)
+            {
+                throw new WorksheetException("MissingReferenceException", "The workbook reference is null");
+            }
+            if (!WorksheetExists(name, workbook))
+            { return name; }
+            Regex regex = new Regex(@"^(.*?)(\d{1,31})$");
+            Match match = regex.Match(name);
+            string prefix = name;
+            int number = 1;
+            if (match.Groups.Count > 1)
+            {
+                prefix = match.Groups[1].Value;
+                number = int.Parse(match.Groups[2].Value);
+            }
             while (true)
             {
-                if (!WorksheetExists(name, workbook))
-                { return name; }
                 string numberString = Utils.ToString(number);
-                if (originalName.Length + numberString.Length > MAX_WORKSHEER_NAME_LENGTH)
+                if (numberString.Length + prefix.Length > MAX_WORKSHEET_NAME_LENGTH)
                 {
-                    name = originalName.Substring(0, MAX_WORKSHEER_NAME_LENGTH - numberString.Length - 1) + numberString;
+                    int endIndex = prefix.Length - (numberString.Length + prefix.Length - MAX_WORKSHEET_NAME_LENGTH);
+                    prefix = prefix.Substring(0,endIndex);
                 }
-                else
-                {
-                    name = originalName + numberString;
-                }
+                string newName = prefix + numberString;
+                if (!WorksheetExists(newName, workbook))
+                { return newName; }
                 number++;
             }
         }
