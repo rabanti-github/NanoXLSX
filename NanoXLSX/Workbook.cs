@@ -55,8 +55,11 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets or sets the filename of the workbook
+        /// Gets or sets the filename of the workbook.
         /// </summary>
+        /// <remarks>
+        /// Note that the file name is not sanitized. If a filename is set that is not compliant to the file system, saving of the workbook may fail
+        /// </remarks>
         public string Filename
         {
             get { return filename; }
@@ -64,18 +67,16 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets whether the structure are locked if workbook is protected
+        /// Gets whether the structure are locked if workbook is protected. See also <see cref="SetWorkbookProtection"/>
         /// </summary>
-        /// <see cref="SetWorkbookProtection"/>
         public bool LockStructureIfProtected
         {
             get { return lockStructureIfProtected; }
         }
 
         /// <summary>
-        /// Gets whether the windows are locked if workbook is protected
+        /// Gets whether the windows are locked if workbook is protected. See also <see cref="SetWorkbookProtection"/> 
         /// </summary>
-        /// <see cref="SetWorkbookProtection"/> 
         public bool LockWindowsIfProtected
         {
             get { return lockWindowsIfProtected; }
@@ -104,9 +105,9 @@ namespace NanoXLSX
         public bool UseWorkbookProtection { get; set; }
 
         /// <summary>
-        /// Gets the password used for workbook protection
+        /// Gets the password used for workbook protection. See also <see cref="SetWorkbookProtection"/>
         /// </summary>
-        /// <see cref="SetWorkbookProtection"/>
+        /// <remarks>The password of this property is stored in plan text. Encryption is performed when the workbook is saved</remarks>
         public string WorkbookProtectionPassword
         {
             get { return workbookProtectionPassword; }
@@ -130,6 +131,14 @@ namespace NanoXLSX
         #endregion
 
         #region constructors
+        /// <summary>
+        /// Default constructor. No initial worksheet is created. Use <see cref="AddWorksheet(string)"/> (or overloads) to add one
+        /// </summary>
+        public Workbook()
+        {
+            Init();
+        }
+
         /// <summary>
         /// Constructor with additional parameter to create a default worksheet. This constructor can be used to define a workbook that is saved as stream
         /// </summary>
@@ -175,7 +184,14 @@ namespace NanoXLSX
         {
             Init();
             this.filename = filename;
-            AddWorksheet(Worksheet.SanitizeWorksheetName(sheetName, this));
+            if (sanitizeSheetName)
+            {
+                AddWorksheet(Worksheet.SanitizeWorksheetName(sheetName, this));
+            }
+            else
+            {
+                AddWorksheet(sheetName);
+            }
         }
 
         #endregion
@@ -290,16 +306,6 @@ namespace NanoXLSX
             worksheet.WorkbookReference = this;
             currentWorksheet = worksheet;
             worksheets.Add(worksheet);
-        }
-
-        /// <summary>
-        /// Init method called in the constructors
-        /// </summary>
-        private void Init()
-        {
-            worksheets = new List<Worksheet>();
-            workbookMetadata = new Metadata();
-            shortener = new Shortener();
         }
 
         /// <summary>
@@ -582,6 +588,16 @@ namespace NanoXLSX
             {
                 throw new WorksheetException("UnknownWorksheetException", "The passed worksheet object is not in the worksheet collection.");
             }
+        }
+
+        /// <summary>
+        /// Init method called in the constructors
+        /// </summary>
+        private void Init()
+        {
+            worksheets = new List<Worksheet>();
+            workbookMetadata = new Metadata();
+            shortener = new Shortener();
         }
 
         #endregion

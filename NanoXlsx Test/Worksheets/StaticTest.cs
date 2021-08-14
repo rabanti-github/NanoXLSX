@@ -10,7 +10,6 @@ namespace NanoXLSX_Test.Worksheets
 {
     public class StaticTest
     {
-
         [Theory(DisplayName = "Test of the SanitizeWorksheetName function")]
         [InlineData("test", 0, null, "test")]
         [InlineData("Sheet2", 1, "Sheet", "Sheet2")]
