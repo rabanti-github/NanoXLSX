@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
-namespace NanoXLSX_Test.Wprkbooks
+namespace NanoXLSX_Test.Workbooks
 {
     public class WorkbookTest
     {
@@ -240,13 +240,294 @@ namespace NanoXLSX_Test.Wprkbooks
             }
         }
 
-
         [Theory(DisplayName = "Test of the AddWorksheet function with the worksheet name")]
-        [InlineData("test")]
-        public void AddWorksheetTest(String name)
+        [InlineData("test", null)]
+        [InlineData("test", "test2")]
+        [InlineData("0", "_")]
+        public void AddWorksheetTest(string name1, string name2)
         {
             Workbook workbook = new Workbook();
+            Assert.Empty(workbook.Worksheets);
+            workbook.AddWorksheet(name1);
+            Assert.Single(workbook.Worksheets);
+            Assert.Equal(name1, workbook.Worksheets[0].SheetName);
+            Assert.Equal(name1, workbook.CurrentWorksheet.SheetName);
+            if (name2 != null)
+            {
+                workbook.AddWorksheet(name2);
+                Assert.Equal(2, workbook.Worksheets.Count);
+                Assert.Equal(name2, workbook.Worksheets[1].SheetName);
+                Assert.Equal(name2, workbook.CurrentWorksheet.SheetName);
+            }
+        }
 
+        [Theory(DisplayName = "Test of the failing AddWorksheet function with an invalid worksheet name")]
+        [InlineData("Sheet1", null)]
+        [InlineData("Sheet1", "")]
+        [InlineData("Sheet1", "?")]
+        [InlineData("Sheet1", "Sheet1")]
+        [InlineData("Sheet1", "--------------------------------")]
+        public void AddWorksheetFailTest(string initialWorksheetName, string invalidName)
+        {
+            Workbook workbook = new Workbook();
+            workbook.AddWorksheet(initialWorksheetName);
+            Assert.ThrowsAny<Exception>(() => workbook.AddWorksheet(invalidName));
+        }
+
+        [Theory(DisplayName = "Test of the AddWorksheet function with the worksheet name and a sanitation option")]
+        [InlineData("Sheet1", null, false, false, null)]
+        [InlineData("test", "test", false, false, null)]
+        [InlineData("Sheet1", "", false, false, null)]
+        [InlineData("Sheet1", "--------------------------------", false, false, null)]
+        [InlineData("Sheet1", "?", false, false, null)]
+        [InlineData("Sheet1", "Sheet2", false, true, "Sheet2")]
+        [InlineData("Sheet1", null, true, true, "Sheet2")]
+        [InlineData("test", "test", true, true, "test1")]
+        [InlineData("Sheet1", "", true, true, "Sheet2")]
+        [InlineData("Sheet1", "--------------------------------", true, true, "-------------------------------")]
+        [InlineData("Sheet1", "?", true, true, "_")]
+        public void AddWorksheetTest2(string initialWorksheetName, string name2, bool sanitize, bool expectedValid, string expectedSheetName)
+        {
+            Workbook workbook = new Workbook();
+            Assert.Empty(workbook.Worksheets);
+            workbook.AddWorksheet(initialWorksheetName);
+            Assert.Single(workbook.Worksheets);
+            if (expectedValid)
+            {
+                workbook.AddWorksheet(name2, sanitize);
+                Assert.Equal(2, workbook.Worksheets.Count);
+                Assert.Equal(expectedSheetName, workbook.Worksheets[1].SheetName);
+                Assert.Equal(expectedSheetName, workbook.CurrentWorksheet.SheetName);
+            }
+            else
+            {
+                Assert.ThrowsAny<Exception>(() => workbook.AddWorksheet(name2, sanitize));
+            }
+        }
+
+        [Fact(DisplayName = "Test of the AddWorksheet function with a Worksheet object")]
+        public void AddWorksheetTest3()
+        {
+            Workbook workbook = new Workbook();
+            Assert.Empty(workbook.Worksheets);
+            Worksheet worksheet = new Worksheet();
+            worksheet.SheetName = "test";
+            workbook.AddWorksheet(worksheet);
+            Assert.Single(workbook.Worksheets);
+            Assert.Equal("test", workbook.Worksheets[0].SheetName);
+            Assert.Equal("test", workbook.CurrentWorksheet.SheetName);
+        }
+
+        [Fact(DisplayName = "Test of the failing AddWorksheet function with a null object")]
+        public void AddWorksheetFailTest3()
+        {
+            Workbook workbook = new Workbook();
+            Worksheet worksheet = null;
+            Assert.ThrowsAny<Exception>(() => workbook.AddWorksheet(worksheet));
+        }
+
+        [Fact(DisplayName = "Test of the failing AddWorksheet function with a worksheet and an empty name")]
+        public void AddWorksheetFailTest3b()
+        {
+            Workbook workbook = new Workbook();
+            Worksheet worksheet = new Worksheet();
+            Assert.ThrowsAny<Exception>(() => workbook.AddWorksheet(worksheet));
+        }
+
+        [Fact(DisplayName = "Test of the failing AddWorksheet function with a worksheet with an already defined name")]
+        public void AddWorksheetFailTest3c()
+        {
+            Workbook workbook = new Workbook();
+            workbook.AddWorksheet("Sheet1");
+            Worksheet worksheet = new Worksheet();
+            worksheet.SheetName = "Sheet1";
+            Assert.ThrowsAny<Exception>(() => workbook.AddWorksheet(worksheet));
+        }
+
+        [Theory(DisplayName = "Test of the AddWorksheet function with the worksheet object and a sanitation option")]
+        [InlineData("Sheet1", "Sheet1", false, false, null)]
+        [InlineData("Sheet1", null, false, false, null)]
+        [InlineData("Sheet1", "Sheet1", true, true, "Sheet2")]
+        [InlineData("Sheet1", null, true, true, "Sheet2")]
+        public void AddWorksheetTest4(string initialWorksheetName, string name2, bool sanitize, bool expectedValid, string expectedSheetName)
+        {
+            Workbook workbook = new Workbook();
+            Assert.Empty(workbook.Worksheets);
+            workbook.AddWorksheet(initialWorksheetName);
+            Assert.Single(workbook.Worksheets);
+            Worksheet worksheet = new Worksheet();
+            if (name2 != null)
+            {
+                worksheet.SheetName = name2;
+            }
+            if (expectedValid)
+            {
+                workbook.AddWorksheet(worksheet, sanitize);
+                Assert.Equal(2, workbook.Worksheets.Count);
+                Assert.Equal(expectedSheetName, workbook.Worksheets[1].SheetName);
+                Assert.Equal(expectedSheetName, workbook.CurrentWorksheet.SheetName);
+            }
+            else
+            {
+                Assert.ThrowsAny<Exception>(() => workbook.AddWorksheet(worksheet, sanitize));
+            }
+        }
+
+        [Fact(DisplayName = "Test of the AddWorksheet function for a valid Sheet ID assignment with a name")]
+        public void AddWorksheetTest5()
+        {
+            Workbook workbook = new Workbook();
+            workbook.AddWorksheet("test");
+            Assert.Equal(1, workbook.Worksheets[0].SheetID);
+            workbook.AddWorksheet("test2");
+            Assert.Equal(2, workbook.Worksheets[1].SheetID);
+            workbook.RemoveWorksheet("test");
+            workbook.AddWorksheet("test3");
+            Assert.Equal(2, workbook.Worksheets[1].SheetID);
+            workbook.RemoveWorksheet("test2");
+            workbook.RemoveWorksheet("test3");
+            workbook.AddWorksheet("test4");
+            Assert.Equal(1, workbook.Worksheets[0].SheetID);
+        }
+
+        [Fact(DisplayName = "Test of the AddWorksheet function for a valid Sheet ID assignment with a worksheet object")]
+        public void AddWorksheetTest6()
+        {
+            Workbook workbook = new Workbook();
+            Worksheet worksheet1 = new Worksheet();
+            worksheet1.SheetName = "test";
+            workbook.AddWorksheet(worksheet1, true);
+            Assert.Equal(1, workbook.Worksheets[0].SheetID);
+            Worksheet worksheet2 = new Worksheet();
+            worksheet2.SheetName = "test2";
+            workbook.AddWorksheet(worksheet2, true);
+            Assert.Equal(2, workbook.Worksheets[1].SheetID);
+            workbook.RemoveWorksheet("test");
+            Worksheet worksheet3 = new Worksheet();
+            worksheet3.SheetName = "test3";
+            workbook.AddWorksheet(worksheet3, true);
+            Assert.Equal(2, workbook.Worksheets[1].SheetID);
+            workbook.RemoveWorksheet("test2");
+            workbook.RemoveWorksheet("test3");
+            Worksheet worksheet4 = new Worksheet();
+            workbook.AddWorksheet(worksheet4, true);
+            Assert.Equal(1, workbook.Worksheets[0].SheetID);
+        }
+
+        [Theory(DisplayName = "Test of the RemoveWorksheet function by name")]
+        [InlineData(2, 0, 1, 1, 0, 0)]
+        [InlineData(2, 1, 0, 1, 0, 0)]
+        [InlineData(2, 1, 1, 1, 0, 0)]
+        [InlineData(2, 0, 0, 1, 0, 0)]
+        [InlineData(1, 0, 0, 0, null, 0)]
+        [InlineData(5, 2, 2, 2, 4, 3)]
+        [InlineData(5, 0, 0, 4, 0, 0)]
+        [InlineData(4, 3, 1, 3, 2, 1)]
+        [InlineData(4, 3, 3, 3, 2, 2)]
+        public void RemoveWorksheetTest(int worksheetCount, int currentWorksheetIndex, int selectedWorksheetIndex, int worksheetToRemoveIndex, int? expectedCurrentWorksheetIndex, int expectedSelectedWorksheetIndex)
+        {
+            Workbook workbook = new Workbook();
+            string current = null;
+            string toRemove = null;
+            string expected = null;
+            for(int i = 0; i < worksheetCount; i++)
+            {
+                string name = "Sheet" + (i + 1).ToString();
+                workbook.AddWorksheet(name);
+                if (i == currentWorksheetIndex)
+                {
+                    current = name;
+                }
+                if (i == worksheetToRemoveIndex)
+                {
+                    toRemove = name;
+                }
+                if (i == expectedCurrentWorksheetIndex)
+                {
+                    expected = name;
+                }
+            }
+            AssertWorksheetRemoval<string>(workbook, workbook.RemoveWorksheet, worksheetCount, current, selectedWorksheetIndex, toRemove, expected, expectedSelectedWorksheetIndex);
+        }
+
+        [Theory(DisplayName = "Test of the RemoveWorksheet function by index")]
+        [InlineData(2, 0, 1, 1, 0, 0)]
+        [InlineData(2, 1, 0, 1, 0, 0)]
+        [InlineData(2, 1, 1, 1, 0, 0)]
+        [InlineData(2, 0, 0, 1, 0, 0)]
+        [InlineData(1, 0, 0, 0, null, 0)]
+        [InlineData(5, 2, 2, 2, 4, 3)]
+        [InlineData(5, 0, 0, 4, 0, 0)]
+        [InlineData(4, 3, 1, 3, 2, 1)]
+        [InlineData(4, 3, 3, 3, 2, 2)]
+        public void RemoveWorksheetTest2(int worksheetCount, int currentWorksheetIndex, int selectedWorksheetIndex, int worksheetToRemoveIndex, int? expectedCurrentWorksheetIndex, int expectedSelectedWorksheetIndex)
+        {
+            Workbook workbook = new Workbook();
+            string current = null;
+            int toRemove = -1;
+            string expected = null;
+            for (int i = 0; i < worksheetCount; i++)
+            {
+                string name = "Sheet" + (i + 1).ToString();
+                workbook.AddWorksheet(name);
+                if (i == currentWorksheetIndex)
+                {
+                    current = name;
+                }
+                if (i == worksheetToRemoveIndex)
+                {
+                    toRemove = i;
+                }
+                if (i == expectedCurrentWorksheetIndex)
+                {
+                    expected = name;
+                }
+            }
+            AssertWorksheetRemoval<int>(workbook, workbook.RemoveWorksheet, worksheetCount, current, selectedWorksheetIndex, toRemove, expected, expectedSelectedWorksheetIndex);
+        }
+
+        [Theory(DisplayName = "Test of the failing RemoveWorksheet function on an non-existing name")]
+        [InlineData("test", null)]
+        [InlineData("test", "")]
+        [InlineData("test", "Test")]
+        [InlineData("test", "Sheet1")]
+        public void RemoveWorksheetFailTest(string existingWorksheet, string absentWorksheet)
+        {
+            Workbook workbook = new Workbook();
+            workbook.AddWorksheet(existingWorksheet);
+            Assert.Throws<WorksheetException>(() => workbook.RemoveWorksheet(absentWorksheet));
+        }
+
+        [Theory(DisplayName = "Test of the failing RemoveWorksheet function on an non-existing index")]
+        [InlineData("test", -1)]
+        [InlineData("test", 1)]
+        [InlineData("test", 99)]
+        public void RemoveWorksheetFailTest2(string existingWorksheet, int absentIndex)
+        {
+            Workbook workbook = new Workbook();
+            workbook.AddWorksheet(existingWorksheet);
+            Assert.Throws<WorksheetException>(() => workbook.RemoveWorksheet(absentIndex));
+        }
+
+
+
+        private void AssertWorksheetRemoval<T>(Workbook workbook, Action<T>removalFunction, int worksheetCount, string currentWorksheet, int selectedWorksheetIndex, T worksheetToRemove, string expectedCurrentWorksheet, int expectedSelectedWorksheetIndex)
+        {
+            workbook.SetCurrentWorksheet(currentWorksheet);
+            workbook.SetSelectedWorksheet(selectedWorksheetIndex);
+            Assert.Equal(worksheetCount, workbook.Worksheets.Count);
+            Assert.Equal(currentWorksheet, workbook.CurrentWorksheet.SheetName);
+            removalFunction.Invoke(worksheetToRemove);
+            Assert.Equal(worksheetCount - 1, workbook.Worksheets.Count);
+            if (expectedCurrentWorksheet == null)
+            {
+                Assert.Null(workbook.CurrentWorksheet);
+            }
+            else
+            {
+                Assert.Equal(expectedCurrentWorksheet, workbook.CurrentWorksheet.SheetName);
+            }
+            Assert.Equal(expectedSelectedWorksheetIndex, workbook.SelectedWorksheet);
         }
 
 

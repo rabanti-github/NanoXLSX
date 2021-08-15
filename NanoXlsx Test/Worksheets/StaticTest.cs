@@ -25,6 +25,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("Sheet10", 20, "Sheet", "Sheet21")]
         [InlineData("*1", 1, "_", "_2")]
         [InlineData("------------------------------9", 9, "------------------------------", "-----------------------------10")]
+        [InlineData("9999999999999999999999999999999", 9, "999999999999999999999999999999", "0")] // special case
         public void SanitizeWorksheetNameTest(String givenName, int numberOfExistingWorksheets, string existingWorksheetPrefix, string expectedName)
         {
             Workbook workbook = new Workbook(false);

@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using NanoXLSX.Exceptions;
@@ -243,7 +244,6 @@ namespace NanoXLSX
             return StyleRepository.Instance.AddStyle(baseStyle);
         }
 
-
         /// <summary>
         /// Adding a new Worksheet. The new worksheet will be defined as current worksheet
         /// </summary>
@@ -259,7 +259,7 @@ namespace NanoXLSX
                     throw new WorksheetException("WorksheetNameAlreadxExistsException", "The worksheet with the name '" + name + "' already exists.");
                 }
             }
-            int number = worksheets.Count + 1;
+            int number = GetNextWorksheetId();
             Worksheet newWs = new Worksheet(name, number, this);
             currentWorksheet = newWs;
             worksheets.Add(newWs);
@@ -291,18 +291,41 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="worksheet">Prepared worksheet object</param>
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists</exception>
-        /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31</exception>
+        /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31)</exception>
         public void AddWorksheet(Worksheet worksheet)
         {
-            for (int i = 0; i < worksheets.Count; i++)
+            AddWorksheet(worksheet, false);
+        }
+
+        /// <summary>
+        /// Adding a new Worksheet. The new worksheet will be defined as current worksheet
+        /// </summary>
+        /// <param name="worksheet">Prepared worksheet object</param>
+        /// <param name="sanitizeSheetName">If true, the name of the worksheet will be sanitized automatically according to the specifications of Excel</param>    
+        /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists, when sanitation is false</exception>
+        /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitation is false</exception>
+        public void AddWorksheet(Worksheet worksheet, bool sanitizeSheetName)
+        {
+            if (sanitizeSheetName)
             {
-                if (worksheets[i].SheetName == worksheet.SheetName)
+                string name = Worksheet.SanitizeWorksheetName(worksheet.SheetName, this);
+                worksheet.SheetName = name;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(worksheet.SheetName))
                 {
-                    throw new WorksheetException("WorksheetNameAlreadyExistsException", "The worksheet with the name '" + worksheet.SheetName + "' already exists.");
+                    throw new WorksheetException("MissingWorksheetNameException", "The name of the passed worksheet is null or empty.");
+                }
+                for (int i = 0; i < worksheets.Count; i++)
+                {
+                    if (worksheets[i].SheetName == worksheet.SheetName)
+                    {
+                        throw new WorksheetException("WorksheetNameAlreadyExistsException", "The worksheet with the name '" + worksheet.SheetName + "' already exists.");
+                    }
                 }
             }
-            int number = worksheets.Count + 1;
-            worksheet.SheetID = number;
+            worksheet.SheetID = GetNextWorksheetId();
             worksheet.WorkbookReference = this;
             currentWorksheet = worksheet;
             worksheets.Add(worksheet);
@@ -312,6 +335,7 @@ namespace NanoXLSX
         /// Removes the passed style from the style sheet. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="style">Style to remove</param>
+        /// <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
         [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(Style style)
         {
@@ -322,6 +346,7 @@ namespace NanoXLSX
         /// Removes the defined style from the style sheet of the workbook. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="styleName">Name of the style to be removed</param>
+        /// <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
         [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(string styleName)
         {
@@ -333,9 +358,14 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="style">Style to remove</param>
         /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>
+        /// <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
         [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(Style style, bool onlyIfUnused)
         {
+            if (style == null) 
+            {
+                throw new StyleException("MissingReferenceException", "The style to remove is not defined");
+            }
             RemoveStyle(style.Name, onlyIfUnused);
         }
 
@@ -344,6 +374,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="styleName">Name of the style to be removed</param>
         /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>
+        /// <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
         [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(string styleName, bool onlyIfUnused)
         {
@@ -355,52 +386,38 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Removes the defined worksheet
+        /// Removes the defined worksheet based on its name. If the worksheet is the current or selected worksheet, the current and / or the selected worksheet will be set to the last worksheet of the workbook.
+        /// If the last worksheet is removed, the selected worksheet will be set to 0 and the current worksheet to null.
         /// </summary>
         /// <param name="name">Name of the worksheet</param>
-        /// <exception cref="WorksheetException">Throws a UnknownWorksheetException if the name of the worksheet is unknown</exception>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the name of the worksheet is unknown</exception>
         public void RemoveWorksheet(string name)
         {
-            bool exists = false;
-            bool resetCurrent = false;
-            int index = 0;
-            for (int i = 0; i < worksheets.Count; i++)
-            {
-                if (worksheets[i].SheetName == name)
-                {
-                    index = i;
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists)
+            Worksheet worksheetToRemove = worksheets.FirstOrDefault(w => w.SheetName == name);
+            if (worksheetToRemove == null)
             {
                 throw new WorksheetException("UnknownWorksheetException", "The worksheet with the name '" + name + "' does not exist.");
             }
-            if (worksheets[index].SheetName == currentWorksheet.SheetName)
+            int index = worksheets.IndexOf(worksheetToRemove);
+            bool resetCurrentWorksheet = worksheetToRemove == currentWorksheet;
+            RemoveWorksheet(index, resetCurrentWorksheet);
+        }
+
+        /// <summary>
+        /// Removes the defined worksheet based on its index. If the worksheet is the current or selected worksheet, the current and / or the selected worksheet will be set to the last worksheet of the workbook.
+        /// If the last worksheet is removed, the selected worksheet will be set to 0 and the current worksheet to null.
+        /// </summary>
+        /// <param name="index">Index within the worksheets list</param>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the index is out of range</exception>
+
+        public void RemoveWorksheet(int index)
+        {
+            if (index < 0 || index >= worksheets.Count)
             {
-                resetCurrent = true;
+                throw new WorksheetException("OutOfRangeException", "The worksheet index " + index + " is out of range");
             }
-            worksheets.RemoveAt(index);
-            if (worksheets.Count > 0)
-            {
-                for (int i = 0; i < worksheets.Count; i++)
-                {
-                    worksheets[i].SheetID = i + 1;
-                    if (resetCurrent && i == 0)
-                    {
-                        currentWorksheet = worksheets[i];
-                    }
-                }
-            }
-            else
-            {
-                currentWorksheet = null;
-            }
-            if (selectedWorksheet > worksheets.Count - 1)
-            {
-                selectedWorksheet = worksheets.Count - 1;
-            }
+            bool resetCurrentWorksheet = worksheets[index] == currentWorksheet;
+            RemoveWorksheet(index, resetCurrentWorksheet);
         }
 
         /// <summary>
@@ -588,6 +605,49 @@ namespace NanoXLSX
             {
                 throw new WorksheetException("UnknownWorksheetException", "The passed worksheet object is not in the worksheet collection.");
             }
+        }
+
+        /// <summary>
+        /// Removes the worksheet at the defined index and relocates current and selected worksheet references
+        /// </summary>
+        /// <param name="index">Index within the worksheets list</param>
+        /// <param name="resetCurrentWorksheet">If true, the current worksheet will be relocated to the last worksheet in the list</param>
+        private void RemoveWorksheet(int index, bool resetCurrentWorksheet)
+        {
+            worksheets.RemoveAt(index);
+            if (worksheets.Count > 0)
+            {
+                for (int i = 0; i < worksheets.Count; i++)
+                {
+                    worksheets[i].SheetID = i + 1;
+                }
+                if (resetCurrentWorksheet)
+                {
+                    currentWorksheet = worksheets[worksheets.Count - 1];
+                }
+                if (selectedWorksheet == index || selectedWorksheet > worksheets.Count - 1)
+                {
+                    selectedWorksheet = worksheets.Count - 1;
+                }
+            }
+            else
+            {
+                currentWorksheet = null;
+                selectedWorksheet = 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets the next free worksheet ID
+        /// </summary>
+        /// <returns>Worksheet ID</returns>
+        private int GetNextWorksheetId()
+        {
+            if (worksheets.Count == 0)
+            {
+                return 1;
+            }
+            return worksheets.Max(w => w.SheetID) + 1;
         }
 
         /// <summary>
