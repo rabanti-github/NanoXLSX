@@ -164,6 +164,8 @@ namespace Demo
             await workbook.SaveAsync();                                     // Save async
         }
 
+        
+
         /// <summary>
         /// This method shows the usage of AddNextCell with several data types and formulas. Furthermore, the several types of Addresses are demonstrated
         /// </summary>
@@ -483,7 +485,7 @@ namespace Demo
             Style style = new Style();                                                            // Create a new style
             style.Append(BasicStyles.Bold);                                                       // Append a basic style (bold) 
             style.Append(BasicStyles.Underline);                                                  // Append a basic style (underline) 
-            style.Append(BasicStyles.Font("Arial Black", 20));                                    // Append a basic style (custom font) 
+            style.Append(BasicStyles.Font("Arial Black", 20f));                                   // Append a basic style (custom font) 
 
             wb.WS.Value("THIS IS A TEST", style);                                                 // Add text and the appended style
             wb.WS.Down();                                                                         // Go to a new row

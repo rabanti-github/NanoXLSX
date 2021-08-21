@@ -35,12 +35,25 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(0, worksheet.SheetID);
         }
 
-        [Theory(DisplayName = "Test of the constructor with parameters")]
+        [Theory(DisplayName = "Test of the constructor with the worksheet name")]
+        [InlineData(".")]
+        [InlineData(" ")]
+        [InlineData("Test")]
+        [InlineData("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")]
+        public void ConstructorTest2(string name)
+        {
+            Worksheet worksheet = new Worksheet(name);
+            AssertConstructorBasics(worksheet);
+            Assert.Null(worksheet.WorkbookReference);
+            Assert.Equal(name, worksheet.SheetName);
+        }
+
+        [Theory(DisplayName = "Test of the constructor with all parameters")]
         [InlineData(".", 1)]
         [InlineData(" ", 2)]
         [InlineData("Test", 10)]
         [InlineData("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", 255)]
-        public void ConstructorTest2(string name, int id)
+        public void ConstructorTest3(string name, int id)
         {
             Workbook workbook = new Workbook("test.xlsx", "sheet2");
             Worksheet worksheet = new Worksheet(name, id, workbook);
@@ -50,14 +63,25 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(id, worksheet.SheetID);
         }
 
-        [Theory(DisplayName = "Test failing of the constructor if provided with invalid values")]
+        [Theory(DisplayName = "Test of the failing constructor if provided with invalid worksheet names")]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("[")]
+        [InlineData("................................")]
+        public void ConstructorFailingTest(string name)
+        {
+            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => new Worksheet(name));
+        }
+
+
+        [Theory(DisplayName = "Test of the failing constructor if provided with invalid values")]
         [InlineData("", 1)]
         [InlineData(null, 1)]
         [InlineData("[", 1)]
         [InlineData("................................", 0)]
         [InlineData("Test", 0)]
         [InlineData("Test", -1)]
-        public void ConstructorFailingTest(string name, int id)
+        public void ConstructorFailingTest2(string name, int id)
         {
             Workbook workbook = new Workbook("test.xlsx", "sheet2");
             Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => new Worksheet(name, id, workbook));

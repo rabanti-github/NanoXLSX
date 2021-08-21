@@ -417,6 +417,16 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Constructor with worksheet name
+        /// </summary>
+        /// <remarks>Note that the worksheet name is not checked and fully sanitized against other worksheets with this operation. This is later performed when the worksheet is added to the workbook</remarks>
+        public Worksheet(string name)
+            : this()
+        {
+            SetSheetName(name);
+        }
+
+        /// <summary>
         /// Constructor with name and sheet ID
         /// </summary>
         /// <param name="name">Name of the worksheet</param>

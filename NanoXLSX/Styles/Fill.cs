@@ -5,6 +5,9 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
+using System.Text.RegularExpressions;
+
 namespace NanoXLSX.Styles
 {
     /// <summary>
@@ -226,6 +229,36 @@ namespace NanoXLSX.Styles
                     break;
             }
             return output;
+        }
+
+        /// <summary>
+        /// Validates the passed string, whether it is a valid RGB value that can be used for Fills or Fonts
+        /// </summary>
+        /// <exception cref="StyleException">A StyleException is thrown if an invalid hex value is passed</exception>
+        /// <param name="hexCode">Hex string to check</param>
+        /// <param name="useAlpha">If true, two additional characters (total 8) are expected as alpha value</param>
+        /// <param name="allowEmpty">Optional parameter that allows null or empty as valid values</param>
+        public static void ValidateColor(string hexCode, bool useAlpha, bool allowEmpty = false)
+        {
+            if (string.IsNullOrEmpty(hexCode))
+            {
+                if (allowEmpty)
+                {
+                    return;
+                }
+                throw new StyleException("A general style exception occurred", "The color expression was null or empty");
+            }
+            
+            int length;
+            length = useAlpha ? 8 : 6;
+            if (hexCode == null || hexCode.Length != length)
+            {
+                throw new StyleException("A general style exception occurred", "The value '" + hexCode + "' is invalid. A valid value must contain six hex characters");
+            }
+            if (!Regex.IsMatch(hexCode, "[a-fA-F0-9]{6,8}"))
+            {
+                throw new StyleException("A general style exception occurred", "The expression '" + hexCode + "' is not a valid hex value");
+            }
         }
         #endregion
 

@@ -145,7 +145,7 @@ namespace NanoXLSX.LowLevel
                             NumberFormat.FormatNumber formatNumber;
                             NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'
                             // Invalid values should not occur at all (malformed Excel files). 
-                            //Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 
+                            // Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 
                             format = new NumberFormat();
                             format.Number = formatNumber;
                             format.InternalID = StyleReaderContainer.GetNextNumberFormatId();

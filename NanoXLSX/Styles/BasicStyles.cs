@@ -6,6 +6,7 @@
  */
 
 using NanoXLSX.Exceptions;
+using System.Text.RegularExpressions;
 
 namespace NanoXLSX.Styles
 {
@@ -230,9 +231,6 @@ namespace NanoXLSX.Styles
                     }
                     s = mergeCellStyle;
                     break;
-                default:
-                    throw new StyleException(StyleException.GENERAL, "The enum value '" + value + "' is not supported yet");
-                    
             }
             return s.CopyStyle(); // Copy makes basic styles immutable
         }
@@ -240,10 +238,12 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets a style to colorize the text of a cell
         /// </summary>
-        /// <param name="rgb">RGB code in hex format (e.g. FF00AC). Alpha will be set to full opacity (FF)</param>
+        /// <param name="rgb">RGB code in hex format (6 characters, e.g. FF00AC). Alpha will be set to full opacity (FF)</param>
         /// <returns>Style with font color definition</returns>
+        /// <exception cref="StyleException">A StyleException is thrown if an invalid hex value is passed</exception>
         public static Style ColorizedText(string rgb)
         {
+            Fill.ValidateColor(rgb, false);
             Style s = new Style();
             s.CurrentFont.ColorValue = Utils.ToUpper("FF" + rgb);
             return s;
@@ -252,10 +252,12 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets a style to colorize the background of a cell
         /// </summary>
-        /// <param name="rgb">RGB code in hex format (e.g. FF00AC). Alpha will be set to full opacity (FF)</param>
+        /// <param name="rgb">RGB code in hex format (6 characters, e.g. FF00AC). Alpha will be set to full opacity (FF)</param>
         /// <returns>Style with background color definition</returns>
+        /// <exception cref="StyleException">A StyleException is thrown if an invalid hex value is passed</exception>
         public static Style ColorizedBackground(string rgb)
         {
+            Fill.ValidateColor(rgb, false);
             Style s = new Style();
             s.CurrentFill.SetColor(Utils.ToUpper("FF" + rgb), Fill.FillType.fillColor);
 
@@ -272,7 +274,7 @@ namespace NanoXLSX.Styles
         /// <returns>Style with font definition</returns>
         /// <remarks>The font name as well as the availability of bold and italic on the font cannot be validated by NanoXLSX. 
         /// The generated file may be corrupt or rendered with a fall-back font in case of an error</remarks>
-        public static Style Font(string fontName, int fontSize = 11, bool isBold = false, bool isItalic = false)
+        public static Style Font(string fontName, float fontSize = 11f, bool isBold = false, bool isItalic = false)
         {
             Style s = new Style();
             s.CurrentFont.Name = fontName;

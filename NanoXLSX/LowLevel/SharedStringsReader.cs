@@ -41,12 +41,7 @@ namespace NanoXLSX.LowLevel
         {
             get
             {
-                if (SharedStrings.Count > 0)
-                {
-                    return true;
-                }
-
-                return false;
+                return SharedStrings.Count > 0;
             }
         }
 

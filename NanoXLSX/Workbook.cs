@@ -528,22 +528,60 @@ namespace NanoXLSX
         /// <exception cref="WorksheetException">Throws a MissingReferenceException if the name of the worksheet is unknown</exception>
         public Worksheet SetCurrentWorksheet(string name)
         {
-            bool exists = false;
-            foreach (Worksheet item in worksheets)
-            {
-                if (item.SheetName == name)
-                {
-                    currentWorksheet = item;
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists)
+            currentWorksheet = worksheets.FirstOrDefault(w => w.SheetName == name);
+            if (currentWorksheet == null)
             {
                 throw new WorksheetException("MissingReferenceException", "The worksheet with the name '" + name + "' does not exist.");
             }
             shortener.SetCurrentWorksheet(currentWorksheet);
             return currentWorksheet;
+        }
+
+        /// <summary>
+        /// Sets the current worksheet
+        /// </summary>
+        /// <param name="worksheetIndex">Zero-based worksheet index</param>
+        /// <returns>Returns the current worksheet</returns>
+        /// <exception cref="WorksheetException">Throws a MissingReferenceException if the name of the worksheet is unknown</exception>
+        public Worksheet SetCurrentWorksheet(int worksheetIndex)
+        {
+            if (worksheetIndex < 0 || worksheetIndex > worksheets.Count - 1)
+            {
+                throw new RangeException(RangeException.GENERAL, "The worksheet index " + worksheetIndex + " is out of range");
+            }
+            currentWorksheet = worksheets[worksheetIndex];
+            shortener.SetCurrentWorksheet(currentWorksheet);
+            return currentWorksheet;
+        }
+
+        /// <summary>
+        /// Sets the current worksheet
+        /// </summary>
+        /// <param name="worksheet">Worksheet object (must be in the collection of worksheets)</param>
+        /// <exception cref="WorksheetException">Throws a UnknownWorksheetException if the worksheet was not found in the worksheet collection</exception>
+        public void SetCurrentWorksheet(Worksheet worksheet)
+        {
+            int index = worksheets.IndexOf(worksheet);
+            if (index < 0)
+            {
+                throw new WorksheetException("UnknownWorksheetException", "The passed worksheet object is not in the worksheet collection.");
+            }
+            currentWorksheet = worksheets[index];
+            shortener.SetCurrentWorksheet(worksheet);
+        }
+
+        /// <summary>
+        /// Sets the selected worksheet in the output workbook
+        /// </summary>
+        /// <param name="name">Name of the worksheet</param>
+        /// <exception cref="WorksheetException">Throws a MissingReferenceException if the name of the worksheet is unknown</exception>
+        public void SetSelectedWorksheet(string name)
+        {
+            selectedWorksheet =  worksheets.FindIndex(w => w.SheetName == name);
+            if (selectedWorksheet < 0)
+            {
+                throw new WorksheetException("MissingReferenceException", "The worksheet with the name '" + name + "' does not exist.");
+            }
         }
 
         /// <summary>
@@ -559,6 +597,21 @@ namespace NanoXLSX
                 throw new RangeException(RangeException.GENERAL, "The worksheet index " + worksheetIndex + " is out of range");
             }
             selectedWorksheet = worksheetIndex;
+        }
+
+        /// <summary>
+        /// Sets the selected worksheet in the output workbook
+        /// </summary>
+        /// <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>
+        /// <param name="worksheet">Worksheet object (must be in the collection of worksheets)</param>
+        /// <exception cref="WorksheetException">Throws a UnknownWorksheetException if the worksheet was not found in the worksheet collection</exception>
+        public void SetSelectedWorksheet(Worksheet worksheet)
+        {
+            selectedWorksheet = worksheets.IndexOf(worksheet);
+            if (selectedWorksheet < 0)
+            {
+                throw new WorksheetException("UnknownWorksheetException", "The passed worksheet object is not in the worksheet collection.");
+            }
         }
 
         /// <summary>
@@ -580,30 +633,6 @@ namespace NanoXLSX
             else
             {
                 UseWorkbookProtection = state;
-            }
-        }
-
-        /// <summary>
-        /// Sets the selected worksheet in the output workbook
-        /// </summary>
-        /// <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>
-        /// <param name="worksheet">Worksheet object (must be in the collection of worksheets)</param>
-        /// <exception cref="WorksheetException">Throws a UnknownWorksheetException if the worksheet was not found in the worksheet collection</exception>
-        public void SetSelectedWorksheet(Worksheet worksheet)
-        {
-            bool check = false;
-            for (int i = 0; i < worksheets.Count; i++)
-            {
-                if (worksheets[i].Equals(worksheet))
-                {
-                    selectedWorksheet = i;
-                    check = true;
-                    break;
-                }
-            }
-            if (!check)
-            {
-                throw new WorksheetException("UnknownWorksheetException", "The passed worksheet object is not in the worksheet collection.");
             }
         }
 

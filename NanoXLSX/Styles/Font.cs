@@ -5,6 +5,8 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
+
 namespace NanoXLSX.Styles
 {
     /// <summary>
@@ -16,8 +18,38 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default font family as constant
         /// </summary>
-        public static readonly string DEFAULTFONT = "Calibri";
+        public static readonly string DEFAULT_FONT_NAME = "Calibri";
+
+        /// <summary>
+        /// Maximum possible font size
+        /// </summary>
+        public static readonly float MIN_FONT_SIZE = 1f;
+
+        /// <summary>
+        /// Minimum possible font size
+        /// </summary>
+        public static readonly float MAX_FONT_SIZE = 409f;
+
+        /// <summary>
+        /// Default font size
+        /// </summary>
+        public static readonly float DEFAULT_FONT_SIZE = 11f;
         #endregion
+
+        /// <summary>
+        /// Default font family
+        /// </summary>
+        public static readonly string DEFAULT_FONT_FAMILY = "2";
+
+        /// <summary>
+        /// Default font scheme
+        /// </summary>
+        public static readonly SchemeValue DEFAULT_FONT_SCHEME = SchemeValue.minor;
+
+        /// <summary>
+        /// Default vertical alignment
+        /// </summary>
+        public static readonly VerticalAlignValue DEFAULT_VERTICAL_ALIGN = VerticalAlignValue.none;
 
         #region enums
         /// <summary>
@@ -48,7 +80,10 @@ namespace NanoXLSX.Styles
         #endregion
 
         #region privateFields
-        private int size;
+        private float size;
+        private string name = DEFAULT_FONT_NAME;
+        private int colorTheme;
+        private string colorValue = "";
         #endregion
 
         #region properties
@@ -63,11 +98,32 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the font color theme (Default is 1)
         /// </summary>
-        public int ColorTheme { get; set; }
+        /// <exception cref="StyleException">Throws a StyleException if the number is below 1</exception>
+        public int ColorTheme
+        {
+            get => colorTheme;
+            set
+            {
+                if (value < 1)
+                {
+                    throw new StyleException(StyleException.GENERAL, "The color theme number " + value + " is invalid. Should be >0");
+                }
+                colorTheme = value;
+            }
+        }
         /// <summary>
-        /// Gets or sets the font color (default is empty)
+        /// Gets or sets the color code of the font color. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF.
+        /// To omit the color, an empty string can be set. Empty is also default.
         /// </summary>
-        public string ColorValue { get; set; }
+        /// <exception cref="StyleException">Throws a StyleException if the passed ARGB value is not valid</exception>
+        public string ColorValue { 
+            get => colorValue;
+            set 
+            {
+                Fill.ValidateColor(value, true, true);
+                colorValue = value;
+            } 
+        }
         /// <summary>
         /// Gets or sets whether the font has a double underline. If true, the font is declared with a double underline
         /// </summary>
@@ -92,26 +148,40 @@ namespace NanoXLSX.Styles
         /// Gets or sets whether the font is italic. If true, the font is declared as italic
         /// </summary>
         public bool Italic { get; set; }
+
         /// <summary>
         /// Gets or sets the font name (Default is Calibri)
         /// </summary>
-        public string Name { get; set; }
+        /// <exception cref="StyleException">A StyleException is thrown if the name is null or empty</exception>
+        /// <remarks>Note that the font name is not validated whether it is a valid or existing font</remarks>
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new StyleException(StyleException.GENERAL, "The font name was null or empty");
+                }
+                name = value;
+            }
+        }
         /// <summary>
         /// Gets or sets the font scheme (Default is minor)
         /// </summary>
         public SchemeValue Scheme { get; set; }
         /// <summary>
-        /// Gets or sets the font size. Valid range is from 8 to 75
+        /// Gets or sets the font size. Valid range is from 1 to 409
         /// </summary>
-        public int Size
+        public float Size
         {
             get { return size; }
             set
             {
-                if (value < 8)
-                { size = 8; }
-                else if (value > 75)
-                { size = 72; }
+                if (value < MIN_FONT_SIZE)
+                { size = MIN_FONT_SIZE; }
+                else if (value > MAX_FONT_SIZE)
+                { size = MAX_FONT_SIZE; }
                 else { size = value; }
             }
         }
@@ -135,14 +205,14 @@ namespace NanoXLSX.Styles
         /// </summary>
         public Font()
         {
-            size = 11;
-            Name = DEFAULTFONT;
+            size = DEFAULT_FONT_SIZE;
+            Name = DEFAULT_FONT_NAME;
             Family = "2";
             ColorTheme = 1;
             ColorValue = string.Empty;
             Charset = string.Empty;
-            Scheme = SchemeValue.minor;
-            VerticalAlign = VerticalAlignValue.none;
+            Scheme = DEFAULT_FONT_SCHEME;
+            VerticalAlign = DEFAULT_VERTICAL_ALIGN;
         }
         #endregion
 
@@ -201,7 +271,7 @@ namespace NanoXLSX.Styles
             r *= p + this.Scheme.GetHashCode();
             r *= p + this.VerticalAlign.GetHashCode();
             r *= p + this.Charset.GetHashCode();
-            r *= p + this.size;
+            r *= p + this.size.GetHashCode();
             return r;
         }
 

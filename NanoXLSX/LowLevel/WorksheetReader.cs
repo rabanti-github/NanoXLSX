@@ -385,13 +385,28 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Parses the numeric (double) value of a raw cell
+        /// Parses the numeric value of a raw cell. The order of possible number types are: int, float double. If nothing applies, a string is returned
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <param name="address">Address of the cell</param>
-        /// <returns>Cell of the type double or the defined fall-back type</returns>
+        /// <returns>Cell of the type int, float, double or string as fall-back type</returns>
         private Cell GetNumericValue(string raw, Address address)
         {
+            int iValue;
+            if (int.TryParse(raw, out iValue))
+            {
+                return new Cell(iValue, Cell.CellType.NUMBER, address);
+            }
+            long lValue;
+            if (long.TryParse(raw, out lValue))
+            {
+                return new Cell(lValue, Cell.CellType.NUMBER, address);
+            }
+            float fValue;
+            if (float.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out fValue))
+            {
+                return new Cell(fValue, Cell.CellType.NUMBER, address);
+            }
             double dValue;
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
             {
