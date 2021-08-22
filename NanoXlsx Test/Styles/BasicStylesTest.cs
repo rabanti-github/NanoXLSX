@@ -157,7 +157,7 @@ namespace NanoXLSX_Test.Styles
             Style style = BasicStyles.ColorizedBackground(hexCode);
             Assert.NotNull(style);
             Assert.Equal(expectedHexCode, style.CurrentFill.ForegroundColor);
-            Assert.Equal(Fill.DEFAULTCOLOR, style.CurrentFill.BackgroundColor);
+            Assert.Equal(Fill.DEFAULT_COLOR, style.CurrentFill.BackgroundColor);
             Assert.Equal(Fill.PatternValue.solid, style.CurrentFill.PatternFill);
 
         }

@@ -32,6 +32,33 @@ namespace NanoXLSX_Test.Styles
             exampleStyle.VerticalAlign = Font.VerticalAlignValue.subscript;
         }
 
+
+        [Fact(DisplayName = "Test of the default values")]
+        public void DefaultValuesTest()
+        {
+            Assert.Equal(11f, Font.DEFAULT_FONT_SIZE);
+            Assert.Equal("2", Font.DEFAULT_FONT_FAMILY);
+            Assert.Equal(Font.SchemeValue.minor, Font.DEFAULT_FONT_SCHEME);
+            Assert.Equal(Font.VerticalAlignValue.none, Font.DEFAULT_VERTICAL_ALIGN);
+            Assert.Equal("Calibri", Font.DEFAULT_FONT_NAME);
+        }
+
+
+        [Fact(DisplayName = "Test of the constructor")]
+        public void ConstructorTest()
+        {
+            Font font = new Font();
+            Assert.Equal(Font.DEFAULT_FONT_SIZE, font.Size);
+            Assert.Equal(Font.DEFAULT_FONT_NAME, font.Name);
+            Assert.Equal(Font.DEFAULT_FONT_FAMILY, font.Family);
+            Assert.Equal(Font.DEFAULT_FONT_SCHEME, font.Scheme);
+            Assert.Equal(Font.DEFAULT_VERTICAL_ALIGN, font.VerticalAlign);
+            Assert.Equal("", font.ColorValue);
+            Assert.Equal("", font.Charset);
+            Assert.Equal(1, font.ColorTheme);
+        }
+
+
         [Theory(DisplayName = "Test of the get and set function of the Bold property")]
         [InlineData(true)]
         [InlineData(false)]
@@ -232,6 +259,13 @@ namespace NanoXLSX_Test.Styles
             font.Italic = true;
             font.Name = "XYZ";
             Assert.False(font.IsDefaultFont);
+        }
+
+        [Fact(DisplayName = "Test of the CopyFont function")]
+        public void CopyFontTest()
+        {
+            Font copy = exampleStyle.CopyFont();
+            Assert.Equal(exampleStyle.GetHashCode(), copy.GetHashCode());
         }
 
         [Fact(DisplayName = "Test of the Equals method")]

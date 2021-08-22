@@ -1335,21 +1335,21 @@ namespace NanoXLSX.LowLevel
             foreach (Font item in fonts)
             {
                 if (string.IsNullOrEmpty(item.ColorValue)) { continue; }
-                if (item.ColorValue == Fill.DEFAULTCOLOR) { continue; }
+                if (item.ColorValue == Fill.DEFAULT_COLOR) { continue; }
                 if (!tempColors.Contains(item.ColorValue)) { tempColors.Add(item.ColorValue); }
             }
             foreach (Fill item in fills)
             {
                 if (!string.IsNullOrEmpty(item.BackgroundColor))
                 {
-                    if (item.BackgroundColor != Fill.DEFAULTCOLOR)
+                    if (item.BackgroundColor != Fill.DEFAULT_COLOR)
                     {
                         if (!tempColors.Contains(item.BackgroundColor)) { tempColors.Add(item.BackgroundColor); }
                     }
                 }
                 if (!string.IsNullOrEmpty(item.ForegroundColor))
                 {
-                    if (item.ForegroundColor != Fill.DEFAULTCOLOR)
+                    if (item.ForegroundColor != Fill.DEFAULT_COLOR)
                     {
                         if (!tempColors.Contains(item.ForegroundColor)) { tempColors.Add(item.ForegroundColor); }
                     }

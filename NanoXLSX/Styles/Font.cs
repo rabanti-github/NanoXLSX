@@ -207,7 +207,7 @@ namespace NanoXLSX.Styles
         {
             size = DEFAULT_FONT_SIZE;
             Name = DEFAULT_FONT_NAME;
-            Family = "2";
+            Family = DEFAULT_FONT_FAMILY;
             ColorTheme = 1;
             ColorValue = string.Empty;
             Charset = string.Empty;

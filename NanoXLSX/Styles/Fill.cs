@@ -17,9 +17,18 @@ namespace NanoXLSX.Styles
     {
         #region constants
         /// <summary>
-        /// Default Color (foreground or background) as constant
+        /// Default Color (foreground or background)
         /// </summary>
-        public static readonly string DEFAULTCOLOR = "FF000000";
+        public static readonly string DEFAULT_COLOR = "FF000000";
+        /// <summary>
+        /// Default index color
+        /// </summary>
+        public static readonly int DEFAULT_INDEXED_COLOR = 64;
+        /// <summary>
+        /// Default pattern
+        /// </summary>
+        public static readonly PatternValue DEFAULT_PATTERN_FILL = PatternValue.none;
+
         #endregion
 
         #region enums
@@ -55,15 +64,36 @@ namespace NanoXLSX.Styles
         }
         #endregion
 
+        #region privateFields
+        private string backgroundColor = DEFAULT_COLOR;
+        private string foregroundColor = DEFAULT_COLOR;
+        #endregion
+
         #region properties
         /// <summary>
         /// Gets or sets the background color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
-        public string BackgroundColor { get; set; }
+        public string BackgroundColor
+        {
+            get => backgroundColor;
+            set
+            {
+                ValidateColor(value, true);
+                backgroundColor = value;
+            }
+        }
         /// <summary>
         /// Gets or sets the foreground color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
-        public string ForegroundColor { get; set; }
+        public string ForegroundColor
+        {
+            get => foregroundColor;
+            set
+            {
+                ValidateColor(value, true);
+                foregroundColor = value;
+            }
+        }
         /// <summary>
         /// Gets or sets the indexed color (Default is 64)
         /// </summary>
@@ -80,10 +110,10 @@ namespace NanoXLSX.Styles
         /// </summary>
         public Fill()
         {
-            IndexedColor = 64;
-            PatternFill = PatternValue.none;
-            ForegroundColor = DEFAULTCOLOR;
-            BackgroundColor = DEFAULTCOLOR;
+            IndexedColor = DEFAULT_INDEXED_COLOR;
+            PatternFill = DEFAULT_PATTERN_FILL;
+            ForegroundColor = DEFAULT_COLOR;
+            BackgroundColor = DEFAULT_COLOR;
         }
         /// <summary>
         /// Constructor with foreground and background color
@@ -94,7 +124,7 @@ namespace NanoXLSX.Styles
         {
             BackgroundColor = background;
             ForegroundColor = foreground;
-            IndexedColor = 64;
+            IndexedColor = DEFAULT_INDEXED_COLOR;
             PatternFill = PatternValue.solid;
         }
 
@@ -108,14 +138,14 @@ namespace NanoXLSX.Styles
             if (filltype == FillType.fillColor)
             {
                 BackgroundColor = value;
-                ForegroundColor = DEFAULTCOLOR;
+                ForegroundColor = DEFAULT_COLOR;
             }
             else
             {
-                BackgroundColor = DEFAULTCOLOR;
+                BackgroundColor = DEFAULT_COLOR;
                 ForegroundColor = value;
             }
-            IndexedColor = 64;
+            IndexedColor = DEFAULT_INDEXED_COLOR;
             PatternFill = PatternValue.solid;
         }
         #endregion
@@ -180,13 +210,13 @@ namespace NanoXLSX.Styles
         {
             if (filltype == FillType.fillColor)
             {
-                ForegroundColor = value;
-                BackgroundColor = DEFAULTCOLOR;
+                BackgroundColor = value;
+                ForegroundColor = DEFAULT_COLOR;
             }
             else
             {
-                ForegroundColor = DEFAULTCOLOR;
-                BackgroundColor = value;
+                BackgroundColor = DEFAULT_COLOR;
+                ForegroundColor = value;
             }
             PatternFill = PatternValue.solid;
         }
@@ -198,7 +228,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <param name="pattern">Enum to process</param>
         /// <returns>The valid value of the pattern as String</returns>
-        public static string GetPatternName(PatternValue pattern)
+        internal static string GetPatternName(PatternValue pattern)
         {
             string output;
             switch (pattern)
@@ -248,7 +278,7 @@ namespace NanoXLSX.Styles
                 }
                 throw new StyleException("A general style exception occurred", "The color expression was null or empty");
             }
-            
+
             int length;
             length = useAlpha ? 8 : 6;
             if (hexCode == null || hexCode.Length != length)
