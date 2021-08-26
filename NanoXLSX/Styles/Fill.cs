@@ -112,8 +112,8 @@ namespace NanoXLSX.Styles
         {
             IndexedColor = DEFAULT_INDEXED_COLOR;
             PatternFill = DEFAULT_PATTERN_FILL;
-            ForegroundColor = DEFAULT_COLOR;
-            BackgroundColor = DEFAULT_COLOR;
+            foregroundColor = DEFAULT_COLOR;
+            backgroundColor = DEFAULT_COLOR;
         }
         /// <summary>
         /// Constructor with foreground and background color
@@ -132,18 +132,18 @@ namespace NanoXLSX.Styles
         /// Constructor with color value and fill type
         /// </summary>
         /// <param name="value">Color value</param>
-        /// <param name="filltype">Fill type (fill or pattern)</param>
-        public Fill(string value, FillType filltype)
+        /// <param name="fillType">Fill type (fill or pattern)</param>
+        public Fill(string value, FillType fillType)
         {
-            if (filltype == FillType.fillColor)
+            if (fillType == FillType.fillColor)
             {
-                BackgroundColor = value;
-                ForegroundColor = DEFAULT_COLOR;
+                backgroundColor = DEFAULT_COLOR;
+                ForegroundColor = value;
             }
             else
             {
-                BackgroundColor = DEFAULT_COLOR;
-                ForegroundColor = value;
+                BackgroundColor = value;
+                foregroundColor = DEFAULT_COLOR;
             }
             IndexedColor = DEFAULT_INDEXED_COLOR;
             PatternFill = PatternValue.solid;
@@ -210,13 +210,13 @@ namespace NanoXLSX.Styles
         {
             if (filltype == FillType.fillColor)
             {
-                BackgroundColor = value;
-                ForegroundColor = DEFAULT_COLOR;
+                backgroundColor = DEFAULT_COLOR;
+                ForegroundColor = value;
             }
             else
             {
-                BackgroundColor = DEFAULT_COLOR;
-                ForegroundColor = value;
+                BackgroundColor = value;
+                foregroundColor = DEFAULT_COLOR;
             }
             PatternFill = PatternValue.solid;
         }
@@ -281,7 +281,7 @@ namespace NanoXLSX.Styles
 
             int length;
             length = useAlpha ? 8 : 6;
-            if (hexCode == null || hexCode.Length != length)
+            if (hexCode.Length != length)
             {
                 throw new StyleException("A general style exception occurred", "The value '" + hexCode + "' is invalid. A valid value must contain six hex characters");
             }

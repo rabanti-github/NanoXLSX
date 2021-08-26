@@ -14,6 +14,25 @@ namespace NanoXLSX.Styles
     /// </summary>
     public class CellXf : AbstractStyle
     {
+        #region constants
+        /// <summary>
+        /// Default horizontal align value as constant
+        /// </summary>
+        public static readonly HorizontalAlignValue DEFAULT_HORIZONTAL_ALIGNMENT = HorizontalAlignValue.none;
+        /// <summary>
+        /// Default text break value as constant
+        /// </summary>
+        public static readonly TextBreakValue DEFAULT_ALIGNMENT = TextBreakValue.none;
+        /// <summary>
+        /// Default text direction value as constant
+        /// </summary>
+        public static readonly TextDirectionValue DEFAULT_TEXT_DIRECTION = TextDirectionValue.horizontal;
+        /// <summary>
+        /// Default vertical align value as constant
+        /// </summary>
+        public static readonly VerticalAlignValue DEFAULT_VERTICAL_ALIGNMENT = VerticalAlignValue.none;
+        #endregion
+
         #region enums
         /// <summary>
         /// Enum for the horizontal alignment of a cell 
@@ -87,6 +106,7 @@ namespace NanoXLSX.Styles
         #region privateFields
         private int textRotation;
         private TextDirectionValue textDirection;
+        private int indent;
         #endregion
 
         #region properties
@@ -143,7 +163,21 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the indentation in case of left, right or distributed alignment. If 0, no alignment is applied
         /// </summary>
-        public int Indent { get; set; }
+        public int Indent
+        {
+            get => indent;
+            set
+            {
+                if (value >= 0)
+                {
+                    indent = value;
+                }
+                else
+                {
+                    throw new StyleException(StyleException.GENERAL, "The indent value '" + value + "' is not valid. It must be >= 0");
+                }
+            }
+        }
 
         #endregion
 
@@ -153,10 +187,10 @@ namespace NanoXLSX.Styles
         /// </summary>
         public CellXf()
         {
-            HorizontalAlign = HorizontalAlignValue.none;
-            Alignment = TextBreakValue.none;
-            textDirection = TextDirectionValue.horizontal;
-            VerticalAlign = VerticalAlignValue.none;
+            HorizontalAlign = DEFAULT_HORIZONTAL_ALIGNMENT;
+            Alignment = DEFAULT_ALIGNMENT;
+            textDirection = DEFAULT_TEXT_DIRECTION;
+            VerticalAlign = DEFAULT_VERTICAL_ALIGNMENT;
             textRotation = 0;
             Indent = 0;
         }
@@ -166,9 +200,9 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Method to calculate the internal text rotation. The text direction and rotation are handled internally by the text rotation value
         /// </summary>
-        /// <returns>Returns the valid rotation in degrees for internal uses (LowLevel)</returns>
+        /// <returns>Returns the valid rotation in degrees for internal use (LowLevel)</returns>
         /// <exception cref="FormatException">Throws a FormatException if the rotation angle (-90 to 90) is out of range</exception>
-        public int CalculateInternalRotation()
+        internal int CalculateInternalRotation()
         {
             if (textRotation < -90 || textRotation > 90)
             {
@@ -176,7 +210,8 @@ namespace NanoXLSX.Styles
             }
             if (textDirection == TextDirectionValue.vertical)
             {
-                return 255;
+                textRotation = 255;
+                return textRotation;
             }
             else
             {

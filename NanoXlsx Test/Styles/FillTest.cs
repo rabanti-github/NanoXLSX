@@ -64,7 +64,7 @@ namespace NanoXLSX_Test.Styles
         [Theory(DisplayName = "Test of the constructor with color and fill type")]
         [InlineData("FFAABBCC", Fill.FillType.fillColor, "FFAABBCC", "FF000000")]
         [InlineData("FF112233", Fill.FillType.patternColor, "FF000000", "FF112233")]
-        public void ConstructorTest3(String color, Fill.FillType fillType, string expectedBackground, string expectedForeground)
+        public void ConstructorTest3(String color, Fill.FillType fillType, string expectedForeground, string expectedBackground)
         {
             Fill fill = new Fill(color, fillType);
             Assert.Equal(Fill.DEFAULT_INDEXED_COLOR, fill.IndexedColor);
@@ -190,7 +190,7 @@ namespace NanoXLSX_Test.Styles
         [Theory(DisplayName = "Test of the SetColor function")]
         [InlineData("FFAABBCC", Fill.FillType.fillColor, "FFAABBCC", "FF000000")]
         [InlineData("FF112233", Fill.FillType.patternColor, "FF000000", "FF112233")]
-        public void SetColorTest(String color, Fill.FillType fillType, string expectedBackground, string expectedForefround)
+        public void SetColorTest(String color, Fill.FillType fillType, string expectedForeground, string expectedBackground)
         {
             Fill fill = new Fill();
             Assert.Equal(Fill.DEFAULT_COLOR, fill.ForegroundColor);
@@ -199,13 +199,44 @@ namespace NanoXLSX_Test.Styles
             fill.SetColor(color, fillType);
             Assert.Equal(Fill.DEFAULT_INDEXED_COLOR, fill.IndexedColor);
             Assert.Equal(Fill.PatternValue.solid, fill.PatternFill);
-            Assert.Equal(expectedForefround, fill.ForegroundColor);
+            Assert.Equal(expectedForeground, fill.ForegroundColor);
             Assert.Equal(expectedBackground, fill.BackgroundColor);
         }
 
-
-
-
+        [Theory(DisplayName = "Test of the ValidateColor function")]
+        [InlineData("", false, false, false)]
+        [InlineData(null, false, false, false)]
+        [InlineData("", true, false, false)]
+        [InlineData(null, true, false, false)]
+        [InlineData("", false, true, true)]
+        [InlineData(null, false, true, true)]
+        [InlineData("", true, true, true)]
+        [InlineData(null, true, true, true)]
+        [InlineData("FFAABBCC", false, false, false)]
+        [InlineData("FFAABBCC", true, false, true)]
+        [InlineData("FFAABBCC", false, true, false)]
+        [InlineData("FFAABBCC", true, true, true)]
+        [InlineData("FFAABB", false, false, true)]
+        [InlineData("FFAABB", true, false, false)]
+        [InlineData("FFAA", true, false, false)]
+        [InlineData("FFAA", false, false, false)]
+        [InlineData("FFAA", true, true, false)]
+        [InlineData("FFAACCDDDD", true, false, false)]
+        [InlineData("FFAACCDDDD", false, false, false)]
+        [InlineData("FFAACCDDDD", true, true, false)]
+        public void ValidateColorTest(String color, bool useAlpha, bool allowEmpty, bool expectedValid)
+        {
+            if (expectedValid)
+            {
+                // Should not throw
+                Fill.ValidateColor(color, useAlpha, allowEmpty);
+            }
+            else
+            {
+                Assert.Throws<StyleException>(() => Fill.ValidateColor(color, useAlpha, allowEmpty));
+            }
+            
+        }
 
         [Fact(DisplayName = "Test of the CopyFill function")]
         public void CopyFillTest()

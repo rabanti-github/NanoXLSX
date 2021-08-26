@@ -12,6 +12,29 @@ namespace NanoXLSX.Styles
     /// </summary>
     public class Border : AbstractStyle
     {
+
+        #region constants
+        /// <summary>
+        /// Default border style as constant
+        /// </summary>
+        public static readonly StyleValue DEFAULT_BORDER_STYLE = StyleValue.none;
+
+        /// <summary>
+        /// Default border color as constant
+        /// </summary>
+        public static readonly string DEFAULT_COLOR = "";
+
+        #endregion
+
+        #region privateFields
+        private string diagonalColor;
+        private string leftColor;
+        private string rightColor;
+        private string topColor;
+        private string bottomColor;
+        #endregion
+
+
         #region enums
         /// <summary>
         /// Enum for the border style
@@ -53,7 +76,14 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the color code of the bottom border. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
-        public string BottomColor { get; set; }
+        public string BottomColor
+        {
+            get => bottomColor; set
+            {
+                Fill.ValidateColor(value, true, true);
+                bottomColor = value;
+            }
+        }
         /// <summary>
         /// Gets or sets the  style of bottom cell border
         /// </summary>
@@ -61,7 +91,15 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the color code of the diagonal lines. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
-        public string DiagonalColor { get; set; }
+        public string DiagonalColor
+        {
+            get => diagonalColor;
+            set
+            {
+                Fill.ValidateColor(value, true, true);
+                diagonalColor = value;
+            }
+        }
         /// <summary>
         /// Gets or sets whether the downwards diagonal line is used. If true, the line is used
         /// </summary>
@@ -77,7 +115,15 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the color code of the left border. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
-        public string LeftColor { get; set; }
+        public string LeftColor
+        {
+            get => leftColor;
+            set
+            {
+                Fill.ValidateColor(value, true, true);
+                leftColor = value;
+            }
+        }
         /// <summary>
         /// Gets or sets the style of left cell border
         /// </summary>
@@ -85,7 +131,14 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the color code of the right border. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
-        public string RightColor { get; set; }
+        public string RightColor
+        {
+            get => rightColor; set
+            {
+                Fill.ValidateColor(value, true, true);
+                rightColor = value;
+            }
+        }
         /// <summary>
         /// Gets or sets the style of right cell border
         /// </summary>
@@ -93,7 +146,14 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the color code of the top border. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
-        public string TopColor { get; set; }
+        public string TopColor
+        {
+            get => topColor; set
+            {
+                Fill.ValidateColor(value, true, true);
+                topColor = value;
+            }
+        }
         /// <summary>
         /// Gets or sets the style of top cell border
         /// </summary>
@@ -106,16 +166,16 @@ namespace NanoXLSX.Styles
         /// </summary>
         public Border()
         {
-            BottomColor = string.Empty;
-            TopColor = string.Empty;
-            LeftColor = string.Empty;
-            RightColor = string.Empty;
-            DiagonalColor = string.Empty;
-            LeftStyle = StyleValue.none;
-            RightStyle = StyleValue.none;
-            TopStyle = StyleValue.none;
-            BottomStyle = StyleValue.none;
-            DiagonalStyle = StyleValue.none;
+            BottomColor = DEFAULT_COLOR;
+            TopColor = DEFAULT_COLOR;
+            LeftColor = DEFAULT_COLOR;
+            RightColor = DEFAULT_COLOR;
+            DiagonalColor = DEFAULT_COLOR;
+            LeftStyle = DEFAULT_BORDER_STYLE;
+            RightStyle = DEFAULT_BORDER_STYLE;
+            TopStyle = DEFAULT_BORDER_STYLE;
+            BottomStyle = DEFAULT_BORDER_STYLE;
+            DiagonalStyle = DEFAULT_BORDER_STYLE;
             DiagonalDown = false;
             DiagonalUp = false;
         }
@@ -191,28 +251,28 @@ namespace NanoXLSX.Styles
         /// Method to determine whether the object has no values but the default values (means: is empty and must not be processed)
         /// </summary>
         /// <returns>True if empty, otherwise false</returns>
-        public bool IsEmpty()
+        internal bool IsEmpty()
         {
             bool state = true;
-            if (BottomColor != string.Empty)
+            if (BottomColor != DEFAULT_COLOR)
             { state = false; }
-            if (TopColor != string.Empty)
+            if (TopColor != DEFAULT_COLOR)
             { state = false; }
-            if (LeftColor != string.Empty)
+            if (LeftColor != DEFAULT_COLOR)
             { state = false; }
-            if (RightColor != string.Empty)
+            if (RightColor != DEFAULT_COLOR)
             { state = false; }
-            if (DiagonalColor != string.Empty)
+            if (DiagonalColor != DEFAULT_COLOR)
             { state = false; }
-            if (LeftStyle != StyleValue.none)
+            if (LeftStyle != DEFAULT_BORDER_STYLE)
             { state = false; }
-            if (RightStyle != StyleValue.none)
+            if (RightStyle != DEFAULT_BORDER_STYLE)
             { state = false; }
-            if (TopStyle != StyleValue.none)
+            if (TopStyle != DEFAULT_BORDER_STYLE)
             { state = false; }
-            if (BottomStyle != StyleValue.none)
+            if (BottomStyle != DEFAULT_BORDER_STYLE)
             { state = false; }
-            if (DiagonalStyle != StyleValue.none)
+            if (DiagonalStyle != DEFAULT_BORDER_STYLE)
             { state = false; }
             if (DiagonalDown)
             { state = false; }
@@ -228,7 +288,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <param name="style">Enum to process</param>
         /// <returns>The valid value of the border style as String</returns>
-        public static string GetStyleName(StyleValue style)
+        internal static string GetStyleName(StyleValue style)
         {
             string output = "";
             switch (style)
