@@ -5,6 +5,8 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
+
 namespace NanoXLSX.Styles
 {
     /// <summary>
@@ -17,8 +19,13 @@ namespace NanoXLSX.Styles
         /// Start ID for custom number formats as constant
         /// </summary>
         public static readonly int CUSTOMFORMAT_START_NUMBER = 164;
-        #endregion
+        /// <summary>
+        /// Default format number as constant
+        /// </summary>
+        public static readonly FormatNumber DEFAULT_NUMBER = FormatNumber.none;
 
+        #endregion
+        private int customFormatID;
         #region enums
         /// <summary>
         /// Enum for predefined number formats
@@ -101,11 +108,11 @@ namespace NanoXLSX.Styles
         public enum FormatRange
         {
             /// <summary>
-            /// Format from 0 to 163 (with gaps)
+            /// Format from 0 to 164 (with gaps)
             /// </summary>
             defined_format,
             /// <summary>
-            /// Custom defined formats from 164 and higher
+            /// Custom defined formats from 165 and higher. Although 164 is already custom, it is still defined as enum value
             /// </summary>
             custom_format,
             /// <summary>
@@ -119,6 +126,9 @@ namespace NanoXLSX.Styles
         }
         #endregion
 
+        #region privateFields
+        #endregion
+
         #region properties
         /// <summary>
         /// Gets or sets the custom format code in the notation of Excel
@@ -127,7 +137,19 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the format number of the custom format. Must be higher or equal then predefined custom number (164) 
         /// </summary>
-        public int CustomFormatID { get; set; }
+        /// <exception cref="Exceptions.StyleException">Throws a StyleException if the number is below the lowest possible custom number (164)</exception>
+        public int CustomFormatID
+        {
+            get { return customFormatID; }
+            set
+            {
+                if (value < CUSTOMFORMAT_START_NUMBER)
+                {
+                    throw new StyleException(StyleException.GENERAL, "The number '" + value + "' is not a valid custom format ID. Must be at least " + CUSTOMFORMAT_START_NUMBER);
+                }
+                customFormatID = value;
+            }
+        }
         /// <summary>
         /// Gets whether the number format is a custom format (higher or equals 164). If true, the format is custom
         /// </summary>
@@ -153,7 +175,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         public NumberFormat()
         {
-            Number = FormatNumber.none;
+            Number = DEFAULT_NUMBER;
             CustomFormatCode = string.Empty;
             CustomFormatID = CUSTOMFORMAT_START_NUMBER;
         }
@@ -213,28 +235,27 @@ namespace NanoXLSX.Styles
         /// <returns>Format range. Will return 'invalid' if out of any range (e.g. negative value)</returns>
         public static FormatRange TryParseFormatNumber(int number, out FormatNumber formatNumber)
         {
-            try
+
+            bool isDefined = System.Enum.IsDefined(typeof(FormatNumber), number);
+            if (isDefined)
             {
                 formatNumber = (FormatNumber)number;
                 return FormatRange.defined_format;
             }
-            catch
+            if (number < 0)
             {
-                if (number < 0)
-                {
-                    formatNumber = FormatNumber.none;
-                    return FormatRange.invalid;
-                }
-                else if (number > 0 && number < CUSTOMFORMAT_START_NUMBER)
-                {
-                    formatNumber = FormatNumber.none;
-                    return FormatRange.undefined;
-                }
-                else
-                {
-                    formatNumber = FormatNumber.custom;
-                    return FormatRange.custom_format;
-                }
+                formatNumber = FormatNumber.none;
+                return FormatRange.invalid;
+            }
+            else if (number > 0 && number < CUSTOMFORMAT_START_NUMBER)
+            {
+                formatNumber = FormatNumber.none;
+                return FormatRange.undefined;
+            }
+            else
+            {
+                formatNumber = FormatNumber.custom;
+                return FormatRange.custom_format;
             }
         }
 
