@@ -404,6 +404,25 @@ namespace NanoXLSX_Test.Styles
             Assert.NotEqual(exampleStyle.GetHashCode(), copy.GetHashCode());
         }
 
+        [Fact(DisplayName = "Test of the CompareTo method")]
+        public void CompareToTest()
+        {
+            Border border = new Border();
+            Border other = new Border();
+            border.InternalID = null;
+            other.InternalID = null;
+            Assert.Equal(-1, border.CompareTo(other));
+            border.InternalID = 5;
+            Assert.Equal(1, border.CompareTo(other));
+            Assert.Equal(1, border.CompareTo(null));
+            other.InternalID = 5;
+            Assert.Equal(0, border.CompareTo(other));
+            other.InternalID = 4;
+            Assert.Equal(1, border.CompareTo(other));
+            other.InternalID = 6;
+            Assert.Equal(-1, border.CompareTo(other));
+        }
+
         // For code coverage
         [Fact(DisplayName = "Test of the ToString function")]
         public void ToStringTest()

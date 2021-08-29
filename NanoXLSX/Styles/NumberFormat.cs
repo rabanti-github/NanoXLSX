@@ -133,11 +133,13 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the custom format code in the notation of Excel
         /// </summary>
+        [Append]
         public string CustomFormatCode { get; set; }
         /// <summary>
         /// Gets or sets the format number of the custom format. Must be higher or equal then predefined custom number (164) 
         /// </summary>
         /// <exception cref="Exceptions.StyleException">Throws a StyleException if the number is below the lowest possible custom number (164)</exception>
+        [Append]
         public int CustomFormatID
         {
             get { return customFormatID; }
@@ -166,6 +168,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the format number. Set this to custom (164) in case of custom number formats
         /// </summary>
+        [Append]
         public FormatNumber Number { get; set; }
         #endregion
 

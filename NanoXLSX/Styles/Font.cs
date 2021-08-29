@@ -90,15 +90,18 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets whether the font is bold. If true, the font is declared as bold
         /// </summary>
+        [Append]
         public bool Bold { get; set; }
         /// <summary>
         /// Gets or sets the char set of the Font (Default is empty)
         /// </summary>
+        [Append]
         public string Charset { get; set; }
         /// <summary>
         /// Gets or sets the font color theme (Default is 1)
         /// </summary>
         /// <exception cref="StyleException">Throws a StyleException if the number is below 1</exception>
+        [Append]
         public int ColorTheme
         {
             get => colorTheme;
@@ -116,6 +119,7 @@ namespace NanoXLSX.Styles
         /// To omit the color, an empty string can be set. Empty is also default.
         /// </summary>
         /// <exception cref="StyleException">Throws a StyleException if the passed ARGB value is not valid</exception>
+        [Append]
         public string ColorValue { 
             get => colorValue;
             set 
@@ -127,10 +131,12 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets whether the font has a double underline. If true, the font is declared with a double underline
         /// </summary>
+        [Append]
         public bool DoubleUnderline { get; set; }
         /// <summary>
         ///  Gets or sets the font family (Default is 2)
         /// </summary>
+        [Append]
         public string Family { get; set; }
         /// <summary>
         /// Gets whether the font is equal to the default font
@@ -147,6 +153,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets whether the font is italic. If true, the font is declared as italic
         /// </summary>
+        [Append]
         public bool Italic { get; set; }
 
         /// <summary>
@@ -154,6 +161,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <exception cref="StyleException">A StyleException is thrown if the name is null or empty</exception>
         /// <remarks>Note that the font name is not validated whether it is a valid or existing font</remarks>
+        [Append]
         public string Name
         {
             get { return name; }
@@ -169,10 +177,12 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the font scheme (Default is minor)
         /// </summary>
+        [Append]
         public SchemeValue Scheme { get; set; }
         /// <summary>
         /// Gets or sets the font size. Valid range is from 1 to 409
         /// </summary>
+        [Append]
         public float Size
         {
             get { return size; }
@@ -188,14 +198,17 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets whether the font is struck through. If true, the font is declared as strike-through
         /// </summary>
+        [Append]
         public bool Strike { get; set; }
         /// <summary>
         /// Gets or sets whether the font is underlined. If true, the font is declared as underlined
         /// </summary>
+        [Append]
         public bool Underline { get; set; }
         /// <summary>
         /// Gets or sets the alignment of the font (Default is none)
         /// </summary>
+        [Append]
         public VerticalAlignValue VerticalAlign { get; set; }
         #endregion
 

@@ -17,9 +17,7 @@ namespace NanoXLSX.Styles
     public class Style : AbstractStyle
     {
         #region privateFields
-        private string name;
         private bool internalStyle;
-        private bool styleNameDefined;
         #endregion
 
         #region properties
@@ -52,15 +50,7 @@ namespace NanoXLSX.Styles
         /// Gets or sets the name of the style. If not defined, the automatically calculated hash will be used as name
         /// </summary>
         [Append(Ignore = true)]
-        public string Name
-        {
-            get { return name; }
-            set
-            {
-                name = value;
-                styleNameDefined = true;
-            }
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets whether the style is system internal. Such styles are not meant to be altered
@@ -84,8 +74,7 @@ namespace NanoXLSX.Styles
             CurrentFill = new Fill();
             CurrentFont = new Font();
             CurrentNumberFormat = new NumberFormat();
-            styleNameDefined = false;
-            name = this.GetHashCode().ToString();
+            Name = this.GetHashCode().ToString();
         }
 
         /// <summary>
@@ -99,15 +88,14 @@ namespace NanoXLSX.Styles
             CurrentFill = new Fill();
             CurrentFont = new Font();
             CurrentNumberFormat = new NumberFormat();
-            styleNameDefined = false;
-            this.name = name;
+            this.Name = name;
         }
 
         /// <summary>
         /// Constructor with parameters (internal use)
         /// </summary>
         /// <param name="name">Name of the style</param>
-        /// <param name="forcedOrder">Number of the style for sorting purpose. Style will be placed to this position (internal use only)</param>
+        /// <param name="forcedOrder">Number of the style for sorting purpose. The style will be placed at this position (internal use only)</param>
         /// <param name="internalStyle">If true, the style is marked as internal</param>
         public Style(string name, int forcedOrder, bool internalStyle)
         {
@@ -116,10 +104,9 @@ namespace NanoXLSX.Styles
             CurrentFill = new Fill();
             CurrentFont = new Font();
             CurrentNumberFormat = new NumberFormat();
-            this.name = name;
+            this.Name = name;
             InternalID = forcedOrder;
             this.internalStyle = internalStyle;
-            styleNameDefined = true;
         }
         #endregion
 
@@ -132,6 +119,10 @@ namespace NanoXLSX.Styles
         /// <returns>Current style with appended style parts</returns>
         public Style Append(AbstractStyle styleToAppend)
         {
+            if (styleToAppend == null)
+            {
+                return this;
+            }
             if (styleToAppend.GetType() == typeof(Border))
             {
                 CurrentBorder.CopyProperties<Border>((Border)styleToAppend, new Border());
@@ -169,7 +160,14 @@ namespace NanoXLSX.Styles
         /// <returns>String of a class instance</returns>
         public override string ToString()
         {
-            return InternalID.ToString() + "->" + this.GetHashCode();
+            if (string.IsNullOrEmpty(Name))
+            {
+                return this.GetHashCode().ToString();
+            }
+            else
+            {
+                return Name + "->" + this.GetHashCode();
+            }
         }
 
         /// <summary>

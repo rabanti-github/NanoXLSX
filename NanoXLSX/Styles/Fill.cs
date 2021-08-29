@@ -73,6 +73,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the background color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
+        [Append]
         public string BackgroundColor
         {
             get => backgroundColor;
@@ -85,6 +86,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the foreground color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
+        [Append]
         public string ForegroundColor
         {
             get => foregroundColor;
@@ -97,10 +99,12 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the indexed color (Default is 64)
         /// </summary>
+        [Append]
         public int IndexedColor { get; set; }
         /// <summary>
         /// Gets or sets the pattern type of the fill (Default is none)
         /// </summary>
+        [Append]
         public PatternValue PatternFill { get; set; }
         #endregion
 

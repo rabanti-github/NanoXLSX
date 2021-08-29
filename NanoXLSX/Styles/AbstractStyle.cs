@@ -40,7 +40,7 @@ namespace NanoXLSX.Styles
         /// <param name="reference">Reference object to decide whether the properties from the source objects are altered or not</param>
         internal void CopyProperties<T>(T source, T reference) where T : AbstractStyle
         {
-            if (GetType() != source.GetType() && GetType() != reference.GetType())
+            if (source == null || GetType() != source.GetType() && GetType() != reference.GetType())
             {
                 throw new StyleException("CopyPropertyException", "The objects of the source, target and reference for style appending are not of the same type");
             }
@@ -114,60 +114,6 @@ namespace NanoXLSX.Styles
                 return false;
             }
             return this.GetHashCode() == other.GetHashCode();
-        }
-
-        /// <summary>
-        /// Method to cast values of the components to string values for the hash calculation (protected/internal static method)
-        /// </summary>
-        /// <param name="o">Value to cast</param>
-        /// <param name="sb">StringBuilder reference to put the casted object in</param>
-        /// <param name="delimiter">Delimiter character to append after the casted value</param>
-        protected static void CastValue(object o, ref StringBuilder sb, char? delimiter)
-        {
-            if (sb == null)
-            {
-                throw new StyleException(StyleException.MISSING_REFERENCE, "The string builder to cats values is not defined");
-            }
-            if (o == null)
-            {
-                sb.Append('#');
-            }
-            else if (o is bool)
-            {
-                sb.Append((bool)o ? 1 : 0);
-            }
-            else if (o is int)
-            {
-                sb.Append((int)o);
-            }
-            else if (o is double)
-            {
-                sb.Append((double)o);
-            }
-            else if (o is float)
-            {
-                sb.Append((float)o);
-            }
-            else if (o is string)
-            {
-                sb.Append(o.ToString() == "#" ? "_#_" : (string)o);
-            }
-            else if (o is long)
-            {
-                sb.Append((long)o);
-            }
-            else if (o is char)
-            {
-                sb.Append((char)o);
-            }
-            else
-            {
-                sb.Append(o);
-            }
-            if (delimiter.HasValue)
-            {
-                sb.Append(delimiter.Value);
-            }
         }
 
         /// <summary>

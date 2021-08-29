@@ -113,26 +113,32 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets whether the applyAlignment property (used to merge cells) will be defined in the XF entry of the style. If true, applyAlignment will be defined
         /// </summary>
+        [Append]
         public bool ForceApplyAlignment { get; set; }
         /// <summary>
         /// Gets or sets whether the hidden property (used for protection or hiding of cells) will be defined in the XF entry of the style. If true, hidden will be defined
         /// </summary>
+        [Append]
         public bool Hidden { get; set; }
         /// <summary>
         /// Gets or sets the horizontal alignment of the style
         /// </summary>
+        [Append]
         public HorizontalAlignValue HorizontalAlign { get; set; }
         /// <summary>
         /// Gets or sets whether the locked property (used for locking / protection of cells or worksheets) will be defined in the XF entry of the style. If true, locked will be defined
         /// </summary>
+        [Append]
         public bool Locked { get; set; }
         /// <summary>
         /// Gets or sets the text break options of the style
         /// </summary>
+        [Append]
         public TextBreakValue Alignment { get; set; }
         /// <summary>
         /// Gets or sets the direction of the text within the cell
         /// </summary>
+        [Append]
         public TextDirectionValue TextDirection
         {
             get { return textDirection; }
@@ -145,6 +151,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the text rotation in degrees (from +90 to -90)
         /// </summary>
+        [Append]
         public int TextRotation
         {
             get { return textRotation; }
@@ -158,11 +165,13 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the vertical alignment of the style
         /// </summary>
+        [Append]
         public VerticalAlignValue VerticalAlign { get; set; }
 
         /// <summary>
         /// Gets or sets the indentation in case of left, right or distributed alignment. If 0, no alignment is applied
         /// </summary>
+        [Append]
         public int Indent
         {
             get => indent;

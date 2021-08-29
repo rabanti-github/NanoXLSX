@@ -276,6 +276,25 @@ namespace NanoXLSX_Test.Styles
             Assert.Equal(164, NumberFormat.CUSTOMFORMAT_START_NUMBER); // Expected 164
         }
 
+        [Fact(DisplayName = "Test of the CompareTo method")]
+        public void CompareToTest()
+        {
+            NumberFormat numberFormat = new NumberFormat();
+            NumberFormat other = new NumberFormat();
+            numberFormat.InternalID = null;
+            other.InternalID = null;
+            Assert.Equal(-1, numberFormat.CompareTo(other));
+            numberFormat.InternalID = 5;
+            Assert.Equal(1, numberFormat.CompareTo(other));
+            Assert.Equal(1, numberFormat.CompareTo(null));
+            other.InternalID = 5;
+            Assert.Equal(0, numberFormat.CompareTo(other));
+            other.InternalID = 4;
+            Assert.Equal(1, numberFormat.CompareTo(other));
+            other.InternalID = 6;
+            Assert.Equal(-1, numberFormat.CompareTo(other));
+        }
+
         // For code coverage
         [Fact(DisplayName = "Test of the ToString function")]
         public void ToStringTest()

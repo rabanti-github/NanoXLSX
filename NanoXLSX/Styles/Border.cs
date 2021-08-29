@@ -76,6 +76,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the color code of the bottom border. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
+        [Append]
         public string BottomColor
         {
             get => bottomColor; set
@@ -87,10 +88,12 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the  style of bottom cell border
         /// </summary>
+        [Append]
         public StyleValue BottomStyle { get; set; }
         /// <summary>
         /// Gets or sets the color code of the diagonal lines. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
+        [Append]
         public string DiagonalColor
         {
             get => diagonalColor;
@@ -103,18 +106,22 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets whether the downwards diagonal line is used. If true, the line is used
         /// </summary>
+        [Append]
         public bool DiagonalDown { get; set; }
         /// <summary>
         /// Gets or sets whether the upwards diagonal line is used. If true, the line is used
         /// </summary>
+        [Append]
         public bool DiagonalUp { get; set; }
         /// <summary>
         /// Gets or sets the style of the diagonal lines
         /// </summary>
+        [Append]
         public StyleValue DiagonalStyle { get; set; }
         /// <summary>
         /// Gets or sets the color code of the left border. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
+        [Append]
         public string LeftColor
         {
             get => leftColor;
@@ -127,13 +134,16 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the style of left cell border
         /// </summary>
+        [Append]
         public StyleValue LeftStyle { get; set; }
         /// <summary>
         /// Gets or sets the color code of the right border. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
+        [Append]
         public string RightColor
         {
-            get => rightColor; set
+            get => rightColor; 
+            set
             {
                 Fill.ValidateColor(value, true, true);
                 rightColor = value;
@@ -142,10 +152,12 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the style of right cell border
         /// </summary>
+        [Append]
         public StyleValue RightStyle { get; set; }
         /// <summary>
         /// Gets or sets the color code of the top border. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
+        [Append]
         public string TopColor
         {
             get => topColor; set
@@ -157,6 +169,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the style of top cell border
         /// </summary>
+        [Append]
         public StyleValue TopStyle { get; set; }
         #endregion
 
