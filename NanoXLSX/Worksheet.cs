@@ -588,7 +588,7 @@ namespace NanoXLSX
         /// <param name="rowNumber">Row number (zero based)</param>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public void AddCell(object value, int columnNumber, int rowNumber)
         {
             AddNextCell(CastValue(value, columnNumber, rowNumber), false, null);
@@ -604,8 +604,8 @@ namespace NanoXLSX
         /// <param name="style">Style to apply on the cell</param>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the passed style is malformed</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public void AddCell(object value, int columnNumber, int rowNumber, Style style)
         {
             AddNextCell(CastValue(value, columnNumber, rowNumber), false, style);
@@ -620,7 +620,7 @@ namespace NanoXLSX
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCell(object value, string address)
         {
@@ -639,8 +639,8 @@ namespace NanoXLSX
         /// <param name="style">Style to apply on the cell</param>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, 
         /// bool. All other types will be casted into a string using the default ToString() method</remarks>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the passed style is malformed</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCell(object value, string address, Style style)
         {
@@ -659,7 +659,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="formula">Formula to insert</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCellFormula(string formula, string address)
         {
@@ -676,8 +676,8 @@ namespace NanoXLSX
         /// <param name="formula">Formula to insert</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <param name="style">Style to apply on the cell</param>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the passed style was malformed</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the passed style was malformed</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCellFormula(string formula, string address, Style style)
         {
@@ -694,7 +694,7 @@ namespace NanoXLSX
         /// <param name="formula">Formula to insert</param>
         /// <param name="columnNumber">Column number (zero based)</param>
         /// <param name="rowNumber">Row number (zero based)</param>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public void AddCellFormula(string formula, int columnNumber, int rowNumber)
         {
             Cell c = new Cell(formula, Cell.CellType.FORMULA, columnNumber, rowNumber);
@@ -708,7 +708,7 @@ namespace NanoXLSX
         /// <param name="columnNumber">Column number (zero based)</param>
         /// <param name="rowNumber">Row number (zero based)</param>
         /// <param name="style">Style to apply on the cell</param>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public void AddCellFormula(string formula, int columnNumber, int rowNumber, Style style)
         {
             Cell c = new Cell(formula, Cell.CellType.FORMULA, columnNumber, rowNumber);
@@ -751,7 +751,7 @@ namespace NanoXLSX
         /// <param name="endAddress">End address</param>
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
-        /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         public void AddCellRange(IReadOnlyList<object> values, Address startAddress, Address endAddress)
         {
             AddCellRangeInternal(values, startAddress, endAddress, null);
@@ -767,8 +767,8 @@ namespace NanoXLSX
         /// <param name="style">Style to apply on the all cells of the range</param>
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
-        /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the passed style is malformed</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
         public void AddCellRange(IReadOnlyList<object> values, Address startAddress, Address endAddress, Style style)
         {
             AddCellRangeInternal(values, startAddress, endAddress, style);
@@ -782,7 +782,7 @@ namespace NanoXLSX
         /// <param name="cellRange">Cell range as string in the format like A1:D1 or X10:X22</param>
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
-        /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
         public void AddCellRange(IReadOnlyList<object> values, string cellRange)
         {
@@ -799,8 +799,8 @@ namespace NanoXLSX
         /// <param name="style">Style to apply on the all cells of the range</param>
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
-        /// <exception cref="RangeException">Throws an RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the passed style is malformed</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
         public void AddCellRange(IReadOnlyList<object> values, string cellRange, Style style)
         {
@@ -818,7 +818,7 @@ namespace NanoXLSX
         /// <param name="style">Style to apply on the all cells of the range</param>
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be casted into a string using the default ToString() method</remarks>
-        /// <exception cref="RangeException">Throws an RangeException if the number of cells differs from the number of passed values</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the number of cells differs from the number of passed values</exception>
         private void AddCellRangeInternal<T>(IReadOnlyList<T> values, Address startAddress, Address endAddress, Style style)
         {
             List<Address> addresses = Cell.GetCellRange(startAddress, endAddress) as List<Address>;
@@ -844,7 +844,7 @@ namespace NanoXLSX
         /// <param name="columnNumber">Column number (zero based)</param>
         /// <param name="rowNumber">Row number (zero based)</param>
         /// <returns>Returns true if the cell could be removed (existed), otherwise false (did not exist)</returns>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public bool RemoveCell(int columnNumber, int rowNumber)
         {
             string address = Cell.ResolveCellAddress(columnNumber, rowNumber);
@@ -856,7 +856,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <returns>Returns true if the cell could be removed (existed), otherwise false (did not exist)</returns>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public bool RemoveCell(string address)
         {
@@ -991,7 +991,7 @@ namespace NanoXLSX
         /// Sets the defined column as hidden
         /// </summary>
         /// <param name="columnAddress">Column address to hide on the worksheet</param>
-        /// <exception cref="RangeException">Throws an RangeException if the passed column address is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed column address is out of range</exception>
         public void AddHiddenColumn(string columnAddress)
         {
             int columnNumber = Cell.ResolveColumn(columnAddress);
@@ -1002,7 +1002,7 @@ namespace NanoXLSX
         /// Sets the defined row as hidden
         /// </summary>
         /// <param name="rowNumber">Row number to hide on the worksheet</param>
-        /// <exception cref="RangeException">Throws an RangeException if the passed row number is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed row number is out of range</exception>
         public void AddHiddenRow(int rowNumber)
         {
             SetRowHiddenState(rowNumber, true);
@@ -1256,11 +1256,15 @@ namespace NanoXLSX
         /// Moves the current position to the next column with the number of cells to move
         /// </summary>
         /// <param name="numberOfColumns">Number of columns to move</param>
+        /// <param name="keepRowPosition">If true, the row position is preserved, otherwise set to 0</param>
         /// <remarks>The value can also be negative. However, resulting column numbers below 0 or above 16383 will cause an exception</remarks>
-        public void GoToNextColumn(int numberOfColumns)
+        public void GoToNextColumn(int numberOfColumns, bool keepRowPosition = false)
         {
             currentColumnNumber += numberOfColumns;
-            currentRowNumber = 0;
+            if (!keepRowPosition)
+            {
+                currentRowNumber = 0;
+            }
             Cell.ValidateColumnNumber(currentColumnNumber);
         }
 
@@ -1278,11 +1282,15 @@ namespace NanoXLSX
         /// Moves the current position to the next row with the number of cells to move (use for a new line)
         /// </summary>
         /// <param name="numberOfRows">Number of rows to move</param>
+        /// <param name="keepColumnPosition">If true, the column position is preserved, otherwise set to 0</param>
         /// <remarks>The value can also be negative. However, resulting row numbers below 0 or above 1048575 will cause an exception</remarks>
-        public void GoToNextRow(int numberOfRows)
+        public void GoToNextRow(int numberOfRows, bool keepColumnPosition = false)
         {
             currentRowNumber += numberOfRows;
-            currentColumnNumber = 0;
+            if (!keepColumnPosition)
+            {
+                currentColumnNumber = 0;
+            }
             Cell.ValidateRowNumber(currentRowNumber);
         }
 
@@ -1291,7 +1299,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="cellRange">Range to merge</param>
         /// <returns>Returns the validated range of the merged cells (e.g. 'A1:B12')</returns>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell range is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell range is out of range</exception>
         public string MergeCells(Range cellRange)
         {
             return MergeCells(cellRange.StartAddress, cellRange.EndAddress);
@@ -1302,7 +1310,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="cellRange">Range to merge (e.g. 'A1:B12')</param>
         /// <returns>Returns the validated range of the merged cells (e.g. 'A1:B12')</returns>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell range is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell range is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
         public string MergeCells(string cellRange)
         {
@@ -1316,7 +1324,7 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address of the merged cell range</param>
         /// <param name="endAddress">End address of the merged cell range</param>
         /// <returns>Returns the validated range of the merged cells (e.g. 'A1:B12')</returns>
-        /// <exception cref="RangeException">Throws an RangeException if one of the passed cell addresses is out of range or if one or more cell addresses are already occupied in another merge range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if one of the passed cell addresses is out of range or if one or more cell addresses are already occupied in another merge range</exception>
         public string MergeCells(Address startAddress, Address endAddress)
         {
             string key = startAddress + ":" + endAddress;
@@ -1442,7 +1450,7 @@ namespace NanoXLSX
         /// Sets a previously defined, hidden column as visible again
         /// </summary>
         /// <param name="columnNumber">Column number to make visible again</param>
-        /// <exception cref="RangeException">Throws an RangeException if the passed column number is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed column number is out of range</exception>
         public void RemoveHiddenColumn(int columnNumber)
         {
             SetColumnHiddenState(columnNumber, false);
@@ -1452,7 +1460,7 @@ namespace NanoXLSX
         /// Sets a previously defined, hidden column as visible again
         /// </summary>
         /// <param name="columnAddress">Column address to make visible again</param>
-        /// <exception cref="RangeException">Throws an RangeException if the column address out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the column address out of range</exception>
         public void RemoveHiddenColumn(string columnAddress)
         {
             int columnNumber = Cell.ResolveColumn(columnAddress);
@@ -1463,7 +1471,7 @@ namespace NanoXLSX
         /// Sets a previously defined, hidden row as visible again
         /// </summary>
         /// <param name="rowNumber">Row number to hide on the worksheet</param>
-        /// <exception cref="RangeException">Throws an RangeException if the passed row number is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed row number is out of range</exception>
         public void RemoveHiddenRow(int rowNumber)
         {
             SetRowHiddenState(rowNumber, false);
@@ -1473,7 +1481,7 @@ namespace NanoXLSX
         /// Removes the defined merged cell range
         /// </summary>
         /// <param name="range">Cell range to remove the merging</param>
-        /// <exception cref="RangeException">Throws a UnkownRangeException if the passed cell range was not merged earlier</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell range was not merged earlier</exception>
         public void RemoveMergedCells(string range)
         {
             range = Utils.ToUpper(range);
@@ -1551,7 +1559,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="startColumn">Column number with the first appearance of an auto filter drop down</param>
         /// <param name="endColumn">Column number with the last appearance of an auto filter drop down</param>
-        /// <exception cref="RangeException">Throws an RangeException if the start or end address out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the start or end address out of range</exception>
         public void SetAutoFilter(int startColumn, int endColumn)
         {
             string start = Cell.ResolveCellAddress(startColumn, 0);
@@ -1570,8 +1578,8 @@ namespace NanoXLSX
         /// Sets the column auto filter within the defined column range
         /// </summary>
         /// <param name="range">Range to apply auto filter on. The range could be 'A1:C10' for instance. The end row will be recalculated automatically when saving the file</param>
-        /// <exception cref="RangeException">Throws an RangeException if the passed range out of range</exception>
-        /// <exception cref="Exceptions.FormatException">Throws an FormatException if the passed range is malformed</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed range out of range</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed range is malformed</exception>
         public void SetAutoFilter(string range)
         {
             autoFilterRange = Cell.ResolveCellRange(range);
@@ -1584,7 +1592,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="columnNumber">Column number to hide on the worksheet</param>
         /// <param name="state">If true, the column will be hidden, otherwise be visible</param>
-        /// <exception cref="RangeException">Throws an RangeException if the column number out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the column number out of range</exception>
         private void SetColumnHiddenState(int columnNumber, bool state)
         {
             Cell.ValidateColumnNumber(columnNumber);
@@ -1609,7 +1617,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="columnAddress">Column address (A - XFD)</param>
         /// <param name="width">Width from 0 to 255.0</param>
-        /// <exception cref="RangeException">Throws an RangeException:<br></br>a) If the passed column address is out of range<br></br>b) if the column width is out of range (0 - 255.0)</exception>
+        /// <exception cref="RangeException">Throws a RangeException:<br></br>a) If the passed column address is out of range<br></br>b) if the column width is out of range (0 - 255.0)</exception>
         public void SetColumnWidth(string columnAddress, float width)
         {
             int columnNumber = Cell.ResolveColumn(columnAddress);
@@ -1621,7 +1629,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="columnNumber">Column number (zero-based, from 0 to 16383)</param>
         /// <param name="width">Width from 0 to 255.0</param>
-        /// <exception cref="RangeException">Throws an RangeException:<br></br>a) If the passed column number is out of range<br></br>b) if the column width is out of range (0 - 255.0)</exception>
+        /// <exception cref="RangeException">Throws a RangeException:<br></br>a) If the passed column number is out of range<br></br>b) if the column width is out of range (0 - 255.0)</exception>
         public void SetColumnWidth(int columnNumber, float width)
         {
             Cell.ValidateColumnNumber(columnNumber);
@@ -1646,7 +1654,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="columnNumber">Column number (zero based)</param>
         /// <param name="rowNumber">Row number (zero based)</param>
-        /// <exception cref="RangeException">Throws an RangeException if one of the passed cell addresses is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if one of the passed cell addresses is out of range</exception>
         public void SetCurrentCellAddress(int columnNumber, int rowNumber)
         {
             SetCurrentColumnNumber(columnNumber);
@@ -1657,7 +1665,7 @@ namespace NanoXLSX
         /// Set the current cell address
         /// </summary>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
-        /// <exception cref="RangeException">Throws an RangeException if the passed cell address is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void SetCurrentCellAddress(string address)
         {
@@ -1671,7 +1679,7 @@ namespace NanoXLSX
         /// Sets the current column number (zero based)
         /// </summary>
         /// <param name="columnNumber">Column number (zero based)</param>
-        /// <exception cref="RangeException">Throws an RangeException if the number is out of the valid range. Range is from 0 to 16383 (16384 columns)</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the number is out of the valid range. Range is from 0 to 16383 (16384 columns)</exception>
         public void SetCurrentColumnNumber(int columnNumber)
         {
             Cell.ValidateColumnNumber(columnNumber);
@@ -1682,7 +1690,7 @@ namespace NanoXLSX
         /// Sets the current row number (zero based)
         /// </summary>
         /// <param name="rowNumber">Row number (zero based)</param>
-        /// <exception cref="RangeException">Throws an RangeException if the number is out of the valid range. Range is from 0 to 1048575 (1048576 rows)</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the number is out of the valid range. Range is from 0 to 1048575 (1048576 rows)</exception>
         public void SetCurrentRowNumber(int rowNumber)
         {
             Cell.ValidateRowNumber(rowNumber);
@@ -1747,7 +1755,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="rowNumber">Row number (zero-based, 0 to 1048575)</param>
         /// <param name="height">Height from 0 to 409.5</param>
-        /// <exception cref="RangeException">Throws an RangeException:<br></br>a) If the passed row number is out of range<br></br>b) if the row height is out of range (0 - 409.5)</exception>
+        /// <exception cref="RangeException">Throws a RangeException:<br></br>a) If the passed row number is out of range<br></br>b) if the row height is out of range (0 - 409.5)</exception>
         public void SetRowHeight(int rowNumber, float height)
         {
             Cell.ValidateRowNumber(rowNumber);
@@ -1770,7 +1778,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="rowNumber">Row number to make visible again</param>
         /// <param name="state">If true, the row will be hidden, otherwise visible</param>
-        /// <exception cref="RangeException">Throws an RangeException if the passed row number was out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed row number was out of range</exception>
         private void SetRowHiddenState(int rowNumber, bool state)
         {
             Cell.ValidateRowNumber(rowNumber);

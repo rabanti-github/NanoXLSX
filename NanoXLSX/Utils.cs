@@ -58,7 +58,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="date">Date to process</param>
         /// <returns>Date or date and time as number</returns>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
+        /// <exception cref="Exceptions.FormatException">Test of the ConvertArray methodFormatException if the passed date cannot be translated to the OADate format</exception>
         /// <remarks>Excel assumes wrongly that the year 1900 is a leap year. There is a gap of 1.0 between 1900-02-28 and 1900-03-01. This method corrects all dates
         /// from the first valid date (1900-01-01) to 1900-03-01. However, Excel displays the minimum valid date as 1900-01-00, although 0 is not a valid description for a day of month.
         /// In conformance to the OAdate specifications, the maximum valid date is 9999-12-31 23:59:59 (plus 999 milliseconds).<br/>
@@ -95,7 +95,7 @@ namespace NanoXLSX
         /// <param name="time">Time to process. The date component of the timespan is neglected</param>
         /// <param name="culture">CultureInfo for proper formatting of the decimal point</param>
         /// <returns>Time as number</returns>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed timespan is invalid</exception>
+        /// <exception cref="Exceptions.FormatException">Test of the ConvertArray methodFormatException if the passed timespan is invalid</exception>
         /// <remarks>The time is represented by a OAdate without the date component. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
         public static string GetOATimeString(TimeSpan time, IFormatProvider culture)
         {

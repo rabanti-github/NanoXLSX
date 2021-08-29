@@ -210,7 +210,7 @@ namespace NanoXLSX.Styles
         /// Method to calculate the internal text rotation. The text direction and rotation are handled internally by the text rotation value
         /// </summary>
         /// <returns>Returns the valid rotation in degrees for internal use (LowLevel)</returns>
-        /// <exception cref="FormatException">Throws a FormatException if the rotation angle (-90 to 90) is out of range</exception>
+        /// <exception cref="FormatException">Test of the ConvertArray methodFormatException if the rotation angle (-90 to 90) is out of range</exception>
         internal int CalculateInternalRotation()
         {
             if (textRotation < -90 || textRotation > 90)

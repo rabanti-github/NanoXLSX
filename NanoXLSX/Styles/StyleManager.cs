@@ -69,7 +69,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <param name="hash">Hash of the border</param>
         /// <returns>Determined border</returns>
-        /// <exception cref="StyleException">Throws a StyleException if the border was not found in the style manager</exception>
+        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the border was not found in the style manager</exception>
         public Border GetBorderByHash(int hash)
         {
             AbstractStyle component = GetComponentByHash(ref borders, hash);
@@ -105,7 +105,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <param name="hash">Hash of the cellXf</param>
         /// <returns>Determined cellXf</returns>
-        /// <exception cref="StyleException">Throws a StyleException if the cellXf was not found in the style manager</exception>
+        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the cellXf was not found in the style manager</exception>
         public CellXf GetCellXfByHash(int hash)
         {
             AbstractStyle component = GetComponentByHash(ref cellXfs, hash);
@@ -141,7 +141,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <param name="hash">Hash of the fill</param>
         /// <returns>Determined fill</returns>
-        /// <exception cref="StyleException">Throws a StyleException if the fill was not found in the style manager</exception>
+        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the fill was not found in the style manager</exception>
         public Fill GetFillByHash(int hash)
         {
             AbstractStyle component = GetComponentByHash(ref fills, hash);
@@ -177,7 +177,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <param name="hash">Hash of the font</param>
         /// <returns>Determined font</returns>
-        /// <exception cref="StyleException">Throws a StyleException if the font was not found in the style manager</exception>
+        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the font was not found in the style manager</exception>
         public Font GetFontByHash(int hash)
         {
             AbstractStyle component = GetComponentByHash(ref fonts, hash);
@@ -213,7 +213,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <param name="hash">Hash of the numberFormat</param>
         /// <returns>Determined numberFormat</returns>
-        /// <exception cref="StyleException">Throws a StyleException if the numberFormat was not found in the style manager</exception>
+        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the numberFormat was not found in the style manager</exception>
         public NumberFormat GetNumberFormatByHash(int hash)
         {
             AbstractStyle component = GetComponentByHash(ref numberFormats, hash);
@@ -249,7 +249,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <param name="name">Name of the style</param>
         /// <returns>Determined style</returns>
-        /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style manager</exception>
+        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the style was not found in the style manager</exception>
         public Style GetStyleByName(string name)
         {
             int len = styles.Count;
@@ -268,7 +268,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <param name="hash">Hash of the style</param>
         /// <returns>Determined style</returns>
-        /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style manager</exception>
+        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the style was not found in the style manager</exception>
         public Style GetStyleByHash(int hash)
         {
             AbstractStyle component = GetComponentByHash(ref styles, hash);
@@ -406,7 +406,7 @@ namespace NanoXLSX.Styles
         /// Removes a style and all its components from the style manager
         /// </summary>
         /// <param name="styleName">Name of the style to remove</param>
-        /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style manager</exception>
+        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the style was not found in the style manager</exception>
         public void RemoveStyle(string styleName)
         {
             bool match = false;

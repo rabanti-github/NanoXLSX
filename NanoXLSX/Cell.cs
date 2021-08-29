@@ -343,7 +343,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="isLocked">If true, the cell will be locked if the worksheet is protected</param>
         /// <param name="isHidden">If true, the value of the cell will be invisible if the worksheet is protected</param>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the style used to lock cells cannot be referenced</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the style used to lock cells cannot be referenced</exception>
         /// <remarks>The listed exception should never happen because the mentioned style is internally generated</remarks>
         public void SetCellLockedState(bool isLocked, bool isHidden)
         {
@@ -460,7 +460,7 @@ namespace NanoXLSX
         /// <param name="range">Range to process</param>
         /// <returns>List of cell addresses</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception>
+        /// <exception cref="RangeException">Throws a RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception>
         public static IEnumerable<Address> GetCellRange(string range)
         {
             Range range2 = ResolveCellRange(range);
@@ -474,7 +474,7 @@ namespace NanoXLSX
         /// <param name="endAddress">End address as string in the format A1 - XFD1048576</param>
         /// <returns>List of cell addresses</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception> 
+        /// <exception cref="RangeException">Throws a RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception> 
         public static IEnumerable<Address> GetCellRange(string startAddress, string endAddress)
         {
             Address start = ResolveCellCoordinate(startAddress);
@@ -490,7 +490,7 @@ namespace NanoXLSX
         /// <param name="endColumn">End column (zero based)</param>
         /// <param name="endRow">End row (zero based)</param>
         /// <returns>List of cell addresses</returns>
-        /// <exception cref="RangeException">Throws an RangeException if the value of one passed address parts is out of range (A-XFD and 1 to 1048576) </exception>
+        /// <exception cref="RangeException">Throws a RangeException if the value of one passed address parts is out of range (A-XFD and 1 to 1048576) </exception>
         public static IEnumerable<Address> GetCellRange(int startColumn, int startRow, int endColumn, int endRow)
         {
             Address start = new Address(startColumn, startRow);
@@ -505,7 +505,7 @@ namespace NanoXLSX
         /// <param name="endAddress">End address</param>
         /// <returns>List of cell addresses</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a part of the passed addresses is malformed</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the value of one passed address is out of range (A-XFD and 1 to 1048576) </exception>
+        /// <exception cref="RangeException">Throws a RangeException if the value of one passed address is out of range (A-XFD and 1 to 1048576) </exception>
         public static IEnumerable<Address> GetCellRange(Address startAddress, Address endAddress)
         {
             int startColumn;
@@ -549,7 +549,7 @@ namespace NanoXLSX
         /// <param name="column">Column number of the cell (zero-based)</param>
         /// <param name="row">Row number of the cell (zero-based)</param>
         /// <param name="type">Optional referencing type of the address</param>
-        /// <exception cref="RangeException">Throws an RangeException if the start or end address was out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the start or end address was out of range</exception>
         /// <returns>Cell Address as string in the format A1 - XFD1048576. Depending on the type, Addresses like '$A55', 'B$2' or '$A$5' are possible outputs</returns>
         public static string ResolveCellAddress(int column, int row, AddressType type = AddressType.Default)
         {
@@ -574,7 +574,7 @@ namespace NanoXLSX
         /// <param name="address">Address as string in the format A1 - XFD1048576</param>
         /// <returns>Struct with row and column</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed address is malformed</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the value of the passed address is out of range (A-XFD and 1 to 1048576) </exception>
+        /// <exception cref="RangeException">Throws a RangeException if the value of the passed address is out of range (A-XFD and 1 to 1048576) </exception>
         public static Address ResolveCellCoordinate(string address)
         {
             int row;
@@ -591,7 +591,7 @@ namespace NanoXLSX
         /// <param name="column">Column number of the cell (zero-based) as out parameter</param>
         /// <param name="row">Row number of the cell (zero-based) as out parameter</param>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the range address was malformed</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the row or column number was out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the row or column number was out of range</exception>
         public static void ResolveCellCoordinate(string address, out int column, out int row)
         {
             AddressType dummy;
@@ -607,7 +607,7 @@ namespace NanoXLSX
         /// <param name="row">Row number of the cell (zero-based) as out parameter</param>
         /// <param name="addressType">Address type of the cell (if defined as modifiers in the address string)</param>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the range address was malformed</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the row or column number was out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the row or column number was out of range</exception>
         public static void ResolveCellCoordinate(string address, out int column, out int row, out AddressType addressType)
         {
             if (string.IsNullOrEmpty(address))
@@ -649,7 +649,7 @@ namespace NanoXLSX
         /// <param name="range">Range to process</param>
         /// <returns>Range object</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the start or end address was malformed</exception>
-        /// <exception cref="RangeException">Throws an RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception>
+        /// <exception cref="RangeException">Throws a RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception>
         public static Range ResolveCellRange(string range)
         {
             if (string.IsNullOrEmpty(range))
@@ -669,7 +669,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="columnAddress">Column address (A - XFD)</param>
         /// <returns>Column number (zero-based)</returns>
-        /// <exception cref="RangeException">Throws an RangeException if the passed address was out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed address was out of range</exception>
         public static int ResolveColumn(string columnAddress)
         {
             if (String.IsNullOrEmpty(columnAddress))
@@ -696,7 +696,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="columnNumber">Column number (zero-based)</param>
         /// <returns>Column address (A - XFD)</returns>
-        /// <exception cref="RangeException">Throws an RangeException if the passed column number was out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passed column number was out of range</exception>
         public static string ResolveColumnAddress(int columnNumber)
         {
             ValidateColumnNumber(columnNumber);

@@ -229,17 +229,42 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(0, worksheet.GetCurrentColumnNumber()); // should reset
         }
 
-        [Fact(DisplayName = "Test of the GoToNextColumn function")]
-        public void GoToNextColumnTest()
+        [Theory(DisplayName = "Test of the GoToNextColumn function")]
+        [InlineData(0, 0, 0)]
+        [InlineData(0, 1, 1)]
+        [InlineData(1, 1, 2)]
+        [InlineData(3, 10, 13)]
+        [InlineData(3, -1, 2)]
+        [InlineData(3, -3, 0)]
+        public void GoToNextColumnTest(int initialColumnNumber, int number, int expectedColumnNumber)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Equal(0, worksheet.GetCurrentColumnNumber());
-            worksheet.GoToNextColumn();
-            Assert.Equal(1, worksheet.GetCurrentColumnNumber());
-            worksheet.GoToNextColumn(5);
-            Assert.Equal(6, worksheet.GetCurrentColumnNumber());
-            worksheet.GoToNextColumn(-2);
-            Assert.Equal(4, worksheet.GetCurrentColumnNumber());
+            worksheet.SetCurrentColumnNumber(initialColumnNumber);
+            worksheet.GoToNextColumn(number);
+            Assert.Equal(expectedColumnNumber, worksheet.GetCurrentColumnNumber());
+        }
+
+        [Theory(DisplayName = "Test of the GoToNextColumn function with the option to keep the row")]
+        [InlineData("A1", 0, false, "A1")]
+        [InlineData("A1", 0, true, "A1")]
+        [InlineData("A1", 1, false, "B1")]
+        [InlineData("A1", 1, true, "B1")]
+        [InlineData("C10", 1, false, "D1")]
+        [InlineData("C10", 1, true, "D10")]
+        [InlineData("R5", 5, false, "W1")]
+        [InlineData("R5", 5, true, "W5")]
+        [InlineData("F5", -3, false, "C1")]
+        [InlineData("F5", -3, true, "C5")]
+        [InlineData("F5", -5, false, "A1")]
+        [InlineData("F5", -5, true, "A5")]
+        public void GoToNextColumnTest2(string initialAddress, int number, bool keepRowPosition, string expectedAddress)
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.SetCurrentCellAddress(initialAddress);
+            worksheet.GoToNextColumn(number, keepRowPosition);
+            Address expected = new Address(expectedAddress);
+            Assert.Equal(expected.Column, worksheet.GetCurrentColumnNumber());
+            Assert.Equal(expected.Row, worksheet.GetCurrentRowNumber());
         }
 
         [Theory(DisplayName = "Test of the failing GoToNextColumn function on invalid values")]
@@ -247,7 +272,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData(10, -12)]
         [InlineData(0, 16384)]
         [InlineData(0, 20383)]
-        public void GoToNextColumnTest2(int initialValue, int value)
+        public void GoToNextColumnFailTest(int initialValue, int value)
         {
             Worksheet worksheet = new Worksheet();
             worksheet.SetCurrentColumnNumber(initialValue);
