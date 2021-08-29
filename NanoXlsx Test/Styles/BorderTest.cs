@@ -53,7 +53,7 @@ namespace NanoXLSX_Test.Styles
             Assert.Equal(typeof(StyleException), ex.GetType());
         }
 
-        [Theory(DisplayName = "Test of the get and set function of the BottomColor property")]
+        [Theory(DisplayName = "Test of the get and set function of the BottomStyle property")]
         [InlineData(Border.StyleValue.dashDot)]
         [InlineData(Border.StyleValue.dashDotDot)]
         [InlineData(Border.StyleValue.dashed)]
@@ -99,7 +99,7 @@ namespace NanoXLSX_Test.Styles
             Assert.Equal(typeof(StyleException), ex.GetType());
         }
 
-        [Theory(DisplayName = "Test of the get and set function of the BottomColor property")]
+        [Theory(DisplayName = "Test of the get and set function of the DiagonalStyle property")]
         [InlineData(Border.StyleValue.dashDot)]
         [InlineData(Border.StyleValue.dashDotDot)]
         [InlineData(Border.StyleValue.dashed)]
