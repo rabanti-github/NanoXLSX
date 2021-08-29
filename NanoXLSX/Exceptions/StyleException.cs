@@ -15,15 +15,6 @@ namespace NanoXLSX.Exceptions
     [Serializable]
     public class StyleException : Exception
     {
-        public static readonly string MISSING_REFERENCE = "A reference is missing in the style definition";
-        public static readonly string GENERAL = "A general style exception occurred";
-        public static readonly string NOT_SUPPORTED = "A not supported style component could not be handled";
-
-        /// <summary>
-        /// Gets or sets the title of the exception
-        /// </summary>
-        public string ExceptionTitle { get; set; }
-
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -33,20 +24,18 @@ namespace NanoXLSX.Exceptions
         /// Constructor with passed message
         /// </summary>
         /// <param name="message">Message of the exception</param>
-        /// <param name="title">Title of the exception</param>
-        public StyleException(string title, string message)
-            : base(title + ": " + message)
-        { ExceptionTitle = title; }
+        public StyleException(string message)
+            : base(message)
+        { }
 
         /// <summary>
         /// Constructor with passed message and inner exception
         /// </summary>
         /// <param name="message">Message of the exception</param>
         /// <param name="inner">Inner exception</param>
-        /// <param name="title">Title of the exception</param>
-        public StyleException(string title, string message, Exception inner)
+        public StyleException(string message, Exception inner)
             : base(message, inner)
-        { ExceptionTitle = title; }
+        { }
     }
 
 }

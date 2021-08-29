@@ -89,7 +89,7 @@ namespace NanoXLSX.LowLevel
                     }
                     else
                     {
-                        throw new IOException("LoadException", "No valid stream or file path was provided to open");
+                        throw new IOException("No valid stream or file path was provided to open");
                     }
 
                     memoryStream.Position = 0;
@@ -132,7 +132,7 @@ namespace NanoXLSX.LowLevel
             }
             catch (Exception ex)
             {
-                throw new IOException("LoadException", "There was an error while reading an XLSX file. Please see the inner exception:", ex);
+                throw new IOException("There was an error while reading an XLSX file. Please see the inner exception:", ex);
             }
         }
 

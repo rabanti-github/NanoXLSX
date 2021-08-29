@@ -85,7 +85,7 @@ namespace NanoXLSX
             }
             catch (Exception e)
             {
-                throw new Exceptions.FormatException("ConversionException", "The date could not be transformed into Excel format (OADate).", e);
+                throw new Exceptions.FormatException("The date could not be transformed into Excel format (OADate).", e);
             }
         }
 
@@ -107,7 +107,7 @@ namespace NanoXLSX
             }
             catch (Exception e)
             {
-                throw new Exceptions.FormatException("ConversionException", "The time could not be transformed into Excel format (OADate).", e);
+                throw new Exceptions.FormatException("The time could not be transformed into Excel format (OADate).", e);
             }
         }
 

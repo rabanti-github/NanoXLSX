@@ -183,7 +183,7 @@ namespace NanoXLSX.Styles
                 }
                 else
                 {
-                    throw new StyleException(StyleException.GENERAL, "The indent value '" + value + "' is not valid. It must be >= 0");
+                    throw new StyleException("The indent value '" + value + "' is not valid. It must be >= 0");
                 }
             }
         }

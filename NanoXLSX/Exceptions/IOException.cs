@@ -16,11 +16,6 @@ namespace NanoXLSX.Exceptions
     public class IOException : Exception
     {
         /// <summary>
-        /// Gets or sets the title of the exception
-        /// </summary>
-        public string ExceptionTitle { get; set; }
-
-        /// <summary>
         /// Default constructor
         /// </summary>
         public IOException()
@@ -29,18 +24,16 @@ namespace NanoXLSX.Exceptions
         /// Constructor with passed message
         /// </summary>
         /// <param name="message">Message of the exception</param>
-        /// <param name="title">Title of the exception</param>
-        public IOException(string title, string message)
-            : base(title + ": " + message)
-        { ExceptionTitle = title; }
+        public IOException(string message)
+            : base(message)
+        { }
         /// <summary>
         /// Constructor with passed message and inner exception
         /// </summary>
         /// <param name="message">Message of the exception</param>
         /// <param name="inner">Inner exception</param>
-        /// <param name="title">Title of the exception</param>
-        public IOException(string title, string message, Exception inner)
+        public IOException(string message, Exception inner)
             : base(message, inner)
-        { ExceptionTitle = title; }
+        { }
     }
 }

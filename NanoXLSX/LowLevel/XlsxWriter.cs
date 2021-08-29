@@ -198,7 +198,7 @@ namespace NanoXLSX.LowLevel
         {
             if (workbook.Worksheets.Count == 0)
             {
-                throw new RangeException(RangeException.GENERAL, "The workbook can not be created because no worksheet was defined.");
+                throw new RangeException("The workbook can not be created because no worksheet was defined.");
             }
             StringBuilder sb = new StringBuilder();
             sb.Append("<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">");
@@ -504,7 +504,7 @@ namespace NanoXLSX.LowLevel
             }
             catch (Exception e)
             {
-                throw new IOException("SaveException", "An error occurred while saving. See inner exception for details: " + e.Message, e);
+                throw new IOException("An error occurred while saving. See inner exception for details: " + e.Message, e);
             }
         }
 
@@ -592,7 +592,7 @@ namespace NanoXLSX.LowLevel
             }
             catch (Exception e)
             {
-                throw new IOException("SaveException", "An error occurred while saving. See inner exception for details: " + e.Message, e);
+                throw new IOException("An error occurred while saving. See inner exception for details: " + e.Message, e);
             }
         }
 
@@ -676,7 +676,7 @@ namespace NanoXLSX.LowLevel
             }
             catch (Exception e)
             {
-                throw new IOException("MemoryStreamException", "The XML document could not be saved into the memory stream", e);
+                throw new IOException("The XML document could not be saved into the memory stream", e);
             }
         }
 

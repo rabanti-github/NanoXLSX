@@ -109,7 +109,7 @@ namespace NanoXLSX.Styles
             {
                 if (value < 1)
                 {
-                    throw new StyleException(StyleException.GENERAL, "The color theme number " + value + " is invalid. Should be >0");
+                    throw new StyleException("The color theme number " + value + " is invalid. Should be >0");
                 }
                 colorTheme = value;
             }
@@ -169,7 +169,7 @@ namespace NanoXLSX.Styles
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new StyleException(StyleException.GENERAL, "The font name was null or empty");
+                    throw new StyleException("The font name was null or empty");
                 }
                 name = value;
             }

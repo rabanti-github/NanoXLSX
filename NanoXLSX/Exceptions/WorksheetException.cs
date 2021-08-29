@@ -17,11 +17,6 @@ namespace NanoXLSX.Exceptions
     public class WorksheetException : Exception
     {
         /// <summary>
-        /// Gets or sets the title of the exception
-        /// </summary>
-        public string ExceptionTitle { get; set; }
-
-        /// <summary>
         /// Default constructor
         /// </summary>
         public WorksheetException()
@@ -30,10 +25,9 @@ namespace NanoXLSX.Exceptions
         /// Constructor with passed message
         /// </summary>
         /// <param name="message">Message of the exception</param>
-        /// <param name="title">Title of the exception</param>
-        public WorksheetException(string title, string message)
-            : base(title + ": " + message)
-        { ExceptionTitle = title; }
+        public WorksheetException(string message)
+            : base(message)
+        {  }
     }
 
     #region doc

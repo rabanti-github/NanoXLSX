@@ -207,7 +207,7 @@ namespace NanoXLSX
             {
                 if (value < MIN_COLUMN_WIDTH || value > MAX_COLUMN_WIDTH)
                 {
-                    throw new RangeException(RangeException.GENERAL, "The passed default column width is out of range (" + MIN_COLUMN_WIDTH + " to " + MAX_COLUMN_WIDTH + ")");
+                    throw new RangeException("The passed default column width is out of range (" + MIN_COLUMN_WIDTH + " to " + MAX_COLUMN_WIDTH + ")");
                 }
                 defaultColumnWidth = value;
             }
@@ -224,7 +224,7 @@ namespace NanoXLSX
             {
                 if (value < MIN_ROW_HEIGHT || value > MAX_ROW_HEIGHT)
                 {
-                    throw new RangeException(RangeException.GENERAL, "The passed default row height is out of range (" + MIN_ROW_HEIGHT + " to " + MAX_ROW_HEIGHT + ")");
+                    throw new RangeException("The passed default row height is out of range (" + MIN_ROW_HEIGHT + " to " + MAX_ROW_HEIGHT + ")");
                 }
                 defaultRowHeight = value;
             }
@@ -271,7 +271,7 @@ namespace NanoXLSX
             {
                 if (value < 1)
                 {
-                    throw new FormatException("InvalidIDException", "The ID " + value + " is invalid. Worksheet IDs must be >0");
+                    throw new FormatException("The ID " + value + " is invalid. Worksheet IDs must be >0");
                 }
                 sheetID = value;
             } 
@@ -824,7 +824,7 @@ namespace NanoXLSX
             List<Address> addresses = Cell.GetCellRange(startAddress, endAddress) as List<Address>;
             if (values.Count != addresses.Count)
             {
-                throw new RangeException(RangeException.GENERAL, "The number of passed values (" + values.Count + ") differs from the number of cells within the range (" + addresses.Count + ")");
+                throw new RangeException("The number of passed values (" + values.Count + ") differs from the number of cells within the range (" + addresses.Count + ")");
             }
             List<Cell> list = Cell.ConvertArray(values) as List<Cell>;
             int len = values.Count;
@@ -951,7 +951,7 @@ namespace NanoXLSX
             }
             else
             {
-                throw new FormatException("InvalidAddressExpression", "The passed address'" + addressExpression + "' is neither a cell address, nor a range");
+                throw new FormatException("The passed address'" + addressExpression + "' is neither a cell address, nor a range");
             }
         }
 
@@ -1027,7 +1027,7 @@ namespace NanoXLSX
         {
             if (!cells.ContainsKey(address.GetAddress()))
             {
-                throw new WorksheetException("CellNotFoundException", "The cell with the address " + address.GetAddress() + " does not exist in this worksheet");
+                throw new WorksheetException("The cell with the address " + address.GetAddress() + " does not exist in this worksheet");
             }
             return cells[address.GetAddress()];
         }
@@ -1326,7 +1326,7 @@ namespace NanoXLSX
             {
                 if (item.Value.ResolveEnclosedAddresses().Intersect(cells).Any())
                 {
-                    throw new RangeException("ConflictingRangeException", "The passed range: " + value.ToString() + " contains cells that are already in the defined merge range: " + item.Key);
+                    throw new RangeException("The passed range: " + value.ToString() + " contains cells that are already in the defined merge range: " + item.Key);
                 }
             }
             mergedCells.Add(key, value);
@@ -1479,7 +1479,7 @@ namespace NanoXLSX
             range = Utils.ToUpper(range);
             if (range == null || !mergedCells.ContainsKey(range))
             {
-                throw new RangeException("UnknownRangeException", "The cell range " + range + " was not found in the list of merged cell ranges");
+                throw new RangeException("The cell range " + range + " was not found in the list of merged cell ranges");
             }
 
             List<Address> addresses = Cell.GetCellRange(range) as List<Address>;
@@ -1627,7 +1627,7 @@ namespace NanoXLSX
             Cell.ValidateColumnNumber(columnNumber);
             if (width < MIN_COLUMN_WIDTH || width > MAX_COLUMN_WIDTH)
             {
-                throw new RangeException(RangeException.GENERAL, "The column width (" + width + ") is out of range. Range is from " + MIN_COLUMN_WIDTH + " to " + MAX_COLUMN_WIDTH + " (chars).");
+                throw new RangeException("The column width (" + width + ") is out of range. Range is from " + MIN_COLUMN_WIDTH + " to " + MAX_COLUMN_WIDTH + " (chars).");
             }
             if (columns.ContainsKey(columnNumber))
             {
@@ -1753,7 +1753,7 @@ namespace NanoXLSX
             Cell.ValidateRowNumber(rowNumber);
             if (height < MIN_ROW_HEIGHT || height > MAX_ROW_HEIGHT)
             {
-                throw new RangeException(RangeException.GENERAL, "The row height (" + height + ") is out of range. Range is from " + MIN_ROW_HEIGHT + " to " + MAX_ROW_HEIGHT + " (equals 546px).");
+                throw new RangeException("The row height (" + height + ") is out of range. Range is from " + MIN_ROW_HEIGHT + " to " + MAX_ROW_HEIGHT + " (equals 546px).");
             }
             if (rowHeights.ContainsKey(rowNumber))
             {
@@ -1900,12 +1900,12 @@ namespace NanoXLSX
             {
                 if (numberOfColumnsFromLeft != null && topLeftCell.Column < numberOfColumnsFromLeft.Value)
                 {
-                    throw new WorksheetException("InvalidTopLeftCellException", "The column number " + topLeftCell.Column +
+                    throw new WorksheetException("The column number " + topLeftCell.Column +
                         " is not valid for a frozen, vertical split with the split pane column number " + numberOfColumnsFromLeft.Value);
                 }
                 if (numberOfRowsFromTop != null && topLeftCell.Row < numberOfRowsFromTop.Value)
                 {
-                    throw new WorksheetException("InvalidTopLeftCellException", "The row number " + topLeftCell.Row +
+                    throw new WorksheetException("The row number " + topLeftCell.Row +
                         " is not valid for a frozen, horizontal split height the split pane row number " + numberOfRowsFromTop.Value);
                 }
             }
@@ -2002,7 +2002,7 @@ namespace NanoXLSX
         {
             if (workbook == null)
             {
-                throw new WorksheetException("MissingReferenceException", "The workbook reference is null");
+                throw new WorksheetException("The workbook reference is null");
             }
             if (!WorksheetExists(name, workbook))
             { return name; }

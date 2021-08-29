@@ -42,7 +42,7 @@ namespace NanoXLSX.Styles
         {
             if (source == null || GetType() != source.GetType() && GetType() != reference.GetType())
             {
-                throw new StyleException("CopyPropertyException", "The objects of the source, target and reference for style appending are not of the same type");
+                throw new StyleException("The objects of the source, target and reference for style appending are not of the same type");
             }
             PropertyInfo[] infos = GetType().GetProperties();
             PropertyInfo sourceInfo;

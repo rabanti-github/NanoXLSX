@@ -256,7 +256,7 @@ namespace NanoXLSX
             {
                 if (item.SheetName == name)
                 {
-                    throw new WorksheetException("WorksheetNameAlreadxExistsException", "The worksheet with the name '" + name + "' already exists.");
+                    throw new WorksheetException("The worksheet with the name '" + name + "' already exists.");
                 }
             }
             int number = GetNextWorksheetId();
@@ -315,13 +315,13 @@ namespace NanoXLSX
             {
                 if (string.IsNullOrEmpty(worksheet.SheetName))
                 {
-                    throw new WorksheetException("MissingWorksheetNameException", "The name of the passed worksheet is null or empty.");
+                    throw new WorksheetException("The name of the passed worksheet is null or empty.");
                 }
                 for (int i = 0; i < worksheets.Count; i++)
                 {
                     if (worksheets[i].SheetName == worksheet.SheetName)
                     {
-                        throw new WorksheetException("WorksheetNameAlreadyExistsException", "The worksheet with the name '" + worksheet.SheetName + "' already exists.");
+                        throw new WorksheetException("The worksheet with the name '" + worksheet.SheetName + "' already exists.");
                     }
                 }
             }
@@ -364,7 +364,7 @@ namespace NanoXLSX
         {
             if (style == null) 
             {
-                throw new StyleException("MissingReferenceException", "The style to remove is not defined");
+                throw new StyleException("The style to remove is not defined");
             }
             RemoveStyle(style.Name, onlyIfUnused);
         }
@@ -380,7 +380,7 @@ namespace NanoXLSX
         {
             if (string.IsNullOrEmpty(styleName))
             {
-                throw new StyleException("MissingReferenceException", "The style to remove is not defined (no name specified)");
+                throw new StyleException("The style to remove is not defined (no name specified)");
             }
             // noOp / deprecated
         }
@@ -396,7 +396,7 @@ namespace NanoXLSX
             Worksheet worksheetToRemove = worksheets.FirstOrDefault(w => w.SheetName == name);
             if (worksheetToRemove == null)
             {
-                throw new WorksheetException("UnknownWorksheetException", "The worksheet with the name '" + name + "' does not exist.");
+                throw new WorksheetException("The worksheet with the name '" + name + "' does not exist.");
             }
             int index = worksheets.IndexOf(worksheetToRemove);
             bool resetCurrentWorksheet = worksheetToRemove == currentWorksheet;
@@ -414,7 +414,7 @@ namespace NanoXLSX
         {
             if (index < 0 || index >= worksheets.Count)
             {
-                throw new WorksheetException("OutOfRangeException", "The worksheet index " + index + " is out of range");
+                throw new WorksheetException("The worksheet index " + index + " is out of range");
             }
             bool resetCurrentWorksheet = worksheets[index] == currentWorksheet;
             RemoveWorksheet(index, resetCurrentWorksheet);
@@ -531,7 +531,7 @@ namespace NanoXLSX
             currentWorksheet = worksheets.FirstOrDefault(w => w.SheetName == name);
             if (currentWorksheet == null)
             {
-                throw new WorksheetException("MissingReferenceException", "The worksheet with the name '" + name + "' does not exist.");
+                throw new WorksheetException("The worksheet with the name '" + name + "' does not exist.");
             }
             shortener.SetCurrentWorksheet(currentWorksheet);
             return currentWorksheet;
@@ -547,7 +547,7 @@ namespace NanoXLSX
         {
             if (worksheetIndex < 0 || worksheetIndex > worksheets.Count - 1)
             {
-                throw new RangeException(RangeException.GENERAL, "The worksheet index " + worksheetIndex + " is out of range");
+                throw new RangeException("The worksheet index " + worksheetIndex + " is out of range");
             }
             currentWorksheet = worksheets[worksheetIndex];
             shortener.SetCurrentWorksheet(currentWorksheet);
@@ -564,7 +564,7 @@ namespace NanoXLSX
             int index = worksheets.IndexOf(worksheet);
             if (index < 0)
             {
-                throw new WorksheetException("UnknownWorksheetException", "The passed worksheet object is not in the worksheet collection.");
+                throw new WorksheetException("The passed worksheet object is not in the worksheet collection.");
             }
             currentWorksheet = worksheets[index];
             shortener.SetCurrentWorksheet(worksheet);
@@ -580,7 +580,7 @@ namespace NanoXLSX
             selectedWorksheet =  worksheets.FindIndex(w => w.SheetName == name);
             if (selectedWorksheet < 0)
             {
-                throw new WorksheetException("MissingReferenceException", "The worksheet with the name '" + name + "' does not exist.");
+                throw new WorksheetException("The worksheet with the name '" + name + "' does not exist.");
             }
         }
 
@@ -594,7 +594,7 @@ namespace NanoXLSX
         {
             if (worksheetIndex < 0 || worksheetIndex > worksheets.Count - 1)
             {
-                throw new RangeException(RangeException.GENERAL, "The worksheet index " + worksheetIndex + " is out of range");
+                throw new RangeException("The worksheet index " + worksheetIndex + " is out of range");
             }
             selectedWorksheet = worksheetIndex;
         }
@@ -610,7 +610,7 @@ namespace NanoXLSX
             selectedWorksheet = worksheets.IndexOf(worksheet);
             if (selectedWorksheet < 0)
             {
-                throw new WorksheetException("UnknownWorksheetException", "The passed worksheet object is not in the worksheet collection.");
+                throw new WorksheetException("The passed worksheet object is not in the worksheet collection.");
             }
         }
 

@@ -181,7 +181,7 @@ namespace NanoXLSX.Styles
         {
             if (CurrentBorder == null || CurrentCellXf == null || CurrentFill == null || CurrentFont == null || CurrentNumberFormat == null)
             {
-                throw new StyleException("MissingReferenceException", "The hash of the style could not be created because one or more components are missing as references");
+                throw new StyleException("The hash of the style could not be created because one or more components are missing as references");
             }
             int p = 241;
             int r = 1;
@@ -201,7 +201,7 @@ namespace NanoXLSX.Styles
         {
             if (CurrentBorder == null || CurrentCellXf == null || CurrentFill == null || CurrentFont == null || CurrentNumberFormat == null)
             {
-                throw new StyleException("MissingReferenceException", "The style could not be copied because one or more components are missing as references");
+                throw new StyleException("The style could not be copied because one or more components are missing as references");
             }
             Style copy = new Style();
             copy.CurrentBorder = CurrentBorder.CopyBorder();

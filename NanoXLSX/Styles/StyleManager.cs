@@ -75,7 +75,7 @@ namespace NanoXLSX.Styles
             AbstractStyle component = GetComponentByHash(ref borders, hash);
             if (component == null)
             {
-                throw new StyleException(StyleException.MISSING_REFERENCE, "The style component with the hash '" + hash + "' was not found");
+                throw new StyleException("The style component with the hash '" + hash + "' was not found");
             }
             return (Border)component;
         }
@@ -111,7 +111,7 @@ namespace NanoXLSX.Styles
             AbstractStyle component = GetComponentByHash(ref cellXfs, hash);
             if (component == null)
             {
-                throw new StyleException(StyleException.MISSING_REFERENCE, "The style component with the hash '" + hash + "' was not found");
+                throw new StyleException("The style component with the hash '" + hash + "' was not found");
             }
             return (CellXf)component;
         }
@@ -147,7 +147,7 @@ namespace NanoXLSX.Styles
             AbstractStyle component = GetComponentByHash(ref fills, hash);
             if (component == null)
             {
-                throw new StyleException(StyleException.MISSING_REFERENCE, "The style component with the hash '" + hash + "' was not found");
+                throw new StyleException("The style component with the hash '" + hash + "' was not found");
             }
             return (Fill)component;
         }
@@ -183,7 +183,7 @@ namespace NanoXLSX.Styles
             AbstractStyle component = GetComponentByHash(ref fonts, hash);
             if (component == null)
             {
-                throw new StyleException(StyleException.MISSING_REFERENCE, "The style component with the hash '" + hash + "' was not found");
+                throw new StyleException("The style component with the hash '" + hash + "' was not found");
             }
             return (Font)component;
         }
@@ -219,7 +219,7 @@ namespace NanoXLSX.Styles
             AbstractStyle component = GetComponentByHash(ref numberFormats, hash);
             if (component == null)
             {
-                throw new StyleException(StyleException.MISSING_REFERENCE, "The style component with the hash '" + hash + "' was not found");
+                throw new StyleException("The style component with the hash '" + hash + "' was not found");
             }
             return (NumberFormat)component;
         }
@@ -260,7 +260,7 @@ namespace NanoXLSX.Styles
                     return (Style)styles[i];
                 }
             }
-            throw new StyleException(StyleException.MISSING_REFERENCE, "The style with the name '" + name + "' was not found");
+            throw new StyleException("The style with the name '" + name + "' was not found");
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace NanoXLSX.Styles
             AbstractStyle component = GetComponentByHash(ref styles, hash);
             if (component == null)
             {
-                throw new StyleException("MissingReferenceException", "The style component with the hash '" + hash + "' was not found");
+                throw new StyleException("The style component with the hash '" + hash + "' was not found");
             }
             return (Style)component;
         }
@@ -366,7 +366,7 @@ namespace NanoXLSX.Styles
                 Style s = (Style)style;
                 if (styleNames.Contains(s.Name))
                 {
-                    throw new StyleException("StyleAlreadyExistsException", "The style with the name '" + s.Name + "' already exists");
+                    throw new StyleException("The style with the name '" + s.Name + "' already exists");
                 }
                 if (GetComponentByHash(ref styles, hash) == null)
                 {
@@ -397,7 +397,7 @@ namespace NanoXLSX.Styles
             }
             else
             {
-                throw new StyleException("UnsupportedComponent", "The component ' " + nameof(style) + "' is not implemented yet");
+                throw new StyleException("The component ' " + nameof(style) + "' is not implemented yet");
             }
             return hash;
         }
@@ -423,7 +423,7 @@ namespace NanoXLSX.Styles
             }
             if (!match)
             {
-                throw new StyleException("MissingReferenceException", "The style with the name '" + styleName + "' was not found in the style manager");
+                throw new StyleException("The style with the name '" + styleName + "' was not found in the style manager");
             }
             styles.RemoveAt(index);
             CleanupStyleComponents();
@@ -571,7 +571,7 @@ namespace NanoXLSX.Styles
                 }
                 else
                 {
-                    throw new StyleException(StyleException.NOT_SUPPORTED, "The component '" + nameof(component) + "' is not implemented yet");
+                    throw new StyleException("The component '" + nameof(component) + "' is not implemented yet");
                 }
             }
             return false;

@@ -28,7 +28,7 @@ namespace NanoXLSX
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new RangeException(RangeException.GENERAL, "The passed address was null or empty");
+                    throw new RangeException("The passed address was null or empty");
                 }
                 number = Cell.ResolveColumn(value);
                 columnAddress = value.ToUpper();
@@ -66,7 +66,7 @@ namespace NanoXLSX
             {
                 if (value < Worksheet.MIN_COLUMN_WIDTH || value > Worksheet.MAX_COLUMN_WIDTH)
                 {
-                    throw new RangeException(RangeException.GENERAL, "The passed column width is out of range (" + Worksheet.MIN_COLUMN_WIDTH + " to " + Worksheet.MAX_COLUMN_WIDTH + ")");
+                    throw new RangeException("The passed column width is out of range (" + Worksheet.MIN_COLUMN_WIDTH + " to " + Worksheet.MAX_COLUMN_WIDTH + ")");
                 }
                 width = value;
             }

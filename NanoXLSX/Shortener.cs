@@ -118,7 +118,7 @@ namespace NanoXLSX
         {
             if (currentWorksheet == null)
             {
-                throw new WorksheetException("UndefinedWorksheetException", "No worksheet was defined");
+                throw new WorksheetException("No worksheet was defined");
             }
         }
 

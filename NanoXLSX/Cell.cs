@@ -371,7 +371,7 @@ namespace NanoXLSX
         {
             if (style == null)
             {
-                throw new StyleException(StyleException.MISSING_REFERENCE, "No style to assign was defined");
+                throw new StyleException("No style to assign was defined");
             }
             cellStyle = unmanaged ? style : StyleRepository.Instance.AddStyle(style);
             return cellStyle;
@@ -674,7 +674,7 @@ namespace NanoXLSX
         {
             if (String.IsNullOrEmpty(columnAddress))
             {
-                throw new RangeException(RangeException.GENERAL, "The passed address was null or empty");
+                throw new RangeException("The passed address was null or empty");
             }
             columnAddress = columnAddress.ToUpper();
             int chr;
@@ -763,7 +763,7 @@ namespace NanoXLSX
         {
             if (column > Worksheet.MAX_COLUMN_NUMBER || column < Worksheet.MIN_COLUMN_NUMBER)
             {
-                throw new RangeException(RangeException.GENERAL, "The column number (" + column + ") is out of range. Range is from " +
+                throw new RangeException("The column number (" + column + ") is out of range. Range is from " +
                     Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
             }
         }
@@ -777,7 +777,7 @@ namespace NanoXLSX
         {
             if (row > Worksheet.MAX_ROW_NUMBER || row < Worksheet.MIN_ROW_NUMBER)
             {
-                throw new RangeException(RangeException.GENERAL, "The row number (" + row + ") is out of range. Range is from " +
+                throw new RangeException("The row number (" + row + ") is out of range. Range is from " +
                     Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
             }
         }

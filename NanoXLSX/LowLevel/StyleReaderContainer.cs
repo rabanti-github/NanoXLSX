@@ -78,7 +78,7 @@ namespace NanoXLSX.LowLevel
             }
             else
             {
-                throw new StyleException(StyleException.GENERAL, "The style definition of the type '" + t.ToString() + "' is unknown or not implemented yet");
+                throw new StyleException("The style definition of the type '" + t.ToString() + "' is unknown or not implemented yet");
             }
         }
 
@@ -102,7 +102,7 @@ namespace NanoXLSX.LowLevel
             }
             else
             {
-                throw new StyleException(StyleException.GENERAL, "The style definition could not be retrieved, because of the invalid style index '" + index + "'");
+                throw new StyleException("The style definition could not be retrieved, because of the invalid style index '" + index + "'");
             }
         }
 
@@ -275,7 +275,7 @@ namespace NanoXLSX.LowLevel
                     NumberFormat numberFormat = numberFormats.Find(x => x.InternalID == index);
                     if (numberFormat == null)
                     {
-                        throw new StyleException(StyleException.GENERAL, "The number format with the numFmtId: " + index + " was not found");
+                        throw new StyleException("The number format with the numFmtId: " + index + " was not found");
                     }
                     return numberFormat;
                 }
@@ -297,7 +297,7 @@ namespace NanoXLSX.LowLevel
                 }
                 else
                 {
-                    throw new StyleException(StyleException.GENERAL, "The style definition of the type '" + type.ToString() + "' is unknown or not implemented yet");
+                    throw new StyleException("The style definition of the type '" + type.ToString() + "' is unknown or not implemented yet");
                 }
             }
             catch (Exception ex)
@@ -308,7 +308,7 @@ namespace NanoXLSX.LowLevel
                 }
                 else
                 {
-                    throw new StyleException(StyleException.GENERAL, "The style definition could not be retrieved. Please see inner exception:", ex);
+                    throw new StyleException("The style definition could not be retrieved. Please see inner exception:", ex);
                 }
             }
         }

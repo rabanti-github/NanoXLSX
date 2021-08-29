@@ -147,7 +147,7 @@ namespace NanoXLSX.Styles
             {
                 if (value < CUSTOMFORMAT_START_NUMBER)
                 {
-                    throw new StyleException(StyleException.GENERAL, "The number '" + value + "' is not a valid custom format ID. Must be at least " + CUSTOMFORMAT_START_NUMBER);
+                    throw new StyleException("The number '" + value + "' is not a valid custom format ID. Must be at least " + CUSTOMFORMAT_START_NUMBER);
                 }
                 customFormatID = value;
             }

@@ -75,7 +75,7 @@ namespace NanoXLSX.LowLevel
             }
             catch (Exception ex)
             {
-                throw new IOException("XMLStreamException", "The XML entry could not be read from the input stream. Please see the inner exception:", ex);
+                throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
             }
         }
 
@@ -121,7 +121,7 @@ namespace NanoXLSX.LowLevel
             }
             catch (Exception ex)
             {
-                throw new IOException("XMLStreamException", "The style information could not be resolved. Please see the inner exception:", ex);
+                throw new IOException("The style information could not be resolved. Please see the inner exception:", ex);
             }
         }
 
@@ -161,7 +161,7 @@ namespace NanoXLSX.LowLevel
             }
             catch (Exception ex)
             {
-                throw new IOException("XMLStreamException", "The style information could not be resolved. Please see the inner exception:", ex);
+                throw new IOException("The style information could not be resolved. Please see the inner exception:", ex);
             }
         }
 

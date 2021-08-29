@@ -101,7 +101,7 @@ namespace NanoXLSX.LowLevel
             }
             catch (Exception ex)
             {
-                throw new IOException("XMLStreamException", "The XML entry could not be read from the " + nameof(stream) +  ". Please see the inner exception:", ex);
+                throw new IOException("The XML entry could not be read from the " + nameof(stream) +  ". Please see the inner exception:", ex);
             }
         }
 
