@@ -18,7 +18,7 @@ namespace NanoXLSX.Exceptions
         /// <summary>
         /// Default constructor
         /// </summary>
-        public RangeException()
+        public RangeException() : base()
         { }
         /// <summary>
         /// Constructor with passed message

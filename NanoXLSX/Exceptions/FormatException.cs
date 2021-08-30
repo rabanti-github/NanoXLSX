@@ -18,7 +18,7 @@ namespace NanoXLSX.Exceptions
         /// <summary>
         /// Default constructor
         /// </summary>
-        public FormatException()
+        public FormatException() : base()
         { }
         /// <summary>
         /// Constructor with passed message
