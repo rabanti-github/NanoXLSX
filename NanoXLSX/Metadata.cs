@@ -30,6 +30,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets or sets the version of the creation application. Default is the library version of NanoXLSX. Use the format xxxxx.yyyyy (e.g. 1.0 or 55.9875) in case of a custom value.
         /// </summary>
+        /// <remarks>Allowed values are null, empty and fractions from 0.0  to 99999.99999 (max. number of digits before and after the period is 5)</remarks>
         public string ApplicationVersion
         {
             get { return applicationVersion; }
@@ -100,7 +101,7 @@ namespace NanoXLSX
 
         #region methods
         /// <summary>
-        /// Checks the format of the passed version string
+        /// Checks the format of the passed version string. Allowed values are null, empty and fractions from 0.0  to 99999.99999 (max. number of digits before and after the period is 5)
         /// </summary>
         /// <exception cref="Exceptions.FormatException">Test of the ConvertArray methodFormatException if the version string is malformed</exception>
         private void CheckVersion()
