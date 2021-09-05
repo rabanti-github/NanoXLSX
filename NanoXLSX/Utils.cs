@@ -9,7 +9,7 @@ using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using NanoXLSX.Exceptions;
-
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX
 {
@@ -20,13 +20,22 @@ namespace NanoXLSX
     {
         #region constants
         /// <summary>
-        /// Minimum valid OAdate value (1900-01-01)
+        /// Minimum valid OAdate value (1900-01-01). However, Excel displays this value as 1900-01-00 (day zero)
         /// </summary>
         public static readonly double MIN_OADATE_VALUE = 0d;
         /// <summary>
         /// Maximum valid OAdate value (9999-12-31)
         /// </summary>
         public static readonly double MAX_OADATE_VALUE = 2958465.9999d;
+        /// <summary>
+        /// First date that can be displayed by Excel. Real values before this date cannot be processed.
+        /// </summary>
+        public static readonly DateTime FIRST_ALLOWED_EXCEL_DATE = new DateTime(1900, 1, 1, 0, 0, 0);
+        /// <summary>
+        /// Last date that can be displayed by Excel. Real values after this date cannot be processed.
+        /// </summary>
+        public static readonly DateTime LAST_ALLOWED_EXCEL_DATE = new DateTime(9999, 12, 31, 23, 59, 59);
+
         /// <summary>
         /// All dates before this date are shifted in Excel by -1.0, since Excel assumes wrongly that the year 1900 is a leap year.<br/>
         /// See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
@@ -50,6 +59,7 @@ namespace NanoXLSX
         private const float SPLIT_WIDTH_POINT_OFFSET = 390f;
         private const float SPLIT_HEIGHT_POINT_OFFSET = 300f;
         private const float ROW_HEIGHT_POINT_MULTIPLIER = 1f / 3f + 1f;
+        private static readonly double ROOT_MILLIS = (double)new DateTime(1899, 12, 30, 0, 0, 0).Ticks / TimeSpan.TicksPerMillisecond;
 
         #endregion
 
@@ -58,7 +68,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="date">Date to process</param>
         /// <returns>Date or date and time as number</returns>
-        /// <exception cref="Exceptions.FormatException">Test of the ConvertArray methodFormatException if the passed date cannot be translated to the OADate format</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
         /// <remarks>Excel assumes wrongly that the year 1900 is a leap year. There is a gap of 1.0 between 1900-02-28 and 1900-03-01. This method corrects all dates
         /// from the first valid date (1900-01-01) to 1900-03-01. However, Excel displays the minimum valid date as 1900-01-00, although 0 is not a valid description for a day of month.
         /// In conformance to the OAdate specifications, the maximum valid date is 9999-12-31 23:59:59 (plus 999 milliseconds).<br/>
@@ -67,48 +77,33 @@ namespace NanoXLSX
         ///See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
         ///https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a>
         /// </remarks>
-        public static string GetOADateTimeString(DateTime date, IFormatProvider culture)
+        public static string GetOADateTimeString(DateTime date)
         {
-            try
+            if (date < FIRST_ALLOWED_EXCEL_DATE || date > LAST_ALLOWED_EXCEL_DATE)
             {
+                throw new Exceptions.FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 or after 9999-12-31 are not allowed.");
+            }
                 DateTime dateValue = date;
                 if (date < FIRST_VALID_EXCEL_DATE)
                 {
                     dateValue = date.AddDays(-1); // Fix of the leap-year-1900-error
                 }
-                double d = dateValue.ToOADate();
-                if (d < MIN_OADATE_VALUE || d > MAX_OADATE_VALUE)
-                {
-                    throw new Exceptions.FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 or after 9999-12-31 are not allowed.");
-                }
-                return d.ToString("G", culture);
-            }
-            catch (Exception e)
-            {
-                throw new Exceptions.FormatException("The date could not be transformed into Excel format (OADate).", e);
-            }
+                double currentMillis = (double)dateValue.Ticks / TimeSpan.TicksPerMillisecond;
+                double d = ((double)(dateValue.Second + (dateValue.Minute * 60) + (dateValue.Hour * 3600)) / 86400) + Math.Floor((currentMillis - ROOT_MILLIS) / 86400000);
+                return d.ToString("G", INVARIANT_CULTURE);
         }
 
         /// <summary>
         /// Method to convert a time into the internal Excel time format (OAdate without days)
         /// </summary>
         /// <param name="time">Time to process. The date component of the timespan is neglected</param>
-        /// <param name="culture">CultureInfo for proper formatting of the decimal point</param>
         /// <returns>Time as number</returns>
-        /// <exception cref="Exceptions.FormatException">Test of the ConvertArray methodFormatException if the passed timespan is invalid</exception>
         /// <remarks>The time is represented by a OAdate without the date component. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
-        public static string GetOATimeString(TimeSpan time, IFormatProvider culture)
+        public static string GetOATimeString(TimeSpan time)
         {
-            try
-            {
                 int seconds = time.Seconds + time.Minutes * 60 + time.Hours * 3600;
                 double d = (double)seconds / 86400d;
-                return d.ToString("G", culture);
-            }
-            catch (Exception e)
-            {
-                throw new Exceptions.FormatException("The time could not be transformed into Excel format (OADate).", e);
-            }
+                return d.ToString("G", INVARIANT_CULTURE);
         }
 
         /// <summary>
@@ -147,8 +142,13 @@ namespace NanoXLSX
         /// <param name="maxDigitWidth">Maximum digit with of the default font (default is 7.0 for Calibri, size 11)</param>
         /// <param name="textPadding">Text padding of the default font (default is 5.0 for Calibri, size 11)</param>
         /// <returns>The internal column width in characters, used in worksheet XML documents</returns>
+        /// <exception cref="FormatException">Throws a FormatException if the column width is out of range</exception>
         public static float GetInternalColumnWidth(float columnWidth, float maxDigitWidth = 7f, float textPadding = 5f)
         {
+            if (columnWidth < Worksheet.MIN_COLUMN_WIDTH || columnWidth > Worksheet.MAX_COLUMN_WIDTH)
+            {
+                throw new FormatException("The column width " + columnWidth + " is not valid. The valid range is between " + Worksheet.MIN_COLUMN_WIDTH + " and " + Worksheet.MAX_COLUMN_WIDTH) ;
+            }
             if (columnWidth <= 0f || maxDigitWidth <= 0f)
             {
                 return 0f;
@@ -171,9 +171,14 @@ namespace NanoXLSX
         /// Therefore, the originally defined row height will slightly deviate, based on this pixel snap</remarks>
         /// <param name="rowHeight">Target row height (displayed in Excel)</param>
         /// <returns>The internal row height which snaps to the nearest pixel</returns>
+        /// <exception cref="FormatException">Throws a FormatException if the row height is out of range</exception>
         public static float GetInternalRowHeight(float rowHeight)
         {
-            if (rowHeight <= 0f)
+            if (rowHeight < Worksheet.MIN_ROW_HEIGHT || rowHeight > Worksheet.MAX_ROW_HEIGHT)
+            {
+                throw new FormatException("The row height " + rowHeight + " is not valid. The valid range is between " + Worksheet.MIN_ROW_HEIGHT + " and " + Worksheet.MAX_ROW_HEIGHT);
+            }
+            if (rowHeight == 0f)
             {
                 return 0f;
             }
@@ -190,7 +195,7 @@ namespace NanoXLSX
         /// See also <see cref="GetInternalColumnWidth(float, float, float)"/> for additional details.<br/>
         /// This method is derived from the Perl implementation by John McNamara (<a href="https://stackoverflow.com/a/5010899">https://stackoverflow.com/a/5010899</a>)<br/>
         /// See also: <a href="https://www.ecma-international.org/publications-and-standards/standards/ecma-376/">ECMA-376, Part 1, Chapter 18.3.1.13</a><br/>
-        /// The two optional parameters maxDigitWidth and textPadding probably don't have to be changed ever.
+        /// The two optional parameters maxDigitWidth and textPadding probably don't have to be changed ever. Negative column widths are automatically transformed to 0.
         /// </remarks>
         /// <param name="width">Target column(s) width (one or more columns, displayed in Excel)</param>
         /// <param name="maxDigitWidth">Maximum digit with of the default font (default is 7.0 for Calibri, size 11)</param>
@@ -199,6 +204,11 @@ namespace NanoXLSX
         public static float GetInternalPaneSplitWidth(float width, float maxDigitWidth = 7f, float textPadding = 5f)
         {
             float pixels;
+            // TODO: Check the <1 part again. Leads always to 390
+            if (width <= 1f)
+            {
+                width = 0;
+            }
             if (width <= 1f)
             {
                 pixels = (float)Math.Floor(width / SPLIT_WIDTH_MULTIPLIER + SPLIT_WIDTH_OFFSET);
@@ -216,12 +226,17 @@ namespace NanoXLSX
         /// </summary>
         /// <remarks>
         /// The internal split height is based on the height of one or more rows. It also depends on various constants.<br/>
-        /// This method is derived from the Perl implementation by John McNamara (<a href="https://stackoverflow.com/a/5010899">https://stackoverflow.com/a/5010899</a>)
+        /// This method is derived from the Perl implementation by John McNamara (<a href="https://stackoverflow.com/a/5010899">https://stackoverflow.com/a/5010899</a>).<br/>
+        /// Negative row heights are automatically transformed to 0.
         /// </remarks>
         /// <param name="height">Target row(s) height (one or more rows, displayed in Excel)</param>
         /// <returns>The internal pane height, used in worksheet XML documents in case of worksheet splitting</returns>
         public static float GetInternalPaneSplitHeight(float height)
         {
+            if (height < 0)
+            {
+                height = 0f;
+            }
             return (float)Math.Floor(SPLIT_POINT_DIVIDER * height + SPLIT_HEIGHT_POINT_OFFSET);
         }
     }

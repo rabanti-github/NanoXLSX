@@ -868,7 +868,7 @@ namespace NanoXLSX.LowLevel
                 {
                     typeAttribute = "d";
                     DateTime date = (DateTime)item.Value;
-                    valueDef = Utils.GetOADateTimeString(date, culture);
+                    valueDef = Utils.GetOADateTimeString(date);
                 }
                 // Time parsing
                 else if (item.DataType == Cell.CellType.TIME)
@@ -876,7 +876,7 @@ namespace NanoXLSX.LowLevel
                     typeAttribute = "d";
                     // TODO: 'd' is probably an outdated attribute (to be checked for dates and times)
                     TimeSpan time = (TimeSpan)item.Value;
-                    valueDef = Utils.GetOATimeString(time, culture);
+                    valueDef = Utils.GetOATimeString(time);
                 }
                 else
                 {
