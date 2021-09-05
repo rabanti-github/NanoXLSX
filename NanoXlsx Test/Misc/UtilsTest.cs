@@ -47,8 +47,7 @@ namespace NanoXLSX_Test.Misc
             string format = "dd.MM.yyyy HH:mm:ss";
             DateTime date = DateTime.ParseExact(dateString, format, provider);
             Assert.Throws<FormatException>(() => Utils.GetOADateTimeString(date));
-        }
-       
+        }       
 
         [Theory(DisplayName = "Test of the GetOATimeString function")]
         [InlineData("00:00:00", "0.0")]

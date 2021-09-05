@@ -47,6 +47,11 @@ namespace NanoXLSX
         /// </summary>
         public bool EnforceDateTimesAsNumbers { get; set; }
 
+        /// <summary>
+        /// If true, empty cells will be interpreted as type of string with an empty value. If false, the type will be Empty and the value null
+        /// </summary>
+        public bool EnforceEmptyValuesAsString { get; set; }
+
 
         /// <summary>
         /// Type enforcing rules during import for particular columns

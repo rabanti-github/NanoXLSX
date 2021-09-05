@@ -306,6 +306,17 @@ namespace NanoXLSX.LowLevel
             }
             if (importOptions.EnforcedColumnTypes.ContainsKey(address.Column))
             {
+                if (string.IsNullOrEmpty(value))
+                {
+                    if (importOptions.EnforceEmptyValuesAsString)
+                    {
+                        return new Cell("", Cell.CellType.STRING, address);
+                    }
+                    else
+                    {
+                        return new Cell(null, Cell.CellType.EMPTY, address);
+                    }
+                }
                 ImportOptions.ColumnType importType = importOptions.EnforcedColumnTypes[address.Column];
                 switch (importType)
                 {
@@ -372,6 +383,10 @@ namespace NanoXLSX.LowLevel
             }
             else if (type == null || type == "n") // try numeric if not parsed as date or time, before numeric
             {
+                if (string.IsNullOrEmpty(value))
+                {
+                    return new Cell(null, Cell.CellType.EMPTY, address);
+                }
                 return GetNumericValue(value, address);
             }
             else if (formula != null) // formula before string
@@ -405,7 +420,10 @@ namespace NanoXLSX.LowLevel
             float fValue;
             if (float.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out fValue))
             {
-                return new Cell(fValue, Cell.CellType.NUMBER, address);
+                if (!float.IsInfinity(fValue))
+                {
+                    return new Cell(fValue, Cell.CellType.NUMBER, address);
+                }
             }
             double dValue;
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))

@@ -134,12 +134,53 @@ namespace NanoXLSX.LowLevel
             sb.Append("\">");
             foreach (string str in sharedStrings.Keys)
             {
-                sb.Append("<si><t>");
-                sb.Append(EscapeXmlChars(str));
-                sb.Append("</t></si>");
+                AppendSharedString(sb, EscapeXmlChars(str));
             }
             sb.Append("</sst>");
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Method to append shared string values and to handle leading or trailing white spaces
+        /// </summary>
+        /// <param name="sb">StringBuilder instance</param>
+        /// <param name="value">Escaped string value (not null)</param>
+        private void AppendSharedString(StringBuilder sb, string value)
+        {
+            int len = value.Length;
+            sb.Append("<si>");
+            if (len == 0)
+            {
+                sb.Append("<t></t>");
+            }
+            else
+            {
+                if (Char.IsWhiteSpace(value,0) || Char.IsWhiteSpace(value, len-1))
+                {
+                    sb.Append("<t xml:space=\"preserve\">");
+                }
+                else
+                {
+                    sb.Append("<t>");
+                }
+                sb.Append(NormalizeNewLines(value)).Append("</t>");
+            }
+            sb.Append("</si>");
+        }
+
+        /// <summary>
+        /// Method to normalize all newlines to CR+LF
+        /// </summary>
+        /// <param name="value">Input value</param>
+        /// <returns>Normalized value</returns>
+        private string NormalizeNewLines(string value)
+        {
+            if (value == null ||  (!value.Contains('\n') && !value.Contains('\r')))
+            {
+                return value;
+            }
+            string normalized = value.Replace("\r\n", "\n").Replace("\r", "\n");
+            return normalized.Replace("\n", "\r\n");
         }
 
         /// <summary>
