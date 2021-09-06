@@ -516,7 +516,7 @@ namespace NanoXLSX.LowLevel
                     switch (type)
                     {
                         case Cell.CellType.DATE:
-                            DateTime date = DateTime.FromOADate(dValue);
+                            DateTime date = Utils.GetDateFromOA(dValue);
                             return new Cell(date, Cell.CellType.DATE, address);
                         case Cell.CellType.TIME:
                             TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);

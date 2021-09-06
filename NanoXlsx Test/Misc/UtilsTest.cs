@@ -173,6 +173,24 @@ namespace NanoXLSX_Test.Misc
             Assert.Equal(expectedValue, value);
         }
 
+        [Theory(DisplayName = "Test of the GetDateFromOA function")]
+        [InlineData(1, "01.01.1900 00:00:00")]
+        [InlineData(2.5245370370370401, "02.01.1900 12:35:20")]
+        [InlineData(58, "27.02.1900 00:00:00")]
+        [InlineData(59, "28.02.1900 00:00:00")]
+        [InlineData(59.521203703703705, "28.02.1900 12:30:32")]
+        [InlineData(61, "01.03.1900 00:00:00")]
+        [InlineData(61.339016203703707, "01.03.1900 08:08:11")]
+        [InlineData(22056.924363425926, "20.05.1960 22:11:05")]
+        [InlineData(44197, "01.01.2021 00:00:00")]
+        [InlineData(1450360.47930556, "12.12.5870 11:30:12")]
+        public void GetDateFromOATest(double givenValue, String expectedDateString)
+        {
+            DateTime expectedDate = DateTime.ParseExact(expectedDateString, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            DateTime date = Utils.GetDateFromOA(givenValue);
+            Assert.Equal(expectedDate, date);
+        }
 
-    }
+
+}
 }

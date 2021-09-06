@@ -26,7 +26,7 @@ namespace NanoXLSX
         /// <summary>
         /// Maximum valid OAdate value (9999-12-31)
         /// </summary>
-        public static readonly double MAX_OADATE_VALUE = 2958465.9999d;
+        public static readonly double MAX_OADATE_VALUE = 2958465.999988426d;
         /// <summary>
         /// First date that can be displayed by Excel. Real values before this date cannot be processed.
         /// </summary>
@@ -59,6 +59,7 @@ namespace NanoXLSX
         private const float SPLIT_WIDTH_POINT_OFFSET = 390f;
         private const float SPLIT_HEIGHT_POINT_OFFSET = 300f;
         private const float ROW_HEIGHT_POINT_MULTIPLIER = 1f / 3f + 1f;
+        private static readonly DateTime ROOT_DATE = new DateTime(1899, 12, 30, 0, 0, 0);
         private static readonly double ROOT_MILLIS = (double)new DateTime(1899, 12, 30, 0, 0, 0).Ticks / TimeSpan.TicksPerMillisecond;
 
         #endregion
@@ -104,6 +105,25 @@ namespace NanoXLSX
                 int seconds = time.Seconds + time.Minutes * 60 + time.Hours * 3600;
                 double d = (double)seconds / 86400d;
                 return d.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Method to calculate a common Date from the OA date (OLE automation) format<br/>
+        /// OA Date format starts at January 1st 1900 (actually 00.01.1900). Dates beyond this date cannot be handled by Excel under normal circumstances and will throw a FormatException
+        /// </summary>
+        /// <param name="oaDate">oaDate OA date number</param>
+        /// <returns>Converted date</returns>
+        /// <remarks>Numbers that represents dates before 1900-03-01 (number of days since 1900-01-01 = 60) are automatically modified.
+        /// Until 1900-03-01 is 1.0 added to the number to get the same date, as displayed in Excel.The reason for this is a bug in Excel.
+        /// See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
+        /// https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a></remarks>
+        public static DateTime GetDateFromOA(double oaDate)
+        {
+            if (oaDate < 60)
+            {
+                oaDate = oaDate + 1;
+            }
+            return ROOT_DATE.AddSeconds(oaDate * 86400d);
         }
 
         /// <summary>
