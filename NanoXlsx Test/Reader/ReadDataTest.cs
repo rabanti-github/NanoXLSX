@@ -80,17 +80,28 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object>(cells, AssertEqals);
         }
 
-        [Fact(DisplayName = "Test of the reader functionality for long values (above int32 range)")]
+        [Fact(DisplayName = "Test of the reader functionality for long values (above int32 and uint32 range)")]
         public void ReadLongTest()
         {
             Dictionary<string, long> cells = new Dictionary<string, long>();
-            cells.Add("A1", 2147483648);
+            cells.Add("A1", 4294967296);
             cells.Add("A2", -2147483649);
             cells.Add("A3", 21474836480);
             cells.Add("A4", -21474836480);
             cells.Add("A5", long.MinValue);
             cells.Add("A6", long.MaxValue);
             AssertValues<long>(cells, AssertEqals);
+        }
+
+        [Fact(DisplayName = "Test of the reader functionality for ulong values (above signed int64 range)")]
+        public void ReadUlongTest()
+        {
+            Dictionary<string, ulong> cells = new Dictionary<string, ulong>();
+            long lmax = long.MaxValue;
+            cells.Add("A1", (ulong)(lmax + 1));
+            cells.Add("A2", (ulong)(lmax + 9999));
+            cells.Add("A3", ulong.MaxValue);
+            AssertValues<ulong>(cells, AssertEqals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for int values")]
@@ -105,6 +116,17 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A6", int.MinValue);
             cells.Add("A7", int.MaxValue);
             AssertValues<int>(cells, AssertEqals);
+        }
+
+        [Fact(DisplayName = "Test of the reader functionality for uint values (above signed int32 range)")]
+        public void ReadUintTest()
+        {
+            Dictionary<string, uint> cells = new Dictionary<string, uint>();
+            uint imax = int.MaxValue;
+            cells.Add("A1", (uint)(imax + 1));
+            cells.Add("A2", (uint)(imax + 9999));
+            cells.Add("A3", uint.MaxValue);
+            AssertValues<uint>(cells, AssertEqals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for float values")]
@@ -156,6 +178,25 @@ namespace NanoXLSX_Test.Reader
             AssertValues<DateTime>(cells, AssertEqals);
         }
 
+        [Fact(DisplayName = "Test of the reader functionality for TimeSpan values")]
+        public void ReadTimeSpanTest()
+        {
+            Dictionary<string, TimeSpan> cells = new Dictionary<string, TimeSpan>();
+            cells.Add("A1", new TimeSpan(0,0,0));
+            cells.Add("A2", new TimeSpan(13,18,22));
+            cells.Add("A3", new TimeSpan(12,0,0));
+            cells.Add("A4", new TimeSpan(23,59,59));
+            AssertValues<TimeSpan>(cells, AssertEqals);
+        }
+
+        [Fact(DisplayName = "Test of the reader functionality on invalid / unexpected values")]
+        public void ReadInvalidDataTest()
+        {
+            Stream stream = TestUtils.GetResource("tampered.xlsx");
+            Workbook workbook = Workbook.Load(stream);
+            int i = 0;
+        }
+
 
         private static void AssertEqals<T>(T expected, T given)
         {
@@ -168,6 +209,7 @@ namespace NanoXLSX_Test.Reader
             foreach (KeyValuePair<string, T> cell in givenCells)
             {
                 workbook.CurrentWorksheet.AddCell(cell.Value, cell.Key);
+               // Cell c = new Cell(1.8e+309, Cell.CellType.NUMBER);
             }
             MemoryStream stream = new MemoryStream();
             workbook.SaveAsStream(stream, true);

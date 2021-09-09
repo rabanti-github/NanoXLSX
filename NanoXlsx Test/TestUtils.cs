@@ -1,13 +1,15 @@
 ﻿using NanoXLSX;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using static NanoXLSX.Cell;
 
-namespace NanoXLSX_Test.Cells
+namespace NanoXLSX_Test
 {
     public class TestUtils
     {
@@ -39,7 +41,7 @@ namespace NanoXLSX_Test.Cells
             return new List<string>(SplitValues(valueString));
         }
 
-            public static string[] SplitValues(string valueString)
+        public static string[] SplitValues(string valueString)
         {
             if (valueString == null || valueString == "")
             {
@@ -47,5 +49,27 @@ namespace NanoXLSX_Test.Cells
             }
             return valueString.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
         }
+
+        public static Stream GetResource(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return null;
+            }
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            StringBuilder sb = new StringBuilder();
+            sb.Append(Path.GetFileNameWithoutExtension(assembly.ManifestModule.Name.Replace(" ", "_")));
+            sb.Append(".Resources."); // Ensure this folder exists
+            sb.Append(path);
+            try
+            {
+                return assembly.GetManifestResourceStream(sb.ToString());
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
     }
 }

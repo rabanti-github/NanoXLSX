@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\tampered.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\tampered.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="System.IO.Packaging" Version="5.0.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -23,6 +31,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NanoXLSX\NanoXLSX.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\tampered.xlsx" />
   </ItemGroup>
 
 </Project>

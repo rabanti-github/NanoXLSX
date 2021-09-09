@@ -400,24 +400,41 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Parses the numeric value of a raw cell. The order of possible number types are: int, float double. If nothing applies, a string is returned
+        /// Parses the numeric value of a raw cell. The order of possible number types are: ulong, long, uint, int, float or double. If nothing applies, a string is returned
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <param name="address">Address of the cell</param>
         /// <returns>Cell of the type int, float, double or string as fall-back type</returns>
         private Cell GetNumericValue(string raw, Address address)
         {
+            uint uiValue;
             int iValue;
-            if (int.TryParse(raw, out iValue))
+            bool canBeUint = uint.TryParse(raw, out uiValue);
+            bool canBeInt = int.TryParse(raw, out iValue);
+
+            if (canBeUint && !canBeInt)
+            {
+                return new Cell(uiValue, Cell.CellType.NUMBER, address);
+            }
+            else if (canBeInt)
             {
                 return new Cell(iValue, Cell.CellType.NUMBER, address);
             }
+            ulong ulValue;
             long lValue;
-            if (long.TryParse(raw, out lValue))
+            bool canBeUlong = ulong.TryParse(raw, out ulValue);
+            bool canBeLong = long.TryParse(raw, out lValue);
+            if (canBeUlong && !canBeLong)
+            {
+                return new Cell(ulValue, Cell.CellType.NUMBER, address);
+            }
+            else if (canBeLong)
             {
                 return new Cell(lValue, Cell.CellType.NUMBER, address);
             }
+
             float fValue;
+            double dValue;
             if (float.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out fValue))
             {
                 if (!float.IsInfinity(fValue))
@@ -425,7 +442,6 @@ namespace NanoXLSX.LowLevel
                     return new Cell(fValue, Cell.CellType.NUMBER, address);
                 }
             }
-            double dValue;
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
             {
                 return new Cell(dValue, Cell.CellType.NUMBER, address);
