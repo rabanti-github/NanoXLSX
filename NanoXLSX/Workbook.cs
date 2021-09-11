@@ -440,6 +440,7 @@ namespace NanoXLSX
             {
                 selectedWorksheet = worksheets.Count - 1;
             }
+            ValidateWorksheets();
         }
 
         /// <summary>
@@ -609,7 +610,8 @@ namespace NanoXLSX
         /// </summary>
         /// <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>
         /// <param name="worksheetIndex">Zero-based worksheet index</param>
-        /// <exception cref="RangeException">Throws a OutOfRangeException if the index of the worksheet is out of range</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the index of the worksheet is out of range</exception>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the worksheet to be set selected is hidden</exception>
         public void SetSelectedWorksheet(int worksheetIndex)
         {
             if (worksheetIndex < 0 || worksheetIndex > worksheets.Count - 1)
@@ -617,6 +619,7 @@ namespace NanoXLSX
                 throw new RangeException(RangeException.GENERAL, "The worksheet index " + worksheetIndex + " is out of range");
             }
             selectedWorksheet = worksheetIndex;
+            ValidateWorksheets();
         }
 
         /// <summary>
@@ -646,7 +649,7 @@ namespace NanoXLSX
         /// </summary>
         /// <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>
         /// <param name="worksheet">Worksheet object (must be in the collection of worksheets)</param>
-        /// <exception cref="WorksheetException">Throws a UnknownWorksheetException if the worksheet was not found in the worksheet collection</exception>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the worksheet was not found in the worksheet collection or if it is hidden</exception>
         public void SetSelectedWorksheet(Worksheet worksheet)
         {
             bool check = false;
@@ -662,6 +665,39 @@ namespace NanoXLSX
             if (!check)
             {
                 throw new WorksheetException("UnknownWorksheetException", "The passed worksheet object is not in the worksheet collection.");
+            }
+            ValidateWorksheets();
+        }
+
+        /// <summary>
+        /// Validates the worksheets regarding several conditions that must be met:<br/>
+        /// - At least one worksheet must be defined<br/>
+        /// - A hidden worksheet cannot be the selected one<br/>
+        /// - At least one worksheet must be visible<br/>
+        /// If one of the conditions is not met, an exception is thrown
+        /// </summary>
+        internal void ValidateWorksheets()
+        {
+            int woksheetCount = worksheets.Count;
+            int hiddenCount = 0;
+            if (woksheetCount == 0)
+            {
+                throw new WorksheetException("NoWorksheetsException", "The workbook must contain at least one worksheet");
+            }
+            for(int i = 0; i < woksheetCount; i++)
+            {
+                if (worksheets[i].Hidden)
+                {
+                    hiddenCount++;
+                    if (i == selectedWorksheet)
+                    {
+                        throw new WorksheetException("InvalidWorksheetRefernceException", "The worksheet with the index " + selectedWorksheet + " cannot be set as selected, since it is set hidden");
+                    }
+                }
+            }
+            if (hiddenCount >= woksheetCount)
+            {
+                throw new WorksheetException("IllegalArgumentException", "At least one worksheet in the workbook must be visible");
             }
         }
 

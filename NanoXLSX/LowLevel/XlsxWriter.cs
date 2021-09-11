@@ -272,7 +272,7 @@ namespace NanoXLSX.LowLevel
             worksheet.RecalculateColumns();
             StringBuilder sb = new StringBuilder();
             sb.Append("<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">");
-            if (worksheet.SelectedCells != null || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null)
+            if (worksheet.SelectedCells != null || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null || worksheet.Hidden)
             {
                 createSheetViewString(worksheet, sb);
             }
@@ -319,7 +319,7 @@ namespace NanoXLSX.LowLevel
         private void createSheetViewString(Worksheet worksheet, StringBuilder sb)
         {
             sb.Append("<sheetViews><sheetView workbookViewId=\"0\"");
-            if (workbook.SelectedWorksheet == worksheet.SheetID - 1)
+            if (workbook.SelectedWorksheet == worksheet.SheetID - 1 && !worksheet.Hidden)
             {
                 sb.Append(" tabSelected=\"1\"");
             }
