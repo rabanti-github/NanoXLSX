@@ -294,9 +294,9 @@ namespace NanoXLSX
             }
             int number = worksheets.Count + 1;
             worksheet.SheetID = number;
-            worksheet.WorkbookReference = this;
             currentWorksheet = worksheet;
             worksheets.Add(worksheet);
+            worksheet.WorkbookReference = this;
         }
 
         /// <summary>
@@ -397,7 +397,8 @@ namespace NanoXLSX
         /// Removes the defined worksheet
         /// </summary>
         /// <param name="name">Name of the worksheet</param>
-        /// <exception cref="WorksheetException">Throws a UnknownWorksheetException if the name of the worksheet is unknown</exception>
+        /// <exception cref="WorksheetException">Throws a UnknownWorksheetException if the name of the worksheet is unknown or if removing would lead to an empty workbook.</exception>
+        /// <remarks>Note that the selected Worksheet (index) must be changed to another worksheet when the selected one is removed.</remarks>
         public void RemoveWorksheet(string name)
         {
             bool exists = false;
@@ -605,7 +606,7 @@ namespace NanoXLSX
             return currentWorksheet;
         }
 
-        /// <summary>SetSelectedWorksheet
+        /// <summary>
         /// Sets the selected worksheet in the output workbook
         /// </summary>
         /// <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>
@@ -679,7 +680,6 @@ namespace NanoXLSX
         internal void ValidateWorksheets()
         {
             int woksheetCount = worksheets.Count;
-            int hiddenCount = 0;
             if (woksheetCount == 0)
             {
                 throw new WorksheetException("NoWorksheetsException", "The workbook must contain at least one worksheet");
@@ -688,16 +688,11 @@ namespace NanoXLSX
             {
                 if (worksheets[i].Hidden)
                 {
-                    hiddenCount++;
                     if (i == selectedWorksheet)
                     {
                         throw new WorksheetException("InvalidWorksheetRefernceException", "The worksheet with the index " + selectedWorksheet + " cannot be set as selected, since it is set hidden");
                     }
                 }
-            }
-            if (hiddenCount >= woksheetCount)
-            {
-                throw new WorksheetException("IllegalArgumentException", "At least one worksheet in the workbook must be visible");
             }
         }
 

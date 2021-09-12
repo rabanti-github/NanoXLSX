@@ -1544,6 +1544,9 @@ namespace NanoXLSX.LowLevel
         private class DynamicRow
         {
             private List<Cell> cellDefinitions;
+            /// <summary>
+            /// Gets or sets the row number (zero-based)
+            /// </summary>
             public int RowNumber { get; set; }
 
             /// <summary>

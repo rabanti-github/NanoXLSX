@@ -1,5 +1,14 @@
 # Change Log
 
+## v1.8.1
+
+---
+Release Date: **12.09.2021**
+
+- Fixed a bug when hiding worksheets
+
+Note: It is not possible anymore to remove all worksheets from a workbook, or to set a hidden one as active. This would lead to an invalid Excel file
+
 ## v1.8.0
 
 ---

@@ -28,9 +28,9 @@
     <PackageLicenseFile></PackageLicenseFile>
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.8.0.0</AssemblyVersion>
-    <FileVersion>1.8.0.0</FileVersion>
-    <Version>1.8.0</Version>
+    <AssemblyVersion>1.8.1.0</AssemblyVersion>
+    <FileVersion>1.8.1.0</FileVersion>
+    <Version>1.8.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\NanoXLSX.xml</DocumentationFile>
@@ -52,7 +52,6 @@
     <Compile Include="..\NanoXLSX\Exceptions\RangeException.cs" Link="Exceptions\RangeException.cs" />
     <Compile Include="..\NanoXLSX\Exceptions\StyleException.cs" Link="Exceptions\StyleException.cs" />
     <Compile Include="..\NanoXLSX\Exceptions\WorksheetException.cs" Link="Exceptions\WorksheetException.cs" />
-    <Compile Include="..\NanoXLSX\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
     <Compile Include="..\NanoXLSX\ImportOptions.cs" Link="ImportOptions.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\DocumentPath.cs" Link="LowLevel\DocumentPath.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\ReaderUtils.cs" Link="LowLevel\ReaderUtils.cs" />

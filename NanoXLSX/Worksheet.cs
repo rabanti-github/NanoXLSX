@@ -316,7 +316,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// gets or sets whether the worksheet is hidden. If true, the worksheet is not listed in the worksheet tabs of the workbook.<br/>
+        /// Gets or sets whether the worksheet is hidden. If true, the worksheet is not listed as tab in the workbook's worksheet selection<br/>
         /// If the worksheet is not part of a workbook, or the only one in the workbook, an exception will be thrown.<br/>
         /// If the worksheet is the selected one, and attempted to set hidden, an exception will be thrown. Define another selected worksheet prior to this call, in this case.
         /// </summary>

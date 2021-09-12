@@ -153,11 +153,12 @@ Workbook wb = Workbook.Load%28&amp;quot%3bbasic.xlsx&amp;quot%3b%29%3b          
     </TransformComponentArguments>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="NanoXLSX" isDocumented="True">Main namespace with all high-level classes and functions to create or read workbooks and worksheets</NamespaceSummaryItem>
-<NamespaceSummaryItem name="NanoXLSX.Exception" isDocumented="False">Sub-namespace for exceptions</NamespaceSummaryItem>
-<NamespaceSummaryItem name="NanoXLSX.LowLevel" isDocumented="True">Sub-namespace with all low-level classes and functions. This namespace is necessary to read and generate files but should not be used as pat of the API. Use the classes and functions in the namespace NanoXLSX instead</NamespaceSummaryItem>
-<NamespaceSummaryItem name="NanoXLSX.Style" isDocumented="True">Sub-namespace for style definitions, style handling and (static) basic styles</NamespaceSummaryItem>
-<NamespaceSummaryItem name="NanoXLSX.Exceptions" isDocumented="True">Sub-namespace for exceptions</NamespaceSummaryItem>
-<NamespaceSummaryItem name="NanoXLSX.Styles" isDocumented="True">Sub-namespace for style definitions, style handling and (static) basic styles</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="NanoXLSX.Exception" isDocumented="False">Sub-namespace for exceptions</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NanoXLSX.LowLevel" isDocumented="True">Sub-namespace with all low-level classes and functions. This namespace is necessary to read and generate files but should not be used as pat of the API. Use the classes and functions in the namespace NanoXLSX instead</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NanoXLSX.Style" isDocumented="True">Sub-namespace for style definitions, style handling and (static) basic styles</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NanoXLSX.Exceptions" isDocumented="True">Sub-namespace for exceptions</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="NanoXLSX.Styles" isDocumented="True">Sub-namespace for style definitions, style handling and (static) basic styles</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <RootNamespaceTitle>NanoXLSX</RootNamespaceTitle>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
@@ -201,12 +202,5 @@ xcopy "$(ProjectDir)icons\favicon.ico" "$(OutputPath)icons" /Y /r /h /c</PostBui
   </ItemGroup>
   <ItemGroup>
     <Content Include="icons\favicon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NanoXLSX\NanoXLSX.csproj">
-      <Name>NanoXLSX</Name>
-      <Project>{a70e40aa-98c1-453a-8030-b4798a89ebfc}</Project>
-      <Private>True</Private>
-    </ProjectReference>
   </ItemGroup>
 </Project>
