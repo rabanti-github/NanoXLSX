@@ -155,6 +155,8 @@ namespace NanoXLSX
         private readonly Dictionary<string, Range> mergedCells;
         private readonly List<SheetProtectionValue> sheetProtectionValues;
         private bool useActiveStyle;
+        private bool hidden;
+        private Workbook workbookReference;
         private string sheetProtectionPassword;
         private Range? selectedCells;
         private bool? freezeSplitPanes;
@@ -310,12 +312,36 @@ namespace NanoXLSX
         /// <summary>
         /// Gets or sets the Reference to the parent Workbook
         /// </summary>
-        public Workbook WorkbookReference { get; set; }
+        public Workbook WorkbookReference
+        {
+            get { return workbookReference; }
+            set
+            {
+                workbookReference = value;
+                if (value != null)
+                {
+                    workbookReference.ValidateWorksheets();
+                }
+            }
+        }
 
         /// <summary>
-        /// Gets or sets whether the worksheet is hidden. If true, the worksheet is not listed in the worksheet tabs of the workbook
+        /// gets or sets whether the worksheet is hidden. If true, the worksheet is not listed in the worksheet tabs of the workbook.<br/>
+        /// If the worksheet is not part of a workbook, or the only one in the workbook, an exception will be thrown.<br/>
+        /// If the worksheet is the selected one, and attempted to set hidden, an exception will be thrown. Define another selected worksheet prior to this call, in this case.
         /// </summary>
-        public bool Hidden { get; set; }
+        public bool Hidden
+        {
+            get { return hidden; }
+            set
+            {
+                hidden = value;
+                if (value && workbookReference != null)
+                {
+                    workbookReference.ValidateWorksheets();
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the height of the upper, horizontal split pane, measured from the top of the window.<br/>
@@ -413,7 +439,7 @@ namespace NanoXLSX
             hiddenRows = new Dictionary<int, bool>();
             columns = new Dictionary<int, Column>();
             activeStyle = null;
-            WorkbookReference = null;
+            workbookReference = null;
         }
 
         /// <summary>
@@ -437,7 +463,7 @@ namespace NanoXLSX
         {
             SetSheetName(name);
             SheetID = id;
-            WorkbookReference = reference;
+            workbookReference = reference;
         }
 
         #endregion
@@ -1834,7 +1860,7 @@ namespace NanoXLSX
             if (sanitize)
             {
                 sheetName = ""; // Empty name (temporary) to prevent conflicts during sanitizing
-                sheetName = SanitizeWorksheetName(name, WorkbookReference);
+                sheetName = SanitizeWorksheetName(name, workbookReference);
             }
             else
             {

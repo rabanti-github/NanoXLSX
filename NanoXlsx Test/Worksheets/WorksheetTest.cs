@@ -354,6 +354,42 @@ namespace NanoXLSX_Test.Worksheets
             Assert.True(worksheet.Hidden);
         }
 
+        [Fact(DisplayName = "Test of the failing set function of the Hidden property when trying to hide all worksheets")]
+        public void HiddenFailTest()
+        {
+            Workbook workbook = new Workbook("test1");
+            workbook.AddWorksheet("test2");
+            workbook.Worksheets[1].Hidden = true;
+            Assert.False(workbook.Worksheets[0].Hidden);
+            Assert.True(workbook.Worksheets[1].Hidden);
+            Assert.Throws<WorksheetException>(() => workbook.Worksheets[0].Hidden = true);
+        }
+
+        [Fact(DisplayName = "Test of the failing set function of the Hidden property when trying to hide all worksheets (scenario with 3 worksheets)")]
+        public void HiddenFailTest2()
+        {
+            Workbook workbook = new Workbook("test1");
+            workbook.AddWorksheet("test2");
+            workbook.AddWorksheet("test3");
+            workbook.SetSelectedWorksheet(1);
+            workbook.Worksheets[0].Hidden = true;
+            workbook.Worksheets[2].Hidden = true;
+            Assert.True(workbook.Worksheets[0].Hidden);
+            Assert.False(workbook.Worksheets[1].Hidden);
+            Assert.True(workbook.Worksheets[2].Hidden);
+            Assert.Throws<WorksheetException>(() => workbook.Worksheets[1].Hidden = true);
+        }
+
+        [Fact(DisplayName = "Test of the failing set function of the Hidden property when trying to hide all worksheets by adding hidden worksheets to a workbook")]
+        public void HiddenFailTest3()
+        {
+            Worksheet hidden = new Worksheet("test1");
+            hidden.Hidden = true;
+            Workbook workbook = new Workbook();
+            Assert.Empty(workbook.Worksheets);
+            Assert.Throws<WorksheetException>(() => workbook.AddWorksheet(hidden));
+        }
+
         [Fact(DisplayName = "Test of the get function of the ActiveStyle property")]
         public void ActiveStyleTest()
         {

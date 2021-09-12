@@ -164,5 +164,18 @@ namespace NanoXLSX_Test.Workbooks
             Assert.Throws<WorksheetException>(() => workbook.SetSelectedWorksheet(worksheet));
         }
 
+        [Fact(DisplayName = "Test of the failing SetSelectedWorksheet function when the worksheet is hidden")]
+        public void SelectedWorksheetFailTest()
+        {
+            Workbook workbook = new Workbook("test1");
+            Assert.Equal(0, workbook.SelectedWorksheet);
+            workbook.AddWorksheet("test2");
+            workbook.SetSelectedWorksheet(1);
+            Assert.Equal(1, workbook.SelectedWorksheet);
+            workbook.Worksheets[0].Hidden = true;
+            Assert.Throws<WorksheetException>(() => workbook.SetSelectedWorksheet(0));
+        }
+
+
     }
 }

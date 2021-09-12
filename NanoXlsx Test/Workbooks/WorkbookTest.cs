@@ -397,8 +397,8 @@ namespace NanoXLSX_Test.Workbooks
             workbook.AddWorksheet("test3");
             Assert.Equal(2, workbook.Worksheets[1].SheetID);
             workbook.RemoveWorksheet("test2");
-            workbook.RemoveWorksheet("test3");
             workbook.AddWorksheet("test4");
+            workbook.RemoveWorksheet("test3");
             Assert.Equal(1, workbook.Worksheets[0].SheetID);
         }
 
@@ -420,9 +420,9 @@ namespace NanoXLSX_Test.Workbooks
             workbook.AddWorksheet(worksheet3, true);
             Assert.Equal(2, workbook.Worksheets[1].SheetID);
             workbook.RemoveWorksheet("test2");
-            workbook.RemoveWorksheet("test3");
             Worksheet worksheet4 = new Worksheet();
             workbook.AddWorksheet(worksheet4, true);
+            workbook.RemoveWorksheet("test3");
             Assert.Equal(1, workbook.Worksheets[0].SheetID);
         }
 
@@ -431,12 +431,11 @@ namespace NanoXLSX_Test.Workbooks
         [InlineData(2, 1, 0, 1, 0, 0)]
         [InlineData(2, 1, 1, 1, 0, 0)]
         [InlineData(2, 0, 0, 1, 0, 0)]
-        [InlineData(1, 0, 0, 0, null, 0)]
         [InlineData(5, 2, 2, 2, 4, 3)]
         [InlineData(5, 0, 0, 4, 0, 0)]
         [InlineData(4, 3, 1, 3, 2, 1)]
         [InlineData(4, 3, 3, 3, 2, 2)]
-        public void RemoveWorksheetTest(int worksheetCount, int currentWorksheetIndex, int selectedWorksheetIndex, int worksheetToRemoveIndex, int? expectedCurrentWorksheetIndex, int expectedSelectedWorksheetIndex)
+        public void RemoveWorksheetTest(int worksheetCount, int currentWorksheetIndex, int selectedWorksheetIndex, int worksheetToRemoveIndex, int expectedCurrentWorksheetIndex, int expectedSelectedWorksheetIndex)
         {
             Workbook workbook = new Workbook();
             string current = null;
@@ -467,12 +466,11 @@ namespace NanoXLSX_Test.Workbooks
         [InlineData(2, 1, 0, 1, 0, 0)]
         [InlineData(2, 1, 1, 1, 0, 0)]
         [InlineData(2, 0, 0, 1, 0, 0)]
-        [InlineData(1, 0, 0, 0, null, 0)]
         [InlineData(5, 2, 2, 2, 4, 3)]
         [InlineData(5, 0, 0, 4, 0, 0)]
         [InlineData(4, 3, 1, 3, 2, 1)]
         [InlineData(4, 3, 3, 3, 2, 2)]
-        public void RemoveWorksheetTest2(int worksheetCount, int currentWorksheetIndex, int selectedWorksheetIndex, int worksheetToRemoveIndex, int? expectedCurrentWorksheetIndex, int expectedSelectedWorksheetIndex)
+        public void RemoveWorksheetTest2(int worksheetCount, int currentWorksheetIndex, int selectedWorksheetIndex, int worksheetToRemoveIndex, int expectedCurrentWorksheetIndex, int expectedSelectedWorksheetIndex)
         {
             Workbook workbook = new Workbook();
             string current = null;
@@ -521,6 +519,13 @@ namespace NanoXLSX_Test.Workbooks
             Assert.Throws<WorksheetException>(() => workbook.RemoveWorksheet(absentIndex));
         }
 
+        [Fact(DisplayName = "Test of the failing RemoveWorksheet function when the last worksheet is removed from a workbook")]
+        public void RemoveWorksheetFailTest3()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            Assert.Throws<WorksheetException>(() => workbook.RemoveWorksheet(0));
+        }
+
         [Theory(DisplayName = "Test of the SetWorkbookProtection function")]
         [InlineData(false, false, false, null, false, false, false)]
         [InlineData(true, false, false, "", false, false, false)]
@@ -540,11 +545,6 @@ namespace NanoXLSX_Test.Workbooks
             Assert.Equal(expectedProtectionState, workbook.UseWorkbookProtection);
             Assert.Equal(password, workbook.WorkbookProtectionPassword);
         }
-
-
-
-
-
 
         private void AssertWorksheetRemoval<T>(Workbook workbook, Action<T>removalFunction, int worksheetCount, string currentWorksheet, int selectedWorksheetIndex, T worksheetToRemove, string expectedCurrentWorksheet, int expectedSelectedWorksheetIndex)
         {
