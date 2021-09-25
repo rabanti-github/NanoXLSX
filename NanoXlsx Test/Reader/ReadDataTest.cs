@@ -189,12 +189,48 @@ namespace NanoXLSX_Test.Reader
             AssertValues<TimeSpan>(cells, AssertEqals);
         }
 
-        [Fact(DisplayName = "Test of the reader functionality on invalid / unexpected values")]
-        public void ReadInvalidDataTest()
+        [Theory(DisplayName = "Test of the reader functionality on invalid / unexpected values")]
+        [InlineData("A1", Cell.CellType.STRING, "Test")]
+        [InlineData("B1", Cell.CellType.STRING, "x")]
+        [InlineData("C1", Cell.CellType.NUMBER, -1.8538541667)]
+        [InlineData("D1", Cell.CellType.STRING, "2")] // Could be number but fallback is string, anyway
+        [InlineData("E1", Cell.CellType.STRING, "x")]
+        [InlineData("F1", Cell.CellType.STRING, "1")] // Reference 1 is casted to string '1'
+        [InlineData("G1", Cell.CellType.NUMBER, -1.5)]
+        [InlineData("H1", Cell.CellType.STRING, "y")]
+        public void ReadInvalidDataTest(string cellAddress, Cell.CellType expectedType, object expectedValue)
         {
+            // Note: Cell A1 is a valid string
+            //       Cell B1 is declared numerical, but contains a string
+            //       Cell C1 is defined as date but has a negative number
+            //       Cell D1 is defined ad bool but has an invalid value of 2
+            //       Cell E1 is defined as bool but has an invalid value of 'x'
+            //       Cell F1 is defines as shared string value, but the value does not exits
+            //       Cell G1 is defined as time but has a negative number
+            //       Cell H1 is defined as the unknown type 'z'
             Stream stream = TestUtils.GetResource("tampered.xlsx");
             Workbook workbook = Workbook.Load(stream);
-            int i = 0;
+            Assert.Equal(expectedType, workbook.Worksheets[0].Cells[cellAddress].DataType);
+            Assert.Equal(expectedValue, workbook.Worksheets[0].Cells[cellAddress].Value);
+        }
+
+        [Theory(DisplayName = "Test of the failing reader functionality on invalid XML content")]
+        [InlineData("invalid_workbook.xlsx")]
+        [InlineData("invalid_worksheet.xlsx")]
+        [InlineData("invalid_style.xlsx")]
+        [InlineData("invalid_sharedStrings.xlsx")]
+        public void FailingReadInvalidDataTest(string invalidFile)
+        {
+            // Note all referenced (embedded) files contains invalid XML documents (malformed, missing start or end tags)
+            Stream stream = TestUtils.GetResource(invalidFile);
+            Assert.Throws<NanoXLSX.Exceptions.IOException>(() => Workbook.Load(stream));
+        }
+
+        [Fact(DisplayName = "Test of the reader functionality on an invalid stream")]
+        public void ReadInvalidStreamTest()
+        {
+            Stream nullStream = null;
+            Assert.Throws<NanoXLSX.Exceptions.IOException>(() => Workbook.Load(nullStream));
         }
 
 

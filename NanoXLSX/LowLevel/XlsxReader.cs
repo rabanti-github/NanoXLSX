@@ -98,7 +98,7 @@ namespace NanoXLSX.LowLevel
 
                     SharedStringsReader sharedStrings = new SharedStringsReader();
                     ms = GetEntryStream("xl/sharedStrings.xml", zf);
-                    if (ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
+                    if (ms != null && ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
                     {
                         sharedStrings.Read(ms);
                     }
@@ -189,6 +189,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>MemoryStream object of the specified file</returns>
         private MemoryStream GetEntryStream(string name, ZipArchive archive)
         {
+            MemoryStream stream = null;
             for (int i = 0; i < archive.Entries.Count; i++)
             {
                 if (archive.Entries[i].FullName == name)
@@ -196,10 +197,11 @@ namespace NanoXLSX.LowLevel
                     MemoryStream ms = new MemoryStream();
                     archive.Entries[i].Open().CopyTo(ms);
                     ms.Position = 0;
-                    return ms;
+                    stream = ms;
+                    break;
                 }
             }
-            return new MemoryStream();
+            return stream;
         }
 
         #endregion

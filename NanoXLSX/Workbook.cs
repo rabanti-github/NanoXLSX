@@ -649,12 +649,12 @@ namespace NanoXLSX
         /// </summary>
         internal void ValidateWorksheets()
         {
-            int woksheetCount = worksheets.Count;
-            if (woksheetCount == 0)
+            int worksheetCount = worksheets.Count;
+            if (worksheetCount == 0)
             {
                 throw new WorksheetException("The workbook must contain at least one worksheet");
             }
-            for (int i = 0; i < woksheetCount; i++)
+            for (int i = 0; i < worksheetCount; i++)
             {
                 if (worksheets[i].Hidden)
                 {

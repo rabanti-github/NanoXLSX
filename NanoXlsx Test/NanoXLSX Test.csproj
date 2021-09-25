@@ -8,11 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\invalid_shardStrings.xlsx" />
+    <None Remove="Resources\invalid_style.xlsx" />
+    <None Remove="Resources\invalid_workbook.xlsx" />
+    <None Remove="Resources\invalid_worksheet.xlsx" />
     <None Remove="Resources\tampered.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\tampered.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_shardStrings.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_style.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_workbook.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_worksheet.xlsx" />
+	<EmbeddedResource Include="Resources\tampered.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +42,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\invalid_shardStrings.xlsx" />
+    <Resource Include="Resources\invalid_style.xlsx" />
+    <Resource Include="Resources\invalid_workbook.xlsx" />
+    <Resource Include="Resources\invalid_worksheet.xlsx" />
     <Resource Include="Resources\tampered.xlsx" />
   </ItemGroup>
 
