@@ -402,6 +402,56 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Throws<RangeException>(() => worksheet.SetCurrentColumnNumber(column));
         }
 
+        [Fact(DisplayName = "Test of the GetColumn function")]
+        public void GetColumnTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            List<object> values = GetCellValues(worksheet);
+            List<Cell> column = worksheet.GetColumn(1).ToList();
+            AssertColumnValues(column, values);
+        }
+
+        [Fact(DisplayName = "Test of the GetColumn function with a column address")]
+        public void GetColumnTest2()
+        {
+            Worksheet worksheet = new Worksheet();
+            List<object> values = GetCellValues(worksheet);
+            List<Cell> column = worksheet.GetColumn("B").ToList();
+            AssertColumnValues(column, values);
+        }
+
+        [Fact(DisplayName = "Test of the GetColumn function when no values are applying")]
+        public void GetColumnTest3()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddCell(22, "A1");
+            worksheet.AddCell(false, "C3");
+            List<Cell> column = worksheet.GetColumn(1).ToList();
+            Assert.Empty(column);
+        }
+
+        private void AssertColumnValues(List<Cell> givenList, List<object> expectedValues)
+        {
+            Assert.Equal(expectedValues.Count, givenList.Count);
+            for(int i = 0; i < expectedValues.Count; i++)
+            {
+                Assert.Equal(expectedValues[i], givenList[i].Value);
+            }
+        }
+
+        private static List<object> GetCellValues(Worksheet worksheet)
+        {
+            List<object> expectedList = new List<object>();
+            expectedList.Add(23);
+            expectedList.Add("test");
+            expectedList.Add(true);
+            worksheet.AddCell(22, "A1");
+            worksheet.AddCell(expectedList[0], "B1");
+            worksheet.AddCell(expectedList[1], "B2");
+            worksheet.AddCell(expectedList[2], "B3");
+            worksheet.AddCell(false, "C2");
+            return expectedList;
+        }
 
     }
 }

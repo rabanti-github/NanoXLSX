@@ -354,6 +354,31 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Throws<RangeException>(() => worksheet.SetRowHeight(rowNumber, height));
         }
 
+        [Fact(DisplayName ="Test of the GetRow function")]
+        public void GetRowTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddCell(22, "B1");
+            worksheet.AddCell(23, "B2");
+            worksheet.AddCell("test", "C2");
+            worksheet.AddCell(true, "D2");
+            worksheet.AddCell(false, "B3");
+            List<Cell> row = worksheet.GetRow(1).ToList();
+            Assert.Equal(3, row.Count());
+            Assert.Equal(23, row[0].Value);
+            Assert.Equal("test", row[1].Value);
+            Assert.Equal(true, row[2].Value);
+        }
+
+        [Fact(DisplayName = "Test of the GetRow function when no values are applying")]
+        public void GetRowTest2()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddCell(22, "B1");
+            worksheet.AddCell(false, "B3");
+            List<Cell> row = worksheet.GetRow(1).ToList();
+            Assert.Empty(row);
+        }
 
     }
 }

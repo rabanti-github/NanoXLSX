@@ -35,7 +35,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("J7", "русский язык");
             cells.Add("K7", "עברית");
             cells.Add("L7", "اَلْعَرَبِيَّة");
-            AssertValues<String>(cells, AssertEqals);
+            AssertValues<String>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for new lines in strings")]
@@ -67,7 +67,7 @@ namespace NanoXLSX_Test.Reader
             expected.Add("A10", "\r\n\r\n\r\n");
             expected.Add("A11", "\r\n\r\n\r\n");
             expected.Add("A12", "\r\n\r\n");
-            AssertValues<String>(given, AssertEqals, expected);
+            AssertValues<String>(given, AssertEquals, expected);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for null / empty values")]
@@ -77,7 +77,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A1", null);
             cells.Add("A2", null);
             cells.Add("A3", null);
-            AssertValues<object>(cells, AssertEqals);
+            AssertValues<object>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for long values (above int32 and uint32 range)")]
@@ -90,7 +90,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A4", -21474836480);
             cells.Add("A5", long.MinValue);
             cells.Add("A6", long.MaxValue);
-            AssertValues<long>(cells, AssertEqals);
+            AssertValues<long>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for ulong values (above signed int64 range)")]
@@ -101,7 +101,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A1", (ulong)(lmax + 1));
             cells.Add("A2", (ulong)(lmax + 9999));
             cells.Add("A3", ulong.MaxValue);
-            AssertValues<ulong>(cells, AssertEqals);
+            AssertValues<ulong>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for int values")]
@@ -115,7 +115,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A5", -999999);
             cells.Add("A6", int.MinValue);
             cells.Add("A7", int.MaxValue);
-            AssertValues<int>(cells, AssertEqals);
+            AssertValues<int>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for uint values (above signed int32 range)")]
@@ -126,7 +126,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A1", (uint)(imax + 1));
             cells.Add("A2", (uint)(imax + 9999));
             cells.Add("A3", uint.MaxValue);
-            AssertValues<uint>(cells, AssertEqals);
+            AssertValues<uint>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for float values")]
@@ -141,7 +141,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A5", -999999.9f);
             cells.Add("A6", float.MinValue);
             cells.Add("A7", float.MaxValue);
-            AssertValues<float>(cells, AssertAppriximateFloat);
+            AssertValues<float>(cells, AssertApproximateFloat);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for double values (above single32 range)")]
@@ -154,7 +154,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A4", -21474836480648356436538453467583748856343865.9d);
             cells.Add("A5", double.MinValue);
             cells.Add("A6", double.MaxValue);
-            AssertValues<double>(cells, AssertAppriximateDouble);
+            AssertValues<double>(cells, AssertApproximateDouble);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for bool values")]
@@ -164,7 +164,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A1", true);
             cells.Add("A2", false);
             cells.Add("A3", true);
-            AssertValues<bool>(cells, AssertEqals);
+            AssertValues<bool>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for DateTime values")]
@@ -175,7 +175,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A2", new DateTime(1900, 1, 1, 0, 0, 0));
             cells.Add("A3", new DateTime(1960, 12, 12));
             cells.Add("A4", new DateTime(9999, 12, 31, 23, 59, 59));
-            AssertValues<DateTime>(cells, AssertEqals);
+            AssertValues<DateTime>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for TimeSpan values")]
@@ -186,7 +186,38 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A2", new TimeSpan(13,18,22));
             cells.Add("A3", new TimeSpan(12,0,0));
             cells.Add("A4", new TimeSpan(23,59,59));
-            AssertValues<TimeSpan>(cells, AssertEqals);
+            AssertValues<TimeSpan>(cells, AssertEquals);
+        }
+
+        [Fact(DisplayName = "Test of the reader functionality for Formulas (no formula parsing)")]
+        public void ReadFormulaTest()
+        {
+            Dictionary<string, string> cells = new Dictionary<string, string>();
+            long lmax = long.MaxValue;
+            cells.Add("A1", "=B2");
+            cells.Add("A2", "MIN(C2:D2)");
+            cells.Add("A3", "MAX(worksheet2!A1:¨worksheet2:A100");
+
+            Workbook workbook = new Workbook("worksheet1");
+            foreach (KeyValuePair<string, string> cell in cells)
+            {
+                workbook.CurrentWorksheet.AddCellFormula(cell.Value, cell.Key);
+            }
+            MemoryStream stream = new MemoryStream();
+            Path.GetTempPath();
+            workbook.SaveAsStream(stream, true);
+            stream.Position = 0;
+            Workbook givenWorkbook = Workbook.Load(stream);
+
+            Assert.NotNull(givenWorkbook);
+            Worksheet givenWorksheet = givenWorkbook.SetCurrentWorksheet(0);
+            Assert.Equal("worksheet1", givenWorksheet.SheetName);
+            foreach (string address in cells.Keys)
+            {
+                Cell givenCell = givenWorksheet.GetCell(new Address(address));
+                Assert.Equal(Cell.CellType.FORMULA, givenCell.DataType);
+                Assert.Equal(cells[address], givenCell.Value);
+            }
         }
 
         [Theory(DisplayName = "Test of the reader functionality on invalid / unexpected values")]
@@ -198,6 +229,8 @@ namespace NanoXLSX_Test.Reader
         [InlineData("F1", Cell.CellType.STRING, "1")] // Reference 1 is casted to string '1'
         [InlineData("G1", Cell.CellType.NUMBER, -1.5)]
         [InlineData("H1", Cell.CellType.STRING, "y")]
+        [InlineData("I1", Cell.CellType.BOOL, true)]
+        [InlineData("J1", Cell.CellType.BOOL, false)] 
         public void ReadInvalidDataTest(string cellAddress, Cell.CellType expectedType, object expectedValue)
         {
             // Note: Cell A1 is a valid string
@@ -208,6 +241,8 @@ namespace NanoXLSX_Test.Reader
             //       Cell F1 is defines as shared string value, but the value does not exits
             //       Cell G1 is defined as time but has a negative number
             //       Cell H1 is defined as the unknown type 'z'
+            //       Cell I1 is defined as boolean but has 'true' instead of 1 as XML value
+            //       Cell J1 is defined as boolean but has 'FALSE' instead of 0 as XML value
             Stream stream = TestUtils.GetResource("tampered.xlsx");
             Workbook workbook = Workbook.Load(stream);
             Assert.Equal(expectedType, workbook.Worksheets[0].Cells[cellAddress].DataType);
@@ -216,12 +251,13 @@ namespace NanoXLSX_Test.Reader
 
         [Theory(DisplayName = "Test of the failing reader functionality on invalid XML content")]
         [InlineData("invalid_workbook.xlsx")]
+        [InlineData("invalid_workbook_sheet-definition.xlsx")]
         [InlineData("invalid_worksheet.xlsx")]
         [InlineData("invalid_style.xlsx")]
         [InlineData("invalid_sharedStrings.xlsx")]
         public void FailingReadInvalidDataTest(string invalidFile)
         {
-            // Note all referenced (embedded) files contains invalid XML documents (malformed, missing start or end tags)
+            // Note: all referenced (embedded) files contains invalid XML documents (malformed, missing start or end tags, missing attributes)
             Stream stream = TestUtils.GetResource(invalidFile);
             Assert.Throws<NanoXLSX.Exceptions.IOException>(() => Workbook.Load(stream));
         }
@@ -234,22 +270,22 @@ namespace NanoXLSX_Test.Reader
         }
 
 
-        private static void AssertEqals<T>(T expected, T given)
+        private static void AssertEquals<T>(T expected, T given)
         {
             Assert.Equal(expected, given);
         }
 
-        private static void AssertValues<T>(Dictionary<string, T> givenCells, Action<T,T> asserionAction, Dictionary<string, T> expectedCells = null)
+        private static void AssertValues<T>(Dictionary<string, T> givenCells, Action<T,T> assertionAction, Dictionary<string, T> expectedCells = null)
         {
             Workbook workbook = new Workbook("worksheet1");
             foreach (KeyValuePair<string, T> cell in givenCells)
             {
                 workbook.CurrentWorksheet.AddCell(cell.Value, cell.Key);
-               // Cell c = new Cell(1.8e+309, Cell.CellType.NUMBER);
             }
-            MemoryStream stream = new MemoryStream();
+            MemoryStream stream = new MemoryStream()
             workbook.SaveAsStream(stream, true);
-            workbook.SaveAs("C:\\purge-temp\\debug.xlsx");
+            // TODO: Remove this (analysis only)
+            //workbook.SaveAs("C:\\purge-temp\\debug.xlsx");
             stream.Position = 0;
             Workbook givenWorkbook = Workbook.Load(stream);
 
@@ -275,19 +311,19 @@ namespace NanoXLSX_Test.Reader
                 }
                 else
                 {
-                    asserionAction.Invoke(value, (T)givenCell.Value);
+                    assertionAction.Invoke(value, (T)givenCell.Value);
                     //Assert.Equal(value, givenCell.Value);
                 }
             }
         }
 
-        private static void AssertAppriximateDouble(double expected, double given)
+        private static void AssertApproximateDouble(double expected, double given)
         {
             double threshold = 0.00000001;
             Assert.True(Math.Abs(given - expected) < threshold);
         }
 
-        private static void AssertAppriximateFloat(float expected, float given)
+        private static void AssertApproximateFloat(float expected, float given)
         {
             float threshold = 0.00000001f;
             Assert.True(Math.Abs(given - expected) < threshold);

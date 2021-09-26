@@ -70,6 +70,5 @@ namespace NanoXLSX_Test
                 return null;
             }
         }
-
     }
 }

@@ -1251,6 +1251,56 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Gets a row as list of cell objects
+        /// </summary>
+        /// <param name="rowNumber">Row number (zero-based)</param>
+        /// <returns>List of cell objects. If the row doesn't exist, an empty list is returned</returns>
+        public IReadOnlyList<Cell> GetRow(int rowNumber)
+        {
+            List<Cell> list = new List<Cell>();
+            foreach (KeyValuePair<string, Cell> cell in cells)
+            {
+                if (cell.Value.RowNumber == rowNumber)
+                {
+                    list.Add(cell.Value);
+                }
+            }
+            list.Sort((c1, c2) => (c1.ColumnNumber.CompareTo(c2.ColumnNumber))); // Lambda sort
+            return list;
+        }
+
+        /// <summary>
+        /// Gets a column as list of cell objects
+        /// </summary>
+        /// <param name="columnAddress">Column address</param>
+        /// <exception cref="RangeException">A range exception is thrown if the address is not valid</exception>
+        /// <returns>List of cell objects. If the column doesn't exist, an empty list is returned</returns>
+        public IReadOnlyList<Cell> GetColumn(string columnAddress)
+        {
+            int column = Cell.ResolveColumn(columnAddress);
+            return GetColumn(column);
+        }
+
+        /// <summary>
+        /// Gets a column as list of cell objects
+        /// </summary>
+        /// <param name="columnNumber">Column number (zero-based)</param>
+        /// <returns>List of cell objects. If the column doesn't exist, an empty list is returned</returns>
+        public IReadOnlyList<Cell> GetColumn(int columnNumber)
+        {
+            List<Cell> list = new List<Cell>();
+            foreach (KeyValuePair<string, Cell> cell in cells)
+            {
+                if (cell.Value.ColumnNumber == columnNumber)
+                {
+                    list.Add(cell.Value);
+                }
+            }
+            list.Sort((c1, c2) => (c1.RowNumber.CompareTo(c2.RowNumber))); // Lambda sort
+            return list;
+        }
+
+        /// <summary>
         /// Gets the current column number (zero based)
         /// </summary>
         /// <returns>Column number (zero-based)</returns>
