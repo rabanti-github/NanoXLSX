@@ -189,14 +189,14 @@ namespace NanoXLSX_Test.Reader
             AssertValues<TimeSpan>(cells, AssertEquals);
         }
 
-        [Fact(DisplayName = "Test of the reader functionality for Formulas (no formula parsing)")]
+        [Fact(DisplayName = "Test of the reader functionality for formulas (no formula parsing)")]
         public void ReadFormulaTest()
         {
             Dictionary<string, string> cells = new Dictionary<string, string>();
             long lmax = long.MaxValue;
             cells.Add("A1", "=B2");
             cells.Add("A2", "MIN(C2:D2)");
-            cells.Add("A3", "MAX(worksheet2!A1:¨worksheet2:A100");
+            cells.Add("A3", "MAX(worksheet2!A1:worksheet2:A100");
 
             Workbook workbook = new Workbook("worksheet1");
             foreach (KeyValuePair<string, string> cell in cells)
@@ -204,7 +204,6 @@ namespace NanoXLSX_Test.Reader
                 workbook.CurrentWorksheet.AddCellFormula(cell.Value, cell.Key);
             }
             MemoryStream stream = new MemoryStream();
-            Path.GetTempPath();
             workbook.SaveAsStream(stream, true);
             stream.Position = 0;
             Workbook givenWorkbook = Workbook.Load(stream);
@@ -238,7 +237,7 @@ namespace NanoXLSX_Test.Reader
             //       Cell C1 is defined as date but has a negative number
             //       Cell D1 is defined ad bool but has an invalid value of 2
             //       Cell E1 is defined as bool but has an invalid value of 'x'
-            //       Cell F1 is defines as shared string value, but the value does not exits
+            //       Cell F1 is defines as shared string value, but the value does not exist
             //       Cell G1 is defined as time but has a negative number
             //       Cell H1 is defined as the unknown type 'z'
             //       Cell I1 is defined as boolean but has 'true' instead of 1 as XML value
@@ -282,7 +281,7 @@ namespace NanoXLSX_Test.Reader
             {
                 workbook.CurrentWorksheet.AddCell(cell.Value, cell.Key);
             }
-            MemoryStream stream = new MemoryStream()
+            MemoryStream stream = new MemoryStream();
             workbook.SaveAsStream(stream, true);
             // TODO: Remove this (analysis only)
             //workbook.SaveAs("C:\\purge-temp\\debug.xlsx");
@@ -323,7 +322,7 @@ namespace NanoXLSX_Test.Reader
             Assert.True(Math.Abs(given - expected) < threshold);
         }
 
-        private static void AssertApproximateFloat(float expected, float given)
+        private static void AssertApproximateFloat (float expected, float given)
         {
             float threshold = 0.00000001f;
             Assert.True(Math.Abs(given - expected) < threshold);

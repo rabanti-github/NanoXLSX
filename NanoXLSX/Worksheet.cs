@@ -471,11 +471,11 @@ namespace NanoXLSX
         #region methods_AddNextCell
 
         /// <summary>
-        /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be casted to a String. 
-        /// A prepared object of the type Cell will not be casted but adjusted
+        /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be cast to a String. 
+        /// A prepared object of the type Cell will not be cast but adjusted
         /// </summary>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
-        /// All other types will be casted into a string using the default ToString() method</remarks>
+        /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <param name="value">Unspecified value to insert</param>
         /// <exception cref="RangeException">Throws a RangeException if the next cell is out of range (on row or column)</exception>
         public void AddNextCell(object value)
@@ -485,11 +485,11 @@ namespace NanoXLSX
 
 
         /// <summary>
-        /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be casted to a String. 
-        /// A prepared object of the type Cell will not be casted but adjusted
+        /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be cast to a String. 
+        /// A prepared object of the type Cell will not be cast but adjusted
         /// </summary>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
-        /// All other types will be casted into a string using the default ToString() method</remarks>
+        /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="style">Style object to apply on this cell</param>
         /// <exception cref="RangeException">Throws a RangeException if the next cell is out of range (on row or column)</exception>
@@ -506,7 +506,7 @@ namespace NanoXLSX
         /// <param name="cell">Cell object to insert</param>
         /// <param name="incremental">If true, the address value (row or column) will be incremented, otherwise not</param>
         /// <param name="style">If not null, the defined style will be applied to the cell, otherwise no style or the default style will be applied</param>
-        /// <remarks>Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be casted into a string using the default ToString() method.<br/>
+        /// <remarks>Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be cast into a string using the default ToString() method.<br/>
         /// If the cell object already has a style definition, and a style or active style is defined, the cell style will be merged, otherwise just set</remarks>
         /// <exception cref="StyleException">Throws a StyleException if the default style was malformed</exception>
         private void AddNextCell(Cell cell, bool incremental, Style style)
@@ -606,14 +606,14 @@ namespace NanoXLSX
         #region methods_AddCell
 
         /// <summary>
-        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be casted to a String. 
-        /// A prepared object of the type Cell will not be casted but adjusted
+        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be cast to a String. 
+        /// A prepared object of the type Cell will not be cast but adjusted
         /// </summary>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="columnNumber">Column number (zero based)</param>
         /// <param name="rowNumber">Row number (zero based)</param>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
-        /// All other types will be casted into a string using the default ToString() method</remarks>
+        /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public void AddCell(object value, int columnNumber, int rowNumber)
         {
@@ -621,15 +621,15 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be casted to a String. 
-        /// A prepared object of the type Cell will not be casted but adjusted
+        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be cast to a String. 
+        /// A prepared object of the type Cell will not be cast but adjusted
         /// </summary>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="columnNumber">Column number (zero based)</param>
         /// <param name="rowNumber">Row number (zero based)</param>
         /// <param name="style">Style to apply on the cell</param>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
-        /// All other types will be casted into a string using the default ToString() method</remarks>
+        /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public void AddCell(object value, int columnNumber, int rowNumber, Style style)
@@ -639,13 +639,13 @@ namespace NanoXLSX
 
 
         /// <summary>
-        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be casted to a String. 
-        /// A prepared object of the type Cell will not be casted but adjusted
+        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be cast to a String. 
+        /// A prepared object of the type Cell will not be cast but adjusted
         /// </summary>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
-        /// All other types will be casted into a string using the default ToString() method</remarks>
+        /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCell(object value, string address)
@@ -657,14 +657,14 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be casted to a String. 
-        /// A prepared object of the type Cell will not be casted but adjusted
+        /// Adds an object to the defined cell address. If the type of the value does not match with one of the supported data types, it will be cast to a String. 
+        /// A prepared object of the type Cell will not be cast but adjusted
         /// </summary>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <param name="style">Style to apply on the cell</param>
         /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, 
-        /// bool. All other types will be casted into a string using the default ToString() method</remarks>
+        /// bool. All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
@@ -769,14 +769,14 @@ namespace NanoXLSX
         #region methods_AddCellRange
 
         /// <summary>
-        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be casted to a String. 
-        /// Prepared objects of the type Cell will not be casted but adjusted
+        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be cast to a String. 
+        /// Prepared objects of the type Cell will not be cast but adjusted
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. 
-        /// All other types will be casted into a string using the default ToString() method</remarks>
+        /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         public void AddCellRange(IReadOnlyList<object> values, Address startAddress, Address endAddress)
         {
@@ -784,15 +784,15 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be casted to a String. 
-        /// Prepared objects of the type Cell will not be casted but adjusted
+        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be cast to a String. 
+        /// Prepared objects of the type Cell will not be cast but adjusted
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
-        /// All other types will be casted into a string using the default ToString() method</remarks>
+        /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
         public void AddCellRange(IReadOnlyList<object> values, Address startAddress, Address endAddress, Style style)
@@ -801,13 +801,13 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be casted to a String. 
-        /// Prepared objects of the type Cell will not be casted but adjusted
+        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be cast to a String. 
+        /// Prepared objects of the type Cell will not be cast but adjusted
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="cellRange">Cell range as string in the format like A1:D1 or X10:X22</param>
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
-        /// All other types will be casted into a string using the default ToString() method</remarks>
+        /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
         public void AddCellRange(IReadOnlyList<object> values, string cellRange)
@@ -817,14 +817,14 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be casted to a String. 
-        /// Prepared objects of the type Cell will not be casted but adjusted
+        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be cast to a String. 
+        /// Prepared objects of the type Cell will not be cast but adjusted
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="cellRange">Cell range as string in the format like A1:D1 or X10:X22</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
-        /// All other types will be casted into a string using the default ToString() method</remarks>
+        /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
@@ -843,7 +843,7 @@ namespace NanoXLSX
         /// <param name="endAddress">End address</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
         /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
-        /// All other types will be casted into a string using the default ToString() method</remarks>
+        /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells differs from the number of passed values</exception>
         private void AddCellRangeInternal<T>(IReadOnlyList<T> values, Address startAddress, Address endAddress, Style style)
         {

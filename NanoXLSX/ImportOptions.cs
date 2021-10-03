@@ -14,6 +14,40 @@ namespace NanoXLSX
     /// </summary>
     public class ImportOptions
     {
+
+        /// <summary>
+        /// Default format if DateTime values are cast to strings
+        /// </summary>
+        public const string DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
+
+        /// <summary>
+        /// Default format if TimeSpan values are cast to strings
+        /// </summary>
+        public const string DEFAULT_TIMESPAN_FORMAT = "hh:mm:ss";
+
+        /// <summary>
+        /// Global conversion types to enforce during the import. All types other than <a cref="GlobalType.Default" /> will override defined <a cref="ColumnType">Column types</a>
+        /// </summary>
+        public enum GlobalType
+        {
+            /// <summary>
+            /// No global strategy. All numbers are tried to be cast to the most suitable types
+            /// </summary>
+            Default,
+            /// <summary>
+            /// All numbers are cast to doubles
+            /// </summary>
+            AllNumbersToDouble,
+            /// <summary>
+            /// All numbers are cast to integers. Floating point numbers will be rounded (commercial rounding) to the nearest int
+            /// </summary>
+            AllNumbersToInt,
+            /// <summary>
+            /// Every cell is cast to a string
+            /// </summary>
+            EverythingToString
+        }
+
         /// <summary>
         /// Column types to enforce during the import
         /// </summary>
@@ -52,6 +86,11 @@ namespace NanoXLSX
         /// </summary>
         public bool EnforceEmptyValuesAsString { get; set; }
 
+        /// <summary>
+        /// Global strategy to handle cell values. The default will not enforce any casting, besides <a cref="EnforceDateTimesAsNumbers" />, <a cref="EnforceEmptyValuesAsString" /> and <a cref="EnforcedColumnTypes" /> 
+        /// </summary>
+        public GlobalType GlobalEnforcingType { get; set; } = GlobalType.Default;
+
 
         /// <summary>
         /// Type enforcing rules during import for particular columns
@@ -62,6 +101,16 @@ namespace NanoXLSX
         /// The row number (zero-based) where enforcing rules are started to be applied. This is, for instance, to prevent enforcing in a header row
         /// </summary>
         public int EnforcingStartRowNumber { get; set; }
+
+        /// <summary>
+        /// Format if DateTime values are cast to strings
+        /// </summary>
+        public string DateTimeFormat { get; set; } = DEFAULT_DATETIME_FORMAT;
+
+        /// <summary>
+        /// Format if TimeSpan values are cast to strings
+        /// </summary>
+        public string TimeSpanFormat { get; set; } = DEFAULT_TIMESPAN_FORMAT;
 
         /// <summary>
         /// Adds a type enforcing rule to the passed column address

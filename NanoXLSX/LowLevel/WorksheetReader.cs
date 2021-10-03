@@ -207,6 +207,41 @@ namespace NanoXLSX.LowLevel
         /// <returns>The resolved Cell</returns>
         private Cell ResolveCellDataConditionally(Address address, string type, string value, string styleNumber, string formula)
         {
+            if (importOptions.GlobalEnforcingType != ImportOptions.GlobalType.Default)
+            {
+                
+                Cell tempCell = AutoResolveCellData(address, type, value, styleNumber, formula);
+                IConvertible converter = tempCell.Value as IConvertible;
+                switch (importOptions.GlobalEnforcingType)
+                {
+                    case ImportOptions.GlobalType.AllNumbersToDouble:
+                        if (tempCell.DataType == Cell.CellType.NUMBER)
+                        {
+                            return new Cell(converter.ToDouble(Utils.INVARIANT_CULTURE), tempCell.DataType, address);
+                        }
+                        else if (tempCell.DataType == Cell.CellType.DATE || tempCell.DataType == Cell.CellType.TIME)
+                        {
+                            converter = value as IConvertible;
+                            double tempDouble = converter.ToDouble(Utils.INVARIANT_CULTURE);
+                            return new Cell(tempDouble, Cell.CellType.NUMBER, address);
+                        }
+                        return tempCell;
+                    case ImportOptions.GlobalType.AllNumbersToInt:
+                        if (tempCell.DataType == Cell.CellType.NUMBER)
+                        {
+                            return new Cell(converter.ToInt32(Utils.INVARIANT_CULTURE), tempCell.DataType, address);
+                        }
+                        else if (tempCell.DataType == Cell.CellType.DATE || tempCell.DataType == Cell.CellType.TIME)
+                        {
+                            converter = value as IConvertible;
+                            double tempDouble = converter.ToDouble(Utils.INVARIANT_CULTURE);
+                            return  new Cell((int)Math.Round(tempDouble, 0), Cell.CellType.NUMBER, address);
+                        }
+                        return tempCell;
+                    case ImportOptions.GlobalType.EverythingToString:
+                        return GetEnforcedStingValue(address, type, value, styleNumber, formula, importOptions);
+                }
+            }
             if (address.Row < importOptions.EnforcingStartRowNumber)
             {
                 return AutoResolveCellData(address, type, value, styleNumber, formula); // Skip enforcing
@@ -304,6 +339,28 @@ namespace NanoXLSX.LowLevel
             {
                 return GetStringValue(value, address);
             }
+        }
+
+        private Cell GetEnforcedStingValue(Address address, string type, string value, string styleNumber, string formula , ImportOptions options)
+        {
+            Cell parsed = AutoResolveCellData(address, type, value, styleNumber, formula);
+            if (parsed.DataType == Cell.CellType.EMPTY)
+            {
+                return parsed;
+            }
+            else if (parsed.DataType == Cell.CellType.DATE)
+            {
+                return GetStringValue(((DateTime)parsed.Value).ToString(options.DateTimeFormat), address);
+            }
+            else if (parsed.DataType == Cell.CellType.TIME)
+            {
+                return GetStringValue(((DateTime)parsed.Value).ToString(options.TimeSpanFormat), address);
+            }
+            else
+            {
+                return GetStringValue(parsed.Value.ToString(), address);
+            }
+
         }
 
         /// <summary>
@@ -445,7 +502,7 @@ namespace NanoXLSX.LowLevel
                             TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);
                             return new Cell(time, Cell.CellType.TIME, address);
                         default:
-                            throw new ArgumentException("The defined type is not supported to be uses as date or time");
+                            throw new ArgumentException("The defined type is not supported to be used as date or time");
                     }
                 }
             }
