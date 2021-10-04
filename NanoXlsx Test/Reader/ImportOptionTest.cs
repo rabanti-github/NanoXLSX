@@ -23,6 +23,8 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A5", 0.55f);
             cells.Add("A6", -0.111d);
             cells.Add("A7", new DateTime(2020, 11, 10, 9, 8, 7, 0));
+            cells.Add("A8", new TimeSpan(18, 15, 12));
+            cells.Add("A9", null);
             Dictionary<string, string> expectedCells = new Dictionary<string, string>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", "True");
@@ -31,6 +33,9 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A5", "0.55");
             expectedCells.Add("A6", "-0.111");
             expectedCells.Add("A7", "2020-11-10 09:08:07");
+            expectedCells.Add("A8", "18:15:12");
+            expectedCells.Add("A9", null);
+
             ImportOptions options = new ImportOptions();
             options.GlobalEnforcingType = ImportOptions.GlobalType.EverythingToString;
             AssertValues<object, string>(cells, options, AssertEquals, expectedCells);
@@ -47,6 +52,8 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A5", 0.55f);
             cells.Add("A6", -0.111d);
             cells.Add("A7", new DateTime(2020, 11, 10, 9, 8, 7, 0));
+            cells.Add("A8", new TimeSpan(18, 15, 12));
+            cells.Add("A9", null);
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", true);
@@ -55,6 +62,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A5", 0.55d);
             expectedCells.Add("A6", -0.111d);
             expectedCells.Add("A7", double.Parse(Utils.GetOADateTimeString(new DateTime(2020,11,10,9,8,7,0))));
+            expectedCells.Add("A8", double.Parse(Utils.GetOATimeString(new TimeSpan(18,15,12))));
+            expectedCells.Add("A9", null);
             ImportOptions options = new ImportOptions();
             options.GlobalEnforcingType = ImportOptions.GlobalType.AllNumbersToDouble;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
@@ -74,6 +83,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A8", new TimeSpan(18,15,12));
             cells.Add("A9", -4.9f);
             cells.Add("A10", 0.49d);
+            cells.Add("A11", null);
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", true);
@@ -85,6 +95,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A8", (int)Math.Round(double.Parse(Utils.GetOATimeString(new TimeSpan(18,15,12))), 0));
             expectedCells.Add("A9", -5);
             expectedCells.Add("A10", 0);
+            expectedCells.Add("A11", null);
             ImportOptions options = new ImportOptions();
             options.GlobalEnforcingType = ImportOptions.GlobalType.AllNumbersToInt;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);

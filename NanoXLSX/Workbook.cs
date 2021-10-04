@@ -728,7 +728,7 @@ namespace NanoXLSX
         /// Loads a workbook from a file
         /// </summary>
         /// <param name="filename">Filename of the workbook</param>
-        /// <param name="options">Import options to override the data types of columns. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
+        /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static Workbook Load(String filename, ImportOptions options = null)
@@ -742,7 +742,7 @@ namespace NanoXLSX
         /// Loads a workbook from a stream
         /// </summary>
         /// <param name="stream">Stream containing the workbook</param>
-        /// /// <param name="options">Import options to override the data types of columns. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
+        /// /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static Workbook Load(Stream stream, ImportOptions options = null)
@@ -756,7 +756,7 @@ namespace NanoXLSX
         /// Loads a workbook from a stream asynchronously
         /// </summary>
         /// <param name="stream">Stream containing the workbook</param>
-        /// /// <param name="options">Import options to override the data types of columns. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
+        /// /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static async Task<Workbook> LoadAsync(Stream stream, ImportOptions options = null)

@@ -23,7 +23,7 @@ namespace NanoXLSX
         /// <summary>
         /// Default format if TimeSpan values are cast to strings
         /// </summary>
-        public const string DEFAULT_TIMESPAN_FORMAT = "hh:mm:ss";
+        public const string DEFAULT_TIMESPAN_FORMAT = "hh\\:mm\\:ss";
 
         /// <summary>
         /// Global conversion types to enforce during the import. All types other than <a cref="GlobalType.Default" /> will override defined <a cref="ColumnType">Column types</a>
@@ -110,6 +110,7 @@ namespace NanoXLSX
         /// <summary>
         /// Format if TimeSpan values are cast to strings
         /// </summary>
+        /// <remarks>The separators like period or semicolon must be escaped by backslashes. See: <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-timespan-format-strings"/></remarks>
         public string TimeSpanFormat { get; set; } = DEFAULT_TIMESPAN_FORMAT;
 
         /// <summary>

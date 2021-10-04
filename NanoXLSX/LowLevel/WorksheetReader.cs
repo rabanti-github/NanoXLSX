@@ -209,7 +209,6 @@ namespace NanoXLSX.LowLevel
         {
             if (importOptions.GlobalEnforcingType != ImportOptions.GlobalType.Default)
             {
-                
                 Cell tempCell = AutoResolveCellData(address, type, value, styleNumber, formula);
                 IConvertible converter = tempCell.Value as IConvertible;
                 switch (importOptions.GlobalEnforcingType)
@@ -304,7 +303,7 @@ namespace NanoXLSX.LowLevel
         /// <param name="value">Raw value as string</param>
         /// <param name="styleNumber">Style number as string (can be null)</param>
         /// <param name="formula">Formula as string (can be null; data type determines whether value or formula is used)</param>
-        /// <returns>The resolved Cell</returns>
+        /// <returns>Resolved Cell</returns>
         private Cell AutoResolveCellData(Address address, string type, string value, string styleNumber, string formula)
         {
             if (type == "s") // string (declared)
@@ -341,6 +340,16 @@ namespace NanoXLSX.LowLevel
             }
         }
 
+        /// <summary>
+        /// Handles the value of a raw cell as string. An appropriate formatting is applied to DateTime and TimeSpan values. Null values are left on type EMPTY 
+        /// </summary>
+        /// <param name="address">Address of the cell</param>
+        /// <param name="type">Expected data type</param>
+        /// <param name="value">Raw value as string</param>
+        /// <param name="styleNumber">Style number as string (can be null)</param>
+        /// <param name="formula">Formula as string (can be null; data type determines whether value or formula is used)</param>
+        /// <param name="options">Options instance to determine appropriate formatting information</param>
+        /// <returns>Cell of the type string</returns>
         private Cell GetEnforcedStingValue(Address address, string type, string value, string styleNumber, string formula , ImportOptions options)
         {
             Cell parsed = AutoResolveCellData(address, type, value, styleNumber, formula);
@@ -354,13 +363,12 @@ namespace NanoXLSX.LowLevel
             }
             else if (parsed.DataType == Cell.CellType.TIME)
             {
-                return GetStringValue(((DateTime)parsed.Value).ToString(options.TimeSpanFormat), address);
+                return GetStringValue(((TimeSpan)parsed.Value).ToString(options.TimeSpanFormat), address);
             }
             else
             {
                 return GetStringValue(parsed.Value.ToString(), address);
             }
-
         }
 
         /// <summary>
