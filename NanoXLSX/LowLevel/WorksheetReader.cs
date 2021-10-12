@@ -207,6 +207,10 @@ namespace NanoXLSX.LowLevel
         /// <returns>The resolved Cell</returns>
         private Cell ResolveCellDataConditionally(Address address, string type, string value, string styleNumber, string formula)
         {
+            if (address.Row < importOptions.EnforcingStartRowNumber)
+            {
+                return AutoResolveCellData(address, type, value, styleNumber, formula); // Skip enforcing
+            }
             if (importOptions.GlobalEnforcingType != ImportOptions.GlobalType.Default)
             {
                 Cell tempCell = AutoResolveCellData(address, type, value, styleNumber, formula);
@@ -241,23 +245,19 @@ namespace NanoXLSX.LowLevel
                         return GetEnforcedStingValue(address, type, value, styleNumber, formula, importOptions);
                 }
             }
-            if (address.Row < importOptions.EnforcingStartRowNumber)
+            if (string.IsNullOrEmpty(value))
             {
-                return AutoResolveCellData(address, type, value, styleNumber, formula); // Skip enforcing
+                if (importOptions.EnforceEmptyValuesAsString)
+                {
+                    return new Cell("", Cell.CellType.STRING, address);
+                }
+                else
+                {
+                    return new Cell(null, Cell.CellType.EMPTY, address);
+                }
             }
             if (importOptions.EnforcedColumnTypes.ContainsKey(address.Column))
             {
-                if (string.IsNullOrEmpty(value))
-                {
-                    if (importOptions.EnforceEmptyValuesAsString)
-                    {
-                        return new Cell("", Cell.CellType.STRING, address);
-                    }
-                    else
-                    {
-                        return new Cell(null, Cell.CellType.EMPTY, address);
-                    }
-                }
                 ImportOptions.ColumnType importType = importOptions.EnforcedColumnTypes[address.Column];
                 switch (importType)
                 {
@@ -499,25 +499,18 @@ namespace NanoXLSX.LowLevel
                 {
                     return new Cell(dValue, Cell.CellType.NUMBER, address); // Invalid OAdate == plain number
                 }
-                else
+                else if (type == Cell.CellType.DATE)
                 {
-                    switch (type)
-                    {
-                        case Cell.CellType.DATE:
-                            DateTime date = Utils.GetDateFromOA(dValue);
-                            return new Cell(date, Cell.CellType.DATE, address);
-                        case Cell.CellType.TIME:
-                            TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);
-                            return new Cell(time, Cell.CellType.TIME, address);
-                        default:
-                            throw new ArgumentException("The defined type is not supported to be used as date or time");
-                    }
+                    DateTime date = Utils.GetDateFromOA(dValue);
+                    return new Cell(date, Cell.CellType.DATE, address);
+                }
+                else if (type == Cell.CellType.TIME)
+                {
+                    TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);
+                    return new Cell(time, Cell.CellType.TIME, address);
                 }
             }
-            else
-            {
                 return new Cell(raw, Cell.CellType.STRING, address);
-            }
         }
 
         #endregion

@@ -101,6 +101,47 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
+        [Fact(DisplayName = "Test of the reader functionality with the import option EnforceEmptyValuesAsString")]
+        public void EnforceEmptyValuesAsStringTest()
+        {
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            cells.Add("A1", "test");
+            cells.Add("A2", true);
+            cells.Add("A3", 22.2d);
+            cells.Add("A4", null);
+            cells.Add("A5", "");
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", "test");
+            expectedCells.Add("A2", true);
+            expectedCells.Add("A3", 22.2f); // Import will go to smallest float unit (float 32 / single)
+            expectedCells.Add("A4", "");
+            expectedCells.Add("A5", "");
+            ImportOptions options = new ImportOptions();
+            options.EnforceEmptyValuesAsString = true;
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
+        [Fact(DisplayName = "Test of the EnforcingStartRowNumber functionality on global enforcing rules")]
+        public void EnforcingStartRowNumberTest()
+        {
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            cells.Add("A1", 22);
+            cells.Add("A2", true);
+            cells.Add("A3", 22);
+            cells.Add("A4", true);
+            cells.Add("A5", 22.5d);
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", 22);
+            expectedCells.Add("A2", true);
+            expectedCells.Add("A3", "22"); // Import will go to the smallest float unit (float 32 / single)
+            expectedCells.Add("A4", "True");
+            expectedCells.Add("A5", "22.5");
+            ImportOptions options = new ImportOptions();
+            options.EnforcingStartRowNumber = 2;
+            options.GlobalEnforcingType = ImportOptions.GlobalType.EverythingToString;
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
         private static void AssertValues<T,D>(Dictionary<string, T> givenCells, ImportOptions importOptions, Action<object, object> assertionAction, Dictionary<string, D> expectedCells = null)
         {
             Workbook workbook = new Workbook("worksheet1");

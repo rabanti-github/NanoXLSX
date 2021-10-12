@@ -39,7 +39,7 @@ namespace NanoXLSX
             /// </summary>
             AllNumbersToDouble,
             /// <summary>
-            /// All numbers are cast to integers. Floating point numbers will be rounded (commercial rounding) to the nearest int
+            /// All numbers are cast to integers. Floating point numbers will be rounded (commercial rounding) to the nearest integers
             /// </summary>
             AllNumbersToInt,
             /// <summary>
@@ -87,7 +87,7 @@ namespace NanoXLSX
         public bool EnforceEmptyValuesAsString { get; set; }
 
         /// <summary>
-        /// Global strategy to handle cell values. The default will not enforce any casting, besides <a cref="EnforceDateTimesAsNumbers" />, <a cref="EnforceEmptyValuesAsString" /> and <a cref="EnforcedColumnTypes" /> 
+        /// Global strategy to handle cell values. The default will not enforce any general casting, besides <a cref="EnforceDateTimesAsNumbers" />, <a cref="EnforceEmptyValuesAsString" /> and <a cref="EnforcedColumnTypes" /> 
         /// </summary>
         public GlobalType GlobalEnforcingType { get; set; } = GlobalType.Default;
 
@@ -98,9 +98,9 @@ namespace NanoXLSX
         public Dictionary<int, ColumnType> EnforcedColumnTypes { get; private set; } = new Dictionary<int, ColumnType>();
 
         /// <summary>
-        /// The row number (zero-based) where enforcing rules are started to be applied. This is, for instance, to prevent enforcing in a header row
+        /// The row number (zero-based) where enforcing rules are started to be applied. This is, for instance, to prevent enforcing types in a header row. Any enforcing rule is skipped until this row number is reached
         /// </summary>
-        public int EnforcingStartRowNumber { get; set; }
+        public int EnforcingStartRowNumber { get; set; } = 0;
 
         /// <summary>
         /// Format if DateTime values are cast to strings

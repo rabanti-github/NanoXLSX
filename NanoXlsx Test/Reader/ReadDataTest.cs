@@ -229,7 +229,9 @@ namespace NanoXLSX_Test.Reader
         [InlineData("G1", Cell.CellType.NUMBER, -1.5)]
         [InlineData("H1", Cell.CellType.STRING, "y")]
         [InlineData("I1", Cell.CellType.BOOL, true)]
-        [InlineData("J1", Cell.CellType.BOOL, false)] 
+        [InlineData("J1", Cell.CellType.BOOL, false)]
+        [InlineData("K1", Cell.CellType.STRING, "z")]
+        [InlineData("L1", Cell.CellType.STRING, "z")]
         public void ReadInvalidDataTest(string cellAddress, Cell.CellType expectedType, object expectedValue)
         {
             // Note: Cell A1 is a valid string
@@ -242,6 +244,8 @@ namespace NanoXLSX_Test.Reader
             //       Cell H1 is defined as the unknown type 'z'
             //       Cell I1 is defined as boolean but has 'true' instead of 1 as XML value
             //       Cell J1 is defined as boolean but has 'FALSE' instead of 0 as XML value
+            //       Cell K1 is defined as date but has an invalid value of 'z'
+            //       Cell L1 is defined as time but has an invalid value of 'z'
             Stream stream = TestUtils.GetResource("tampered.xlsx");
             Workbook workbook = Workbook.Load(stream);
             Assert.Equal(expectedType, workbook.Worksheets[0].Cells[cellAddress].DataType);
