@@ -222,11 +222,23 @@ namespace NanoXLSX.LowLevel
                         {
                             return new Cell(converter.ToDouble(Utils.INVARIANT_CULTURE), tempCell.DataType, address);
                         }
+                        else if (tempCell.DataType == Cell.CellType.BOOL)
+                        {
+                            double tempDouble = ((bool)tempCell.Value) ? 1d : 0d;
+                            return new Cell(tempDouble, Cell.CellType.NUMBER, address);
+                        }
                         else if (tempCell.DataType == Cell.CellType.DATE || tempCell.DataType == Cell.CellType.TIME)
                         {
                             converter = value as IConvertible;
                             double tempDouble = converter.ToDouble(Utils.INVARIANT_CULTURE);
                             return new Cell(tempDouble, Cell.CellType.NUMBER, address);
+                        }
+                        else if (tempCell.DataType == Cell.CellType.STRING)
+                        {
+                            double tempDouble;
+                            if (double.TryParse(tempCell.Value.ToString(), out tempDouble)){
+                                return new Cell(tempDouble, Cell.CellType.NUMBER, address);
+                            }
                         }
                         return tempCell;
                     case ImportOptions.GlobalType.AllNumbersToInt:
@@ -234,11 +246,24 @@ namespace NanoXLSX.LowLevel
                         {
                             return new Cell(converter.ToInt32(Utils.INVARIANT_CULTURE), tempCell.DataType, address);
                         }
+                        else if (tempCell.DataType == Cell.CellType.BOOL)
+                        {
+                            int tempint = ((bool)tempCell.Value) ? 1 : 0;
+                            return new Cell(tempint, Cell.CellType.NUMBER, address);
+                        }
                         else if (tempCell.DataType == Cell.CellType.DATE || tempCell.DataType == Cell.CellType.TIME)
                         {
                             converter = value as IConvertible;
                             double tempDouble = converter.ToDouble(Utils.INVARIANT_CULTURE);
                             return  new Cell((int)Math.Round(tempDouble, 0), Cell.CellType.NUMBER, address);
+                        }
+                        else if (tempCell.DataType == Cell.CellType.STRING)
+                        {
+                            int tempInt;
+                            if (int.TryParse(tempCell.Value.ToString(), out tempInt))
+                            {
+                                return new Cell(tempInt, Cell.CellType.NUMBER, address);
+                            }
                         }
                         return tempCell;
                     case ImportOptions.GlobalType.EverythingToString:
@@ -259,6 +284,11 @@ namespace NanoXLSX.LowLevel
             if (importOptions.EnforcedColumnTypes.ContainsKey(address.Column))
             {
                 ImportOptions.ColumnType importType = importOptions.EnforcedColumnTypes[address.Column];
+                if (type == "s")
+                {
+                    // Resolve shared string first
+                    value = ResolveSharedString(value);
+                }
                 switch (importType)
                 {
                     case ImportOptions.ColumnType.Bool:
@@ -283,6 +313,8 @@ namespace NanoXLSX.LowLevel
                         }
                     case ImportOptions.ColumnType.Numeric:
                         return GetNumericValue(value, address);
+                    case ImportOptions.ColumnType.Double:
+                        return GetDoubleValue(value, address);
                     case ImportOptions.ColumnType.String:
                         return GetStringValue(value, address);
                     default:
@@ -414,6 +446,18 @@ namespace NanoXLSX.LowLevel
                     return new Cell(fValue, Cell.CellType.NUMBER, address);
                 }
             }
+            return GetDoubleValue(raw, address);
+        }
+
+        /// <summary>
+        /// Parses a raw value as double 
+        /// </summary>
+        /// <param name="raw">Raw value as string</param>
+        /// <param name="address">Address of the cell</param>
+        /// <returns>Cell of the type double or string as fall-back type</returns>
+        private Cell GetDoubleValue(String raw, Address address)
+        {
+            double dValue;
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
             {
                 return new Cell(dValue, Cell.CellType.NUMBER, address);
@@ -432,23 +476,30 @@ namespace NanoXLSX.LowLevel
         /// <returns>Cell of the type string</returns>
         private Cell GetStringValue(string raw, Address address)
         {
+            return new Cell(ResolveSharedString(raw), Cell.CellType.STRING, address);
+        }
+
+        /// <summary>
+        /// Tries to resolve a shared string from its ID
+        /// </summary>
+        /// <param name="raw">Raw value that can be either an ID of a shared string or an actual string value</param>
+        /// <returns>Resolved string or the raw value if no shared string could be determined</returns>
+        private string ResolveSharedString(string raw)
+        {
             int stringId;
             if (int.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out stringId))
             {
                 string resolvedString = sharedStrings.GetString(stringId);
                 if (resolvedString == null)
                 {
-                    return new Cell(raw, Cell.CellType.STRING, address);
+                    return raw;
                 }
                 else
                 {
-                    return new Cell(resolvedString, Cell.CellType.STRING, address);
+                    return resolvedString;
                 }
             }
-            else
-            {
-                return new Cell(raw, Cell.CellType.STRING, address);
-            }
+            return raw;
         }
 
         /// <summary>

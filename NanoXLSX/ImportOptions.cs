@@ -54,9 +54,13 @@ namespace NanoXLSX
         public enum ColumnType
         {
             /// <summary>
-            /// Cells are tried to be imported as numbers (double)
+            /// Cells are tried to be imported as numbers (automatic determination of numeric type)
             /// </summary>
             Numeric,
+            /// <summary>
+            /// Cells are tried to be imported as numbers (enforcing double)
+            /// </summary>
+            Double,
             /// <summary>
             /// Cells are tried to be imported as dates (DateTime)
             /// </summary>
