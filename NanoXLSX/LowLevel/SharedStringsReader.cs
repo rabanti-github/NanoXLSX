@@ -52,7 +52,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Determined shared string value. Returns null in case of a invalid index</returns>
         public string GetString(int index)
         {
-            if (!HasElements || index > SharedStrings.Count - 1)
+            if (!HasElements || index > SharedStrings.Count - 1 || index < 0)
             {
                 return null;
             }

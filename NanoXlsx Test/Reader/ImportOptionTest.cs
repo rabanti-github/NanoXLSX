@@ -146,8 +146,10 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Fact(DisplayName = "Test of the import options for the import column type: Double")]
-        public void EnforcingColumnAsNumberTest()
+        [Theory(DisplayName = "Test of the import options for the import column type: Double")]
+        [InlineData("B")]
+        [InlineData(1)]
+        public void EnforcingColumnAsNumberTest(object column)
         {
             TimeSpan time = new TimeSpan(11, 12, 13);
             DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
@@ -174,12 +176,21 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("C1", "2");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             ImportOptions options = new ImportOptions();
-            options.AddEnforcedColumn(1, ImportOptions.ColumnType.Double);
+            if (column is string)
+            {
+                options.AddEnforcedColumn(column as string, ImportOptions.ColumnType.Double);
+            }
+            else
+            {
+                options.AddEnforcedColumn((int)column, ImportOptions.ColumnType.Double);
+            }
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Fact(DisplayName = "Test of the import options for the import column type: Numeric")]
-        public void EnforcingColumnAsNumberTest2()
+        [Theory(DisplayName = "Test of the import options for the import column type: Numeric")]
+        [InlineData("B")]
+        [InlineData(1)]
+        public void EnforcingColumnAsNumberTest2(object column)
         {
             TimeSpan time = new TimeSpan(11, 12, 13);
             DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
@@ -206,12 +217,21 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("C1", "2");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             ImportOptions options = new ImportOptions();
-            options.AddEnforcedColumn(1, ImportOptions.ColumnType.Numeric);
+            if (column is string)
+            {
+                options.AddEnforcedColumn(column as string, ImportOptions.ColumnType.Numeric);
+            }
+            else
+            {
+                options.AddEnforcedColumn((int)column, ImportOptions.ColumnType.Numeric);
+            }
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Fact(DisplayName = "Test of the import options for the import column type: Bool")]
-        public void EnforcingColumnAsBoolsTest()
+        [Theory(DisplayName = "Test of the import options for the import column type: Bool")]
+        [InlineData("B")]
+        [InlineData(1)]
+        public void EnforcingColumnAsBoolTest(object column)
         {
             TimeSpan time = new TimeSpan(11, 12, 13);
             DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
@@ -227,6 +247,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B6", 0f);
             cells.Add("B7", "1");
             cells.Add("B8", "Test");
+            cells.Add("B9", 1.0d);
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
@@ -241,10 +262,67 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B6", false);
             expectedCells.Add("B7", true);
             expectedCells.Add("B8", "Test");
+            expectedCells.Add("B9", true);
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             ImportOptions options = new ImportOptions();
-            options.AddEnforcedColumn(1, ImportOptions.ColumnType.Bool);
+            if (column is string)
+            {
+                options.AddEnforcedColumn(column as string, ImportOptions.ColumnType.Bool);
+            }
+            else
+            {
+                options.AddEnforcedColumn((int)column, ImportOptions.ColumnType.Bool);
+            }
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
+        [Theory(DisplayName = "Test of the import options for the import column type: String")]
+        [InlineData("B")]
+        [InlineData(1)]
+        public void EnforcingColumnAsStringTest(object column)
+        {
+            TimeSpan time = new TimeSpan(11, 12, 13);
+            DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            cells.Add("A1", 1);
+            cells.Add("A2", "21");
+            cells.Add("A3", true);
+            cells.Add("B1", 1);
+            cells.Add("B2", "Test");
+            cells.Add("B3", false);
+            cells.Add("B4", time);
+            cells.Add("B5", date);
+            cells.Add("B6", 0f);
+            cells.Add("B7", true);
+            cells.Add("B8", -10);
+            cells.Add("B9", 1.111d);
+            cells.Add("C1", "0");
+            cells.Add("C2", new TimeSpan(12, 14, 16));
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", 1);
+            expectedCells.Add("A2", "21");
+            expectedCells.Add("A3", true);
+            expectedCells.Add("B1", "1");
+            expectedCells.Add("B2", "Test");
+            expectedCells.Add("B3", "False");
+            expectedCells.Add("B4", time.ToString(ImportOptions.DEFAULT_TIMESPAN_FORMAT));
+            expectedCells.Add("B5", date.ToString(ImportOptions.DEFAULT_DATETIME_FORMAT));
+            expectedCells.Add("B6", "0");
+            expectedCells.Add("B7", "True");
+            expectedCells.Add("B8", "-10");
+            expectedCells.Add("B9", "1.111");
+            expectedCells.Add("C1", "0");
+            expectedCells.Add("C2", new TimeSpan(12, 14, 16));
+            ImportOptions options = new ImportOptions();
+            if (column is string)
+            {
+                options.AddEnforcedColumn(column as string, ImportOptions.ColumnType.String);
+            }
+            else
+            {
+                options.AddEnforcedColumn((int)column, ImportOptions.ColumnType.String);
+            }
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 

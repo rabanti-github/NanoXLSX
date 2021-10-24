@@ -321,7 +321,7 @@ namespace NanoXLSX.LowLevel
                     case ImportOptions.ColumnType.Double:
                         return GetDoubleValue(value, address);
                     case ImportOptions.ColumnType.String:
-                        return GetStringValue(value, address);
+                        return GetStringValue(value, address, type, styleNumber, importOptions);
                     default:
                         return AutoResolveCellData(address, type, value, styleNumber, formula);
                 }
@@ -345,7 +345,7 @@ namespace NanoXLSX.LowLevel
         {
             if (type != null && type == "s") // string (declared)
             {
-                return GetStringValue(value, address);
+                return GetStringValue(value, address, type);
             }
             else if (type == "b") // boolean
             {
@@ -465,7 +465,7 @@ namespace NanoXLSX.LowLevel
         /// <param name="raw">Raw value as string</param>
         /// <param name="address">Address of the cell</param>
         /// <returns>Cell of the type double or string as fall-back type</returns>
-        private Cell GetDoubleValue(String raw, Address address)
+        private Cell GetDoubleValue(string raw, Address address)
         {
             double dValue;
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
@@ -483,10 +483,45 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <param name="address">Address of the cell</param>
+        /// <param name="type">Optional parameter to check whether the raw value is already a resolved string</param>
+        /// <param name="options">Optional import options to determine the date and time formatting information</param>
         /// <returns>Cell of the type string</returns>
-        private Cell GetStringValue(string raw, Address address)
+        private Cell GetStringValue(string raw, Address address, string type = null, string styleNumber = null, ImportOptions options = null)
         {
-            return new Cell(ResolveSharedString(raw), Cell.CellType.STRING, address);
+            if (type != null && type == "s")
+            {
+                return new Cell(ResolveSharedString(raw), Cell.CellType.STRING, address);
+            }
+            else if (type != null && type == "b")
+            {
+                Cell tempCell = GetBooleanValue(raw, address);
+                if (tempCell != null)
+                {
+                    return new Cell(tempCell.Value.ToString(), Cell.CellType.STRING, address);
+                }
+            }
+            else if (styleNumber != null)
+            {
+                Cell tempCell = null;
+                if (dateStyles.Contains(styleNumber))  // date (priority)
+                {
+                    tempCell = GetDateTimeValue(raw, address, Cell.CellType.DATE);
+                }
+                else if (timeStyles.Contains(styleNumber)) // time
+                {
+                    tempCell = GetDateTimeValue(raw, address, Cell.CellType.TIME);
+                }
+                if (tempCell != null && tempCell.DataType == Cell.CellType.DATE)
+                {
+                    return new Cell(((DateTime)tempCell.Value).ToString(options.DateTimeFormat), Cell.CellType.STRING, address);
+                }
+                else if (tempCell != null && tempCell.DataType == Cell.CellType.TIME)
+                {
+                    return new Cell(((TimeSpan)tempCell.Value).ToString(options.TimeSpanFormat), Cell.CellType.STRING, address);
+                }
+            }
+            return new Cell(raw, Cell.CellType.STRING, address);
+                                 
         }
 
         /// <summary>
