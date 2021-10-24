@@ -178,6 +178,76 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
+        [Fact(DisplayName = "Test of the import options for the import column type: Numeric")]
+        public void EnforcingColumnAsNumberTest2()
+        {
+            TimeSpan time = new TimeSpan(11, 12, 13);
+            DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            cells.Add("A1", 22);
+            cells.Add("A2", "21");
+            cells.Add("A3", true);
+            cells.Add("B1", 23);
+            cells.Add("B2", "20.1");
+            cells.Add("B3", true);
+            cells.Add("B4", time);
+            cells.Add("B5", date);
+            cells.Add("C1", "2");
+            cells.Add("C2", new TimeSpan(12, 14, 16));
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", 22);
+            expectedCells.Add("A2", "21");
+            expectedCells.Add("A3", true);
+            expectedCells.Add("B1", 23);
+            expectedCells.Add("B2", 20.1f);
+            expectedCells.Add("B3", 1);
+            expectedCells.Add("B4", float.Parse(Utils.GetOATimeString(time)));
+            expectedCells.Add("B5", float.Parse(Utils.GetOADateTimeString(date)));
+            expectedCells.Add("C1", "2");
+            expectedCells.Add("C2", new TimeSpan(12, 14, 16));
+            ImportOptions options = new ImportOptions();
+            options.AddEnforcedColumn(1, ImportOptions.ColumnType.Numeric);
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
+        [Fact(DisplayName = "Test of the import options for the import column type: Bool")]
+        public void EnforcingColumnAsBoolsTest()
+        {
+            TimeSpan time = new TimeSpan(11, 12, 13);
+            DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            cells.Add("A1", 1);
+            cells.Add("A2", "21");
+            cells.Add("A3", true);
+            cells.Add("B1", 1);
+            cells.Add("B2", "true");
+            cells.Add("B3", false);
+            cells.Add("B4", time);
+            cells.Add("B5", date);
+            cells.Add("B6", 0f);
+            cells.Add("B7", "1");
+            cells.Add("B8", "Test");
+            cells.Add("C1", "0");
+            cells.Add("C2", new TimeSpan(12, 14, 16));
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", 1);
+            expectedCells.Add("A2", "21");
+            expectedCells.Add("A3", true);
+            expectedCells.Add("B1", true);
+            expectedCells.Add("B2", true);
+            expectedCells.Add("B3", false);
+            expectedCells.Add("B4", time);
+            expectedCells.Add("B5", date);
+            expectedCells.Add("B6", false);
+            expectedCells.Add("B7", true);
+            expectedCells.Add("B8", "Test");
+            expectedCells.Add("C1", "0");
+            expectedCells.Add("C2", new TimeSpan(12, 14, 16));
+            ImportOptions options = new ImportOptions();
+            options.AddEnforcedColumn(1, ImportOptions.ColumnType.Bool);
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
         private static void AssertValues<T,D>(Dictionary<string, T> givenCells, ImportOptions importOptions, Action<object, object> assertionAction, Dictionary<string, D> expectedCells = null)
         {
             Workbook workbook = new Workbook("worksheet1");

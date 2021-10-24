@@ -223,7 +223,7 @@ namespace NanoXLSX_Test.Reader
         [InlineData("A1", Cell.CellType.STRING, "Test")]
         [InlineData("B1", Cell.CellType.STRING, "x")]
         [InlineData("C1", Cell.CellType.NUMBER, -1.8538541667)]
-        [InlineData("D1", Cell.CellType.STRING, "2")] // Could be number but fallback is string, anyway
+        [InlineData("D1", Cell.CellType.NUMBER, 2)] 
         [InlineData("E1", Cell.CellType.STRING, "x")]
         [InlineData("F1", Cell.CellType.STRING, "1")] // Reference 1 is casted to string '1'
         [InlineData("G1", Cell.CellType.NUMBER, -1.5)]

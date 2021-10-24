@@ -292,7 +292,12 @@ namespace NanoXLSX.LowLevel
                 switch (importType)
                 {
                     case ImportOptions.ColumnType.Bool:
-                        return GetBooleanValue(value, address);
+                        Cell tempCell = GetBooleanValue(value, address);
+                        if (tempCell == null)
+                        {
+                            return AutoResolveCellData(address, type, value, styleNumber, formula);
+                        }
+                        return tempCell;
                     case ImportOptions.ColumnType.Date:
                         if (importOptions.EnforceDateTimesAsNumbers)
                         {
@@ -338,13 +343,18 @@ namespace NanoXLSX.LowLevel
         /// <returns>Resolved Cell</returns>
         private Cell AutoResolveCellData(Address address, string type, string value, string styleNumber, string formula)
         {
-            if (type == "s") // string (declared)
+            if (type != null && type == "s") // string (declared)
             {
                 return GetStringValue(value, address);
             }
             else if (type == "b") // boolean
             {
-                return GetBooleanValue(value, address);
+                Cell tempCell = GetBooleanValue(value, address);
+                if (tempCell == null)
+                {
+                    return AutoResolveCellData(address, null, value, styleNumber, formula);
+                }
+                return tempCell;
             }
             else if (dateStyles.Contains(styleNumber))  // date (priority)
             {
@@ -507,7 +517,7 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <param name="address">Address of the cell</param>
-        /// <returns>Cell of the type bool or the defined fall-back type</returns>
+        /// <returns>Cell of the type bool or null if not able to parse</returns>
         private Cell GetBooleanValue(String raw, Address address)
         {
             if (raw == "0")
@@ -527,7 +537,7 @@ namespace NanoXLSX.LowLevel
                 }
                 else
                 {
-                    return new Cell(raw, Cell.CellType.STRING, address);
+                    return null;
 
                 }
             }
