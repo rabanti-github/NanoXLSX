@@ -211,65 +211,63 @@ namespace NanoXLSX.LowLevel
             {
                 return AutoResolveCellData(address, type, value, styleNumber, formula); // Skip enforcing
             }
-            if (importOptions.GlobalEnforcingType != ImportOptions.GlobalType.Default)
+            Cell tempCell = AutoResolveCellData(address, type, value, styleNumber, formula);
+            IConvertible converter = tempCell.Value as IConvertible;
+            switch (importOptions.GlobalEnforcingType)
             {
-                Cell tempCell = AutoResolveCellData(address, type, value, styleNumber, formula);
-                IConvertible converter = tempCell.Value as IConvertible;
-                switch (importOptions.GlobalEnforcingType)
-                {
-                    case ImportOptions.GlobalType.AllNumbersToDouble:
-                        if (tempCell.DataType == Cell.CellType.NUMBER)
-                        {
-                            return new Cell(converter.ToDouble(Utils.INVARIANT_CULTURE), tempCell.DataType, address);
-                        }
-                        else if (tempCell.DataType == Cell.CellType.BOOL)
-                        {
-                            double tempDouble = ((bool)tempCell.Value) ? 1d : 0d;
+                case ImportOptions.GlobalType.AllNumbersToDouble:
+                    if (tempCell.DataType == Cell.CellType.NUMBER)
+                    {
+                        return new Cell(converter.ToDouble(Utils.INVARIANT_CULTURE), tempCell.DataType, address);
+                    }
+                    else if (tempCell.DataType == Cell.CellType.BOOL)
+                    {
+                        double tempDouble = ((bool)tempCell.Value) ? 1d : 0d;
+                        return new Cell(tempDouble, Cell.CellType.NUMBER, address);
+                    }
+                    else if (tempCell.DataType == Cell.CellType.DATE || tempCell.DataType == Cell.CellType.TIME)
+                    {
+                        converter = value as IConvertible;
+                        double tempDouble = converter.ToDouble(Utils.INVARIANT_CULTURE);
+                        return new Cell(tempDouble, Cell.CellType.NUMBER, address);
+                    }
+                    else if (tempCell.DataType == Cell.CellType.STRING)
+                    {
+                        double tempDouble;
+                        if (double.TryParse(tempCell.Value.ToString(), out tempDouble)){
                             return new Cell(tempDouble, Cell.CellType.NUMBER, address);
                         }
-                        else if (tempCell.DataType == Cell.CellType.DATE || tempCell.DataType == Cell.CellType.TIME)
+                    }
+                    return tempCell;
+                case ImportOptions.GlobalType.AllNumbersToInt:
+                    if (tempCell.DataType == Cell.CellType.NUMBER)
+                    {
+                        return new Cell(converter.ToInt32(Utils.INVARIANT_CULTURE), tempCell.DataType, address);
+                    }
+                    else if (tempCell.DataType == Cell.CellType.BOOL)
+                    {
+                        int tempint = ((bool)tempCell.Value) ? 1 : 0;
+                        return new Cell(tempint, Cell.CellType.NUMBER, address);
+                    }
+                    else if (tempCell.DataType == Cell.CellType.DATE || tempCell.DataType == Cell.CellType.TIME)
+                    {
+                        converter = value as IConvertible;
+                        double tempDouble = converter.ToDouble(Utils.INVARIANT_CULTURE);
+                        return  new Cell((int)Math.Round(tempDouble, 0), Cell.CellType.NUMBER, address);
+                    }
+                    else if (tempCell.DataType == Cell.CellType.STRING)
+                    {
+                        int tempInt;
+                        if (int.TryParse(tempCell.Value.ToString(), out tempInt))
                         {
-                            converter = value as IConvertible;
-                            double tempDouble = converter.ToDouble(Utils.INVARIANT_CULTURE);
-                            return new Cell(tempDouble, Cell.CellType.NUMBER, address);
+                            return new Cell(tempInt, Cell.CellType.NUMBER, address);
                         }
-                        else if (tempCell.DataType == Cell.CellType.STRING)
-                        {
-                            double tempDouble;
-                            if (double.TryParse(tempCell.Value.ToString(), out tempDouble)){
-                                return new Cell(tempDouble, Cell.CellType.NUMBER, address);
-                            }
-                        }
-                        return tempCell;
-                    case ImportOptions.GlobalType.AllNumbersToInt:
-                        if (tempCell.DataType == Cell.CellType.NUMBER)
-                        {
-                            return new Cell(converter.ToInt32(Utils.INVARIANT_CULTURE), tempCell.DataType, address);
-                        }
-                        else if (tempCell.DataType == Cell.CellType.BOOL)
-                        {
-                            int tempint = ((bool)tempCell.Value) ? 1 : 0;
-                            return new Cell(tempint, Cell.CellType.NUMBER, address);
-                        }
-                        else if (tempCell.DataType == Cell.CellType.DATE || tempCell.DataType == Cell.CellType.TIME)
-                        {
-                            converter = value as IConvertible;
-                            double tempDouble = converter.ToDouble(Utils.INVARIANT_CULTURE);
-                            return  new Cell((int)Math.Round(tempDouble, 0), Cell.CellType.NUMBER, address);
-                        }
-                        else if (tempCell.DataType == Cell.CellType.STRING)
-                        {
-                            int tempInt;
-                            if (int.TryParse(tempCell.Value.ToString(), out tempInt))
-                            {
-                                return new Cell(tempInt, Cell.CellType.NUMBER, address);
-                            }
-                        }
-                        return tempCell;
-                    case ImportOptions.GlobalType.EverythingToString:
-                        return GetEnforcedStingValue(address, type, value, styleNumber, formula, importOptions);
-                }
+                    }
+                    return tempCell;
+                case ImportOptions.GlobalType.EverythingToString:
+                    return GetEnforcedStingValue(address, type, value, styleNumber, formula, importOptions);
             }
+            
             if (string.IsNullOrEmpty(value))
             {
                 if (importOptions.EnforceEmptyValuesAsString)
@@ -305,7 +303,7 @@ namespace NanoXLSX.LowLevel
                         }
                         else
                         {
-                            return GetDateTimeValue(value, address, Cell.CellType.DATE);
+                            return GetDateTimeValue(value, address, Cell.CellType.DATE, type);
                         }
                     case ImportOptions.ColumnType.Time:
                         if (importOptions.EnforceDateTimesAsNumbers)
@@ -314,7 +312,7 @@ namespace NanoXLSX.LowLevel
                         }
                         else
                         {
-                            return GetDateTimeValue(value, address, Cell.CellType.TIME);
+                            return GetDateTimeValue(value, address, Cell.CellType.TIME, type);
                         }
                     case ImportOptions.ColumnType.Numeric:
                         return GetNumericValue(value, address);
@@ -584,10 +582,40 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <param name="address">Address of the cell</param>
-        /// <param name="type">Type of the value to be converted: Valid values are DATE and TIME</param>
+        /// <param name="valueType">Type of the value to be converted: Valid values are DATE and TIME</param>
+        /// <param name="type">Optional parameter to check whether the raw value should be tried to be parsed as date or time</param>
         /// <returns>Cell of the type TimeSpan or the defined fall-back type</returns>
-        private Cell GetDateTimeValue(String raw, Address address, Cell.CellType type)
+        private Cell GetDateTimeValue(String raw, Address address, Cell.CellType valueType, string type = null)
         {
+            if (type != null && type == "b")
+            {
+                return GetBooleanValue(raw, address);
+            }
+            if (type != null && type == "s")
+            {
+                DateTime dateTime;
+                bool isDateTime = false;
+                if (string.IsNullOrEmpty(importOptions.DateTimeFormat) || importOptions.TemporalCultureInfo == null)
+                {
+                    isDateTime = DateTime.TryParse(raw, out dateTime);
+                }
+                else
+                {
+                    isDateTime = DateTime.TryParseExact(raw, importOptions.DateTimeFormat, importOptions.TemporalCultureInfo, DateTimeStyles.None, out dateTime);
+                }
+                if (isDateTime)
+                {
+                  if (valueType == Cell.CellType.DATE && dateTime >= Utils.FIRST_ALLOWED_EXCEL_DATE && dateTime <= Utils.LAST_ALLOWED_EXCEL_DATE)
+                  {
+                        return new Cell(dateTime, Cell.CellType.DATE, address);
+                    }
+                    else if (valueType == Cell.CellType.TIME)
+                    {
+                        return new Cell(new TimeSpan(0, dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Millisecond), Cell.CellType.TIME, address);
+                    }
+                }
+                // fallback to string
+            }
             double dValue;
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
             {
@@ -595,16 +623,25 @@ namespace NanoXLSX.LowLevel
                 {
                     return new Cell(dValue, Cell.CellType.NUMBER, address); // Invalid OAdate == plain number
                 }
-                else if (type == Cell.CellType.DATE)
+                else if (valueType == Cell.CellType.DATE)
                 {
                     DateTime date = Utils.GetDateFromOA(dValue);
-                    return new Cell(date, Cell.CellType.DATE, address);
+                    if (date >= Utils.FIRST_ALLOWED_EXCEL_DATE)
+                    {
+                        return new Cell(date, Cell.CellType.DATE, address);
+                    }
+                    else
+                    {
+                        // Prevent to import 00.01.1900, since it will lead to trouble when exporting / writing
+                        return new Cell(dValue, Cell.CellType.NUMBER, address);
+                    }
                 }
-                else if (type == Cell.CellType.TIME)
+                else if (valueType == Cell.CellType.TIME)
                 {
                     TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);
                     return new Cell(time, Cell.CellType.TIME, address);
                 }
+                
             }
                 return new Cell(raw, Cell.CellType.STRING, address);
         }

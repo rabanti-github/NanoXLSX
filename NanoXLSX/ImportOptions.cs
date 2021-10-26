@@ -6,6 +6,7 @@
  */
 
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace NanoXLSX
 {
@@ -18,12 +19,17 @@ namespace NanoXLSX
         /// <summary>
         /// Default format if DateTime values are cast to strings
         /// </summary>
-        public const string DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
+        public const string DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
         /// <summary>
         /// Default format if TimeSpan values are cast to strings
         /// </summary>
         public const string DEFAULT_TIMESPAN_FORMAT = "hh\\:mm\\:ss";
+
+        /// <summary>
+        /// Default culture info instance (invariant culture) used for date and time parsing, if no custom culture info is defined
+        /// </summary>
+        public static readonly CultureInfo DEFAULT_CILTURE_INFO = CultureInfo.InvariantCulture;
 
         /// <summary>
         /// Global conversion types to enforce during the import. All types other than <a cref="GlobalType.Default" /> will override defined <a cref="ColumnType">Column types</a>
@@ -62,7 +68,7 @@ namespace NanoXLSX
             /// </summary>
             Double,
             /// <summary>
-            /// Cells are tried to be imported as dates (DateTime)
+            /// Cells are tried to be imported as dates (DateTime). See also  <see cref="DateTimeFormat"/>, <see cref="TimeSpanFormat"/> and <see cref="TemporalCultureInfo"/>
             /// </summary>
             Date,
             /// <summary>
@@ -107,7 +113,8 @@ namespace NanoXLSX
         public int EnforcingStartRowNumber { get; set; } = 0;
 
         /// <summary>
-        /// Format if DateTime values are cast to strings
+        /// Format if DateTime values are cast to strings or DateTime objects are parsed from strings. If null or empty, parsing will be tried with 'best effort', according to <a cref="System.DateTime.Parse(string)" />. 
+        /// See also  <see cref="TemporalCultureInfo"/>
         /// </summary>
         public string DateTimeFormat { get; set; } = DEFAULT_DATETIME_FORMAT;
 
@@ -116,6 +123,12 @@ namespace NanoXLSX
         /// </summary>
         /// <remarks>The separators like period or semicolon must be escaped by backslashes. See: <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-timespan-format-strings"/></remarks>
         public string TimeSpanFormat { get; set; } = DEFAULT_TIMESPAN_FORMAT;
+
+        /// <summary>
+        /// Culture info instance, used to parse DateTime or TimeSpan objects from strings. If null, parsing will be tried with 'best effort', according to <a cref="System.DateTime.Parse(string)" />.
+        /// See also  <see cref="DateTimeFormat"/> and <see cref="TimeSpanFormat"/>
+        /// </summary>
+        public CultureInfo TemporalCultureInfo { get; set; } = DEFAULT_CILTURE_INFO;
 
         /// <summary>
         /// Adds a type enforcing rule to the passed column address
