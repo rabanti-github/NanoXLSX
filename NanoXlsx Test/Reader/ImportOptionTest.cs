@@ -375,6 +375,56 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
+                [Theory(DisplayName = "Test of the import options for the import column type: Time")]
+        [InlineData("B")]
+        [InlineData(1)]
+        public void EnforcingColumnAsTimeTest(object column)
+        {
+            TimeSpan time = new TimeSpan(11, 12, 13);
+            DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            cells.Add("A1", 1);
+            cells.Add("A2", "21");
+            cells.Add("A3", true);
+            cells.Add("B1", 1);
+            cells.Add("B2", "Test");
+            cells.Add("B3", false);
+            cells.Add("B4", time);
+            cells.Add("B5", date);
+            cells.Add("B6", 44494.5209490741d);
+            cells.Add("B7", "2021-10-25 12:30:10");
+            cells.Add("B8", -10);
+            cells.Add("B9", 44494.5f);
+            cells.Add("C1", "0");
+            cells.Add("C2", new TimeSpan(12, 14, 16));
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", 1);
+            expectedCells.Add("A2", "21");
+            expectedCells.Add("A3", true);
+            expectedCells.Add("B1", new TimeSpan(0, 0, 0));
+            expectedCells.Add("B2", "Test");
+            expectedCells.Add("B3", false);
+            expectedCells.Add("B4", time);
+            expectedCells.Add("B5", new TimeSpan(18, 22, 13));
+            expectedCells.Add("B6", new TimeSpan(12, 30, 10));
+            expectedCells.Add("B7", new TimeSpan(12, 30, 10));
+            expectedCells.Add("B8", -10d); // Fallback to double from int
+            expectedCells.Add("B9", new TimeSpan(12, 0, 0));
+            expectedCells.Add("C1", "0");
+            expectedCells.Add("C2", new TimeSpan(12, 14, 16));
+            ImportOptions options = new ImportOptions();
+            if (column is string)
+            {
+                options.AddEnforcedColumn(column as string, ImportOptions.ColumnType.Time);
+            }
+            else
+            {
+                options.AddEnforcedColumn((int)column, ImportOptions.ColumnType.Time);
+            }
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
+
         private static void AssertValues<T,D>(Dictionary<string, T> givenCells, ImportOptions importOptions, Action<object, object> assertionAction, Dictionary<string, D> expectedCells = null)
         {
             Workbook workbook = new Workbook("worksheet1");

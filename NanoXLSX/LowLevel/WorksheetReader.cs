@@ -290,7 +290,7 @@ namespace NanoXLSX.LowLevel
                 switch (importType)
                 {
                     case ImportOptions.ColumnType.Bool:
-                        Cell tempCell = GetBooleanValue(value, address);
+                         tempCell = GetBooleanValue(value, address);
                         if (tempCell == null)
                         {
                             return AutoResolveCellData(address, type, value, styleNumber, formula);
@@ -617,7 +617,17 @@ namespace NanoXLSX.LowLevel
                 // fallback to string
             }
             double dValue;
-            if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
+            bool isDouble = false;
+            if (importOptions == null || string.IsNullOrEmpty(importOptions.DateTimeFormat) || importOptions.TemporalCultureInfo == null)
+            {
+                isDouble = double.TryParse(raw, out dValue);
+            }
+            else
+            {
+                isDouble = double.TryParse(raw, NumberStyles.Any, importOptions.TemporalCultureInfo, out dValue);
+            }
+
+            if (isDouble)
             {
                 if (dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE)
                 {
