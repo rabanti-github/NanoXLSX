@@ -571,7 +571,6 @@ namespace NanoXLSX.LowLevel
                 else
                 {
                     return null;
-
                 }
             }
         }
@@ -593,28 +592,20 @@ namespace NanoXLSX.LowLevel
             }
             if (type != null && type == "s")
             {
-                DateTime dateTime;
-                bool isDateTime = false;
-                if (string.IsNullOrEmpty(importOptions.DateTimeFormat) || importOptions.TemporalCultureInfo == null)
+                DateTime? tempDate = TryParseDate(raw);
+                if (tempDate != null && valueType == Cell.CellType.DATE)
                 {
-                    isDateTime = DateTime.TryParse(raw, out dateTime);
+                    return new Cell(tempDate.Value, Cell.CellType.DATE, address);
                 }
-                else
+                else if (tempDate != null && valueType == Cell.CellType.TIME)
                 {
-                    isDateTime = DateTime.TryParseExact(raw, importOptions.DateTimeFormat, importOptions.TemporalCultureInfo, DateTimeStyles.None, out dateTime);
+                    return new Cell(new TimeSpan(tempDate.Value.Hour, tempDate.Value.Minute, tempDate.Value.Second), Cell.CellType.TIME, address); 
                 }
-                if (isDateTime)
+                TimeSpan? tempTime = TryParseTime(raw);
+                if (tempTime != null && valueType == Cell.CellType.TIME)
                 {
-                  if (valueType == Cell.CellType.DATE && dateTime >= Utils.FIRST_ALLOWED_EXCEL_DATE && dateTime <= Utils.LAST_ALLOWED_EXCEL_DATE)
-                  {
-                        return new Cell(dateTime, Cell.CellType.DATE, address);
-                    }
-                    else if (valueType == Cell.CellType.TIME)
-                    {
-                        return new Cell(new TimeSpan(0, dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Millisecond), Cell.CellType.TIME, address);
-                    }
+                    return new Cell(tempTime.Value, Cell.CellType.TIME, address);
                 }
-                // fallback to string
             }
             double dValue;
             bool isDouble = false;
@@ -626,7 +617,6 @@ namespace NanoXLSX.LowLevel
             {
                 isDouble = double.TryParse(raw, NumberStyles.Any, importOptions.TemporalCultureInfo, out dValue);
             }
-
             if (isDouble)
             {
                 if (dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE)
@@ -651,9 +641,56 @@ namespace NanoXLSX.LowLevel
                     TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);
                     return new Cell(time, Cell.CellType.TIME, address);
                 }
-                
             }
                 return new Cell(raw, Cell.CellType.STRING, address);
+        }
+
+        /// <summary>
+        /// Tris to parse a DateTime instance from a string
+        /// </summary>
+        /// <param name="raw">String to parse</param>
+        /// <returns>DateTime instance or null if not possible to parse</returns>
+        private DateTime? TryParseDate(string raw)
+        {
+            DateTime dateTime;
+            bool isDateTime = false;
+            if (importOptions == null || string.IsNullOrEmpty(importOptions.DateTimeFormat) || importOptions.TemporalCultureInfo == null)
+            {
+                isDateTime = DateTime.TryParse(raw, out dateTime);
+            }
+            else
+            {
+                isDateTime = DateTime.TryParseExact(raw, importOptions.DateTimeFormat, importOptions.TemporalCultureInfo, DateTimeStyles.None, out dateTime);
+            }
+            if (isDateTime && dateTime >= Utils.FIRST_ALLOWED_EXCEL_DATE && dateTime <= Utils.LAST_ALLOWED_EXCEL_DATE)
+            {
+                return dateTime;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Tris to parse a TimeSpan instance from a string
+        /// </summary>
+        /// <param name="raw">String to parse</param>
+        /// <returns>TimeSpan instance or null if not possible to parse</returns>
+        private TimeSpan? TryParseTime(string raw)
+        {
+            TimeSpan timeSpan;
+            bool isTimeSpan = false;
+            if (importOptions == null || string.IsNullOrEmpty(importOptions.TimeSpanFormat) || importOptions.TemporalCultureInfo == null)
+            {
+                isTimeSpan = TimeSpan.TryParse(raw, out timeSpan);
+            }
+            else
+            {
+                isTimeSpan = TimeSpan.TryParseExact(raw, importOptions.TimeSpanFormat, importOptions.TemporalCultureInfo, out timeSpan);
+            }
+            if (isTimeSpan)
+            {
+                return timeSpan;
+            }
+            return null;
         }
 
         #endregion

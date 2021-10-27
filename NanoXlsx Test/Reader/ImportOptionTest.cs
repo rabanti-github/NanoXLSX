@@ -12,6 +12,7 @@ namespace NanoXLSX_Test.Reader
     public class ImportOptionTest
     {
 
+
         [Fact( DisplayName = "Test of the reader functionality with the global import option to cast everything to string")]
         public void CastAllToStringTest()
         {
@@ -162,6 +163,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B3", true);
             cells.Add("B4", time);
             cells.Add("B5", date);
+            cells.Add("B6", null);
             cells.Add("C1", "2");
             cells.Add("C2", new TimeSpan(12, 14, 16));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
@@ -173,6 +175,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B3", 1d);
             expectedCells.Add("B4",  double.Parse(Utils.GetOATimeString(time)));
             expectedCells.Add("B5", double.Parse(Utils.GetOADateTimeString(date)));
+            expectedCells.Add("B6", null);
             expectedCells.Add("C1", "2");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             ImportOptions options = new ImportOptions();
@@ -203,6 +206,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B3", true);
             cells.Add("B4", time);
             cells.Add("B5", date);
+            cells.Add("B6", null);
             cells.Add("C1", "2");
             cells.Add("C2", new TimeSpan(12, 14, 16));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
@@ -214,6 +218,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B3", 1);
             expectedCells.Add("B4", float.Parse(Utils.GetOATimeString(time)));
             expectedCells.Add("B5", float.Parse(Utils.GetOADateTimeString(date)));
+            expectedCells.Add("B6", null);
             expectedCells.Add("C1", "2");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             ImportOptions options = new ImportOptions();
@@ -248,6 +253,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B7", "1");
             cells.Add("B8", "Test");
             cells.Add("B9", 1.0d);
+            cells.Add("B10", null);
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
@@ -263,6 +269,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B7", true);
             expectedCells.Add("B8", "Test");
             expectedCells.Add("B9", true);
+            expectedCells.Add("B10", null);
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             ImportOptions options = new ImportOptions();
@@ -297,6 +304,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B7", true);
             cells.Add("B8", -10);
             cells.Add("B9", 1.111d);
+            cells.Add("B10", null);
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
@@ -312,6 +320,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B7", "True");
             expectedCells.Add("B8", "-10");
             expectedCells.Add("B9", "1.111");
+            expectedCells.Add("B10", null);
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             ImportOptions options = new ImportOptions();
@@ -346,6 +355,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B7", "2021-10-25 12:30:10");
             cells.Add("B8", -10);
             cells.Add("B9", 44494.5f);
+            cells.Add("B10", null);
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
@@ -361,6 +371,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B7", new DateTime(2021, 10, 25, 12, 30, 10, 0));
             expectedCells.Add("B8", -10d); // Fallback to double from int
             expectedCells.Add("B9", new DateTime(2021, 10, 25, 12, 0, 0, 0));
+            expectedCells.Add("B10", null);
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             ImportOptions options = new ImportOptions();
@@ -375,7 +386,7 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-                [Theory(DisplayName = "Test of the import options for the import column type: Time")]
+        [Theory(DisplayName = "Test of the import options for the import column type: Time")]
         [InlineData("B")]
         [InlineData(1)]
         public void EnforcingColumnAsTimeTest(object column)
@@ -395,6 +406,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B7", "2021-10-25 12:30:10");
             cells.Add("B8", -10);
             cells.Add("B9", 44494.5f);
+            cells.Add("B10", null);
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
@@ -410,6 +422,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B7", new TimeSpan(12, 30, 10));
             expectedCells.Add("B8", -10d); // Fallback to double from int
             expectedCells.Add("B9", new TimeSpan(12, 0, 0));
+            expectedCells.Add("B10", null);
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             ImportOptions options = new ImportOptions();
@@ -422,6 +435,103 @@ namespace NanoXLSX_Test.Reader
                 options.AddEnforcedColumn((int)column, ImportOptions.ColumnType.Time);
             }
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
+        [Theory(DisplayName = "Test of the import options for the combination of a start row and a enforced column")]
+        [InlineData(ImportOptions.ColumnType.Bool, "1", true)]
+        [InlineData(ImportOptions.ColumnType.Bool, false, false)]
+        [InlineData(ImportOptions.ColumnType.Double, "-2.5", -2.5d)]
+        [InlineData(ImportOptions.ColumnType.Double, 13, 13d)]
+        [InlineData(ImportOptions.ColumnType.Numeric, "12.5", 12.5f)]
+        [InlineData(ImportOptions.ColumnType.Numeric, 13, 13)]
+        [InlineData(ImportOptions.ColumnType.String, 16.5f, "16.5")]
+        [InlineData(ImportOptions.ColumnType.String, true, "True")]
+        public void EnforcingColumnStartRowTest(ImportOptions.ColumnType columnType, object givenValue, object expectedValue)
+        {
+            TimeSpan time = new TimeSpan(11, 12, 13);
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            cells.Add("A1", "test");
+            cells.Add("A2", 23);
+            cells.Add("A3", time);
+            cells.Add("B1", null);
+            cells.Add("B2", givenValue);
+            cells.Add("B3", givenValue);
+            cells.Add("C1", 28);
+            cells.Add("C2", false);
+            cells.Add("C3", "Test");
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", "test");
+            expectedCells.Add("A2", 23);
+            expectedCells.Add("A3", time);
+            expectedCells.Add("B1", null);
+            expectedCells.Add("B2", givenValue);
+            expectedCells.Add("B3", expectedValue);
+            expectedCells.Add("C1", 28);
+            expectedCells.Add("C2", false);
+            expectedCells.Add("C3", "Test");
+            ImportOptions options = new ImportOptions();
+            options.AddEnforcedColumn(1, columnType);
+            options.EnforcingStartRowNumber = 2;
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+            ImportOptions options2 = new ImportOptions();
+            options2.AddEnforcedColumn("B", columnType);
+            options2.EnforcingStartRowNumber = 2;
+            AssertValues<object, object>(cells, options2, AssertApproximate, expectedCells);
+        }
+
+        [Theory(DisplayName = "Test of the import options for the combination of a start row and a enforced column on types Date and Time")]
+        [InlineData(ImportOptions.ColumnType.Date)]
+        [InlineData(ImportOptions.ColumnType.Time)]
+        public void EnforcingColumnStartRowTest2(ImportOptions.ColumnType columnType)
+        {
+            TimeSpan time = new TimeSpan(11, 12, 13);
+            TimeSpan expectedTime = new TimeSpan(12, 13, 14);
+            DateTime expectedDate = new DateTime(2021, 8, 14, 18, 22, 13, 0);
+
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            cells.Add("A1", "test");
+            cells.Add("A2", 23);
+            cells.Add("A3", time);
+            cells.Add("B1", null);
+            if (columnType == ImportOptions.ColumnType.Time)
+            {
+                cells.Add("B2", "12:13:14");
+                cells.Add("B3", "12:13:14");
+            }
+            else if (columnType == ImportOptions.ColumnType.Date) 
+            {
+                cells.Add("B2", "2021-08-14 18:22:13");
+                cells.Add("B3", "2021-08-14 18:22:13");
+            }
+            cells.Add("C1", 28);
+            cells.Add("C2", false);
+            cells.Add("C3", "Test");
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", "test");
+            expectedCells.Add("A2", 23);
+            expectedCells.Add("A3", time);
+            expectedCells.Add("B1", null);
+            if (columnType == ImportOptions.ColumnType.Time)
+            {
+                expectedCells.Add("B2", "12:13:14");
+                expectedCells.Add("B3", expectedTime);
+            }
+            else if (columnType == ImportOptions.ColumnType.Date)
+            {
+                expectedCells.Add("B2", "2021-08-14 18:22:13");
+                expectedCells.Add("B3", expectedDate);
+            }
+            expectedCells.Add("C1", 28);
+            expectedCells.Add("C2", false);
+            expectedCells.Add("C3", "Test");
+            ImportOptions options = new ImportOptions();
+            options.AddEnforcedColumn(1, columnType);
+            options.EnforcingStartRowNumber = 2;
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+            ImportOptions options2 = new ImportOptions();
+            options2.AddEnforcedColumn("B", columnType);
+            options2.EnforcingStartRowNumber = 2;
+            AssertValues<object, object>(cells, options2, AssertApproximate, expectedCells);
         }
 
 
