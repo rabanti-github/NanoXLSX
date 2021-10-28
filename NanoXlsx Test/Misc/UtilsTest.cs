@@ -36,6 +36,27 @@ namespace NanoXLSX_Test.Misc
             Assert.True(Math.Abs(expected - given) < threshold);
         }
 
+        [Theory(DisplayName = "Test of the GetOADateTime function")]
+        [InlineData("01.01.1900 00:00:00", 1d)]
+        [InlineData("02.01.1900 12:35:20", 2.5245370370370401d)]
+        [InlineData("27.02.1900 00:00:00", 58d)]
+        [InlineData("28.02.1900 00:00:00", 59d)]
+        [InlineData("28.02.1900 12:30:32", 59.521203703703705d)]
+        [InlineData("01.03.1900 00:00:00", 61d)]
+        [InlineData("01.03.1900 08:08:11", 61.339016203703707d)]
+        [InlineData("20.05.1960 22:11:05", 22056.924363425926d)]
+        [InlineData("01.01.2021 00:00:00", 44197d)]
+        [InlineData("12.12.5870 11:30:12", 1450360.47930556d)]
+        public void GetOADateTimeString(string dateString, double expectedOaDate)
+        {
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            string format = "dd.MM.yyyy HH:mm:ss";
+            DateTime date = DateTime.ParseExact(dateString, format, provider);
+            double oaDate = Utils.GetOADateTime(date);
+            float threshold = 0.00000001f; // Ignore everything below a millisecond (double precision may vary)
+            Assert.True(Math.Abs(expectedOaDate - oaDate) < threshold);
+        }
+
         [Theory(DisplayName = "Test of the failing GetOADateTimeString function on invalid dates")]
         [InlineData("01.01.0001 00:00:00")]
         [InlineData("18.05.0712 11:15:02")]
@@ -47,12 +68,25 @@ namespace NanoXLSX_Test.Misc
             string format = "dd.MM.yyyy HH:mm:ss";
             DateTime date = DateTime.ParseExact(dateString, format, provider);
             Assert.Throws<FormatException>(() => Utils.GetOADateTimeString(date));
-        }       
+        }
+
+        [Theory(DisplayName = "Test of the failing GetOADateTime function on invalid dates")]
+        [InlineData("01.01.0001 00:00:00")]
+        [InlineData("18.05.0712 11:15:02")]
+        [InlineData("31.12.1899 23:59:59")]
+        public void GetOADateTimeFailTest(string dateString)
+        {
+            // Note: Dates beyond the year 10000 cannot be tested though
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            string format = "dd.MM.yyyy HH:mm:ss";
+            DateTime date = DateTime.ParseExact(dateString, format, provider);
+            Assert.Throws<FormatException>(() => Utils.GetOADateTime(date));
+        }
 
         [Theory(DisplayName = "Test of the GetOATimeString function")]
         [InlineData("00:00:00", "0.0")]
         [InlineData("12:00:00", "0.5")]
-        [InlineData("23:59:59", " 0.999988425925926")]
+        [InlineData("23:59:59", "0.999988425925926")]
         [InlineData("13:11:10", "0.549421296296296")]
         [InlineData("18:00:00", "0.75")]
         public void GetOATimeStringTest(string timeString, string expectedOaTime)
@@ -65,6 +99,22 @@ namespace NanoXLSX_Test.Misc
             float given = float.Parse(oaDate);
             float threshold = 0.000000001f; // Ignore everything below a millisecond
             Assert.True(Math.Abs(expected - given) < threshold);
+        }
+
+        [Theory(DisplayName = "Test of the GetOATime function")]
+        [InlineData("00:00:00", 0.0d)]
+        [InlineData("12:00:00", 0.5d)]
+        [InlineData("23:59:59", 0.999988425925926d)]
+        [InlineData("13:11:10", 0.549421296296296d)]
+        [InlineData("18:00:00", 0.75d)]
+        public void GetOATimeTest(string timeString, double expectedOaTime)
+        {
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            string format = "hh\\:mm\\:ss";
+            TimeSpan time = TimeSpan.ParseExact(timeString, format, provider);
+            double oaTime = Utils.GetOATime(time);
+            float threshold = 0.000000001f; // Ignore everything below a millisecond
+            Assert.True(Math.Abs(expectedOaTime - oaTime) < threshold);
         }
 
         [Theory(DisplayName = "Test of the GetInternalColumnWidth function")]

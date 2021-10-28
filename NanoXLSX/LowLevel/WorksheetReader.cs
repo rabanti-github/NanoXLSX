@@ -595,16 +595,16 @@ namespace NanoXLSX.LowLevel
                 DateTime? tempDate = TryParseDate(raw);
                 if (tempDate != null && valueType == Cell.CellType.DATE)
                 {
-                    return new Cell(tempDate.Value, Cell.CellType.DATE, address);
+                    return GetTemporalCell(tempDate.Value, address);
                 }
                 else if (tempDate != null && valueType == Cell.CellType.TIME)
                 {
-                    return new Cell(new TimeSpan(tempDate.Value.Hour, tempDate.Value.Minute, tempDate.Value.Second), Cell.CellType.TIME, address); 
+                    return GetTemporalCell(new TimeSpan(tempDate.Value.Hour, tempDate.Value.Minute, tempDate.Value.Second), address);
                 }
                 TimeSpan? tempTime = TryParseTime(raw);
                 if (tempTime != null && valueType == Cell.CellType.TIME)
                 {
-                    return new Cell(tempTime.Value, Cell.CellType.TIME, address);
+                    return GetTemporalCell(tempTime.Value, address);
                 }
             }
             double dValue;
@@ -619,16 +619,16 @@ namespace NanoXLSX.LowLevel
             }
             if (isDouble)
             {
-                if (dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE)
+                if (dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE || (importOptions != null && importOptions.EnforceDateTimesAsNumbers))
                 {
-                    return new Cell(dValue, Cell.CellType.NUMBER, address); // Invalid OAdate == plain number
+                    return new Cell(dValue, Cell.CellType.NUMBER, address); // Invalid OAdate / enforced number == plain number
                 }
                 else if (valueType == Cell.CellType.DATE)
                 {
                     DateTime date = Utils.GetDateFromOA(dValue);
                     if (date >= Utils.FIRST_ALLOWED_EXCEL_DATE)
                     {
-                        return new Cell(date, Cell.CellType.DATE, address);
+                        return GetTemporalCell(date, address);
                     }
                     else
                     {
@@ -639,10 +639,39 @@ namespace NanoXLSX.LowLevel
                 else if (valueType == Cell.CellType.TIME)
                 {
                     TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);
-                    return new Cell(time, Cell.CellType.TIME, address);
+                    return GetTemporalCell(time, address);
                 }
             }
                 return new Cell(raw, Cell.CellType.STRING, address);
+        }
+
+        /// <summary>
+        /// Gets a cell either as DateTime, TimeSpan or as double if enforced by import options
+        /// </summary>
+        /// <param name="dateTimeValue">Value of the cell</param>
+        /// <param name="address">Address of the cell</param>
+        /// <returns>Casted cell</returns>
+        private Cell GetTemporalCell(Object dateTimeValue, Address address)
+        {
+            if (importOptions != null && importOptions.EnforceDateTimesAsNumbers)
+            {
+                if (dateTimeValue is DateTime)
+                {
+                    return new Cell(Utils.GetOADateTime((DateTime)dateTimeValue), Cell.CellType.NUMBER, address);
+                }
+                else
+                {
+                    return new Cell(Utils.GetOATime((TimeSpan)dateTimeValue), Cell.CellType.NUMBER, address);
+                }
+            }
+            if (dateTimeValue is DateTime)
+            {
+                return new Cell((DateTime)dateTimeValue, Cell.CellType.DATE, address);
+            }
+            else
+            {
+                return new Cell((TimeSpan)dateTimeValue, Cell.CellType.TIME, address);
+            }
         }
 
         /// <summary>

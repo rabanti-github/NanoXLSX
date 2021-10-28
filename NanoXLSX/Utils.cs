@@ -68,7 +68,7 @@ namespace NanoXLSX
         /// Method to convert a date or date and time into the internal Excel time format (OAdate)
         /// </summary>
         /// <param name="date">Date to process</param>
-        /// <returns>Date or date and time as number</returns>
+        /// <returns>Date or date and time as number string</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
         /// <remarks>Excel assumes wrongly that the year 1900 is a leap year. There is a gap of 1.0 between 1900-02-28 and 1900-03-01. This method corrects all dates
         /// from the first valid date (1900-01-01) to 1900-03-01. However, Excel displays the minimum valid date as 1900-01-00, although 0 is not a valid description for a day of month.
@@ -80,18 +80,49 @@ namespace NanoXLSX
         /// </remarks>
         public static string GetOADateTimeString(DateTime date)
         {
+            double d = GetOADateTime(date);
+            return d.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Method to convert a date or date and time into the internal Excel time format (OAdate)
+        /// </summary>
+        /// <param name="date">Date to process</param>
+        /// <returns>Date or date and time as number</returns>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
+        /// <remarks>Excel assumes wrongly that the year 1900 is a leap year. There is a gap of 1.0 between 1900-02-28 and 1900-03-01. This method corrects all dates
+        /// from the first valid date (1900-01-01) to 1900-03-01. However, Excel displays the minimum valid date as 1900-01-00, although 0 is not a valid description for a day of month.
+        /// In conformance to the OAdate specifications, the maximum valid date is 9999-12-31 23:59:59 (plus 999 milliseconds).<br/>
+        ///See also: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1">
+        ///https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1</a><br/>
+        ///See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
+        ///https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a>
+        /// </remarks>
+        public static double GetOADateTime(DateTime date)
+        {
             if (date < FIRST_ALLOWED_EXCEL_DATE || date > LAST_ALLOWED_EXCEL_DATE)
             {
                 throw new Exceptions.FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 or after 9999-12-31 are not allowed.");
             }
-                DateTime dateValue = date;
-                if (date < FIRST_VALID_EXCEL_DATE)
-                {
-                    dateValue = date.AddDays(-1); // Fix of the leap-year-1900-error
-                }
-                double currentMillis = (double)dateValue.Ticks / TimeSpan.TicksPerMillisecond;
-                double d = ((double)(dateValue.Second + (dateValue.Minute * 60) + (dateValue.Hour * 3600)) / 86400) + Math.Floor((currentMillis - ROOT_MILLIS) / 86400000);
-                return d.ToString("G", INVARIANT_CULTURE);
+            DateTime dateValue = date;
+            if (date < FIRST_VALID_EXCEL_DATE)
+            {
+                dateValue = date.AddDays(-1); // Fix of the leap-year-1900-error
+            }
+            double currentMillis = (double)dateValue.Ticks / TimeSpan.TicksPerMillisecond;
+            return ((double)(dateValue.Second + (dateValue.Minute * 60) + (dateValue.Hour * 3600)) / 86400) + Math.Floor((currentMillis - ROOT_MILLIS) / 86400000);
+        }
+
+        /// <summary>
+        /// Method to convert a time into the internal Excel time format (OAdate without days)
+        /// </summary>
+        /// <param name="time">Time to process. The date component of the timespan is neglected</param>
+        /// <returns>Time as number string</returns>
+        /// <remarks>The time is represented by a OAdate without the date component. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
+        public static string GetOATimeString(TimeSpan time)
+        {
+            double d = GetOATime(time);
+            return d.ToString("G", INVARIANT_CULTURE);
         }
 
         /// <summary>
@@ -100,11 +131,10 @@ namespace NanoXLSX
         /// <param name="time">Time to process. The date component of the timespan is neglected</param>
         /// <returns>Time as number</returns>
         /// <remarks>The time is represented by a OAdate without the date component. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
-        public static string GetOATimeString(TimeSpan time)
+        public static double GetOATime(TimeSpan time)
         {
-                int seconds = time.Seconds + time.Minutes * 60 + time.Hours * 3600;
-                double d = (double)seconds / 86400d;
-                return d.ToString("G", INVARIANT_CULTURE);
+            int seconds = time.Seconds + time.Minutes * 60 + time.Hours * 3600;
+            return (double)seconds / 86400d;
         }
 
         /// <summary>

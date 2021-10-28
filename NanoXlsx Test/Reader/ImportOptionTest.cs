@@ -63,8 +63,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A4", 42d);
             expectedCells.Add("A5", 0.55d);
             expectedCells.Add("A6", -0.111d);
-            expectedCells.Add("A7", double.Parse(Utils.GetOADateTimeString(new DateTime(2020,11,10,9,8,7,0))));
-            expectedCells.Add("A8", double.Parse(Utils.GetOATimeString(new TimeSpan(18,15,12))));
+            expectedCells.Add("A7", Utils.GetOADateTime(new DateTime(2020,11,10,9,8,7,0)));
+            expectedCells.Add("A8", Utils.GetOATime(new TimeSpan(18,15,12)));
             expectedCells.Add("A9", null);
             expectedCells.Add("A10", 27d);
             ImportOptions options = new ImportOptions();
@@ -95,8 +95,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A4", 42);
             expectedCells.Add("A5", 1);
             expectedCells.Add("A6", -3);
-            expectedCells.Add("A7", (int)Math.Round(double.Parse(Utils.GetOADateTimeString(new DateTime(2020, 11, 10, 9, 8, 7, 0))),0));
-            expectedCells.Add("A8", (int)Math.Round(double.Parse(Utils.GetOATimeString(new TimeSpan(18,15,12))), 0));
+            expectedCells.Add("A7", (int)Math.Round(Utils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)),0));
+            expectedCells.Add("A8", (int)Math.Round(Utils.GetOATime(new TimeSpan(18,15,12)), 0));
             expectedCells.Add("A9", -5);
             expectedCells.Add("A10", 0);
             expectedCells.Add("A11", null);
@@ -147,6 +147,28 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
+        [Fact(DisplayName = "Test of the EnforceDateTimesAsNumbers functionality on global enforcing rules")]
+        public void EnforceDateTimesAsNumbersTest()
+        {
+            DateTime date = new DateTime(2021, 8, 17, 11, 12, 13, 0);
+            TimeSpan time = new TimeSpan(18, 14, 10);
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            cells.Add("A1", 22);
+            cells.Add("A2", true);
+            cells.Add("A3", date);
+            cells.Add("A4", time);
+            cells.Add("A5", 22.5d);
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", 22);
+            expectedCells.Add("A2", true);
+            expectedCells.Add("A3", Utils.GetOADateTime(date));
+            expectedCells.Add("A4", Utils.GetOATime(time));
+            expectedCells.Add("A5", 22.5f); // Auto-import will cast this value to float
+            ImportOptions options = new ImportOptions();
+            options.EnforceDateTimesAsNumbers = true;
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
         [Theory(DisplayName = "Test of the import options for the import column type: Double")]
         [InlineData("B")]
         [InlineData(1)]
@@ -173,8 +195,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B1", 23d);
             expectedCells.Add("B2", 20d);
             expectedCells.Add("B3", 1d);
-            expectedCells.Add("B4",  double.Parse(Utils.GetOATimeString(time)));
-            expectedCells.Add("B5", double.Parse(Utils.GetOADateTimeString(date)));
+            expectedCells.Add("B4",  Utils.GetOATime(time));
+            expectedCells.Add("B5", Utils.GetOADateTime(date));
             expectedCells.Add("B6", null);
             expectedCells.Add("C1", "2");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
@@ -582,14 +604,14 @@ namespace NanoXLSX_Test.Reader
             }
             else if (given is DateTime)
             {
-                double e = double.Parse(Utils.GetOADateTimeString((DateTime)expected));
-                double g = double.Parse(Utils.GetOADateTimeString((DateTime)given));
+                double e = Utils.GetOADateTime((DateTime)expected);
+                double g = Utils.GetOADateTime((DateTime)given);
                 AssertApproximate(e, g);
             }
             else if (given is TimeSpan)
             {
-                double g = double.Parse(Utils.GetOATimeString((TimeSpan)given));
-                double e = double.Parse(Utils.GetOATimeString((TimeSpan)expected));
+                double g = Utils.GetOATime((TimeSpan)given);
+                double e = Utils.GetOATime((TimeSpan)expected);
                 AssertApproximate(e, g);
             }
             else
