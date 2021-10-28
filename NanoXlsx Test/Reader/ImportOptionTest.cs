@@ -1,6 +1,7 @@
 ﻿using NanoXLSX;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -166,6 +167,35 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A5", 22.5f); // Auto-import will cast this value to float
             ImportOptions options = new ImportOptions();
             options.EnforceDateTimesAsNumbers = true;
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
+        [Theory(DisplayName = "Test of the EnforceDateTimesAsNumbers functionality for the import column type")]
+        [InlineData(ImportOptions.ColumnType.Date)]
+        [InlineData(ImportOptions.ColumnType.Time)]
+        public void EnforceDateTimesAsNumbersTest2(ImportOptions.ColumnType columnType)
+        {
+            DateTime date = new DateTime(2021, 8, 17, 11, 12, 13, 0);
+            TimeSpan time = new TimeSpan(18, 14, 10);
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            cells.Add("A1", 22);
+            cells.Add("A2", true);
+            cells.Add("A3", date);
+            cells.Add("A4", time);
+            cells.Add("B1", date);
+            cells.Add("B2", time);
+            cells.Add("B3", 22.5d);
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", 22);
+            expectedCells.Add("A2", true);
+            expectedCells.Add("A3", Utils.GetOADateTime(date));
+            expectedCells.Add("A4", Utils.GetOATime(time));
+            expectedCells.Add("B1", Utils.GetOADateTime(date));
+            expectedCells.Add("B2", Utils.GetOATime(time));
+            expectedCells.Add("B3", 22.5f); // Auto-import will cast this value to float
+            ImportOptions options = new ImportOptions();
+            options.EnforceDateTimesAsNumbers = true;
+            options.AddEnforcedColumn(1, columnType);
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
@@ -554,6 +584,42 @@ namespace NanoXLSX_Test.Reader
             options2.AddEnforcedColumn("B", columnType);
             options2.EnforcingStartRowNumber = 2;
             AssertValues<object, object>(cells, options2, AssertApproximate, expectedCells);
+        }
+
+        [Theory(DisplayName = "Test of the import options for custom date and time formats and culture info")]
+        [InlineData(ImportOptions.ColumnType.Date, "en-US", "yyyy-MM-dd HH:mm:ss", "2021-08-12 12:11:10", "2021-08-12 12:11:10")]
+        [InlineData(ImportOptions.ColumnType.Date, "de-DE", "dd.MM.yyyy HH:mm:ss", "12.08.2021 12:11:10", "2021-08-12 12:11:10")]
+        [InlineData(ImportOptions.ColumnType.Date, "fr-FR", "dd/MM/yyyy", "12/08/2021", "2021-08-12 00:00:00")]
+        [InlineData(ImportOptions.ColumnType.Date, null, null, "12.08.2021 12:11:10", "2021-08-12 12:11:10")]
+        [InlineData(ImportOptions.ColumnType.Time, "en-US", "hh\\:mm\\:ss", "18:11:10", "18:11:10")]
+        [InlineData(ImportOptions.ColumnType.Time, "", "hh", "12", "12:00:00")]
+        [InlineData(ImportOptions.ColumnType.Time, null, null, "18:11:10", "18:11:10")]
+        public void ParseDateTimeTest(ImportOptions.ColumnType columnType, string cultureInfo, string pattern, string givenValue, string expectedValue)
+        {
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            ImportOptions importOptions = new ImportOptions();
+            if (columnType == ImportOptions.ColumnType.Date)
+            {
+                DateTime expected = DateTime.ParseExact(expectedValue, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                expectedCells.Add("A1", expected);
+                importOptions.DateTimeFormat = pattern;
+                importOptions.AddEnforcedColumn(0, ImportOptions.ColumnType.Date);
+            }
+            else
+            {
+                TimeSpan expected = TimeSpan.ParseExact(expectedValue, "hh\\:mm\\:ss", CultureInfo.InvariantCulture);
+                expectedCells.Add("A1", expected);
+                importOptions.TimeSpanFormat = pattern;
+                importOptions.AddEnforcedColumn(0, ImportOptions.ColumnType.Time);
+            }
+            if (cultureInfo != null)
+            {
+                CultureInfo givenCultureInfo = new CultureInfo(cultureInfo); // empty will lead to invariant
+                importOptions.TemporalCultureInfo = givenCultureInfo;
+            }
+            cells.Add("A1", givenValue);
+            AssertValues<object, object>(cells, importOptions, AssertApproximate, expectedCells);
         }
 
 

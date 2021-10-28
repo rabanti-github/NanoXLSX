@@ -299,7 +299,7 @@ namespace NanoXLSX.LowLevel
                     case ImportOptions.ColumnType.Date:
                         if (importOptions.EnforceDateTimesAsNumbers)
                         {
-                            return GetNumericValue(value, address);
+                            return GetNumericValue(value, address, styleNumber);
                         }
                         else
                         {
@@ -308,7 +308,7 @@ namespace NanoXLSX.LowLevel
                     case ImportOptions.ColumnType.Time:
                         if (importOptions.EnforceDateTimesAsNumbers)
                         {
-                            return GetNumericValue(value, address);
+                            return GetNumericValue(value, address, styleNumber);
                         }
                         else
                         {
@@ -416,14 +416,18 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <param name="address">Address of the cell</param>
+        /// <param name="styleNumber">Optional parameter to determine whether a double is enforced in case of a date or time style</param>
         /// <returns>Cell of the type int, float, double or string as fall-back type</returns>
-        private Cell GetNumericValue(string raw, Address address)
+        private Cell GetNumericValue(string raw, Address address, string styleNumber = null)
         {
+            if (dateStyles.Contains(styleNumber) || timeStyles.Contains(styleNumber))
+            {
+                return GetDoubleValue(raw, address);
+            }
             uint uiValue;
             int iValue;
             bool canBeUint = uint.TryParse(raw, out uiValue);
-            bool canBeInt = int.TryParse(raw, out iValue);
-
+            bool canBeInt = int.TryParse(raw, out iValue);             
             if (canBeUint && !canBeInt)
             {
                 return new Cell(uiValue, Cell.CellType.NUMBER, address);
@@ -446,7 +450,7 @@ namespace NanoXLSX.LowLevel
             }
 
             float fValue;
-            double dValue;
+
             if (float.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out fValue))
             {
                 if (!float.IsInfinity(fValue))
