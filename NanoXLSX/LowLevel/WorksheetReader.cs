@@ -267,7 +267,6 @@ namespace NanoXLSX.LowLevel
                 case ImportOptions.GlobalType.EverythingToString:
                     return GetEnforcedStingValue(address, type, value, styleNumber, formula, importOptions);
             }
-            
             if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(formula))
             {
                 if (importOptions.EnforceEmptyValuesAsString)
@@ -323,11 +322,27 @@ namespace NanoXLSX.LowLevel
                             return GetDateTimeValue(value, address, Cell.CellType.TIME, type);
                         }
                     case ImportOptions.ColumnType.Numeric:
+                        if (!string.IsNullOrEmpty(formula))
+                        {
+                            return tempCell;
+                        }
                         return GetNumericValue(value, address);
                     case ImportOptions.ColumnType.Double:
+                        if (!string.IsNullOrEmpty(formula))
+                        {
+                            return tempCell;
+                        }
                         return GetDoubleValue(value, address);
-                    case ImportOptions.ColumnType.String:
-                        return GetStringValue(value, address, type, styleNumber, importOptions);
+                    default:
+                        // Is string
+                        if (string.IsNullOrEmpty(formula))
+                        {
+                            return GetStringValue(value, address, type, styleNumber, importOptions);
+                        }
+                        else
+                        {
+                            return GetStringValue(formula, address, type, styleNumber, importOptions);
+                        }
                 }
             }
             return AutoResolveCellData(address, type, value, styleNumber, formula);
@@ -472,6 +487,19 @@ namespace NanoXLSX.LowLevel
         /// <returns>Cell of the type double or string as fall-back type</returns>
         private Cell GetDoubleValue(string raw, Address address)
         {
+            if (importOptions != null && importOptions.EnforceDateTimesAsNumbers)
+            {
+                DateTime? date = TryParseDate(raw);
+                if (date != null)
+                {
+                    return new Cell(Utils.GetOADateTime(date.Value), Cell.CellType.NUMBER, address);
+                }
+                TimeSpan? time = TryParseTime(raw);
+                if (time != null)
+                {
+                    return new Cell(Utils.GetOATime(time.Value), Cell.CellType.NUMBER, address);
+                }
+            }
             double dValue;
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
             {
@@ -493,16 +521,17 @@ namespace NanoXLSX.LowLevel
         /// <returns>Cell of the type string</returns>
         private Cell GetStringValue(string raw, Address address, string type = null, string styleNumber = null, ImportOptions options = null)
         {
+            string value = raw;
             if (type != null && type == "s")
             {
-                return new Cell(ResolveSharedString(raw), Cell.CellType.STRING, address);
+                return new Cell(ResolveSharedString(value), Cell.CellType.STRING, address);
             }
             else if (type != null && type == "b")
             {
-                Cell tempCell = GetBooleanValue(raw, address);
+                Cell tempCell = GetBooleanValue(value, address);
                 if (tempCell != null)
                 {
-                    return new Cell(tempCell.Value.ToString(), Cell.CellType.STRING, address);
+                    value = tempCell.Value.ToString();
                 }
             }
             else if (styleNumber != null)
@@ -510,22 +539,22 @@ namespace NanoXLSX.LowLevel
                 Cell tempCell = null;
                 if (dateStyles.Contains(styleNumber))  // date (priority)
                 {
-                    tempCell = GetDateTimeValue(raw, address, Cell.CellType.DATE);
+                    tempCell = GetDateTimeValue(value, address, Cell.CellType.DATE);
                 }
                 else if (timeStyles.Contains(styleNumber)) // time
                 {
-                    tempCell = GetDateTimeValue(raw, address, Cell.CellType.TIME);
+                    tempCell = GetDateTimeValue(value, address, Cell.CellType.TIME);
                 }
                 if (tempCell != null && tempCell.DataType == Cell.CellType.DATE)
                 {
-                    return new Cell(((DateTime)tempCell.Value).ToString(options.DateTimeFormat), Cell.CellType.STRING, address);
+                    value = ((DateTime)tempCell.Value).ToString(options.DateTimeFormat);
                 }
                 else if (tempCell != null && tempCell.DataType == Cell.CellType.TIME)
                 {
-                    return new Cell(((TimeSpan)tempCell.Value).ToString(options.TimeSpanFormat), Cell.CellType.STRING, address);
+                    value = ((TimeSpan)tempCell.Value).ToString(options.TimeSpanFormat);
                 }
             }
-            return new Cell(raw, Cell.CellType.STRING, address);
+            return new Cell(value, Cell.CellType.STRING, address);
                                  
         }
 
@@ -645,12 +674,11 @@ namespace NanoXLSX.LowLevel
                     return new Cell(dValue, Cell.CellType.NUMBER, address);
                 }
             }
-            else if (valueType == Cell.CellType.TIME)
+            else // TIME
             {
                 TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);
                 return GetTemporalCell(time, address);
             }
-            return new Cell(raw, Cell.CellType.STRING, address);
         }
 
         /// <summary>
@@ -661,17 +689,6 @@ namespace NanoXLSX.LowLevel
         /// <returns>Casted cell</returns>
         private Cell GetTemporalCell(Object dateTimeValue, Address address)
         {
-            if (importOptions != null && importOptions.EnforceDateTimesAsNumbers)
-            {
-                if (dateTimeValue is DateTime)
-                {
-                    return new Cell(Utils.GetOADateTime((DateTime)dateTimeValue), Cell.CellType.NUMBER, address);
-                }
-                else
-                {
-                    return new Cell(Utils.GetOATime((TimeSpan)dateTimeValue), Cell.CellType.NUMBER, address);
-                }
-            }
             if (dateTimeValue is DateTime)
             {
                 return new Cell((DateTime)dateTimeValue, Cell.CellType.DATE, address);

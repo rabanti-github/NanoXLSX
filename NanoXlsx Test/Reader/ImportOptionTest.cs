@@ -232,8 +232,10 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B4", time);
             cells.Add("B5", date);
             cells.Add("B6", null);
+            cells.Add("B7", new Cell("=A1", Cell.CellType.FORMULA, "B7"));
             cells.Add("C1", "2");
             cells.Add("C2", new TimeSpan(12, 14, 16));
+            cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", "21");
@@ -244,8 +246,10 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B4",  Utils.GetOATime(time));
             expectedCells.Add("B5", Utils.GetOADateTime(date));
             expectedCells.Add("B6", null);
+            expectedCells.Add("B7", new Cell("=A1", Cell.CellType.FORMULA, "B7"));
             expectedCells.Add("C1", "2");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
+            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
             ImportOptions options = new ImportOptions();
             if (column is string)
             {
@@ -275,8 +279,10 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B4", time);
             cells.Add("B5", date);
             cells.Add("B6", null);
+            cells.Add("B7", new Cell("=A1", Cell.CellType.FORMULA, "B7"));
             cells.Add("C1", "2");
             cells.Add("C2", new TimeSpan(12, 14, 16));
+            cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", "21");
@@ -287,8 +293,10 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B4", float.Parse(Utils.GetOATimeString(time)));
             expectedCells.Add("B5", float.Parse(Utils.GetOADateTimeString(date)));
             expectedCells.Add("B6", null);
+            expectedCells.Add("B7", new Cell("=A1", Cell.CellType.FORMULA, "B7"));
             expectedCells.Add("C1", "2");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
+            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
             ImportOptions options = new ImportOptions();
             if (column is string)
             {
@@ -298,6 +306,28 @@ namespace NanoXLSX_Test.Reader
             {
                 options.AddEnforcedColumn((int)column, ImportOptions.ColumnType.Numeric);
             }
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
+        [Theory(DisplayName = "Test of the import options for the import column types Numeric and Double on parsed dates and times")]
+        [InlineData(ImportOptions.ColumnType.Double, "2021-10-31 12:11:10", 44500.5077546296d)]
+        [InlineData(ImportOptions.ColumnType.Double, "18:20:22", 0.764143518518519d)]
+        [InlineData(ImportOptions.ColumnType.Numeric, "2021-10-31 12:11:10", 44500.5077546296d)]
+        [InlineData(ImportOptions.ColumnType.Numeric, "18:20:22", 0.764143518518519d)]
+        public void EnforcingColumnAsNumberTest3(ImportOptions.ColumnType columnType, string givenValue, object expectedValue)
+        {
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            cells.Add("A1", true);
+            cells.Add("B1", givenValue);
+            cells.Add("C1", "2");
+
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", true);
+            expectedCells.Add("B1", expectedValue);
+            expectedCells.Add("C1", "2");
+            ImportOptions options = new ImportOptions();
+            options.EnforceDateTimesAsNumbers = true;
+            options.AddEnforcedColumn(1, columnType);
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
@@ -322,8 +352,10 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B8", "Test");
             cells.Add("B9", 1.0d);
             cells.Add("B10", null);
+            cells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
+            cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 1);
             expectedCells.Add("A2", "21");
@@ -338,8 +370,10 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B8", "Test");
             expectedCells.Add("B9", true);
             expectedCells.Add("B10", null);
+            expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
+            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
             ImportOptions options = new ImportOptions();
             if (column is string)
             {
@@ -373,8 +407,10 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B8", -10);
             cells.Add("B9", 1.111d);
             cells.Add("B10", null);
+            cells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
+            cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 1);
             expectedCells.Add("A2", "21");
@@ -389,8 +425,10 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B8", "-10");
             expectedCells.Add("B9", "1.111");
             expectedCells.Add("B10", null);
+            expectedCells.Add("B11", "=A1");
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
+            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
             ImportOptions options = new ImportOptions();
             if (column is string)
             {
@@ -424,8 +462,10 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B8", -10);
             cells.Add("B9", 44494.5f);
             cells.Add("B10", null);
+            cells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
+            cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 1);
             expectedCells.Add("A2", "21");
@@ -440,8 +480,10 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B8", -10d); // Fallback to double from int
             expectedCells.Add("B9", new DateTime(2021, 10, 25, 12, 0, 0, 0));
             expectedCells.Add("B10", null);
+            expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
+            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
             ImportOptions options = new ImportOptions();
             if (column is string)
             {
@@ -475,8 +517,10 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B8", -10);
             cells.Add("B9", 44494.5f);
             cells.Add("B10", null);
+            cells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
+            cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 1);
             expectedCells.Add("A2", "21");
@@ -491,8 +535,10 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B8", -10d); // Fallback to double from int
             expectedCells.Add("B9", new TimeSpan(12, 0, 0));
             expectedCells.Add("B10", null);
+            expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
+            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
             ImportOptions options = new ImportOptions();
             if (column is string)
             {
