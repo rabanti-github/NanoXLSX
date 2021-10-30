@@ -27,6 +27,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A7", new DateTime(2020, 11, 10, 9, 8, 7, 0));
             cells.Add("A8", new TimeSpan(18, 15, 12));
             cells.Add("A9", null);
+            cells.Add("A10", new Cell("=A1", Cell.CellType.FORMULA, "A10"));
             Dictionary<string, string> expectedCells = new Dictionary<string, string>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", "True");
@@ -37,6 +38,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A7", "2020-11-10 09:08:07");
             expectedCells.Add("A8", "18:15:12");
             expectedCells.Add("A9", null);
+            expectedCells.Add("A10", "=A1");
 
             ImportOptions options = new ImportOptions();
             options.GlobalEnforcingType = ImportOptions.GlobalType.EverythingToString;
@@ -57,6 +59,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A8", new TimeSpan(18, 15, 12));
             cells.Add("A9", null);
             cells.Add("A10", "27");
+            cells.Add("A11", new Cell("=A1", Cell.CellType.FORMULA, "A11"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", 1d);
@@ -68,6 +71,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A8", Utils.GetOATime(new TimeSpan(18,15,12)));
             expectedCells.Add("A9", null);
             expectedCells.Add("A10", 27d);
+            expectedCells.Add("A11", new Cell("=A1", Cell.CellType.FORMULA, "A11"));
             ImportOptions options = new ImportOptions();
             options.GlobalEnforcingType = ImportOptions.GlobalType.AllNumbersToDouble;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
@@ -89,6 +93,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A10", 0.49d);
             cells.Add("A11", null);
             cells.Add("A12", "28");
+            cells.Add("A13", new Cell("=A1", Cell.CellType.FORMULA, "A13"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", 1);
@@ -102,6 +107,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A10", 0);
             expectedCells.Add("A11", null);
             expectedCells.Add("A12", 28);
+            expectedCells.Add("A13", new Cell("=A1", Cell.CellType.FORMULA, "A13"));
             ImportOptions options = new ImportOptions();
             options.GlobalEnforcingType = ImportOptions.GlobalType.AllNumbersToInt;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
@@ -116,12 +122,14 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A3", 22.2d);
             cells.Add("A4", null);
             cells.Add("A5", "");
+            cells.Add("A6", new Cell("=A1", Cell.CellType.FORMULA, "A6"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", true);
             expectedCells.Add("A3", 22.2f); // Import will go to the smallest float unit (float 32 / single)
             expectedCells.Add("A4", "");
             expectedCells.Add("A5", "");
+            expectedCells.Add("A6", new Cell("=A1", Cell.CellType.FORMULA, "A6"));
             ImportOptions options = new ImportOptions();
             options.EnforceEmptyValuesAsString = true;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
@@ -133,17 +141,21 @@ namespace NanoXLSX_Test.Reader
             Dictionary<string, Object> cells = new Dictionary<string, object>();
             cells.Add("A1", 22);
             cells.Add("A2", true);
-            cells.Add("A3", 22);
-            cells.Add("A4", true);
-            cells.Add("A5", 22.5d);
+            cells.Add("A3", new Cell("=A1", Cell.CellType.FORMULA, "A3"));
+            cells.Add("A4", 22);
+            cells.Add("A5", true);
+            cells.Add("A6", 22.5d);
+            cells.Add("A7", new Cell("=A1", Cell.CellType.FORMULA, "A7"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", true);
-            expectedCells.Add("A3", "22");
-            expectedCells.Add("A4", "True");
-            expectedCells.Add("A5", "22.5");
+            expectedCells.Add("A3", new Cell("=A1", Cell.CellType.FORMULA, "A3"));
+            expectedCells.Add("A4", "22");
+            expectedCells.Add("A5", "True");
+            expectedCells.Add("A6", "22.5");
+            expectedCells.Add("A7", "=A1");
             ImportOptions options = new ImportOptions();
-            options.EnforcingStartRowNumber = 2;
+            options.EnforcingStartRowNumber = 3;
             options.GlobalEnforcingType = ImportOptions.GlobalType.EverythingToString;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
@@ -159,18 +171,20 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A3", date);
             cells.Add("A4", time);
             cells.Add("A5", 22.5d);
+            cells.Add("A6", new Cell("=A1", Cell.CellType.FORMULA, "A6"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", true);
             expectedCells.Add("A3", Utils.GetOADateTime(date));
             expectedCells.Add("A4", Utils.GetOATime(time));
             expectedCells.Add("A5", 22.5f); // Auto-import will cast this value to float
+            expectedCells.Add("A6", new Cell("=A1", Cell.CellType.FORMULA, "A6"));
             ImportOptions options = new ImportOptions();
             options.EnforceDateTimesAsNumbers = true;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the EnforceDateTimesAsNumbers functionality for the import column type")]
+        [Theory(DisplayName = "Test of the EnforceDateTimesAsNumbers functionality for the import column types: Date or Time")]
         [InlineData(ImportOptions.ColumnType.Date)]
         [InlineData(ImportOptions.ColumnType.Time)]
         public void EnforceDateTimesAsNumbersTest2(ImportOptions.ColumnType columnType)
@@ -185,6 +199,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B1", date);
             cells.Add("B2", time);
             cells.Add("B3", 22.5d);
+            cells.Add("B4", new Cell("=A1", Cell.CellType.FORMULA, "B4"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", true);
@@ -193,6 +208,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B1", Utils.GetOADateTime(date));
             expectedCells.Add("B2", Utils.GetOATime(time));
             expectedCells.Add("B3", 22.5f); // Auto-import will cast this value to float
+            expectedCells.Add("B4", new Cell("=A1", Cell.CellType.FORMULA, "B4"));
             ImportOptions options = new ImportOptions();
             options.EnforceDateTimesAsNumbers = true;
             options.AddEnforcedColumn(1, columnType);
@@ -622,7 +638,6 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, importOptions, AssertApproximate, expectedCells);
         }
 
-
         private static void AssertValues<T,D>(Dictionary<string, T> givenCells, ImportOptions importOptions, Action<object, object> assertionAction, Dictionary<string, D> expectedCells = null)
         {
             Workbook workbook = new Workbook("worksheet1");
@@ -645,6 +660,11 @@ namespace NanoXLSX_Test.Reader
                 if (expectedValue == null)
                 {
                     Assert.Equal(Cell.CellType.EMPTY, givenCell.DataType);
+                }
+                else if (expectedValue is Cell)
+                {
+                    assertionAction.Invoke((D)(expectedValue as Cell).Value, (D)givenCell.Value);
+                    Assert.Equal(Cell.CellType.FORMULA, givenCell.DataType);
                 }
                 else
                 {

@@ -268,7 +268,7 @@ namespace NanoXLSX.LowLevel
                     return GetEnforcedStingValue(address, type, value, styleNumber, formula, importOptions);
             }
             
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(formula))
             {
                 if (importOptions.EnforceEmptyValuesAsString)
                 {
@@ -297,6 +297,10 @@ namespace NanoXLSX.LowLevel
                         }
                         return tempCell;
                     case ImportOptions.ColumnType.Date:
+                        if (!string.IsNullOrEmpty(formula))
+                        {
+                            return tempCell;
+                        }
                         if (importOptions.EnforceDateTimesAsNumbers)
                         {
                             return GetNumericValue(value, address, styleNumber);
@@ -306,6 +310,10 @@ namespace NanoXLSX.LowLevel
                             return GetDateTimeValue(value, address, Cell.CellType.DATE, type);
                         }
                     case ImportOptions.ColumnType.Time:
+                        if (!string.IsNullOrEmpty(formula))
+                        {
+                            return tempCell;
+                        }
                         if (importOptions.EnforceDateTimesAsNumbers)
                         {
                             return GetNumericValue(value, address, styleNumber);
@@ -320,14 +328,9 @@ namespace NanoXLSX.LowLevel
                         return GetDoubleValue(value, address);
                     case ImportOptions.ColumnType.String:
                         return GetStringValue(value, address, type, styleNumber, importOptions);
-                    default:
-                        return AutoResolveCellData(address, type, value, styleNumber, formula);
                 }
             }
-            else
-            {
-                return AutoResolveCellData(address, type, value, styleNumber, formula);
-            }
+            return AutoResolveCellData(address, type, value, styleNumber, formula);
         }
 
         /// <summary>
@@ -621,32 +624,33 @@ namespace NanoXLSX.LowLevel
             {
                 isDouble = double.TryParse(raw, NumberStyles.Any, importOptions.TemporalCultureInfo, out dValue);
             }
-            if (isDouble)
+            if (!isDouble)
             {
-                if (dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE || (importOptions != null && importOptions.EnforceDateTimesAsNumbers))
+                return new Cell(raw, Cell.CellType.STRING, address);
+            }
+            if (dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE || (importOptions != null && importOptions.EnforceDateTimesAsNumbers))
+            {
+                return new Cell(dValue, Cell.CellType.NUMBER, address); // Invalid OAdate / enforced number == plain number
+            }
+            else if (valueType == Cell.CellType.DATE)
+            {
+                DateTime date = Utils.GetDateFromOA(dValue);
+                if (date >= Utils.FIRST_ALLOWED_EXCEL_DATE)
                 {
-                    return new Cell(dValue, Cell.CellType.NUMBER, address); // Invalid OAdate / enforced number == plain number
+                    return GetTemporalCell(date, address);
                 }
-                else if (valueType == Cell.CellType.DATE)
+                else
                 {
-                    DateTime date = Utils.GetDateFromOA(dValue);
-                    if (date >= Utils.FIRST_ALLOWED_EXCEL_DATE)
-                    {
-                        return GetTemporalCell(date, address);
-                    }
-                    else
-                    {
-                        // Prevent to import 00.01.1900, since it will lead to trouble when exporting / writing
-                        return new Cell(dValue, Cell.CellType.NUMBER, address);
-                    }
-                }
-                else if (valueType == Cell.CellType.TIME)
-                {
-                    TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);
-                    return GetTemporalCell(time, address);
+                    // Prevent to import 00.01.1900, since it will lead to trouble when exporting / writing
+                    return new Cell(dValue, Cell.CellType.NUMBER, address);
                 }
             }
-                return new Cell(raw, Cell.CellType.STRING, address);
+            else if (valueType == Cell.CellType.TIME)
+            {
+                TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);
+                return GetTemporalCell(time, address);
+            }
+            return new Cell(raw, Cell.CellType.STRING, address);
         }
 
         /// <summary>
