@@ -258,6 +258,8 @@ namespace NanoXLSX_Test.Reader
         [InlineData("invalid_worksheet.xlsx")]
         [InlineData("invalid_style.xlsx")]
         [InlineData("invalid_sharedStrings.xlsx")]
+        [InlineData("invalid_sharedStrings2.xlsx")]
+        [InlineData("missing_worksheet.xlsx")]
         public void FailingReadInvalidDataTest(string invalidFile)
         {
             // Note: all referenced (embedded) files contains invalid XML documents (malformed, missing start or end tags, missing attributes)

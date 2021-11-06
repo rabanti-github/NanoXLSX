@@ -22,13 +22,6 @@ namespace NanoXLSX.LowLevel
         public string Path { get; set; }
 
         /// <summary>
-        /// Default constructor
-        /// </summary>
-        public DocumentPath()
-        {
-        }
-
-        /// <summary>
         /// Constructor with defined file name and path
         /// </summary>
         /// <param name="filename">File name of the document</param>
@@ -51,7 +44,6 @@ namespace NanoXLSX.LowLevel
             {
                 return System.IO.Path.AltDirectorySeparatorChar + Path + Filename;
             }
-
             return System.IO.Path.AltDirectorySeparatorChar + Path + System.IO.Path.AltDirectorySeparatorChar + Filename;
         }
 
