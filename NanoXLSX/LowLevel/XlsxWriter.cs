@@ -936,12 +936,7 @@ namespace NanoXLSX.LowLevel
                         else
                         {
                             typeAttribute = "s";
-                            valueDef = item.Value.ToString();
-                            if (!sharedStrings.ContainsKey(valueDef))
-                            {
-                                sharedStrings.Add(valueDef, sharedStrings.Count.ToString("G", culture));
-                            }
-                            valueDef = sharedStrings[valueDef];
+                            valueDef = sharedStrings.Add(item.Value.ToString(), sharedStrings.Count.ToString("G", culture));
                             sharedStringsTotalCount++;
                         }
                     }
