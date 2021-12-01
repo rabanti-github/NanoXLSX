@@ -1050,7 +1050,7 @@ namespace NanoXLSX.LowLevel
             StringBuilder sb = new StringBuilder();
             foreach (Border item in borderStyles)
             {
-                if (!item.DiagonalDown && item.DiagonalUp) { sb.Append("<border diagonalDown=\"1\">"); }
+                if (item.DiagonalDown && !item.DiagonalUp) { sb.Append("<border diagonalDown=\"1\">"); }
                 else if (!item.DiagonalDown && item.DiagonalUp) { sb.Append("<border diagonalUp=\"1\">"); }
                 else if (item.DiagonalDown && item.DiagonalUp) { sb.Append("<border diagonalDown=\"1\" diagonalUp=\"1\">"); }
                 else { sb.Append("<border>"); }
@@ -1058,7 +1058,7 @@ namespace NanoXLSX.LowLevel
                 if (item.LeftStyle != Border.StyleValue.none)
                 {
                     sb.Append("<left style=\"" + Border.GetStyleName(item.LeftStyle) + "\">");
-                    if (string.IsNullOrEmpty(item.LeftColor)) { sb.Append("<color rgb=\"").Append(item.LeftColor).Append("\"/>"); }
+                    if (!string.IsNullOrEmpty(item.LeftColor)) { sb.Append("<color rgb=\"").Append(item.LeftColor).Append("\"/>"); }
                     else { sb.Append("<color auto=\"1\"/>"); }
                     sb.Append("</left>");
                 }
@@ -1069,7 +1069,7 @@ namespace NanoXLSX.LowLevel
                 if (item.RightStyle != Border.StyleValue.none)
                 {
                     sb.Append("<right style=\"").Append(Border.GetStyleName(item.RightStyle)).Append("\">");
-                    if (string.IsNullOrEmpty(item.RightColor)) { sb.Append("<color rgb=\"").Append(item.RightColor).Append("\"/>"); }
+                    if (!string.IsNullOrEmpty(item.RightColor)) { sb.Append("<color rgb=\"").Append(item.RightColor).Append("\"/>"); }
                     else { sb.Append("<color auto=\"1\"/>"); }
                     sb.Append("</right>");
                 }
@@ -1080,7 +1080,7 @@ namespace NanoXLSX.LowLevel
                 if (item.TopStyle != Border.StyleValue.none)
                 {
                     sb.Append("<top style=\"").Append(Border.GetStyleName(item.TopStyle)).Append("\">");
-                    if (string.IsNullOrEmpty(item.TopColor)) { sb.Append("<color rgb=\"").Append(item.TopColor).Append("\"/>"); }
+                    if (!string.IsNullOrEmpty(item.TopColor)) { sb.Append("<color rgb=\"").Append(item.TopColor).Append("\"/>"); }
                     else { sb.Append("<color auto=\"1\"/>"); }
                     sb.Append("</top>");
                 }
@@ -1091,7 +1091,7 @@ namespace NanoXLSX.LowLevel
                 if (item.BottomStyle != Border.StyleValue.none)
                 {
                     sb.Append("<bottom style=\"").Append(Border.GetStyleName(item.BottomStyle)).Append("\">");
-                    if (string.IsNullOrEmpty(item.BottomColor)) { sb.Append("<color rgb=\"").Append(item.BottomColor).Append("\"/>"); }
+                    if (!string.IsNullOrEmpty(item.BottomColor)) { sb.Append("<color rgb=\"").Append(item.BottomColor).Append("\"/>"); }
                     else { sb.Append("<color auto=\"1\"/>"); }
                     sb.Append("</bottom>");
                 }
@@ -1102,7 +1102,7 @@ namespace NanoXLSX.LowLevel
                 if (item.DiagonalStyle != Border.StyleValue.none)
                 {
                     sb.Append("<diagonal style=\"").Append(Border.GetStyleName(item.DiagonalStyle)).Append("\">");
-                    if (string.IsNullOrEmpty(item.DiagonalColor)) { sb.Append("<color rgb=\"").Append(item.DiagonalColor).Append("\"/>"); }
+                    if (!string.IsNullOrEmpty(item.DiagonalColor)) { sb.Append("<color rgb=\"").Append(item.DiagonalColor).Append("\"/>"); }
                     else { sb.Append("<color auto=\"1\"/>"); }
                     sb.Append("</diagonal>");
                 }

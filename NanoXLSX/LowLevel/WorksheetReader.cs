@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using NanoXLSX.Exceptions;
+using NanoXLSX.Styles;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.LowLevel
@@ -26,6 +27,7 @@ namespace NanoXLSX.LowLevel
         private ImportOptions importOptions;
         private List<string> dateStyles;
         private List<string> timeStyles;
+        private Dictionary<string, Style> resolvedStyles;
         #endregion
 
         #region properties
@@ -94,19 +96,22 @@ namespace NanoXLSX.LowLevel
         {
             dateStyles = new List<string>();
             timeStyles = new List<string>();
+            resolvedStyles = new Dictionary<string, Style>();
             for (int i = 0; i < styleReaderContainer.StyleCount; i++)
             {
                 bool isDate;
                 bool isTime;
-                styleReaderContainer.GetStyle(i, out isDate, out isTime, true);
+                string index = i.ToString("G", CultureInfo.InvariantCulture);
+                Style style = styleReaderContainer.GetStyle(i, out isDate, out isTime, true);
                 if (isDate)
                 {
-                    dateStyles.Add(i.ToString("G", CultureInfo.InvariantCulture));
+                    dateStyles.Add(index);
                 }
                 if (isTime)
                 {
-                    timeStyles.Add(i.ToString("G", CultureInfo.InvariantCulture));
+                    timeStyles.Add(index);
                 }
+                resolvedStyles.Add(index, style);
             }
         }
 
@@ -121,11 +126,6 @@ namespace NanoXLSX.LowLevel
             {
                 using (stream) // Close after processing
                 {
-                    string type;
-                    string styleNumber;
-                    string address;
-                    string value;
-                    string formula;
                     XmlDocument xr = new XmlDocument();
                     xr.XmlResolver = null;
                     xr.Load(stream);
@@ -136,32 +136,7 @@ namespace NanoXLSX.LowLevel
                         {
                             foreach (XmlNode rowChild in row.ChildNodes)
                             {
-                                type = "s";
-                                styleNumber = "";
-                                address = "A1";
-                                value = "";
-                                formula = null;
-                                if (rowChild.LocalName.Equals("c", StringComparison.InvariantCultureIgnoreCase))
-                                {
-                                    address = ReaderUtils.GetAttribute("r", rowChild); // Mandatory
-                                    type = ReaderUtils.GetAttribute("t", rowChild); // can be null if not existing
-                                    styleNumber = ReaderUtils.GetAttribute("s", rowChild); // can be null
-                                    if (rowChild.HasChildNodes)
-                                    {
-                                        foreach (XmlNode valueNode in rowChild.ChildNodes)
-                                        {
-                                            if (valueNode.LocalName.Equals("v", StringComparison.InvariantCultureIgnoreCase))
-                                            {
-                                                value = valueNode.InnerText;
-                                            }
-                                            if (valueNode.LocalName.Equals("f", StringComparison.InvariantCultureIgnoreCase))
-                                            {
-                                                formula = valueNode.InnerText;
-                                            }
-                                        }
-                                    }
-                                }
-                                ResolveCellData(address, type, value, styleNumber, formula);
+                                ReadCell(rowChild);
                             }
                         }
                     }
@@ -174,285 +149,736 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Resolves the data of a read cell either automatically or conditionally  (import options), transforms it into a cell object and adds it to the data
+        /// Reads one cell in a worksheet
         /// </summary>
-        /// <param name="addressString">Address of the cell</param>
-        /// <param name="type">Expected data type</param>
-        /// <param name="value">Raw value as string</param>
-        /// <param name="styleNumber">Style number as string (can be null)</param>
-        /// <param name="formula"> Formula as string (can be null; data type determines whether value or formula is used)</param>
-        private void ResolveCellData(string addressString, string type, string value, string styleNumber, string formula)
+        /// <param name="rowChild">Current child row as XmlNode</param>
+        private void ReadCell(XmlNode rowChild)
         {
-            Address address = new Address(addressString);
-            string key = Utils.ToUpper(addressString);
+            string type = "s";
+            string styleNumber = "";
+            string address = "A1";
+            string value = "";
+            if (rowChild.LocalName.Equals("c", StringComparison.InvariantCultureIgnoreCase))
+            {
+                address = ReaderUtils.GetAttribute("r", rowChild); // Mandatory
+                type = ReaderUtils.GetAttribute("t", rowChild); // can be null if not existing
+                styleNumber = ReaderUtils.GetAttribute("s", rowChild); // can be null
+                if (rowChild.HasChildNodes)
+                {
+                    foreach (XmlNode valueNode in rowChild.ChildNodes)
+                    {
+                        if (valueNode.LocalName.Equals("v", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            value = valueNode.InnerText;
+                        }
+                        if (valueNode.LocalName.Equals("f", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            value = valueNode.InnerText;
+                        }
+                    }
+                }
+            }
+            string key = Utils.ToUpper(address);
             StyleAssignment[key] = styleNumber;
-            if (importOptions == null)
-            {
-                Data.Add(key, AutoResolveCellData(address, type, value, styleNumber, formula));
-            }
-            else
-            {
-                Data.Add(key, ResolveCellDataConditionally(address, type, value, styleNumber, formula));
-            }
+            Data.Add(key, ResolveCellData(value, type, styleNumber, address));
         }
 
         /// <summary>
-        /// Resolves the data of a read cell with conditions of import options, transforms it into a cell object
+        /// Resolves the data of a read cell either automatically or conditionally  (import options), transforms it into a cell object and adds it to the data
         /// </summary>
-        /// <param name="address">Address of the cell</param>
+        /// <param name="raw">Raw value as string</param>
         /// <param name="type">Expected data type</param>
-        /// <param name="value">Raw value as string</param>
-        /// <param name="styleNumber">Style number as string (can be null)</param>
-        /// <param name="formula">Formula as string (can be null; data type determines whether value or formula is used)</param>
-        /// <returns>The resolved Cell</returns>
-        private Cell ResolveCellDataConditionally(Address address, string type, string value, string styleNumber, string formula)
+        /// <param name="styleNumber">>Style number as string (can be null)</param>
+        /// <param name="address">Address of the cell</param>
+        /// <returns>Cell object with either the originally loaded or modified (by import options) value</returns>
+        private Cell ResolveCellData(string raw, string type, string styleNumber, string address)
         {
-            if (address.Row < importOptions.EnforcingStartRowNumber)
+            Cell.CellType importedType = Cell.CellType.DEFAULT;
+            object rawValue;
+            if (type == "b")
             {
-                return AutoResolveCellData(address, type, value, styleNumber, formula); // Skip enforcing
-            }
-            Cell tempCell = AutoResolveCellData(address, type, value, styleNumber, formula);
-            IConvertible converter = tempCell.Value as IConvertible;
-            switch (importOptions.GlobalEnforcingType)
-            {
-                case ImportOptions.GlobalType.AllNumbersToDouble:
-                    if (tempCell.DataType == Cell.CellType.NUMBER)
-                    {
-                        return new Cell(converter.ToDouble(Utils.INVARIANT_CULTURE), tempCell.DataType, address);
-                    }
-                    else if (tempCell.DataType == Cell.CellType.BOOL)
-                    {
-                        double tempDouble = ((bool)tempCell.Value) ? 1d : 0d;
-                        return new Cell(tempDouble, Cell.CellType.NUMBER, address);
-                    }
-                    else if (tempCell.DataType == Cell.CellType.DATE || tempCell.DataType == Cell.CellType.TIME)
-                    {
-                        converter = value as IConvertible;
-                        double tempDouble = converter.ToDouble(Utils.INVARIANT_CULTURE);
-                        return new Cell(tempDouble, Cell.CellType.NUMBER, address);
-                    }
-                    else if (tempCell.DataType == Cell.CellType.STRING)
-                    {
-                        double tempDouble;
-                        if (double.TryParse(tempCell.Value.ToString(), out tempDouble)){
-                            return new Cell(tempDouble, Cell.CellType.NUMBER, address);
-                        }
-                    }
-                    return tempCell;
-                case ImportOptions.GlobalType.AllNumbersToInt:
-                    if (tempCell.DataType == Cell.CellType.NUMBER)
-                    {
-                        return new Cell(converter.ToInt32(Utils.INVARIANT_CULTURE), tempCell.DataType, address);
-                    }
-                    else if (tempCell.DataType == Cell.CellType.BOOL)
-                    {
-                        int tempint = ((bool)tempCell.Value) ? 1 : 0;
-                        return new Cell(tempint, Cell.CellType.NUMBER, address);
-                    }
-                    else if (tempCell.DataType == Cell.CellType.DATE || tempCell.DataType == Cell.CellType.TIME)
-                    {
-                        converter = value as IConvertible;
-                        double tempDouble = converter.ToDouble(Utils.INVARIANT_CULTURE);
-                        return  new Cell((int)Math.Round(tempDouble, 0), Cell.CellType.NUMBER, address);
-                    }
-                    else if (tempCell.DataType == Cell.CellType.STRING)
-                    {
-                        int tempInt;
-                        if (int.TryParse(tempCell.Value.ToString(), out tempInt))
-                        {
-                            return new Cell(tempInt, Cell.CellType.NUMBER, address);
-                        }
-                    }
-                    return tempCell;
-                case ImportOptions.GlobalType.EverythingToString:
-                    return GetEnforcedStingValue(address, type, value, styleNumber, formula, importOptions);
-            }
-            if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(formula))
-            {
-                if (importOptions.EnforceEmptyValuesAsString)
+                rawValue = TryParseBool(raw);
+                if (rawValue != null)
                 {
-                    return new Cell("", Cell.CellType.STRING, address);
+                    importedType = Cell.CellType.BOOL;
                 }
                 else
                 {
-                    return new Cell(null, Cell.CellType.EMPTY, address);
+                    rawValue = GetNumericValue(raw);
+                    if (rawValue != null)
+                    {
+                        importedType = Cell.CellType.NUMBER;
+                    }
                 }
             }
-            if (importOptions.EnforcedColumnTypes.ContainsKey(address.Column))
+            else if (type == "s")
             {
-                ImportOptions.ColumnType importType = importOptions.EnforcedColumnTypes[address.Column];
-                if (type == "s")
-                {
-                    // Resolve shared string first
-                    value = ResolveSharedString(value);
-                }
-                switch (importType)
-                {
-                    case ImportOptions.ColumnType.Bool:
-                         tempCell = GetBooleanValue(value, address);
-                        if (tempCell == null)
-                        {
-                            return AutoResolveCellData(address, type, value, styleNumber, formula);
-                        }
-                        return tempCell;
-                    case ImportOptions.ColumnType.Date:
-                        if (!string.IsNullOrEmpty(formula))
-                        {
-                            return tempCell;
-                        }
-                        if (importOptions.EnforceDateTimesAsNumbers)
-                        {
-                            return GetNumericValue(value, address, styleNumber);
-                        }
-                        else
-                        {
-                            return GetDateTimeValue(value, address, Cell.CellType.DATE, type);
-                        }
-                    case ImportOptions.ColumnType.Time:
-                        if (!string.IsNullOrEmpty(formula))
-                        {
-                            return tempCell;
-                        }
-                        if (importOptions.EnforceDateTimesAsNumbers)
-                        {
-                            return GetNumericValue(value, address, styleNumber);
-                        }
-                        else
-                        {
-                            return GetDateTimeValue(value, address, Cell.CellType.TIME, type);
-                        }
-                    case ImportOptions.ColumnType.Numeric:
-                        if (!string.IsNullOrEmpty(formula))
-                        {
-                            return tempCell;
-                        }
-                        return GetNumericValue(value, address);
-                    case ImportOptions.ColumnType.Double:
-                        if (!string.IsNullOrEmpty(formula))
-                        {
-                            return tempCell;
-                        }
-                        return GetDoubleValue(value, address);
-                    default:
-                        // Is string
-                        if (string.IsNullOrEmpty(formula))
-                        {
-                            return GetStringValue(value, address, type, styleNumber, importOptions);
-                        }
-                        else
-                        {
-                            return GetStringValue(formula, address, type, styleNumber, importOptions);
-                        }
-                }
+                importedType = Cell.CellType.STRING;
+                rawValue = ResolveSharedString(raw);
             }
-            return AutoResolveCellData(address, type, value, styleNumber, formula);
-        }
-
-        /// <summary>
-        /// Resolves the data of a read cell automatically, transforms it into a cell object
-        /// </summary>
-        /// <param name="address">Address of the cell</param>
-        /// <param name="type">Expected data type</param>
-        /// <param name="value">Raw value as string</param>
-        /// <param name="styleNumber">Style number as string (can be null)</param>
-        /// <param name="formula">Formula as string (can be null; data type determines whether value or formula is used)</param>
-        /// <returns>Resolved Cell</returns>
-        private Cell AutoResolveCellData(Address address, string type, string value, string styleNumber, string formula)
-        {
-            if (type != null && type == "s") // string (declared)
+            else if (type == "str")
             {
-                return GetStringValue(value, address, type);
+                importedType = Cell.CellType.FORMULA;
+                rawValue = raw;
             }
-            else if (type == "b") // boolean
+            else if (dateStyles.Contains(styleNumber) && (type == null || type == "" || type == "n"))
             {
-                Cell tempCell = GetBooleanValue(value, address);
-                if (tempCell == null)
-                {
-                    return AutoResolveCellData(address, null, value, styleNumber, formula);
-                }
-                return tempCell;
+                rawValue = GetDateTimeValue(raw, Cell.CellType.DATE, out importedType);
             }
-            else if (dateStyles.Contains(styleNumber))  // date (priority)
+            else if (timeStyles.Contains(styleNumber) && (type == null || type == "" || type == "n"))
             {
-                return GetDateTimeValue(value, address, Cell.CellType.DATE);
-            }
-            else if (timeStyles.Contains(styleNumber)) // time
-            {
-                return GetDateTimeValue(value, address, Cell.CellType.TIME);
-            }
-            else if (type == null || type == "n") // try numeric if not parsed as date or time, before numeric
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    return new Cell(null, Cell.CellType.EMPTY, address);
-                }
-                return GetNumericValue(value, address);
-            }
-            else if (formula != null) // formula before string
-            {
-                return new Cell(formula, Cell.CellType.FORMULA, address);
-            }
-            else // fall back to sting
-            {
-                return GetStringValue(value, address);
-            }
-        }
-
-        /// <summary>
-        /// Handles the value of a raw cell as string. An appropriate formatting is applied to DateTime and TimeSpan values. Null values are left on type EMPTY 
-        /// </summary>
-        /// <param name="address">Address of the cell</param>
-        /// <param name="type">Expected data type</param>
-        /// <param name="value">Raw value as string</param>
-        /// <param name="styleNumber">Style number as string (can be null)</param>
-        /// <param name="formula">Formula as string (can be null; data type determines whether value or formula is used)</param>
-        /// <param name="options">Options instance to determine appropriate formatting information</param>
-        /// <returns>Cell of the type string</returns>
-        private Cell GetEnforcedStingValue(Address address, string type, string value, string styleNumber, string formula , ImportOptions options)
-        {
-            Cell parsed = AutoResolveCellData(address, type, value, styleNumber, formula);
-            if (parsed.DataType == Cell.CellType.EMPTY)
-            {
-                return parsed;
-            }
-            else if (parsed.DataType == Cell.CellType.DATE)
-            {
-                return GetStringValue(((DateTime)parsed.Value).ToString(options.DateTimeFormat), address);
-            }
-            else if (parsed.DataType == Cell.CellType.TIME)
-            {
-                return GetStringValue(((TimeSpan)parsed.Value).ToString(options.TimeSpanFormat), address);
+                rawValue = GetDateTimeValue(raw, Cell.CellType.TIME, out importedType);
             }
             else
             {
-                return GetStringValue(parsed.Value.ToString(), address);
+                importedType = Cell.CellType.NUMBER;
+                rawValue = GetNumericValue(raw);
+            }
+            if (rawValue == null && raw == "")
+            {
+                importedType = Cell.CellType.EMPTY;
+                rawValue = null;
+            }
+            else if (rawValue == null && raw.Length > 0)
+            {
+                importedType = Cell.CellType.STRING;
+                rawValue = raw;
+            }
+            Address cellAddress = new Address(address);
+            if (importOptions != null)
+            {
+                if (importOptions.EnforcedColumnTypes.Count > 0)
+                {
+                    rawValue = GetEnforcedColumnValue(rawValue, importedType, cellAddress);
+                }
+                rawValue = GetGloballyEnforcedValue(rawValue, cellAddress);
+                rawValue = GetGloballyEnforcedFlagValues(rawValue, cellAddress);
+                importedType = ResolveType(rawValue, importedType);
+                if (importedType == Cell.CellType.DATE && rawValue is DateTime && (DateTime)rawValue < Utils.FIRST_ALLOWED_EXCEL_DATE)
+                {
+                    // Fix conversion from time to date, where time has no days
+                    rawValue = ((DateTime)rawValue).AddDays(1);
+                }
+            }
+            return CreateCell(rawValue, importedType, cellAddress, styleNumber);
+        }
+
+        /// <summary>
+        /// Resolves the final cell type after a possible conversion by import options
+        /// </summary>
+        /// <param name="value">Value of the cell</param>
+        /// <param name="defaultType">Originally resolved type. If a formula, the method immediately returns</param>
+        /// <returns>Resolved cell type</returns>
+        private Cell.CellType ResolveType(object value, Cell.CellType defaultType)
+        {
+            if (defaultType == Cell.CellType.FORMULA)
+            {
+                return defaultType;
+            }
+            if (value == null)
+            {
+                return Cell.CellType.EMPTY;
+            }
+            switch (value)
+            {
+                case uint _:
+                case long _:
+                case ulong _:
+                case short _:
+                case ushort _:
+                case float _:
+                case byte _:
+                case sbyte _:
+                case int _:
+                    return Cell.CellType.NUMBER;
+                case string _:
+                    return Cell.CellType.STRING;
+                case DateTime _:
+                    return Cell.CellType.DATE;
+                case TimeSpan _:
+                    return Cell.CellType.TIME;
+                case bool _:
+                    return Cell.CellType.BOOL;
+            }
+            return defaultType;
+        }
+
+        /// <summary>
+        /// Modifies certain values globally by import options (e.g. empty as string or dates as numbers)
+        /// </summary>
+        /// <param name="data">Cell data</param>
+        /// <param name="address">Cell address (conversion is skipped if start row is not reached)</param>
+        /// <returns>Modified value</returns>
+        private object GetGloballyEnforcedFlagValues(object data, Address address)
+        {
+            if (address.Row < importOptions.EnforcingStartRowNumber)
+            {
+                return data;
+            }
+            if (importOptions.EnforceDateTimesAsNumbers)
+            {
+                if (data is DateTime)
+                {
+                    data = Utils.GetOADateTime((DateTime)data, true);
+                }
+                else if (data is TimeSpan)
+                {
+                    data = Utils.GetOATime((TimeSpan)data);
+                }
+            }
+            if (importOptions.EnforceEmptyValuesAsString)
+            {
+                if (data == null)
+                {
+                    return "";
+                }
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// Converts the cell values globally, based on import options (e.g. everything to string or all numbers to double)
+        /// </summary>
+        /// <param name="data">Cell data</param>
+        /// <param name="address">>Cell address (conversion is skipped if start row is not reached)</param>
+        /// <returns>Converted value</returns>
+        private object GetGloballyEnforcedValue(object data, Address address)
+        {
+            if (address.Row < importOptions.EnforcingStartRowNumber)
+            {
+                return data;
+            }
+            if (importOptions.GlobalEnforcingType == ImportOptions.GlobalType.AllNumbersToDouble)
+            {
+                object tempDouble = ConvertToDouble(data);
+                if (tempDouble != null)
+                {
+                    return tempDouble;
+                }
+            }
+            else if (importOptions.GlobalEnforcingType == ImportOptions.GlobalType.AllNumbersToInt)
+            {
+                object tempInt;
+                if (ConvertToInt(data, out tempInt))
+                {
+                    return tempInt;
+                }
+            }
+            else if (importOptions.GlobalEnforcingType == ImportOptions.GlobalType.EverythingToString)
+            {
+                return ConvertToString(data);
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// Converts the cell values of defined rows, based on import options (e.g. everything to string or all values to double)
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="importedTyp"></param>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        private object GetEnforcedColumnValue(object data, Cell.CellType importedTyp, Address address)
+        {
+            if (address.Row < importOptions.EnforcingStartRowNumber)
+            {
+                return data;
+            }
+            if (!importOptions.EnforcedColumnTypes.ContainsKey(address.Column))
+            {
+                return data;
+            }
+            if (importedTyp == Cell.CellType.FORMULA)
+            {
+                return data;
+            }
+            switch (importOptions.EnforcedColumnTypes[address.Column])
+            {
+                case ImportOptions.ColumnType.Numeric:
+                    return GetNumericValue(data, importedTyp);
+                case ImportOptions.ColumnType.Double:
+                        return ConvertToDouble(data);
+                case ImportOptions.ColumnType.Date:
+                    return ConvertToDate(data);
+                case ImportOptions.ColumnType.Time:
+                    return ConvertToTime(data);
+                case ImportOptions.ColumnType.Bool:
+                    return ConvertToBool(data);
+                default:
+                    return ConvertToString(data);
             }
         }
 
         /// <summary>
-        /// Parses the numeric value of a raw cell. The order of possible number types are: ulong, long, uint, int, float or double. If nothing applies, a string is returned
+        /// Tries to convert a value to a bool
+        /// </summary>
+        /// <param name="data">Raw data</param>
+        /// <returns>Bool value or original value if not possible to convert</returns>
+        private object ConvertToBool(object data)
+        {
+            switch (data)
+            {
+                case bool _:
+                    return data;
+                case uint _:
+                case long _:
+                case ulong _:
+                case short _:
+                case ushort _:
+                case float _:
+                case byte _:
+                case sbyte _:
+                case int _:
+                    object tempObject = ConvertToDouble(data);
+                    if (tempObject is double)
+                    {
+                        double tempDouble = (double)tempObject;
+                        if (double.Equals(tempDouble, 0d))
+                        {
+                            return false;
+                        }
+                        else if (double.Equals(tempDouble, 1d))
+                        {
+                            return true;
+                        }
+                    }
+                    break;
+                case string _:
+                    bool tempBool;
+                    string tempString = (string)data;
+                    if (bool.TryParse(tempString, out tempBool)){
+                        return tempBool;
+                    }
+                    else if (tempString == "1")
+                    {
+                        return true;
+                    }
+                    else if (tempString == "0")
+                    {
+                        return false;
+                    }
+                    break;
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// Tries to convert a value to a double
+        /// </summary>
+        /// <param name="data">Raw data</param>
+        /// <returns>Double value or original value if not possible to convert</returns>
+        private object ConvertToDouble(object data)
+        {
+            switch (data)
+            {
+                case double _:
+                    return data;
+                case uint _:
+                case long _:
+                case ulong _:
+                case short _:
+                case ushort _:
+                case float _:
+                case byte _:
+                case sbyte _:
+                case int _:
+                    IConvertible converter = data as IConvertible;
+                    return converter.ToDouble(Utils.INVARIANT_CULTURE);
+                case bool _:
+                    if ((bool)data)
+                    {
+                        return 1d;
+                    }
+                    else
+                    {
+                        return 0d;
+                    }
+                case DateTime _:
+                case TimeSpan _:
+                    object tempObject;
+                    if (TryConvertOaDateTime(data, out tempObject))
+                    {
+                        return tempObject;
+                    }
+                    break;
+                case string _:
+                    double dValue;
+                    string tempString = (string)data;
+                    if (double.TryParse(tempString, out dValue))
+                    {
+                        return dValue;
+                    }
+                    DateTime? tempDate = TryParseDate(tempString);
+                    if (tempDate != null)
+                    {
+                        return Utils.GetOADateTime(tempDate.Value);
+                    }
+                    TimeSpan? tempTime = TryParseTime(tempString);
+                    if (tempTime != null)
+                    {
+                        return Utils.GetOATime(tempTime.Value);
+                    }
+                    break;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Tries to convert a value to an integer
+        /// </summary>
+        /// <param name="data">Raw data</param>
+        /// <returns>Integer value or original value if not possible to convert</returns>
+        private bool ConvertToInt(object data, out object converted)
+        {
+            object tempValue;
+            switch (data)
+            {
+                case uint _:
+                    uint uiValue = (uint)data;
+                    if (uiValue < int.MaxValue)
+                    {
+                        converted = (int)uiValue;
+                        return true;
+                    }
+                    break;
+                case long _:
+                    long lValue = (long)data;
+                    if (lValue > int.MinValue && lValue < int.MaxValue)
+                    {
+                        converted = (int)lValue;
+                        return true;
+                    }
+                    break;
+                case ulong _:
+                    ulong ulValue = (ulong)data;
+                    if (ulValue < int.MaxValue)
+                    {
+                        converted = (int)ulValue;
+                        return true;
+                    }
+                    break;
+                case short _:
+                case ushort _:
+                case byte _:
+                case sbyte _:
+                    converted = (int)data;
+                    return true;
+                case DateTime _:
+                case TimeSpan _:
+                    if (TryConvertOaDateTime(data, out tempValue))
+                    {
+                        if (TryConvertDoubleToInt(tempValue, out tempValue))
+                        {
+                            converted = tempValue;
+                            return true;
+                        }
+                    }
+                    break;
+                case float _:
+                case double _:
+                    if (TryConvertDoubleToInt(data, out tempValue))
+                    {
+                        converted = tempValue;
+                        return true;
+                    }
+                    break;
+                case bool _:
+                    if ((bool)data)
+                    {
+                        converted = 1;
+                    }
+                    else
+                    {
+                        converted = 0;
+                    }
+                    return true;
+                case string _:
+                    int tempInt;
+                    if (int.TryParse((string)data, out tempInt))
+                    {
+                        converted = tempInt;
+                        return true;
+                    }
+                    break;
+            }
+            converted = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to convert a value to a Date (DateTime)
+        /// </summary>
+        /// <param name="data">Raw data</param>
+        /// <returns>DateTime value or original value if not possible to convert</returns>
+        private object ConvertToDate(object data)
+        {
+            switch (data)
+            {
+                case DateTime _:
+                    return data;
+                case TimeSpan _:
+                    DateTime root = Utils.FIRST_ALLOWED_EXCEL_DATE;
+                    TimeSpan time = (TimeSpan)data;
+                    root = root.AddDays(-1); // Fix offset of 1
+                    root = root.AddHours(time.Hours);
+                    root = root.AddMinutes(time.Minutes);
+                    root = root.AddSeconds(time.Seconds);
+                    return root;
+                case double _:
+                case uint _:
+                case long _:
+                case ulong _:
+                case short _:
+                case ushort _:
+                case float _:
+                case byte _:
+                case sbyte _:
+                case int _:
+                    return ConvertDateFromDouble(data);
+                case string _:
+                    DateTime date2;
+                    if(DateTime.TryParseExact((string)data, importOptions.DateTimeFormat, importOptions.TemporalCultureInfo, DateTimeStyles.None, out date2))
+                    {
+                        return date2;
+                    }
+                    return ConvertDateFromDouble(data);
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// Tries to convert a value to a Time (TimeSpan)
+        /// </summary>
+        /// <param name="data">Raw data</param>
+        /// <returns>TimeSpan value or original value if not possible to convert</returns>
+        private object ConvertToTime(object data)
+        {
+            switch (data)
+            {
+                case DateTime _:
+                    return ConvertTimeFromDouble(data);
+                case TimeSpan _:
+                    return data;
+                case double _:
+                case uint _:
+                case long _:
+                case ulong _:
+                case short _:
+                case ushort _:
+                case float _:
+                case byte _:
+                case sbyte _:
+                case int _:
+                    return ConvertTimeFromDouble(data);
+                case string _:
+                    TimeSpan time;
+                    if(TimeSpan.TryParseExact((string)data, importOptions.TimeSpanFormat, importOptions.TemporalCultureInfo, out time))
+                    {
+                        return time;
+                    }
+                    return ConvertTimeFromDouble(data);
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// Tries to convert a date (DateTime) from a double
+        /// </summary>
+        /// <param name="data">Raw data (may not be a double)</param>
+        /// <returns>DateTime value or original value if not possible to convert</returns>
+        private object ConvertDateFromDouble(object data)
+        {
+            object oaDate = ConvertToDouble(data);
+            if (oaDate is double)
+            {
+                DateTime date = Utils.GetDateFromOA((double)oaDate);
+                if (date >= Utils.FIRST_ALLOWED_EXCEL_DATE && date <= Utils.LAST_ALLOWED_EXCEL_DATE)
+                {
+                    return date;
+                }
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// Tries to convert a time (TimeSpan) from a double
+        /// </summary>
+        /// <param name="data">Raw data (my not be a double)</param>
+        /// <returns>TimeSpan value or original value if not possible to convert</returns>
+        private object ConvertTimeFromDouble(object data)
+        {
+            object oaDate = ConvertToDouble(data);
+            if (oaDate is double)
+            { double d = (double)oaDate;
+                if (d >= Utils.MIN_OADATE_VALUE && d <= Utils.MAX_OADATE_VALUE)
+                {
+                    DateTime date = Utils.GetDateFromOA(d);
+                    return new TimeSpan((int)d, date.Hour, date.Minute, date.Second);
+                }
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// Tries to convert a date (DateTime) or time (Timespan) to its OA date value (double
+        /// </summary>
+        /// <param name="data">Date or time object (may be also another type)</param>
+        /// <param name="converted">Converted values as out parameter. If not possible to convert, the original value is returned</param>
+        /// <returns>True if possible to convert, otherwise false</returns>
+        private bool TryConvertOaDateTime(object data, out object converted)
+        {
+            switch (data)
+            {
+                case DateTime _:
+                    converted = Utils.GetOADateTime((DateTime)data);
+                    return true;
+                case TimeSpan _:
+                    converted = Utils.GetOATime((TimeSpan)data);
+                    return true;
+            }
+            converted = data;
+            return false;
+        }
+
+
+        /// <summary>
+        /// Tries to convert a double to an integer
+        /// </summary>
+        /// <param name="data">Numeric value (possibly integer)</param>
+        /// <param name="converted">>Converted values as out parameter. If not possible to convert, the original value is returned</param>
+        /// <returns>True if possible to convert, otherwise false</returns>
+        private bool TryConvertDoubleToInt(object data, out object converted)
+        {
+            IConvertible converter = data as IConvertible;
+            double dValue = converter.ToDouble(ImportOptions.DEFAULT_CULTURE_INFO);
+            if (dValue > int.MinValue && dValue < int.MaxValue)
+            {
+                converted = converter.ToInt32(ImportOptions.DEFAULT_CULTURE_INFO);
+                return true;
+            }
+            converted = data;
+            return false;
+        }
+
+        /// <summary>
+        /// Converts an arbitrary value to string 
+        /// </summary>
+        /// <param name="data">Raw data</param>
+        /// <returns>Converted string or null in case of null as input</returns>
+        private string ConvertToString(object data)
+        {
+            switch (data)
+            {
+                case int _:
+                    return ((int)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
+                case uint _:
+                    return ((uint)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
+                case long _:
+                    return ((long)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
+                case ulong _:
+                    return ((ulong)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
+                case short _:
+                    return ((short)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
+                case ushort _:
+                    return ((ushort)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
+                case float _:
+                    return ((float)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
+                case double _:
+                    return ((double)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
+                case byte _:
+                    return ((byte)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
+                case sbyte _:
+                    return ((sbyte)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
+                case bool _:
+                    return ((bool)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
+                case DateTime _:
+                    return ((DateTime)data).ToString(importOptions.DateTimeFormat);
+                case TimeSpan _:
+                    return ((TimeSpan)data).ToString(importOptions.TimeSpanFormat);
+                default:
+                    if (data == null)
+                    {
+                        return null;
+                    }
+                    return data.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Tries to parse a numeric value with an appropriate type
+        /// </summary>
+        /// <param name="raw">Raw value</param>
+        /// <param name="importedType">Originally resolved cell type</param>
+        /// <returns>Converted value or null if not possible to convert</returns>
+        private object GetNumericValue(object raw, Cell.CellType importedType)
+        {
+            if (raw == null)
+            {
+                return null;
+            }
+            object tempObject;
+            switch (importedType)
+            {
+                case Cell.CellType.STRING:
+                    string tempString = raw.ToString();
+                    tempObject = GetNumericValue(tempString);
+                    if (tempObject != null)
+                    {
+                        return tempObject;
+                    }
+                    DateTime? tempDate = TryParseDate(tempString);
+                    if (tempDate != null)
+                    {
+                        return Utils.GetOADateTime(tempDate.Value);
+                    }
+                    TimeSpan? tempTime = TryParseTime(tempString);
+                    if (tempTime != null)
+                    {
+                        return Utils.GetOATime(tempTime.Value);
+                    }
+                    tempObject = ConvertToBool(raw);
+                    if (tempObject is bool)
+                    {
+                        return (bool)tempObject ? 1 : (object)0;
+                    }
+                    break;
+                case Cell.CellType.NUMBER:
+                    return raw;
+                case Cell.CellType.DATE:
+                    return Utils.GetOADateTime((DateTime)raw);
+                case Cell.CellType.TIME:
+                    return Utils.GetOATime((TimeSpan)raw);
+                case Cell.CellType.BOOL:
+                    if ((bool)raw){
+                        return 1;
+                    }
+                    return 0;
+                case Cell.CellType.FORMULA:
+                    return raw;
+            }
+            return null;
+        }
+
+
+        /// <summary>
+        /// Parses the numeric value of a raw cell. The order of possible number types are: ulong, long, uint, int, float or double. If nothing applies, null is returned
         /// </summary>
         /// <param name="raw">Raw value as string</param>
-        /// <param name="address">Address of the cell</param>
-        /// <param name="styleNumber">Optional parameter to determine whether a double is enforced in case of a date or time style</param>
-        /// <returns>Cell of the type int, float, double or string as fall-back type</returns>
-        private Cell GetNumericValue(string raw, Address address, string styleNumber = null)
+        /// <returns>Value of the type int, float, double or null as fall-back</returns>
+        private object GetNumericValue(string raw)
         {
-            if (dateStyles.Contains(styleNumber) || timeStyles.Contains(styleNumber))
-            {
-                return GetDoubleValue(raw, address);
-            }
+            // integer section
             uint uiValue;
             int iValue;
             bool canBeUint = uint.TryParse(raw, out uiValue);
-            bool canBeInt = int.TryParse(raw, out iValue);             
+            bool canBeInt = int.TryParse(raw, out iValue);
             if (canBeUint && !canBeInt)
             {
-                return new Cell(uiValue, Cell.CellType.NUMBER, address);
+                return uiValue;
             }
             else if (canBeInt)
             {
-                return new Cell(iValue, Cell.CellType.NUMBER, address);
+                return iValue;
             }
             ulong ulValue;
             long lValue;
@@ -460,102 +886,38 @@ namespace NanoXLSX.LowLevel
             bool canBeLong = long.TryParse(raw, out lValue);
             if (canBeUlong && !canBeLong)
             {
-                return new Cell(ulValue, Cell.CellType.NUMBER, address);
+                return  ulValue;
             }
             else if (canBeLong)
             {
-                return new Cell(lValue, Cell.CellType.NUMBER, address);
+                return lValue;
             }
-
-            float fValue;
-
-            if (float.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out fValue))
-            {
-                if (!float.IsInfinity(fValue))
-                {
-                    return new Cell(fValue, Cell.CellType.NUMBER, address);
-                }
-            }
-            return GetDoubleValue(raw, address);
-        }
-
-        /// <summary>
-        /// Parses a raw value as double 
-        /// </summary>
-        /// <param name="raw">Raw value as string</param>
-        /// <param name="address">Address of the cell</param>
-        /// <returns>Cell of the type double or string as fall-back type</returns>
-        private Cell GetDoubleValue(string raw, Address address)
-        {
-            if (importOptions != null && importOptions.EnforceDateTimesAsNumbers)
-            {
-                DateTime? date = TryParseDate(raw);
-                if (date != null)
-                {
-                    return new Cell(Utils.GetOADateTime(date.Value), Cell.CellType.NUMBER, address);
-                }
-                TimeSpan? time = TryParseTime(raw);
-                if (time != null)
-                {
-                    return new Cell(Utils.GetOATime(time.Value), Cell.CellType.NUMBER, address);
-                }
-            }
+            decimal dcValue;
             double dValue;
+            float fValue;
+            // float section
+            if (decimal.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out dcValue))
+            {
+                int decimals = BitConverter.GetBytes(decimal.GetBits(dcValue)[3])[2];
+                if (decimals < 7)
+                {
+                    return decimal.ToSingle(dcValue);
+                }
+                else
+                {
+                    return decimal.ToDouble(dcValue);
+                }
+            }
+            // High range float section
+            else if (float.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out fValue) && fValue >= float.MinValue && fValue <= float.MaxValue && !float.IsInfinity(fValue))
+            {
+                return fValue;
+            }
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
             {
-                return new Cell(dValue, Cell.CellType.NUMBER, address);
+                    return dValue;
             }
-            else
-            {
-                return new Cell(raw, Cell.CellType.STRING, address);
-            }
-        }
-
-        /// <summary>
-        /// Parses the string value of a raw cell. May take the value from the shared string table, if available
-        /// </summary>
-        /// <param name="raw">Raw value as string</param>
-        /// <param name="address">Address of the cell</param>
-        /// <param name="type">Optional parameter to check whether the raw value is already a resolved string</param>
-        /// <param name="options">Optional import options to determine the date and time formatting information</param>
-        /// <returns>Cell of the type string</returns>
-        private Cell GetStringValue(string raw, Address address, string type = null, string styleNumber = null, ImportOptions options = null)
-        {
-            string value = raw;
-            if (type != null && type == "s")
-            {
-                return new Cell(ResolveSharedString(value), Cell.CellType.STRING, address);
-            }
-            else if (type != null && type == "b")
-            {
-                Cell tempCell = GetBooleanValue(value, address);
-                if (tempCell != null)
-                {
-                    value = tempCell.Value.ToString();
-                }
-            }
-            else if (styleNumber != null)
-            {
-                Cell tempCell = null;
-                if (dateStyles.Contains(styleNumber))  // date (priority)
-                {
-                    tempCell = GetDateTimeValue(value, address, Cell.CellType.DATE);
-                }
-                else if (timeStyles.Contains(styleNumber)) // time
-                {
-                    tempCell = GetDateTimeValue(value, address, Cell.CellType.TIME);
-                }
-                if (tempCell != null && tempCell.DataType == Cell.CellType.DATE)
-                {
-                    value = ((DateTime)tempCell.Value).ToString(options.DateTimeFormat);
-                }
-                else if (tempCell != null && tempCell.DataType == Cell.CellType.TIME)
-                {
-                    value = ((TimeSpan)tempCell.Value).ToString(options.TimeSpanFormat);
-                }
-            }
-            return new Cell(value, Cell.CellType.STRING, address);
-                                 
+            return null;
         }
 
         /// <summary>
@@ -585,24 +947,23 @@ namespace NanoXLSX.LowLevel
         /// Parses the boolean value of a raw cell
         /// </summary>
         /// <param name="raw">Raw value as string</param>
-        /// <param name="address">Address of the cell</param>
-        /// <returns>Cell of the type bool or null if not able to parse</returns>
-        private Cell GetBooleanValue(String raw, Address address)
+        /// <returns>Object of the type bool or null if not able to parse</returns>
+        private bool? TryParseBool(string raw)
         {
             if (raw == "0")
             {
-                return new Cell(false, Cell.CellType.BOOL, address);
+                return false;
             }
             else if (raw == "1")
             {
-                return new Cell(true, Cell.CellType.BOOL, address);
+                return true;
             }
             else
             {
                 bool value;
                 if (bool.TryParse(raw, out value))
                 {
-                    return new Cell(value, Cell.CellType.BOOL, address);
+                    return value;
                 }
                 else
                 {
@@ -616,86 +977,47 @@ namespace NanoXLSX.LowLevel
         /// If invalid, the string representation will be returned.
         /// </summary>
         /// <param name="raw">Raw value as string</param>
-        /// <param name="address">Address of the cell</param>
         /// <param name="valueType">Type of the value to be converted: Valid values are DATE and TIME</param>
-        /// <param name="type">Optional parameter to check whether the raw value should be tried to be parsed as date or time</param>
-        /// <returns>Cell of the type TimeSpan or the defined fall-back type</returns>
-        private Cell GetDateTimeValue(String raw, Address address, Cell.CellType valueType, string type = null)
+        /// <returns>Object of the type TimeSpan or null if not possible to parse</returns>
+        private object GetDateTimeValue(string raw, Cell.CellType valueType, out Cell.CellType resolvedType)
         {
-            if (type != null && type == "b")
-            {
-                return GetBooleanValue(raw, address);
-            }
-            if (type != null && type == "s")
-            {
-                DateTime? tempDate = TryParseDate(raw);
-                if (tempDate != null && valueType == Cell.CellType.DATE)
-                {
-                    return GetTemporalCell(tempDate.Value, address);
-                }
-                else if (tempDate != null && valueType == Cell.CellType.TIME)
-                {
-                    return GetTemporalCell(new TimeSpan(tempDate.Value.Hour, tempDate.Value.Minute, tempDate.Value.Second), address);
-                }
-                TimeSpan? tempTime = TryParseTime(raw);
-                if (tempTime != null && valueType == Cell.CellType.TIME)
-                {
-                    return GetTemporalCell(tempTime.Value, address);
-                }
-            }
             double dValue;
-            bool isDouble = false;
-            if (importOptions == null || string.IsNullOrEmpty(importOptions.DateTimeFormat) || importOptions.TemporalCultureInfo == null)
+            if (!double.TryParse(raw, out dValue))
             {
-                isDouble = double.TryParse(raw, out dValue);
+                resolvedType = Cell.CellType.STRING;
+                return raw;
             }
-            else
+            if ((valueType == Cell.CellType.DATE && ( dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE)) || (valueType == Cell.CellType.TIME && (dValue < 0.0 || dValue >1.0)))
             {
-                isDouble = double.TryParse(raw, NumberStyles.Any, importOptions.TemporalCultureInfo, out dValue);
-            }
-            if (!isDouble)
-            {
-                return new Cell(raw, Cell.CellType.STRING, address);
-            }
-            if (dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE || (importOptions != null && importOptions.EnforceDateTimesAsNumbers))
-            {
-                return new Cell(dValue, Cell.CellType.NUMBER, address); // Invalid OAdate / enforced number == plain number
-            }
-            else if (valueType == Cell.CellType.DATE)
-            {
-                DateTime date = Utils.GetDateFromOA(dValue);
-                if (date >= Utils.FIRST_ALLOWED_EXCEL_DATE)
+                // fallback to number
+                object number = GetNumericValue(raw);
+                if (number != null)
                 {
-                    return GetTemporalCell(date, address);
+                    resolvedType = Cell.CellType.NUMBER;
+                    return number;
                 }
                 else
                 {
-                    // Prevent to import 00.01.1900, since it will lead to trouble when exporting / writing
-                    return new Cell(dValue, Cell.CellType.NUMBER, address);
+                    // fallback to string
+                    resolvedType = Cell.CellType.STRING;
+                    return raw;
                 }
-            }
-            else // TIME
-            {
-                TimeSpan time = TimeSpan.FromSeconds(dValue * 86400d);
-                return GetTemporalCell(time, address);
-            }
-        }
 
-        /// <summary>
-        /// Gets a cell either as DateTime, TimeSpan or as double if enforced by import options
-        /// </summary>
-        /// <param name="dateTimeValue">Value of the cell</param>
-        /// <param name="address">Address of the cell</param>
-        /// <returns>Casted cell</returns>
-        private Cell GetTemporalCell(Object dateTimeValue, Address address)
-        {
-            if (dateTimeValue is DateTime)
-            {
-                return new Cell((DateTime)dateTimeValue, Cell.CellType.DATE, address);
             }
-            else
+            DateTime tempDate = Utils.GetDateFromOA(dValue);
+            if (dValue < 1.0)
             {
-                return new Cell((TimeSpan)dateTimeValue, Cell.CellType.TIME, address);
+                tempDate = tempDate.AddDays(1); // Modify wrong 1st date when < 1
+            }
+            if (valueType == Cell.CellType.DATE)
+            {
+                resolvedType = Cell.CellType.DATE;
+                return tempDate;
+            }
+            else 
+            {
+                resolvedType = Cell.CellType.TIME;
+                return new TimeSpan((int)dValue, tempDate.Hour, tempDate.Minute, tempDate.Second);
             }
         }
 
@@ -745,6 +1067,24 @@ namespace NanoXLSX.LowLevel
                 return timeSpan;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Creates a generic cell with optional style information
+        /// </summary>
+        /// <param name="value">Value of the cell</param>
+        /// <param name="type">Cell type</param>
+        /// <param name="address">Cell address</param>
+        /// <param name="styleNumber">Optional style number of the cell</param>
+        /// <returns>Resolved cell</returns>
+        private Cell CreateCell(object value, Cell.CellType type, Address address, string styleNumber = null)
+        {
+            Cell cell = new Cell(value, type, address);
+            if (styleNumber != null && resolvedStyles.ContainsKey(styleNumber))
+            {
+                cell.SetStyle(resolvedStyles[styleNumber]);
+            }
+            return cell;
         }
 
         #endregion

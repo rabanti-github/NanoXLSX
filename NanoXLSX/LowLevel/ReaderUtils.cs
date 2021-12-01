@@ -5,6 +5,8 @@
 * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
 */
 
+using System;
+using System.Linq;
 using System.Xml;
 
 namespace NanoXLSX.LowLevel
@@ -37,6 +39,32 @@ namespace NanoXLSX.LowLevel
             }
 
             return fallbackValue;
+        }
+
+        /// <summary>
+        /// Gets the specified child node
+        /// </summary>
+        /// <param name="node">XML node that contains child node</param>
+        /// <param name="name">Name of the child node</param>
+        /// <returns>Child node or null if not found</returns>
+        public static XmlNode GetChildNode(XmlNode node, string name)
+        {
+            if (node != null && node.HasChildNodes)
+            {
+                return node.ChildNodes.Cast<XmlNode>().FirstOrDefault(c => c.LocalName.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Checks whether the given node has the specified name
+        /// </summary>
+        /// <param name="node">XML node to check</param>
+        /// <param name="name">Name to check</param>
+        /// <returns>True if applying</returns>
+        internal static bool IsNode(XmlNode node, string name)
+        {
+            return node.LocalName.Equals(name, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

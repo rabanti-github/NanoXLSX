@@ -3,9 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test.Reader
@@ -37,7 +34,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A6", "-0.111");
             expectedCells.Add("A7", "2020-11-10 09:08:07");
             expectedCells.Add("A8", "18:15:12");
-            expectedCells.Add("A9", null);
+            expectedCells.Add("A9", null); // Empty remains empty
             expectedCells.Add("A10", "=A1");
 
             ImportOptions options = new ImportOptions();
@@ -170,14 +167,14 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A2", true);
             cells.Add("A3", date);
             cells.Add("A4", time);
-            cells.Add("A5", 22.5d);
+            cells.Add("A5", 22.5f);
             cells.Add("A6", new Cell("=A1", Cell.CellType.FORMULA, "A6"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", true);
             expectedCells.Add("A3", Utils.GetOADateTime(date));
             expectedCells.Add("A4", Utils.GetOATime(time));
-            expectedCells.Add("A5", 22.5f); // Auto-import will cast this value to float
+            expectedCells.Add("A5", 22.5f);
             expectedCells.Add("A6", new Cell("=A1", Cell.CellType.FORMULA, "A6"));
             ImportOptions options = new ImportOptions();
             options.EnforceDateTimesAsNumbers = true;
@@ -185,9 +182,9 @@ namespace NanoXLSX_Test.Reader
         }
 
         [Theory(DisplayName = "Test of the EnforceDateTimesAsNumbers functionality for the import column types: Date or Time")]
-        [InlineData(ImportOptions.ColumnType.Date)]
-        [InlineData(ImportOptions.ColumnType.Time)]
-        public void EnforceDateTimesAsNumbersTest2(ImportOptions.ColumnType columnType)
+        [InlineData(ImportOptions.ColumnType.Date, 22.5f, 22.5d)]
+        [InlineData(ImportOptions.ColumnType.Time, 22.5d, 22.5d)]
+        public void EnforceDateTimesAsNumbersTest2(ImportOptions.ColumnType columnType, object givenLowNumber, object expectedLowNumber)
         {
             DateTime date = new DateTime(2021, 8, 17, 11, 12, 13, 0);
             TimeSpan time = new TimeSpan(18, 14, 10);
@@ -198,7 +195,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A4", time);
             cells.Add("B1", date);
             cells.Add("B2", time);
-            cells.Add("B3", 22.5d);
+            cells.Add("B3", givenLowNumber);
             cells.Add("B4", new Cell("=A1", Cell.CellType.FORMULA, "B4"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
@@ -207,7 +204,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A4", Utils.GetOATime(time));
             expectedCells.Add("B1", Utils.GetOADateTime(date));
             expectedCells.Add("B2", Utils.GetOATime(time));
-            expectedCells.Add("B3", 22.5f); // Auto-import will cast this value to float
+            expectedCells.Add("B3", expectedLowNumber);
             expectedCells.Add("B4", new Cell("=A1", Cell.CellType.FORMULA, "B4"));
             ImportOptions options = new ImportOptions();
             options.EnforceDateTimesAsNumbers = true;
@@ -290,8 +287,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B1", 23);
             expectedCells.Add("B2", 20.1f);
             expectedCells.Add("B3", 1);
-            expectedCells.Add("B4", float.Parse(Utils.GetOATimeString(time)));
-            expectedCells.Add("B5", float.Parse(Utils.GetOADateTimeString(date)));
+            expectedCells.Add("B4", Utils.GetOATime(time));
+            expectedCells.Add("B5", Utils.GetOADateTime(date));
             expectedCells.Add("B6", null);
             expectedCells.Add("B7", new Cell("=A1", Cell.CellType.FORMULA, "B7"));
             expectedCells.Add("C1", "2");
@@ -473,11 +470,11 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B1", new DateTime(1900, 1, 1, 0, 0, 0, 0));
             expectedCells.Add("B2", "Test");
             expectedCells.Add("B3", false);
-            expectedCells.Add("B4", 0.46681712962963); // Fallback since < 1
+            expectedCells.Add("B4", new DateTime(1900, 1, 1, 11, 12, 13, 0));
             expectedCells.Add("B5", new DateTime(2021, 8, 14, 18, 22, 13, 0));
             expectedCells.Add("B6", new DateTime(2021, 10, 25, 12, 30, 10, 0));
             expectedCells.Add("B7", new DateTime(2021, 10, 25, 12, 30, 10, 0));
-            expectedCells.Add("B8", -10d); // Fallback to double from int
+            expectedCells.Add("B8", -10); 
             expectedCells.Add("B9", new DateTime(2021, 10, 25, 12, 0, 0, 0));
             expectedCells.Add("B10", null);
             expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
@@ -525,15 +522,15 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A1", 1);
             expectedCells.Add("A2", "21");
             expectedCells.Add("A3", true);
-            expectedCells.Add("B1", new TimeSpan(0, 0, 0));
+            expectedCells.Add("B1", new TimeSpan(1, 0, 0, 0));
             expectedCells.Add("B2", "Test");
             expectedCells.Add("B3", false);
             expectedCells.Add("B4", time);
-            expectedCells.Add("B5", new TimeSpan(18, 22, 13));
-            expectedCells.Add("B6", new TimeSpan(12, 30, 10));
-            expectedCells.Add("B7", new TimeSpan(12, 30, 10));
-            expectedCells.Add("B8", -10d); // Fallback to double from int
-            expectedCells.Add("B9", new TimeSpan(12, 0, 0));
+            expectedCells.Add("B5", new TimeSpan(44422, 18, 22, 13));
+            expectedCells.Add("B6", new TimeSpan(44494, 12, 30, 10));
+            expectedCells.Add("B7", new TimeSpan(44494, 12, 30, 10));
+            expectedCells.Add("B8", -10); 
+            expectedCells.Add("B9", new TimeSpan(44494, 12, 0, 0));
             expectedCells.Add("B10", null);
             expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
             expectedCells.Add("C1", "0");

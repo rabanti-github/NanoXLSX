@@ -226,7 +226,7 @@ namespace NanoXLSX_Test.Reader
         [InlineData("D1", Cell.CellType.NUMBER, 2)] 
         [InlineData("E1", Cell.CellType.STRING, "x")]
         [InlineData("F1", Cell.CellType.STRING, "1")] // Reference 1 is casted to string '1'
-        [InlineData("G1", Cell.CellType.NUMBER, -1.5)]
+        [InlineData("G1", Cell.CellType.NUMBER, -1.5f)]
         [InlineData("H1", Cell.CellType.STRING, "y")]
         [InlineData("I1", Cell.CellType.BOOL, true)]
         [InlineData("J1", Cell.CellType.BOOL, false)]

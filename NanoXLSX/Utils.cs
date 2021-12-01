@@ -87,6 +87,7 @@ namespace NanoXLSX
         /// <summary>
         /// Method to convert a date or date and time into the internal Excel time format (OAdate)
         /// </summary>
+        /// <param name="skipCheck">Optional flag to skip the validity check if set to true</param>
         /// <param name="date">Date to process</param>
         /// <returns>Date or date and time as number</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
@@ -98,9 +99,9 @@ namespace NanoXLSX
         ///See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
         ///https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a>
         /// </remarks>
-        public static double GetOADateTime(DateTime date)
+        public static double GetOADateTime(DateTime date, bool skipCheck = false)
         {
-            if (date < FIRST_ALLOWED_EXCEL_DATE || date > LAST_ALLOWED_EXCEL_DATE)
+            if (!skipCheck && (date < FIRST_ALLOWED_EXCEL_DATE || date > LAST_ALLOWED_EXCEL_DATE))
             {
                 throw new Exceptions.FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 or after 9999-12-31 are not allowed.");
             }
@@ -116,9 +117,9 @@ namespace NanoXLSX
         /// <summary>
         /// Method to convert a time into the internal Excel time format (OAdate without days)
         /// </summary>
-        /// <param name="time">Time to process. The date component of the timespan is neglected</param>
+        /// <param name="time">Time to process. The date component of the timespan is converted to the total numbers of days</param>
         /// <returns>Time as number string</returns>
-        /// <remarks>The time is represented by a OAdate without the date component. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
+        /// <remarks>The time is represented by a OAdate without the date component but a possible number of total days. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
         public static string GetOATimeString(TimeSpan time)
         {
             double d = GetOATime(time);
@@ -128,13 +129,13 @@ namespace NanoXLSX
         /// <summary>
         /// Method to convert a time into the internal Excel time format (OAdate without days)
         /// </summary>
-        /// <param name="time">Time to process. The date component of the timespan is neglected</param>
+        /// <param name="time">Time to process. The date component of the timespan is converted to the total numbers of days</param>
         /// <returns>Time as number</returns>
-        /// <remarks>The time is represented by a OAdate without the date component. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
+        /// <remarks>The time is represented by a OAdate without the date component but a possible number of total days. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
         public static double GetOATime(TimeSpan time)
         {
             int seconds = time.Seconds + time.Minutes * 60 + time.Hours * 3600;
-            return (double)seconds / 86400d;
+            return time.Days + (double)seconds / 86400d;
         }
 
         /// <summary>

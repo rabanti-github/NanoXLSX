@@ -29,7 +29,7 @@ namespace NanoXLSX
         /// <summary>
         /// Default culture info instance (invariant culture) used for date and time parsing, if no custom culture info is defined
         /// </summary>
-        public static readonly CultureInfo DEFAULT_CILTURE_INFO = CultureInfo.InvariantCulture;
+        public static readonly CultureInfo DEFAULT_CULTURE_INFO = CultureInfo.InvariantCulture;
 
         /// <summary>
         /// Global conversion types to enforce during the import. All types other than <a cref="GlobalType.Default" /> will override defined <a cref="ColumnType">Column types</a>
@@ -128,7 +128,7 @@ namespace NanoXLSX
         /// Culture info instance, used to parse DateTime or TimeSpan objects from strings. If null, parsing will be tried with 'best effort', according to <a cref="System.DateTime.Parse(string)" />.
         /// See also  <see cref="DateTimeFormat"/> and <see cref="TimeSpanFormat"/>
         /// </summary>
-        public CultureInfo TemporalCultureInfo { get; set; } = DEFAULT_CILTURE_INFO;
+        public CultureInfo TemporalCultureInfo { get; set; } = DEFAULT_CULTURE_INFO;
 
         /// <summary>
         /// Adds a type enforcing rule to the passed column address
