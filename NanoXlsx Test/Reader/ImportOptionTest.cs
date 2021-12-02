@@ -1,4 +1,5 @@
 ﻿using NanoXLSX;
+using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -350,6 +351,8 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B9", 1.0d);
             cells.Add("B10", null);
             cells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
+            cells.Add("B12", 2);
+            cells.Add("B13", "0");
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
             cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
@@ -368,6 +371,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B9", true);
             expectedCells.Add("B10", null);
             expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
+            expectedCells.Add("B12", 2);
+            expectedCells.Add("B13", false);
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
@@ -491,6 +496,55 @@ namespace NanoXLSX_Test.Reader
                 options.AddEnforcedColumn((int)column, ImportOptions.ColumnType.Date);
             }
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
+        [Theory(DisplayName = "Test of the import options for the import column type with wrong style information: Date")]
+        [InlineData("B", ImportOptions.ColumnType.Date)]
+        [InlineData(1, ImportOptions.ColumnType.Date)]
+        [InlineData("B", ImportOptions.ColumnType.Time)]
+        [InlineData(1, ImportOptions.ColumnType.Time)]
+        public void EnforcingColumnAsDateTest2(object column, ImportOptions.ColumnType type)
+        {
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            Cell a1 = new Cell(1, Cell.CellType.NUMBER, "A1");
+            Cell b1 = new Cell(-10, Cell.CellType.NUMBER, "B1");
+            b1.SetStyle(BasicStyles.DateFormat);
+            Cell b2 = new Cell(-5.5f, Cell.CellType.NUMBER, "B2");
+            b1.SetStyle(BasicStyles.TimeFormat);
+            Cell b3 = new Cell("5-7", Cell.CellType.STRING, "B3");
+            b1.SetStyle(BasicStyles.DateFormat);
+            Cell b4 = new Cell("-1", Cell.CellType.STRING, "B42");
+            b1.SetStyle(BasicStyles.TimeFormat);
+            Cell c1 = new Cell(10, Cell.CellType.NUMBER, "C1");
+            cells.Add("A1", a1);
+            cells.Add("B1", b1);
+            cells.Add("B2", b2);
+            cells.Add("B3", b3);
+            cells.Add("B4", b4);
+            cells.Add("C1", c1);
+            Dictionary<string, Cell> expectedCells = new Dictionary<string, Cell>();
+            Cell exA1 = new Cell(1, Cell.CellType.NUMBER, "A1");
+            Cell exB1 = new Cell(-10, Cell.CellType.NUMBER, "B1");
+            Cell exB2 = new Cell(-5.5f, Cell.CellType.NUMBER, "B2");
+            Cell exB3 = new Cell("5-7", Cell.CellType.STRING, "B3");
+            Cell exB4 = new Cell("-1", Cell.CellType.STRING, "B4");
+            Cell exC1 = new Cell(10, Cell.CellType.NUMBER, "C1");
+            expectedCells.Add("A1", exA1);
+            expectedCells.Add("B1", exB1);
+            expectedCells.Add("B2", exB2);
+            expectedCells.Add("B3", exB3);
+            expectedCells.Add("B4", exB4);
+            expectedCells.Add("C1", exC1);
+            ImportOptions options = new ImportOptions();
+            if (column is string)
+            {
+                options.AddEnforcedColumn(column as string, type);
+            }
+            else
+            {
+                options.AddEnforcedColumn((int)column, type);
+            }
+            AssertValues<object, Cell>(cells, options, AssertApproximate, expectedCells);
         }
 
         [Theory(DisplayName = "Test of the import options for the import column type: Time")]
@@ -703,6 +757,10 @@ namespace NanoXLSX_Test.Reader
                 if (expectedValue == null)
                 {
                     Assert.Equal(Cell.CellType.EMPTY, givenCell.DataType);
+                }
+                else if (expectedValue is Cell && givenCell is Cell)
+                {
+                    assertionAction.Invoke((expectedValue as Cell).Value, (givenCell as Cell).Value);
                 }
                 else if (expectedValue is Cell)
                 {
