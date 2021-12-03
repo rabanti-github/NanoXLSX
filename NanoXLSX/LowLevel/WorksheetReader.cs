@@ -520,7 +520,7 @@ namespace NanoXLSX.LowLevel
                     }
                     break;
             }
-            return null;
+            return data;
         }
 
         /// <summary>
@@ -639,7 +639,10 @@ namespace NanoXLSX.LowLevel
                     DateTime date2;
                     if(DateTime.TryParseExact((string)data, importOptions.DateTimeFormat, importOptions.TemporalCultureInfo, DateTimeStyles.None, out date2))
                     {
-                        return date2;
+                        if (date2 >= Utils.FIRST_ALLOWED_EXCEL_DATE && date2 <= Utils.LAST_ALLOWED_EXCEL_DATE)
+                        {
+                            return date2;
+                        }
                     }
                     return ConvertDateFromDouble(data);
             }

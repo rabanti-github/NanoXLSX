@@ -92,6 +92,9 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A11", null);
             cells.Add("A12", "28");
             cells.Add("A13", new Cell("=A1", Cell.CellType.FORMULA, "A13"));
+            cells.Add("A14", 8589934592l);
+            cells.Add("A15", 4294967294u);
+            cells.Add("A16", 18446744073709551614);
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", 1);
@@ -106,6 +109,9 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A11", null);
             expectedCells.Add("A12", 28);
             expectedCells.Add("A13", new Cell("=A1", Cell.CellType.FORMULA, "A13"));
+            expectedCells.Add("A14", 8589934592l);
+            expectedCells.Add("A15", 4294967294u);
+            expectedCells.Add("A16", 18446744073709551614);
             ImportOptions options = new ImportOptions();
             options.GlobalEnforcingType = ImportOptions.GlobalType.AllNumbersToInt;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
@@ -329,6 +335,63 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
+
+
+
+        [Theory(DisplayName = "Test of the import options for the import column type with wrong style information: Double")]
+        [InlineData("B", ImportOptions.ColumnType.Double)]
+        [InlineData(1, ImportOptions.ColumnType.Double)]
+        public void EnforcingColumnAsNumberTest4(object column, ImportOptions.ColumnType type)
+        {
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            Cell a1 = new Cell(1, Cell.CellType.NUMBER, "A1");
+            Cell b1 = new Cell(-10, Cell.CellType.NUMBER, "B1");
+            b1.SetStyle(BasicStyles.DateFormat);
+            Cell b2 = new Cell(-5.5f, Cell.CellType.NUMBER, "B2");
+            b1.SetStyle(BasicStyles.TimeFormat);
+            Cell b3 = new Cell("5-7", Cell.CellType.STRING, "B3");
+            b1.SetStyle(BasicStyles.DateFormat);
+            Cell b4 = new Cell("-1", Cell.CellType.STRING, "B4");
+            b1.SetStyle(BasicStyles.DateFormat);
+            Cell b5 = new Cell("1870-06-01 12:12:00", Cell.CellType.STRING, "B5");
+            b5.SetStyle(BasicStyles.DateFormat);
+            Cell c1 = new Cell(10, Cell.CellType.NUMBER, "C1");
+            cells.Add("A1", a1);
+            cells.Add("B1", b1);
+            cells.Add("B2", b2);
+            cells.Add("B3", b3);
+            cells.Add("B4", b4);
+            cells.Add("B5", b5);
+            cells.Add("C1", c1);
+            Dictionary<string, Cell> expectedCells = new Dictionary<string, Cell>();
+            Cell exA1 = new Cell(1, Cell.CellType.NUMBER, "A1");
+            Cell exB1 = new Cell(-10d, Cell.CellType.NUMBER, "B1");
+            Cell exB2 = new Cell(-5.5d, Cell.CellType.NUMBER, "B2");
+            Cell exB3 = new Cell("5-7", Cell.CellType.STRING, "B3");
+            Cell exB4 = new Cell(-1d, Cell.CellType.STRING, "B4");
+            Cell exB5 = new Cell("1870-06-01 12:12:00", Cell.CellType.STRING, "B5");
+            Cell exC1 = new Cell(10, Cell.CellType.NUMBER, "C1");
+            expectedCells.Add("A1", exA1);
+            expectedCells.Add("B1", exB1);
+            expectedCells.Add("B2", exB2);
+            expectedCells.Add("B3", exB3);
+            expectedCells.Add("B4", exB4);
+            expectedCells.Add("B5", exB5);
+            expectedCells.Add("C1", exC1);
+            ImportOptions options = new ImportOptions();
+            if (column is string)
+            {
+                options.AddEnforcedColumn(column as string, type);
+            }
+            else
+            {
+                options.AddEnforcedColumn((int)column, type);
+            }
+            AssertValues<object, Cell>(cells, options, AssertApproximate, expectedCells);
+        }
+
+
+
         [Theory(DisplayName = "Test of the import options for the import column type: Bool")]
         [InlineData("B")]
         [InlineData(1)]
@@ -510,17 +573,20 @@ namespace NanoXLSX_Test.Reader
             Cell b1 = new Cell(-10, Cell.CellType.NUMBER, "B1");
             b1.SetStyle(BasicStyles.DateFormat);
             Cell b2 = new Cell(-5.5f, Cell.CellType.NUMBER, "B2");
-            b1.SetStyle(BasicStyles.TimeFormat);
+            b2.SetStyle(BasicStyles.TimeFormat);
             Cell b3 = new Cell("5-7", Cell.CellType.STRING, "B3");
-            b1.SetStyle(BasicStyles.DateFormat);
-            Cell b4 = new Cell("-1", Cell.CellType.STRING, "B42");
-            b1.SetStyle(BasicStyles.TimeFormat);
+            b3.SetStyle(BasicStyles.DateFormat);
+            Cell b4 = new Cell("-1", Cell.CellType.STRING, "B4");
+            b4.SetStyle(BasicStyles.TimeFormat);
+            Cell b5 = new Cell("1870-06-06 12:12:00", Cell.CellType.STRING, "B5");
+            b5.SetStyle(BasicStyles.DateFormat);
             Cell c1 = new Cell(10, Cell.CellType.NUMBER, "C1");
             cells.Add("A1", a1);
             cells.Add("B1", b1);
             cells.Add("B2", b2);
             cells.Add("B3", b3);
             cells.Add("B4", b4);
+            cells.Add("B5", b5);
             cells.Add("C1", c1);
             Dictionary<string, Cell> expectedCells = new Dictionary<string, Cell>();
             Cell exA1 = new Cell(1, Cell.CellType.NUMBER, "A1");
@@ -528,12 +594,14 @@ namespace NanoXLSX_Test.Reader
             Cell exB2 = new Cell(-5.5f, Cell.CellType.NUMBER, "B2");
             Cell exB3 = new Cell("5-7", Cell.CellType.STRING, "B3");
             Cell exB4 = new Cell("-1", Cell.CellType.STRING, "B4");
+            Cell exB5 = new Cell("1870-06-06 12:12:00", Cell.CellType.STRING, "B4");
             Cell exC1 = new Cell(10, Cell.CellType.NUMBER, "C1");
             expectedCells.Add("A1", exA1);
             expectedCells.Add("B1", exB1);
             expectedCells.Add("B2", exB2);
             expectedCells.Add("B3", exB3);
             expectedCells.Add("B4", exB4);
+            expectedCells.Add("B5", exB5);
             expectedCells.Add("C1", exC1);
             ImportOptions options = new ImportOptions();
             if (column is string)
