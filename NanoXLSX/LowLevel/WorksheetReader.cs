@@ -494,13 +494,9 @@ namespace NanoXLSX.LowLevel
                         return 0d;
                     }
                 case DateTime _:
+                    return Utils.GetOADateTime((DateTime)data);
                 case TimeSpan _:
-                    object tempObject;
-                    if (TryConvertOaDateTime(data, out tempObject))
-                    {
-                        return tempObject;
-                    }
-                    break;
+                    return Utils.GetOATime((TimeSpan)data);
                 case string _:
                     double dValue;
                     string tempString = (string)data;
@@ -531,49 +527,21 @@ namespace NanoXLSX.LowLevel
         private bool ConvertToInt(object data, out object converted)
         {
             object tempValue;
+            double tempDouble;
             switch (data)
             {
                 case uint _:
-                    uint uiValue = (uint)data;
-                    if (uiValue < int.MaxValue)
-                    {
-                        converted = (int)uiValue;
-                        return true;
-                    }
-                    break;
                 case long _:
-                    long lValue = (long)data;
-                    if (lValue > int.MinValue && lValue < int.MaxValue)
-                    {
-                        converted = (int)lValue;
-                        return true;
-                    }
-                    break;
                 case ulong _:
-                    ulong ulValue = (ulong)data;
-                    if (ulValue < int.MaxValue)
-                    {
-                        converted = (int)ulValue;
-                        return true;
-                    }
                     break;
-                case short _:
-                case ushort _:
-                case byte _:
-                case sbyte _:
-                    converted = (int)data;
-                    return true;
                 case DateTime _:
+                    tempDouble = Utils.GetOADateTime((DateTime)data, true);
+                    converted = ConvertDoubleToInt(tempDouble);
+                    return true;
                 case TimeSpan _:
-                    if (TryConvertOaDateTime(data, out tempValue))
-                    {
-                        if (TryConvertDoubleToInt(tempValue, out tempValue))
-                        {
-                            converted = tempValue;
-                            return true;
-                        }
-                    }
-                    break;
+                    tempDouble = Utils.GetOATime((TimeSpan)data);
+                    converted = ConvertDoubleToInt(tempDouble);
+                    return true;
                 case float _:
                 case double _:
                     if (TryConvertDoubleToInt(data, out tempValue))
@@ -692,7 +660,7 @@ namespace NanoXLSX.LowLevel
         private object ConvertDateFromDouble(object data)
         {
             object oaDate = ConvertToDouble(data);
-            if (oaDate is double)
+            if (oaDate is double && (double)oaDate < Utils.MAX_OADATE_VALUE)
             {
                 DateTime date = Utils.GetDateFromOA((double)oaDate);
                 if (date >= Utils.FIRST_ALLOWED_EXCEL_DATE && date <= Utils.LAST_ALLOWED_EXCEL_DATE)
@@ -723,28 +691,6 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Tries to convert a date (DateTime) or time (Timespan) to its OA date value (double
-        /// </summary>
-        /// <param name="data">Date or time object (may be also another type)</param>
-        /// <param name="converted">Converted values as out parameter. If not possible to convert, the original value is returned</param>
-        /// <returns>True if possible to convert, otherwise false</returns>
-        private bool TryConvertOaDateTime(object data, out object converted)
-        {
-            switch (data)
-            {
-                case DateTime _:
-                    converted = Utils.GetOADateTime((DateTime)data);
-                    return true;
-                case TimeSpan _:
-                    converted = Utils.GetOATime((TimeSpan)data);
-                    return true;
-            }
-            converted = data;
-            return false;
-        }
-
-
-        /// <summary>
         /// Tries to convert a double to an integer
         /// </summary>
         /// <param name="data">Numeric value (possibly integer)</param>
@@ -764,6 +710,17 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
+        /// Converts a double to an integer without checks
+        /// </summary>
+        /// <param name="data">Numeric value</param>
+        /// <returns>Converted Value</returns>
+        public object ConvertDoubleToInt(object data)
+        {
+            IConvertible converter = data as IConvertible;
+            return converter.ToInt32(ImportOptions.DEFAULT_CULTURE_INFO);
+        }
+
+        /// <summary>
         /// Converts an arbitrary value to string 
         /// </summary>
         /// <param name="data">Raw data</param>
@@ -780,18 +737,10 @@ namespace NanoXLSX.LowLevel
                     return ((long)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
                 case ulong _:
                     return ((ulong)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
-                case short _:
-                    return ((short)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
-                case ushort _:
-                    return ((ushort)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
                 case float _:
                     return ((float)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
                 case double _:
                     return ((double)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
-                case byte _:
-                    return ((byte)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
-                case sbyte _:
-                    return ((sbyte)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
                 case bool _:
                     return ((bool)data).ToString(ImportOptions.DEFAULT_CULTURE_INFO);
                 case DateTime _:
@@ -812,7 +761,7 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="raw">Raw value</param>
         /// <param name="importedType">Originally resolved cell type</param>
-        /// <returns>Converted value or null if not possible to convert</returns>
+        /// <returns>Converted value or the raw value if not possible to convert</returns>
         private object GetNumericValue(object raw, Cell.CellType importedType)
         {
             if (raw == null)
@@ -856,10 +805,8 @@ namespace NanoXLSX.LowLevel
                         return 1;
                     }
                     return 0;
-                case Cell.CellType.FORMULA:
-                    return raw;
             }
-            return null;
+            return raw;
         }
 
 
@@ -990,22 +937,11 @@ namespace NanoXLSX.LowLevel
                 resolvedType = Cell.CellType.STRING;
                 return raw;
             }
-            if ((valueType == Cell.CellType.DATE && ( dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE)) || (valueType == Cell.CellType.TIME && (dValue < 0.0 || dValue >1.0)))
+            if ((valueType == Cell.CellType.DATE && ( dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE)) || (valueType == Cell.CellType.TIME && (dValue < 0.0 || dValue >Utils.MAX_OADATE_VALUE)))
             {
-                // fallback to number
-                object number = GetNumericValue(raw);
-                if (number != null)
-                {
-                    resolvedType = Cell.CellType.NUMBER;
-                    return number;
-                }
-                else
-                {
-                    // fallback to string
-                    resolvedType = Cell.CellType.STRING;
-                    return raw;
-                }
-
+                // fallback to number (cannot be anything else)
+                resolvedType = Cell.CellType.NUMBER;
+                return GetNumericValue(raw);
             }
             DateTime tempDate = Utils.GetDateFromOA(dValue);
             if (dValue < 1.0)

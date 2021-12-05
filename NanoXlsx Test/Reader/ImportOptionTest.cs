@@ -95,6 +95,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A14", 8589934592l);
             cells.Add("A15", 4294967294u);
             cells.Add("A16", 18446744073709551614);
+            cells.Add("A17", 2147483650.6f);
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", 1);
@@ -112,6 +113,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A14", 8589934592l);
             expectedCells.Add("A15", 4294967294u);
             expectedCells.Add("A16", 18446744073709551614);
+            expectedCells.Add("A17", 2147483650.6f);
             ImportOptions options = new ImportOptions();
             options.GlobalEnforcingType = ImportOptions.GlobalType.AllNumbersToInt;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
@@ -279,11 +281,15 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A3", true);
             cells.Add("B1", 23);
             cells.Add("B2", "20.1");
-            cells.Add("B3", true);
-            cells.Add("B4", time);
-            cells.Add("B5", date);
-            cells.Add("B6", null);
-            cells.Add("B7", new Cell("=A1", Cell.CellType.FORMULA, "B7"));
+            cells.Add("B3", time);
+            cells.Add("B4", date);
+            cells.Add("B5", null);
+            cells.Add("B6", new Cell("=A1", Cell.CellType.FORMULA, "B6"));
+            cells.Add("B7", "true");
+            cells.Add("B8", "false");
+            cells.Add("B9", true);
+            cells.Add("B10", false);
+            cells.Add("B11", "XYZ");
             cells.Add("C1", "2");
             cells.Add("C2", new TimeSpan(12, 14, 16));
             cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
@@ -293,11 +299,15 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A3", true);
             expectedCells.Add("B1", 23);
             expectedCells.Add("B2", 20.1f);
-            expectedCells.Add("B3", 1);
-            expectedCells.Add("B4", Utils.GetOATime(time));
-            expectedCells.Add("B5", Utils.GetOADateTime(date));
-            expectedCells.Add("B6", null);
-            expectedCells.Add("B7", new Cell("=A1", Cell.CellType.FORMULA, "B7"));
+            expectedCells.Add("B3", Utils.GetOATime(time));
+            expectedCells.Add("B4", Utils.GetOADateTime(date));
+            expectedCells.Add("B5", null);
+            expectedCells.Add("B6", new Cell("=A1", Cell.CellType.FORMULA, "B6"));
+            expectedCells.Add("B7", 1);
+            expectedCells.Add("B8", 0);
+            expectedCells.Add("B9", 1);
+            expectedCells.Add("B10", 0);
+            expectedCells.Add("B11", "XYZ");
             expectedCells.Add("C1", "2");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
@@ -334,9 +344,6 @@ namespace NanoXLSX_Test.Reader
             options.AddEnforcedColumn(1, columnType);
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
-
-
-
 
         [Theory(DisplayName = "Test of the import options for the import column type with wrong style information: Double")]
         [InlineData("B", ImportOptions.ColumnType.Double)]
@@ -389,8 +396,6 @@ namespace NanoXLSX_Test.Reader
             }
             AssertValues<object, Cell>(cells, options, AssertApproximate, expectedCells);
         }
-
-
 
         [Theory(DisplayName = "Test of the import options for the import column type: Bool")]
         [InlineData("B")]
@@ -473,6 +478,14 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B9", 1.111d);
             cells.Add("B10", null);
             cells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
+            cells.Add("B12", 2147483650);
+            cells.Add("B13", 9223372036854775806);
+            cells.Add("B14", 18446744073709551614);
+            cells.Add("B15", (short)32766);
+            cells.Add("B16", (ushort)65534);
+            cells.Add("B17", 0.000000001d);
+            cells.Add("B18", 0.123f);
+            cells.Add("B19", (byte)17);
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
             cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
@@ -491,6 +504,14 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B9", "1.111");
             expectedCells.Add("B10", null);
             expectedCells.Add("B11", "=A1");
+            expectedCells.Add("B12", "2147483650");
+            expectedCells.Add("B13", "9223372036854775806");
+            expectedCells.Add("B14", "18446744073709551614");
+            expectedCells.Add("B15", "32766");
+            expectedCells.Add("B16", "65534");
+            expectedCells.Add("B17", "1E-09"); // Currently handled without option to format the number
+            expectedCells.Add("B18", "0.123");
+            expectedCells.Add("B19", "17");
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
@@ -528,6 +549,8 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B9", 44494.5f);
             cells.Add("B10", null);
             cells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
+            cells.Add("B12", 2147483650);
+            cells.Add("B13", 2958466);
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
             cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
@@ -546,6 +569,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B9", new DateTime(2021, 10, 25, 12, 0, 0, 0));
             expectedCells.Add("B10", null);
             expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
+            expectedCells.Add("B12", 2147483650);
+            expectedCells.Add("B13", 2958466); // Exceeds year 9999
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
