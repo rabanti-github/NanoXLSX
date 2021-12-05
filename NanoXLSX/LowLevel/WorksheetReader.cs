@@ -358,8 +358,8 @@ namespace NanoXLSX.LowLevel
             }
             else if (importOptions.GlobalEnforcingType == ImportOptions.GlobalType.AllNumbersToInt)
             {
-                object tempInt;
-                if (ConvertToInt(data, out tempInt))
+                object tempInt = ConvertToInt(data);
+                if (tempInt != null)
                 {
                     return tempInt;
                 }
@@ -463,6 +463,35 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
+        /// Parses the boolean value of a raw cell
+        /// </summary>
+        /// <param name="raw">Raw value as string</param>
+        /// <returns>Object of the type bool or null if not able to parse</returns>
+        private bool? TryParseBool(string raw)
+        {
+            if (raw == "0")
+            {
+                return false;
+            }
+            else if (raw == "1")
+            {
+                return true;
+            }
+            else
+            {
+                bool value;
+                if (bool.TryParse(raw, out value))
+                {
+                    return value;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
         /// Tries to convert a value to a double
         /// </summary>
         /// <param name="data">Raw data</param>
@@ -523,8 +552,8 @@ namespace NanoXLSX.LowLevel
         /// Tries to convert a value to an integer
         /// </summary>
         /// <param name="data">Raw data</param>
-        /// <returns>Integer value or original value if not possible to convert</returns>
-        private bool ConvertToInt(object data, out object converted)
+        /// <returns>Integer value or null if not possible to convert</returns>
+        private object ConvertToInt(object data)
         {
             object tempValue;
             double tempDouble;
@@ -536,41 +565,29 @@ namespace NanoXLSX.LowLevel
                     break;
                 case DateTime _:
                     tempDouble = Utils.GetOADateTime((DateTime)data, true);
-                    converted = ConvertDoubleToInt(tempDouble);
-                    return true;
+                    return ConvertDoubleToInt(tempDouble);
                 case TimeSpan _:
                     tempDouble = Utils.GetOATime((TimeSpan)data);
-                    converted = ConvertDoubleToInt(tempDouble);
-                    return true;
+                    return ConvertDoubleToInt(tempDouble);
                 case float _:
                 case double _:
-                    if (TryConvertDoubleToInt(data, out tempValue))
+                    object tempInt = TryConvertDoubleToInt(data);
+                    if (tempInt != null)
                     {
-                        converted = tempValue;
-                        return true;
+                        return tempInt;
                     }
                     break;
                 case bool _:
-                    if ((bool)data)
-                    {
-                        converted = 1;
-                    }
-                    else
-                    {
-                        converted = 0;
-                    }
-                    return true;
+                    return (bool)data ? 1 : 0;
                 case string _:
-                    int tempInt;
-                    if (int.TryParse((string)data, out tempInt))
+                    int tempInt2;
+                    if (int.TryParse((string)data, out tempInt2))
                     {
-                        converted = tempInt;
-                        return true;
+                        return tempInt2;
                     }
                     break;
             }
-            converted = null;
-            return false;
+            return null;
         }
 
         /// <summary>
@@ -618,6 +635,30 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
+        /// Tris to parse a DateTime instance from a string
+        /// </summary>
+        /// <param name="raw">String to parse</param>
+        /// <returns>DateTime instance or null if not possible to parse</returns>
+        private DateTime? TryParseDate(string raw)
+        {
+            DateTime dateTime;
+            bool isDateTime = false;
+            if (importOptions == null || string.IsNullOrEmpty(importOptions.DateTimeFormat) || importOptions.TemporalCultureInfo == null)
+            {
+                isDateTime = DateTime.TryParse(raw, out dateTime);
+            }
+            else
+            {
+                isDateTime = DateTime.TryParseExact(raw, importOptions.DateTimeFormat, importOptions.TemporalCultureInfo, DateTimeStyles.None, out dateTime);
+            }
+            if (isDateTime && dateTime >= Utils.FIRST_ALLOWED_EXCEL_DATE && dateTime <= Utils.LAST_ALLOWED_EXCEL_DATE)
+            {
+                return dateTime;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Tries to convert a value to a Time (TimeSpan)
         /// </summary>
         /// <param name="data">Raw data</param>
@@ -650,6 +691,68 @@ namespace NanoXLSX.LowLevel
                     return ConvertTimeFromDouble(data);
             }
             return data;
+        }
+
+        /// <summary>
+        /// Tris to parse a TimeSpan instance from a string
+        /// </summary>
+        /// <param name="raw">String to parse</param>
+        /// <returns>TimeSpan instance or null if not possible to parse</returns>
+        private TimeSpan? TryParseTime(string raw)
+        {
+            TimeSpan timeSpan;
+            bool isTimeSpan = false;
+            if (importOptions == null || string.IsNullOrEmpty(importOptions.TimeSpanFormat) || importOptions.TemporalCultureInfo == null)
+            {
+                isTimeSpan = TimeSpan.TryParse(raw, out timeSpan);
+            }
+            else
+            {
+                isTimeSpan = TimeSpan.TryParseExact(raw, importOptions.TimeSpanFormat, importOptions.TemporalCultureInfo, out timeSpan);
+            }
+            if (isTimeSpan)
+            {
+                return timeSpan;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Parses the date (DateTime) or time (TimeSpan) value of a raw cell. If the value is numeric, but out of range of a OAdate, a numeric value will be returned instead. 
+        /// If invalid, the string representation will be returned.
+        /// </summary>
+        /// <param name="raw">Raw value as string</param>
+        /// <param name="valueType">Type of the value to be converted: Valid values are DATE and TIME</param>
+        /// <returns>Object of the type TimeSpan or null if not possible to parse</returns>
+        private object GetDateTimeValue(string raw, Cell.CellType valueType, out Cell.CellType resolvedType)
+        {
+            double dValue;
+            if (!double.TryParse(raw, out dValue))
+            {
+                resolvedType = Cell.CellType.STRING;
+                return raw;
+            }
+            if ((valueType == Cell.CellType.DATE && (dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE)) || (valueType == Cell.CellType.TIME && (dValue < 0.0 || dValue > Utils.MAX_OADATE_VALUE)))
+            {
+                // fallback to number (cannot be anything else)
+                resolvedType = Cell.CellType.NUMBER;
+                return GetNumericValue(raw);
+            }
+            DateTime tempDate = Utils.GetDateFromOA(dValue);
+            if (dValue < 1.0)
+            {
+                tempDate = tempDate.AddDays(1); // Modify wrong 1st date when < 1
+            }
+            if (valueType == Cell.CellType.DATE)
+            {
+                resolvedType = Cell.CellType.DATE;
+                return tempDate;
+            }
+            else
+            {
+                resolvedType = Cell.CellType.TIME;
+                return new TimeSpan((int)dValue, tempDate.Hour, tempDate.Minute, tempDate.Second);
+            }
         }
 
         /// <summary>
@@ -694,19 +797,16 @@ namespace NanoXLSX.LowLevel
         /// Tries to convert a double to an integer
         /// </summary>
         /// <param name="data">Numeric value (possibly integer)</param>
-        /// <param name="converted">>Converted values as out parameter. If not possible to convert, the original value is returned</param>
-        /// <returns>True if possible to convert, otherwise false</returns>
-        private bool TryConvertDoubleToInt(object data, out object converted)
+        /// <returns>Converted value if possible to convert, otherwise null</returns>
+        private object TryConvertDoubleToInt(object data)
         {
             IConvertible converter = data as IConvertible;
             double dValue = converter.ToDouble(ImportOptions.DEFAULT_CULTURE_INFO);
             if (dValue > int.MinValue && dValue < int.MaxValue)
             {
-                converted = converter.ToInt32(ImportOptions.DEFAULT_CULTURE_INFO);
-                return true;
+                return converter.ToInt32(ImportOptions.DEFAULT_CULTURE_INFO);
             }
-            converted = data;
-            return false;
+            return null;
         }
 
         /// <summary>
@@ -791,7 +891,7 @@ namespace NanoXLSX.LowLevel
                     tempObject = ConvertToBool(raw);
                     if (tempObject is bool)
                     {
-                        return (bool)tempObject ? 1 : (object)0;
+                        return (bool)tempObject ? 1 : 0;
                     }
                     break;
                 case Cell.CellType.NUMBER:
@@ -891,121 +991,6 @@ namespace NanoXLSX.LowLevel
                 }
             }
             return raw;
-        }
-
-        /// <summary>
-        /// Parses the boolean value of a raw cell
-        /// </summary>
-        /// <param name="raw">Raw value as string</param>
-        /// <returns>Object of the type bool or null if not able to parse</returns>
-        private bool? TryParseBool(string raw)
-        {
-            if (raw == "0")
-            {
-                return false;
-            }
-            else if (raw == "1")
-            {
-                return true;
-            }
-            else
-            {
-                bool value;
-                if (bool.TryParse(raw, out value))
-                {
-                    return value;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Parses the date (DateTime) or time (TimeSpan) value of a raw cell. If the value is numeric, but out of range of a OAdate, a numeric value will be returned instead. 
-        /// If invalid, the string representation will be returned.
-        /// </summary>
-        /// <param name="raw">Raw value as string</param>
-        /// <param name="valueType">Type of the value to be converted: Valid values are DATE and TIME</param>
-        /// <returns>Object of the type TimeSpan or null if not possible to parse</returns>
-        private object GetDateTimeValue(string raw, Cell.CellType valueType, out Cell.CellType resolvedType)
-        {
-            double dValue;
-            if (!double.TryParse(raw, out dValue))
-            {
-                resolvedType = Cell.CellType.STRING;
-                return raw;
-            }
-            if ((valueType == Cell.CellType.DATE && ( dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE)) || (valueType == Cell.CellType.TIME && (dValue < 0.0 || dValue >Utils.MAX_OADATE_VALUE)))
-            {
-                // fallback to number (cannot be anything else)
-                resolvedType = Cell.CellType.NUMBER;
-                return GetNumericValue(raw);
-            }
-            DateTime tempDate = Utils.GetDateFromOA(dValue);
-            if (dValue < 1.0)
-            {
-                tempDate = tempDate.AddDays(1); // Modify wrong 1st date when < 1
-            }
-            if (valueType == Cell.CellType.DATE)
-            {
-                resolvedType = Cell.CellType.DATE;
-                return tempDate;
-            }
-            else 
-            {
-                resolvedType = Cell.CellType.TIME;
-                return new TimeSpan((int)dValue, tempDate.Hour, tempDate.Minute, tempDate.Second);
-            }
-        }
-
-        /// <summary>
-        /// Tris to parse a DateTime instance from a string
-        /// </summary>
-        /// <param name="raw">String to parse</param>
-        /// <returns>DateTime instance or null if not possible to parse</returns>
-        private DateTime? TryParseDate(string raw)
-        {
-            DateTime dateTime;
-            bool isDateTime = false;
-            if (importOptions == null || string.IsNullOrEmpty(importOptions.DateTimeFormat) || importOptions.TemporalCultureInfo == null)
-            {
-                isDateTime = DateTime.TryParse(raw, out dateTime);
-            }
-            else
-            {
-                isDateTime = DateTime.TryParseExact(raw, importOptions.DateTimeFormat, importOptions.TemporalCultureInfo, DateTimeStyles.None, out dateTime);
-            }
-            if (isDateTime && dateTime >= Utils.FIRST_ALLOWED_EXCEL_DATE && dateTime <= Utils.LAST_ALLOWED_EXCEL_DATE)
-            {
-                return dateTime;
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Tris to parse a TimeSpan instance from a string
-        /// </summary>
-        /// <param name="raw">String to parse</param>
-        /// <returns>TimeSpan instance or null if not possible to parse</returns>
-        private TimeSpan? TryParseTime(string raw)
-        {
-            TimeSpan timeSpan;
-            bool isTimeSpan = false;
-            if (importOptions == null || string.IsNullOrEmpty(importOptions.TimeSpanFormat) || importOptions.TemporalCultureInfo == null)
-            {
-                isTimeSpan = TimeSpan.TryParse(raw, out timeSpan);
-            }
-            else
-            {
-                isTimeSpan = TimeSpan.TryParseExact(raw, importOptions.TimeSpanFormat, importOptions.TemporalCultureInfo, out timeSpan);
-            }
-            if (isTimeSpan)
-            {
-                return timeSpan;
-            }
-            return null;
         }
 
         /// <summary>
