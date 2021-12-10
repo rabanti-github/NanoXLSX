@@ -24,12 +24,12 @@ namespace NanoXLSX.LowLevel
         #region properties
 
         /// <summary>
-        /// Dictionary of worksheet definitions. The key is the worksheet number and the value is the worksheet name
+        /// Dictionary of worksheet definitions. The key is the worksheet number and the value is a WorksheetDefinition object with name, hidden state and other information
         /// </summary>
         /// <value>
         /// Dictionary with worksheet definitions
         /// </value>
-        public Dictionary<int, string> WorksheetDefinitions { get; private set; }
+        public Dictionary<int, WorksheetDefinition> WorksheetDefinitions { get; private set; }
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         public WorkbookReader()
         {
-            WorksheetDefinitions = new Dictionary<int, string>();
+            WorksheetDefinitions = new Dictionary<int, WorksheetDefinition>();
         }
 
         #endregion
@@ -58,7 +58,6 @@ namespace NanoXLSX.LowLevel
             {
                 using (stream) // Close after processing
                 {
-
                     XmlDocument xr = new XmlDocument();
                     xr.XmlResolver = null;
                     xr.Load(stream);
@@ -86,7 +85,15 @@ namespace NanoXLSX.LowLevel
                 {
                     string sheetName = ReaderUtils.GetAttribute("name", node, "worksheet1");
                     int id = int.Parse(ReaderUtils.GetAttribute("sheetId", node), CultureInfo.InvariantCulture); // Default will rightly throw an exception
-                    WorksheetDefinitions.Add(id, sheetName);
+                    string state = ReaderUtils.GetAttribute("state", node);
+                    bool hidden = false;
+                    if (state != null && state.ToLower() == "hidden")
+                    {
+                        hidden = true;
+                    }
+                    WorksheetDefinition definition = new WorksheetDefinition(id, sheetName);
+                    definition.Hidden = hidden;
+                    WorksheetDefinitions.Add(id, definition);
                 }
                 catch (Exception e)
                 {
@@ -100,6 +107,40 @@ namespace NanoXLSX.LowLevel
                 {
                     GetWorkbookInformation(childNode);
                 }
+            }
+        }
+
+        #endregion
+
+        #region subclasses
+
+        /// <summary>
+        /// Class for worksheet Mata-data on import
+        /// </summary>
+        public class WorksheetDefinition
+        {
+            /// <summary>
+            /// Worksheet name
+            /// </summary>
+            public string WorksheetName { get; set; }
+            /// <summary>
+            /// Hidden state of the worksheet
+            /// </summary>
+            public bool Hidden { get; set; }
+            /// <summary>
+            /// Internal worksheet ID
+            /// </summary>
+            public int SheetID { get; set; }
+
+            /// <summary>
+            /// Default constructor with parameters
+            /// </summary>
+            /// <param name="id">Internal ID</param>
+            /// <param name="name">Worksheet name</param>
+            public WorksheetDefinition(int id, string name)
+            {
+                this.SheetID = id;
+                this.WorksheetName = name;
             }
         }
 
