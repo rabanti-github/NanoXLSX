@@ -287,20 +287,20 @@ namespace NanoXLSX.LowLevel
                 case short _:
                 case ushort _:
                 case float _:
+                case double _:
                 case byte _:
                 case sbyte _:
                 case int _:
                     return Cell.CellType.NUMBER;
-                case string _:
-                    return Cell.CellType.STRING;
                 case DateTime _:
                     return Cell.CellType.DATE;
                 case TimeSpan _:
                     return Cell.CellType.TIME;
                 case bool _:
                     return Cell.CellType.BOOL;
+                default:
+                    return Cell.CellType.STRING;
             }
-            return defaultType;
         }
 
         /// <summary>
@@ -444,18 +444,12 @@ namespace NanoXLSX.LowLevel
                     }
                     break;
                 case string _:
-                    bool tempBool;
+                    
                     string tempString = (string)data;
-                    if (bool.TryParse(tempString, out tempBool)){
-                        return tempBool;
-                    }
-                    else if (tempString == "1")
+                    bool? tempBool = TryParseBool(tempString);
+                    if (tempBool != null)
                     {
-                        return true;
-                    }
-                    else if (tempString == "0")
-                    {
-                        return false;
+                        return tempBool.Value;
                     }
                     break;
             }
@@ -621,13 +615,10 @@ namespace NanoXLSX.LowLevel
                 case int _:
                     return ConvertDateFromDouble(data);
                 case string _:
-                    DateTime date2;
-                    if(DateTime.TryParseExact((string)data, importOptions.DateTimeFormat, importOptions.TemporalCultureInfo, DateTimeStyles.None, out date2))
+                    DateTime? date2 = TryParseDate((string)data);
+                    if(date2 != null)
                     {
-                        if (date2 >= Utils.FIRST_ALLOWED_EXCEL_DATE && date2 <= Utils.LAST_ALLOWED_EXCEL_DATE)
-                        {
-                            return date2;
-                        }
+                        return date2.Value;
                     }
                     return ConvertDateFromDouble(data);
             }
@@ -683,8 +674,8 @@ namespace NanoXLSX.LowLevel
                 case int _:
                     return ConvertTimeFromDouble(data);
                 case string _:
-                    TimeSpan time;
-                    if(TimeSpan.TryParseExact((string)data, importOptions.TimeSpanFormat, importOptions.TemporalCultureInfo, out time))
+                    TimeSpan? time = TryParseTime((string)data);
+                    if(time != null)
                     {
                         return time;
                     }
@@ -710,7 +701,7 @@ namespace NanoXLSX.LowLevel
             {
                 isTimeSpan = TimeSpan.TryParseExact(raw, importOptions.TimeSpanFormat, importOptions.TemporalCultureInfo, out timeSpan);
             }
-            if (isTimeSpan)
+            if (isTimeSpan && timeSpan.Days >= 0 && timeSpan.Days < Utils.MAX_OADATE_VALUE)
             {
                 return timeSpan;
             }

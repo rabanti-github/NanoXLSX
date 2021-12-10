@@ -119,7 +119,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="time">Time to process. The date component of the timespan is converted to the total numbers of days</param>
         /// <returns>Time as number string</returns>
-        /// <remarks>The time is represented by a OAdate without the date component but a possible number of total days. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
+        /// <remarks>The time is represented by a OAdate without the date component but a possible number of total days</remarks>
         public static string GetOATimeString(TimeSpan time)
         {
             double d = GetOATime(time);
@@ -131,7 +131,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="time">Time to process. The date component of the timespan is converted to the total numbers of days</param>
         /// <returns>Time as number</returns>
-        /// <remarks>The time is represented by a OAdate without the date component but a possible number of total days. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
+        /// <remarks>The time is represented by a OAdate without the date component but a possible number of total days</remarks>
         public static double GetOATime(TimeSpan time)
         {
             int seconds = time.Seconds + time.Minutes * 60 + time.Hours * 3600;
