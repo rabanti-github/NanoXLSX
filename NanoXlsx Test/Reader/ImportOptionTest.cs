@@ -93,9 +93,9 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A12", "28");
             cells.Add("A13", new Cell("=A1", Cell.CellType.FORMULA, "A13"));
             cells.Add("A14", 8589934592l);
-            cells.Add("A15", 4294967294u);
-            cells.Add("A16", 18446744073709551614);
-            cells.Add("A17", 2147483650.6f);
+            cells.Add("A15", 2147483650.6f);
+            cells.Add("A16", 4294967294u);
+            cells.Add("A17", 18446744073709551614);
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", 1);
@@ -111,9 +111,9 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A12", 28);
             expectedCells.Add("A13", new Cell("=A1", Cell.CellType.FORMULA, "A13"));
             expectedCells.Add("A14", 8589934592l);
-            expectedCells.Add("A15", 4294967294u);
-            expectedCells.Add("A16", 18446744073709551614);
-            expectedCells.Add("A17", 2147483650.6f);
+            expectedCells.Add("A15", 2147483650.6f);
+            expectedCells.Add("A16", 4294967294u);
+            expectedCells.Add("A17", 18446744073709551614);
             ImportOptions options = new ImportOptions();
             options.GlobalEnforcingType = ImportOptions.GlobalType.AllNumbersToInt;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
