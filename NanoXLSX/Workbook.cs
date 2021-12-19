@@ -691,7 +691,7 @@ namespace NanoXLSX
             {
                 throw new WorksheetException("NoWorksheetsException", "The workbook must contain at least one worksheet");
             }
-            for(int i = 0; i < woksheetCount; i++)
+            for(int i = 0; i < worksheetCount; i++)
             {
                 if (worksheets[i].Hidden)
                 {
