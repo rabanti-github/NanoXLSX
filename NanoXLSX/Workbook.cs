@@ -33,6 +33,7 @@ namespace NanoXLSX
         private bool lockStructureIfProtected;
         private int selectedWorksheet;
         private Shortener shortener;
+        private bool importInProgress = false;
         #endregion
 
         #region properties
@@ -677,10 +678,16 @@ namespace NanoXLSX
         /// - At least one worksheet must be visible<br/>
         /// If one of the conditions is not met, an exception is thrown
         /// </summary>
+        /// <remarks>If an import is in progress, these rules are disabled to avoid conflicts by the order of loaded worksheets</remarks>
         internal void ValidateWorksheets()
         {
-            int woksheetCount = worksheets.Count;
-            if (woksheetCount == 0)
+            if (importInProgress)
+            {
+                // No validation during import
+                return;
+            }
+            int worksheetCount = worksheets.Count;
+            if (worksheetCount == 0)
             {
                 throw new WorksheetException("NoWorksheetsException", "The workbook must contain at least one worksheet");
             }
@@ -740,6 +747,15 @@ namespace NanoXLSX
             XlsxReader r = new XlsxReader(stream, options);
             await r.ReadAsync();
             return r.GetWorkbook();
+        }
+
+        /// <summary>
+        /// Sets the import state. If an import is in progress, no validity checks on are performed to avoid conflicts by incomplete data (e.g. hidden worksheets)
+        /// </summary>
+        /// <param name="state">True if an import is in progress, otherwise false</param>
+        internal void SetImportState(bool state)
+        {
+            this.importInProgress = state;
         }
 
         #endregion

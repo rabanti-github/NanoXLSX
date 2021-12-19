@@ -158,6 +158,7 @@ namespace NanoXLSX.LowLevel
         public Workbook GetWorkbook()
         {
             Workbook wb = new Workbook(false);
+            wb.SetImportState(true);
             Worksheet ws;
             foreach (KeyValuePair<int, WorksheetReader> reader in worksheets)
             {
@@ -179,6 +180,7 @@ namespace NanoXLSX.LowLevel
                 }
                 wb.AddWorksheet(ws);
             }
+            wb.SetImportState(false);
             return wb;
         }
 
