@@ -1,5 +1,14 @@
 # Change Log
 
+## v1.8.2
+
+---
+Release Date: **20.12.2021**
+
+- Added hidden property for worksheets when loading a workbook
+
+Note: The reader functionality on worksheets is not feature complete yet. Additional information like panes, splitting, column and row sizes are currently in development
+
 ## v1.8.1
 
 ---
