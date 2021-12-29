@@ -111,7 +111,7 @@ namespace NanoXLSX
                 dateValue = date.AddDays(-1); // Fix of the leap-year-1900-error
             }
             double currentMillis = (double)dateValue.Ticks / TimeSpan.TicksPerMillisecond;
-            return ((double)(dateValue.Second + (dateValue.Minute * 60) + (dateValue.Hour * 3600)) / 86400) + Math.Floor((currentMillis - ROOT_MILLIS) / 86400000);
+            return ((dateValue.Second + (dateValue.Minute * 60) + (dateValue.Hour * 3600)) / 86400d) + Math.Floor((currentMillis - ROOT_MILLIS) / 86400000d);
         }
 
         /// <summary>

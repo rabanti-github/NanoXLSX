@@ -57,6 +57,19 @@ namespace NanoXLSX_Test.Misc
             Assert.True(Math.Abs(expectedOaDate - oaDate) < threshold);
         }
 
+        [Theory(DisplayName = "Test of the successful GetOADateTime function on invalid dates when checks are disabled")]
+        [InlineData("02.01.0001 00:00:00")] // The DateTime does not allow negative values. The leap year fix would lead to this on 1.1.0001
+        [InlineData("18.05.0712 11:15:02")]
+        [InlineData("31.12.1899 23:59:59")]
+        public void GetOADateTimeTest2(string dateString)
+        {
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            string format = "dd.MM.yyyy HH:mm:ss";
+            DateTime date = DateTime.ParseExact(dateString, format, provider);
+            double given = Utils.GetOADateTime(date, true);
+            Assert.NotEqual(0d, given);
+        }
+
         [Theory(DisplayName = "Test of the failing GetOADateTimeString function on invalid dates")]
         [InlineData("01.01.0001 00:00:00")]
         [InlineData("18.05.0712 11:15:02")]

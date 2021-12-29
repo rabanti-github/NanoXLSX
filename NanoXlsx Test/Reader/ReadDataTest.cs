@@ -291,8 +291,6 @@ namespace NanoXLSX_Test.Reader
             }
             MemoryStream stream = new MemoryStream();
             workbook.SaveAsStream(stream, true);
-            // TODO: Remove this (analysis only)
-            //workbook.SaveAs("C:\\purge-temp\\debug.xlsx");
             stream.Position = 0;
             Workbook givenWorkbook = Workbook.Load(stream);
 
