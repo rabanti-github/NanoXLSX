@@ -33,22 +33,6 @@ namespace NanoXLSX.LowLevel
         #region properties
 
         /// <summary>
-        /// Gets the number of the worksheet
-        /// </summary>
-        /// <value>
-        /// Number of the worksheet
-        /// </value>
-        public int WorksheetNumber { get; private set; }
-
-        /// <summary>
-        /// Gets the name of the worksheet
-        /// </summary>
-        /// <value>
-        /// Name of the worksheet
-        /// </value>
-        public string Name { get; private set; }
-
-        /// <summary>
         /// Gets the data of the worksheet as Dictionary of cell address-cell object tuples
         /// </summary>
         /// <value>
@@ -70,16 +54,12 @@ namespace NanoXLSX.LowLevel
         /// Constructor with parameters
         /// </summary>
         /// <param name="sharedStrings">SharedStringsReader object</param>
-        /// <param name="name">Worksheet name</param>
-        /// <param name="number">Worksheet number</param>
         /// <param name="styleReaderContainer">Resolved styles, used to determine dates or times</param>
         /// <param name="options">Import options to override the automatic approach of the reader. <see cref="ImportOptions"/> for information about import options.</param>
-        public WorksheetReader(SharedStringsReader sharedStrings, string name, int number, StyleReaderContainer styleReaderContainer, ImportOptions options = null)
+        public WorksheetReader(SharedStringsReader sharedStrings, StyleReaderContainer styleReaderContainer, ImportOptions options = null)
         {
             importOptions = options;
             Data = new Dictionary<string, Cell>();
-            Name = name;
-            WorksheetNumber = number;
             this.sharedStrings = sharedStrings;
             ProcessStyles(styleReaderContainer);
         }

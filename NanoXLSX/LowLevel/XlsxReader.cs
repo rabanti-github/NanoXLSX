@@ -121,7 +121,7 @@ namespace NanoXLSX.LowLevel
                     foreach (KeyValuePair<int, WorkbookReader.WorksheetDefinition> definition in workbook.WorksheetDefinitions)
                     {
                         ms = GetEntryStream(name, zf);
-                        wr = new WorksheetReader(sharedStrings, nameTemplate, worksheetIndex, styleReaderContainer, importOptions);
+                        wr = new WorksheetReader(sharedStrings, styleReaderContainer, importOptions);
                         wr.Read(ms);
                         worksheets.Add(definition.Key, wr);
                         worksheetIndex++;
