@@ -336,6 +336,14 @@ namespace NanoXLSX.LowLevel
                     return tempDouble;
                 }
             }
+            else if (importOptions.GlobalEnforcingType == ImportOptions.GlobalType.AllNumbersToDecimal)
+            {
+                object tempDeciaml = ConvertToDecimal(data);
+                if (tempDeciaml != null)
+                {
+                    return tempDeciaml;
+                }
+            }
             else if (importOptions.GlobalEnforcingType == ImportOptions.GlobalType.AllNumbersToInt)
             {
                 object tempInt = ConvertToInt(data);
@@ -376,6 +384,8 @@ namespace NanoXLSX.LowLevel
             {
                 case ImportOptions.ColumnType.Numeric:
                     return GetNumericValue(data, importedTyp);
+                case ImportOptions.ColumnType.Decimal:
+                    return ConvertToDecimal(data);
                 case ImportOptions.ColumnType.Double:
                         return ConvertToDouble(data);
                 case ImportOptions.ColumnType.Date:
@@ -472,6 +482,22 @@ namespace NanoXLSX.LowLevel
         /// <returns>Double value or original value if not possible to convert</returns>
         private object ConvertToDouble(object data)
         {
+            object value = ConvertToDecimal(data);
+            if (value is decimal)
+            {
+                return Decimal.ToDouble((decimal)value);
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// Tries to convert a value to a decimal
+        /// </summary>
+        /// <param name="data">Raw data</param>
+        /// <returns>Decimal value or original value if not possible to convert</returns>
+        private object ConvertToDecimal(object data)
+        {
+            IConvertible converter = null;
             switch (data)
             {
                 case double _:
@@ -485,42 +511,53 @@ namespace NanoXLSX.LowLevel
                 case byte _:
                 case sbyte _:
                 case int _:
-                    IConvertible converter = data as IConvertible;
-                    return converter.ToDouble(Utils.INVARIANT_CULTURE);
-                case bool _:
-                    if ((bool)data)
+                    converter = data as IConvertible;
+                    double tempDouble = converter.ToDouble(Utils.INVARIANT_CULTURE);
+                    if (tempDouble > (double)decimal.MaxValue || tempDouble < (double)decimal.MinValue)
                     {
-                        return 1d;
+                        return data;
                     }
                     else
                     {
-                        return 0d;
+                        return converter.ToDecimal(Utils.INVARIANT_CULTURE);
+                    }
+                case bool _:
+                    if ((bool)data)
+                    {
+                        return decimal.One;
+                    }
+                    else
+                    {
+                        return decimal.Zero;
                     }
                 case DateTime _:
-                    return Utils.GetOADateTime((DateTime)data);
+                    return new decimal(Utils.GetOADateTime((DateTime)data));
                 case TimeSpan _:
-                    return Utils.GetOATime((TimeSpan)data);
+                    return  new decimal(Utils.GetOATime((TimeSpan)data));
                 case string _:
-                    double dValue;
+                    decimal dValue;
                     string tempString = (string)data;
-                    if (double.TryParse(tempString, out dValue))
+                    if (decimal.TryParse(tempString, out dValue))
                     {
                         return dValue;
                     }
                     DateTime? tempDate = TryParseDate(tempString);
                     if (tempDate != null)
                     {
-                        return Utils.GetOADateTime(tempDate.Value);
+                        return new decimal(Utils.GetOADateTime(tempDate.Value));
                     }
                     TimeSpan? tempTime = TryParseTime(tempString);
                     if (tempTime != null)
                     {
-                        return Utils.GetOATime(tempTime.Value);
+                        return new decimal(Utils.GetOATime(tempTime.Value));
                     }
                     break;
             }
             return data;
         }
+
+
+
 
         /// <summary>
         /// Tries to convert a value to an integer

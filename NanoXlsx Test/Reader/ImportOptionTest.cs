@@ -43,6 +43,40 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, string>(cells, options, AssertEquals, expectedCells);
         }
 
+
+        [Fact(DisplayName = "Test of the reader functionality with the global import option to cast all number to decimal")]
+        public void CastToDecimalTest()
+        {
+            Dictionary<string, Object> cells = new Dictionary<string, object>();
+            cells.Add("A1", "test");
+            cells.Add("A2", true);
+            cells.Add("A3", false);
+            cells.Add("A4", 42);
+            cells.Add("A5", 0.55f);
+            cells.Add("A6", -0.111d);
+            cells.Add("A7", new DateTime(2020, 11, 10, 9, 8, 7, 0));
+            cells.Add("A8", new TimeSpan(18, 15, 12));
+            cells.Add("A9", null);
+            cells.Add("A10", "27");
+            cells.Add("A11", new Cell("=A1", Cell.CellType.FORMULA, "A11"));
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", "test");
+            expectedCells.Add("A2", decimal.One);
+            expectedCells.Add("A3", decimal.Zero);
+            expectedCells.Add("A4", 42m);
+            expectedCells.Add("A5", 0.55m);
+            expectedCells.Add("A6", -0.111m);
+            expectedCells.Add("A7", (decimal)Utils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)));
+            expectedCells.Add("A8", (decimal)Utils.GetOATime(new TimeSpan(18, 15, 12)));
+            expectedCells.Add("A9", null);
+            expectedCells.Add("A10", 27m);
+            expectedCells.Add("A11", new Cell("=A1", Cell.CellType.FORMULA, "A11"));
+            ImportOptions options = new ImportOptions();
+            options.GlobalEnforcingType = ImportOptions.GlobalType.AllNumbersToDecimal;
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
+
         [Fact(DisplayName = "Test of the reader functionality with the global import option to cast all number to double")]
         public void CastToDoubleTest()
         {
@@ -323,9 +357,11 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the import column types Numeric and Double on parsed dates and times")]
+        [Theory(DisplayName = "Test of the import options for the import column types Numeric, Decimal and Double on parsed dates and times")]
         [InlineData(ImportOptions.ColumnType.Double, "2021-10-31 12:11:10", 44500.5077546296d)]
         [InlineData(ImportOptions.ColumnType.Double, "18:20:22", 0.764143518518519d)]
+        [InlineData(ImportOptions.ColumnType.Decimal, "2021-10-31 12:11:10", "44500.5077546296")]
+        [InlineData(ImportOptions.ColumnType.Decimal, "18:20:22", "0.764143518518519")]
         [InlineData(ImportOptions.ColumnType.Numeric, "2021-10-31 12:11:10", 44500.5077546296d)]
         [InlineData(ImportOptions.ColumnType.Numeric, "18:20:22", 0.764143518518519d)]
         public void EnforcingColumnAsNumberTest3(ImportOptions.ColumnType columnType, string givenValue, object expectedValue)
@@ -337,7 +373,15 @@ namespace NanoXLSX_Test.Reader
 
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", true);
-            expectedCells.Add("B1", expectedValue);
+            if (columnType == ImportOptions.ColumnType.Decimal)
+            {
+                // m-suffix is not working
+                expectedCells.Add("B1", Convert.ToDecimal(expectedValue));
+            }
+            else
+            {
+                expectedCells.Add("B1", expectedValue);
+            }
             expectedCells.Add("C1", "2");
             ImportOptions options = new ImportOptions();
             options.EnforceDateTimesAsNumbers = true;
@@ -345,22 +389,39 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the import column type with wrong style information: Double")]
+        [Theory(DisplayName = "Test of the import options for the import column type with wrong style information: Double and Decimal")]
         [InlineData("B", ImportOptions.ColumnType.Double)]
         [InlineData(1, ImportOptions.ColumnType.Double)]
+        [InlineData("B", ImportOptions.ColumnType.Decimal)]
+        [InlineData(1, ImportOptions.ColumnType.Decimal)]
         public void EnforcingColumnAsNumberTest4(object column, ImportOptions.ColumnType type)
         {
+            object ob1, ob2, ob4;
+            string ob3 = "5-7";
+            string ob5 = "1870-06-01 12:12:00";
+            if (type == ImportOptions.ColumnType.Double)
+            {
+                ob1 = -10d;
+                ob2 = -5.5d;
+                ob4 = -1d;
+            }
+            else
+            {
+                ob1 = -10m;
+                ob2 = -5.5m;
+                ob4 = -1m;
+            }
             Dictionary<string, Object> cells = new Dictionary<string, object>();
             Cell a1 = new Cell(1, Cell.CellType.NUMBER, "A1");
-            Cell b1 = new Cell(-10, Cell.CellType.NUMBER, "B1");
+            Cell b1 = new Cell(ob1, Cell.CellType.NUMBER, "B1");
             b1.SetStyle(BasicStyles.DateFormat);
-            Cell b2 = new Cell(-5.5f, Cell.CellType.NUMBER, "B2");
+            Cell b2 = new Cell(ob2, Cell.CellType.NUMBER, "B2");
             b1.SetStyle(BasicStyles.TimeFormat);
-            Cell b3 = new Cell("5-7", Cell.CellType.STRING, "B3");
+            Cell b3 = new Cell(ob3, Cell.CellType.STRING, "B3");
             b1.SetStyle(BasicStyles.DateFormat);
-            Cell b4 = new Cell("-1", Cell.CellType.STRING, "B4");
+            Cell b4 = new Cell(ob4, Cell.CellType.STRING, "B4");
             b1.SetStyle(BasicStyles.DateFormat);
-            Cell b5 = new Cell("1870-06-01 12:12:00", Cell.CellType.STRING, "B5");
+            Cell b5 = new Cell(ob5, Cell.CellType.STRING, "B5");
             b5.SetStyle(BasicStyles.DateFormat);
             Cell c1 = new Cell(10, Cell.CellType.NUMBER, "C1");
             cells.Add("A1", a1);
@@ -372,11 +433,11 @@ namespace NanoXLSX_Test.Reader
             cells.Add("C1", c1);
             Dictionary<string, Cell> expectedCells = new Dictionary<string, Cell>();
             Cell exA1 = new Cell(1, Cell.CellType.NUMBER, "A1");
-            Cell exB1 = new Cell(-10d, Cell.CellType.NUMBER, "B1");
-            Cell exB2 = new Cell(-5.5d, Cell.CellType.NUMBER, "B2");
-            Cell exB3 = new Cell("5-7", Cell.CellType.STRING, "B3");
-            Cell exB4 = new Cell(-1d, Cell.CellType.STRING, "B4");
-            Cell exB5 = new Cell("1870-06-01 12:12:00", Cell.CellType.STRING, "B5");
+            Cell exB1 = new Cell(ob1, Cell.CellType.NUMBER, "B1");
+            Cell exB2 = new Cell(ob2, Cell.CellType.NUMBER, "B2");
+            Cell exB3 = new Cell(ob3, Cell.CellType.STRING, "B3");
+            Cell exB4 = new Cell(ob4, Cell.CellType.STRING, "B4");
+            Cell exB5 = new Cell(ob5, Cell.CellType.STRING, "B5");
             Cell exC1 = new Cell(10, Cell.CellType.NUMBER, "C1");
             expectedCells.Add("A1", exA1);
             expectedCells.Add("B1", exB1);
@@ -421,6 +482,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
             cells.Add("B12", 2);
             cells.Add("B13", "0");
+            cells.Add("B14", "");
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
             cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
@@ -441,6 +503,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
             expectedCells.Add("B12", 2);
             expectedCells.Add("B13", false);
+            expectedCells.Add("B14", "");
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
             expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
@@ -873,14 +936,19 @@ namespace NanoXLSX_Test.Reader
 
         private static void AssertApproximate(object expected, object given)
         {
-            double threshold = 0.000012; // The precision may vary (roughly one second)
-            if (given is double)
+            double doubleThreshold =   0.000012; // The precision may vary (roughly one second)
+            decimal decimalThreshold = 0.00000012m;
+            if (given is decimal)
             {
-                Assert.True(Math.Abs((double)given - (double)expected) < threshold);
+                Assert.True(Math.Abs((decimal)given - (decimal)expected) < decimalThreshold);
+            }
+            else if (given is double)
+            {
+                Assert.True(Math.Abs((double)given - (double)expected) < doubleThreshold);
             }
             else if (given is float)
             {
-                Assert.True(Math.Abs((float)given - (float)expected) < threshold);
+                Assert.True(Math.Abs((float)given - (float)expected) < doubleThreshold);
             }
             else if (given is DateTime)
             {

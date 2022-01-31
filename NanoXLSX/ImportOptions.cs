@@ -45,6 +45,10 @@ namespace NanoXLSX
             /// </summary>
             AllNumbersToDouble,
             /// <summary>
+            /// All numbers are cast to decimal
+            /// </summary>
+            AllNumbersToDecimal,
+            /// <summary>
             /// All numbers are cast to integers. Floating point numbers will be rounded (commercial rounding) to the nearest integers
             /// </summary>
             AllNumbersToInt,
@@ -67,6 +71,10 @@ namespace NanoXLSX
             /// Cells are tried to be imported as numbers (enforcing double)
             /// </summary>
             Double,
+            /// <summary>
+            /// Cells are tried to be imported as numbers (enforcing decimal)
+            /// </summary>
+            Decimal,
             /// <summary>
             /// Cells are tried to be imported as dates (DateTime). See also  <see cref="DateTimeFormat"/>, <see cref="TimeSpanFormat"/> and <see cref="TemporalCultureInfo"/>
             /// </summary>
