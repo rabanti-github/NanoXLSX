@@ -387,7 +387,7 @@ namespace NanoXLSX.LowLevel
                 case ImportOptions.ColumnType.Decimal:
                     return ConvertToDecimal(data);
                 case ImportOptions.ColumnType.Double:
-                        return ConvertToDouble(data);
+                    return ConvertToDouble(data);
                 case ImportOptions.ColumnType.Date:
                     return ConvertToDate(data);
                 case ImportOptions.ColumnType.Time:
@@ -486,6 +486,10 @@ namespace NanoXLSX.LowLevel
             if (value is decimal)
             {
                 return Decimal.ToDouble((decimal)value);
+            }
+            else if (value is float)
+            {
+                return Convert.ToDouble((float)value);
             }
             return value;
         }

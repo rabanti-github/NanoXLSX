@@ -388,28 +388,39 @@ namespace NanoXLSX_Test.Reader
             options.AddEnforcedColumn(1, columnType);
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
-
+        
         [Theory(DisplayName = "Test of the import options for the import column type with wrong style information: Double and Decimal")]
         [InlineData("B", ImportOptions.ColumnType.Double)]
         [InlineData(1, ImportOptions.ColumnType.Double)]
         [InlineData("B", ImportOptions.ColumnType.Decimal)]
         [InlineData(1, ImportOptions.ColumnType.Decimal)]
-        public void EnforcingColumnAsNumberTest4(object column, ImportOptions.ColumnType type)
+        public void EnforcingColumnAsNumberTest4a(object column, ImportOptions.ColumnType type)
         {
-            object ob1, ob2, ob4;
+            object ob1, ob2, ob4, ob5;
+            object exOb1, exOb2, exOb4, exOb5;
             string ob3 = "5-7";
-            string ob5 = "1870-06-01 12:12:00";
+            string ob6 = "1870-06-01 12:12:00";
             if (type == ImportOptions.ColumnType.Double)
             {
                 ob1 = -10d;
                 ob2 = -5.5d;
                 ob4 = -1d;
+                ob5 = float.MaxValue;
+                exOb1 = -10d;
+                exOb2 = -5.5d;
+                exOb4 = -1d;
+                exOb5 = (double)float.MaxValue;
             }
             else
             {
                 ob1 = -10m;
                 ob2 = -5.5m;
                 ob4 = -1m;
+                ob5 = float.MaxValue;
+                exOb1 = -10m;
+                exOb2 = -5.5m;
+                exOb4 = -1m;
+                exOb5 = float.MaxValue;
             }
             Dictionary<string, Object> cells = new Dictionary<string, object>();
             Cell a1 = new Cell(1, Cell.CellType.NUMBER, "A1");
@@ -421,7 +432,9 @@ namespace NanoXLSX_Test.Reader
             b1.SetStyle(BasicStyles.DateFormat);
             Cell b4 = new Cell(ob4, Cell.CellType.STRING, "B4");
             b1.SetStyle(BasicStyles.DateFormat);
-            Cell b5 = new Cell(ob5, Cell.CellType.STRING, "B5");
+            Cell b5 = new Cell(ob5, Cell.CellType.NUMBER, "B5");
+            b1.SetStyle(BasicStyles.DateFormat);
+            Cell b6 = new Cell(ob6, Cell.CellType.STRING, "B6");
             b5.SetStyle(BasicStyles.DateFormat);
             Cell c1 = new Cell(10, Cell.CellType.NUMBER, "C1");
             cells.Add("A1", a1);
@@ -430,14 +443,16 @@ namespace NanoXLSX_Test.Reader
             cells.Add("B3", b3);
             cells.Add("B4", b4);
             cells.Add("B5", b5);
+            cells.Add("B6", b6);
             cells.Add("C1", c1);
             Dictionary<string, Cell> expectedCells = new Dictionary<string, Cell>();
             Cell exA1 = new Cell(1, Cell.CellType.NUMBER, "A1");
-            Cell exB1 = new Cell(ob1, Cell.CellType.NUMBER, "B1");
-            Cell exB2 = new Cell(ob2, Cell.CellType.NUMBER, "B2");
+            Cell exB1 = new Cell(exOb1, Cell.CellType.NUMBER, "B1");
+            Cell exB2 = new Cell(exOb2, Cell.CellType.NUMBER, "B2");
             Cell exB3 = new Cell(ob3, Cell.CellType.STRING, "B3");
-            Cell exB4 = new Cell(ob4, Cell.CellType.STRING, "B4");
-            Cell exB5 = new Cell(ob5, Cell.CellType.STRING, "B5");
+            Cell exB4 = new Cell(exOb4, Cell.CellType.STRING, "B4");
+            Cell exB5 = new Cell(exOb5, Cell.CellType.NUMBER, "B5");
+            Cell exB6 = new Cell(ob6, Cell.CellType.STRING, "B6");
             Cell exC1 = new Cell(10, Cell.CellType.NUMBER, "C1");
             expectedCells.Add("A1", exA1);
             expectedCells.Add("B1", exB1);
@@ -445,6 +460,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B3", exB3);
             expectedCells.Add("B4", exB4);
             expectedCells.Add("B5", exB5);
+            expectedCells.Add("B6", exB6);
             expectedCells.Add("C1", exC1);
             ImportOptions options = new ImportOptions();
             if (column is string)
@@ -457,6 +473,7 @@ namespace NanoXLSX_Test.Reader
             }
             AssertValues<object, Cell>(cells, options, AssertApproximate, expectedCells);
         }
+        
 
         [Theory(DisplayName = "Test of the import options for the import column type: Bool")]
         [InlineData("B")]
