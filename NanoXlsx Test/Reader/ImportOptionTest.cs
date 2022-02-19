@@ -699,7 +699,7 @@ namespace NanoXLSX_Test.Reader
             Cell exB2 = new Cell(-5.5f, Cell.CellType.NUMBER, "B2");
             Cell exB3 = new Cell("5-7", Cell.CellType.STRING, "B3");
             Cell exB4 = new Cell("-1", Cell.CellType.STRING, "B4");
-            Cell exB5 = new Cell("1870-06-06 12:12:00", Cell.CellType.STRING, "B4");
+            Cell exB5 = new Cell("1870-06-06 12:12:00", Cell.CellType.STRING, "B5");
             Cell exC1 = new Cell(10, Cell.CellType.NUMBER, "C1");
             expectedCells.Add("A1", exA1);
             expectedCells.Add("B1", exB1);

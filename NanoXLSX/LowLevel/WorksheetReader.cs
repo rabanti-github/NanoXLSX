@@ -338,10 +338,10 @@ namespace NanoXLSX.LowLevel
             }
             else if (importOptions.GlobalEnforcingType == ImportOptions.GlobalType.AllNumbersToDecimal)
             {
-                object tempDeciaml = ConvertToDecimal(data);
-                if (tempDeciaml != null)
+                object tempDecimal = ConvertToDecimal(data);
+                if (tempDecimal != null)
                 {
-                    return tempDeciaml;
+                    return tempDecimal;
                 }
             }
             else if (importOptions.GlobalEnforcingType == ImportOptions.GlobalType.AllNumbersToInt)
