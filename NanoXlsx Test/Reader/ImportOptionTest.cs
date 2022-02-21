@@ -981,11 +981,13 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, importOptions, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of all the failing casting on an invalid Date or Duration value")]
+        [Theory(DisplayName = "Test of all the failing casting on an invalid Date or TimeSpan value")]
         [InlineData(ImportOptions.ColumnType.Time, "55.81.202x")]
         [InlineData(ImportOptions.ColumnType.Date, "2022-18-22 15:6x:00")]
         [InlineData(ImportOptions.ColumnType.Time, "10000-01-01 00:00:00")]
         [InlineData(ImportOptions.ColumnType.Date, "10000-01-01 00:00:00")]
+        [InlineData(ImportOptions.ColumnType.Time, "1800-01-01 00:00:00")]
+        [InlineData(ImportOptions.ColumnType.Time, "-10:00:00")]
         void InvalidDateCastingTest(ImportOptions.ColumnType columnType, String value)
         {
                 ImportOptions options = new ImportOptions();
@@ -997,6 +999,21 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A1", value);
             AssertValues<object,object>(cells, options, AssertApproximate, expectedCells);
         }
+
+        [Fact(DisplayName = "Test of all the failing casting on an TimeSpan with an invalid (too high) number of days")]
+        void InvalidDateCastingTest2()
+        {
+            ImportOptions options = new ImportOptions();
+            options.EnforceDateTimesAsNumbers = true;
+            options.AddEnforcedColumn("A", ImportOptions.ColumnType.Time);
+            options.TimeSpanFormat = "HH:mm:ss d";
+            Dictionary<string, object> cells = new Dictionary<string, object>();
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            cells.Add("A1", "00:00:00 2958467");
+            expectedCells.Add("A1", "00:00:00 2958467");
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
 
         private static void AssertValues<T, D>(Dictionary<string, T> givenCells, ImportOptions importOptions, Action<object, object> assertionAction, Dictionary<string, D> expectedCells = null)
         {
