@@ -105,7 +105,7 @@ namespace NanoXLSX
         public bool EnforceEmptyValuesAsString { get; set; }
 
         /// <summary>
-        /// Global strategy to handle cell values. The default will not enforce any general casting, besides <a cref="EnforceDateTimesAsNumbers" />, <a cref="EnforceEmptyValuesAsString" /> and <a cref="EnforcedColumnTypes" /> 
+        /// Global strategy to handle cell values. The default will not enforce any general casting, beside defined values of <a cref="EnforceDateTimesAsNumbers" />, <a cref="EnforceEmptyValuesAsString" /> and <a cref="EnforcedColumnTypes" /> 
         /// </summary>
         public GlobalType GlobalEnforcingType { get; set; } = GlobalType.Default;
 

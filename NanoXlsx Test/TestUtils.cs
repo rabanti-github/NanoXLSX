@@ -1,6 +1,7 @@
 ﻿using NanoXLSX;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -70,5 +71,28 @@ namespace NanoXLSX_Test
                 return null;
             }
         }
+
+        public static object CreateInstance(Type sourceType, string sourceValue)
+        {
+            if (sourceType == typeof(decimal))
+            {
+                return decimal.Parse(sourceValue);
+            }
+            else if (sourceType == typeof(double))
+            {
+                return double.Parse(sourceValue);
+            }
+            else if (sourceType == typeof(int))
+            {
+                double d = double.Parse(sourceValue);
+                return (int)d;
+            }
+            else if (sourceType == typeof(string))
+            {
+                return sourceValue.ToString(CultureInfo.InvariantCulture);
+            }
+            throw new ArgumentException("Not implemented source type: " + sourceType);
+        }
+
     }
 }

@@ -12,7 +12,7 @@ namespace NanoXLSX_Test.Reader
     {
 
 
-        [Fact( DisplayName = "Test of the reader functionality with the global import option to cast everything to string")]
+        [Fact(DisplayName = "Test of the reader functionality with the global import option to cast everything to string")]
         public void CastAllToStringTest()
         {
             Dictionary<string, Object> cells = new Dictionary<string, object>();
@@ -99,8 +99,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A4", 42d);
             expectedCells.Add("A5", 0.55d);
             expectedCells.Add("A6", -0.111d);
-            expectedCells.Add("A7", Utils.GetOADateTime(new DateTime(2020,11,10,9,8,7,0)));
-            expectedCells.Add("A8", Utils.GetOATime(new TimeSpan(18,15,12)));
+            expectedCells.Add("A7", Utils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)));
+            expectedCells.Add("A8", Utils.GetOATime(new TimeSpan(18, 15, 12)));
             expectedCells.Add("A9", null);
             expectedCells.Add("A10", 27d);
             expectedCells.Add("A11", new Cell("=A1", Cell.CellType.FORMULA, "A11"));
@@ -120,7 +120,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A5", 0.55f);
             cells.Add("A6", -3.111d);
             cells.Add("A7", new DateTime(2020, 11, 10, 9, 8, 7, 0));
-            cells.Add("A8", new TimeSpan(18,15,12));
+            cells.Add("A8", new TimeSpan(18, 15, 12));
             cells.Add("A9", -4.9f);
             cells.Add("A10", 0.49d);
             cells.Add("A11", null);
@@ -137,8 +137,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A4", 42);
             expectedCells.Add("A5", 1);
             expectedCells.Add("A6", -3);
-            expectedCells.Add("A7", (int)Math.Round(Utils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)),0));
-            expectedCells.Add("A8", (int)Math.Round(Utils.GetOATime(new TimeSpan(18,15,12)), 0));
+            expectedCells.Add("A7", (int)Math.Round(Utils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)), 0));
+            expectedCells.Add("A8", (int)Math.Round(Utils.GetOATime(new TimeSpan(18, 15, 12)), 0));
             expectedCells.Add("A9", -5);
             expectedCells.Add("A10", 0);
             expectedCells.Add("A11", null);
@@ -283,7 +283,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B1", 23d);
             expectedCells.Add("B2", 20d);
             expectedCells.Add("B3", 1d);
-            expectedCells.Add("B4",  Utils.GetOATime(time));
+            expectedCells.Add("B4", Utils.GetOATime(time));
             expectedCells.Add("B5", Utils.GetOADateTime(date));
             expectedCells.Add("B6", null);
             expectedCells.Add("B7", new Cell("=A1", Cell.CellType.FORMULA, "B7"));
@@ -388,7 +388,7 @@ namespace NanoXLSX_Test.Reader
             options.AddEnforcedColumn(1, columnType);
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
-        
+
         [Theory(DisplayName = "Test of the import options for the import column type with wrong style information: Double and Decimal")]
         [InlineData("B", ImportOptions.ColumnType.Double)]
         [InlineData(1, ImportOptions.ColumnType.Double)]
@@ -473,7 +473,7 @@ namespace NanoXLSX_Test.Reader
             }
             AssertValues<object, Cell>(cells, options, AssertApproximate, expectedCells);
         }
-        
+
 
         [Theory(DisplayName = "Test of the import options for the import column type: Bool")]
         [InlineData("B")]
@@ -645,7 +645,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B5", new DateTime(2021, 8, 14, 18, 22, 13, 0));
             expectedCells.Add("B6", new DateTime(2021, 10, 25, 12, 30, 10, 0));
             expectedCells.Add("B7", new DateTime(2021, 10, 25, 12, 30, 10, 0));
-            expectedCells.Add("B8", -10); 
+            expectedCells.Add("B8", -10);
             expectedCells.Add("B9", new DateTime(2021, 10, 25, 12, 0, 0, 0));
             expectedCells.Add("B10", null);
             expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
@@ -662,6 +662,39 @@ namespace NanoXLSX_Test.Reader
             else
             {
                 options.AddEnforcedColumn((int)column, ImportOptions.ColumnType.Date);
+            }
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
+        }
+
+        [Theory(DisplayName = "Test of the import options for the import column type (without casting to numbers) with missing formats for DateTime and TimeSpan")]
+        [InlineData("B", "C")]
+        [InlineData(1, 2)]
+        void enforcingColumnAsDateTest2(object column1, object column2)
+        {
+
+            Dictionary<string, object> cells = new Dictionary<string, object>();
+            cells.Add("A1", 1);
+            cells.Add("B1", "11:12:13");
+            cells.Add("C1", "2021-08-14 18:22:13");
+            cells.Add("D1", "0");
+
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            expectedCells.Add("A1", 1);
+            expectedCells.Add("B1", new TimeSpan(11, 12, 13));
+            expectedCells.Add("C1", new DateTime(2021, 8, 14, 18, 22, 13));
+            expectedCells.Add("D1", "0");
+            ImportOptions options = new ImportOptions();
+            options.DateTimeFormat = null;
+            options.TimeSpanFormat = null;
+            if (column1 is String)
+            {
+                options.AddEnforcedColumn(column1 as string, ImportOptions.ColumnType.Time);
+                options.AddEnforcedColumn(column2 as string, ImportOptions.ColumnType.Date);
+            }
+            else
+            {
+                options.AddEnforcedColumn((int)column1, ImportOptions.ColumnType.Time);
+                options.AddEnforcedColumn((int)column2, ImportOptions.ColumnType.Date);
             }
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
@@ -756,7 +789,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B5", new TimeSpan(44422, 18, 22, 13));
             expectedCells.Add("B6", new TimeSpan(44494, 12, 30, 10));
             expectedCells.Add("B7", new TimeSpan(44494, 12, 30, 10));
-            expectedCells.Add("B8", -10); 
+            expectedCells.Add("B8", -10);
             expectedCells.Add("B9", new TimeSpan(44494, 12, 0, 0));
             expectedCells.Add("B10", null);
             expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
@@ -836,7 +869,7 @@ namespace NanoXLSX_Test.Reader
                 cells.Add("B2", "12:13:14");
                 cells.Add("B3", "12:13:14");
             }
-            else if (columnType == ImportOptions.ColumnType.Date) 
+            else if (columnType == ImportOptions.ColumnType.Date)
             {
                 cells.Add("B2", "2021-08-14 18:22:13");
                 cells.Add("B3", "2021-08-14 18:22:13");
@@ -871,6 +904,46 @@ namespace NanoXLSX_Test.Reader
             options2.EnforcingStartRowNumber = 2;
             AssertValues<object, object>(cells, options2, AssertApproximate, expectedCells);
         }
+
+        [Theory(DisplayName = "Test of enforced import types when the same type overlaps globally and on a column")]
+        [InlineData(ImportOptions.GlobalType.AllNumbersToDecimal, ImportOptions.ColumnType.Decimal, "7", "23", "1.1", typeof(decimal))]
+        [InlineData(ImportOptions.GlobalType.AllNumbersToDouble, ImportOptions.ColumnType.Double, "7", "23", "1.1", typeof(double))]
+        [InlineData(ImportOptions.GlobalType.AllNumbersToInt, ImportOptions.ColumnType.Numeric, "7", "23", "1.1", typeof(int))]
+        [InlineData(ImportOptions.GlobalType.EverythingToString, ImportOptions.ColumnType.String, "7", "23", "1.1", typeof(string))]
+        public void ImportEnforceOverlappingTest(ImportOptions.GlobalType globalType, ImportOptions.ColumnType columnType, string givenA2Value, string givenB1Value, string givenB2Value, Type expectedType)
+        {
+            Dictionary<string, object> cells = new Dictionary<string, object>();
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            cells.Add("A1", "test");
+            cells.Add("A2", givenA2Value);
+            cells.Add("B1", givenB1Value);
+            cells.Add("B2", givenB2Value);
+            expectedCells.Add("A1", "test");
+            expectedCells.Add("A2", TestUtils.CreateInstance(expectedType, givenA2Value));
+            expectedCells.Add("B1", TestUtils.CreateInstance(expectedType, givenB1Value));
+            expectedCells.Add("B2", TestUtils.CreateInstance(expectedType, givenB2Value));
+            ImportOptions importOptions = new ImportOptions();
+            importOptions.AddEnforcedColumn(1, columnType);
+            importOptions.GlobalEnforcingType = globalType;
+            AssertValues<object, object>(cells, importOptions, AssertApproximate, expectedCells);
+        }
+
+
+        [Theory(DisplayName = "Test of enforced import types when the global type overrules the column type")]
+        [InlineData(ImportOptions.ColumnType.Decimal, ImportOptions.GlobalType.AllNumbersToDouble, typeof(decimal), "7", typeof(double), "7")]
+        [InlineData(ImportOptions.ColumnType.Double, ImportOptions.GlobalType.AllNumbersToDecimal, typeof(double), "7", typeof(decimal), "7")]
+        public void ImportEnforceOverruleTest(ImportOptions.ColumnType columnType, ImportOptions.GlobalType globalType, Type givenType, string givenValue, Type expectedType, string expectedValue)
+        {
+            Dictionary<string, object> cells = new Dictionary<string, object>();
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            cells.Add("A1", TestUtils.CreateInstance(givenType, givenValue));
+            expectedCells.Add("A1", TestUtils.CreateInstance(expectedType, expectedValue));
+            ImportOptions importOptions = new ImportOptions();
+            importOptions.AddEnforcedColumn(1, columnType);
+            importOptions.GlobalEnforcingType = globalType;
+            AssertValues<object, object>(cells, importOptions, AssertApproximate, expectedCells);
+        }
+
 
         [Theory(DisplayName = "Test of the import options for custom date and time formats and culture info")]
         [InlineData(ImportOptions.ColumnType.Date, "en-US", "yyyy-MM-dd HH:mm:ss", "2021-08-12 12:11:10", "2021-08-12 12:11:10")]
@@ -908,7 +981,24 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, importOptions, AssertApproximate, expectedCells);
         }
 
-        private static void AssertValues<T,D>(Dictionary<string, T> givenCells, ImportOptions importOptions, Action<object, object> assertionAction, Dictionary<string, D> expectedCells = null)
+        [Theory(DisplayName = "Test of all the failing casting on an invalid Date or Duration value")]
+        [InlineData(ImportOptions.ColumnType.Time, "55.81.202x")]
+        [InlineData(ImportOptions.ColumnType.Date, "2022-18-22 15:6x:00")]
+        [InlineData(ImportOptions.ColumnType.Time, "10000-01-01 00:00:00")]
+        [InlineData(ImportOptions.ColumnType.Date, "10000-01-01 00:00:00")]
+        void InvalidDateCastingTest(ImportOptions.ColumnType columnType, String value)
+        {
+                ImportOptions options = new ImportOptions();
+            options.EnforceDateTimesAsNumbers = true;
+            options.AddEnforcedColumn("A", columnType);
+            Dictionary<string, object> cells = new Dictionary<string, object>();
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
+            cells.Add("A1", value);
+            expectedCells.Add("A1", value);
+            AssertValues<object,object>(cells, options, AssertApproximate, expectedCells);
+        }
+
+        private static void AssertValues<T, D>(Dictionary<string, T> givenCells, ImportOptions importOptions, Action<object, object> assertionAction, Dictionary<string, D> expectedCells = null)
         {
             Workbook workbook = new Workbook("worksheet1");
             foreach (KeyValuePair<string, T> cell in givenCells)
@@ -953,7 +1043,7 @@ namespace NanoXLSX_Test.Reader
 
         private static void AssertApproximate(object expected, object given)
         {
-            double doubleThreshold =   0.000012; // The precision may vary (roughly one second)
+            double doubleThreshold = 0.000012; // The precision may vary (roughly one second)
             decimal decimalThreshold = 0.00000012m;
             if (given is decimal)
             {
@@ -981,9 +1071,9 @@ namespace NanoXLSX_Test.Reader
             }
             else
             {
-                AssertEquals<object>(expected,given);
+                AssertEquals<object>(expected, given);
             }
-            
+
         }
 
     }
