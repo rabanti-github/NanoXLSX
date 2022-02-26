@@ -1066,6 +1066,78 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Gets the first existing column number in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based column number. In case of a empty worksheet, int32.max will be returned</returns>
+        /// <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formated but empty cell (or many) before the first cell with data, 
+        /// GetLastColumnNumber() will return the column number of this empty cell. Use <see cref="GetFirstDataColumnNumber"/> in this case.</remarks>
+        public int GetFirstColumnNumber()
+        {
+            return GetFirstAddress(true, false);
+        }
+
+        /// <summary>
+        /// Gets the first existing column number with data in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based column number. In case of a empty worksheet, int32.max will be returned</returns>
+        /// <remarks>GetFirstDataColumnNumber() will ignore formatted but empty cells before the first column with data. 
+        /// If you want the first defined column, use <see cref="GetFirstColumnNumber"/> instead.</remarks>
+        public int GetFirstDataColumnNumber()
+        {
+            return GetFirstAddress(true, true);
+        }
+
+        /// <summary>
+        /// Gets the first existing row number in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based row number. In case of a empty worksheet, int32.max will be returned</returns>
+        /// <remarks>GetFirstRowNumber() will not return the first row with data in any case. If there is a formated but empty cell (or many) before the first cell with data, 
+        /// GetFirstRowNumber() will return the row number of this empty cell. Use <see cref="GetFirstDataRowNumber"/> in this case.</remarks>
+        public int GetFirstRowNumber()
+        {
+            return GetFirstAddress(false, false);
+        }
+
+        /// <summary>
+        /// Gets the first existing row number with data in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based row number. In case of a empty worksheet, int32.max will be returned</returns>
+        /// <remarks>GetFirstDataColumnNumber() will ignore formatted but empty cells before the first column with data. 
+        /// If you want the first defined column, use <see cref="GetfirstColumnNumber"/> instead.</remarks>
+        public int GetFirstDataRowNumber()
+        {
+            return GetFirstAddress(false, true);
+        }
+
+        /// <summary>
+        ///  Gets the first existing cell in the current worksheet (bottom right)
+        /// </summary>
+        /// <returns>Cell Address</returns>
+        /// <remarks>GetFirstCellAddress() will not return the first cell with data in any case. If there is a formated but empty cell (or many) before the first cell with data, 
+        /// GetLastCellAddress() will return the address of this empty cell. Use <see cref="GetFirstDataCellAddress"/> in this case.</remarks>
+
+        public Address GetFirstCellAddress()
+        {
+            int firstRow = GetFirstRowNumber();
+            int firstColumn = GetFirstColumnNumber();
+            return new Address(firstColumn, firstRow);
+        }
+
+        /// <summary>
+        ///  Gets the first existing cell with data in the current worksheet (bottom right)
+        /// </summary>
+        /// <returns>Cell Address</returns>
+        /// <remarks>GetFirstDataCellAddress() will ignore formatted but empty cells before the first cell with data. 
+        /// If you want the last defined cell, use <see cref="GetFirstCellAddress"/> instead.</remarks>
+
+        public Address GetFirstDataCellAddress()
+        {
+            int firstRow = GetFirstDataRowNumber();
+            int firstColumn = GetLastDataColumnNumber();
+            return new Address(firstColumn, firstRow);
+        }
+
+        /// <summary>
         /// Gets the last existing column number in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based column number. In case of a empty worksheet, -1 will be returned</returns>
@@ -1139,6 +1211,17 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Gets the first existing row or column number of the current worksheet (zero-based)
+        /// </summary>
+        /// <param name="column">If true, the output will be the first column, otherwise the first row</param>
+        /// <param name="ignoreEmpty">If true, empty cells are ignored and the first column or row is this one with a value</param>
+        /// <returns>First row or column number (zero-based)</returns>
+        private int GetFirstAddress(bool column, bool ignoreEmpty)
+        {
+            return GetBoundryAddress(false, column, ignoreEmpty);
+        }
+
+        /// <summary>
         /// Gets the last existing row or column number of the current worksheet (zero-based)
         /// </summary>
         /// <param name="column">If true, the output will be the last column, otherwise the last row</param>
@@ -1146,21 +1229,55 @@ namespace NanoXLSX
         /// <returns>Last row or column number (zero-based)</returns>
         private int GetLastAddress(bool column, bool ignoreEmpty)
         {
+            return GetBoundryAddress(true, column, ignoreEmpty);
+        }
+
+        /// <summary>
+        /// Gets the first or last existing row or column number of the current worksheet (zero-based)
+        /// </summary>
+        /// <param name="last">If true, the output will be the last column/row, otherwise the first value column/row</param>
+        /// <param name="column">If true, the output will be the first7last column, otherwise the first/last row</param>
+        /// <param name="ignoreEmpty">If true, empty cells are ignored and the last column or row is this one with a value</param>
+        /// <returns>Last row or column number (zero-based)</returns>
+        private int GetBoundryAddress(bool last, bool column, bool ignoreEmpty)
+        {
             int max = -1;
+            int min = int.MaxValue;
             int number;
             foreach (KeyValuePair<string, Cell> cell in cells)
             {
                 number = column ? cell.Value.ColumnNumber : cell.Value.RowNumber;
-                if (ignoreEmpty && cell.Value.Value != null && cell.Value.Value.ToString() != String.Empty && number > max)
+                if (cell.Value.Value != null && cell.Value.Value.ToString() != String.Empty)
                 {
-                    max = number;
+                    if (last && number > max)
+                    {
+                        max = number;
+                    }
+                    else if (!last && number < min)
+                    {
+                        min = number;
+                    }
                 }
-                else if (!ignoreEmpty && number > max)
+                else if (!ignoreEmpty)
                 {
-                    max = number;
+                    if (last && number > max)
+                    {
+                        max = number;
+                    }
+                    else if (!last && number < min)
+                    {
+                        min = number;
+                    }
                 }
             }
-            return max;
+            if (last)
+            {
+                return max;
+            }
+            else
+            {
+                return min;
+            }
         }
 
         /// <summary>

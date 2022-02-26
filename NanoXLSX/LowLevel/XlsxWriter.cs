@@ -272,11 +272,18 @@ namespace NanoXLSX.LowLevel
             worksheet.RecalculateColumns();
             StringBuilder sb = new StringBuilder();
             sb.Append("<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">");
+            sb.Append("<dimension ref=\"").Append(new Range(worksheet.GetFirstCellAddress(), worksheet.GetLastCellAddress())).Append("\"/>");
             if (worksheet.SelectedCells != null || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null || worksheet.Hidden)
             {
                 createSheetViewString(worksheet, sb);
             }
-            sb.Append("<sheetFormatPr x14ac:dyDescent=\"0.25\" defaultRowHeight=\"").Append(worksheet.DefaultRowHeight.ToString("G", culture)).Append("\" baseColWidth=\"").Append(worksheet.DefaultColumnWidth.ToString("G", culture)).Append("\"/>");
+            sb.Append("<sheetFormatPr defaultColWidth=\"")
+                .Append(worksheet.DefaultColumnWidth.ToString("G", culture))
+                .Append("\" defaultRowHeight=\"")
+                .Append(worksheet.DefaultRowHeight.ToString("G", culture))
+                .Append("\" baseColWidth=\"")
+                .Append(worksheet.DefaultColumnWidth.ToString("G", culture))
+                .Append("\" x14ac:dyDescent=\"0.25\"/>");
 
             string colWidths = CreateColsString(worksheet);
             if (!string.IsNullOrEmpty(colWidths))
@@ -903,7 +910,7 @@ namespace NanoXLSX.LowLevel
                 }
                 if (item.DataType != Cell.CellType.EMPTY)
                 {
-                    sb.Append("<c").Append(typeDef).Append("r=\"").Append(item.CellAddress).Append("\"").Append(styleDef).Append(">");
+                    sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(typeDef).Append(styleDef).Append(">");
                     if (item.DataType == Cell.CellType.FORMULA)
                     {
                         sb.Append("<f>").Append(EscapeXmlChars(item.Value.ToString())).Append("</f>");
@@ -920,7 +927,7 @@ namespace NanoXLSX.LowLevel
                 }
                 else // All other, unexpected cases
                 {
-                    sb.Append("<c").Append(typeDef).Append("r=\"").Append(item.CellAddress).Append("\"").Append(styleDef).Append("/>");
+                    sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(typeDef).Append(styleDef).Append("/>");
                 }
                 col++;
             }
