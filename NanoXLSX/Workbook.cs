@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2022
+ * Copyright Raphael Stoeckli © 2021
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -479,17 +479,7 @@ namespace NanoXLSX
                         if (pos != 0)
                         {
                             cell.DataType = Cell.CellType.EMPTY;
-                            if (cell.CellStyle == null)
-                            {
-                                cell.SetStyle(mergeStyle);
-                            }
-                            else
-                            {
-                                Style mixedMergeStyle = cell.CellStyle;
-                                // TODO: There should be a better possibility to identify particular style elements that deviates
-                                mixedMergeStyle.CurrentCellXf.ForceApplyAlignment = mergeStyle.CurrentCellXf.ForceApplyAlignment;
-                                cell.SetStyle(mixedMergeStyle);
-                            }
+                            cell.SetStyle(mergeStyle);
                         }
                         pos++;
                     }
