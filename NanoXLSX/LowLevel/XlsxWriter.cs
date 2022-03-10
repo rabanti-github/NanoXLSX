@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2021
+ * Copyright Raphael Stoeckli © 2022
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -273,18 +273,23 @@ namespace NanoXLSX.LowLevel
             StringBuilder sb = new StringBuilder();
             sb.Append("<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">");
             sb.Append("<dimension ref=\"").Append(new Range(worksheet.GetFirstCellAddress(), worksheet.GetLastCellAddress())).Append("\"/>");
-            if (worksheet.SelectedCells != null || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null || worksheet.Hidden)
+            if (worksheet.SelectedCells != null || HasPaneSplitting(worksheet) || worksheet.Hidden)
             {
                 createSheetViewString(worksheet, sb);
             }
-            sb.Append("<sheetFormatPr defaultColWidth=\"")
+            sb.Append("<sheetFormatPr");
+            if (!HasPaneSplitting(worksheet))
+            {
+                // TODO: Find the right calculation to compensate baseColWidth when using pane splitting
+                sb.Append(" defaultColWidth=\"")
                 .Append(worksheet.DefaultColumnWidth.ToString("G", culture))
-                .Append("\" defaultRowHeight=\"")
+                .Append("\"");
+            }
+            sb.Append(" defaultRowHeight=\"")
                 .Append(worksheet.DefaultRowHeight.ToString("G", culture))
                 .Append("\" baseColWidth=\"")
                 .Append(worksheet.DefaultColumnWidth.ToString("G", culture))
                 .Append("\" x14ac:dyDescent=\"0.25\"/>");
-
             string colWidths = CreateColsString(worksheet);
             if (!string.IsNullOrEmpty(colWidths))
             {
@@ -307,6 +312,25 @@ namespace NanoXLSX.LowLevel
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Checks whether pane splitting is applied in the given worksheet
+        /// </summary>
+        /// <param name="worksheet"></param>
+        /// <returns>True if applied, otherwise false</returns>
+        private bool HasPaneSplitting(Worksheet worksheet)
+        {
+            if (worksheet.PaneSplitLeftWidth == null && worksheet.PaneSplitTopHeight == null && worksheet.PaneSplitAddress == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Method to create the enclosing part of the rows
+        /// </summary>
+        /// <param name="worksheet">worksheet object to process</param>
+        /// <param name="sb">reference to the stringbuilder</param>
         private void CreateRowsString(Worksheet worksheet, StringBuilder sb)
         {
             List<DynamicRow> cellData = GetSortedSheetData(worksheet);
@@ -350,7 +374,7 @@ namespace NanoXLSX.LowLevel
         /// <param name="sb">reference to the stringbuilder</param>
         private void CreatePaneString(Worksheet worksheet, StringBuilder sb)
         {
-            if (worksheet.PaneSplitLeftWidth == null && worksheet.PaneSplitTopHeight == null && worksheet.PaneSplitAddress == null)
+            if (!HasPaneSplitting(worksheet))
             {
                 return;
             }
@@ -362,7 +386,7 @@ namespace NanoXLSX.LowLevel
                 bool freeze = worksheet.FreezeSplitPanes != null && worksheet.FreezeSplitPanes.Value;
                 int xSplit = worksheet.PaneSplitAddress.Value.Column;
                 int ySplit = worksheet.PaneSplitAddress.Value.Row;
-                if (xSplit > 0 )
+                if (xSplit > 0)
                 {
                     if (freeze)
                     {
@@ -390,7 +414,7 @@ namespace NanoXLSX.LowLevel
                 {
                     sb.Append(" state=\"frozenSplit\"");
                 }
-               else if (freeze)
+                else if (freeze)
                 {
                     sb.Append(" state=\"frozen\"");
                 }
@@ -435,7 +459,7 @@ namespace NanoXLSX.LowLevel
             }
             else if (applyYSplit && !applyXSplit)
             {
-                sb.Append("<selection pane=\"bottomLeft\" activeCell=\""+ topLeftCell + "\"  sqref=\"" + topLeftCell + "\" />");
+                sb.Append("<selection pane=\"bottomLeft\" activeCell=\"" + topLeftCell + "\"  sqref=\"" + topLeftCell + "\" />");
             }
             else if (applyYSplit && applyXSplit)
             {
@@ -452,11 +476,11 @@ namespace NanoXLSX.LowLevel
         private float CalculatePaneHeight(Worksheet worksheet, int numberOfRows)
         {
             float height = 0;
-            for(int i = 0; i < numberOfRows; i++)
+            for (int i = 0; i < numberOfRows; i++)
             {
                 if (worksheet.RowHeights.ContainsKey(i))
                 {
-                    height +=  Utils.GetInternalRowHeight(worksheet.RowHeights[i]);
+                    height += Utils.GetInternalRowHeight(worksheet.RowHeights[i]);
                 }
                 else
                 {
@@ -483,7 +507,7 @@ namespace NanoXLSX.LowLevel
                 }
                 else
                 {
-                   width += Utils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
+                    width += Utils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
                 }
             }
             // Add padding of 75 per column
@@ -1024,7 +1048,7 @@ namespace NanoXLSX.LowLevel
                 if (item.LeftStyle != Border.StyleValue.none)
                 {
                     sb.Append("<left style=\"" + Border.GetStyleName(item.LeftStyle) + "\">");
-                    if (string.IsNullOrEmpty(item.LeftColor)) { sb.Append("<color rgb=\"").Append(item.LeftColor).Append("\"/>"); }
+                    if (!string.IsNullOrEmpty(item.LeftColor)) { sb.Append("<color rgb=\"").Append(item.LeftColor).Append("\"/>"); }
                     else { sb.Append("<color auto=\"1\"/>"); }
                     sb.Append("</left>");
                 }
@@ -1035,7 +1059,7 @@ namespace NanoXLSX.LowLevel
                 if (item.RightStyle != Border.StyleValue.none)
                 {
                     sb.Append("<right style=\"").Append(Border.GetStyleName(item.RightStyle)).Append("\">");
-                    if (string.IsNullOrEmpty(item.RightColor)) { sb.Append("<color rgb=\"").Append(item.RightColor).Append("\"/>"); }
+                    if (!string.IsNullOrEmpty(item.RightColor)) { sb.Append("<color rgb=\"").Append(item.RightColor).Append("\"/>"); }
                     else { sb.Append("<color auto=\"1\"/>"); }
                     sb.Append("</right>");
                 }
@@ -1046,7 +1070,7 @@ namespace NanoXLSX.LowLevel
                 if (item.TopStyle != Border.StyleValue.none)
                 {
                     sb.Append("<top style=\"").Append(Border.GetStyleName(item.TopStyle)).Append("\">");
-                    if (string.IsNullOrEmpty(item.TopColor)) { sb.Append("<color rgb=\"").Append(item.TopColor).Append("\"/>"); }
+                    if (!string.IsNullOrEmpty(item.TopColor)) { sb.Append("<color rgb=\"").Append(item.TopColor).Append("\"/>"); }
                     else { sb.Append("<color auto=\"1\"/>"); }
                     sb.Append("</top>");
                 }
@@ -1057,7 +1081,7 @@ namespace NanoXLSX.LowLevel
                 if (item.BottomStyle != Border.StyleValue.none)
                 {
                     sb.Append("<bottom style=\"").Append(Border.GetStyleName(item.BottomStyle)).Append("\">");
-                    if (string.IsNullOrEmpty(item.BottomColor)) { sb.Append("<color rgb=\"").Append(item.BottomColor).Append("\"/>"); }
+                    if (!string.IsNullOrEmpty(item.BottomColor)) { sb.Append("<color rgb=\"").Append(item.BottomColor).Append("\"/>"); }
                     else { sb.Append("<color auto=\"1\"/>"); }
                     sb.Append("</bottom>");
                 }
@@ -1068,7 +1092,7 @@ namespace NanoXLSX.LowLevel
                 if (item.DiagonalStyle != Border.StyleValue.none)
                 {
                     sb.Append("<diagonal style=\"").Append(Border.GetStyleName(item.DiagonalStyle)).Append("\">");
-                    if (string.IsNullOrEmpty(item.DiagonalColor)) { sb.Append("<color rgb=\"").Append(item.DiagonalColor).Append("\"/>"); }
+                    if (!string.IsNullOrEmpty(item.DiagonalColor)) { sb.Append("<color rgb=\"").Append(item.DiagonalColor).Append("\"/>"); }
                     else { sb.Append("<color auto=\"1\"/>"); }
                     sb.Append("</diagonal>");
                 }

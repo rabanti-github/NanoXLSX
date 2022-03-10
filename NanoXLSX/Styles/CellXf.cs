@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2021
+ * Copyright Raphael Stoeckli © 2022
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -208,18 +208,17 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            const int p = 269;
-            int r = 1;
-            r *= p + (int)this.HorizontalAlign;
-            r *= p + (int)this.VerticalAlign;
-            r *= p + (int)this.Alignment;
-            r *= p + (int)this.TextDirection;
-            r *= p + this.Indent;
-            r *= p + this.TextRotation;
-            r *= p + (this.ForceApplyAlignment ? 0 : 1);
-            r *= p + (this.Locked ? 0 : 1);
-            r *= p + (this.Hidden ? 0 : 1);
-            return r;
+            int hashCode = 626307906;
+            hashCode = hashCode * -1521134295 + ForceApplyAlignment.GetHashCode();
+            hashCode = hashCode * -1521134295 + Hidden.GetHashCode();
+            hashCode = hashCode * -1521134295 + HorizontalAlign.GetHashCode();
+            hashCode = hashCode * -1521134295 + Locked.GetHashCode();
+            hashCode = hashCode * -1521134295 + Alignment.GetHashCode();
+            hashCode = hashCode * -1521134295 + TextDirection.GetHashCode();
+            hashCode = hashCode * -1521134295 + TextRotation.GetHashCode();
+            hashCode = hashCode * -1521134295 + VerticalAlign.GetHashCode();
+            hashCode = hashCode * -1521134295 + Indent.GetHashCode();
+            return hashCode;
         }
 
         /// <summary>

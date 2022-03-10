@@ -1,9 +1,11 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2021
+ * Copyright Raphael Stoeckli © 2022
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
+
+using System.Collections.Generic;
 
 namespace NanoXLSX.Styles
 {
@@ -150,13 +152,12 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            const int p = 263;
-            int r = 1;
-            r *= p + this.IndexedColor;
-            r *= p + (int)this.PatternFill;
-            r *= p + this.ForegroundColor.GetHashCode();
-            r *= p + this.BackgroundColor.GetHashCode();
-            return r;
+            int hashCode = -1564173520;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BackgroundColor);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ForegroundColor);
+            hashCode = hashCode * -1521134295 + IndexedColor.GetHashCode();
+            hashCode = hashCode * -1521134295 + PatternFill.GetHashCode();
+            return hashCode;
         }
 
         /// <summary>
@@ -228,6 +229,8 @@ namespace NanoXLSX.Styles
             return output;
         }
         #endregion
+
+
 
     }
 }

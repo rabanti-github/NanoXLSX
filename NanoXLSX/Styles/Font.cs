@@ -1,9 +1,11 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2021
+ * Copyright Raphael Stoeckli © 2022
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
+
+using System.Collections.Generic;
 
 namespace NanoXLSX.Styles
 {
@@ -187,22 +189,21 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            const int p = 257;
-            int r = 1;
-            r *= p + (this.Bold ? 0 : 1);
-            r *= p + (this.Italic ? 0 : 1);
-            r *= p + (this.Underline ? 0 : 1);
-            r *= p + (this.DoubleUnderline ? 0 : 1);
-            r *= p + (this.Strike ? 0 : 1);
-            r *= p + this.ColorTheme;
-            r *= p + this.ColorValue.GetHashCode();
-            r *= p + this.Family.GetHashCode();
-            r *= p + this.Name.GetHashCode();
-            r *= p + this.Scheme.GetHashCode();
-            r *= p + (int)this.VerticalAlign;
-            r *= p + this.Charset.GetHashCode();
-            r *= p + this.size;
-            return r;
+            int hashCode = -924704582;
+            hashCode = hashCode * -1521134295 + size.GetHashCode();
+            hashCode = hashCode * -1521134295 + Bold.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Charset);
+            hashCode = hashCode * -1521134295 + ColorTheme.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ColorValue);
+            hashCode = hashCode * -1521134295 + DoubleUnderline.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Family);
+            hashCode = hashCode * -1521134295 + Italic.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + Scheme.GetHashCode();
+            hashCode = hashCode * -1521134295 + Strike.GetHashCode();
+            hashCode = hashCode * -1521134295 + Underline.GetHashCode();
+            hashCode = hashCode * -1521134295 + VerticalAlign.GetHashCode();
+            return hashCode;
         }
 
         /// <summary>

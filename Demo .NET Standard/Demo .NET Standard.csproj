@@ -8,7 +8,7 @@
     <Product>NanoXLSX</Product>
     <Company>Raphael Stoeckli</Company>
     <Authors>Raphael Stoeckli</Authors>
-    <Copyright>Copyright Raphael Stoeckli © 2021</Copyright>
+    <Copyright>Copyright Raphael Stoeckli © 2022</Copyright>
     <Description>Demo Library showing the use of NanoXLSX, a library to generate and read Microsoft Excel files (XLSX) in an easy and native way</Description>
     <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.git</RepositoryUrl>
@@ -21,15 +21,21 @@
 
     <StartupObject>Demo.Program</StartupObject>
 
-    <Version>1.8.2</Version>
+    <Version>1.8.3</Version>
 
-    <AssemblyVersion>1.8.2.0</AssemblyVersion>
+    <AssemblyVersion>1.8.3.0</AssemblyVersion>
 
-    <FileVersion>1.8.2.0</FileVersion>
+    <FileVersion>1.8.3.0</FileVersion>
 
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <PackageIcon>NanoXLSX.png</PackageIcon>
+
+    <PackageIconUrl />
+
+    <PackageTags>XLSX Excel ExcelWriter ExcelReader Office</PackageTags>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
@@ -42,5 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NanoXLSX .NET Standard\NanoXLSX .NET Standard.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Documentation\icons\NanoXLSX.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 </Project>

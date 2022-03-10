@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2021
+ * Copyright Raphael Stoeckli © 2022
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -1068,7 +1068,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the first existing column number in the current worksheet (zero-based)
         /// </summary>
-        /// <returns>Zero-based column number. In case of a empty worksheet, int32.max will be returned</returns>
+        /// <returns>Zero-based column number. In case of an empty worksheet, int32.max will be returned</returns>
         /// <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formated but empty cell (or many) before the first cell with data, 
         /// GetLastColumnNumber() will return the column number of this empty cell. Use <see cref="GetFirstDataColumnNumber"/> in this case.</remarks>
         public int GetFirstColumnNumber()
@@ -1079,7 +1079,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the first existing column number with data in the current worksheet (zero-based)
         /// </summary>
-        /// <returns>Zero-based column number. In case of a empty worksheet, int32.max will be returned</returns>
+        /// <returns>Zero-based column number. In case of an empty worksheet, int32.max will be returned</returns>
         /// <remarks>GetFirstDataColumnNumber() will ignore formatted but empty cells before the first column with data. 
         /// If you want the first defined column, use <see cref="GetFirstColumnNumber"/> instead.</remarks>
         public int GetFirstDataColumnNumber()
@@ -1090,7 +1090,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the first existing row number in the current worksheet (zero-based)
         /// </summary>
-        /// <returns>Zero-based row number. In case of a empty worksheet, int32.max will be returned</returns>
+        /// <returns>Zero-based row number. In case of an empty worksheet, int32.max will be returned</returns>
         /// <remarks>GetFirstRowNumber() will not return the first row with data in any case. If there is a formated but empty cell (or many) before the first cell with data, 
         /// GetFirstRowNumber() will return the row number of this empty cell. Use <see cref="GetFirstDataRowNumber"/> in this case.</remarks>
         public int GetFirstRowNumber()
@@ -1101,7 +1101,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the first existing row number with data in the current worksheet (zero-based)
         /// </summary>
-        /// <returns>Zero-based row number. In case of a empty worksheet, int32.max will be returned</returns>
+        /// <returns>Zero-based row number. In case of an empty worksheet, int32.max will be returned</returns>
         /// <remarks>GetFirstDataColumnNumber() will ignore formatted but empty cells before the first column with data. 
         /// If you want the first defined column, use <see cref="GetfirstColumnNumber"/> instead.</remarks>
         public int GetFirstDataRowNumber()
@@ -1140,7 +1140,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the last existing column number in the current worksheet (zero-based)
         /// </summary>
-        /// <returns>Zero-based column number. In case of a empty worksheet, -1 will be returned</returns>
+        /// <returns>Zero-based column number. In case of an empty worksheet, -1 will be returned</returns>
         /// <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, 
         /// GetLastColumnNumber() will return the column number of this empty cell. Use <see cref="GetLastDataColumnNumber"/> in this case.</remarks>
         public int GetLastColumnNumber()
@@ -1151,7 +1151,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the last existing column number with data in the current worksheet (zero-based)
         /// </summary>
-        /// <returns>Zero-based column number. In case of a empty worksheet, -1 will be returned</returns>
+        /// <returns>Zero-based column number. In case of an empty worksheet, -1 will be returned</returns>
         /// <remarks>GetLastDataColumnNumber() will ignore formatted but empty cells beyond the last column with data. 
         /// If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
         public int GetLastDataColumnNumber()
@@ -1162,7 +1162,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the last existing row number in the current worksheet (zero-based)
         /// </summary>
-        /// <returns>Zero-based row number. In case of a empty worksheet, -1 will be returned</returns>
+        /// <returns>Zero-based row number. In case of an empty worksheet, -1 will be returned</returns>
         /// <remarks>GetLastRowNumber() will not return the last row with data in any case. If there is a formated but empty cell (or many) beyond the last cell with data, 
         /// GetLastRowNumber() will return the row number of this empty cell. Use <see cref="GetLastDataRowNumber"/> in this case.</remarks>
         public int GetLastRowNumber()
@@ -1174,7 +1174,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the last existing row number with data in the current worksheet (zero-based)
         /// </summary>
-        /// <returns>Zero-based row number. In case of a empty worksheet, -1 will be returned</returns>
+        /// <returns>Zero-based row number. In case of an empty worksheet, -1 will be returned</returns>
         /// <remarks>GetLastDataColumnNumber() will ignore formatted but empty cells beyond the last column with data. 
         /// If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
         public int GetLastDataRowNumber()
@@ -1241,6 +1241,10 @@ namespace NanoXLSX
         /// <returns>Last row or column number (zero-based)</returns>
         private int GetBoundryAddress(bool last, bool column, bool ignoreEmpty)
         {
+            if (cells.Count == 0)
+            {
+                return 0;
+            }
             int max = -1;
             int min = int.MaxValue;
             int number;

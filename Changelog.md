@@ -1,5 +1,16 @@
 # Change Log
 
+## v1.8.3
+
+---
+Release Date: **10.03.2022**
+
+- Added functions to determine the first cell address, column number or row number of a worksheet
+- Adapted internal style handling
+- Adapted the internal building of XML documents
+- Fixed a bug in the handling of border colors
+
+
 ## v1.8.2
 
 ---
