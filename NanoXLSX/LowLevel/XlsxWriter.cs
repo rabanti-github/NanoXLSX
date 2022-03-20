@@ -319,7 +319,19 @@ namespace NanoXLSX.LowLevel
             {
                 CreateSheetViewString(worksheet, sb);
             }
-            sb.Append("<sheetFormatPr x14ac:dyDescent=\"0.25\" defaultRowHeight=\"").Append(worksheet.DefaultRowHeight.ToString("G", culture)).Append("\" baseColWidth=\"").Append(worksheet.DefaultColumnWidth.ToString("G", culture)).Append("\"/>");
+            sb.Append("<sheetFormatPr");
+            if (!HasPaneSplitting(worksheet))
+            {
+                // TODO: Find the right calculation to compensate baseColWidth when using pane splitting
+                sb.Append(" defaultColWidth=\"")
+             .Append(worksheet.DefaultColumnWidth.ToString("G", culture))
+                .Append("\"");
+            }
+            sb.Append(" defaultRowHeight=\"")
+             .Append(worksheet.DefaultRowHeight.ToString("G", culture))
+             .Append("\" baseColWidth=\"")
+             .Append(worksheet.DefaultColumnWidth.ToString("G", culture))
+             .Append("\" x14ac:dyDescent=\"0.25\"/>");
 
             string colWidths = CreateColsString(worksheet);
             if (!string.IsNullOrEmpty(colWidths))
@@ -341,6 +353,20 @@ namespace NanoXLSX.LowLevel
 
             sb.Append("</worksheet>");
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Checks whether pane splitting is applied in the given worksheet
+        /// </summary>
+        /// <param name="worksheet"></param>
+        /// <returns>True if applied, otherwise false</returns>
+        private bool HasPaneSplitting(Worksheet worksheet)
+        {
+            if (worksheet.PaneSplitLeftWidth == null && worksheet.PaneSplitTopHeight == null && worksheet.PaneSplitAddress == null)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -391,7 +417,7 @@ namespace NanoXLSX.LowLevel
         /// <param name="sb">reference to the stringbuilder</param>
         private void CreatePaneString(Worksheet worksheet, StringBuilder sb)
         {
-            if (worksheet.PaneSplitLeftWidth == null && worksheet.PaneSplitTopHeight == null && worksheet.PaneSplitAddress == null)
+            if (!HasPaneSplitting(worksheet))
             {
                 return;
             }
@@ -403,7 +429,7 @@ namespace NanoXLSX.LowLevel
                 bool freeze = worksheet.FreezeSplitPanes != null && worksheet.FreezeSplitPanes.Value;
                 int xSplit = worksheet.PaneSplitAddress.Value.Column;
                 int ySplit = worksheet.PaneSplitAddress.Value.Row;
-                if (xSplit > 0 )
+                if (xSplit > 0)
                 {
                     if (freeze)
                     {
@@ -431,7 +457,7 @@ namespace NanoXLSX.LowLevel
                 {
                     sb.Append(" state=\"frozenSplit\"");
                 }
-               else if (freeze)
+                else if (freeze)
                 {
                     sb.Append(" state=\"frozen\"");
                 }
@@ -476,7 +502,7 @@ namespace NanoXLSX.LowLevel
             }
             else if (applyYSplit && !applyXSplit)
             {
-                sb.Append("<selection pane=\"bottomLeft\" activeCell=\""+ topLeftCell + "\"  sqref=\"" + topLeftCell + "\" />");
+                sb.Append("<selection pane=\"bottomLeft\" activeCell=\"" + topLeftCell + "\"  sqref=\"" + topLeftCell + "\" />");
             }
             else if (applyYSplit && applyXSplit)
             {
@@ -493,11 +519,11 @@ namespace NanoXLSX.LowLevel
         private float CalculatePaneHeight(Worksheet worksheet, int numberOfRows)
         {
             float height = 0;
-            for(int i = 0; i < numberOfRows; i++)
+            for (int i = 0; i < numberOfRows; i++)
             {
                 if (worksheet.RowHeights.ContainsKey(i))
                 {
-                    height +=  Utils.GetInternalRowHeight(worksheet.RowHeights[i]);
+                    height += Utils.GetInternalRowHeight(worksheet.RowHeights[i]);
                 }
                 else
                 {
@@ -524,7 +550,7 @@ namespace NanoXLSX.LowLevel
                 }
                 else
                 {
-                   width += Utils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
+                    width += Utils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
                 }
             }
             // Add padding of 75 per column
@@ -948,7 +974,7 @@ namespace NanoXLSX.LowLevel
                 }
                 if (item.DataType != Cell.CellType.EMPTY)
                 {
-                    sb.Append("<c").Append(typeDef).Append("r=\"").Append(item.CellAddress).Append("\"").Append(styleDef).Append(">");
+                    sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(typeDef).Append(styleDef).Append(">");
                     if (item.DataType == Cell.CellType.FORMULA)
                     {
                         sb.Append("<f>").Append(EscapeXmlChars(item.Value.ToString())).Append("</f>");
@@ -965,7 +991,7 @@ namespace NanoXLSX.LowLevel
                 }
                 else // All other, unexpected cases
                 {
-                    sb.Append("<c").Append(typeDef).Append("r=\"").Append(item.CellAddress).Append("\"").Append(styleDef).Append("/>");
+                    sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(typeDef).Append(styleDef).Append("/>");
                 }
                 col++;
             }

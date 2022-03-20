@@ -332,6 +332,22 @@ namespace NanoXLSX
             worksheet.WorkbookReference = this;
         }
 
+        public void CopyWorksheet(Worksheet sourceWorksheet, String newWorksheetName)
+        {
+            CopyWorksheet(sourceWorksheet, newWorksheetName, false);
+        }
+
+        public void CopyWorksheet(Worksheet sourceWorksheet, String newWorksheetName, bool sanitizeSheetName)
+        {
+            Worksheet targetWorksheet = new Worksheet(newWorksheetName);
+            foreach(KeyValuePair<string,Cell> cell in sourceWorksheet.Cells)
+            {
+                targetWorksheet.AddCell(cell.Value, cell.Key, cell.Value.CellStyle);
+            }
+            // TODO: implement
+           // foreach(var x in sourceWorksheet.)
+        }
+
         /// <summary>
         /// Removes the passed style from the style sheet. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>

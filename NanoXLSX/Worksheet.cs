@@ -1662,8 +1662,18 @@ namespace NanoXLSX
                         if (pos != 0)
                         {
                             cell.DataType = Cell.CellType.EMPTY;
+                        if (cell.CellStyle == null)
+                        {
                             cell.SetStyle(mergeStyle);
                         }
+                        else
+                        {
+                            Style mixedMergeStyle = cell.CellStyle;
+                            // TODO: There should be a better possibility to identify particular style elements that deviates
+                            mixedMergeStyle.CurrentCellXf.ForceApplyAlignment = mergeStyle.CurrentCellXf.ForceApplyAlignment;
+                            cell.SetStyle(mixedMergeStyle);
+                        }
+                    }
                         pos++;
                     }
                 }

@@ -5,6 +5,8 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using System.Collections.Generic;
+
 namespace NanoXLSX.Styles
 {
     /// <summary>
@@ -203,21 +205,20 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            const int p = 271;
-            int r = 1;
-            r *= p + (int)this.BottomStyle;
-            r *= p + (int)this.DiagonalStyle;
-            r *= p + (int)this.TopStyle;
-            r *= p + (int)this.LeftStyle;
-            r *= p + (int)this.RightStyle;
-            r *= p + this.BottomColor.GetHashCode();
-            r *= p + this.DiagonalColor.GetHashCode();
-            r *= p + this.TopColor.GetHashCode();
-            r *= p + this.LeftColor.GetHashCode();
-            r *= p + this.RightColor.GetHashCode();
-            r *= p + (this.DiagonalDown ? 0 : 1);
-            r *= p + (this.DiagonalUp ? 0 : 2);
-            return r;
+            int hashCode = -153001865;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BottomColor);
+            hashCode = hashCode * -1521134295 + BottomStyle.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(DiagonalColor);
+            hashCode = hashCode * -1521134295 + DiagonalDown.GetHashCode();
+            hashCode = hashCode * -1521134295 + DiagonalUp.GetHashCode();
+            hashCode = hashCode * -1521134295 + DiagonalStyle.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LeftColor);
+            hashCode = hashCode * -1521134295 + LeftStyle.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(RightColor);
+            hashCode = hashCode * -1521134295 + RightStyle.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(TopColor);
+            hashCode = hashCode * -1521134295 + TopStyle.GetHashCode();
+            return hashCode;
         }
 
         /// <summary>

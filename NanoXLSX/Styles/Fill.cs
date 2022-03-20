@@ -6,6 +6,7 @@
  */
 
 using NanoXLSX.Exceptions;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace NanoXLSX.Styles
@@ -187,13 +188,12 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            const int p = 263;
-            int r = 1;
-            r *= p + this.IndexedColor;
-            r *= p + (int)this.PatternFill;
-            r *= p + this.ForegroundColor.GetHashCode();
-            r *= p + this.BackgroundColor.GetHashCode();
-            return r;
+            int hashCode = -1564173520;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BackgroundColor);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ForegroundColor);
+            hashCode = hashCode * -1521134295 + IndexedColor.GetHashCode();
+            hashCode = hashCode * -1521134295 + PatternFill.GetHashCode();
+            return hashCode;
         }
 
         /// <summary>

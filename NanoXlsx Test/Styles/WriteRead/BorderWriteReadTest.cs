@@ -1,4 +1,4 @@
-﻿using NanoXLSX;
+using NanoXLSX;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,15 @@ namespace NanoXLSX_Test.Styles.WriteRead
 {
     public class BorderWriteReadTest
     {
+
+        private enum BorderDirection
+        {
+            Diagonal,
+            Left,
+            Right,
+            Top,
+            Bottom
+        }
 
         /*
         private string diagonalColor;
@@ -40,6 +49,8 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.True(cell.CellStyle.CurrentBorder.DiagonalUp);
             Assert.False(cell.CellStyle.CurrentBorder.DiagonalDown);
         }
+
+
 
         private static Cell CreateWorkbook(object value, Style style)
         {

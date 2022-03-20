@@ -6,6 +6,7 @@
  */
 
 using NanoXLSX.Exceptions;
+using System.Collections.Generic;
 
 namespace NanoXLSX.Styles
 {
@@ -301,12 +302,11 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            const int p = 251;
-            int r = 1;
-            r *= p + this.CustomFormatCode.GetHashCode();
-            r *= p + this.CustomFormatID;
-            r *= p + (int)this.Number;
-            return r;
+            int hashCode = 495605284;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CustomFormatCode);
+            hashCode = hashCode * -1521134295 + CustomFormatID.GetHashCode();
+            hashCode = hashCode * -1521134295 + Number.GetHashCode();
+            return hashCode;
         }
 
         #endregion

@@ -6,6 +6,7 @@
  */
 
 using NanoXLSX.Exceptions;
+using System.Collections.Generic;
 
 namespace NanoXLSX.Styles
 {
@@ -270,22 +271,21 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            const int p = 257;
-            int r = 1;
-            r *= p + (this.Bold ? 0 : 1);
-            r *= p + (this.Italic ? 0 : 2);
-            r *= p + (this.Underline ? 0 : 4);
-            r *= p + (this.DoubleUnderline ? 0 : 8);
-            r *= p + (this.Strike ? 0 : 16);
-            r *= p + this.ColorTheme;
-            r *= p + this.ColorValue.GetHashCode();
-            r *= p + this.Family.GetHashCode();
-            r *= p + this.Name.GetHashCode();
-            r *= p + this.Scheme.GetHashCode();
-            r *= p + this.VerticalAlign.GetHashCode();
-            r *= p + this.Charset.GetHashCode();
-            r *= p + this.size.GetHashCode();
-            return r;
+            int hashCode = -924704582;
+            hashCode = hashCode * -1521134295 + size.GetHashCode();
+            hashCode = hashCode * -1521134295 + Bold.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Charset);
+            hashCode = hashCode * -1521134295 + ColorTheme.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ColorValue);
+            hashCode = hashCode * -1521134295 + DoubleUnderline.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Family);
+            hashCode = hashCode * -1521134295 + Italic.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + Scheme.GetHashCode();
+            hashCode = hashCode * -1521134295 + Strike.GetHashCode();
+            hashCode = hashCode * -1521134295 + Underline.GetHashCode();
+            hashCode = hashCode * -1521134295 + VerticalAlign.GetHashCode();
+            return hashCode;
         }
 
         /// <summary>

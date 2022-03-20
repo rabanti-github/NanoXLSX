@@ -1,4 +1,4 @@
-﻿using NanoXLSX;
+using NanoXLSX;
 using NanoXLSX.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -109,103 +109,6 @@ namespace NanoXLSX_Test.Worksheets
             Assert.False(worksheet.Columns[1].IsHidden);
             Assert.True(worksheet.Columns[1].HasAutoFilter);
             Assert.Equal(Worksheet.DEFAULT_COLUMN_WIDTH, worksheet.Columns[1].Width);
-        }
-
-        [Fact(DisplayName = "Test of the GetLastColumnNumber function with an empty worksheet")]
-        public void GetLastColumnNumberTest()
-        {
-            Worksheet worksheet = new Worksheet();
-            int column = worksheet.GetLastColumnNumber();
-            Assert.Equal(-1, column);
-        }
-
-        [Fact(DisplayName = "Test of the GetLastColumnNumber function with defined columns on an empty worksheet")]
-        public void GetLastColumnNumberTest2()
-        {
-            Worksheet worksheet = new Worksheet();
-            worksheet.AddHiddenColumn(0);
-            worksheet.AddHiddenColumn(1);
-            worksheet.AddHiddenColumn(2);
-            int column = worksheet.GetLastColumnNumber();
-            Assert.Equal(2, column);
-        }
-
-        [Fact(DisplayName = "Test of the GetLastColumnNumber function with defined columns on an empty worksheet, where the column definition has gaps")]
-        public void GetLastColumnNumberTest3()
-        {
-            Worksheet worksheet = new Worksheet();
-            worksheet.AddHiddenColumn(0);
-            worksheet.AddHiddenColumn(1);
-            worksheet.AddHiddenColumn(10);
-            int column = worksheet.GetLastColumnNumber();
-            Assert.Equal(10, column);
-        }
-
-        [Fact(DisplayName = "Test of the GetLastColumnNumber function with defined columns where cells are defined below the last column")]
-        public void GetLastColumnNumberTest4()
-        {
-            Worksheet worksheet = new Worksheet();
-            worksheet.AddHiddenColumn(0);
-            worksheet.AddHiddenColumn(1);
-            worksheet.AddHiddenColumn(10);
-            worksheet.AddCell("test", "E5");
-            int column = worksheet.GetLastColumnNumber();
-            Assert.Equal(10, column);
-        }
-
-        [Fact(DisplayName = "Test of the GetLastColumnNumber function with defined columns where cells are defined above the last column")]
-        public void GetLastColumnNumberTest5()
-        {
-            Worksheet worksheet = new Worksheet();
-            worksheet.AddHiddenColumn(0);
-            worksheet.AddHiddenColumn(1);
-            worksheet.AddHiddenColumn(2);
-            worksheet.AddCell("test", "F5");
-            int column = worksheet.GetLastColumnNumber();
-            Assert.Equal(5, column);
-        }
-
-        [Fact(DisplayName = "Test of the GetLastDataColumnNumber function with an empty worksheet")]
-        public void GetLastDataColumnNumberTest()
-        {
-            Worksheet worksheet = new Worksheet();
-            int column = worksheet.GetLastDataColumnNumber();
-            Assert.Equal(-1, column);
-        }
-
-        [Fact(DisplayName = "Test of the GetLastDataColumnNumber function with defined columns on an empty worksheet")]
-        public void GetLastDataColumnNumberTest2()
-        {
-            Worksheet worksheet = new Worksheet();
-            worksheet.AddHiddenColumn(0);
-            worksheet.AddHiddenColumn(1);
-            worksheet.AddHiddenColumn(2);
-            int column = worksheet.GetLastDataColumnNumber();
-            Assert.Equal(-1, column);
-        }
-
-        [Fact(DisplayName = "Test of the GetLastDataColumnNumber function with defined columns where cells are defined below the last column")]
-        public void GetLastDataColumnNumberTest3()
-        {
-            Worksheet worksheet = new Worksheet();
-            worksheet.AddHiddenColumn(0);
-            worksheet.AddHiddenColumn(1);
-            worksheet.AddHiddenColumn(10);
-            worksheet.AddCell("test", "E5");
-            int column = worksheet.GetLastDataColumnNumber();
-            Assert.Equal(4, column);
-        }
-
-        [Fact(DisplayName = "Test of the GetLastDataColumnNumber function with defined columns where cells are defined above the last column")]
-        public void GetLastDataColumnNumberTest4()
-        {
-            Worksheet worksheet = new Worksheet();
-            worksheet.AddHiddenColumn(0);
-            worksheet.AddHiddenColumn(1);
-            worksheet.AddHiddenColumn(2);
-            worksheet.AddCell("test", "F5");
-            int column = worksheet.GetLastDataColumnNumber();
-            Assert.Equal(5, column);
         }
 
         [Fact(DisplayName ="Test of the GetCurrentColumnNumber function")]
