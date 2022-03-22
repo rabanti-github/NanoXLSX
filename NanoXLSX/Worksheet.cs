@@ -983,6 +983,316 @@ namespace NanoXLSX
 
         #endregion
 
+        #region boundaryFunctions
+        /// <summary>
+        /// Gets the first existing column number in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based column number. In case of an empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetFirstColumnNumber() will not return the first column with data in any case. If there is a formatted but empty cell (or many) before the first cell with data, 
+        /// GetFirstColumnNumber() will return the column number of this empty cell. Use <see cref="GetFirstDataColumnNumber"/> in this case.</remarks>
+        public int GetFirstColumnNumber()
+        {
+            return GetBoundaryNumber(false, true);
+        }
+
+        /// <summary>
+        /// Gets the first existing column number with data in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based column number. In case of an empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetFirstDataColumnNumber() will ignore formatted but empty cells before the first column with data. 
+        /// If you want the first defined column, use <see cref="GetFirstColumnNumber"/> instead.</remarks>
+        public int GetFirstDataColumnNumber()
+        {
+            return GetBoundaryDataNumber(false, true, true);
+        }
+
+        /// <summary>
+        /// Gets the first existing row number in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based row number. In case of an empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetFirstRowNumber() will not return the first row with data in any case. If there is a formatted but empty cell (or many) before the first cell with data, 
+        /// GetFirstRowNumber() will return the row number of this empty cell. Use <see cref="GetFirstDataRowNumber"/> in this case.</remarks>
+        public int GetFirstRowNumber()
+        {
+            return GetBoundaryNumber(true, true);
+        }
+
+        /// <summary>
+        /// Gets the first existing row number with data in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based row number. In case of an empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetFirstDataRowNumber() will ignore formatted but empty cells before the first row with data. 
+        /// If you want the first defined row, use <see cref="GetFirstRowNumber"/> instead.</remarks>
+        public int GetFirstDataRowNumber()
+        {
+            return GetBoundaryDataNumber(true, true, true);
+        }
+
+        /// <summary>
+        /// Gets the last existing column number in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based column number. In case of an empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formatted (or with the definition of AutoFilter, 
+        /// column width or hidden state) but empty cell (or many) after the last cell with data, 
+        /// GetLastColumnNumber() will return the column number of this empty cell. Use <see cref="GetLastDataColumnNumber"/> in this case.</remarks>
+        public int GetLastColumnNumber()
+        {
+            return GetBoundaryNumber(false, false);
+        }
+
+        /// <summary>
+        /// Gets the last existing column number with data in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based column number. in case of an empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetLastDataColumnNumber() will ignore formatted (or with the definition of AutoFilter, column width or hidden state) but empty cells after the last column with data. 
+        /// If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
+        public int GetLastDataColumnNumber()
+        {
+            return GetBoundaryDataNumber(false, false, true);
+        }
+
+        /// <summary>
+        /// Gets the last existing row number in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based row number. In case of an empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetLastRowNumber() will not return the last row with data in any case. If there is a formatted (or with the definition of row height or hidden state) 
+        /// but empty cell (or many) after the last cell with data, 
+        /// GetLastRowNumber() will return the row number of this empty cell. Use <see cref="GetLastDataRowNumber"/> in this case.</remarks>
+        public int GetLastRowNumber()
+        {
+            return GetBoundaryNumber(true, false);
+        }
+
+
+        /// <summary>
+        /// Gets the last existing row number with data in the current worksheet (zero-based)
+        /// </summary>
+        /// <returns>Zero-based row number. in case of an empty worksheet, -1 will be returned</returns>
+        /// <remarks>GetLastDataColumnNumber() will ignore formatted (or with the definition of row height or hidden state) but empty cells after the last column with data. 
+        /// If you want the last defined column, use <see cref="GetLastRowNumber"/> instead.</remarks>
+        public int GetLastDataRowNumber()
+        {
+            return GetBoundaryDataNumber(true, false, true);
+        }
+
+        /// <summary>
+        ///  Gets the last existing cell in the current worksheet (bottom right)
+        /// </summary>
+        /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
+        /// <remarks>GetLastCellAddress() will not return the last cell with data in any case. If there is a formatted (or with definitions of hidden states, AutoFilters, heights or widths) 
+        /// but empty cell (or many) after the last cell with data, 
+        /// GetLastCellAddress() will return the address of this empty cell. Use <see cref="GetLastDataCellAddress"/> in this case.</remarks>
+
+        public Address? GetLastCellAddress()
+        {
+            int lastRow = GetLastRowNumber();
+            int lastColumn = GetLastColumnNumber();
+            if (lastRow < 0 || lastColumn < 0)
+            {
+                return null;
+            }
+            return new Address(lastColumn, lastRow);
+        }
+
+        /// <summary>
+        ///  Gets the last existing cell with data in the current worksheet (bottom right)
+        /// </summary>
+        /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
+        /// <remarks>GetLastDataCellAddress() will ignore formatted (or with definitions of hidden states, AutoFilters, heights or widths) but empty cells after the last cell with data. 
+        /// If you want the last defined cell, use <see cref="GetLastCellAddress"/> instead.</remarks>
+
+        public Address? GetLastDataCellAddress()
+        {
+            int lastRow = GetLastDataRowNumber();
+            int lastColumn = GetLastDataColumnNumber();
+            if (lastRow < 0 || lastColumn < 0)
+            {
+                return null;
+            }
+            return new Address(lastColumn, lastRow);
+        }
+
+        /// <summary>
+        ///  Gets the first existing cell in the current worksheet (bottom right)
+        /// </summary>
+        /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
+        /// <remarks>GetFirstCellAddress() will not return the first cell with data in any case. If there is a formatted but empty cell (or many) before the first cell with data, 
+        /// GetLastCellAddress() will return the address of this empty cell. Use <see cref="GetFirstDataCellAddress"/> in this case.</remarks>
+        public Address? GetFirstCellAddress()
+        {
+            int firstRow = GetFirstRowNumber();
+            int firstColumn = GetFirstColumnNumber();
+            if (firstRow < 0 || firstColumn < 0)
+            {
+                return null;
+            }
+            return new Address(firstColumn, firstRow);
+        }
+
+        /// <summary>
+        ///  Gets the first existing cell with data in the current worksheet (bottom right)
+        /// </summary>
+        /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
+        /// <remarks>GetFirstDataCellAddress() will ignore formatted but empty cells before the first cell with data. 
+        /// If you want the first defined cell, use <see cref="GetFirstCellAddress"/> instead.</remarks>
+        public Address? GetFirstDataCellAddress()
+        {
+            int firstRow = GetFirstDataRowNumber();
+            int firstColumn = GetLastDataColumnNumber();
+            if (firstRow < 0 || firstColumn < 0)
+            {
+                return null;
+            }
+            return new Address(firstColumn, firstRow);
+        }
+
+        /// <summary>
+        /// Gets either the minimum or maximum row or column number, considering only calls with data
+        /// </summary>
+        /// <param name="row">If true, the min or max row is returned, otherwise the column</param>
+        /// <param name="min">If true, the min value of the row or column is defined, otherwise the max value</param>
+        /// <param name="ignoreEmpty">If true, empty cell values are ignored, otherwise considered without checking the content</param>
+        /// <returns>Min or max number, or -1 if not defined</returns>
+        private int GetBoundaryDataNumber(bool row, bool min, bool ignoreEmpty)
+        {
+            if (cells.Count == 0)
+            {
+                return -1;
+            }
+            if (!ignoreEmpty)
+            {
+                if (row && min)
+                {
+                    return cells.Min(x => x.Value.RowNumber);
+                }
+                else if (row)
+                {
+                    return cells.Max(x => x.Value.RowNumber);
+                }
+                else if (min)
+                {
+                    return cells.Min(x => x.Value.ColumnNumber);
+                }
+                else
+                {
+                    return cells.Max(x => x.Value.ColumnNumber);
+                }
+            }
+            List<Cell> nonEmptyCells = cells.Values.Where(x => x.Value != null).ToList();
+            if (nonEmptyCells.Count == 0)
+            {
+                return -1;
+            }
+            if (row && min)
+            {
+                return nonEmptyCells.Where(x => x.Value.ToString() != string.Empty).Min(x => x.RowNumber);
+            }
+            else if (row)
+            {
+                return nonEmptyCells.Where(x => x.Value.ToString() != string.Empty).Max(x => x.RowNumber);
+            }
+            else if (min)
+            {
+                return nonEmptyCells.Where(x => x.Value.ToString() != string.Empty).Max(x => x.ColumnNumber);
+            }
+            else
+            {
+                return nonEmptyCells.Where(x => x.Value.ToString() != string.Empty).Min(x => x.ColumnNumber);
+            }
+        }
+
+        /// <summary>
+        /// Gets either the minimum or maximum row or column number, considering all available data
+        /// </summary>
+        /// <param name="row">If true, the min or max row is returned, otherwise the column</param>
+        /// <param name="min">If true, the min value of the row or column is defined, otherwise the max value</param>
+        /// <returns>Min or max number, or -1 if not defined</returns>
+        private int GetBoundaryNumber(bool row, bool min)
+        {
+            int cellBoundary = GetBoundaryDataNumber(row, min, false);
+            if (row)
+            {
+                int heightBoundary = -1;
+                if (rowHeights.Count > 0)
+                {
+                    heightBoundary = min ? RowHeights.Min(x => x.Key) : RowHeights.Max(x => x.Key);
+                }
+                int hiddenBoundary = -1;
+                if (hiddenRows.Count > 0)
+                {
+                    hiddenBoundary = min ? HiddenRows.Min(x => x.Key) : HiddenRows.Max(x => x.Key);
+                }
+                return min ? GetMinRow(cellBoundary, heightBoundary, hiddenBoundary) : GetMaxRow(cellBoundary, heightBoundary, hiddenBoundary);
+            }
+            else
+            {
+                int columnDefBoundary = -1;
+                if (columns.Count > 0)
+                {
+                    columnDefBoundary = min ? Columns.Min(x => x.Key) : Columns.Max(x => x.Key);
+                }
+                if (min)
+                {
+                    return cellBoundary >= 0 && cellBoundary < columnDefBoundary ? cellBoundary : columnDefBoundary;
+                }
+                else
+                {
+                    return cellBoundary >= 0 && cellBoundary > columnDefBoundary ? cellBoundary : columnDefBoundary;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the maximum row coordinate either from cell data, height definitions or hidden rows
+        /// </summary>
+        /// <param name="cellBoundary">Row number of max cell data</param>
+        /// <param name="heightBoundary">Row number of max defined row height</param>
+        /// <param name="hiddenBoundary">Row number of max defined hidden row</param>
+        /// <returns>Max row number or -1 if nothing valid defined</returns>
+        private int GetMaxRow(int cellBoundary, int heightBoundary, int hiddenBoundary)
+        {
+            int highest = -1;
+            if (cellBoundary >= 0)
+            {
+                highest = cellBoundary;
+            }
+            if (heightBoundary >= 0 && heightBoundary > highest)
+            {
+                highest = heightBoundary;
+            }
+            if (hiddenBoundary >= 0 && hiddenBoundary > highest)
+            {
+                highest = hiddenBoundary;
+            }
+            return highest;
+        }
+
+        /// <summary>
+        /// Gets the minimum row coordinate either from cell data, height definitions or hidden rows
+        /// </summary>
+        /// <param name="cellBoundary">Row number of min cell data</param>
+        /// <param name="heightBoundary">Row number of min defined row height</param>
+        /// <param name="hiddenBoundary">Row number of min defined hidden row</param>
+        /// <returns>Min row number or -1 if nothing valid defined</returns>
+        private int GetMinRow(int cellBoundary, int heightBoundary, int hiddenBoundary)
+        {
+            int lowest = int.MaxValue;
+            if (cellBoundary >= 0)
+            {
+                lowest = cellBoundary;
+            }
+            if (heightBoundary >= 0 && heightBoundary < lowest)
+            {
+                lowest = heightBoundary;
+            }
+            if (hiddenBoundary >= 0 && hiddenBoundary < lowest)
+            {
+                lowest = hiddenBoundary;
+            }
+            return lowest == int.MaxValue ? -1 : lowest;
+        }
+        #endregion
+
         #region common_methods
 
         /// <summary>
@@ -1112,297 +1422,6 @@ namespace NanoXLSX
                 columns[columnNumber].IsHidden = false;
                 columns[columnNumber].Width = DEFAULT_COLUMN_WIDTH;
             }
-        }
-
-        /// <summary>
-        /// Gets the first existing column number in the current worksheet (zero-based)
-        /// </summary>
-        /// <returns>Zero-based column number. In case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formated but empty cell (or many) before the first cell with data, 
-        /// GetLastColumnNumber() will return the column number of this empty cell. Use <see cref="GetFirstDataColumnNumber"/> in this case.</remarks>
-        public int GetFirstColumnNumber()
-        {
-            return GetBoundaryNumber(false, true);
-        }
-
-        /// <summary>
-        /// Gets the first existing column number with data in the current worksheet (zero-based)
-        /// </summary>
-        /// <returns>Zero-based column number. In case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetFirstDataColumnNumber() will ignore formatted but empty cells before the first column with data. 
-        /// If you want the first defined column, use <see cref="GetFirstColumnNumber"/> instead.</remarks>
-        public int GetFirstDataColumnNumber()
-        {
-            return GetBoundaryDataNumber(false, true);
-        }
-
-        /// <summary>
-        /// Gets the first existing row number in the current worksheet (zero-based)
-        /// </summary>
-        /// <returns>Zero-based row number. In case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetFirstRowNumber() will not return the first row with data in any case. If there is a formated but empty cell (or many) before the first cell with data, 
-        /// GetFirstRowNumber() will return the row number of this empty cell. Use <see cref="GetFirstDataRowNumber"/> in this case.</remarks>
-        public int GetFirstRowNumber()
-        {
-            return GetBoundaryNumber(true, true);
-        }
-
-        /// <summary>
-        /// Gets the first existing row number with data in the current worksheet (zero-based)
-        /// </summary>
-        /// <returns>Zero-based row number. In case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetFirstDataColumnNumber() will ignore formatted but empty cells before the first column with data. 
-        /// If you want the first defined column, use <see cref="GetFirstColumnNumber"/> instead.</remarks>
-        public int GetFirstDataRowNumber()
-        {
-            return GetBoundaryDataNumber(true, true);
-        }
-
-        /// <summary>
-        /// Gets the last existing column number in the current worksheet (zero-based)
-        /// </summary>
-        /// <returns>Zero-based column number. In case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formatted (or with the definition of AutoFilter, 
-        /// column width or hidden state) but empty cell (or many) beyond the last cell with data, 
-        /// GetLastColumnNumber() will return the column number of this empty cell. Use <see cref="GetLastDataColumnNumber"/> in this case.</remarks>
-        public int GetLastColumnNumber()
-        {
-            return GetBoundaryNumber(false, false);
-        }
-
-        /// <summary>
-        /// Gets the last existing column number with data in the current worksheet (zero-based)
-        /// </summary>
-        /// <returns>Zero-based column number. in case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastDataColumnNumber() will ignore formatted (or with the definition of AutoFilter, column width or hidden state) but empty cells beyond the last column with data. 
-        /// If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
-        public int GetLastDataColumnNumber()
-        {
-            return GetBoundaryDataNumber(false, false);
-        }
-
-        /// <summary>
-        /// Gets the last existing row number in the current worksheet (zero-based)
-        /// </summary>
-        /// <returns>Zero-based row number. In case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastRowNumber() will not return the last row with data in any case. If there is a formatted (or with the definition of row height or hidden state) 
-        /// but empty cell (or many) beyond the last cell with data, 
-        /// GetLastRowNumber() will return the row number of this empty cell. Use <see cref="GetLastDataRowNumber"/> in this case.</remarks>
-        public int GetLastRowNumber()
-        {
-            return GetBoundaryNumber(true, false);
-        }
-
-
-        /// <summary>
-        /// Gets the last existing row number with data in the current worksheet (zero-based)
-        /// </summary>
-        /// <returns>Zero-based row number. in case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastDataColumnNumber() will ignore formatted (or with the definition of row height or hidden state) but empty cells beyond the last column with data. 
-        /// If you want the last defined column, use <see cref="GetLastRowNumber"/> instead.</remarks>
-        public int GetLastDataRowNumber()
-        {
-            return GetBoundaryDataNumber(true, false);
-        }
-
-        /// <summary>
-        ///  Gets the last existing cell in the current worksheet (bottom right)
-        /// </summary>
-        /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
-        /// <remarks>GetLastCellAddress() will not return the last cell with data in any case. If there is a formatted (or with definitions of hidden states, AutoFilters, heights or widths) 
-        /// but empty cell (or many) beyond the last cell with data, 
-        /// GetLastCellAddress() will return the address of this empty cell. Use <see cref="GetLastDataCellAddress"/> in this case.</remarks>
-
-        public Address? GetLastCellAddress()
-        {
-            int lastRow = GetLastRowNumber();
-            int lastColumn = GetLastColumnNumber();
-            if (lastRow < 0 || lastColumn < 0)
-            {
-                return null;
-            }
-            return new Address(lastColumn, lastRow);
-        }
-
-        /// <summary>
-        ///  Gets the last existing cell with data in the current worksheet (bottom right)
-        /// </summary>
-        /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
-        /// <remarks>GetLastDataCellAddress() will ignore formatted (or with definitions of hidden states, AutoFilters, heights or widths) but empty cells beyond the last cell with data. 
-        /// If you want the last defined cell, use <see cref="GetLastCellAddress"/> instead.</remarks>
-
-        public Address? GetLastDataCellAddress()
-        {
-            int lastRow = GetLastDataRowNumber();
-            int lastColumn = GetLastDataColumnNumber();
-            if (lastRow < 0 || lastColumn < 0)
-            {
-                return null;
-            }
-            return new Address(lastColumn, lastRow);
-        }
-
-        /// <summary>
-        ///  Gets the first existing cell in the current worksheet (bottom right)
-        /// </summary>
-        /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
-        /// <remarks>GetFirstCellAddress() will not return the first cell with data in any case. If there is a formated but empty cell (or many) before the first cell with data, 
-        /// GetLastCellAddress() will return the address of this empty cell. Use <see cref="GetFirstDataCellAddress"/> in this case.</remarks>
-        public Address? GetFirstCellAddress()
-        {
-            int firstRow = GetFirstRowNumber();
-            int firstColumn = GetFirstColumnNumber();
-            if (firstRow < 0 || firstColumn < 0)
-            {
-                return null;
-            }
-            return new Address(firstColumn, firstRow);
-        }
-
-        /// <summary>
-        ///  Gets the first existing cell with data in the current worksheet (bottom right)
-        /// </summary>
-        /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
-        /// <remarks>GetFirstDataCellAddress() will ignore formatted but empty cells before the first cell with data. 
-        /// If you want the first defined cell, use <see cref="GetFirstCellAddress"/> instead.</remarks>
-        public Address? GetFirstDataCellAddress()
-        {
-            int firstRow = GetFirstDataRowNumber();
-            int firstColumn = GetLastDataColumnNumber();
-            if (firstRow < 0 || firstColumn < 0)
-            {
-                return null;
-            }
-            return new Address(firstColumn, firstRow);
-        }
-
-        /// <summary>
-        /// Gets either the minimum or maximum row or column number, considering only calls with data
-        /// </summary>
-        /// <param name="row">If true, the min or max row is returned, otherwise the column</param>
-        /// <param name="min">If true, the min value of the row or column is defined, otherwise the max value</param>
-        /// <returns>Min or max number, or -1 if not defined</returns>
-        private int GetBoundaryDataNumber(bool row, bool min)
-        {
-            if (cells.Count == 0)
-            {
-                return -1;
-            }
-            else
-            {
-                List<Cell> nonEmptyCells = cells.Values.Where(x => x.Value != null).ToList();
-                if (nonEmptyCells.Count == 0)
-                {
-                    return -1;
-                }
-                if (row && min)
-                {
-                    return nonEmptyCells.Where(x => x.Value.ToString() != string.Empty).Min(x => x.RowNumber);
-                }
-                else if (row)
-                {
-                    return nonEmptyCells.Where(x => x.Value.ToString() != string.Empty).Max(x => x.RowNumber);
-                }
-                else if (min)
-                {
-                    return nonEmptyCells.Where(x => x.Value.ToString() != string.Empty).Max(x => x.ColumnNumber);
-                }
-                else
-                {
-                    return nonEmptyCells.Where(x => x.Value.ToString() != string.Empty).Min(x => x.ColumnNumber);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets either the minimum or maximum row or column number, considering all available data
-        /// </summary>
-        /// <param name="row">If true, the min or max row is returned, otherwise the column</param>
-        /// <param name="min">If true, the min value of the row or column is defined, otherwise the max value</param>
-        /// <returns>Min or max number, or -1 if not defined</returns>
-        private int GetBoundaryNumber(bool row, bool min)
-        {
-            int cellBoundary = GetBoundaryDataNumber(row, min);
-            if (row)
-            {
-                int heightBoundary = -1;
-                if (rowHeights.Count > 0)
-                {
-                    heightBoundary = min ? RowHeights.Min(x => x.Key) : RowHeights.Max(x => x.Key);
-                }
-                int hiddenBoundary = -1;
-                if (hiddenRows.Count > 0)
-                {
-                    hiddenBoundary = min ? HiddenRows.Min(x => x.Key) : HiddenRows.Max(x => x.Key);
-                }
-                return min ? GetMinRow(cellBoundary, heightBoundary, hiddenBoundary) : GetMaxRow(cellBoundary, heightBoundary, hiddenBoundary);
-            }
-            else
-            {
-                int columnDefBoundary = -1;
-                if (columns.Count > 0) 
-                {
-                    columnDefBoundary = min ? Columns.Min(x => x.Key) : Columns.Max(x => x.Key);
-                }
-                if (min)
-                {
-                    return cellBoundary > 0 && cellBoundary < columnDefBoundary ? cellBoundary : columnDefBoundary;
-                }
-                else
-                {
-                    return cellBoundary > 0 && cellBoundary > columnDefBoundary ? cellBoundary : columnDefBoundary;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the maximum row coordinate either from cell data, height definitions or hidden rows
-        /// </summary>
-        /// <param name="cellBoundary">Row number of max cell data</param>
-        /// <param name="heightBoundary">Row number of max defined row height</param>
-        /// <param name="hiddenBoundary">Row number of max defined hidden row</param>
-        /// <returns>Max row number or -1 if nothing valid defined</returns>
-        private int GetMaxRow(int cellBoundary, int heightBoundary, int hiddenBoundary)
-        {
-            int highest = -1;
-            if (cellBoundary >= 0)
-            {
-                highest = cellBoundary;
-            }
-            if (heightBoundary >= 0 && heightBoundary > highest)
-            {
-                highest = heightBoundary;
-            }
-            if (hiddenBoundary >= 0 && hiddenBoundary > highest)
-            {
-                highest = hiddenBoundary;
-            }
-            return highest;
-        }
-
-        /// <summary>
-        /// Gets the minimum row coordinate either from cell data, height definitions or hidden rows
-        /// </summary>
-        /// <param name="cellBoundary">Row number of min cell data</param>
-        /// <param name="heightBoundary">Row number of min defined row height</param>
-        /// <param name="hiddenBoundary">Row number of min defined hidden row</param>
-        /// <returns>Min row number or -1 if nothing valid defined</returns>
-        private int GetMinRow(int cellBoundary, int heightBoundary, int hiddenBoundary)
-        {
-            int lowest = int.MaxValue;
-            if (cellBoundary >= 0)
-            {
-                lowest = cellBoundary;
-            }
-            if (heightBoundary >= 0 && heightBoundary < lowest)
-            {
-                lowest = heightBoundary;
-            }
-            if (hiddenBoundary >= 0 && hiddenBoundary < lowest)
-            {
-                lowest = hiddenBoundary;
-            }
-            return lowest == int.MaxValue ? -1 : lowest;
         }
 
         /// <summary>
