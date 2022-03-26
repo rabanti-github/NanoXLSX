@@ -110,6 +110,19 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(4, row);
         }
 
+        [Theory(DisplayName = "Test of the GetLastRowNumber function with an explicitly defined, empty cell besides other row definitions")]
+        [InlineData("F7", 6)]
+        [InlineData("A1", 4)]
+        public void GetLastRowNumberTest6(String emptyCellAddress, int expectedFirstRow)
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddHiddenRow(3);
+            worksheet.AddHiddenRow(4);
+            worksheet.AddCell(null, emptyCellAddress);
+            int row = worksheet.GetLastRowNumber();
+            Assert.Equal(expectedFirstRow, row);
+        }
+
         [Fact(DisplayName = "Test of the GetLastDataRowNumber function with an empty worksheet")]
         public void GetLastDataRowNumberTest()
         {
@@ -187,15 +200,6 @@ namespace NanoXLSX_Test.Worksheets
             int row = worksheet.GetLastDataRowNumber();
             Assert.Equal(4, row);
         }
-
-
-
-
-
-
-
-
-
 
         [Fact(DisplayName = "Test of the GetFirstRowNumber function with an empty worksheet")]
         public void GetFirstRowNumberTest()
@@ -295,6 +299,19 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(4, row);
         }
 
+        [Theory(DisplayName = "Test of the getFirstRowNumber function with an explicitly defined, empty cell besides other row definitions")]
+        [InlineData("F5", 4)]
+        [InlineData("A1", 0)]
+        public void GetFirstRowNumberTest6(String emptyCellAddress, int expectedFirstRow)
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddHiddenColumn(3);
+            worksheet.AddHiddenColumn(4);
+            worksheet.AddCell(null, emptyCellAddress);
+            int row = worksheet.GetFirstRowNumber();
+            Assert.Equal(expectedFirstRow, row);
+        }
+
         [Fact(DisplayName = "Test of the GetFirstDataRowNumber function with an empty worksheet")]
         public void GetFirstDataRowNumberTest()
         {
@@ -373,7 +390,34 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(4, row);
         }
 
+        [Theory(DisplayName = "Test of the getFirstDataRowNumber and getLastDataRowNumber functions with an explicitly defined, empty cell besides other row definitions")]
+        [InlineData("F5")]
+        [InlineData("A1")]
+        void GetFirstOrLastDataRowNumberTest(String emptyCellAddress)
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddHiddenRow(3);
+            worksheet.AddHiddenRow(4);
+            worksheet.AddCell(null, emptyCellAddress);
+            int minRow = worksheet.GetFirstDataRowNumber();
+            int maxRow = worksheet.GetLastDataRowNumber();
+            Assert.Equal(-1, minRow);
+            Assert.Equal(-1, maxRow);
+        }
 
+        [Fact(DisplayName = "Test of the GetFirstDataRowNumber and GetLastDataRowNumber functions with exactly one defined cell")]
+        public void GetFirstOrLastDataRowNumberTest2()
+        {
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddHiddenRow(2);
+            worksheet.AddHiddenRow(3);
+            worksheet.AddHiddenRow(10);
+            worksheet.AddCell("test", "F5");
+            int minRow = worksheet.GetFirstDataRowNumber();
+            int maxRow = worksheet.GetLastDataRowNumber();
+            Assert.Equal(4, minRow);
+            Assert.Equal(4, maxRow);
+        }
 
 
 
