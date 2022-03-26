@@ -1,5 +1,13 @@
 # Change Log
 
+## v1.8.5
+
+---
+Release Date: **27.03.2022**
+
+- Fixed a follow-up issue on finding first/last cell addresses on explicitly defined, empty cells
+- Code maintenance
+
 ## v1.8.4
 
 ---
