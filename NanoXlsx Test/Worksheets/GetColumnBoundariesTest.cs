@@ -137,10 +137,10 @@ namespace NanoXLSX_Test.Worksheets
         public void GetFirstColumnNumberTest6(String emptyCellAddress, int expectedFirstRow)
         {
             Worksheet worksheet = new Worksheet();
-            worksheet.AddHiddenRow(3);
-            worksheet.AddHiddenRow(4);
+            worksheet.AddHiddenColumn(3);
+            worksheet.AddHiddenColumn(4);
             worksheet.AddCell(null, emptyCellAddress);
-            int column = worksheet.GetLastRowNumber();
+            int column = worksheet.GetFirstColumnNumber();
             Assert.Equal(expectedFirstRow, column);
         }
 
