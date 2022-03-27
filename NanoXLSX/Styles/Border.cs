@@ -307,10 +307,8 @@ namespace NanoXLSX.Styles
             string output = "";
             switch (style)
             {
-                case StyleValue.none:
-                    output = "";
-                    break;
                 case StyleValue.hair:
+                    output = "hair";
                     break;
                 case StyleValue.dotted:
                     output = "dotted";
@@ -348,9 +346,7 @@ namespace NanoXLSX.Styles
                 case StyleValue.s_double:
                     output = "double";
                     break;
-                default:
-                    output = "";
-                    break;
+               // Default / none is already handled (ignored)
             }
             return output;
         }
