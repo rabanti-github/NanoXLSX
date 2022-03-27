@@ -138,7 +138,7 @@ namespace NanoXLSX.LowLevel
         {
             foreach (XmlNode border in node.ChildNodes)
             {
-                Border borderStyle = new Border();
+                    Border borderStyle = new Border();
                     string diagonalDown = ReaderUtils.GetAttribute("diagonalDown", border);
                     string diagonalUp = ReaderUtils.GetAttribute("diagonalUp", border);
                     if (diagonalDown == "1")
@@ -149,60 +149,62 @@ namespace NanoXLSX.LowLevel
                     {
                         borderStyle.DiagonalUp = true;
                     }
-                    Border.StyleValue styleType;
                     XmlNode innerNode = ReaderUtils.GetChildNode(border, "diagonal");
                     if (innerNode != null)
                     {
-                        string styleValue = ReaderUtils.GetAttribute("style", innerNode);
-                        if (styleValue != null && Enum.TryParse<Border.StyleValue>(styleValue, out styleType))
-                        {
-                            borderStyle.DiagonalStyle = styleType;
-                        }
+                        borderStyle.DiagonalStyle = ParseStyle(innerNode);
                         borderStyle.DiagonalColor = GetColor(innerNode, Border.DEFAULT_COLOR);
                     }
                     innerNode = ReaderUtils.GetChildNode(border, "top");
                     if (innerNode != null)
                     {
-                        string styleValue = ReaderUtils.GetAttribute("style", innerNode);
-                        if (styleValue != null && Enum.TryParse<Border.StyleValue>(styleValue, out styleType))
-                        {
-                            borderStyle.TopStyle = styleType;
-                        }
+                        borderStyle.TopStyle = ParseStyle(innerNode);
                         borderStyle.TopColor = GetColor(innerNode, Border.DEFAULT_COLOR);
                     }
                     innerNode = ReaderUtils.GetChildNode(border, "bottom");
                     if (innerNode != null)
                     {
-                        string styleValue = ReaderUtils.GetAttribute("style", innerNode);
-                        if (styleValue != null && Enum.TryParse<Border.StyleValue>(styleValue, out styleType))
-                        {
-                            borderStyle.BottomStyle = styleType;
-                        }
+                        borderStyle.BottomStyle = ParseStyle(innerNode);
                         borderStyle.BottomColor = GetColor(innerNode, Border.DEFAULT_COLOR);
                     }
                     innerNode = ReaderUtils.GetChildNode(border, "left");
                     if (innerNode != null)
                     {
-                        string styleValue = ReaderUtils.GetAttribute("style", innerNode);
-                        if (styleValue != null && Enum.TryParse<Border.StyleValue>(styleValue, out styleType))
-                        {
-                            borderStyle.LeftStyle = styleType;
-                        }
+                        borderStyle.LeftStyle = ParseStyle(innerNode);
                         borderStyle.LeftColor = GetColor(innerNode, Border.DEFAULT_COLOR);
                     }
                     innerNode = ReaderUtils.GetChildNode(border, "right");
                     if (innerNode != null)
                     {
-                        string styleValue = ReaderUtils.GetAttribute("style", innerNode);
-                        if (styleValue != null && Enum.TryParse<Border.StyleValue>(styleValue, out styleType))
-                        {
-                            borderStyle.RightStyle = styleType;
-                        }
+                        borderStyle.RightStyle = ParseStyle(innerNode);
                         borderStyle.RightColor = GetColor(innerNode, Border.DEFAULT_COLOR);
                     }
                 borderStyle.InternalID = StyleReaderContainer.GetNextBorderId();
                 StyleReaderContainer.AddStyleComponent(borderStyle);
             }
+        }
+
+        /// <summary>
+        /// Tries to parse a border style
+        /// </summary>
+        /// <param name="innerNode">Border sub-node</param>
+        /// <returns>Border type or non if parsing was not successful</returns>
+        private static Border.StyleValue ParseStyle(XmlNode innerNode)
+        {
+            string value = ReaderUtils.GetAttribute("style", innerNode);
+            if (value != null)
+            {
+                if (value.Equals("double", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return Border.StyleValue.s_double; // special handling, since double is not a valid enum value
+                }
+                Border.StyleValue styleType;
+                if (Enum.TryParse<Border.StyleValue>(value, out styleType))
+                {
+                    return styleType;
+                }
+            }
+            return Border.StyleValue.none;
         }
 
         /// <summary>

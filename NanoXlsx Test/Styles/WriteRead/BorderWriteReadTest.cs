@@ -50,6 +50,23 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.False(cell.CellStyle.CurrentBorder.DiagonalDown);
         }
 
+        [Theory(DisplayName = "Test of the writing and reading of the top color style value")]
+        [InlineData("FFAACC00", "test")]
+        [InlineData("FFAADD00", 0.5f)]
+        [InlineData("FFDDCC00", true)]
+        [InlineData("FFAACCDD", null)]
+        public void UpperColorTest(String color, object value)
+        {
+            Style style = new Style();
+            style.CurrentBorder.TopColor = color;
+            style.CurrentBorder.TopStyle = Border.StyleValue.s_double;
+
+            Cell cell = CreateWorkbook(value, style);
+
+            Assert.Equal(color, cell.CellStyle.CurrentBorder.TopColor);
+            Assert.Equal(Border.StyleValue.s_double, cell.CellStyle.CurrentBorder.TopStyle);
+        }
+
 
 
         private static Cell CreateWorkbook(object value, Style style)
