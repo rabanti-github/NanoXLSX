@@ -1,5 +1,14 @@
 # Change Log
 
+## v1.8.6
+
+---
+Release Date: **02.04.2022**
+
+- Added an import option to display phonetic characters (like Ruby Characters / Furigana / Zhuyin Fuhao are now discarded) in strings
+
+Note: Phonetic characters are discarded by default. If the import option "EnforcePhoneticCharacterImport" is set to true, the phonetic transcription will be displayed in brackets, right after the characters to be transcribed
+
 ## v1.8.5
 
 ---
