@@ -96,7 +96,7 @@ namespace NanoXLSX.LowLevel
                     zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
                     MemoryStream ms;
 
-                    SharedStringsReader sharedStrings = new SharedStringsReader();
+                    SharedStringsReader sharedStrings = new SharedStringsReader(importOptions);
                     ms = GetEntryStream("xl/sharedStrings.xml", zf);
                     if (ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
                     {

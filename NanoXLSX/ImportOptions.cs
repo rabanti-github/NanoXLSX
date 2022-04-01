@@ -47,6 +47,12 @@ namespace NanoXLSX
         /// </summary>
         public bool EnforceDateTimesAsNumbers { get; set; }
 
+        /// <summary>
+        /// If true, phonetic characters (like ruby characters / Furigana / Zhuyin fuhao) in strings are added in brackets after the transcribed symbols. By default, phonetic characters are removed from strings.
+        /// </summary>
+        /// <remarks>This option is not applicable to specific rows or a start column (applied globally)</remarks>
+        public bool EnforcePhoneticCharacterImport { get; set; }
+
 
         /// <summary>
         /// Type enforcing rules during import for particular columns
