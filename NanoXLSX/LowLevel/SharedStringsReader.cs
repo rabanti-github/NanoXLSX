@@ -21,6 +21,11 @@ namespace NanoXLSX.LowLevel
     public class SharedStringsReader
     {
 
+        #region privateFields
+        private bool capturePhoneticCharacters = false;
+        private List<PhoneticInfo> phoneticsInfo = null;
+        #endregion
+
         #region properties
 
         /// <summary>
@@ -63,10 +68,19 @@ namespace NanoXLSX.LowLevel
         #region constructors
 
         /// <summary>
-        /// Default constructor
+        /// Constructor with parameters
         /// </summary>
-        public SharedStringsReader()
+        /// <param name="importOptions">Import options instance</param>
+        public SharedStringsReader(ImportOptions importOptions)
         {
+            if (importOptions != null)
+            {
+                this.capturePhoneticCharacters = importOptions.EnforcePhoneticCharacterImport;
+                if (capturePhoneticCharacters)
+                {
+                    phoneticsInfo = new List<PhoneticInfo>();
+                }
+            }
             SharedStrings = new List<string>();
         }
         #endregion
@@ -94,7 +108,14 @@ namespace NanoXLSX.LowLevel
                         {
                             sb.Clear();
                             GetTextToken(node, ref sb);
-                            SharedStrings.Add(sb.ToString());
+                            if (capturePhoneticCharacters)
+                            {
+                                SharedStrings.Add(ProcessPhoneticCharacters(sb));
+                            }
+                            else
+                            {
+                                SharedStrings.Add(sb.ToString());
+                            }
                         }
                     }
                 }
@@ -112,6 +133,17 @@ namespace NanoXLSX.LowLevel
         /// <param name="sb">StringBuilder reference</param>
         private void GetTextToken(XmlNode node, ref StringBuilder sb)
         {
+            if (node.LocalName.Equals("rPh", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (capturePhoneticCharacters && !string.IsNullOrEmpty(node.InnerText))
+                {
+                    string start = node.Attributes.GetNamedItem("sb").InnerText;
+                    string end = node.Attributes.GetNamedItem("eb").InnerText;
+                    phoneticsInfo.Add(new PhoneticInfo(node.InnerText, start, end));
+                }
+                return;
+            }
+
             if (node.LocalName.Equals("t", StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(node.InnerText))
             {
                 sb.Append(node.InnerText);
@@ -125,7 +157,92 @@ namespace NanoXLSX.LowLevel
             }
         }
 
+        /// <summary>
+        /// Function to add determined phonetic tokens
+        /// </summary>
+        /// <param name="sb">Original StringBuilder</param>
+        /// <returns>Text with added phonetic characters (after particular characters, in brackets)</returns>
+        private string ProcessPhoneticCharacters(StringBuilder sb)
+        {
+            if (phoneticsInfo.Count == 0)
+            {
+                return sb.ToString();
+            }
+            String text = sb.ToString();
+            StringBuilder sb2 = new StringBuilder();
+            int currentTextIndex = 0;
+            foreach (PhoneticInfo info in phoneticsInfo)
+            {
+                if (info.IsValid)
+                {
+                    sb2.Append(text.Substring(currentTextIndex, info.StartIndex + info.Length - currentTextIndex));
+                    sb2.Append("(").Append(info.Value).Append(")");
+                    currentTextIndex = info.StartIndex + info.Length;
+                }
+            }
+            sb2.Append(text.Substring(currentTextIndex));
+
+            phoneticsInfo.Clear();
+            return sb2.ToString();
+        }
+
         #endregion
 
+        #region sub-classes
+        /// <summary>
+        /// Class to represent a phonetic transcription of character sequence
+        /// </summary>
+        private class PhoneticInfo
+        {
+            /// <summary>
+            /// Transcription value
+            /// </summary>
+            public String Value { get; private set; }
+            /// <summary>
+            /// Absolute start index within the original string
+            /// </summary>
+            public int StartIndex { get; private set; }
+            /// <summary>
+            /// Number of characters of the original string that are described by this transcription token
+            /// </summary>
+            public int Length { get; private set; }
+            /// <summary>
+            /// If true, the token could be resolved, otherwise it is malformed
+            /// </summary>
+            public bool IsValid { get; private set; }
+
+            /// <summary>
+            /// Constructor with parameters
+            /// </summary>
+            /// <param name="value">Transcription value</param>
+            /// <param name="start">Absolute start index as string</param>
+            /// <param name="end">Absolute end index as string</param>
+            public PhoneticInfo(string value, String start, String end)
+            {
+                IsValid = true;
+                if (string.IsNullOrEmpty(value) || string.IsNullOrEmpty(start) || string.IsNullOrEmpty(end))
+                {
+                    IsValid = false;
+                }
+                else
+                {
+                    int i = 0;
+                    int j = 0;
+                    Value = value;
+                    if (!int.TryParse(start, out i))
+                    {
+                        IsValid = false;
+                    }
+                    if (!int.TryParse(end, out j))
+                    {
+                        IsValid = false;
+                    }
+                    StartIndex = i;
+                    Length = j - i;
+                }
+            }
+        }
+
+        #endregion
     }
 }

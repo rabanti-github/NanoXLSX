@@ -100,6 +100,12 @@ namespace NanoXLSX
         public bool EnforceDateTimesAsNumbers { get; set; }
 
         /// <summary>
+        /// If true, phonetic characters (like ruby characters / Furigana / Zhuyin fuhao) in strings are added in brackets after the transcribed symbols. By default, phonetic characters are removed from strings.
+        /// </summary>
+        /// <remarks>This option is not applicable to specific rows or a start column (applied globally)</remarks>
+        public bool EnforcePhoneticCharacterImport { get; set; }
+
+        /// <summary>
         /// If true, empty cells will be interpreted as type of string with an empty value. If false, the type will be Empty and the value null
         /// </summary>
         public bool EnforceEmptyValuesAsString { get; set; }
