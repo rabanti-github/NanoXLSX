@@ -981,7 +981,7 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, importOptions, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of all the failing casting on an invalid Date or TimeSpan value")]
+        [Theory(DisplayName = "Test of the failing casting on an invalid Date or TimeSpan value")]
         [InlineData(ImportOptions.ColumnType.Time, "55.81.202x")]
         [InlineData(ImportOptions.ColumnType.Date, "2022-18-22 15:6x:00")]
         [InlineData(ImportOptions.ColumnType.Time, "10000-01-01 00:00:00")]
@@ -1000,7 +1000,7 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object,object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Fact(DisplayName = "Test of all the failing casting on an TimeSpan with an invalid (too high) number of days")]
+        [Fact(DisplayName = "Test of the failing casting on an TimeSpan with an invalid (too high) number of days")]
         void InvalidDateCastingTest2()
         {
             ImportOptions options = new ImportOptions();
@@ -1014,6 +1014,29 @@ namespace NanoXLSX_Test.Reader
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
+        [Theory(DisplayName = "Test of the import option to process or discard phonetic characters in strings")]
+        [InlineData(0, 1, false)]
+        [InlineData(0, 2, true)]
+        void PhnoneticCharactersImportOptionTest(int givenValuesColumn, int expectedValuesColumn, bool importOptionValue)
+        {
+            // Note: Cells in column A contains the strings with phonetic characters.
+            // The corresponding Cells in column B contains the values without enabled import option.
+            // The cells in column C contains the values with the import option enabled.
+            // The values starts at Row 2 (Index 1)
+
+            ImportOptions options = new ImportOptions();
+            options.EnforcePhoneticCharacterImport = importOptionValue;
+            Stream stream = TestUtils.GetResource("phonetics.xlsx");
+            Workbook workbook = Workbook.Load(stream, options);
+
+            int lastRow = workbook.Worksheets[0].GetLastDataRowNumber();
+            for(int r = 1; r <= lastRow; r++)
+            {
+                String given = workbook.Worksheets[0].GetCell(new Address(givenValuesColumn, r)).Value.ToString();
+                String expected = workbook.Worksheets[0].GetCell(new Address(expectedValuesColumn, r)).Value.ToString();
+                Assert.Equal(expected, given);
+            }
+        }
 
         private static void AssertValues<T, D>(Dictionary<string, T> givenCells, ImportOptions importOptions, Action<object, object> assertionAction, Dictionary<string, D> expectedCells = null)
         {

@@ -15,6 +15,7 @@
 	<None Remove="Resources\invalid_workbook_sheet-definition.xlsx" />
     <None Remove="Resources\invalid_worksheet.xlsx" />
     <None Remove="Resources\missing_worksheet.xlsx" />
+    <None Remove="Resources\phonetics.xlsx" />
     <None Remove="Resources\tampered.xlsx" />
   </ItemGroup>
 
@@ -28,6 +29,7 @@
 	  <EmbeddedResource Include="Resources\missing_worksheet.xlsx">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\phonetics.xlsx" />
 	<EmbeddedResource Include="Resources\tampered.xlsx" />
   </ItemGroup>
 
