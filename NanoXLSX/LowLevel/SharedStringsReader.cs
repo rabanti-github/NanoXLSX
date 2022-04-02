@@ -21,8 +21,8 @@ namespace NanoXLSX.LowLevel
     public class SharedStringsReader
     {
         #region privateFields
-        private bool capturePhoneticCharacters = false;
-        private List<PhoneticInfo> phoneticsInfo = null;
+        private readonly bool capturePhoneticCharacters = false;
+        private readonly List<PhoneticInfo> phoneticsInfo = null;
         #endregion
 
         #region properties
@@ -75,7 +75,7 @@ namespace NanoXLSX.LowLevel
             if (importOptions != null)
             {
                 this.capturePhoneticCharacters = importOptions.EnforcePhoneticCharacterImport;
-                if (capturePhoneticCharacters)
+                if (this.capturePhoneticCharacters)
                 {
                     phoneticsInfo = new List<PhoneticInfo>();
                 }
@@ -172,12 +172,9 @@ namespace NanoXLSX.LowLevel
             int currentTextIndex = 0;
             foreach (PhoneticInfo info in phoneticsInfo)
             {
-                if (info.IsValid)
-                {
-                    sb2.Append(text.Substring(currentTextIndex, info.StartIndex + info.Length - currentTextIndex));
-                    sb2.Append("(").Append(info.Value).Append(")");
-                    currentTextIndex = info.StartIndex + info.Length;
-                }
+                sb2.Append(text.Substring(currentTextIndex, info.StartIndex + info.Length - currentTextIndex));
+                sb2.Append("(").Append(info.Value).Append(")");
+                currentTextIndex = info.StartIndex + info.Length;
             }
             sb2.Append(text.Substring(currentTextIndex));
 
@@ -189,7 +186,8 @@ namespace NanoXLSX.LowLevel
         #endregion
 
         /// <summary>
-        /// Class to represent a phonetic transcription of character sequence
+        /// Class to represent a phonetic transcription of character sequence.
+        /// Note: Invalid values will lead to a crash. The specifications requires a start index, an end index and a value
         /// </summary>
         private class PhoneticInfo
         {
@@ -205,10 +203,6 @@ namespace NanoXLSX.LowLevel
             /// Number of characters of the original string that are described by this transcription token
             /// </summary>
             public int Length { get; private set; }
-            /// <summary>
-            /// If true, the token could be resolved, otherwise it is malformed
-            /// </summary>
-            public bool IsValid { get; private set; }
 
             /// <summary>
             /// Constructor with parameters
@@ -218,27 +212,10 @@ namespace NanoXLSX.LowLevel
             /// <param name="end">Absolute end index as string</param>
             public PhoneticInfo(string value, String start, String end)
             {
-                IsValid = true;
-                if (string.IsNullOrEmpty(value) || string.IsNullOrEmpty(start) || string.IsNullOrEmpty(end))
-                {
-                    IsValid = false;
-                }
-                else
-                {
-                    int i = 0;
-                    int j = 0;
-                    Value = value;
-                    if (!int.TryParse(start, out i))
-                    {
-                        IsValid = false;
-                    }
-                    if (!int.TryParse(end, out j))
-                    {
-                        IsValid = false;
-                    }
-                    StartIndex = i;
-                    Length = j-i;
-                }
+                Value = value;
+                StartIndex = int.Parse(start);
+                Length = int.Parse(end) - StartIndex;
+
             }
         }
 
