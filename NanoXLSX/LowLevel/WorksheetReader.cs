@@ -140,9 +140,9 @@ namespace NanoXLSX.LowLevel
             string value = "";
             if (rowChild.LocalName.Equals("c", StringComparison.InvariantCultureIgnoreCase))
             {
-                address = ReaderUtils.GetAttribute("r", rowChild); // Mandatory
-                type = ReaderUtils.GetAttribute("t", rowChild); // can be null if not existing
-                styleNumber = ReaderUtils.GetAttribute("s", rowChild); // can be null
+                address = ReaderUtils.GetAttribute(rowChild, "r"); // Mandatory
+                type = ReaderUtils.GetAttribute(rowChild, "t"); // can be null if not existing
+                styleNumber = ReaderUtils.GetAttribute(rowChild, "s"); // can be null
                 if (rowChild.HasChildNodes)
                 {
                     foreach (XmlNode valueNode in rowChild.ChildNodes)

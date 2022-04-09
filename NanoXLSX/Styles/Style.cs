@@ -160,14 +160,16 @@ namespace NanoXLSX.Styles
         /// <returns>String of a class instance</returns>
         public override string ToString()
         {
-            if (string.IsNullOrEmpty(Name))
-            {
-                return this.GetHashCode().ToString();
-            }
-            else
-            {
-                return Name + "->" + this.GetHashCode();
-            }
+            StringBuilder sb = new StringBuilder();
+            sb.Append("{\n\"Style\": {\n");
+            AddPropertyAsJson(sb, "Name", Name);
+            AddPropertyAsJson(sb, "HashCode", this.GetHashCode());
+            sb.Append(CurrentBorder.ToString()).Append(",\n");
+            sb.Append(CurrentCellXf.ToString()).Append(",\n");
+            sb.Append(CurrentFill.ToString()).Append(",\n");
+            sb.Append(CurrentFont.ToString()).Append(",\n");
+            sb.Append(CurrentNumberFormat.ToString()).Append("\n}\n}");
+            return sb.ToString();
         }
 
         /// <summary>

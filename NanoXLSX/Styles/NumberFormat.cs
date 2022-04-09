@@ -7,6 +7,7 @@
 
 using NanoXLSX.Exceptions;
 using System.Collections.Generic;
+using System.Text;
 
 namespace NanoXLSX.Styles
 {
@@ -269,7 +270,14 @@ namespace NanoXLSX.Styles
         /// <returns>String of a class</returns>
         public override string ToString()
         {
-            return "NumberFormat:" + this.GetHashCode();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("\"NumberFormat\": {\n");
+            AddPropertyAsJson(sb, "CustomFormatCode", CustomFormatCode);
+            AddPropertyAsJson(sb, "CustomFormatID", CustomFormatID);
+            AddPropertyAsJson(sb, "Number", Number);
+            AddPropertyAsJson(sb, "HashCode", this.GetHashCode(), true);
+            sb.Append("\n}");
+            return sb.ToString();
         }
 
         /// <summary>

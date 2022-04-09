@@ -7,6 +7,7 @@
 
 using NanoXLSX.Exceptions;
 using System.Collections.Generic;
+using System.Text;
 
 namespace NanoXLSX.Styles
 {
@@ -237,7 +238,24 @@ namespace NanoXLSX.Styles
         /// <returns>String of a class</returns>
         public override string ToString()
         {
-            return "Font:" + this.GetHashCode();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("\"Font\": {\n");
+            AddPropertyAsJson(sb, "Bold", Bold);
+            AddPropertyAsJson(sb, "Charset", Charset);
+            AddPropertyAsJson(sb, "ColorTheme", ColorTheme);
+            AddPropertyAsJson(sb, "ColorValue", ColorValue);
+            AddPropertyAsJson(sb, "VerticalAlign", VerticalAlign);
+            AddPropertyAsJson(sb, "DoubleUnderline", DoubleUnderline);
+            AddPropertyAsJson(sb, "Family", Family);
+            AddPropertyAsJson(sb, "Italic", Italic);
+            AddPropertyAsJson(sb, "Name", Name);
+            AddPropertyAsJson(sb, "Scheme", Scheme);
+            AddPropertyAsJson(sb, "Size", Size);
+            AddPropertyAsJson(sb, "Strike", Strike);
+            AddPropertyAsJson(sb, "Underline", Underline);
+            AddPropertyAsJson(sb, "HashCode", this.GetHashCode(), true);
+            sb.Append("\n}");
+            return sb.ToString();
         }
 
         /// <summary>

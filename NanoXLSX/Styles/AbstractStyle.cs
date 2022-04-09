@@ -117,6 +117,30 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
+        /// Append a JSON property for debug purpose (used in the ToString methods) to the passed string builder
+        /// </summary>
+        /// <param name="sb">String builder</param>
+        /// <param name="name">Property name</param>
+        /// <param name="value">Property value</param>
+        /// <param name="terminate">If true, no comma and newline will be appended</param>
+        internal static void AddPropertyAsJson(StringBuilder sb, String name, object value, bool terminate = false)
+        {
+            sb.Append("\"").Append(name).Append("\": ");
+            if (value == null)
+            {
+                sb.Append("\"\"");
+            }
+            else
+            {
+                sb.Append("\"").Append(value.ToString().Replace("\"", "\\\"")).Append("\"");
+            }
+            if (!terminate)
+            {
+                sb.Append(",\n");
+            }
+        }
+
+        /// <summary>
         /// Attribute designated to control the copying of style properties
         /// </summary>
         /// <seealso cref="System.Attribute" />

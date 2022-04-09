@@ -19,11 +19,11 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Gets the XML attribute of the passed XML node by its name
         /// </summary>
-        /// <param name="targetName">Name of the target attribute</param>
         /// <param name="node">XML node that contains the attribute</param>
+        /// <param name="targetName">Name of the target attribute</param>
         /// <param name="fallbackValue">Optional fallback value if the attribute was not found. Default is null</param>
         /// <returns>Attribute value as string or default value if not found (can be null)</returns>
-        public static string GetAttribute(string targetName, XmlNode node, string fallbackValue = null)
+        public static string GetAttribute(XmlNode node, string targetName, string fallbackValue = null)
         {
             if (node.Attributes == null || node.Attributes.Count == 0)
             {

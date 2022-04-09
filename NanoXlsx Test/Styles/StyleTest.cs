@@ -357,7 +357,7 @@ namespace NanoXLSX_Test.Styles
             string hashCode = style.GetHashCode().ToString();
             Assert.NotEqual(s1, s2);
             Assert.Contains("Test1", s2);
-            Assert.Equal(hashCode, s3);
+            Assert.Contains(hashCode, s3);
         }
 
     }

@@ -83,9 +83,9 @@ namespace NanoXLSX.LowLevel
             {
                 try
                 {
-                    string sheetName = ReaderUtils.GetAttribute("name", node, "worksheet1");
-                    int id = int.Parse(ReaderUtils.GetAttribute("sheetId", node), CultureInfo.InvariantCulture); // Default will rightly throw an exception
-                    string state = ReaderUtils.GetAttribute("state", node);
+                    string sheetName = ReaderUtils.GetAttribute(node, "name", "worksheet1");
+                    int id = int.Parse(ReaderUtils.GetAttribute(node, "sheetId"), CultureInfo.InvariantCulture); // Default will rightly throw an exception
+                    string state = ReaderUtils.GetAttribute(node, "state");
                     bool hidden = false;
                     if (state != null && state.ToLower() == "hidden")
                     {

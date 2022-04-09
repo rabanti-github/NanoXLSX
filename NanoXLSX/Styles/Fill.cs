@@ -7,6 +7,7 @@
 
 using NanoXLSX.Exceptions;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace NanoXLSX.Styles
@@ -48,7 +49,10 @@ namespace NanoXLSX.Styles
         /// </summary>
         public enum PatternValue
         {
-            /// <summary>No pattern (default)</summary>
+            /// <summary>
+            /// No pattern (default)
+            /// </summary>
+            /// <remarks>The value none will lead to a invalidation of the foreground or background color values</remarks>
             none,
             /// <summary>Solid fill (for colors)</summary>
             solid,
@@ -74,6 +78,8 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the background color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
+        /// <remarks>If a background color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.none">PatternValue.none</see>, 
+        /// the PatternFill property will be automatically set to <see cref="PatternValue.solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
         [Append]
         public string BackgroundColor
         {
@@ -82,11 +88,17 @@ namespace NanoXLSX.Styles
             {
                 ValidateColor(value, true);
                 backgroundColor = value;
+                if (PatternFill == PatternValue.none)
+                {
+                    PatternFill = PatternValue.solid;
+                }
             }
         }
         /// <summary>
         /// Gets or sets the foreground color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
+        /// <remarks>If a foreground color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.none">PatternValue.none</see>, 
+        /// the PatternFill property will be automatically set to <see cref="PatternValue.solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
         [Append]
         public string ForegroundColor
         {
@@ -95,6 +107,10 @@ namespace NanoXLSX.Styles
             {
                 ValidateColor(value, true);
                 foregroundColor = value;
+                if (PatternFill == PatternValue.none)
+                {
+                    PatternFill = PatternValue.solid;
+                }
             }
         }
         /// <summary>
@@ -163,7 +179,15 @@ namespace NanoXLSX.Styles
         /// <returns>String of a class</returns>
         public override string ToString()
         {
-            return "Fill:" + this.GetHashCode();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("\"Fill\": {\n");
+            AddPropertyAsJson(sb, "BackgroundColor", BackgroundColor);
+            AddPropertyAsJson(sb, "ForegroundColor", ForegroundColor);
+            AddPropertyAsJson(sb, "IndexedColor", IndexedColor);
+            AddPropertyAsJson(sb, "PatternFill", PatternFill);
+            AddPropertyAsJson(sb, "HashCode", this.GetHashCode(), true);
+            sb.Append("\n}");
+            return sb.ToString();
         }
 
         /// <summary>

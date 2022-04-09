@@ -6,6 +6,7 @@
  */
 
 using NanoXLSX.Exceptions;
+using System.Text;
 
 namespace NanoXLSX.Styles
 {
@@ -241,7 +242,20 @@ namespace NanoXLSX.Styles
         /// <returns>String of a class instance</returns>
         public override string ToString()
         {
-            return "StyleXF:" + this.GetHashCode();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("\"StyleXF\": {\n");
+            AddPropertyAsJson(sb, "HorizontalAlign", HorizontalAlign);
+            AddPropertyAsJson(sb, "Alignment", Alignment);
+            AddPropertyAsJson(sb, "TextDirection", TextDirection);
+            AddPropertyAsJson(sb, "TextRotation", TextRotation);
+            AddPropertyAsJson(sb, "VerticalAlign", VerticalAlign);
+            AddPropertyAsJson(sb, "ForceApplyAlignment", ForceApplyAlignment);
+            AddPropertyAsJson(sb, "Locked", Locked);
+            AddPropertyAsJson(sb, "Hidden", Hidden);
+            AddPropertyAsJson(sb, "Indent", Indent);
+            AddPropertyAsJson(sb, "HashCode", this.GetHashCode(), true);
+            sb.Append("\n}");
+            return sb.ToString();
         }
 
         /// <summary>

@@ -6,6 +6,7 @@
  */
 
 using System.Collections.Generic;
+using System.Text;
 
 namespace NanoXLSX.Styles
 {
@@ -258,7 +259,22 @@ namespace NanoXLSX.Styles
         /// <returns>String of a class</returns>
         public override string ToString()
         {
-            return "Border:" + this.GetHashCode();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("\"Border\": {\n");
+            AddPropertyAsJson(sb, "BottomStyle", BottomStyle);
+            AddPropertyAsJson(sb, "DiagonalColor", DiagonalColor);
+            AddPropertyAsJson(sb, "DiagonalDown", DiagonalDown);
+            AddPropertyAsJson(sb, "DiagonalStyle", DiagonalStyle);
+            AddPropertyAsJson(sb, "DiagonalUp", DiagonalUp);
+            AddPropertyAsJson(sb, "LeftColor", LeftColor);
+            AddPropertyAsJson(sb, "LeftStyle", LeftStyle);
+            AddPropertyAsJson(sb, "RightColor", RightColor);
+            AddPropertyAsJson(sb, "RightStyle", RightStyle);
+            AddPropertyAsJson(sb, "TopColor", TopColor);
+            AddPropertyAsJson(sb, "TopStyle", TopStyle);
+            AddPropertyAsJson(sb, "HashCode", this.GetHashCode(), true);
+            sb.Append("\n}");
+            return sb.ToString();
         }
 
         /// <summary>

@@ -67,6 +67,10 @@ namespace NanoXLSX.LowLevel
                         {
                             GetBorders(node);
                         }
+                        else if (node.LocalName.Equals("fills", StringComparison.InvariantCultureIgnoreCase)) // Handles fills
+                        {
+                            GetFills(node);
+                        }
                         // TODO: Implement other style components
                     }
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes) // Redo for composition after all style parts are gathered; standard number formats
@@ -98,8 +102,8 @@ namespace NanoXLSX.LowLevel
                     if (childNode.LocalName.Equals("numfmt", StringComparison.InvariantCultureIgnoreCase))
                     {
                         NumberFormat numberFormat = new NumberFormat();
-                        int id = int.Parse(ReaderUtils.GetAttribute("numFmtId", childNode)); // Default will (justified) throw an exception
-                        string code = ReaderUtils.GetAttribute("formatCode", childNode, string.Empty);
+                        int id = int.Parse(ReaderUtils.GetAttribute(childNode, "numFmtId")); // Default will (justified) throw an exception
+                        string code = ReaderUtils.GetAttribute(childNode, "formatCode", string.Empty);
 
                         if (id < NumberFormat.CUSTOMFORMAT_START_NUMBER)
                         {
@@ -138,60 +142,60 @@ namespace NanoXLSX.LowLevel
         {
             foreach (XmlNode border in node.ChildNodes)
             {
-                    Border borderStyle = new Border();
-                    string diagonalDown = ReaderUtils.GetAttribute("diagonalDown", border);
-                    string diagonalUp = ReaderUtils.GetAttribute("diagonalUp", border);
-                    if (diagonalDown == "1")
-                    {
-                        borderStyle.DiagonalDown = true;
-                    }
-                    if (diagonalUp == "1")
-                    {
-                        borderStyle.DiagonalUp = true;
-                    }
-                    XmlNode innerNode = ReaderUtils.GetChildNode(border, "diagonal");
-                    if (innerNode != null)
-                    {
-                        borderStyle.DiagonalStyle = ParseStyle(innerNode);
-                        borderStyle.DiagonalColor = GetColor(innerNode, Border.DEFAULT_COLOR);
-                    }
-                    innerNode = ReaderUtils.GetChildNode(border, "top");
-                    if (innerNode != null)
-                    {
-                        borderStyle.TopStyle = ParseStyle(innerNode);
-                        borderStyle.TopColor = GetColor(innerNode, Border.DEFAULT_COLOR);
-                    }
-                    innerNode = ReaderUtils.GetChildNode(border, "bottom");
-                    if (innerNode != null)
-                    {
-                        borderStyle.BottomStyle = ParseStyle(innerNode);
-                        borderStyle.BottomColor = GetColor(innerNode, Border.DEFAULT_COLOR);
-                    }
-                    innerNode = ReaderUtils.GetChildNode(border, "left");
-                    if (innerNode != null)
-                    {
-                        borderStyle.LeftStyle = ParseStyle(innerNode);
-                        borderStyle.LeftColor = GetColor(innerNode, Border.DEFAULT_COLOR);
-                    }
-                    innerNode = ReaderUtils.GetChildNode(border, "right");
-                    if (innerNode != null)
-                    {
-                        borderStyle.RightStyle = ParseStyle(innerNode);
-                        borderStyle.RightColor = GetColor(innerNode, Border.DEFAULT_COLOR);
-                    }
+                Border borderStyle = new Border();
+                String diagonalDown = ReaderUtils.GetAttribute(border, "diagonalDown");
+                String diagonalUp = ReaderUtils.GetAttribute(border, "diagonalUp");
+                if (diagonalDown != null && diagonalDown == "1")
+                {
+                    borderStyle.DiagonalDown = true;
+                }
+                if (diagonalUp != null && diagonalUp == "1")
+                {
+                    borderStyle.DiagonalUp = true;
+                }
+                XmlNode innerNode = ReaderUtils.GetChildNode(border, "diagonal");
+                if (innerNode != null)
+                {
+                    borderStyle.DiagonalStyle = ParseBorderStyle(innerNode);
+                    borderStyle.DiagonalColor = GetColor(innerNode, Border.DEFAULT_COLOR);
+                }
+                innerNode = ReaderUtils.GetChildNode(border, "top");
+                if (innerNode != null)
+                {
+                    borderStyle.TopStyle = ParseBorderStyle(innerNode);
+                    borderStyle.TopColor = GetColor(innerNode, Border.DEFAULT_COLOR);
+                }
+                innerNode = ReaderUtils.GetChildNode(border, "bottom");
+                if (innerNode != null)
+                {
+                    borderStyle.BottomStyle = ParseBorderStyle(innerNode);
+                    borderStyle.BottomColor = GetColor(innerNode, Border.DEFAULT_COLOR);
+                }
+                innerNode = ReaderUtils.GetChildNode(border, "left");
+                if (innerNode != null)
+                {
+                    borderStyle.LeftStyle = ParseBorderStyle(innerNode);
+                    borderStyle.LeftColor = GetColor(innerNode, Border.DEFAULT_COLOR);
+                }
+                innerNode = ReaderUtils.GetChildNode(border, "right");
+                if (innerNode != null)
+                {
+                    borderStyle.RightStyle = ParseBorderStyle(innerNode);
+                    borderStyle.RightColor = GetColor(innerNode, Border.DEFAULT_COLOR);
+                }
                 borderStyle.InternalID = StyleReaderContainer.GetNextBorderId();
                 StyleReaderContainer.AddStyleComponent(borderStyle);
             }
         }
 
-        /// <summary>
-        /// Tries to parse a border style
-        /// </summary>
-        /// <param name="innerNode">Border sub-node</param>
-        /// <returns>Border type or non if parsing was not successful</returns>
-        private static Border.StyleValue ParseStyle(XmlNode innerNode)
+            /// <summary>
+            /// Tries to parse a border style
+            /// </summary>
+            /// <param name="innerNode">Border sub-node</param>
+            /// <returns>Border type or non if parsing was not successful</returns>
+            private static Border.StyleValue ParseBorderStyle(XmlNode innerNode)
         {
-            string value = ReaderUtils.GetAttribute("style", innerNode);
+            string value = ReaderUtils.GetAttribute(innerNode, "style");
             if (value != null)
             {
                 if (value.Equals("double", StringComparison.InvariantCultureIgnoreCase))
@@ -208,6 +212,54 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
+        /// Determines the fills in an XML node of the style document
+        /// </summary>
+        /// <param name="node">Fill root node</param>
+        private void GetFills(XmlNode node)
+        {
+            foreach (XmlNode fill in node.ChildNodes)
+            {
+                Fill fillStyle = new Fill();
+                XmlNode innerNode = ReaderUtils.GetChildNode(fill, "patternFill");
+                String pattern = ReaderUtils.GetAttribute(innerNode, "patternType");
+                if (innerNode != null)
+                {
+                    Fill.PatternValue patternValue;
+                    if (Enum.TryParse<Fill.PatternValue>(pattern, out patternValue))
+                    {
+                        fillStyle.PatternFill = patternValue;
+                    }
+                    XmlNode foregroundNode = ReaderUtils.GetChildNode(innerNode, "fgColor");
+                    if (foregroundNode != null)
+                    {
+                        String foregroundRgba = ReaderUtils.GetAttribute(foregroundNode, "rgb");
+                        if (!string.IsNullOrEmpty(foregroundRgba))
+                        {
+                            fillStyle.ForegroundColor = foregroundRgba;
+                        }
+                    }
+                    XmlNode backgroundNode = ReaderUtils.GetChildNode(innerNode, "bgColor");
+                    if (backgroundNode != null)
+                    {
+                        String backgroundRgba = ReaderUtils.GetAttribute(backgroundNode, "rgb");
+                        if (!string.IsNullOrEmpty(backgroundRgba))
+                        {
+                            fillStyle.BackgroundColor = backgroundRgba;
+                        }
+                        String backgroundIndex = ReaderUtils.GetAttribute(backgroundNode, "indexed");
+                        if (!String.IsNullOrEmpty(backgroundIndex))
+                        {
+                            fillStyle.IndexedColor = int.Parse(backgroundIndex);
+                        }
+                    }
+                }
+
+                fillStyle.InternalID = StyleReaderContainer.GetNextFillId();
+                StyleReaderContainer.AddStyleComponent(fillStyle);
+            }
+        }
+
+        /// <summary>
         /// Determines the cell XF entries in an XML node of the style document
         /// </summary>
         /// <param name="node">Cell XF root node</param>
@@ -220,7 +272,7 @@ namespace NanoXLSX.LowLevel
                     if (ReaderUtils.IsNode(childNode, "xf"))
                     {
                         Style style = new Style();
-                        int id = int.Parse(ReaderUtils.GetAttribute("numFmtId", childNode));
+                        int id = int.Parse(ReaderUtils.GetAttribute(childNode, "numFmtId"));
                         NumberFormat format = StyleReaderContainer.GetNumberFormat(id, true);
                         if (format == null)
                         {
@@ -233,17 +285,25 @@ namespace NanoXLSX.LowLevel
                             format.InternalID = StyleReaderContainer.GetNextNumberFormatId();
                             StyleReaderContainer.AddStyleComponent(format);
                         }
-                        id = int.Parse(ReaderUtils.GetAttribute("borderId", childNode));
+                        id = int.Parse(ReaderUtils.GetAttribute(childNode, "borderId"));
                         Border border = StyleReaderContainer.GetBorder(id, true);
                         if (border == null)
                         {
                             border = new Border();
                             border.InternalID = StyleReaderContainer.GetNextBorderId();
                         }
+                        id = int.Parse(ReaderUtils.GetAttribute(childNode, "fillId"));
+                        Fill fill = StyleReaderContainer.GetFill(id, true);
+                        if (fill == null)
+                        {
+                            fill = new Fill();
+                            fill.InternalID = StyleReaderContainer.GetNextFillId();
+                        }
                         
                         // TODO: Implement other style information
                         style.CurrentNumberFormat = format;
                         style.CurrentBorder = border;
+                        style.CurrentFill = fill;
                         style.InternalID = StyleReaderContainer.GetNextStyleId();
 
                         StyleReaderContainer.AddStyleComponent(style);
@@ -267,7 +327,7 @@ namespace NanoXLSX.LowLevel
             XmlNode childNode = ReaderUtils.GetChildNode(node, "color");
             if (childNode != null)
             {
-                return ReaderUtils.GetAttribute("rgb", childNode);
+                return ReaderUtils.GetAttribute(childNode, "rgb");
             }
             return fallback;
         }
