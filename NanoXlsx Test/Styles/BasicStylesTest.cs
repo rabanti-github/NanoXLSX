@@ -41,7 +41,7 @@ namespace NanoXLSX_Test.Styles
         {
             Style style = BasicStyles.Underline;
             Assert.NotNull(style);
-            Assert.True(style.CurrentFont.Underline);
+            Assert.Equal(Font.UnderlineValue.u_single, style.CurrentFont.Underline);
         }
 
         [Fact(DisplayName = "Test of the static DoubleUnderline style")]
@@ -49,7 +49,7 @@ namespace NanoXLSX_Test.Styles
         {
             Style style = BasicStyles.DoubleUnderline;
             Assert.NotNull(style);
-            Assert.True(style.CurrentFont.DoubleUnderline);
+            Assert.Equal(Font.UnderlineValue.u_double, style.CurrentFont.Underline);
         }
 
         [Fact(DisplayName = "Test of the static Strike style")]

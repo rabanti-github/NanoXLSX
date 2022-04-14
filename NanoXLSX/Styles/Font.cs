@@ -79,6 +79,23 @@ namespace NanoXLSX.Styles
             /// <summary>Text will be rendered normal</summary>
             none,
         }
+
+        /// <summary>
+        /// Enum for the style of the underline property of a stylized text
+        /// </summary>
+        public enum UnderlineValue
+        {
+            /// <summary>Text contains a single underline</summary>
+            u_single,
+            /// <summary>Text contains a double underline</summary>
+            u_double,
+            /// <summary>Text contains a single, accounting underline</summary>
+            singleAccounting,
+            /// <summary>Text contains a double, accounting underline</summary>
+            doubleAccounting,
+            /// <summary>Text contains no underline (default)</summary>
+            none,
+        }
         #endregion
 
         #region privateFields
@@ -94,6 +111,22 @@ namespace NanoXLSX.Styles
         /// </summary>
         [Append]
         public bool Bold { get; set; }
+        /// <summary>
+        /// Gets or sets whether the font is italic. If true, the font is declared as italic
+        /// </summary>
+        [Append]
+        public bool Italic { get; set; }
+        /// <summary>
+        /// Gets or sets whether the font is struck through. If true, the font is declared as strike-through
+        /// </summary>
+        [Append]
+        public bool Strike { get; set; }
+        /// <summary>
+        /// Gets or sets the underline style of the font. If set to <a cref="UnderlineValue.none">none</a> no underline will be applied (default)
+        /// </summary>
+        [Append]
+        public UnderlineValue Underline { get; set; } = UnderlineValue.none;
+
         /// <summary>
         /// Gets or sets the char set of the Font (Default is empty)
         /// </summary>
@@ -131,11 +164,6 @@ namespace NanoXLSX.Styles
             } 
         }
         /// <summary>
-        /// Gets or sets whether the font has a double underline. If true, the font is declared with a double underline
-        /// </summary>
-        [Append]
-        public bool DoubleUnderline { get; set; }
-        /// <summary>
         ///  Gets or sets the font family (Default is 2)
         /// </summary>
         [Append]
@@ -152,11 +180,7 @@ namespace NanoXLSX.Styles
                 return Equals(temp);
             }
         }
-        /// <summary>
-        /// Gets or sets whether the font is italic. If true, the font is declared as italic
-        /// </summary>
-        [Append]
-        public bool Italic { get; set; }
+
 
         /// <summary>
         /// Gets or sets the font name (Default is Calibri)
@@ -197,16 +221,7 @@ namespace NanoXLSX.Styles
                 else { size = value; }
             }
         }
-        /// <summary>
-        /// Gets or sets whether the font is struck through. If true, the font is declared as strike-through
-        /// </summary>
-        [Append]
-        public bool Strike { get; set; }
-        /// <summary>
-        /// Gets or sets whether the font is underlined. If true, the font is declared as underlined
-        /// </summary>
-        [Append]
-        public bool Underline { get; set; }
+
         /// <summary>
         /// Gets or sets the alignment of the font (Default is none)
         /// </summary>
@@ -245,7 +260,6 @@ namespace NanoXLSX.Styles
             AddPropertyAsJson(sb, "ColorTheme", ColorTheme);
             AddPropertyAsJson(sb, "ColorValue", ColorValue);
             AddPropertyAsJson(sb, "VerticalAlign", VerticalAlign);
-            AddPropertyAsJson(sb, "DoubleUnderline", DoubleUnderline);
             AddPropertyAsJson(sb, "Family", Family);
             AddPropertyAsJson(sb, "Italic", Italic);
             AddPropertyAsJson(sb, "Name", Name);
@@ -270,7 +284,6 @@ namespace NanoXLSX.Styles
             copy.ColorTheme = ColorTheme;
             copy.ColorValue = ColorValue;
             copy.VerticalAlign = VerticalAlign;
-            copy.DoubleUnderline = DoubleUnderline;
             copy.Family = Family;
             copy.Italic = Italic;
             copy.Name = Name;
@@ -295,7 +308,6 @@ namespace NanoXLSX.Styles
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Charset);
             hashCode = hashCode * -1521134295 + ColorTheme.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ColorValue);
-            hashCode = hashCode * -1521134295 + DoubleUnderline.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Family);
             hashCode = hashCode * -1521134295 + Italic.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);

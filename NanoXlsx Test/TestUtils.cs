@@ -1,4 +1,5 @@
 ﻿using NanoXLSX;
+using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -92,6 +93,20 @@ namespace NanoXLSX_Test
                 return sourceValue.ToString(CultureInfo.InvariantCulture);
             }
             throw new ArgumentException("Not implemented source type: " + sourceType);
+        }
+
+        public static Cell SaveAndReadStyledCell(object value, Style style, string targetCellAddress)
+        {
+            Workbook workbook = new Workbook(false);
+            workbook.AddWorksheet("sheet1");
+            workbook.CurrentWorksheet.AddCell(value, targetCellAddress, style);
+            MemoryStream stream = new MemoryStream();
+            workbook.SaveAsStream(stream, true);
+            stream.Position = 0;
+            Workbook givenWorkbook = Workbook.Load(stream);
+            Cell cell = givenWorkbook.CurrentWorksheet.Cells[targetCellAddress];
+            Assert.Equal(value, cell.Value);
+            return cell;
         }
 
     }

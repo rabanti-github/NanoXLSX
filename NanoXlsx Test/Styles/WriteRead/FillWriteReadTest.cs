@@ -21,7 +21,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         {
             Style style = new Style();
             style.CurrentFill.ForegroundColor = color;
-            Cell cell = CreateWorkbook(value, style);
+            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentFill.ForegroundColor);
             Assert.NotEqual(Fill.PatternValue.none, cell.CellStyle.CurrentFill.PatternFill);
@@ -37,24 +37,27 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Style style = new Style();
             style.CurrentFill.BackgroundColor = color;
             style.CurrentFill.PatternFill = Fill.PatternValue.darkGray;
-            Cell cell = CreateWorkbook(value, style);
+            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentFill.BackgroundColor);
             Assert.Equal(Fill.PatternValue.darkGray, cell.CellStyle.CurrentFill.PatternFill);
         }
 
-        private static Cell CreateWorkbook(object value, Style style)
+        [Theory(DisplayName = "Test of the writing and reading of the pattern value for fills styles")]
+        [InlineData(Fill.PatternValue.solid, "test")]
+        [InlineData(Fill.PatternValue.darkGray, 0.5f)]
+        [InlineData(Fill.PatternValue.gray0625, true)]
+        [InlineData(Fill.PatternValue.gray125, null)]
+        [InlineData(Fill.PatternValue.lightGray, "")]
+        [InlineData(Fill.PatternValue.mediumGray, 0)]
+        [InlineData(Fill.PatternValue.none, true)]
+        public void PatternValueTest(Fill.PatternValue pattern, object value)
         {
-            Workbook workbook = new Workbook(false);
-            workbook.AddWorksheet("sheet1");
-            workbook.CurrentWorksheet.AddCell(value, "A1", style);
-            MemoryStream stream = new MemoryStream();
-            workbook.SaveAsStream(stream, true);
-            stream.Position = 0;
-            Workbook givenWorkbook = Workbook.Load(stream);
-            Cell cell = givenWorkbook.CurrentWorksheet.Cells["A1"];
-            Assert.Equal(value, cell.Value);
-            return cell;
+            Style style = new Style();
+            style.CurrentFill.PatternFill = pattern;
+            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+
+            Assert.Equal(pattern, cell.CellStyle.CurrentFill.PatternFill);
         }
 
     }

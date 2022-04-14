@@ -71,6 +71,10 @@ namespace NanoXLSX.LowLevel
                         {
                             GetFills(node);
                         }
+                        else if (node.LocalName.Equals("fonts", StringComparison.InvariantCultureIgnoreCase)) // Handles fonts
+                        {
+                            GetFonts(node);
+                        }
                         // TODO: Implement other style components
                     }
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes) // Redo for composition after all style parts are gathered; standard number formats
@@ -260,6 +264,75 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
+        /// Determines the fonts in an XML node of the style document
+        /// </summary>
+        /// <param name="node">Font root node</param>
+        private void GetFonts(XmlNode node)
+        {
+            foreach (XmlNode font in node.ChildNodes)
+            {
+                Font fontStyle = new Font();
+                XmlNode boldNode = ReaderUtils.GetChildNode(font, "b");
+                if (boldNode != null)
+                {
+                    fontStyle.Bold = true;
+                }
+                XmlNode italicdNode = ReaderUtils.GetChildNode(font, "i");
+                if (italicdNode != null)
+                {
+                    fontStyle.Italic = true;
+                }
+                XmlNode strikeNode = ReaderUtils.GetChildNode(font, "strike");
+                if (strikeNode != null)
+                {
+                    fontStyle.Strike = true;
+                }
+                XmlNode underlineNode = ReaderUtils.GetChildNode(font, "u");
+                if (underlineNode != null)
+                {
+                    fontStyle.Underline = Font.UnderlineValue.u_single; // default
+                    string underlineValue = ReaderUtils.GetAttribute(underlineNode, "val");
+                    if (underlineValue != null){
+                        switch (underlineValue)
+                        {
+                            case "double":
+                                fontStyle.Underline = Font.UnderlineValue.u_double;
+                                break;
+                            case "singleAccounting":
+                                fontStyle.Underline = Font.UnderlineValue.singleAccounting;
+                                break;
+                            case "doubleAccounting":
+                                fontStyle.Underline = Font.UnderlineValue.doubleAccounting;
+                                break;
+                        }
+                    }
+                }
+                XmlNode vertAlignNode = ReaderUtils.GetChildNode(font, "vertAlign");
+                if (vertAlignNode != null)
+                {
+                    Font.VerticalAlignValue vertAlignValue;
+                    string vertAlign = ReaderUtils.GetAttribute(vertAlignNode, "val");
+                    if (Enum.TryParse<Font.VerticalAlignValue>(vertAlign, out vertAlignValue))
+                    {
+                        fontStyle.VerticalAlign = vertAlignValue;
+                    }
+                }
+                XmlNode sizeNode = ReaderUtils.GetChildNode(font, "sz");
+                if (sizeNode != null)
+                {
+                    String size = ReaderUtils.GetAttribute(sizeNode, "val");
+                    if (!String.IsNullOrEmpty(size))
+                    {
+                        fontStyle.Size = float.Parse(size);
+                    }
+                }
+
+                fontStyle.InternalID = StyleReaderContainer.GetNextFontId();
+                StyleReaderContainer.AddStyleComponent(fontStyle);
+            }
+        }
+
+        /// <summary>
         /// Determines the cell XF entries in an XML node of the style document
         /// </summary>
         /// <param name="node">Cell XF root node</param>
@@ -299,11 +372,19 @@ namespace NanoXLSX.LowLevel
                             fill = new Fill();
                             fill.InternalID = StyleReaderContainer.GetNextFillId();
                         }
-                        
+                        id = int.Parse(ReaderUtils.GetAttribute(childNode, "fontId"));
+                        Font font = StyleReaderContainer.GetFont(id, true);
+                        if (font == null)
+                        {
+                            font = new Font();
+                            font.InternalID = StyleReaderContainer.GetNextFontId();
+                        }
+
                         // TODO: Implement other style information
                         style.CurrentNumberFormat = format;
                         style.CurrentBorder = border;
                         style.CurrentFill = fill;
+                        style.CurrentFont = font;
                         style.InternalID = StyleReaderContainer.GetNextStyleId();
 
                         StyleReaderContainer.AddStyleComponent(style);

@@ -1159,9 +1159,14 @@ namespace NanoXLSX.LowLevel
                 sb.Append("<font>");
                 if (item.Bold) { sb.Append("<b/>"); }
                 if (item.Italic) { sb.Append("<i/>"); }
-                if (item.Underline) { sb.Append("<u/>"); }
-                if (item.DoubleUnderline) { sb.Append("<u val=\"double\"/>"); }
                 if (item.Strike) { sb.Append("<strike/>"); }
+                if (item.Underline != Font.UnderlineValue.none)
+                {
+                    if (item.Underline == Font.UnderlineValue.u_double) { sb.Append("<u val=\"double\"/>"); }
+                    else if (item.Underline == Font.UnderlineValue.singleAccounting) { sb.Append("<u val=\"singleAccounting\"/>"); }
+                    else if (item.Underline == Font.UnderlineValue.doubleAccounting) { sb.Append("<u val=\"doubleAccounting\"/>"); }
+                    else { sb.Append("<u/>"); }
+                }
                 if (item.VerticalAlign == Font.VerticalAlignValue.subscript) { sb.Append("<vertAlign val=\"subscript\"/>"); }
                 else if (item.VerticalAlign == Font.VerticalAlignValue.superscript) { sb.Append("<vertAlign val=\"superscript\"/>"); }
                 sb.Append("<sz val=\"").Append(item.Size.ToString("G", culture)).Append("\"/>");

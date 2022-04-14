@@ -19,8 +19,7 @@ namespace NanoXLSX_Test.Styles
             exampleStyle = new Font();
             exampleStyle.Bold = true;
             exampleStyle.Italic = true;
-            exampleStyle.Underline = true;
-            exampleStyle.DoubleUnderline = true;
+            exampleStyle.Underline = Font.UnderlineValue.u_double;
             exampleStyle.Strike = true;
             exampleStyle.Charset = "ASCII";
             exampleStyle.Size = 15;
@@ -82,25 +81,17 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the Underline property")]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void UnderlineTest(bool value)
+        [InlineData(Font.UnderlineValue.none)]
+        [InlineData(Font.UnderlineValue.doubleAccounting)]
+        [InlineData(Font.UnderlineValue.singleAccounting)]
+        [InlineData(Font.UnderlineValue.u_double)]
+        [InlineData(Font.UnderlineValue.u_single)]
+        public void UnderlineTest(Font.UnderlineValue value)
         {
             Font font = new Font();
-            Assert.False(font.Underline);
+            Assert.Equal(Font.UnderlineValue.none, font.Underline);
             font.Underline = value;
             Assert.Equal(value, font.Underline);
-        }
-
-        [Theory(DisplayName = "Test of the get and set function of the DoubleUnderline property")]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void DoubleUnderlineTest(bool value)
-        {
-            Font font = new Font();
-            Assert.False(font.DoubleUnderline);
-            font.DoubleUnderline = value;
-            Assert.Equal(value, font.DoubleUnderline);
         }
 
         [Theory(DisplayName = "Test of the get and set function of the Strike property")]
@@ -295,15 +286,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2c()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.Underline = false;
-            Assert.False(exampleStyle.Equals(style2));
-        }
-
-        [Fact(DisplayName = "Test of the Equals method (inequality of DoubleUnderline)")]
-        public void EqualsTest2d()
-        {
-            Font style2 = (Font)exampleStyle.Copy();
-            style2.DoubleUnderline = false;
+            style2.Underline = Font.UnderlineValue.doubleAccounting;
             Assert.False(exampleStyle.Equals(style2));
         }
 

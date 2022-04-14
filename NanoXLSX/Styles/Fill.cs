@@ -261,9 +261,6 @@ namespace NanoXLSX.Styles
             string output;
             switch (pattern)
             {
-                case PatternValue.none:
-                    output = "none";
-                    break;
                 case PatternValue.solid:
                     output = "solid";
                     break;

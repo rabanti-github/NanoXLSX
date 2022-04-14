@@ -148,7 +148,7 @@ namespace NanoXLSX.Styles
                     if (underline == null)
                     {
                         underline = new Style();
-                        underline.CurrentFont.Underline = true;
+                        underline.CurrentFont.Underline = Styles.Font.UnderlineValue.u_single;
                     }
                     s = underline;
                     break;
@@ -156,7 +156,7 @@ namespace NanoXLSX.Styles
                     if (doubleUnderline == null)
                     {
                         doubleUnderline = new Style();
-                        doubleUnderline.CurrentFont.DoubleUnderline = true;
+                        doubleUnderline.CurrentFont.Underline = Styles.Font.UnderlineValue.u_double;
                     }
                     s = doubleUnderline;
                     break;
