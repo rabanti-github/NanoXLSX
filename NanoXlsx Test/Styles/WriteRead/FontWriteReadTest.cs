@@ -75,12 +75,83 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData(10.5f, "test")]
         [InlineData(11f, 0.5f)]
         [InlineData(50.55f, true)]
-        public void SizeFontTest(float styleValue, float value)
+        public void SizeFontTest(float styleValue, object value)
         {
             Style style = new Style();
             style.CurrentFont.Size = styleValue;
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Size);
+        }
+
+        [Theory(DisplayName = "Test of the writing and reading of the theme font style value")]
+        [InlineData(1, "test")]
+        [InlineData(2, 0.5f)]
+        [InlineData(64, true)]
+        public void ThemeFontTest(int styleValue, object value)
+        {
+            Style style = new Style();
+            style.CurrentFont.ColorTheme = styleValue;
+            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            Assert.Equal(styleValue, cell.CellStyle.CurrentFont.ColorTheme);
+        }
+
+        [Theory(DisplayName = "Test of the writing and reading of the colorValue font style value")]
+        [InlineData("FFAABBCC", "test")]
+        [InlineData("", 0.5f)]
+        public void ColorValueFontTest(string styleValue, object value)
+        {
+            Style style = new Style();
+            style.CurrentFont.ColorValue = styleValue;
+            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            Assert.Equal(styleValue, cell.CellStyle.CurrentFont.ColorValue);
+        }
+
+
+        [Theory(DisplayName = "Test of the writing and reading of the name font style value")]
+        [InlineData(" ", "test")]
+        [InlineData("test", 0.5f)]
+        public void NameFontTest(string styleValue, object value)
+        {
+            Style style = new Style();
+            style.CurrentFont.Name = styleValue;
+            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Name);
+        }
+
+        [Theory(DisplayName = "Test of the writing and reading of the family font style value")]
+        [InlineData(" ", "test")]
+        [InlineData("test", 0.5f)]
+        [InlineData("", true)]
+        public void FamilyFontTest(string styleValue, object value)
+        {
+            Style style = new Style();
+            style.CurrentFont.Family = styleValue;
+            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Family);
+        }
+
+
+        [Theory(DisplayName = "Test of the writing and reading of the scheme font style value")]
+        [InlineData(Font.SchemeValue.minor, "test")]
+        [InlineData(Font.SchemeValue.major, 0.5f)]
+        public void SchemeFontTest(Font.SchemeValue styleValue, object value)
+        {
+            Style style = new Style();
+            style.CurrentFont.Scheme = styleValue;
+            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Scheme);
+        }
+
+        [Theory(DisplayName = "Test of the writing and reading of the charset font style value")]
+        [InlineData(" ", "test")]
+        [InlineData("test", 0.5f)]
+        [InlineData("", true)]
+        public void CharsetFontTest(string styleValue, object value)
+        {
+            Style style = new Style();
+            style.CurrentFont.Charset = styleValue;
+            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Charset);
         }
 
     }

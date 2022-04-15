@@ -147,8 +147,8 @@ namespace NanoXLSX.LowLevel
             foreach (XmlNode border in node.ChildNodes)
             {
                 Border borderStyle = new Border();
-                String diagonalDown = ReaderUtils.GetAttribute(border, "diagonalDown");
-                String diagonalUp = ReaderUtils.GetAttribute(border, "diagonalUp");
+                string diagonalDown = ReaderUtils.GetAttribute(border, "diagonalDown");
+                string diagonalUp = ReaderUtils.GetAttribute(border, "diagonalUp");
                 if (diagonalDown != null && diagonalDown == "1")
                 {
                     borderStyle.DiagonalDown = true;
@@ -197,7 +197,7 @@ namespace NanoXLSX.LowLevel
             /// </summary>
             /// <param name="innerNode">Border sub-node</param>
             /// <returns>Border type or non if parsing was not successful</returns>
-            private static Border.StyleValue ParseBorderStyle(XmlNode innerNode)
+         private static Border.StyleValue ParseBorderStyle(XmlNode innerNode)
         {
             string value = ReaderUtils.GetAttribute(innerNode, "style");
             if (value != null)
@@ -221,11 +221,12 @@ namespace NanoXLSX.LowLevel
         /// <param name="node">Fill root node</param>
         private void GetFills(XmlNode node)
         {
+            string attribute;
             foreach (XmlNode fill in node.ChildNodes)
             {
                 Fill fillStyle = new Fill();
                 XmlNode innerNode = ReaderUtils.GetChildNode(fill, "patternFill");
-                String pattern = ReaderUtils.GetAttribute(innerNode, "patternType");
+                string pattern = ReaderUtils.GetAttribute(innerNode, "patternType");
                 if (innerNode != null)
                 {
                     Fill.PatternValue patternValue;
@@ -233,25 +234,20 @@ namespace NanoXLSX.LowLevel
                     {
                         fillStyle.PatternFill = patternValue;
                     }
-                    XmlNode foregroundNode = ReaderUtils.GetChildNode(innerNode, "fgColor");
-                    if (foregroundNode != null)
+                    if (ReaderUtils.GetAttributeOfChild(innerNode, "fgColor", "rgb", out attribute))
                     {
-                        String foregroundRgba = ReaderUtils.GetAttribute(foregroundNode, "rgb");
-                        if (!string.IsNullOrEmpty(foregroundRgba))
-                        {
-                            fillStyle.ForegroundColor = foregroundRgba;
-                        }
+                        fillStyle.ForegroundColor = attribute;
                     }
                     XmlNode backgroundNode = ReaderUtils.GetChildNode(innerNode, "bgColor");
                     if (backgroundNode != null)
                     {
-                        String backgroundRgba = ReaderUtils.GetAttribute(backgroundNode, "rgb");
+                        string backgroundRgba = ReaderUtils.GetAttribute(backgroundNode, "rgb");
                         if (!string.IsNullOrEmpty(backgroundRgba))
                         {
                             fillStyle.BackgroundColor = backgroundRgba;
                         }
-                        String backgroundIndex = ReaderUtils.GetAttribute(backgroundNode, "indexed");
-                        if (!String.IsNullOrEmpty(backgroundIndex))
+                        string backgroundIndex = ReaderUtils.GetAttribute(backgroundNode, "indexed");
+                        if (!string.IsNullOrEmpty(backgroundIndex))
                         {
                             fillStyle.IndexedColor = int.Parse(backgroundIndex);
                         }
@@ -269,6 +265,7 @@ namespace NanoXLSX.LowLevel
         /// <param name="node">Font root node</param>
         private void GetFonts(XmlNode node)
         {
+            string attribute;
             foreach (XmlNode font in node.ChildNodes)
             {
                 Font fontStyle = new Font();
@@ -287,50 +284,78 @@ namespace NanoXLSX.LowLevel
                 {
                     fontStyle.Strike = true;
                 }
-                XmlNode underlineNode = ReaderUtils.GetChildNode(font, "u");
-                if (underlineNode != null)
+                if (ReaderUtils.GetAttributeOfChild(font, "u", "val", out attribute))
                 {
                     fontStyle.Underline = Font.UnderlineValue.u_single; // default
-                    string underlineValue = ReaderUtils.GetAttribute(underlineNode, "val");
-                    if (underlineValue != null){
-                        switch (underlineValue)
-                        {
-                            case "double":
-                                fontStyle.Underline = Font.UnderlineValue.u_double;
-                                break;
-                            case "singleAccounting":
-                                fontStyle.Underline = Font.UnderlineValue.singleAccounting;
-                                break;
-                            case "doubleAccounting":
-                                fontStyle.Underline = Font.UnderlineValue.doubleAccounting;
-                                break;
-                        }
+                    switch (attribute)
+                    {
+                        case "double":
+                            fontStyle.Underline = Font.UnderlineValue.u_double;
+                            break;
+                        case "singleAccounting":
+                            fontStyle.Underline = Font.UnderlineValue.singleAccounting;
+                            break;
+                        case "doubleAccounting":
+                            fontStyle.Underline = Font.UnderlineValue.doubleAccounting;
+                            break;
                     }
                 }
-                XmlNode vertAlignNode = ReaderUtils.GetChildNode(font, "vertAlign");
-                if (vertAlignNode != null)
+                if (ReaderUtils.GetAttributeOfChild(font, "vertAlign", "val", out attribute))
                 {
                     Font.VerticalAlignValue vertAlignValue;
-                    string vertAlign = ReaderUtils.GetAttribute(vertAlignNode, "val");
-                    if (Enum.TryParse<Font.VerticalAlignValue>(vertAlign, out vertAlignValue))
+                    if (Enum.TryParse<Font.VerticalAlignValue>(attribute, out vertAlignValue))
                     {
                         fontStyle.VerticalAlign = vertAlignValue;
                     }
                 }
-                XmlNode sizeNode = ReaderUtils.GetChildNode(font, "sz");
-                if (sizeNode != null)
+                if (ReaderUtils.GetAttributeOfChild(font, "sz", "val", out attribute))
                 {
-                    String size = ReaderUtils.GetAttribute(sizeNode, "val");
-                    if (!String.IsNullOrEmpty(size))
+                    fontStyle.Size = float.Parse(attribute);
+                }
+                XmlNode colorNode = ReaderUtils.GetChildNode(font, "color");
+                if (colorNode != null)
+                {
+                    attribute = ReaderUtils.GetAttribute(colorNode, "theme");
+                    if (attribute != null)
                     {
-                        fontStyle.Size = float.Parse(size);
+                        fontStyle.ColorTheme = int.Parse(attribute);
                     }
+                    attribute = ReaderUtils.GetAttribute(colorNode, "rgb");
+                   if (attribute != null)
+                    {
+                        fontStyle.ColorValue = attribute;
+                    }
+                }
+                if (ReaderUtils.GetAttributeOfChild(font, "name", "val", out attribute))
+                {
+                    fontStyle.Name = attribute;
+                }
+                if (ReaderUtils.GetAttributeOfChild(font, "family", "val", out attribute))
+                {
+                    fontStyle.Family = attribute;
+                }
+                if (ReaderUtils.GetAttributeOfChild(font, "scheme", "val", out attribute))
+                {
+                    switch (attribute)
+                    {
+                        case "major":
+                            fontStyle.Scheme = Font.SchemeValue.major;
+                            break;
+                        case "minor":
+                            fontStyle.Scheme = Font.SchemeValue.minor;
+                            break;
+                    }
+                }
+                if (ReaderUtils.GetAttributeOfChild(font, "charset", "val", out attribute))
+                {
+                    fontStyle.Charset = attribute;
                 }
 
                 fontStyle.InternalID = StyleReaderContainer.GetNextFontId();
                 StyleReaderContainer.AddStyleComponent(fontStyle);
             }
         }
+
 
         /// <summary>
         /// Determines the cell XF entries in an XML node of the style document

@@ -42,6 +42,27 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
+        /// Gets the XML attribute from a child node of the passed XML node by its name and the name of the child node.
+        /// This method simplifies the process of gathering one single child node attribute
+        /// </summary>
+        /// <param name="node">XML node that contains the child node</param>
+        /// <param name="childNodeName">Name of the child node</param>
+        /// <param name="attributeName">Name of the attribute in the child node</param>
+        /// <param name="output">Value of the attribute as string or null if not found</param>
+        /// <returns>True if found, otherwise false</returns>
+        public static bool GetAttributeOfChild(XmlNode node, string childNodeName, string attributeName, out string output)
+        {
+            XmlNode childNode = GetChildNode(node, childNodeName);
+            if (childNode != null)
+            {
+                output = GetAttribute(childNode, attributeName);
+                return true;
+            }
+            output = null;
+            return false;
+        }
+
+        /// <summary>
         /// Gets the specified child node
         /// </summary>
         /// <param name="node">XML node that contains child node</param>
