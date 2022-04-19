@@ -22,7 +22,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Bottom
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the diagonal color style value")]
+        [Theory(DisplayName = "Test of the 'diagonal' value when writing and reading a Border style")]
         [InlineData("FFAACC00", "test", true, true)]
         [InlineData("FFAADD00", 0.5f, true, false)]
         [InlineData("FFDDCC00", true, false, true)]
@@ -44,7 +44,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(diagonalDown, cell.CellStyle.CurrentBorder.DiagonalDown);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the top color style value")]
+        [Theory(DisplayName = "Test of the 'top' value when writing and reading a Border style")]
         [InlineData("FFAACC00", "test")]
         [InlineData("FFAADD00", 0.5f)]
         [InlineData("FFDDCC00", true)]
@@ -63,7 +63,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
 
-        [Theory(DisplayName = "Test of the writing and reading of the bottom color style value")]
+        [Theory(DisplayName = "Test of the 'bottom' value when writing and reading a Border style")]
         [InlineData("FFAACC00", "test")]
         [InlineData("FFAADD00", 0.5f)]
         [InlineData("FFDDCC00", true)]
@@ -81,7 +81,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(Border.StyleValue.thin, cell.CellStyle.CurrentBorder.BottomStyle);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the left color style value")]
+        [Theory(DisplayName = "Test of the 'left' value when writing and reading a Border style")]
         [InlineData("FFAACC00", "test")]
         [InlineData("FFAADD00", 0.5f)]
         [InlineData("FFDDCC00", true)]
@@ -99,7 +99,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(Border.StyleValue.dashDotDot, cell.CellStyle.CurrentBorder.LeftStyle);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the right color style value")]
+        [Theory(DisplayName = "Test of the 'right' value when writing and reading a Border style")]
         [InlineData("FFAACC00", "test")]
         [InlineData("FFAADD00", 0.5f)]
         [InlineData("FFDDCC00", true)]
@@ -117,7 +117,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(Border.StyleValue.dashed, cell.CellStyle.CurrentBorder.RightStyle);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of border style value")]
+        [Theory(DisplayName = "Test of the 'styleValue' property when writing and reading a Font style")]
         [InlineData(Border.StyleValue.dashDotDot, BorderDirection.Bottom)]
         [InlineData(Border.StyleValue.dashDot, BorderDirection.Top)]
         [InlineData(Border.StyleValue.dashed, BorderDirection.Left)]

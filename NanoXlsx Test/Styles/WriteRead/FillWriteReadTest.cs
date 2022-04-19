@@ -12,7 +12,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
 {
     public class FillWriteReadTest
     {
-        [Theory(DisplayName = "Test of the writing and reading of the foreground color style value")]
+        [Theory(DisplayName = "Test of the 'foreground' value when writing and reading a Fill style")]
         [InlineData("FFAACC00", "test")]
         [InlineData("FFAADD00", 0.5f)]
         [InlineData("FFDDCC00", true)]
@@ -27,7 +27,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.NotEqual(Fill.PatternValue.none, cell.CellStyle.CurrentFill.PatternFill);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the background color style value")]
+        [Theory(DisplayName = "Test of the 'background' value when writing and reading a Fill style")]
         [InlineData("FFAACC00", "test")]
         [InlineData("FFAADD00", 0.5f)]
         [InlineData("FFDDCC00", true)]
@@ -43,7 +43,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(Fill.PatternValue.darkGray, cell.CellStyle.CurrentFill.PatternFill);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the pattern value for fills styles")]
+        [Theory(DisplayName = "Test of the 'patternFill' value when writing and reading a Fill style")]
         [InlineData(Fill.PatternValue.solid, "test")]
         [InlineData(Fill.PatternValue.darkGray, 0.5f)]
         [InlineData(Fill.PatternValue.gray0625, true)]

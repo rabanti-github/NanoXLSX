@@ -201,7 +201,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Next id of styles (collected in this class)</returns>
         public int GetNextStyleId()
         {
-            return styles.Count + 1;
+            return styles.Count;
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Next id of the component type (collected in this class)</returns>
         public int GetNextCellXFId()
         {
-            return cellXfs.Count + 1;
+            return cellXfs.Count;
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Next id of the component type (collected in this class)</returns>
         public int GetNextNumberFormatId()
         {
-            return numberFormats.Count + 1;
+                return numberFormats.Count;
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Next id of the component type (collected in this class)</returns>
         public int GetNextBorderId()
         {
-            return borders.Count + 1;
+            return borders.Count;
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Next id of the component type (collected in this class)</returns>
         public int GetNextFillId()
         {
-            return fills.Count + 1;
+            return fills.Count;
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Next id of the component type (collected in this class)</returns>
         public int GetNextFontId()
         {
-            return fonts.Count + 1;
+            return fonts.Count;
         }
 
         /// <summary>

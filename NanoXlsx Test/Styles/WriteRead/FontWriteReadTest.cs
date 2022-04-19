@@ -12,7 +12,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
     public class FontWriteReadTest
     {
 
-        [Theory(DisplayName = "Test of the writing and reading of the bold font style value")]
+        [Theory(DisplayName = "Test of the 'bold' value when writing and reading a Font style")]
         [InlineData(true, "test")]
         [InlineData(false, 0.5f)]
         public void BoldFontTest(bool styleValue, object value)
@@ -23,7 +23,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Bold);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the italic font style value")]
+        [Theory(DisplayName = "Test of the 'italic' value when writing and reading a Font style")]
         [InlineData(true, "test")]
         [InlineData(false, 0.5f)]
         public void ItalicFontTest(bool styleValue, object value)
@@ -34,7 +34,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Italic);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the strike font style value")]
+        [Theory(DisplayName = "Test of the 'strike' value when writing and reading a Font style")]
         [InlineData(true, "test")]
         [InlineData(false, 0.5f)]
         public void StrikeFontTest(bool styleValue, object value)
@@ -45,7 +45,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Strike);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the underline font style value")]
+        [Theory(DisplayName = "Test of the 'underline' value when writing and reading a Font style")]
         [InlineData(Font.UnderlineValue.u_single, "test")]
         [InlineData(Font.UnderlineValue.u_double, 0.5f)]
         [InlineData(Font.UnderlineValue.doubleAccounting, true)]
@@ -59,7 +59,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Underline);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the vertical alignment font style value")]
+        [Theory(DisplayName = "Test of the 'vertical alignment' value when writing and reading a Font style")]
         [InlineData(Font.VerticalAlignValue.subscript, "test")]
         [InlineData(Font.VerticalAlignValue.superscript, 0.5f)]
         [InlineData(Font.VerticalAlignValue.none, true)]
@@ -71,7 +71,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.VerticalAlign);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the size font style value")]
+        [Theory(DisplayName = "Test of the 'size' value when writing and reading a Font style")]
         [InlineData(10.5f, "test")]
         [InlineData(11f, 0.5f)]
         [InlineData(50.55f, true)]
@@ -83,7 +83,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Size);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the theme font style value")]
+        [Theory(DisplayName = "Test of the 'theme' value when writing and reading a Font style")]
         [InlineData(1, "test")]
         [InlineData(2, 0.5f)]
         [InlineData(64, true)]
@@ -95,7 +95,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.ColorTheme);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the colorValue font style value")]
+        [Theory(DisplayName = "Test of the 'colorValue' value when writing and reading a Font style")]
         [InlineData("FFAABBCC", "test")]
         [InlineData("", 0.5f)]
         public void ColorValueFontTest(string styleValue, object value)
@@ -106,8 +106,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.ColorValue);
         }
 
-
-        [Theory(DisplayName = "Test of the writing and reading of the name font style value")]
+        [Theory(DisplayName = "Test of the 'name' value when writing and reading a Font style")]
         [InlineData(" ", "test")]
         [InlineData("test", 0.5f)]
         public void NameFontTest(string styleValue, object value)
@@ -118,7 +117,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Name);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the family font style value")]
+        [Theory(DisplayName = "Test of the 'family' value when writing and reading a Font style")]
         [InlineData(" ", "test")]
         [InlineData("test", 0.5f)]
         [InlineData("", true)]
@@ -131,7 +130,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
 
-        [Theory(DisplayName = "Test of the writing and reading of the scheme font style value")]
+        [Theory(DisplayName = "Test of the 'scheme' value when writing and reading a Font style")]
         [InlineData(Font.SchemeValue.minor, "test")]
         [InlineData(Font.SchemeValue.major, 0.5f)]
         public void SchemeFontTest(Font.SchemeValue styleValue, object value)
@@ -142,7 +141,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Scheme);
         }
 
-        [Theory(DisplayName = "Test of the writing and reading of the charset font style value")]
+        [Theory(DisplayName = "Test of the 'charset' value when writing and reading a Font style")]
         [InlineData(" ", "test")]
         [InlineData("test", 0.5f)]
         [InlineData("", true)]
