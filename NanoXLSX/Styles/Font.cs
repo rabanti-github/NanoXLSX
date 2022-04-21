@@ -319,6 +319,28 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
+        /// Returns whether two instances are the same
+        /// </summary>
+        /// <param name="obj">Object to compare</param>
+        /// <returns>True if this instance and the other are the same</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Font font &&
+                   size == font.size &&
+                   Bold == font.Bold &&
+                   Italic == font.Italic &&
+                   Strike == font.Strike &&
+                   Underline == font.Underline &&
+                   Charset == font.Charset &&
+                   ColorTheme == font.ColorTheme &&
+                   ColorValue == font.ColorValue &&
+                   Family == font.Family &&
+                   Name == font.Name &&
+                   Scheme == font.Scheme &&
+                   VerticalAlign == font.VerticalAlign;
+        }
+
+        /// <summary>
         /// Method to copy the current object to a new one with casting
         /// </summary>
         /// <returns>Copy of the current object without the internal ID</returns>

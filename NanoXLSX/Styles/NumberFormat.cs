@@ -18,7 +18,7 @@ namespace NanoXLSX.Styles
     {
         #region constants
         /// <summary>
-        /// Start ID for custom number formats as constant
+        /// Start ID for custom number formats as constant (value 164)
         /// </summary>
         public static readonly int CUSTOMFORMAT_START_NUMBER = 164;
         /// <summary>
@@ -315,6 +315,19 @@ namespace NanoXLSX.Styles
             hashCode = hashCode * -1521134295 + CustomFormatID.GetHashCode();
             hashCode = hashCode * -1521134295 + Number.GetHashCode();
             return hashCode;
+        }
+
+        /// <summary>
+        /// Returns whether two instances are the same
+        /// </summary>
+        /// <param name="obj">Object to compare</param>
+        /// <returns>True if this instance and the other are the same</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is NumberFormat format &&
+                   CustomFormatCode == format.CustomFormatCode &&
+                   CustomFormatID == format.CustomFormatID &&
+                   Number == format.Number;
         }
 
         #endregion

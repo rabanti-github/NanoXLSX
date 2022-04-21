@@ -223,6 +223,28 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
+        /// Returns whether two instances are the same
+        /// </summary>
+        /// <param name="obj">Object to compare</param>
+        /// <returns>True if this instance and the other are the same</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Border border &&
+                   BottomColor == border.BottomColor &&
+                   BottomStyle == border.BottomStyle &&
+                   DiagonalColor == border.DiagonalColor &&
+                   DiagonalDown == border.DiagonalDown &&
+                   DiagonalUp == border.DiagonalUp &&
+                   DiagonalStyle == border.DiagonalStyle &&
+                   LeftColor == border.LeftColor &&
+                   LeftStyle == border.LeftStyle &&
+                   RightColor == border.RightColor &&
+                   RightStyle == border.RightStyle &&
+                   TopColor == border.TopColor &&
+                   TopStyle == border.TopStyle;
+        }
+
+        /// <summary>
         /// Method to copy the current object to a new one without casting
         /// </summary>
         /// <returns>Copy of the current object without the internal ID</returns>

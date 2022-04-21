@@ -280,6 +280,27 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
+        /// Returns whether two instances are the same
+        /// </summary>
+        /// <param name="obj">Object to compare</param>
+        /// <returns>True if this instance and the other are the same</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is CellXf xf &&
+                   ForceApplyAlignment == xf.ForceApplyAlignment &&
+                   Hidden == xf.Hidden &&
+                   HorizontalAlign == xf.HorizontalAlign &&
+                   Locked == xf.Locked &&
+                   Alignment == xf.Alignment &&
+                   TextDirection == xf.TextDirection &&
+                   TextRotation == xf.TextRotation &&
+                   VerticalAlign == xf.VerticalAlign &&
+                   Indent == xf.Indent;
+        }
+
+
+
+        /// <summary>
         /// Method to copy the current object to a new one without casting
         /// </summary>
         /// <returns>Copy of the current object without the internal ID</returns>
@@ -306,7 +327,6 @@ namespace NanoXLSX.Styles
         {
             return (CellXf)Copy();
         }
-
         #endregion
 
     }
