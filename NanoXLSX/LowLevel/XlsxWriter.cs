@@ -1326,7 +1326,7 @@ namespace NanoXLSX.LowLevel
                     {
                         protectionString = "<protection locked=\"1\" hidden=\"1\"/>";
                     }
-                    else if (!style.CurrentCellXf.Hidden && style.CurrentCellXf.Locked)
+                    else if (style.CurrentCellXf.Hidden && !style.CurrentCellXf.Locked)
                     {
                         protectionString = "<protection hidden=\"1\" locked=\"0\"/>";
                     }

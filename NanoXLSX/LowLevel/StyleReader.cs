@@ -369,6 +369,35 @@ namespace NanoXLSX.LowLevel
                 {
                     if (ReaderUtils.IsNode(childNode, "xf"))
                     {
+                        CellXf cellXfStyle = new CellXf();
+                        string attribute = ReaderUtils.GetAttribute(childNode, "applyAlignment");
+                        if (attribute != null && attribute == "1")
+                        {
+                            cellXfStyle.ForceApplyAlignment = true;
+                        }
+                        attribute = ReaderUtils.GetAttribute(childNode, "applyAlignment");
+                        if (attribute != null && attribute == "1")
+                        {
+                            cellXfStyle.ForceApplyAlignment = true;
+                        }
+                        XmlNode protectionNode = ReaderUtils.GetChildNode(childNode, "protection");
+                        if (protectionNode != null)
+                        {
+                            attribute = ReaderUtils.GetAttribute(protectionNode, "hidden");
+                            if (attribute != null && attribute == "1")
+                            {
+                                cellXfStyle.Hidden = true;
+                            }
+                            attribute = ReaderUtils.GetAttribute(protectionNode, "locked");
+                            if (attribute != null && attribute == "1")
+                            {
+                                cellXfStyle.Locked = true;
+                            }
+                        }
+
+                        cellXfStyle.InternalID = StyleReaderContainer.GetNextCellXFId();
+                        StyleReaderContainer.AddStyleComponent(cellXfStyle);
+
                         Style style = new Style();
                         int id = int.Parse(ReaderUtils.GetAttribute(childNode, "numFmtId"));
                         NumberFormat format = StyleReaderContainer.GetNumberFormat(id, true);
@@ -410,6 +439,7 @@ namespace NanoXLSX.LowLevel
                         style.CurrentBorder = border;
                         style.CurrentFill = fill;
                         style.CurrentFont = font;
+                        style.CurrentCellXf = cellXfStyle;
                         style.InternalID = StyleReaderContainer.GetNextStyleId();
 
                         StyleReaderContainer.AddStyleComponent(style);
