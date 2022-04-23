@@ -46,6 +46,11 @@ namespace NanoXLSX.LowLevel
         /// <value>Dictionary of cell address-style number tuples</value>
         public Dictionary<string, string> StyleAssignment { get; private set; } = new Dictionary<string, string>();
 
+        /// <summary>
+        /// Gets the auto filter range. If null, no auto filters were defined
+        /// </summary>
+        public Range? AutoFilterRange { get; private set; }
+
         #endregion
 
         #region constructors
@@ -118,6 +123,15 @@ namespace NanoXLSX.LowLevel
                             {
                                 ReadCell(rowChild);
                             }
+                        }
+                    }
+                    XmlNodeList autoFilterNodes = xr.GetElementsByTagName("autoFilter");
+                    if (autoFilterNodes != null && autoFilterNodes.Count > 0)
+                    {
+                        string autoFilterRef = ReaderUtils.GetAttribute(autoFilterNodes[0], "ref");
+                        if (autoFilterRef != null)
+                        {
+                            this.AutoFilterRange = new Range(autoFilterRef);
                         }
                     }
                 }
@@ -559,9 +573,6 @@ namespace NanoXLSX.LowLevel
             }
             return data;
         }
-
-
-
 
         /// <summary>
         /// Tries to convert a value to an integer
