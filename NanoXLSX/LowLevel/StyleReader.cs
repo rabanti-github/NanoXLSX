@@ -375,10 +375,42 @@ namespace NanoXLSX.LowLevel
                         {
                             cellXfStyle.ForceApplyAlignment = true;
                         }
-                        attribute = ReaderUtils.GetAttribute(childNode, "applyAlignment");
-                        if (attribute != null && attribute == "1")
+                        XmlNode alignmentNode = ReaderUtils.GetChildNode(childNode, "alignment");
+                        if (alignmentNode != null)
                         {
-                            cellXfStyle.ForceApplyAlignment = true;
+                            attribute = ReaderUtils.GetAttribute(alignmentNode, "shrinkToFit");
+                            if (attribute != null && attribute == "1")
+                            {
+                                cellXfStyle.Alignment = CellXf.TextBreakValue.shrinkToFit;
+                            }
+                            attribute = ReaderUtils.GetAttribute(alignmentNode, "wrapText");
+                            if (attribute != null && attribute == "1")
+                            {
+                                cellXfStyle.Alignment = CellXf.TextBreakValue.wrapText;
+                            }
+                            attribute = ReaderUtils.GetAttribute(alignmentNode, "horizontal");
+                            CellXf.HorizontalAlignValue horizontalAlignValue;
+                            if (Enum.TryParse<CellXf.HorizontalAlignValue>(attribute, out horizontalAlignValue))
+                            {
+                                cellXfStyle.HorizontalAlign = horizontalAlignValue;
+                            }
+                            attribute = ReaderUtils.GetAttribute(alignmentNode, "vertical");
+                            CellXf.VerticalAlignValue verticalAlignValue;
+                            if (Enum.TryParse<CellXf.VerticalAlignValue>(attribute, out verticalAlignValue))
+                            {
+                                cellXfStyle.VerticalAlign = verticalAlignValue;
+                            }
+                            attribute = ReaderUtils.GetAttribute(alignmentNode, "indent");
+                            if (attribute != null)
+                            {
+                                cellXfStyle.Indent = int.Parse(attribute);
+                            }
+                            attribute = ReaderUtils.GetAttribute(alignmentNode, "textRotation");
+                            if (attribute != null)
+                            {
+                                int rotation = int.Parse(attribute);
+                                cellXfStyle.TextRotation = rotation > 90 ? 90 - rotation : rotation;
+                            }
                         }
                         XmlNode protectionNode = ReaderUtils.GetChildNode(childNode, "protection");
                         if (protectionNode != null)
