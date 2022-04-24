@@ -169,6 +169,10 @@ namespace NanoXLSX.LowLevel
                 {
                     ws.SetAutoFilter(reader.Value.AutoFilterRange.Value.StartAddress.Column, reader.Value.AutoFilterRange.Value.EndAddress.Column);
                 }
+                if (reader.Value.DefaultColumnWidth.HasValue)
+                {
+                    ws.DefaultColumnWidth = reader.Value.DefaultColumnWidth.Value;
+                }
                 foreach (Column column in reader.Value.Columns)
                 {
                     if (column.Width != Worksheet.DEFAULT_COLUMN_WIDTH)

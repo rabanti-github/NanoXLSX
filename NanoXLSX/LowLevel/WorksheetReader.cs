@@ -55,6 +55,11 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         public List<Column> Columns { get; private set; } = new List<Column>();
 
+        /// <summary>
+        /// Gets the default column width if defined, otherwise null
+        /// </summary>
+        public float? DefaultColumnWidth { get; private set; } = null;
+
         #endregion
 
         #region constructors
@@ -129,6 +134,7 @@ namespace NanoXLSX.LowLevel
                             }
                         }
                     }
+                    GetSheetFormats(xr);
                     GetAutoFilters(xr);
                     GetColumns(xr);
                 }
@@ -136,6 +142,23 @@ namespace NanoXLSX.LowLevel
             catch (Exception ex)
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
+            }
+        }
+
+        /// <summary>
+        /// Gets the sheet format information of the current worksheet
+        /// </summary>
+        /// <param name="xmlDocument">XML document of the current worksheet</param>
+        private void GetSheetFormats(XmlDocument xmlDocument)
+        {
+            XmlNodeList formatNodes = xmlDocument.GetElementsByTagName("sheetFormatPr");
+            if (formatNodes != null && formatNodes.Count > 0)
+            {
+                string attribute = ReaderUtils.GetAttribute(formatNodes[0], "defaultColWidth");
+                if (attribute != null)
+                {
+                    this.DefaultColumnWidth = float.Parse(attribute);
+                }
             }
         }
 

@@ -113,6 +113,28 @@ namespace NanoXLSX_Test.Worksheets
             }
         }
 
+        [Theory(DisplayName = "Test of the 'DefaultColumnWidth' property when writing and reading a worksheet")]
+        [InlineData(1f, 0)]
+        [InlineData(11f, 0)]
+        [InlineData(55.55f, 0)]
+        [InlineData(1f, 1)]
+        [InlineData(11f, 2)]
+        [InlineData(55.55f, 3)]
+        public void DefaultColumnWidthWriteReadTest(float width, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (sheetIndex == i)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    workbook.CurrentWorksheet.DefaultColumnWidth = width;
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.True(Math.Abs(givenWorksheet.DefaultColumnWidth - width) < 0.001);
+        }
+
         private static Workbook PrepareWorkbook(int numberOfWorksheets, object a1Data)
         {
             Workbook workbook = new Workbook();
