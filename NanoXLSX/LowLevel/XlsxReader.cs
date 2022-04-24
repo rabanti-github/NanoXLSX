@@ -169,6 +169,17 @@ namespace NanoXLSX.LowLevel
                 {
                     ws.SetAutoFilter(reader.Value.AutoFilterRange.Value.StartAddress.Column, reader.Value.AutoFilterRange.Value.EndAddress.Column);
                 }
+                foreach (Column column in reader.Value.Columns)
+                {
+                    if (column.Width != Worksheet.DEFAULT_COLUMN_WIDTH)
+                    {
+                        ws.SetColumnWidth(column.ColumnAddress, column.Width);
+                    }
+                    if (column.IsHidden)
+                    {
+                        ws.AddHiddenColumn(column.Number);
+                    }
+                }
                 foreach (KeyValuePair<string, Cell> cell in reader.Value.Data)
                 {
                     if (reader.Value.StyleAssignment.ContainsKey(cell.Key))

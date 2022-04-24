@@ -50,6 +50,10 @@ namespace NanoXLSX.LowLevel
         /// Gets the auto filter range. If null, no auto filters were defined
         /// </summary>
         public Range? AutoFilterRange { get; private set; }
+        /// <summary>
+        /// Gets a list of defined Columns
+        /// </summary>
+        public List<Column> Columns { get; private set; } = new List<Column>();
 
         #endregion
 
@@ -125,20 +129,83 @@ namespace NanoXLSX.LowLevel
                             }
                         }
                     }
-                    XmlNodeList autoFilterNodes = xr.GetElementsByTagName("autoFilter");
-                    if (autoFilterNodes != null && autoFilterNodes.Count > 0)
-                    {
-                        string autoFilterRef = ReaderUtils.GetAttribute(autoFilterNodes[0], "ref");
-                        if (autoFilterRef != null)
-                        {
-                            this.AutoFilterRange = new Range(autoFilterRef);
-                        }
-                    }
+                    GetAutoFilters(xr);
+                    GetColumns(xr);
                 }
             }
             catch (Exception ex)
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
+            }
+        }
+
+        /// <summary>
+        /// Gets the auto filters of the current worksheet
+        /// </summary>
+        /// <param name="xmlDocument">XML document of the current worksheet</param>
+        private void GetAutoFilters(XmlDocument xmlDocument)
+        {
+            XmlNodeList autoFilterNodes = xmlDocument.GetElementsByTagName("autoFilter");
+            if (autoFilterNodes != null && autoFilterNodes.Count > 0)
+            {
+                string autoFilterRef = ReaderUtils.GetAttribute(autoFilterNodes[0], "ref");
+                if (autoFilterRef != null)
+                {
+                    this.AutoFilterRange = new Range(autoFilterRef);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the columns of the current worksheet
+        /// </summary>
+        /// <param name="xmlDocument">XML document of the current worksheet</param>
+        private void GetColumns(XmlDocument xmlDocument)
+        {
+            XmlNodeList columnNodes = xmlDocument.GetElementsByTagName("col");
+            foreach (XmlNode columnNode in columnNodes)
+            {
+                int? min = null;
+                int? max = null;
+                List<int> indices = new List<int>();
+                string attribute = ReaderUtils.GetAttribute(columnNode, "min");
+                if (attribute != null)
+                {
+                    min = int.Parse(attribute);
+                    max = min;
+                    indices.Add(min.Value);
+                }
+                attribute = ReaderUtils.GetAttribute(columnNode, "max");
+                if (attribute != null)
+                {
+                    max = int.Parse(attribute);
+                }
+                if (min != null && max.Value != min.Value)
+                {
+                    for (int i = min.Value; i <= max.Value; i++)
+                    {
+                        indices.Add(i);
+                    }
+                }
+                attribute = ReaderUtils.GetAttribute(columnNode, "width");
+                float width = Worksheet.DEFAULT_COLUMN_WIDTH;
+                if (attribute != null)
+                {
+                    width = float.Parse(attribute);
+                }
+                attribute = ReaderUtils.GetAttribute(columnNode, "hidden");
+                bool hidden = false;
+                if (attribute != null && attribute == "1")
+                {
+                    hidden = true;
+                }
+                foreach (int index in indices)
+                {
+                    Column column = new Column(index);
+                    column.Width = width;
+                    column.IsHidden = hidden;
+                    this.Columns.Add(column);
+                }
             }
         }
 

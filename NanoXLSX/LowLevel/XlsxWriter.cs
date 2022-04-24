@@ -333,11 +333,11 @@ namespace NanoXLSX.LowLevel
              .Append(worksheet.DefaultColumnWidth.ToString("G", culture))
              .Append("\" x14ac:dyDescent=\"0.25\"/>");
 
-            string colWidths = CreateColsString(worksheet);
-            if (!string.IsNullOrEmpty(colWidths))
+            string colDefinitions = CreateColsString(worksheet);
+            if (!string.IsNullOrEmpty(colDefinitions))
             {
                 sb.Append("<cols>");
-                sb.Append(colWidths);
+                sb.Append(colDefinitions);
                 sb.Append("</cols>");
             }
             sb.Append("<sheetData>");
