@@ -60,6 +60,11 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         public float? DefaultColumnWidth { get; private set; } = null;
 
+        /// <summary>
+        /// Gets the default row height if defined, otherwise null
+        /// </summary>
+        public float? DefaultRowHeight { get; private set; } = null;
+
         #endregion
 
         #region constructors
@@ -158,6 +163,11 @@ namespace NanoXLSX.LowLevel
                 if (attribute != null)
                 {
                     this.DefaultColumnWidth = float.Parse(attribute);
+                }
+                attribute = ReaderUtils.GetAttribute(formatNodes[0], "defaultRowHeight");
+                if (attribute != null)
+                {
+                    this.DefaultRowHeight = float.Parse(attribute);
                 }
             }
         }

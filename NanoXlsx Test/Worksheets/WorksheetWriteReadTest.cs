@@ -135,6 +135,28 @@ namespace NanoXLSX_Test.Worksheets
             Assert.True(Math.Abs(givenWorksheet.DefaultColumnWidth - width) < 0.001);
         }
 
+        [Theory(DisplayName = "Test of the 'DefaultRowHeight' property when writing and reading a worksheet")]
+        [InlineData(1f, 0)]
+        [InlineData(11f, 0)]
+        [InlineData(55.55f, 0)]
+        [InlineData(1f, 1)]
+        [InlineData(11f, 2)]
+        [InlineData(55.55f, 3)]
+        public void DefaultRowHeightWriteReadTest(float height, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (sheetIndex == i)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    workbook.CurrentWorksheet.DefaultRowHeight = height;
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.True(Math.Abs(givenWorksheet.DefaultRowHeight - height) < 0.001);
+        }
+
         private static Workbook PrepareWorkbook(int numberOfWorksheets, object a1Data)
         {
             Workbook workbook = new Workbook();

@@ -173,6 +173,10 @@ namespace NanoXLSX.LowLevel
                 {
                     ws.DefaultColumnWidth = reader.Value.DefaultColumnWidth.Value;
                 }
+                if (reader.Value.DefaultRowHeight.HasValue)
+                {
+                    ws.DefaultRowHeight = reader.Value.DefaultRowHeight.Value;
+                }
                 foreach (Column column in reader.Value.Columns)
                 {
                     if (column.Width != Worksheet.DEFAULT_COLUMN_WIDTH)

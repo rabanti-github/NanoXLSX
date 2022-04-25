@@ -372,7 +372,7 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Method to create the enclosing part of the rows
         /// </summary>
-        /// <param name="worksheet">worksheet object to process</param>
+        /// <param name="worksheet"><s</param>
         /// <param name="sb">reference to the stringbuilder</param>
         private void CreateRowsString(Worksheet worksheet, StringBuilder sb)
         {
