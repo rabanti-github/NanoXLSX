@@ -157,6 +157,92 @@ namespace NanoXLSX_Test.Worksheets
             Assert.True(Math.Abs(givenWorksheet.DefaultRowHeight - height) < 0.001);
         }
 
+        [Theory(DisplayName = "Test of the 'HiddenRows' property when writing and reading a worksheet")]
+        [InlineData("", 0)]
+        [InlineData("0", 0)]
+        [InlineData("0,1,2", 0)]
+        [InlineData("1,3,5", 0)]
+        [InlineData("", 1)]
+        [InlineData("0", 1)]
+        [InlineData("0,1,2", 2)]
+        [InlineData("1,3,5", 3)]
+        public void HiddenRowsWriteReadTest(string rowDefinitions, int sheetIndex)
+        {
+            string[] tokens = rowDefinitions.Split(',');
+            List<int> rowIndices = new List<int>();
+            foreach (string token in tokens)
+            {
+                if (token != "")
+                {
+                    rowIndices.Add(int.Parse(token));
+                }
+            }
+            Workbook workbook = PrepareWorkbook(4, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (sheetIndex == i)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    foreach (int index in rowIndices)
+                    {
+                        workbook.CurrentWorksheet.AddHiddenRow(index);
+                    }
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.Equal(rowIndices.Count, givenWorksheet.HiddenRows.Count);
+            foreach (KeyValuePair<int, bool> hiddenRow in givenWorksheet.HiddenRows)
+            {
+                Assert.Contains(rowIndices, x => x + 1 == hiddenRow.Key); // Not zero-based
+                Assert.True(hiddenRow.Value);
+            }
+        }
+
+
+
+        [Theory(DisplayName = "Test of the 'RowHeight' property when writing and reading a worksheet")]
+        [InlineData("", "", 0)]
+        [InlineData("0", "17", 0)]
+        [InlineData("0,1,2", "11,12,13.5", 0)]
+        [InlineData("1,3,5", "55.5,1.111,5.587", 0)]
+        [InlineData("", "", 1)]
+        [InlineData("0", "17.2", 1)]
+        [InlineData("0,1,2", "11.05,12.1,13.55", 2)]
+        [InlineData("1,3,5", "55.5,1.111,5.587", 3)]
+        public void RowHeightsWriteReadTest(string rowDefinitions, string heightDefinitions, int sheetIndex)
+        {
+            string[] tokens = rowDefinitions.Split(',');
+            string[] heightTokens = heightDefinitions.Split(',');
+            Dictionary<int, float> rows = new Dictionary<int,float>();
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                if (tokens[i] != "")
+                {
+                    rows.Add(int.Parse(tokens[i]), float.Parse(heightTokens[i]));
+                }
+            }
+            Workbook workbook = PrepareWorkbook(4, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (sheetIndex == i)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    foreach (KeyValuePair<int, float> row in rows)
+                    {
+                        workbook.CurrentWorksheet.SetRowHeight(row.Key, row.Value);
+                    }
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.Equal(rows.Count, givenWorksheet.RowHeights.Count);
+            foreach (KeyValuePair<int, float> rowHeight in givenWorksheet.RowHeights)
+            {
+                Assert.Contains(rows.Keys, x => x + 1 == rowHeight.Key); // Not zero-based
+                float expectedHeight = Utils.GetInternalRowHeight(rows[rowHeight.Key - 1]);
+                Assert.Equal(expectedHeight, rowHeight.Value);
+            }
+        }
+
         private static Workbook PrepareWorkbook(int numberOfWorksheets, object a1Data)
         {
             Workbook workbook = new Workbook();

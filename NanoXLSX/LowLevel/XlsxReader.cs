@@ -177,6 +177,17 @@ namespace NanoXLSX.LowLevel
                 {
                     ws.DefaultRowHeight = reader.Value.DefaultRowHeight.Value;
                 }
+                foreach(KeyValuePair<int,WorksheetReader.RowDefinition> row in reader.Value.Rows)
+                {
+                    if (row.Value.Hidden)
+                    {
+                        ws.AddHiddenRow(row.Key);
+                    }
+                    if (row.Value.Height.HasValue)
+                    {
+                        ws.SetRowHeight(row.Key, row.Value.Height.Value);
+                    }
+                }
                 foreach (Column column in reader.Value.Columns)
                 {
                     if (column.Width != Worksheet.DEFAULT_COLUMN_WIDTH)

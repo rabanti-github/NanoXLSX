@@ -65,6 +65,11 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         public float? DefaultRowHeight { get; private set; } = null;
 
+        /// <summary>
+        /// Gets a dictionary of internal Row definitions
+        /// </summary>
+        public Dictionary<int, RowDefinition> Rows { get; private set; } = new Dictionary<int, RowDefinition>();
+
         #endregion
 
         #region constructors
@@ -131,6 +136,14 @@ namespace NanoXLSX.LowLevel
                     XmlNodeList rows = xr.GetElementsByTagName("row");
                     foreach (XmlNode row in rows)
                     {
+                        string rowAttribute = ReaderUtils.GetAttribute(row, "r");
+                        if (rowAttribute != null)
+                        {
+                            string hiddenAttribute = ReaderUtils.GetAttribute(row, "hidden");
+                            RowDefinition.AddHiddenRow(Rows, rowAttribute, hiddenAttribute);
+                            string heightAttribute = ReaderUtils.GetAttribute(row, "ht");
+                            RowDefinition.AddRowHeight(Rows, rowAttribute, heightAttribute);
+                        }
                         if (row.HasChildNodes)
                         {
                             foreach (XmlNode rowChild in row.ChildNodes)
@@ -1136,5 +1149,58 @@ namespace NanoXLSX.LowLevel
 
         #endregion
 
+        #region subClasses
+        /// <summary>
+        /// Internal class to represent a row
+        /// </summary>
+        public class RowDefinition
+        {
+            /// <summary>
+            /// Indicates whether the row is hidden
+            /// </summary>
+            public bool Hidden { get; set; }
+            /// <summary>
+            /// Non-standard row height
+            /// </summary>
+            public float? Height { get; set; } = null;
+
+            /// <summary>
+            /// Adds a row definition or changes it, when a hidden property is defined
+            /// </summary>
+            /// <param name="rows">Row dictionary</param>
+            /// <param name="rowNumber">Row number as string (directly resolved from the corresponding XML attribute)</param>
+            /// <param name="hiddenProperty">Hidden definition as string (directly resolved from the corresponding XML attribute)</param>
+            public static void AddHiddenRow(Dictionary<int,RowDefinition>rows, string rowNumber, string hiddenProperty)
+            {
+                int row = int.Parse(rowNumber);
+                if (!rows.ContainsKey(row))
+                {
+                    rows.Add(row, new RowDefinition());
+                }
+                if (hiddenProperty != null && hiddenProperty == "1")
+                {
+                    rows[row].Hidden = true;
+                }
+            }
+            /// <summary>
+            /// Adds a row definition or changes it, when a non-standard row height is defined
+            /// </summary>
+            /// <param name="rows">Row dictionary</param>
+            /// <param name="rowNumber">Row number as string (directly resolved from the corresponding XML attribute)</param>
+            /// <param name="heightProperty">Row height as string (directly resolved from the corresponding XML attribute)</param>
+            public static void AddRowHeight(Dictionary<int, RowDefinition> rows, string rowNumber, string heightProperty)
+            {
+                int row = int.Parse(rowNumber);
+                if (!rows.ContainsKey(row))
+                {
+                    rows.Add(row, new RowDefinition());
+                }
+                if (heightProperty != null)
+                {
+                    rows[row].Height = float.Parse(heightProperty);
+                }
+            }
+        }
+        #endregion
     }
 }
