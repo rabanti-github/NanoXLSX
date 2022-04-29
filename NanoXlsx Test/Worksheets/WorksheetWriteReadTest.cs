@@ -193,7 +193,7 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(rowIndices.Count, givenWorksheet.HiddenRows.Count);
             foreach (KeyValuePair<int, bool> hiddenRow in givenWorksheet.HiddenRows)
             {
-                Assert.Contains(rowIndices, x => x + 1 == hiddenRow.Key); // Not zero-based
+                Assert.Contains(rowIndices, x => x == hiddenRow.Key);
                 Assert.True(hiddenRow.Value);
             }
         }
@@ -237,13 +237,25 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(rows.Count, givenWorksheet.RowHeights.Count);
             foreach (KeyValuePair<int, float> rowHeight in givenWorksheet.RowHeights)
             {
-                Assert.Contains(rows.Keys, x => x + 1 == rowHeight.Key); // Not zero-based
-                float expectedHeight = Utils.GetInternalRowHeight(rows[rowHeight.Key - 1]);
+                Assert.Contains(rows.Keys, x => x == rowHeight.Key);
+                float expectedHeight = Utils.GetInternalRowHeight(rows[rowHeight.Key]);
                 Assert.Equal(expectedHeight, rowHeight.Value);
             }
         }
 
-        private static Workbook PrepareWorkbook(int numberOfWorksheets, object a1Data)
+        [Fact(DisplayName = "Test of the 'RowHeight' property when writing and reading a worksheet, if a row already exists")]
+        public void RowHeightsWriteReadTest2()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            workbook.CurrentWorksheet.AddCell(42, "C2");
+            workbook.CurrentWorksheet.SetRowHeight(2, 22.55f);
+            workbook.CurrentWorksheet.AddHiddenRow(2);
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, 0);
+            Assert.Equal(Utils.GetInternalRowHeight(22.55f), givenWorksheet.RowHeights[2]);
+            Assert.True(givenWorksheet.HiddenRows[2]);
+    }
+
+    private static Workbook PrepareWorkbook(int numberOfWorksheets, object a1Data)
         {
             Workbook workbook = new Workbook();
             for (int i = 0; i < numberOfWorksheets; i++)

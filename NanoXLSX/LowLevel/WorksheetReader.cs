@@ -140,9 +140,9 @@ namespace NanoXLSX.LowLevel
                         if (rowAttribute != null)
                         {
                             string hiddenAttribute = ReaderUtils.GetAttribute(row, "hidden");
-                            RowDefinition.AddHiddenRow(Rows, rowAttribute, hiddenAttribute);
+                            RowDefinition.AddRowDefinition(Rows, rowAttribute, null, hiddenAttribute);
                             string heightAttribute = ReaderUtils.GetAttribute(row, "ht");
-                            RowDefinition.AddRowHeight(Rows, rowAttribute, heightAttribute);
+                            RowDefinition.AddRowDefinition(Rows, rowAttribute, heightAttribute, null);
                         }
                         if (row.HasChildNodes)
                         {
@@ -1165,32 +1165,15 @@ namespace NanoXLSX.LowLevel
             public float? Height { get; set; } = null;
 
             /// <summary>
-            /// Adds a row definition or changes it, when a hidden property is defined
-            /// </summary>
-            /// <param name="rows">Row dictionary</param>
-            /// <param name="rowNumber">Row number as string (directly resolved from the corresponding XML attribute)</param>
-            /// <param name="hiddenProperty">Hidden definition as string (directly resolved from the corresponding XML attribute)</param>
-            public static void AddHiddenRow(Dictionary<int,RowDefinition>rows, string rowNumber, string hiddenProperty)
-            {
-                int row = int.Parse(rowNumber);
-                if (!rows.ContainsKey(row))
-                {
-                    rows.Add(row, new RowDefinition());
-                }
-                if (hiddenProperty != null && hiddenProperty == "1")
-                {
-                    rows[row].Hidden = true;
-                }
-            }
-            /// <summary>
-            /// Adds a row definition or changes it, when a non-standard row height is defined
+            /// Adds a row definition or changes it, when a non-standard row height and/or hidden state is defined
             /// </summary>
             /// <param name="rows">Row dictionary</param>
             /// <param name="rowNumber">Row number as string (directly resolved from the corresponding XML attribute)</param>
             /// <param name="heightProperty">Row height as string (directly resolved from the corresponding XML attribute)</param>
-            public static void AddRowHeight(Dictionary<int, RowDefinition> rows, string rowNumber, string heightProperty)
+            /// <param name="hiddenProperty">Hidden definition as string (directly resolved from the corresponding XML attribute)</param>
+            public static void AddRowDefinition(Dictionary<int, RowDefinition> rows, string rowNumber, string heightProperty, string hiddenProperty)
             {
-                int row = int.Parse(rowNumber);
+                int row = int.Parse(rowNumber) - 1; // Transform to zero-based
                 if (!rows.ContainsKey(row))
                 {
                     rows.Add(row, new RowDefinition());
@@ -1198,6 +1181,10 @@ namespace NanoXLSX.LowLevel
                 if (heightProperty != null)
                 {
                     rows[row].Height = float.Parse(heightProperty);
+                }
+                if (hiddenProperty != null && hiddenProperty == "1")
+                {
+                    rows[row].Hidden = true;
                 }
             }
         }
