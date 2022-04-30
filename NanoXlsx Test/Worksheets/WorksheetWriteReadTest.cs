@@ -255,7 +255,47 @@ namespace NanoXLSX_Test.Worksheets
             Assert.True(givenWorksheet.HiddenRows[2]);
     }
 
-    private static Workbook PrepareWorkbook(int numberOfWorksheets, object a1Data)
+
+        [Theory(DisplayName = "Test of the 'MergedCells' property when writing and reading a worksheet")]
+        [InlineData(null, 0)]
+        [InlineData("A1:A1", 0)]
+        [InlineData("A1:C1", 0)]
+        [InlineData("B1:D1", 0)]
+        [InlineData(null, 1)]
+        [InlineData("A1:A1", 1)]
+        [InlineData("A1:C1", 2)]
+        [InlineData("B1:D1", 3)]
+        public void MergedCellsWriteReadTest(string mergedCellsRange, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            Range? range = null;
+            if (mergedCellsRange != null)
+            {
+                range = new Range(mergedCellsRange);
+                for (int i = 0; i <= sheetIndex; i++)
+                {
+                    if (sheetIndex == i)
+                    {
+                        workbook.SetCurrentWorksheet(i);
+                        workbook.CurrentWorksheet.MergeCells(range.Value);
+                    }
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            if (mergedCellsRange == null)
+            {
+                Assert.Empty(givenWorksheet.MergedCells);
+            }
+            else
+            {
+                Assert.Equal(range.Value, givenWorksheet.MergedCells[mergedCellsRange]);
+            }
+        }
+
+
+
+
+        private static Workbook PrepareWorkbook(int numberOfWorksheets, object a1Data)
         {
             Workbook workbook = new Workbook();
             for (int i = 0; i < numberOfWorksheets; i++)

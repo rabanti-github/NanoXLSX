@@ -242,19 +242,19 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the merged cells (only references) as dictionary with the cell address as key and the range object as value
-        /// </summary>
-        public Dictionary<string, Range> MergedCells
-        {
-            get { return mergedCells; }
-        }
-
-        /// <summary>
         /// Gets defined row heights as dictionary with the zero-based row number as key and the height (float from 0 to 409.5) as value
         /// </summary>
         public Dictionary<int, float> RowHeights
         {
             get { return rowHeights; }
+        }
+
+        /// <summary>
+        /// Gets the merged cells (only references) as dictionary with the cell address as key and the range object as value
+        /// </summary>
+        public Dictionary<string, Range> MergedCells
+        {
+            get { return mergedCells; }
         }
 
         /// <summary>

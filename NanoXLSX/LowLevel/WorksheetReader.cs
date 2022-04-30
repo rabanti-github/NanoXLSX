@@ -69,6 +69,10 @@ namespace NanoXLSX.LowLevel
         /// Gets a dictionary of internal Row definitions
         /// </summary>
         public Dictionary<int, RowDefinition> Rows { get; private set; } = new Dictionary<int, RowDefinition>();
+        /// <summary>
+        /// Gets a list of merged cells
+        /// </summary>
+        public List<Range> MergedCells { get; private set; } = new List<Range>();
 
         #endregion
 
@@ -152,6 +156,7 @@ namespace NanoXLSX.LowLevel
                             }
                         }
                     }
+                    GetMergedCells(xr);
                     GetSheetFormats(xr);
                     GetAutoFilters(xr);
                     GetColumns(xr);
@@ -160,6 +165,31 @@ namespace NanoXLSX.LowLevel
             catch (Exception ex)
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
+            }
+        }
+
+        /// <summary>
+        /// Gets the merged cells of the current worksheet
+        /// </summary>
+        /// <param name="xmlDocument">XML document of the current worksheet</param>
+        private void GetMergedCells(XmlDocument xmlDocument)
+        {
+            XmlNodeList mergedCellsNodes = xmlDocument.GetElementsByTagName("mergeCells");
+            if (mergedCellsNodes != null && mergedCellsNodes.Count > 0)
+            {
+
+                XmlNodeList mergedCellNodes = mergedCellsNodes[0].ChildNodes;
+                if (mergedCellNodes != null && mergedCellNodes.Count > 0)
+                {
+                    foreach(XmlNode mergedCells in mergedCellNodes)
+                    {
+                        string attribute = ReaderUtils.GetAttribute(mergedCells, "ref");
+                        if (attribute != null)
+                        {
+                            this.MergedCells.Add(new Range(attribute));
+                        }
+                    }
+                }
             }
         }
 
