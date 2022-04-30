@@ -261,38 +261,84 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1:A1", 0)]
         [InlineData("A1:C1", 0)]
         [InlineData("B1:D1", 0)]
+        [InlineData("B1:D1,E5:E7", 0)]
         [InlineData(null, 1)]
         [InlineData("A1:A1", 1)]
         [InlineData("A1:C1", 2)]
         [InlineData("B1:D1", 3)]
-        public void MergedCellsWriteReadTest(string mergedCellsRange, int sheetIndex)
+        [InlineData("B1:D1,E5:E7", 3)]
+        public void MergedCellsWriteReadTest(string mergedCellsRanges, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
-            Range? range = null;
-            if (mergedCellsRange != null)
+            List<Range>ranges = new List<Range>();
+            if (mergedCellsRanges != null)
             {
-                range = new Range(mergedCellsRange);
+                string[] split = mergedCellsRanges.Split(",");
+                foreach(string range in split)
+                {
+                    ranges.Add(new Range(range));
+                }
                 for (int i = 0; i <= sheetIndex; i++)
                 {
                     if (sheetIndex == i)
                     {
                         workbook.SetCurrentWorksheet(i);
-                        workbook.CurrentWorksheet.MergeCells(range.Value);
+                        foreach(Range range in ranges)
+                        {
+                            workbook.CurrentWorksheet.MergeCells(range);
+                        }
                     }
                 }
             }
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
-            if (mergedCellsRange == null)
+            if (mergedCellsRanges == null)
             {
                 Assert.Empty(givenWorksheet.MergedCells);
             }
             else
             {
-                Assert.Equal(range.Value, givenWorksheet.MergedCells[mergedCellsRange]);
+                foreach(Range range in ranges)
+                {
+                    Assert.Equal(range, givenWorksheet.MergedCells[range.ToString()]);
+                }
             }
         }
 
-
+        [Theory(DisplayName = "Test of the 'SelectedCells' property when writing and reading a worksheet")]
+        [InlineData(null, 0)]
+        [InlineData("A1:A1", 0)]
+        [InlineData("A1:C1", 0)]
+        [InlineData("B1:D1", 0)]
+        [InlineData(null, 1)]
+        [InlineData("A1:A1", 1)]
+        [InlineData("A1:C1", 2)]
+        [InlineData("B1:D1", 3)]
+        public void SelectedCellsWriteReadTest(string selectedCellsRange, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            Range? range = null;
+            if (selectedCellsRange != null)
+            {
+                range = new Range(selectedCellsRange);
+                for (int i = 0; i <= sheetIndex; i++)
+                {
+                    if (sheetIndex == i)
+                    {
+                        workbook.SetCurrentWorksheet(i);
+                        workbook.CurrentWorksheet.SetSelectedCells(range.Value);
+                    }
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            if (selectedCellsRange == null)
+            {
+                Assert.Null(givenWorksheet.SelectedCells);
+            }
+            else
+            {
+                Assert.Equal(range.Value, givenWorksheet.SelectedCells);
+            }
+        }
 
 
         private static Workbook PrepareWorkbook(int numberOfWorksheets, object a1Data)

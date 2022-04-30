@@ -74,6 +74,11 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         public List<Range> MergedCells { get; private set; } = new List<Range>();
 
+        /// <summary>
+        /// Gets the selected cells (panes are currently not considered)
+        /// </summary>
+        public Range? SelectedCells { get; private set; } = null;
+
         #endregion
 
         #region constructors
@@ -156,6 +161,7 @@ namespace NanoXLSX.LowLevel
                             }
                         }
                     }
+                    GetSheetView(xr);
                     GetMergedCells(xr);
                     GetSheetFormats(xr);
                     GetAutoFilters(xr);
@@ -169,6 +175,40 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
+        /// Gets the selected cells of the current worksheet
+        /// </summary>
+        /// <param name="xmlDocument">XML document of the current worksheet</param>
+        private void GetSheetView(XmlDocument xmlDocument)
+        {
+            XmlNodeList sheetViewsNodes = xmlDocument.GetElementsByTagName("sheetViews");
+            if (sheetViewsNodes != null && sheetViewsNodes.Count > 0)
+            {
+                XmlNodeList sheetViewNodes = sheetViewsNodes[0].ChildNodes;
+                // Go through all possible views
+                foreach(XmlNode sheetView in sheetViewNodes)
+                {
+                    if (sheetView.LocalName.Equals("sheetView", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        XmlNodeList selectionNodes = sheetView.ChildNodes;
+                        if (selectionNodes != null && selectionNodes.Count > 0)
+                        {
+                            foreach(XmlNode selectionNode in selectionNodes)
+                            {
+                                // TODO: Panes are currently not considered
+                                string attribute = ReaderUtils.GetAttribute(selectionNode, "sqref");
+                                if (attribute != null)
+                                {
+                                    this.SelectedCells = new Range(attribute);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        /// <summary>
         /// Gets the merged cells of the current worksheet
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
@@ -177,7 +217,6 @@ namespace NanoXLSX.LowLevel
             XmlNodeList mergedCellsNodes = xmlDocument.GetElementsByTagName("mergeCells");
             if (mergedCellsNodes != null && mergedCellsNodes.Count > 0)
             {
-
                 XmlNodeList mergedCellNodes = mergedCellsNodes[0].ChildNodes;
                 if (mergedCellNodes != null && mergedCellNodes.Count > 0)
                 {

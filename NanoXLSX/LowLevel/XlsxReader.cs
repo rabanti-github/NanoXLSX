@@ -177,6 +177,10 @@ namespace NanoXLSX.LowLevel
                 {
                     ws.DefaultRowHeight = reader.Value.DefaultRowHeight.Value;
                 }
+                if (reader.Value.SelectedCells.HasValue)
+                {
+                    ws.SetSelectedCells(reader.Value.SelectedCells.Value);
+                }
                 foreach(Range range in reader.Value.MergedCells)
                 {
                     ws.MergeCells(range);
