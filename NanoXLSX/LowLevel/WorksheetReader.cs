@@ -247,7 +247,7 @@ namespace NanoXLSX.LowLevel
                 }
                 foreach (int index in indices)
                 {
-                    Column column = new Column(index);
+                    Column column = new Column(index - 1); // Transform to zero-based
                     column.Width = width;
                     column.IsHidden = hidden;
                     this.Columns.Add(column);

@@ -100,7 +100,7 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(columnIndices.Count, givenWorksheet.Columns.Count);
             foreach(KeyValuePair<int,Column> column in givenWorksheet.Columns)
             {
-                Assert.Contains(columnIndices, x => x + 1 == column.Value.Number); // Not zero-based
+                Assert.Contains(columnIndices, x => x == column.Value.Number);
                 if (setWidth)
                 {
                    
