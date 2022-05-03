@@ -205,7 +205,6 @@ namespace NanoXLSX.LowLevel
                     }
                 }
             }
-
         }
 
         /// <summary>

@@ -340,6 +340,66 @@ namespace NanoXLSX_Test.Worksheets
             }
         }
 
+        [Fact(DisplayName = "Test of the 'SheetID'  property when writing and reading a worksheet")]
+        public void SheetIDWriteReadTest()
+        {
+            Workbook workbook = new Workbook();
+            string sheetName1 = "sheet_a";
+            string sheetName2 = "sheet_b";
+            string sheetName3 = "sheet_c";
+            string sheetName4 = "sheet_d";
+            int id1, id2, id3, id4;
+            workbook.AddWorksheet(sheetName1);
+            id1 = workbook.CurrentWorksheet.SheetID;
+            workbook.AddWorksheet(sheetName2);
+            id2 = workbook.CurrentWorksheet.SheetID;
+            workbook.AddWorksheet(sheetName3);
+            id3 = workbook.CurrentWorksheet.SheetID;
+            workbook.AddWorksheet(sheetName4);
+            id4 = workbook.CurrentWorksheet.SheetID;
+            Workbook givenWorkbook = null;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                workbook.SaveAsStream(stream, true);
+                stream.Position = 0;
+                givenWorkbook = Workbook.Load(stream);
+            }
+            Assert.Equal(id1, givenWorkbook.Worksheets.First(w => w.SheetName == sheetName1).SheetID);
+            Assert.Equal(id2, givenWorkbook.Worksheets.First(w => w.SheetName == sheetName2).SheetID);
+            Assert.Equal(id3, givenWorkbook.Worksheets.First(w => w.SheetName == sheetName3).SheetID);
+            Assert.Equal(id4, givenWorkbook.Worksheets.First(w => w.SheetName == sheetName4).SheetID);
+        }
+
+        [Fact(DisplayName = "Test of the 'SheetName'  property when writing and reading a worksheet")]
+        public void SheetNameWriteReadTest()
+        {
+            Workbook workbook = new Workbook();
+            string sheetName1 = "sheet_a";
+            string sheetName2 = "sheet_b";
+            string sheetName3 = "sheet_c";
+            string sheetName4 = "sheet_d";
+            int id1, id2, id3, id4;
+            workbook.AddWorksheet(sheetName1);
+            id1 = workbook.CurrentWorksheet.SheetID;
+            workbook.AddWorksheet(sheetName2);
+            id2 = workbook.CurrentWorksheet.SheetID;
+            workbook.AddWorksheet(sheetName3);
+            id3 = workbook.CurrentWorksheet.SheetID;
+            workbook.AddWorksheet(sheetName4);
+            id4 = workbook.CurrentWorksheet.SheetID;
+            Workbook givenWorkbook = null;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                workbook.SaveAsStream(stream, true);
+                stream.Position = 0;
+                givenWorkbook = Workbook.Load(stream);
+            }
+            Assert.Equal(sheetName1, givenWorkbook.Worksheets.First(w => w.SheetID == id1).SheetName);
+            Assert.Equal(sheetName3, givenWorkbook.Worksheets.First(w => w.SheetID == id3).SheetName);
+            Assert.Equal(sheetName4, givenWorkbook.Worksheets.First(w => w.SheetID == id4).SheetName);
+            Assert.Equal(sheetName2, givenWorkbook.Worksheets.First(w => w.SheetID == id2).SheetName);
+        }
+
 
         private static Workbook PrepareWorkbook(int numberOfWorksheets, object a1Data)
         {
