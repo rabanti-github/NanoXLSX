@@ -79,6 +79,11 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         public Range? SelectedCells { get; private set; } = null;
 
+        /// <summary>
+        /// Gets the applicable worksheet protection values
+        /// </summary>
+        public Dictionary<Worksheet.SheetProtectionValue, int> WorksheetProtection { get; private set; } = new Dictionary<Worksheet.SheetProtectionValue, int>();
+
         #endregion
 
         #region constructors
@@ -166,6 +171,7 @@ namespace NanoXLSX.LowLevel
                     GetSheetFormats(xr);
                     GetAutoFilters(xr);
                     GetColumns(xr);
+                    GetSheetProtection(xr);
                 }
             }
             catch (Exception ex)
@@ -204,6 +210,51 @@ namespace NanoXLSX.LowLevel
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets the sheet protection values of the current worksheets
+        /// </summary>
+        /// <param name="xmlDocument">XML document of the current worksheet</param>
+        private void GetSheetProtection(XmlDocument xmlDocument)
+        {
+            XmlNodeList sheetProtectionNodes = xmlDocument.GetElementsByTagName("sheetProtection");
+            if (sheetProtectionNodes != null && sheetProtectionNodes.Count > 0)
+            {
+                XmlNode sheetProtectionNode = sheetProtectionNodes[0];
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.autoFilter);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.deleteColumns);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.deleteRows);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.formatCells);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.formatColumns);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.formatRows);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.insertColumns);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.insertHyperlinks);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.insertRows);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.objects);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.pivotTables);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.scenarios);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectLockedCells);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectUnlockedCells);
+                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.sort);
+            }
+
+        }
+
+        /// <summary>
+        /// Manages particular sheet protection values if defined
+        /// </summary>
+        /// <param name="node">Sheet protection node</param>
+        /// <param name="sheetProtectionValue">Value to check and maintain (i defined)</param>
+        private void ManageSheetProtection(XmlNode node, Worksheet.SheetProtectionValue sheetProtectionValue)
+        {
+            string attributeName = Enum.GetName(typeof(Worksheet.SheetProtectionValue), sheetProtectionValue);
+            string attribute = ReaderUtils.GetAttribute(node, attributeName);
+            if (attribute != null)
+            {
+                int value = int.Parse(attribute);
+                WorksheetProtection.Add(sheetProtectionValue, value);
             }
         }
 

@@ -1054,12 +1054,8 @@ namespace NanoXLSX.LowLevel
             string temp;
             foreach (KeyValuePair<Worksheet.SheetProtectionValue, int> item in actualLockingValues)
             {
-                try
-                {
                     temp = Enum.GetName(typeof(Worksheet.SheetProtectionValue), item.Key); // Note! If the enum names differs from the OOXML definitions, this method will cause invalid OOXML entries
                     sb.Append(" ").Append(temp).Append("=\"").Append(item.Value.ToString("G", culture)).Append("\"");
-                }
-                catch { }
             }
             if (!string.IsNullOrEmpty(sheet.SheetProtectionPassword))
             {

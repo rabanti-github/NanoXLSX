@@ -400,6 +400,91 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(sheetName2, givenWorkbook.Worksheets.First(w => w.SheetID == id2).SheetName);
         }
 
+        [Theory(DisplayName = "Test of the 'SheetProtectionValues'  and 'UseSheetProtection' property when writing and reading a worksheet")]
+        [InlineData(false, "", "", 0)]
+        [InlineData(false, "autoFilter:0,sort:0", "", 0)]
+        [InlineData(true, "", "objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "autoFilter:0", "autoFilter:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "pivotTables:0", "pivotTables:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "sort:0", "sort:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "deleteRows:0", "deleteRows:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "deleteColumns:0", "deleteColumns:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "insertHyperlinks:0", "insertHyperlinks:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "insertRows:0", "insertRows:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "insertColumns:0", "insertColumns:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "formatRows:0", "formatRows:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "formatColumns:0", "formatColumns:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "formatCells:0", "formatCells:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "objects:0", "scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)] 
+        [InlineData(true, "scenarios:0", "objects:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "selectLockedCells:0", "objects:1,scenarios:1", 0)]
+        [InlineData(true, "selectUnlockedCells:0", "objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:0", 0)]
+        [InlineData(false, "", "", 1)]
+        [InlineData(false, "autoFilter:0", "", 2)]
+        [InlineData(true, "", "objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 3)]
+        [InlineData(true, "autoFilter:0", "autoFilter:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 1)]
+        [InlineData(true, "pivotTables:0,sort:0", "pivotTables:0,sort:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 2)]
+        [InlineData(true, "sort:0,deleteColumns:0,formatCells:0", "sort:0,deleteColumns:0,formatCells:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 3)]
+        [InlineData(true, "deleteRows:0,formatCells:0", "deleteRows:0,formatCells:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 1)]
+        [InlineData(true, "deleteColumns:0,formatColumns:0,formatRows:0", "deleteColumns:0,formatColumns:0,formatRows:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 2)]
+        [InlineData(true, "insertHyperlinks:0,formatCells:0", "insertHyperlinks:0,formatCells:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 3)]
+        [InlineData(true, "insertRows:0,formatRows:0", "insertRows:0,formatRows:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 1)]
+        [InlineData(true, "insertColumns:0,formatColumns:0", "insertColumns:0,formatColumns:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 2)]
+        [InlineData(true, "formatRows:0,formatColumns:0", "formatRows:0,formatColumns:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 3)]
+        [InlineData(true, "formatColumns:0,formatCells:0", "formatColumns:0,formatCells:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 1)]
+        public void SheetProtectionWriteReadTest(bool useSheetProtection, string givenProtectionValues, string expectedProtectionValues, int sheetIndex)
+        {
+            Dictionary<Worksheet.SheetProtectionValue, bool> expectedProtection = PrepareSheetProtectionValues(expectedProtectionValues);
+            Dictionary<Worksheet.SheetProtectionValue, bool> givenProtection = PrepareSheetProtectionValues(givenProtectionValues);
+            Workbook workbook = PrepareWorkbook(4, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (sheetIndex == i)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    foreach (KeyValuePair<Worksheet.SheetProtectionValue, bool> item in givenProtection)
+                    {
+                       workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(item.Key);
+                    }
+                    // adding values will enable sheet protection in any case, can be deactivated afterwards
+                    workbook.CurrentWorksheet.UseSheetProtection = useSheetProtection;
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.Equal(expectedProtection.Count, givenWorksheet.SheetProtectionValues.Count);
+            Assert.Equal(useSheetProtection, givenWorksheet.UseSheetProtection);
+            foreach (KeyValuePair<Worksheet.SheetProtectionValue, bool> item in expectedProtection)
+            {
+                if (item.Value)
+                {
+                    Assert.Contains(item.Key, givenWorksheet.SheetProtectionValues);
+                }
+            }
+        }
+
+        private static Dictionary<Worksheet.SheetProtectionValue, bool> PrepareSheetProtectionValues(string tokenString)
+        {
+            Dictionary<Worksheet.SheetProtectionValue, bool> dictionary = new Dictionary<Worksheet.SheetProtectionValue, bool>();
+            string[] tokens = tokenString.Split(",");
+            foreach (string token in tokens)
+            {
+                if (token == "")
+                {
+                    continue;
+                }
+                string[] subTokens = token.Split(":");
+                Worksheet.SheetProtectionValue value = (Worksheet.SheetProtectionValue)Enum.Parse(typeof(Worksheet.SheetProtectionValue), subTokens[0]);
+                if (subTokens[1] == "1")
+                {
+                    dictionary.Add(value, true);
+                }
+                else
+                {
+                    dictionary.Add(value, false);
+                }
+            }
+            return dictionary;
+        }
 
         private static Workbook PrepareWorkbook(int numberOfWorksheets, object a1Data)
         {

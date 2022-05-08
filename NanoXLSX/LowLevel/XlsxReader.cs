@@ -185,6 +185,14 @@ namespace NanoXLSX.LowLevel
                 {
                     ws.MergeCells(range);
                 }
+                foreach(KeyValuePair<Worksheet.SheetProtectionValue, int> sheetProtection in reader.Value.WorksheetProtection)
+                {
+                    ws.SheetProtectionValues.Add(sheetProtection.Key);
+                }
+                if (reader.Value.WorksheetProtection.Count > 0)
+                {
+                    ws.UseSheetProtection = true;
+                }
                 foreach(KeyValuePair<int,WorksheetReader.RowDefinition> row in reader.Value.Rows)
                 {
                     if (row.Value.Hidden)
