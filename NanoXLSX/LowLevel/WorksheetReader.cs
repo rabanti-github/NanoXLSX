@@ -84,6 +84,11 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         public Dictionary<Worksheet.SheetProtectionValue, int> WorksheetProtection { get; private set; } = new Dictionary<Worksheet.SheetProtectionValue, int>();
 
+        /// <summary>
+        /// Gets the (legacy) password hash of a worksheet if protection values are applied with a password
+        /// </summary>
+        public string WorksheetProtectionHash { get; private set; }
+
         #endregion
 
         #region constructors
@@ -238,15 +243,19 @@ namespace NanoXLSX.LowLevel
                 ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectLockedCells);
                 ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectUnlockedCells);
                 ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.sort);
+                string legacyPasswordHash = ReaderUtils.GetAttribute(sheetProtectionNode, "password");
+                if (legacyPasswordHash != null)
+                {
+                    this.WorksheetProtectionHash = legacyPasswordHash;
+                }
             }
-
         }
 
         /// <summary>
         /// Manages particular sheet protection values if defined
         /// </summary>
         /// <param name="node">Sheet protection node</param>
-        /// <param name="sheetProtectionValue">Value to check and maintain (i defined)</param>
+        /// <param name="sheetProtectionValue">Value to check and maintain (if defined)</param>
         private void ManageSheetProtection(XmlNode node, Worksheet.SheetProtectionValue sheetProtectionValue)
         {
             string attributeName = Enum.GetName(typeof(Worksheet.SheetProtectionValue), sheetProtectionValue);

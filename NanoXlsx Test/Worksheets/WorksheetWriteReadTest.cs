@@ -462,6 +462,33 @@ namespace NanoXLSX_Test.Worksheets
             }
         }
 
+        [Theory(DisplayName = "Test of the 'SheetProtectionPasswordHash' property when writing and reading a worksheet")]
+        [InlineData("x", 0)]
+        [InlineData("@test-1,23", 0)]
+        [InlineData("", 0)]
+        [InlineData(null, 0)]
+        [InlineData("x", 1)]
+        [InlineData("@test-1,23", 2)]
+        [InlineData("", 3)]
+        [InlineData(null, 4)]
+        public void SheetProtectionPasswordHashWriteReadTest(string givenPassword, int sheetIndex)
+        {
+            string hash = null;
+            Workbook workbook = PrepareWorkbook(5, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (sheetIndex == i)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.deleteRows);
+                    workbook.CurrentWorksheet.SetSheetProtectionPassword(givenPassword);
+                    hash = workbook.CurrentWorksheet.SheetProtectionPasswordHash;
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.Equal(hash, givenWorksheet.SheetProtectionPasswordHash);
+        }
+
         private static Dictionary<Worksheet.SheetProtectionValue, bool> PrepareSheetProtectionValues(string tokenString)
         {
             Dictionary<Worksheet.SheetProtectionValue, bool> dictionary = new Dictionary<Worksheet.SheetProtectionValue, bool>();

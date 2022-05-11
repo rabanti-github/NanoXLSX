@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NanoXLSX.Exceptions;
+using NanoXLSX.LowLevel;
 using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
@@ -157,7 +158,8 @@ namespace NanoXLSX
         private bool useActiveStyle;
         private bool hidden;
         private Workbook workbookReference;
-        private string sheetProtectionPassword;
+        private string sheetProtectionPassword = null;
+        private string sheetProtectionPasswordHash = null;
         private Range? selectedCells;
         private bool? freezeSplitPanes;
         private float? paneSplitLeftWidth;
@@ -291,9 +293,23 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the password used for sheet protection. See <see cref="SetSheetProtectionPassword"/> to set the password
         /// </summary>
+        /// <remarks>If a workbook with password protected worksheets is loaded, only the <see cref="SheetProtectionPasswordHash"/> is loaded. 
+        /// The password itself cannot be recovered. Use the <see cref="SheetProtectionPasswordHash"/> property to check whether there is a password set</remarks>
         public string SheetProtectionPassword
         {
             get { return sheetProtectionPassword; }
+        }
+
+        /// <summary>
+        /// gets the encrypted hash of the password, defined with <see cref="SheetProtectionPassword"/>. The value will be null, if no password is defined
+        /// </summary>
+        public string SheetProtectionPasswordHash
+        {
+            get { return sheetProtectionPasswordHash; }
+            internal set
+            {
+                sheetProtectionPasswordHash = value;
+            }
         }
 
         /// <summary>
@@ -2001,11 +2017,13 @@ namespace NanoXLSX
             if (string.IsNullOrEmpty(password))
             {
                 sheetProtectionPassword = null;
+                sheetProtectionPasswordHash = null;
                 UseSheetProtection = false;
             }
             else
             {
                 sheetProtectionPassword = password;
+                sheetProtectionPasswordHash = Utils.GeneratePasswordHash(password);
                 UseSheetProtection = true;
             }
         }

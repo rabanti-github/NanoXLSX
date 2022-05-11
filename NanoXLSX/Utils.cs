@@ -290,5 +290,29 @@ namespace NanoXLSX
             }
             return (float)Math.Floor(SPLIT_POINT_DIVIDER * height + SPLIT_HEIGHT_POINT_OFFSET);
         }
+
+        /// <summary>
+        /// Method to generate an Excel internal password hash to protect workbooks or worksheets<br></br>This method is derived from the c++ implementation by Kohei Yoshida (<a href="http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/">http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/</a>)
+        /// </summary>
+        /// <remarks>WARNING! Do not use this method to encrypt 'real' passwords or data outside from NanoXLSX. This is only a minor security feature. Use a proper cryptography method instead.</remarks>
+        /// <param name="password">Password string in UTF-8 to encrypt</param>
+        /// <returns>16 bit hash as hex string</returns>
+        public static string GeneratePasswordHash(string password)
+        {
+            if (string.IsNullOrEmpty(password)) { return string.Empty; }
+            int passwordLength = password.Length;
+            int passwordHash = 0;
+            char character;
+            for (int i = passwordLength; i > 0; i--)
+            {
+                character = password[i - 1];
+                passwordHash = ((passwordHash >> 14) & 0x01) | ((passwordHash << 1) & 0x7fff);
+                passwordHash ^= character;
+            }
+            passwordHash = ((passwordHash >> 14) & 0x01) | ((passwordHash << 1) & 0x7fff);
+            passwordHash ^= (0x8000 | ('N' << 8) | 'K');
+            passwordHash ^= passwordLength;
+            return passwordHash.ToString("X");
+        }
     }
 }

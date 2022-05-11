@@ -247,13 +247,24 @@ namespace NanoXLSX_Test.Misc
         [InlineData(22056.924363425926, "20.05.1960 22:11:05")]
         [InlineData(44197, "01.01.2021 00:00:00")]
         [InlineData(1450360.47930556, "12.12.5870 11:30:12")]
-        public void GetDateFromOATest(double givenValue, String expectedDateString)
+        public void GetDateFromOATest(double givenValue, string expectedDateString)
         {
             DateTime expectedDate = DateTime.ParseExact(expectedDateString, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
             DateTime date = Utils.GetDateFromOA(givenValue);
             Assert.Equal(expectedDate, date);
         }
 
+        [Theory(DisplayName = "Test of the GeneratePasswordHash function")]
+        [InlineData("x", "CEBA")]
+        [InlineData("Test@1-2,3!", "F767")]
+        [InlineData(" ", "CE0A")]
+        [InlineData("", "")]
+        [InlineData(null, "")]
+        public void GeneratePasswordHashTest(string givenVPassword, string expectedHash)
+        {
+            string hash = Utils.GeneratePasswordHash(givenVPassword);
+            Assert.Equal(expectedHash, hash);
+        }
 
-}
+    }
 }

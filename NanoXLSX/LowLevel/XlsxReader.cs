@@ -193,6 +193,10 @@ namespace NanoXLSX.LowLevel
                 {
                     ws.UseSheetProtection = true;
                 }
+                if (!string.IsNullOrEmpty(reader.Value.WorksheetProtectionHash))
+                {
+                    ws.SheetProtectionPasswordHash = reader.Value.WorksheetProtectionHash;
+                }
                 foreach(KeyValuePair<int,WorksheetReader.RowDefinition> row in reader.Value.Rows)
                 {
                     if (row.Value.Hidden)
