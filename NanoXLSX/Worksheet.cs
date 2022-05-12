@@ -301,7 +301,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// gets the encrypted hash of the password, defined with <see cref="SheetProtectionPassword"/>. The value will be null, if no password is defined
+        /// gets the encryption hash of the password, defined with <see cref="SheetProtectionPassword"/>. The value will be null, if no password is defined
         /// </summary>
         public string SheetProtectionPasswordHash
         {

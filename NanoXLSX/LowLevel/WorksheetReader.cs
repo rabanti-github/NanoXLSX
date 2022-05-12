@@ -209,7 +209,15 @@ namespace NanoXLSX.LowLevel
                                 string attribute = ReaderUtils.GetAttribute(selectionNode, "sqref");
                                 if (attribute != null)
                                 {
-                                    this.SelectedCells = new Range(attribute);
+                                    if (!string.IsNullOrEmpty(attribute) && attribute.Contains(":"))
+                                    {
+                                        this.SelectedCells = new Range(attribute);
+                                    }
+                                    else
+                                    {
+                                        this.SelectedCells = new Range(attribute + ":" + attribute);
+                                    }
+                                        
                                 }
                             }
                         }

@@ -489,6 +489,50 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(hash, givenWorksheet.SheetProtectionPasswordHash);
         }
 
+        [Theory(DisplayName = "Test of the 'Hidden' property when writing and reading a worksheet")]
+        [InlineData(false, 0)]
+        [InlineData(true, 0)]
+        [InlineData(false, 1)]
+        [InlineData(true, 1)]
+        [InlineData(false, 2)]
+        [InlineData(true, 2)]
+        public void HiddenWriteReadTest(bool hidden, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (i == 0 && i == sheetIndex)
+                {
+                    // Prevents setting selected worksheet as hidden
+                    workbook.SetSelectedWorksheet(1);
+                }
+                if (sheetIndex == i)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    workbook.CurrentWorksheet.Hidden = hidden;
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.Equal(hidden, givenWorksheet.Hidden);
+        }
+
+        [Theory(DisplayName = "Test of the 'PaneSplitTopHeight' property when writing and reading a worksheet")]
+        [InlineData(27f, 0)]
+        public void PaneSplitTopHeightWriteReadTest(float height, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (sheetIndex == i)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    workbook.CurrentWorksheet.SetHorizontalSplit(height, new Address("A1"), Worksheet.WorksheetPane.topLeft);
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.Equal(height, givenWorksheet.PaneSplitTopHeight);
+        }
+
         private static Dictionary<Worksheet.SheetProtectionValue, bool> PrepareSheetProtectionValues(string tokenString)
         {
             Dictionary<Worksheet.SheetProtectionValue, bool> dictionary = new Dictionary<Worksheet.SheetProtectionValue, bool>();

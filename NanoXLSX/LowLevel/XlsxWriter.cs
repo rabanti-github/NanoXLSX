@@ -47,37 +47,6 @@ namespace NanoXLSX.LowLevel
         private bool interceptDocuments;
         #endregion
 
-        #region properties
-        /// <summary>
-        /// Gets or set whether XML documents are intercepted during creation
-        /// </summary>
-        public bool InterceptDocuments
-        {
-            get { return interceptDocuments; }
-            set
-            {
-                interceptDocuments = value;
-                if (interceptDocuments && interceptedDocuments == null)
-                {
-                    interceptedDocuments = new Dictionary<string, XmlDocument>();
-                }
-                else if (!interceptDocuments)
-                {
-                    interceptedDocuments = null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the intercepted documents if interceptDocuments is set to true
-        /// </summary>
-        public Dictionary<string, XmlDocument> InterceptedDocuments
-        {
-            get { return interceptedDocuments; }
-        }
-
-        #endregion
-
         #region constructors
         /// <summary>
         /// Constructor with defined workbook object
