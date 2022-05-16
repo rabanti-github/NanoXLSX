@@ -43,8 +43,6 @@ namespace NanoXLSX.LowLevel
         private StyleManager styles;
         private SortedMap sharedStrings;
         private int sharedStringsTotalCount;
-        private Dictionary<string, XmlDocument> interceptedDocuments;
-        private bool interceptDocuments;
         #endregion
 
         #region constructors
@@ -693,12 +691,6 @@ namespace NanoXLSX.LowLevel
         {
             try
             {
-                if (interceptDocuments)
-                {
-                    XmlDocument xDoc = new XmlDocument();
-                    xDoc.LoadXml(doc);
-                    interceptedDocuments.Add(title, xDoc);
-                }
                 using (MemoryStream ms = new MemoryStream()) // Write workbook.xml
                 {
                     if (!ms.CanWrite) { return; }

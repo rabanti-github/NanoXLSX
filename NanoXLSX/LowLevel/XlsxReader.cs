@@ -231,6 +231,16 @@ namespace NanoXLSX.LowLevel
                     }
                     ws.AddCell(cell.Value, cell.Key);
                 }
+                if (reader.Value.PaneSplitValue != null)
+                {
+                    WorksheetReader.PaneDefinition pane = reader.Value.PaneSplitValue;
+                    ws.SetSplit(null, pane.PaneSplitHeight, pane.TopLeftCell, pane.ActivePane);
+                   // public void SetSplit(int? numberOfColumnsFromLeft, int? numberOfRowsFromTop, bool freeze, Address topLeftCell, WorksheetPane activePane)
+                    if (pane.YSplitDefined)
+                    {
+                        ws.SetHorizontalSplit(pane.PaneSplitHeight.Value, pane.TopLeftCell, pane.ActivePane);
+                    }
+                }
                 wb.AddWorksheet(ws);
             }
             wb.SetImportState(false);

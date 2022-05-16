@@ -292,6 +292,25 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Calculates the height of a split pane in a worksheet, based on the internal value (calculated by <see cref="GetInternalPaneSplitHeight(float)"/>)
+        /// </summary>
+        /// <param name="internalHeight">Internal pane height stored in a worksheet. The minimal value is defined by <see cref="SPLIT_HEIGHT_POINT_OFFSET"/></param>
+        /// <returns>Actual pane height</returns>
+        /// <remarks>Depending on the initial height, the result value of <see cref="GetInternalPaneSplitHeight(float)"/> may not lead back to the initial value, 
+        /// since rounding is applied when calculating the internal height</remarks>
+        public static float GetPaneSplitHeight(float internalHeight)
+        {
+            if (internalHeight < 300f)
+            {
+                return 0;
+            }
+            else
+            {
+                return (internalHeight - SPLIT_HEIGHT_POINT_OFFSET) / SPLIT_POINT_DIVIDER;
+            }
+        }
+
+        /// <summary>
         /// Method to generate an Excel internal password hash to protect workbooks or worksheets<br></br>This method is derived from the c++ implementation by Kohei Yoshida (<a href="http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/">http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/</a>)
         /// </summary>
         /// <remarks>WARNING! Do not use this method to encrypt 'real' passwords or data outside from NanoXLSX. This is only a minor security feature. Use a proper cryptography method instead.</remarks>

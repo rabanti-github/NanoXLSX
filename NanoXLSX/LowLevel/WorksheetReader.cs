@@ -89,6 +89,11 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         public string WorksheetProtectionHash { get; private set; }
 
+        /// <summary>
+        /// Gets the definition of pane split-related information 
+        /// </summary>
+        public PaneDefinition PaneSplitValue { get; private set; }
+
         #endregion
 
         #region constructors
@@ -209,7 +214,7 @@ namespace NanoXLSX.LowLevel
                                 string attribute = ReaderUtils.GetAttribute(selectionNode, "sqref");
                                 if (attribute != null)
                                 {
-                                    if (!string.IsNullOrEmpty(attribute) && attribute.Contains(":"))
+                                    if (attribute.Contains(":"))
                                     {
                                         this.SelectedCells = new Range(attribute);
                                     }
@@ -220,6 +225,28 @@ namespace NanoXLSX.LowLevel
                                         
                                 }
                             }
+                        }
+                        XmlNode paneNode = ReaderUtils.GetChildNode(sheetView, "pane");
+                        if (paneNode != null)
+                        {
+                            this.PaneSplitValue = new PaneDefinition();
+                            string attribute = ReaderUtils.GetAttribute(paneNode, "ySplit");
+                            if (attribute != null)
+                            {
+                                this.PaneSplitValue.YSplitDefined = true;
+                                this.PaneSplitValue.PaneSplitHeight = Utils.GetPaneSplitHeight(float.Parse(attribute));
+                            }
+                            attribute = ReaderUtils.GetAttribute(paneNode, "topLeftCell");
+                            if (attribute != null)
+                            {
+                                this.PaneSplitValue.TopLeftCell = new Address(attribute);
+                            }
+                            attribute = ReaderUtils.GetAttribute(paneNode, "activePane");
+                            if (attribute != null)
+                            {
+                                this.PaneSplitValue.SetActivePane(attribute);
+                            }
+
                         }
                     }
                 }
@@ -1286,6 +1313,48 @@ namespace NanoXLSX.LowLevel
         #endregion
 
         #region subClasses
+
+        public class PaneDefinition
+        {
+            /// <summary>
+            /// Gets or sets the pane split height of a worksheet split
+            /// </summary>
+            public float? PaneSplitHeight { get; set; }
+            /// <summary>
+            /// Top Left cell address of the bottom right pane
+            /// </summary>
+            public Address TopLeftCell { get; set; }
+            /// <summary>
+            /// Active pane in the split window
+            /// </summary>
+            public Worksheet.WorksheetPane ActivePane { get; private set; }
+
+            /// <summary>
+            /// Gets whether an Y split was defined
+            /// </summary>
+            public bool YSplitDefined { get; set; }
+
+            /// <summary>
+            /// Gets whether an X split was defined
+            /// </summary>
+            public bool XSplitDefined { get; set; }
+
+            public PaneDefinition()
+            {
+                ActivePane = Worksheet.WorksheetPane.topLeft;
+                TopLeftCell = new Address(0, 0);
+            }
+
+            /// <summary>
+            /// Parses and sets the active pane from a string value
+            /// </summary>
+            /// <param name="value">raw enum value as string</param>
+            public void SetActivePane(string value)
+            {
+                this.ActivePane = (Worksheet.WorksheetPane)Enum.Parse(typeof(Worksheet.WorksheetPane), value);
+            }
+        }
+
         /// <summary>
         /// Internal class to represent a row
         /// </summary>
