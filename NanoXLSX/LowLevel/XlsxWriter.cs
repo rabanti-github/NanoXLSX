@@ -940,7 +940,7 @@ namespace NanoXLSX.LowLevel
                     sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(typeDef).Append(styleDef).Append(">");
                     if (item.DataType == Cell.CellType.FORMULA)
                     {
-                        sb.Append("<f>").Append(EscapeXmlChars(item.Value.ToString())).Append("</f>");
+                        sb.Append("<f>").Append(EscapeXmlChars(item.Value.ToString(), sanitizeSemicolon: true)).Append("</f>");
                     }
                     else
                     {
@@ -1469,7 +1469,7 @@ namespace NanoXLSX.LowLevel
         /// <param name="input">Input string to process</param>
         /// <returns>Escaped string</returns>
         /// <remarks>Note: The XML specs allow characters up to the character value of 0x10FFFF. However, the C# char range is only up to 0xFFFF. NanoXLSX will neglect all values above this level in the sanitizing check. Illegal characters like 0x1 will be replaced with a white space (0x20)</remarks>
-        public static string EscapeXmlChars(string input)
+        public static string EscapeXmlChars(string input, bool sanitizeSemicolon = false)
         {
             if (input == null) { return ""; }
             int len = input.Length;
@@ -1499,6 +1499,11 @@ namespace NanoXLSX.LowLevel
                     illegalCharacters.Add(i);
                     characterTypes.Add(3);
                 }
+                else if (input[i] == 0x3B && sanitizeSemicolon)
+                {
+                    illegalCharacters.Add(i);
+                    characterTypes.Add(4);
+                }
             }
             if (illegalCharacters.Count == 0)
             {
@@ -1526,6 +1531,10 @@ namespace NanoXLSX.LowLevel
                 else if (characterTypes[i] == 3) // replace &
                 {
                     sb.Append("&amp;");
+                }
+                else if (characterTypes[i] == 4 && sanitizeSemicolon) // replace ;
+                {
+                    sb.Append(",");
                 }
                 lastIndex = illegalCharacters[i] + 1;
             }
