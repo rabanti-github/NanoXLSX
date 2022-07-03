@@ -259,9 +259,6 @@ namespace NanoXLSX
             if (width <= 1f)
             {
                 width = 0;
-            }
-            if (width <= 1f)
-            {
                 pixels = (float)Math.Floor(width / SPLIT_WIDTH_MULTIPLIER + SPLIT_WIDTH_OFFSET);
             }
             else
@@ -307,6 +304,29 @@ namespace NanoXLSX
             else
             {
                 return (internalHeight - SPLIT_HEIGHT_POINT_OFFSET) / SPLIT_POINT_DIVIDER;
+            }
+        }
+
+        /// <summary>
+        /// Calculates the width of a split pane in a worksheet, based on the internal value (calculated by <see cref="GetInternalPaneSplitWidth(float, float, float)"/>)
+        /// </summary>
+        /// <param name="internalWidth">Internal pane width stored in a worksheet. The minimal value is defined by <see cref="SPLIT_WIDTH_POINT_OFFSET"/></param>
+        /// <param name="maxDigitWidth">Maximum digit with of the default font (default is 7.0 for Calibri, size 11)</param>
+        /// <param name="textPadding">Text padding of the default font (default is 5.0 for Calibri, size 11)</param>
+        /// <returns>Actual pane width</returns>
+        /// <remarks>Depending on the initial width, the result value of <see cref="GetInternalPaneSplitWidth(float,float,float)"/> may not lead back to the initial value, 
+        /// since rounding is applied when calculating the internal width</remarks>
+        public static float GetPaneSplitWidth(float internalWidth, float maxDigitWidth = 7f, float textPadding = 5f)
+        {
+            float points = (internalWidth - SPLIT_WIDTH_POINT_OFFSET) / SPLIT_POINT_DIVIDER;
+            if (points < 0.001f)
+            {
+                return 0;
+            }
+            else
+            {
+                float width = points / SPLIT_WIDTH_POINT_MULTIPLIER;
+                return (width - textPadding - SPLIT_WIDTH_OFFSET) / maxDigitWidth;
             }
         }
 

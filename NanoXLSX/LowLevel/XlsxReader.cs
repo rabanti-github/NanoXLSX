@@ -236,9 +236,18 @@ namespace NanoXLSX.LowLevel
                     WorksheetReader.PaneDefinition pane = reader.Value.PaneSplitValue;
                     ws.SetSplit(null, pane.PaneSplitHeight, pane.TopLeftCell, pane.ActivePane);
                    // public void SetSplit(int? numberOfColumnsFromLeft, int? numberOfRowsFromTop, bool freeze, Address topLeftCell, WorksheetPane activePane)
-                    if (pane.YSplitDefined)
+                    if (pane.YSplitDefined  && !pane.XSplitDefined)
                     {
                         ws.SetHorizontalSplit(pane.PaneSplitHeight.Value, pane.TopLeftCell, pane.ActivePane);
+                    }
+                    if (!pane.YSplitDefined && pane.XSplitDefined)
+                    {
+                        ws.SetVerticalSplit(pane.PaneSplitWidth.Value, pane.TopLeftCell, pane.ActivePane);
+                    }
+                    else if (pane.YSplitDefined && pane.XSplitDefined)
+                    {
+                        ws.SetHorizontalSplit(pane.PaneSplitHeight.Value, pane.TopLeftCell, pane.ActivePane);
+                        ws.SetVerticalSplit(pane.PaneSplitWidth.Value, pane.TopLeftCell, pane.ActivePane);
                     }
                 }
                 wb.AddWorksheet(ws);

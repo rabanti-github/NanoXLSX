@@ -236,6 +236,12 @@ namespace NanoXLSX.LowLevel
                                 this.PaneSplitValue.YSplitDefined = true;
                                 this.PaneSplitValue.PaneSplitHeight = Utils.GetPaneSplitHeight(float.Parse(attribute));
                             }
+                            attribute = ReaderUtils.GetAttribute(paneNode, "xSplit");
+                            if (attribute != null)
+                            {
+                                this.PaneSplitValue.XSplitDefined = true;
+                                this.PaneSplitValue.PaneSplitWidth = Utils.GetPaneSplitWidth(float.Parse(attribute));
+                            }
                             attribute = ReaderUtils.GetAttribute(paneNode, "topLeftCell");
                             if (attribute != null)
                             {
@@ -1320,6 +1326,10 @@ namespace NanoXLSX.LowLevel
             /// Gets or sets the pane split height of a worksheet split
             /// </summary>
             public float? PaneSplitHeight { get; set; }
+            /// <summary>
+            /// Gets or sets the pane split width of a worksheet split
+            /// </summary>
+            public float? PaneSplitWidth { get; set; }
             /// <summary>
             /// Top Left cell address of the bottom right pane
             /// </summary>

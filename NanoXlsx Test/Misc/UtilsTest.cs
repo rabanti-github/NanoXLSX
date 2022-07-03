@@ -229,6 +229,21 @@ namespace NanoXLSX_Test.Misc
             Assert.Equal(expectedSplitHeight, splitHeight);
         }
 
+        [Theory(DisplayName = "Test of the GetPaneSplitWidth function")]
+        [InlineData(390f, 0f)]
+        [InlineData(2415f, 18.5f)]
+        [InlineData(1680f, 11.5f)]
+        [InlineData(3825f, 31.9286f)]
+        [InlineData(27240f, 254.9286f)]
+        [InlineData(27345f, 255.9286f)]
+        [InlineData(105465f, 999.9286f)]
+        public void GetPaneSplitWidthTest(float width, float expectedSplitWidth)
+        {
+            float splitWidth = Utils.GetPaneSplitWidth(width);
+            float delta = Math.Abs(splitWidth - expectedSplitWidth);
+            Assert.True(delta < 0.001);
+        }
+
 
         [Theory(DisplayName = "Test of the Utils ToUpper function")]
         [InlineData("", "")]
