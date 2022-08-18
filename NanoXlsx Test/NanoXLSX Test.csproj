@@ -17,6 +17,8 @@
     <None Remove="Resources\missing_worksheet.xlsx" />
     <None Remove="Resources\phonetics.xlsx" />
     <None Remove="Resources\tampered.xlsx" />
+    <None Remove="Resources\unknown_border_type.xlsx" />
+    <None Remove="Resources\unknown_style_enums.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +33,7 @@
 	  </EmbeddedResource>
 	  <EmbeddedResource Include="Resources\phonetics.xlsx" />
 	<EmbeddedResource Include="Resources\tampered.xlsx" />
+	<EmbeddedResource Include="Resources\unknown_style_enums.xlsx" />
   </ItemGroup>
 
   <ItemGroup>

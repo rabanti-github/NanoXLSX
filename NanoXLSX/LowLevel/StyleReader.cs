@@ -108,24 +108,8 @@ namespace NanoXLSX.LowLevel
                         NumberFormat numberFormat = new NumberFormat();
                         int id = int.Parse(ReaderUtils.GetAttribute(childNode, "numFmtId")); // Default will (justified) throw an exception
                         string code = ReaderUtils.GetAttribute(childNode, "formatCode", string.Empty);
-
-                        if (id < NumberFormat.CUSTOMFORMAT_START_NUMBER)
-                        {
-                            if (Enum.IsDefined(typeof(NumberFormat.FormatNumber), id))
-                            {
-                                numberFormat.Number = (NumberFormat.FormatNumber)Enum.ToObject(typeof(NumberFormat.FormatNumber), id);
-                            }
-                            else
-                            {
-                                numberFormat.CustomFormatID = id;
-                                numberFormat.Number = NumberFormat.FormatNumber.custom;
-                            }
-                        }
-                        else
-                        {
-                            numberFormat.CustomFormatID = id;
-                            numberFormat.Number = NumberFormat.FormatNumber.custom;
-                        }
+                        numberFormat.CustomFormatID = id;
+                        numberFormat.Number = NumberFormat.FormatNumber.custom;
                         numberFormat.InternalID = id;
                         numberFormat.CustomFormatCode = code;
                         StyleReaderContainer.AddStyleComponent(numberFormat);
@@ -207,7 +191,7 @@ namespace NanoXLSX.LowLevel
                     return Border.StyleValue.s_double; // special handling, since double is not a valid enum value
                 }
                 Border.StyleValue styleType;
-                if (Enum.TryParse<Border.StyleValue>(value, out styleType))
+                if (Enum.TryParse(value, out styleType))
                 {
                     return styleType;
                 }
