@@ -47,7 +47,6 @@ namespace NanoXLSX.LowLevel
         /// Adds a style component and determines the appropriate type of it automatically
         /// </summary>
         /// <param name="component">Style component to add to the collections</param>
-        /// <exception cref="StyleException">Throws a StyleException if an unknown style component type was passed</exception>
 
         public void AddStyleComponent(AbstractStyle component)
         {
@@ -76,34 +75,21 @@ namespace NanoXLSX.LowLevel
             {
                 fonts.Add(component as Font);
             }
-            else
-            {
-                throw new StyleException("The style definition of the type '" + t.ToString() + "' is unknown or not implemented yet");
-            }
         }
 
         /// <summary>
         /// Returns a whole style by its index
         /// </summary>
         /// <param name="index">Index of the style</param>
-        /// <param name="returnNullOnFail">If true, null will be returned if the style could not be retrieved. Otherwise an exception will be thrown</param>
-        /// <exception cref="StyleException">Throws a StyleException if the style was not found and the parameter returnNullOnFail was set to false</exception>
-        /// <returns>Style object or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
-        public Style GetStyle(string index, bool returnNullOnFail = false)
+        /// <returns>Style object or null if the component could not be retrieved</returns>
+        public Style GetStyle(string index)
         {
             int number;
             if (int.TryParse(index, out number))
             {
-                return GetComponent(typeof(Style), number, returnNullOnFail) as Style;
+                return GetComponent(typeof(Style), number) as Style;
             }
-            else if (returnNullOnFail)
-            {
                 return null;
-            }
-            else
-            {
-                throw new StyleException("The style definition could not be retrieved, because of the invalid style index '" + index + "'");
-            }
         }
 
         /// <summary>
@@ -112,12 +98,10 @@ namespace NanoXLSX.LowLevel
         /// <param name="index">Index of the style</param>
         /// <param name="isDateStyle">Out parameter that indicates whether the style represents a date</param>
         /// <param name="isTimeStyle">Out parameter that indicates whether the style represents a time</param>
-        /// <param name="returnNullOnFail">If true, null will be returned if the style could not be retrieved. Otherwise an exception will be thrown</param>
-        /// <exception cref="StyleException">Throws a StyleException if the style was not found and the parameter returnNullOnFail was set to false</exception>
-        /// <returns>Style object or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
-        public Style GetStyle(int index, out bool isDateStyle, out bool isTimeStyle, bool returnNullOnFail = false)
+        /// <returns>Style object or null if the component could not be retrieved</returns>
+        public Style GetStyle(int index, out bool isDateStyle, out bool isTimeStyle)
         {
-            Style style = GetComponent(typeof(Style), index, returnNullOnFail) as Style;
+            Style style = GetComponent(typeof(Style), index) as Style;
             if (style != null)
             {
                 isDateStyle = NumberFormat.IsDateFormat(style.CurrentNumberFormat.Number);
@@ -135,64 +119,50 @@ namespace NanoXLSX.LowLevel
         /// Returns a cell XF component by its index
         /// </summary>
         /// <param name="index">Internal index of the style component</param>
-        /// <param name="returnNullOnFail">If true, null will be returned if the component could not be retrieved. Otherwise an exception will be thrown</param>
-        /// <exception cref="StyleException">Throws a StyleException if the component was not found and the parameter returnNullOnFail was set to false</exception>
-        /// <remarks>The method is currently not used but prepared for usage when the style reader is fully implemented</remarks>
-        /// <returns>Style component or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
-        public CellXf GetCellXF(int index, bool returnNullOnFail = false)
+        /// <returns>Style component or null if the component could not be retrieved</returns>
+        public CellXf GetCellXF(int index)
         {
-            return GetComponent(typeof(CellXf), index, returnNullOnFail) as CellXf;
+            return GetComponent(typeof(CellXf), index) as CellXf;
         }
 
         /// <summary>
         /// Returns a number format component by its index
         /// </summary>
         /// <param name="index">Internal index of the style component</param>
-        /// <param name="returnNullOnFail">If true, null will be returned if the component could not be retrieved. Otherwise an exception will be thrown</param>
-        /// <exception cref="StyleException">Throws a StyleException if the component was not found and the parameter returnNullOnFail was set to false</exception>
-        /// <returns>Style component or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
-        public NumberFormat GetNumberFormat(int index, bool returnNullOnFail = false)
+        /// <returns>Style component or null if the component could not be retrieved</returns>
+        public NumberFormat GetNumberFormat(int index)
         {
-            return GetComponent(typeof(NumberFormat), index, returnNullOnFail) as NumberFormat;
+            return GetComponent(typeof(NumberFormat), index) as NumberFormat;
         }
 
         /// <summary>
         /// Returns a border component by its index
         /// </summary>
         /// <param name="index">Internal index of the style component</param>
-        /// <param name="returnNullOnFail">If true, null will be returned if the component could not be retrieved. Otherwise an exception will be thrown</param>
-        /// <exception cref="StyleException">Throws a StyleException if the component was not found and the parameter returnNullOnFail was set to false</exception>
-        /// <remarks>The method is currently not used but prepared for usage when the style reader is fully implemented</remarks>
-        /// <returns>Style component or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
-        public Border GetBorder(int index, bool returnNullOnFail = false)
+        /// <returns>Style component or null if the component could not be retrieved</returns>
+        public Border GetBorder(int index)
         {
-            return GetComponent(typeof(Border), index, returnNullOnFail) as Border;
+            return GetComponent(typeof(Border), index) as Border;
         }
 
         /// <summary>
         /// Returns a fill component by its index
         /// </summary>
         /// <param name="index">Internal index of the style component</param>
-        /// <param name="returnNullOnFail">If true, null will be returned if the component could not be retrieved. Otherwise an exception will be thrown</param>
-        /// <exception cref="StyleException">Throws a StyleException if the component was not found and the parameter returnNullOnFail was set to false</exception>
-        /// <remarks>The method is currently not used but prepared for usage when the style reader is fully implemented</remarks>
-        /// <returns>Style component or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
-        public Fill GetFill(int index, bool returnNullOnFail = false)
+        /// <returns>Style component or null if the component could not be retrieved</returns>
+        public Fill GetFill(int index)
         {
-            return GetComponent(typeof(Fill), index, returnNullOnFail) as Fill;
+            return GetComponent(typeof(Fill), index) as Fill;
         }
 
         /// <summary>
         /// Returns a font component by its index
         /// </summary>
         /// <param name="index">Internal index of the style component</param>
-        /// <param name="returnNullOnFail">If true, null will be returned if the component could not be retrieved. Otherwise an exception will be thrown</param>
-        /// <exception cref="StyleException">Throws a StyleException if the component was not found and the parameter returnNullOnFail was set to false</exception>
-        /// <remarks>The method is currently not used but prepared for usage when the style reader is fully implemented</remarks>
-        /// <returns>Style component or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
-        public Font GetFont(int index, bool returnNullOnFail = false)
+        /// <returns>Style component or null if the component could not be retrieved</returns>
+        public Font GetFont(int index)
         {
-            return GetComponent(typeof(Font), index, returnNullOnFail) as Font;
+            return GetComponent(typeof(Font), index) as Font;
         }
 
         /// <summary>
@@ -207,7 +177,6 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Gets the next internal id of a cell XF component
         /// </summary>
-        /// <remarks>The method is currently not used but prepared for usage when the style reader is fully implemented</remarks>
         /// <returns>Next id of the component type (collected in this class)</returns>
         public int GetNextCellXFId()
         {
@@ -226,7 +195,6 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Gets the next internal id of a border component
         /// </summary>
-        /// <remarks>The method is currently not used but prepared for usage when the style reader is fully implemented</remarks>
         /// <returns>Next id of the component type (collected in this class)</returns>
         public int GetNextBorderId()
         {
@@ -236,7 +204,6 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Gets the next internal id of a fill component
         /// </summary>
-        /// <remarks>The method is currently not used but prepared for usage when the style reader is fully implemented</remarks>
         /// <returns>Next id of the component type (collected in this class)</returns>
         public int GetNextFillId()
         {
@@ -246,7 +213,6 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Gets the next internal id of a font component
         /// </summary>
-        /// <remarks>The method is currently not used but prepared for usage when the style reader is fully implemented</remarks>
         /// <returns>Next id of the component type (collected in this class)</returns>
         public int GetNextFontId()
         {
@@ -258,10 +224,8 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="type">Type of the style components</param>
         /// <param name="index">Internal index of the style components</param>
-        /// <param name="returnNullOnFail">If true, null will be returned if the component could not be retrieved. Otherwise an exception will be thrown</param>
-        /// <exception cref="StyleException">Throws a StyleException if the component was not found and the parameter returnNullOnFail was set to false</exception>
-        /// <returns>Style component or null if parameter returnNullOnFail was set to true and the component could not be retrieved</returns>
-        private AbstractStyle GetComponent(Type type, int index, bool returnNullOnFail)
+        /// <returns>Style component or null if the component could not be retrieved</returns>
+        private AbstractStyle GetComponent(Type type, int index)
         {
             try
             {
@@ -295,22 +259,12 @@ namespace NanoXLSX.LowLevel
                 {
                     return fonts[index];
                 }
-                else
-                {
-                    throw new StyleException("The style definition of the type '" + type.ToString() + "' is unknown or not implemented yet");
-                }
             }
             catch (Exception ex)
             {
-                if (returnNullOnFail)
-                {
-                    return null;
-                }
-                else
-                {
-                    throw new StyleException("The style definition could not be retrieved. Please see inner exception:", ex);
-                }
+                // Ignore
             }
+            return null;
         }
         #endregion
 

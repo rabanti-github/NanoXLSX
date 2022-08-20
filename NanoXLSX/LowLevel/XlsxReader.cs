@@ -223,7 +223,7 @@ namespace NanoXLSX.LowLevel
                 {
                     if (reader.Value.StyleAssignment.ContainsKey(cell.Key))
                     {
-                        Style style = styleReaderContainer.GetStyle(reader.Value.StyleAssignment[cell.Key], true);
+                        Style style = styleReaderContainer.GetStyle(reader.Value.StyleAssignment[cell.Key]);
                         if (style != null)
                         {
                             cell.Value.SetStyle(style);

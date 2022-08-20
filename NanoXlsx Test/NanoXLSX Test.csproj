@@ -15,6 +15,7 @@
 	<None Remove="Resources\invalid_workbook_sheet-definition.xlsx" />
     <None Remove="Resources\invalid_worksheet.xlsx" />
     <None Remove="Resources\missing_worksheet.xlsx" />
+    <None Remove="Resources\omitted_style_refs.xlsx" />
     <None Remove="Resources\phonetics.xlsx" />
     <None Remove="Resources\tampered.xlsx" />
     <None Remove="Resources\unknown_border_type.xlsx" />
@@ -31,6 +32,7 @@
 	  <EmbeddedResource Include="Resources\missing_worksheet.xlsx">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\omitted_style_refs.xlsx" />
 	  <EmbeddedResource Include="Resources\phonetics.xlsx" />
 	<EmbeddedResource Include="Resources\tampered.xlsx" />
 	<EmbeddedResource Include="Resources\unknown_style_enums.xlsx" />

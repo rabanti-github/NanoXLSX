@@ -26,7 +26,7 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Container for raw style components of the reader. 
         /// </summary>
-        public StyleReaderContainer StyleReaderContainer { get; set; }
+        public StyleReaderContainer StyleReaderContainer { get; private set; }
 
         #endregion
 
@@ -95,12 +95,9 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Determines the number formats in an XML node of the style document
         /// </summary>
-        /// <param name="node">Number formats root node</param>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <param name="node">Number formats root name</param>
         private void GetNumberFormats(XmlNode node)
         {
-            try
-            {
                 foreach (XmlNode childNode in node.ChildNodes)
                 {
                     if (childNode.LocalName.Equals("numfmt", StringComparison.InvariantCultureIgnoreCase))
@@ -115,11 +112,6 @@ namespace NanoXLSX.LowLevel
                         StyleReaderContainer.AddStyleComponent(numberFormat);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new IOException("The style information could not be resolved. Please see the inner exception:", ex);
-            }
         }
 
         /// <summary>
@@ -220,7 +212,10 @@ namespace NanoXLSX.LowLevel
                     }
                     if (ReaderUtils.GetAttributeOfChild(innerNode, "fgColor", "rgb", out attribute))
                     {
-                        fillStyle.ForegroundColor = attribute;
+                        if (!string.IsNullOrEmpty(attribute))
+                        {
+                            fillStyle.ForegroundColor = attribute;
+                        }
                     }
                     XmlNode backgroundNode = ReaderUtils.GetChildNode(innerNode, "bgColor");
                     if (backgroundNode != null)
@@ -347,8 +342,6 @@ namespace NanoXLSX.LowLevel
         /// <param name="node">Cell XF root node</param>
         private void GetCellXfs(XmlNode node)
         {
-            try
-            {
                 foreach (XmlNode childNode in node.ChildNodes)
                 {
                     if (ReaderUtils.IsNode(childNode, "xf"))
@@ -415,9 +408,12 @@ namespace NanoXLSX.LowLevel
                         StyleReaderContainer.AddStyleComponent(cellXfStyle);
 
                         Style style = new Style();
-                        int id = int.Parse(ReaderUtils.GetAttribute(childNode, "numFmtId"));
-                        NumberFormat format = StyleReaderContainer.GetNumberFormat(id, true);
-                        if (format == null)
+                        int id = 0;
+                        bool hasId;
+
+                        hasId = int.TryParse(ReaderUtils.GetAttribute(childNode, "numFmtId"), out id);
+                        NumberFormat format = StyleReaderContainer.GetNumberFormat(id);
+                        if (!hasId || format == null)
                         {
                             NumberFormat.FormatNumber formatNumber;
                             NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'
@@ -428,23 +424,23 @@ namespace NanoXLSX.LowLevel
                             format.InternalID = StyleReaderContainer.GetNextNumberFormatId();
                             StyleReaderContainer.AddStyleComponent(format);
                         }
-                        id = int.Parse(ReaderUtils.GetAttribute(childNode, "borderId"));
-                        Border border = StyleReaderContainer.GetBorder(id, true);
-                        if (border == null)
+                        hasId = int.TryParse(ReaderUtils.GetAttribute(childNode, "borderId"), out id);
+                        Border border = StyleReaderContainer.GetBorder(id);
+                        if (!hasId || border == null)
                         {
                             border = new Border();
                             border.InternalID = StyleReaderContainer.GetNextBorderId();
                         }
-                        id = int.Parse(ReaderUtils.GetAttribute(childNode, "fillId"));
-                        Fill fill = StyleReaderContainer.GetFill(id, true);
-                        if (fill == null)
+                        hasId = int.TryParse(ReaderUtils.GetAttribute(childNode, "fillId"), out id);
+                        Fill fill = StyleReaderContainer.GetFill(id);
+                        if (!hasId || fill == null)
                         {
                             fill = new Fill();
                             fill.InternalID = StyleReaderContainer.GetNextFillId();
                         }
-                        id = int.Parse(ReaderUtils.GetAttribute(childNode, "fontId"));
-                        Font font = StyleReaderContainer.GetFont(id, true);
-                        if (font == null)
+                        hasId = int.TryParse(ReaderUtils.GetAttribute(childNode, "fontId"), out id);
+                        Font font = StyleReaderContainer.GetFont(id);
+                        if (!hasId || font == null)
                         {
                             font = new Font();
                             font.InternalID = StyleReaderContainer.GetNextFontId();
@@ -461,11 +457,6 @@ namespace NanoXLSX.LowLevel
                         StyleReaderContainer.AddStyleComponent(style);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new IOException("The style information could not be resolved. Please see the inner exception:", ex);
-            }
         }
 
         /// <summary>

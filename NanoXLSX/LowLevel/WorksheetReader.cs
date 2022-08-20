@@ -130,7 +130,7 @@ namespace NanoXLSX.LowLevel
                 bool isDate;
                 bool isTime;
                 string index = i.ToString("G", CultureInfo.InvariantCulture);
-                Style style = styleReaderContainer.GetStyle(i, out isDate, out isTime, true);
+                Style style = styleReaderContainer.GetStyle(i, out isDate, out isTime);
                 if (isDate)
                 {
                     dateStyles.Add(index);
