@@ -102,27 +102,14 @@ namespace NanoXLSX.LowLevel
         public Style GetStyle(int index, out bool isDateStyle, out bool isTimeStyle)
         {
             Style style = GetComponent(typeof(Style), index) as Style;
+            isDateStyle = false;
+            isTimeStyle = false;
             if (style != null)
             {
                 isDateStyle = NumberFormat.IsDateFormat(style.CurrentNumberFormat.Number);
                 isTimeStyle = NumberFormat.IsTimeFormat(style.CurrentNumberFormat.Number);
             }
-            else
-            {
-                isDateStyle = false;
-                isTimeStyle = false;
-            }
             return style;
-        }
-
-        /// <summary>
-        /// Returns a cell XF component by its index
-        /// </summary>
-        /// <param name="index">Internal index of the style component</param>
-        /// <returns>Style component or null if the component could not be retrieved</returns>
-        public CellXf GetCellXF(int index)
-        {
-            return GetComponent(typeof(CellXf), index) as CellXf;
         }
 
         /// <summary>
@@ -222,6 +209,7 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Internal method to retrieve style components
         /// </summary>
+        /// <remarks>CellXF is not handled, since retrieved in the style reader in a different way</remarks>
         /// <param name="type">Type of the style components</param>
         /// <param name="index">Internal index of the style components</param>
         /// <returns>Style component or null if the component could not be retrieved</returns>
@@ -229,11 +217,7 @@ namespace NanoXLSX.LowLevel
         {
             try
             {
-                if (type == typeof(CellXf))
-                {
-                    return cellXfs[index];
-                }
-                else if (type == typeof(NumberFormat))
+                if (type == typeof(NumberFormat))
                 {
                     //Number format entries are handles differently, since identified by 'numFmtId'. Other components are identified by its entry index
                     NumberFormat numberFormat = numberFormats.Find(x => x.InternalID == index);
@@ -255,7 +239,7 @@ namespace NanoXLSX.LowLevel
                 {
                     return fills[index];
                 }
-                else if (type == typeof(Font))
+                else // must be font (CellXF is not handled here)
                 {
                     return fonts[index];
                 }
