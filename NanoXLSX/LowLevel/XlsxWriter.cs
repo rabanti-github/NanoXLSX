@@ -442,7 +442,7 @@ namespace NanoXLSX.LowLevel
                     applyYSplit = true;
                 }
             }
-            if (applyXSplit && applyYSplit)
+            if ((applyXSplit || applyYSplit) && worksheet.ActivePane != null)
             {
                 switch (worksheet.ActivePane.Value)
                 {

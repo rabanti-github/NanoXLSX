@@ -1337,7 +1337,7 @@ namespace NanoXLSX.LowLevel
             /// <summary>
             /// Active pane in the split window
             /// </summary>
-            public Worksheet.WorksheetPane ActivePane { get; private set; }
+            public Worksheet.WorksheetPane? ActivePane { get; private set; }
 
             /// <summary>
             /// Gets whether an Y split was defined
@@ -1351,7 +1351,7 @@ namespace NanoXLSX.LowLevel
 
             public PaneDefinition()
             {
-                ActivePane = Worksheet.WorksheetPane.topLeft;
+                ActivePane = null;
                 TopLeftCell = new Address(0, 0);
             }
 

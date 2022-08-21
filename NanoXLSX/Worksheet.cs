@@ -2125,8 +2125,8 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="topPaneHeight">Height (similar to row height) from top of the worksheet to the split line in characters</param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the row component is important in a horizontal split</param>
-        /// <param name="activePane">Active pane in the split window</param>
-        public void SetHorizontalSplit(float topPaneHeight, Address topLeftCell, WorksheetPane activePane)
+        /// <param name="activePane">Active pane in the split window.<br/>The parameter is nullable</param>
+        public void SetHorizontalSplit(float topPaneHeight, Address topLeftCell, WorksheetPane? activePane)
         {
             SetSplit(null, topPaneHeight, topLeftCell, activePane);
         }
@@ -2137,9 +2137,9 @@ namespace NanoXLSX
         /// <param name="numberOfRowsFromTop">Number of rows from top of the worksheet to the split line. The particular row heights are considered</param>
         /// <param name="freeze">If true, all panes are frozen, otherwise remains movable</param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the row component is important in a horizontal split</param>
-        /// <param name="activePane">Active pane in the split window</param>
+        /// <param name="activePane">Active pane in the split window.<br/>The parameter is nullable</param>
         /// <exception cref="WorksheetException">WorksheetException Thrown if the row number of the top left cell is smaller the split panes number of rows from top, if freeze is applied</exception>
-        public void SetHorizontalSplit(int numberOfRowsFromTop, bool freeze, Address topLeftCell, WorksheetPane activePane)
+        public void SetHorizontalSplit(int numberOfRowsFromTop, bool freeze, Address topLeftCell, WorksheetPane? activePane)
         {
             SetSplit(null, numberOfRowsFromTop, freeze, topLeftCell, activePane);
         }
@@ -2149,8 +2149,8 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="leftPaneWidth">Width (similar to column width) from left of the worksheet to the split line in characters</param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the column component is important in a vertical split</param>
-        /// <param name="activePane">Active pane in the split window</param>
-        public void SetVerticalSplit(float leftPaneWidth, Address topLeftCell, WorksheetPane activePane)
+        /// <param name="activePane">Active pane in the split window.<br/>The parameter is nullable</param>
+        public void SetVerticalSplit(float leftPaneWidth, Address topLeftCell, WorksheetPane? activePane)
         {
             SetSplit(leftPaneWidth, null, topLeftCell, activePane);
         }
@@ -2161,10 +2161,10 @@ namespace NanoXLSX
         /// <param name="numberOfColumnsFromLeft">Number of columns from left of the worksheet to the split line. The particular column widths are considered</param>
         /// <param name="freeze">If true, all panes are frozen, otherwise remains movable</param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the column component is important in a vertical split</param>
-        /// <param name="activePane">Active pane in the split window</param>
+        /// <param name="activePane">Active pane in the split window.<br/>The parameter is nullable</param>
         /// <exception cref="WorksheetException">WorksheetException Thrown if the column number of the top left cell is smaller the split panes number of columns from left, 
         /// if freeze is applied</exception>
-        public void SetVerticalSplit(int numberOfColumnsFromLeft, bool freeze, Address topLeftCell, WorksheetPane activePane)
+        public void SetVerticalSplit(int numberOfColumnsFromLeft, bool freeze, Address topLeftCell, WorksheetPane? activePane)
         {
             SetSplit(numberOfColumnsFromLeft, null, freeze, topLeftCell, activePane);
         }
@@ -2173,14 +2173,14 @@ namespace NanoXLSX
         /// Sets the horizontal and vertical split of the worksheet into four panes. The measurement in rows and columns can be used to split and freeze panes
         /// </summary>
         /// <param name="numberOfColumnsFromLeft">Number of columns from left of the worksheet to the split line. The particular column widths are considered.<br/>
-        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetHorizontalSplit(int, bool, Address, WorksheetPane)"/></param>
+        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetHorizontalSplit(int, bool, Address, WorksheetPane?)"/></param>
         /// <param name="numberOfRowsFromTop">Number of rows from top of the worksheet to the split line. The particular row heights are considered.<br/>
-        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetVerticalSplit(int, bool, Address, WorksheetPane)"/></param>
+        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetVerticalSplit(int, bool, Address, WorksheetPane?)"/></param>
         /// <param name="freeze">If true, all panes are frozen, otherwise remains movable</param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable)</param>
-        /// <param name="activePane">Active pane in the split window</param>
+        /// <param name="activePane">Active pane in the split window.<br/>The parameter is nullable</param>
         /// <exception cref="WorksheetException">WorksheetException Thrown if the address of the top left cell is smaller the split panes address, if freeze is applied</exception>
-        public void SetSplit(int? numberOfColumnsFromLeft, int? numberOfRowsFromTop, bool freeze, Address topLeftCell, WorksheetPane activePane)
+        public void SetSplit(int? numberOfColumnsFromLeft, int? numberOfRowsFromTop, bool freeze, Address topLeftCell, WorksheetPane? activePane)
         {
             if (freeze)
             {
@@ -2209,12 +2209,12 @@ namespace NanoXLSX
         /// Sets the horizontal and vertical split of the worksheet into four panes. The measurement in characters cannot be used to freeze panes
         /// </summary>
         /// <param name="leftPaneWidth">Width (similar to column width) from left of the worksheet to the split line in characters.<br/>
-        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetHorizontalSplit(float, Address, WorksheetPane)"/></param>
+        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetHorizontalSplit(float, Address, WorksheetPane?)"/></param>
         /// <param name="topPaneHeight">Height (similar to row height) from top of the worksheet to the split line in characters.<br/>
-        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetVerticalSplit(float, Address, WorksheetPane)"/></param>
+        /// The parameter is nullable. If left null, the method acts identical to <see cref="SetVerticalSplit(float, Address, WorksheetPane?)"/></param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable)</param>
-        /// <param name="activePane">Active pane in the split window</param>
-        public void SetSplit(float? leftPaneWidth, float? topPaneHeight, Address topLeftCell, WorksheetPane activePane)
+        /// <param name="activePane">Active pane in the split window.<br/>The parameter is nullable</param>
+        public void SetSplit(float? leftPaneWidth, float? topPaneHeight, Address topLeftCell, WorksheetPane? activePane)
         {
             this.paneSplitLeftWidth = leftPaneWidth;
             this.paneSplitTopHeight = topPaneHeight;
