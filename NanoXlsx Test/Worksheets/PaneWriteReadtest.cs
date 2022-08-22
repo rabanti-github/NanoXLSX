@@ -34,6 +34,34 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(height, givenWorksheet.PaneSplitTopHeight);
         }
 
+        [Theory(DisplayName = "Test of the 'PaneSplitTopHeight' property defined by a split address, when writing and reading a worksheet")]
+        [InlineData(0, false, "A2", null, 0)]
+        [InlineData(1, false, "A2", null, 0)]
+        [InlineData(15, false, "A18", null, 0)]
+        [InlineData(0, false, "A2", Worksheet.WorksheetPane.topLeft, 0)]
+        [InlineData(1, false, "A2", Worksheet.WorksheetPane.bottomLeft, 0)]
+        [InlineData(15, false, "A18", Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(0, true, "A2", null, 0)]
+        [InlineData(1, true, "A2", null, 0)]
+        [InlineData(15, true, "A18", null, 0)]
+        [InlineData(0, true, "A2", Worksheet.WorksheetPane.topLeft, 0)]
+        [InlineData(1, true, "A2", Worksheet.WorksheetPane.bottomLeft, 0)]
+        [InlineData(15, true, "A18", Worksheet.WorksheetPane.topRight, 0)]
+        public void PaneSplitTopHeightWriteReadTest2(int rowNumber, bool freeze, string topLeftCellAddress, Worksheet.WorksheetPane? activePane, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (sheetIndex == i)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    workbook.CurrentWorksheet.SetHorizontalSplit(rowNumber, freeze, new Address(topLeftCellAddress), activePane);
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            assertRowSplit(rowNumber, freeze, givenWorksheet);
+        }
+
         [Theory(DisplayName = "Test of the 'PaneSplitLeftWidth' property when writing and reading a worksheet")]
         [InlineData(27f, null, 0)]
         [InlineData(100f, null, 0)]
@@ -56,6 +84,34 @@ namespace NanoXLSX_Test.Worksheets
             // There may be a deviation by rounding
             float delta = Math.Abs(width - givenWorksheet.PaneSplitLeftWidth.Value);
             Assert.True(delta < 0.1);
+        }
+
+        [Theory(DisplayName = "Test of the 'PaneSplitLeftWidth' property defined by a split address, when writing and reading a worksheet")]
+        [InlineData(0, false, "A2", null, 0)]
+        [InlineData(1, false, "B2", null, 0)]
+        [InlineData(5, false, "G2", null, 0)]
+        [InlineData(0, false, "A2", Worksheet.WorksheetPane.topLeft, 0)]
+        [InlineData(1, false, "B2", Worksheet.WorksheetPane.bottomLeft, 0)]
+        [InlineData(5, false, "G2", Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(0, true, "A2", null, 0)]
+        [InlineData(1, true, "B2", null, 0)]
+        [InlineData(5, true, "G2", null, 0)]
+        [InlineData(0, true, "A2", Worksheet.WorksheetPane.topLeft, 0)]
+        [InlineData(1, true, "B2", Worksheet.WorksheetPane.bottomLeft, 0)]
+        [InlineData(5, true, "G2", Worksheet.WorksheetPane.topRight, 0)]
+        public void PaneSplitLeftWidthWriteReadTest2(int columnNumber, bool freeze, string topLeftCellAddress, Worksheet.WorksheetPane? activePane, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (sheetIndex == i)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    workbook.CurrentWorksheet.SetVerticalSplit(columnNumber, freeze, new Address(topLeftCellAddress), activePane);
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            asserColumnSplit(columnNumber, freeze, givenWorksheet, false);
         }
 
         [Theory(DisplayName = "Test of the 'ActivePane' property when writing and reading a worksheet")]
@@ -141,6 +197,99 @@ namespace NanoXLSX_Test.Worksheets
                 // There may be a deviation by rounding
                 float delta = Math.Abs(width.Value - givenWorksheet.PaneSplitLeftWidth.Value);
                 Assert.True(delta < 0.1);
+            }
+        }
+
+        [Theory(DisplayName = "Test of the'PaneSplitTopHeight' and the 'PaneSplitLeftWidth' properties (combined X/Y-Split) defined by a split address, when writing and reading a worksheet")]
+        [InlineData(0, 0, false, "A2", null, 0)]
+        [InlineData(1, 0, false, "B2", null, 0)]
+        [InlineData(5, 0, false, "G2", null, 0)]
+        [InlineData(0, 0, false, "A2", Worksheet.WorksheetPane.topLeft, 0)]
+        [InlineData(1, 0, false, "B2", Worksheet.WorksheetPane.bottomLeft, 0)]
+        [InlineData(5, 0, false, "G2", Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(0, 1, true, "A2", null, 0)]
+        [InlineData(1, 1, true, "B2", null, 0)]
+        [InlineData(5, 1, true, "G2", null, 0)]
+        [InlineData(0, 1, true, "A2", Worksheet.WorksheetPane.topLeft, 0)]
+        [InlineData(1, 1, true, "B2", Worksheet.WorksheetPane.bottomLeft, 0)]
+        [InlineData(5, 1, true, "G2", Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(0, 15, true, "A20", null, 0)]
+        [InlineData(1, 15, true, "B20", null, 0)]
+        [InlineData(5, 15, true, "G20", null, 0)]
+        [InlineData(0, 15, true, "A20", Worksheet.WorksheetPane.topLeft, 0)]
+        [InlineData(1, 15, true, "B20", Worksheet.WorksheetPane.bottomLeft, 0)]
+        [InlineData(5, 15, true, "G20", Worksheet.WorksheetPane.topRight, 0)]
+        public void PaneSplitWidthHeightWriteReadTest2(int columnNumber, int rowNumber, bool freeze, string topLeftCellAddress, Worksheet.WorksheetPane? activePane, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (sheetIndex == i)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    workbook.CurrentWorksheet.SetSplit(columnNumber, rowNumber, freeze, new Address(topLeftCellAddress), activePane);
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            asserColumnSplit(columnNumber, freeze, givenWorksheet, true);
+            assertRowSplit(rowNumber, freeze, givenWorksheet);
+        }
+
+        private static void asserColumnSplit(int columnNumber, bool freeze, Worksheet givenWorksheet, bool xyApplied)
+        {
+            if (columnNumber == 0 && !xyApplied)
+            {
+                // No split at all (column 0)
+                Assert.Null(givenWorksheet.PaneSplitAddress);
+                Assert.Null(givenWorksheet.FreezeSplitPanes);
+            }
+            else
+            {
+                if (freeze)
+                {
+                    Assert.Equal(columnNumber, givenWorksheet.PaneSplitAddress.Value.Column);
+                    Assert.Equal(freeze, givenWorksheet.FreezeSplitPanes.Value);
+                }
+                else
+                {
+                    float width = Utils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH) * columnNumber;
+                    if (width == 0)
+                    {
+                        // Not applied as x split
+                        Assert.Null(givenWorksheet.PaneSplitLeftWidth);
+                    }
+                    else
+                    {
+                        // There may be a deviation by rounding
+                        float delta = Math.Abs(width - givenWorksheet.PaneSplitLeftWidth.Value);
+                        Assert.True(delta < 0.1);
+                    }
+                    Assert.Null(givenWorksheet.FreezeSplitPanes);
+                }
+
+            }
+        }
+        private static void assertRowSplit(int rowNumber, bool freeze, Worksheet givenWorksheet)
+        {
+            if (rowNumber == 0)
+            {
+                // No split at all (row 0)
+                Assert.Null(givenWorksheet.PaneSplitAddress);
+                Assert.Null(givenWorksheet.FreezeSplitPanes);
+            }
+            else
+            {
+                if (freeze)
+                {
+                    Assert.Equal(rowNumber, givenWorksheet.PaneSplitAddress.Value.Row);
+                    Assert.Equal(freeze, givenWorksheet.FreezeSplitPanes.Value);
+                }
+                else
+                {
+                    float height = Worksheet.DEFAULT_ROW_HEIGHT * rowNumber;
+                    Assert.Equal(height, givenWorksheet.PaneSplitTopHeight);
+                    Assert.Null(givenWorksheet.FreezeSplitPanes);
+                }
             }
         }
 

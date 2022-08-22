@@ -210,7 +210,6 @@ namespace NanoXLSX.LowLevel
                         {
                             foreach(XmlNode selectionNode in selectionNodes)
                             {
-                                // TODO: Panes are currently not considered
                                 string attribute = ReaderUtils.GetAttribute(selectionNode, "sqref");
                                 if (attribute != null)
                                 {
@@ -222,25 +221,45 @@ namespace NanoXLSX.LowLevel
                                     {
                                         this.SelectedCells = new Range(attribute + ":" + attribute);
                                     }
-                                        
                                 }
                             }
                         }
                         XmlNode paneNode = ReaderUtils.GetChildNode(sheetView, "pane");
                         if (paneNode != null)
                         {
+                            string attribute = ReaderUtils.GetAttribute(paneNode, "state");
+                            bool useNumbers = false;
                             this.PaneSplitValue = new PaneDefinition();
-                            string attribute = ReaderUtils.GetAttribute(paneNode, "ySplit");
+                            if (attribute != null)
+                            {
+                                this.PaneSplitValue.SetFrozenState(attribute);
+                                useNumbers = this.PaneSplitValue.FrozenState;
+                            }
+                            attribute = ReaderUtils.GetAttribute(paneNode, "ySplit");
                             if (attribute != null)
                             {
                                 this.PaneSplitValue.YSplitDefined = true;
-                                this.PaneSplitValue.PaneSplitHeight = Utils.GetPaneSplitHeight(float.Parse(attribute));
+                                if (useNumbers)
+                                {
+                                    this.PaneSplitValue.PaneSplitRowIndex = int.Parse(attribute);
+                                }
+                                else
+                                {
+                                    this.PaneSplitValue.PaneSplitHeight = Utils.GetPaneSplitHeight(float.Parse(attribute));
+                                }
                             }
                             attribute = ReaderUtils.GetAttribute(paneNode, "xSplit");
                             if (attribute != null)
                             {
                                 this.PaneSplitValue.XSplitDefined = true;
-                                this.PaneSplitValue.PaneSplitWidth = Utils.GetPaneSplitWidth(float.Parse(attribute));
+                                if (useNumbers)
+                                {
+                                    this.PaneSplitValue.PaneSplitColumnIndex = int.Parse(attribute);
+                                }
+                                else
+                                {
+                                    this.PaneSplitValue.PaneSplitWidth = Utils.GetPaneSplitWidth(float.Parse(attribute));
+                                }
                             }
                             attribute = ReaderUtils.GetAttribute(paneNode, "topLeftCell");
                             if (attribute != null)
@@ -252,7 +271,6 @@ namespace NanoXLSX.LowLevel
                             {
                                 this.PaneSplitValue.SetActivePane(attribute);
                             }
-
                         }
                     }
                 }
@@ -1331,6 +1349,14 @@ namespace NanoXLSX.LowLevel
             /// </summary>
             public float? PaneSplitWidth { get; set; }
             /// <summary>
+            /// Gets or sets the pane split row index of a worksheet split
+            /// </summary>
+            public int? PaneSplitRowIndex { get; set; }
+            /// <summary>
+            /// Gets or sets the pane split column index of a worksheet split
+            /// </summary>
+            public int? PaneSplitColumnIndex { get; set; }
+            /// <summary>
             /// Top Left cell address of the bottom right pane
             /// </summary>
             public Address TopLeftCell { get; set; }
@@ -1338,6 +1364,10 @@ namespace NanoXLSX.LowLevel
             /// Active pane in the split window
             /// </summary>
             public Worksheet.WorksheetPane? ActivePane { get; private set; }
+            /// <summary>
+            /// Frozen state of the split window
+            /// </summary>
+            public bool FrozenState { get; private set; }
 
             /// <summary>
             /// Gets whether an Y split was defined
@@ -1363,6 +1393,19 @@ namespace NanoXLSX.LowLevel
             {
                 this.ActivePane = (Worksheet.WorksheetPane)Enum.Parse(typeof(Worksheet.WorksheetPane), value);
             }
+
+            /// <summary>
+            /// Sets the frozen state of the split window if defined
+            /// </summary>
+            /// <param name="value">raw attribute value</param>
+            public void SetFrozenState(string value)
+            {
+                if (value.ToLower() == "frozen" || value.ToLower() == "frozensplit")
+                {
+                    this.FrozenState = true;
+                }
+            }
+
         }
 
         /// <summary>

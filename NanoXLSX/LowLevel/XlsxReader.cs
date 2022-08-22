@@ -234,17 +234,35 @@ namespace NanoXLSX.LowLevel
                 if (reader.Value.PaneSplitValue != null)
                 {
                     WorksheetReader.PaneDefinition pane = reader.Value.PaneSplitValue;
-                    if (pane.YSplitDefined  && !pane.XSplitDefined)
+                    if (pane.FrozenState)
                     {
-                        ws.SetHorizontalSplit(pane.PaneSplitHeight.Value, pane.TopLeftCell, pane.ActivePane);
+                        if (pane.YSplitDefined && !pane.XSplitDefined)
+                        {
+                            ws.SetHorizontalSplit(pane.PaneSplitRowIndex.Value, pane.FrozenState, pane.TopLeftCell, pane.ActivePane);
+                        }
+                        if (!pane.YSplitDefined && pane.XSplitDefined)
+                        {
+                            ws.SetVerticalSplit(pane.PaneSplitColumnIndex.Value, pane.FrozenState, pane.TopLeftCell, pane.ActivePane);
+                        }
+                        else if (pane.YSplitDefined && pane.XSplitDefined)
+                        {
+                            ws.SetSplit(pane.PaneSplitColumnIndex.Value, pane.PaneSplitRowIndex.Value, pane.FrozenState, pane.TopLeftCell, pane.ActivePane);
+                        }
                     }
-                    if (!pane.YSplitDefined && pane.XSplitDefined)
+                    else
                     {
-                        ws.SetVerticalSplit(pane.PaneSplitWidth.Value, pane.TopLeftCell, pane.ActivePane);
-                    }
-                    else if (pane.YSplitDefined && pane.XSplitDefined)
-                    {
-                        ws.SetSplit(pane.PaneSplitWidth, pane.PaneSplitHeight, pane.TopLeftCell, pane.ActivePane);
+                        if (pane.YSplitDefined && !pane.XSplitDefined)
+                        {
+                            ws.SetHorizontalSplit(pane.PaneSplitHeight.Value, pane.TopLeftCell, pane.ActivePane);
+                        }
+                        if (!pane.YSplitDefined && pane.XSplitDefined)
+                        {
+                            ws.SetVerticalSplit(pane.PaneSplitWidth.Value, pane.TopLeftCell, pane.ActivePane);
+                        }
+                        else if (pane.YSplitDefined && pane.XSplitDefined)
+                        {
+                            ws.SetSplit(pane.PaneSplitWidth, pane.PaneSplitHeight, pane.TopLeftCell, pane.ActivePane);
+                        }
                     }
                 }
                 wb.AddWorksheet(ws);
