@@ -267,6 +267,13 @@ namespace NanoXLSX.LowLevel
                 }
                 wb.AddWorksheet(ws);
             }
+            if (styleReaderContainer.GetMruColors().Count > 0)
+            {
+                foreach(string color in styleReaderContainer.GetMruColors())
+                {
+                    wb.AddMruColor(color);
+                }
+            }
             wb.SetImportState(false);
             return wb;
         }

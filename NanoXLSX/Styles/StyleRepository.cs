@@ -16,6 +16,7 @@ namespace NanoXLSX.Styles
     /// <summary>
     /// Class to manage all styles at runtime, before writing XLSX files. The main purpose is deduplication and decoupling of styles from workbooks at runtime
     /// </summary>
+    /// <remarks>Be careful when changing style data in this class. It may lead to inconsistencies</remarks>
     public class StyleRepository
     {
         private readonly object lockObject = new object();

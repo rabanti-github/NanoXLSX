@@ -546,6 +546,52 @@ namespace NanoXLSX_Test.Workbooks
             Assert.Equal(password, workbook.WorkbookProtectionPassword);
         }
 
+        [Fact(DisplayName = "Test of the AddMruColor function")]
+        public void AddMruColorTest()
+        {
+            Workbook workbook = new Workbook();
+            Assert.Empty(workbook.GetMruColors());
+            workbook.AddMruColor("AABBCC");
+            Assert.Equal(1, workbook.GetMruColors().Count);
+            Assert.Equal("FFAABBCC", workbook.GetMruColors()[0]);
+        }
+
+        [Theory(DisplayName = "Test of the failing AddMruColor function when adding an invalid color value")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("GGGGGG")]
+        [InlineData("AABBCCDD22")]
+        public void AddMruColorFailTest(string value)
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            Assert.Throws<StyleException>(() => workbook.AddMruColor(value));
+        }
+
+        [Fact(DisplayName = "Test of the ClearMruColors function")]
+        public void ClearMruColorsTest()
+        {
+            Workbook workbook = new Workbook();
+            workbook.AddMruColor("00AAFF");
+            workbook.AddMruColor("AABBCC");
+            Assert.Equal(2, workbook.GetMruColors().Count);
+            workbook.ClearMruColors();
+            Assert.Empty(workbook.GetMruColors());
+        }
+
+        [Fact(DisplayName = "Test of the GetMruColors function")]
+        public void GetMruColorsTest()
+        {
+            Workbook workbook = new Workbook();
+            workbook.AddMruColor("00AAFF");
+            workbook.AddMruColor("AABBCC");
+            List<String> list = (List<string>)workbook.GetMruColors();
+            Assert.Equal(2, workbook.GetMruColors().Count);
+            Assert.Equal("FF00AAFF", workbook.GetMruColors()[0]);
+            Assert.Equal("FFAABBCC", workbook.GetMruColors()[1]);
+        }
+
+
         private void AssertWorksheetRemoval<T>(Workbook workbook, Action<T>removalFunction, int worksheetCount, string currentWorksheet, int selectedWorksheetIndex, T worksheetToRemove, string expectedCurrentWorksheet, int expectedSelectedWorksheetIndex)
         {
             workbook.SetCurrentWorksheet(currentWorksheet);

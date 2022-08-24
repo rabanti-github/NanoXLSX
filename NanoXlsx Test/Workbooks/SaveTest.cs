@@ -155,5 +155,8 @@ namespace NanoXLSX_Test.Workbooks
             Workbook workbook = new Workbook("test");
             await Assert.ThrowsAnyAsync<Exception>(() => workbook.SaveAsStreamAsync(null));
         }
+
+
+
     }
 }

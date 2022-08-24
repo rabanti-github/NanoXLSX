@@ -140,15 +140,6 @@ namespace NanoXLSX_Test.Misc
             Assert.Equal("test", metadata.Title);
         }
 
-        [Fact(DisplayName = "Test of the get and set function of the UseColorMRU property")]
-        public void UseColorMRUTest()
-        {
-            Metadata metadata = new Metadata();
-            Assert.False(metadata.UseColorMRU);
-            metadata.UseColorMRU = true;
-            Assert.True(metadata.UseColorMRU);
-        }
-
         [Fact(DisplayName = "Test of the Constructor")]
         public void ConstructorTest()
         {

@@ -75,6 +75,10 @@ namespace NanoXLSX.LowLevel
                         {
                             GetFonts(node);
                         }
+                        else if (node.LocalName.Equals("colors", StringComparison.InvariantCultureIgnoreCase)) // Handles MRU colors
+                        {
+                            GetColors(node);
+                        }
                         // TODO: Implement other style components
                     }
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes) // Redo for composition after all style parts are gathered; standard number formats
@@ -457,6 +461,29 @@ namespace NanoXLSX.LowLevel
                         StyleReaderContainer.AddStyleComponent(style);
                     }
                 }
+        }
+
+        /// <summary>
+        /// Determines the MRU colors in an XML node of the style document
+        /// </summary>
+        /// <param name="node">Color root node</param>
+        private void GetColors(XmlNode node)
+        {
+            foreach (XmlNode color in node.ChildNodes)
+            {
+                XmlNode mruColor = ReaderUtils.GetChildNode(color, "color");
+                if (color.Name.Equals("mruColors") && mruColor != null)
+                {
+                    foreach (XmlNode value in color.ChildNodes)
+                    {
+                        string attribute = ReaderUtils.GetAttribute(value, "rgb");
+                        if (attribute != null)
+                        {
+                            StyleReaderContainer.AddMruColor(attribute);
+                        }
+                   }
+                }
+            }
         }
 
         /// <summary>

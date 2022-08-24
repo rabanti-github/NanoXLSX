@@ -26,6 +26,7 @@ namespace NanoXLSX.LowLevel
         private List<Border> borders = new List<Border>();
         private List<Fill> fills = new List<Fill>();
         private List<Font> fonts = new List<Font>();
+        private List<string> mruColors = new List<string>();
 
         #endregion
 
@@ -250,6 +251,25 @@ namespace NanoXLSX.LowLevel
             }
             return null;
         }
+
+        /// <summary>
+        /// Adds a color value to the color MRU list
+        /// </summary>
+        /// <param name="value">ARGB value</param>
+        internal void AddMruColor(string value)
+        {
+            this.mruColors.Add(value);
+        }
+
+        /// <summary>
+        /// Gets the mRU colors as list
+        /// </summary>
+        /// <returns>ARGB value</returns>
+        internal List<string> GetMruColors()
+        {
+            return this.mruColors;
+        }
+
         #endregion
 
     }

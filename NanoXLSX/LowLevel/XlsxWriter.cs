@@ -186,7 +186,7 @@ namespace NanoXLSX.LowLevel
             sb.Append(xfsStings).Append("</cellXfs>");
             if (workbook.WorkbookMetadata != null)
             {
-                if (!string.IsNullOrEmpty(mruColorString) && workbook.WorkbookMetadata.UseColorMRU)
+                if (!string.IsNullOrEmpty(mruColorString))
                 {
                     sb.Append("<colors>");
                     sb.Append(mruColorString);
@@ -204,10 +204,6 @@ namespace NanoXLSX.LowLevel
         /// <exception cref="RangeException">Throws a RangeException if an address was out of range</exception>
         private string CreateWorkbookDocument()
         {
-            if (workbook.Worksheets.Count == 0)
-            {
-                throw new RangeException("The workbook can not be created because no worksheet was defined.");
-            }
             StringBuilder sb = new StringBuilder();
             sb.Append("<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">");
             if (workbook.SelectedWorksheet > 0 || workbook.Hidden)
@@ -225,15 +221,24 @@ namespace NanoXLSX.LowLevel
             }
             CreateWorkbookProtectionString(sb);
             sb.Append("<sheets>");
-            foreach (Worksheet item in workbook.Worksheets)
+            if (workbook.Worksheets.Count > 0)
             {
-                sb.Append("<sheet r:id=\"rId").Append(item.SheetID.ToString()).Append("\" sheetId=\"").Append(item.SheetID.ToString()).Append("\" name=\"").Append(EscapeXmlAttributeChars(item.SheetName)).Append("\"");
-                if (item.Hidden)
+                foreach (Worksheet item in workbook.Worksheets)
                 {
-                    sb.Append(" state=\"hidden\"");
+                    sb.Append("<sheet r:id=\"rId").Append(item.SheetID.ToString()).Append("\" sheetId=\"").Append(item.SheetID.ToString()).Append("\" name=\"").Append(EscapeXmlAttributeChars(item.SheetName)).Append("\"");
+                    if (item.Hidden)
+                    {
+                        sb.Append(" state=\"hidden\"");
+                    }
+                    sb.Append("/>");
                 }
-                sb.Append("/>");
             }
+            else
+            {
+                // Fallback on empty workbook
+                sb.Append("<sheet r:id=\"rId1\" sheetId=\"1\" name=\"sheet1\"/>");
+            }
+            
             sb.Append("</sheets>");
             sb.Append("</workbook>");
             return sb.ToString();
@@ -587,38 +592,66 @@ namespace NanoXLSX.LowLevel
                     p.CreateRelationship(corePropertiesUri, TargetMode.Internal, @"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties", "rId2"); //!
                     p.CreateRelationship(appPropertiesUri, TargetMode.Internal, @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties", "rId3"); //!
 
-                    AppendXmlToPackagePart(CreateWorkbookDocument(), pp, "WORKBOOK");
-                    int idCounter = workbook.Worksheets.Count + 1;
+                    AppendXmlToPackagePart(CreateWorkbookDocument(), pp);
+                    int idCounter;
+                    if (workbook.Worksheets.Count > 0)
+                    {
+                        idCounter = workbook.Worksheets.Count + 1;
+                    }
+                    else
+                    {
+                        //  Fallback on empty workbook
+                        idCounter = 2;
+                    }
 
                     pp.CreateRelationship(stylesheetUri, TargetMode.Internal, @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles", "rId" + idCounter);
                     pp.CreateRelationship(sharedStringsUri, TargetMode.Internal, @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings", "rId" + (idCounter + 1));
 
-                    foreach (Worksheet item in workbook.Worksheets)
+                    if (workbook.Worksheets.Count > 0)
                     {
-                        sheetPath = new DocumentPath("sheet" + item.SheetID + ".xml", "xl/worksheets");
+                        foreach (Worksheet item in workbook.Worksheets)
+                        {
+                            sheetPath = new DocumentPath("sheet" + item.SheetID + ".xml", "xl/worksheets");
+                            sheetURIs.Add(new Uri(sheetPath.GetFullPath(), UriKind.Relative));
+                            pp.CreateRelationship(sheetURIs[sheetURIs.Count - 1], TargetMode.Internal, @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet", "rId" + item.SheetID);
+                        }
+                    }
+                    else
+                    {
+                        //  Fallback on empty workbook
+                        sheetPath = new DocumentPath("sheet1.xml", "xl/worksheets");
                         sheetURIs.Add(new Uri(sheetPath.GetFullPath(), UriKind.Relative));
-                        pp.CreateRelationship(sheetURIs[sheetURIs.Count - 1], TargetMode.Internal, @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet", "rId" + item.SheetID);
+                        pp.CreateRelationship(sheetURIs[sheetURIs.Count - 1], TargetMode.Internal, @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet", "rId1");
                     }
 
                     pp = p.CreatePart(stylesheetUri, @"application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml", CompressionOption.Normal);
-                    AppendXmlToPackagePart(CreateStyleSheetDocument(), pp, "STYLESHEET");
+                    AppendXmlToPackagePart(CreateStyleSheetDocument(), pp);
 
                     int i = 0;
-                    foreach (Worksheet item in workbook.Worksheets)
+                    if (workbook.Worksheets.Count > 0)
+                    {
+                        foreach (Worksheet item in workbook.Worksheets)
+                        {
+                            pp = p.CreatePart(sheetURIs[i], @"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml", CompressionOption.Normal);
+                            i++;
+                            AppendXmlToPackagePart(CreateWorksheetPart(item), pp);
+                        }
+                    }
+                    else
                     {
                         pp = p.CreatePart(sheetURIs[i], @"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml", CompressionOption.Normal);
                         i++;
-                        AppendXmlToPackagePart(CreateWorksheetPart(item), pp, "WORKSHEET:" + item.SheetName);
+                        AppendXmlToPackagePart(CreateWorksheetPart(new Worksheet("sheet1")), pp);
                     }
                     pp = p.CreatePart(sharedStringsUri, @"application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml", CompressionOption.Normal);
-                    AppendXmlToPackagePart(CreateSharedStringsDocument(), pp, "SHAREDSTRINGS");
+                    AppendXmlToPackagePart(CreateSharedStringsDocument(), pp);
 
                     if (workbook.WorkbookMetadata != null)
                     {
                         pp = p.CreatePart(appPropertiesUri, @"application/vnd.openxmlformats-officedocument.extended-properties+xml", CompressionOption.Normal);
-                        AppendXmlToPackagePart(CreateAppPropertiesDocument(), pp, "APPPROPERTIES");
+                        AppendXmlToPackagePart(CreateAppPropertiesDocument(), pp);
                         pp = p.CreatePart(corePropertiesUri, @"application/vnd.openxmlformats-package.core-properties+xml", CompressionOption.Normal);
-                        AppendXmlToPackagePart(CreateCorePropertiesDocument(), pp, "COREPROPERTIES");
+                        AppendXmlToPackagePart(CreateCorePropertiesDocument(), pp);
                     }
                     p.Flush();
                     p.Close();
@@ -685,9 +718,8 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="doc">document as raw XML string</param>
         /// <param name="pp">Package part to append the XML data</param>
-        /// <param name="title">Title for interception / debugging purpose</param>
         /// <exception cref="Exceptions.IOException">Throws an IOException if the XML data could not be written into the Package Part</exception>
-        private void AppendXmlToPackagePart(string doc, PackagePart pp, string title)
+        private void AppendXmlToPackagePart(string doc, PackagePart pp)
         {
             try
             {
@@ -1355,32 +1387,12 @@ namespace NanoXLSX.LowLevel
         /// <returns>String with formatted XML data</returns>
         private string CreateMruColorsString()
         {
-            Font[] fonts = styles.GetFonts();
-            Fill[] fills = styles.GetFills();
             StringBuilder sb = new StringBuilder();
             List<string> tempColors = new List<string>();
-            foreach (Font item in fonts)
+            foreach (string item in this.workbook.GetMruColors())
             {
-                if (string.IsNullOrEmpty(item.ColorValue)) { continue; }
-                if (item.ColorValue == Fill.DEFAULT_COLOR) { continue; }
-                if (!tempColors.Contains(item.ColorValue)) { tempColors.Add(item.ColorValue); }
-            }
-            foreach (Fill item in fills)
-            {
-                if (!string.IsNullOrEmpty(item.BackgroundColor))
-                {
-                    if (item.BackgroundColor != Fill.DEFAULT_COLOR)
-                    {
-                        if (!tempColors.Contains(item.BackgroundColor)) { tempColors.Add(item.BackgroundColor); }
-                    }
-                }
-                if (!string.IsNullOrEmpty(item.ForegroundColor))
-                {
-                    if (item.ForegroundColor != Fill.DEFAULT_COLOR)
-                    {
-                        if (!tempColors.Contains(item.ForegroundColor)) { tempColors.Add(item.ForegroundColor); }
-                    }
-                }
+                if (item == Fill.DEFAULT_COLOR) { continue; }
+                if (!tempColors.Contains(item)) { tempColors.Add(item); }
             }
             if (tempColors.Count > 0)
             {
@@ -1392,7 +1404,6 @@ namespace NanoXLSX.LowLevel
                 sb.Append("</mruColors>");
                 return sb.ToString();
             }
-
             return string.Empty;
         }
 

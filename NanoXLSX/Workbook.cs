@@ -34,6 +34,7 @@ namespace NanoXLSX
         private int selectedWorksheet;
         private Shortener shortener;
         private bool importInProgress = false;
+        private List<string> mruColors = new List<string>();
         #endregion
 
         #region properties
@@ -199,6 +200,37 @@ namespace NanoXLSX
         #endregion
 
         #region methods_PICO
+
+        /// <summary>
+        /// Adds a color value (HEX; 6-digit RGB or 8-digit RGBA) to the MRU list
+        /// </summary>
+        /// <param name="color">RGB code in hex format (either 6 characters, e.g. FF00AC or 8 characters with leading alpha value). Alpha will be set to full opacity (FF) in case of 6 characters</param>
+        public void AddMruColor(string color)
+        {
+            if (color != null && color.Length == 6)
+            {
+                color = "FF" + color;
+            }
+            Fill.ValidateColor(color, true);
+            mruColors.Add(Utils.ToUpper(color));
+        }
+
+        /// <summary>
+        /// Gets the MRU color list
+        /// </summary>
+        /// <returns>Immutable list of color values</returns>
+        public IReadOnlyList<string> GetMruColors()
+        {
+            return mruColors;
+        }
+
+        /// <summary>
+        /// Clears the MRU color list
+        /// </summary>
+        public void ClearMruColors()
+        {
+            mruColors.Clear();
+        }
 
         /// <summary>
         /// Adds a style to the style repository. This method is deprecated since it has no direct impact on the generated file.
