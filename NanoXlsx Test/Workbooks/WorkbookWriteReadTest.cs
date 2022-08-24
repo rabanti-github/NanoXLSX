@@ -57,7 +57,7 @@ namespace NanoXLSX_Test.Workbooks
         [Theory(DisplayName = "Test of the 'LockWindowsIfProtected' property when writing and reading a workbook")]
         [InlineData(true)]
         [InlineData(false)]
-        public void ReadWorkbookLockWindwosTest(bool locked)
+        public void ReadWorkbookLockWindowsTest(bool locked)
         {
             Workbook workbook = new Workbook("sheet1");
             workbook.SetWorkbookProtection(true, locked, false, null);

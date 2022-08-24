@@ -62,6 +62,35 @@ namespace NanoXLSX_Test.Worksheets
             assertRowSplit(rowNumber, freeze, givenWorksheet);
         }
 
+        [Fact(DisplayName = "Test of the 'PaneSplitTopHeight' property defined by a split address with custom row heights, when writing and reading a worksheet")]
+        public void PaneSplitTopHeightsWriteReadTest3()
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            workbook.SetCurrentWorksheet(0);
+            workbook.CurrentWorksheet.SetRowHeight(0, 18f);
+            workbook.CurrentWorksheet.SetRowHeight(2, 22.5f);
+            workbook.CurrentWorksheet.SetHorizontalSplit(4, false, new Address("D1"), Worksheet.WorksheetPane.topLeft);
+
+            float expectedHeight = 0f;
+            for (int i = 0; i < 4; i++)
+            {
+                if (workbook.CurrentWorksheet.RowHeights.ContainsKey(i))
+                {
+                    expectedHeight += Utils.GetInternalRowHeight(workbook.CurrentWorksheet.RowHeights[i]);
+                }
+                else
+                {
+                    expectedHeight += Utils.GetInternalRowHeight(Worksheet.DEFAULT_ROW_HEIGHT);
+                }
+
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, 0);
+            // There may be a deviation by rounding
+            float delta = Math.Abs(expectedHeight - givenWorksheet.PaneSplitTopHeight.Value);
+            Assert.True(delta < 0.15);
+            Assert.Null(givenWorksheet.FreezeSplitPanes);
+        }
+
         [Theory(DisplayName = "Test of the 'PaneSplitLeftWidth' property when writing and reading a worksheet")]
         [InlineData(27f, null, 0)]
         [InlineData(100f, null, 0)]
@@ -112,6 +141,35 @@ namespace NanoXLSX_Test.Worksheets
             }
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
             asserColumnSplit(columnNumber, freeze, givenWorksheet, false);
+        }
+
+        [Fact(DisplayName = "Test of the 'PaneSplitLeftWidth' property defined by a split address with custom column widths, when writing and reading a worksheet")]
+        public void PaneSplitLeftWidthWriteReadTest3()
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            workbook.SetCurrentWorksheet(0);
+            workbook.CurrentWorksheet.SetColumnWidth(0, 18f);
+            workbook.CurrentWorksheet.SetColumnWidth(2, 22.5f);
+            workbook.CurrentWorksheet.SetVerticalSplit(4, false, new Address("D1"), Worksheet.WorksheetPane.topLeft);
+
+            float expectedWidth = 0f;
+            for(int i = 0; i < 4; i++)
+            {
+                if (workbook.CurrentWorksheet.Columns.ContainsKey(i))
+                {
+                    expectedWidth += Utils.GetInternalColumnWidth(workbook.CurrentWorksheet.Columns[i].Width);
+                }
+                else
+                {
+                    expectedWidth += Utils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
+                }
+                
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, 0);
+            // There may be a deviation by rounding
+            float delta = Math.Abs(expectedWidth - givenWorksheet.PaneSplitLeftWidth.Value);
+            Assert.True(delta < 0.15);
+            Assert.Null(givenWorksheet.FreezeSplitPanes);
         }
 
         [Theory(DisplayName = "Test of the 'ActivePane' property when writing and reading a worksheet")]
