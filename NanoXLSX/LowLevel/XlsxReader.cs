@@ -274,6 +274,13 @@ namespace NanoXLSX.LowLevel
                     wb.AddMruColor(color);
                 }
             }
+            wb.Hidden = workbook.Hidden;
+            wb.SetSelectedWorksheet(workbook.SelectedWorksheet);
+            if (workbook.Protected)
+            {
+                wb.SetWorkbookProtection(workbook.Protected, workbook.LockWindows, workbook.LockStructure, null);
+                wb.WorkbookProtectionPasswordHash = workbook.PasswordHash;
+            }
             wb.SetImportState(false);
             return wb;
         }

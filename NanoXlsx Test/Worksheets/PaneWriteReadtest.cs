@@ -200,6 +200,8 @@ namespace NanoXLSX_Test.Worksheets
             }
         }
 
+        //public void PaneSplit
+
         [Theory(DisplayName = "Test of the'PaneSplitTopHeight' and the 'PaneSplitLeftWidth' properties (combined X/Y-Split) defined by a split address, when writing and reading a worksheet")]
         [InlineData(0, 0, false, "A2", null, 0)]
         [InlineData(1, 0, false, "B2", null, 0)]

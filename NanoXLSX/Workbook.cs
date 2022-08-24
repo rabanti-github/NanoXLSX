@@ -109,11 +109,18 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the password used for workbook protection. See also <see cref="SetWorkbookProtection"/>
         /// </summary>
-        /// <remarks>The password of this property is stored in plan text. Encryption is performed when the workbook is saved</remarks>
+        /// <remarks>The password of this property is stored in plan text at runtime but not stored to a workbook. See also <see cref="WorkbookProtectionPasswordHash"/> for the generated hash</remarks>
         public string WorkbookProtectionPassword
         {
             get { return workbookProtectionPassword; }
         }
+
+        /// <summary>
+        /// Hash of the protected workbook, originated from <see cref="WorkbookProtectionPassword"/>
+        /// </summary>
+        /// <remarks>The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused, 
+        /// if no changes are made in the area of workbook protection (<see cref="SetWorkbookProtection(bool, bool, bool, string)"/>)</remarks>
+        public string WorkbookProtectionPasswordHash { get; internal set; }
 
         /// <summary>
         /// Gets the list of worksheets in the workbook
@@ -678,6 +685,7 @@ namespace NanoXLSX
             lockWindowsIfProtected = protectWindows;
             lockStructureIfProtected = protectStructure;
             workbookProtectionPassword = password;
+            WorkbookProtectionPasswordHash = Utils.GeneratePasswordHash(password);
             if (!protectWindows && !protectStructure)
             {
                 UseWorkbookProtection = false;

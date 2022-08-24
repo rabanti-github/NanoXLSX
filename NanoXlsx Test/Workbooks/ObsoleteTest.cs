@@ -13,7 +13,7 @@ namespace NanoXLSX_Test.Workbooks
     /// <summary>
     /// Note: All tests of this class are just for code coverage. The tested functions will be removed in the future
     /// </summary>
-    ///     // Ensure that these tests are executed sequentially, since static repository methods may be called 
+    /// Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]
     public class ObsoleteTest
     {

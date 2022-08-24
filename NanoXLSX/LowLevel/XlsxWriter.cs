@@ -238,7 +238,6 @@ namespace NanoXLSX.LowLevel
                 // Fallback on empty workbook
                 sb.Append("<sheet r:id=\"rId1\" sheetId=\"1\" name=\"sheet1\"/>");
             }
-            
             sb.Append("</sheets>");
             sb.Append("</workbook>");
             return sb.ToString();
@@ -264,7 +263,7 @@ namespace NanoXLSX.LowLevel
                 if (!string.IsNullOrEmpty(workbook.WorkbookProtectionPassword))
                 {
                     sb.Append(" workbookPassword=\"");
-                    sb.Append(Utils.GeneratePasswordHash(workbook.WorkbookProtectionPassword));
+                    sb.Append(workbook.WorkbookProtectionPasswordHash);
                     sb.Append("\"");
                 }
                 sb.Append("/>");
@@ -603,7 +602,6 @@ namespace NanoXLSX.LowLevel
                         //  Fallback on empty workbook
                         idCounter = 2;
                     }
-
                     pp.CreateRelationship(stylesheetUri, TargetMode.Internal, @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles", "rId" + idCounter);
                     pp.CreateRelationship(sharedStringsUri, TargetMode.Internal, @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings", "rId" + (idCounter + 1));
 
@@ -728,7 +726,6 @@ namespace NanoXLSX.LowLevel
                     if (!ms.CanWrite) { return; }
                     using (XmlWriter writer = XmlWriter.Create(ms))
                     {
-                        //doc.WriteTo(writer);
                         writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"");
                         writer.WriteRaw(doc);
                         writer.Flush();
