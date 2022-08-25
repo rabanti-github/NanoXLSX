@@ -573,7 +573,7 @@ namespace NanoXLSX.LowLevel
         public void SaveAsStream(Stream stream, bool leaveOpen = false)
         {
             workbook.ResolveMergedCells();
-            this.styles = StyleManager.GetManagedStyles(workbook); // After this point, styles must not be changed anymore
+            this.styles = StyleManager.GetManagedStyles(workbook);
             DocumentPath sheetPath;
             List<Uri> sheetURIs = new List<Uri>();
             try
@@ -716,28 +716,19 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="doc">document as raw XML string</param>
         /// <param name="pp">Package part to append the XML data</param>
-        /// <exception cref="Exceptions.IOException">Throws an IOException if the XML data could not be written into the Package Part</exception>
         private void AppendXmlToPackagePart(string doc, PackagePart pp)
         {
-            try
+            using (MemoryStream ms = new MemoryStream())
             {
-                using (MemoryStream ms = new MemoryStream()) // Write workbook.xml
+                using (XmlWriter writer = XmlWriter.Create(ms))
                 {
-                    if (!ms.CanWrite) { return; }
-                    using (XmlWriter writer = XmlWriter.Create(ms))
-                    {
-                        writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"");
-                        writer.WriteRaw(doc);
-                        writer.Flush();
-                        ms.Position = 0;
-                        ms.CopyTo(pp.GetStream());
-                        ms.Flush();
-                    }
+                    writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"");
+                    writer.WriteRaw(doc);
+                    writer.Flush();
+                    ms.Position = 0;
+                    ms.CopyTo(pp.GetStream());
+                    ms.Flush();
                 }
-            }
-            catch (Exception e)
-            {
-                throw new IOException("The XML document could not be saved into the memory stream", e);
             }
         }
 

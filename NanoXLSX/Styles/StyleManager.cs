@@ -24,7 +24,6 @@ namespace NanoXLSX.Styles
         private List<AbstractStyle> fonts;
         private List<AbstractStyle> numberFormats;
         private List<AbstractStyle> styles;
-        private readonly List<string> styleNames;
         #endregion
 
         #region constructors
@@ -39,7 +38,6 @@ namespace NanoXLSX.Styles
             fonts = new List<AbstractStyle>();
             numberFormats = new List<AbstractStyle>();
             styles = new List<AbstractStyle>();
-            styleNames = new List<string>();
         }
         #endregion
 
@@ -65,22 +63,6 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Gets a border by its hash
-        /// </summary>
-        /// <param name="hash">Hash of the border</param>
-        /// <returns>Determined border</returns>
-        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the border was not found in the style manager</exception>
-        public Border GetBorderByHash(int hash)
-        {
-            AbstractStyle component = GetComponentByHash(ref borders, hash);
-            if (component == null)
-            {
-                throw new StyleException("The style component with the hash '" + hash + "' was not found");
-            }
-            return (Border)component;
-        }
-
-        /// <summary>
         /// Gets all borders of the style manager
         /// </summary>
         /// <returns>Array of borders</returns>
@@ -98,59 +80,9 @@ namespace NanoXLSX.Styles
             return borders.Count;
         }
 
-        /* ****************************** */
 
-        /// <summary>
-        /// Gets a cellXf by its hash
-        /// </summary>
-        /// <param name="hash">Hash of the cellXf</param>
-        /// <returns>Determined cellXf</returns>
-        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the cellXf was not found in the style manager</exception>
-        public CellXf GetCellXfByHash(int hash)
-        {
-            AbstractStyle component = GetComponentByHash(ref cellXfs, hash);
-            if (component == null)
-            {
-                throw new StyleException("The style component with the hash '" + hash + "' was not found");
-            }
-            return (CellXf)component;
-        }
-
-        /// <summary>
-        /// Gets all cellXfs of the style manager
-        /// </summary>
-        /// <returns>Array of cellXfs</returns>
-        public CellXf[] GetCellXfs()
-        {
-            return Array.ConvertAll(cellXfs.ToArray(), x => (CellXf)x);
-        }
-
-        /// <summary>
-        /// Gets the number of cellXfs in the style manager
-        /// </summary>
-        /// <returns>Number of stored cellXfs</returns>
-        public int GetCellXfStyleNumber()
-        {
-            return cellXfs.Count;
-        }
 
         /* ****************************** */
-
-        /// <summary>
-        /// Gets a fill by its hash
-        /// </summary>
-        /// <param name="hash">Hash of the fill</param>
-        /// <returns>Determined fill</returns>
-        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the fill was not found in the style manager</exception>
-        public Fill GetFillByHash(int hash)
-        {
-            AbstractStyle component = GetComponentByHash(ref fills, hash);
-            if (component == null)
-            {
-                throw new StyleException("The style component with the hash '" + hash + "' was not found");
-            }
-            return (Fill)component;
-        }
 
         /// <summary>
         /// Gets all fills of the style manager
@@ -173,22 +105,6 @@ namespace NanoXLSX.Styles
         /* ****************************** */
 
         /// <summary>
-        /// Gets a font by its hash
-        /// </summary>
-        /// <param name="hash">Hash of the font</param>
-        /// <returns>Determined font</returns>
-        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the font was not found in the style manager</exception>
-        public Font GetFontByHash(int hash)
-        {
-            AbstractStyle component = GetComponentByHash(ref fonts, hash);
-            if (component == null)
-            {
-                throw new StyleException("The style component with the hash '" + hash + "' was not found");
-            }
-            return (Font)component;
-        }
-
-        /// <summary>
         /// Gets all fonts of the style manager
         /// </summary>
         /// <returns>Array of fonts</returns>
@@ -209,22 +125,6 @@ namespace NanoXLSX.Styles
         /* ****************************** */
 
         /// <summary>
-        /// Gets a numberFormat by its hash
-        /// </summary>
-        /// <param name="hash">Hash of the numberFormat</param>
-        /// <returns>Determined numberFormat</returns>
-        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the numberFormat was not found in the style manager</exception>
-        public NumberFormat GetNumberFormatByHash(int hash)
-        {
-            AbstractStyle component = GetComponentByHash(ref numberFormats, hash);
-            if (component == null)
-            {
-                throw new StyleException("The style component with the hash '" + hash + "' was not found");
-            }
-            return (NumberFormat)component;
-        }
-
-        /// <summary>
         /// Gets all numberFormats of the style manager
         /// </summary>
         /// <returns>Array of numberFormats</returns>
@@ -243,41 +143,6 @@ namespace NanoXLSX.Styles
         }
 
         /* ****************************** */
-
-        /// <summary>
-        /// Gets a style by its name
-        /// </summary>
-        /// <param name="name">Name of the style</param>
-        /// <returns>Determined style</returns>
-        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the style was not found in the style manager</exception>
-        public Style GetStyleByName(string name)
-        {
-            int len = styles.Count;
-            for (int i = 0; i < len; i++)
-            {
-                if (((Style)styles[i]).Name == name)
-                {
-                    return (Style)styles[i];
-                }
-            }
-            throw new StyleException("The style with the name '" + name + "' was not found");
-        }
-
-        /// <summary>
-        /// Gets a style by its hash
-        /// </summary>
-        /// <param name="hash">Hash of the style</param>
-        /// <returns>Determined style</returns>
-        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the style was not found in the style manager</exception>
-        public Style GetStyleByHash(int hash)
-        {
-            AbstractStyle component = GetComponentByHash(ref styles, hash);
-            if (component == null)
-            {
-                throw new StyleException("The style component with the hash '" + hash + "' was not found");
-            }
-            return (Style)component;
-        }
 
         /// <summary>
         /// Gets all styles of the style manager
@@ -364,10 +229,6 @@ namespace NanoXLSX.Styles
             else if (style.GetType() == typeof(Style))
             {
                 Style s = (Style)style;
-                if (styleNames.Contains(s.Name))
-                {
-                    throw new StyleException("The style with the name '" + s.Name + "' already exists");
-                }
                 if (GetComponentByHash(ref styles, hash) == null)
                 {
                     int? id;
@@ -395,38 +256,7 @@ namespace NanoXLSX.Styles
                 Reorganize(ref styles);
                 hash = s.GetHashCode();
             }
-            else
-            {
-                throw new StyleException("The component ' " + nameof(style) + "' is not implemented yet");
-            }
             return hash;
-        }
-
-        /// <summary>
-        /// Removes a style and all its components from the style manager
-        /// </summary>
-        /// <param name="styleName">Name of the style to remove</param>
-        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the style was not found in the style manager</exception>
-        public void RemoveStyle(string styleName)
-        {
-            bool match = false;
-            int len = styles.Count;
-            int index = -1;
-            for (int i = 0; i < len; i++)
-            {
-                if (((Style)styles[i]).Name == styleName)
-                {
-                    match = true;
-                    index = i;
-                    break;
-                }
-            }
-            if (!match)
-            {
-                throw new StyleException("The style with the name '" + styleName + "' was not found in the style manager");
-            }
-            styles.RemoveAt(index);
-            CleanupStyleComponents();
         }
 
         /// <summary>
@@ -471,110 +301,6 @@ namespace NanoXLSX.Styles
                 list[i].InternalID = id;
                 id++;
             }
-        }
-
-        /// <summary>
-        /// Method to cleanup style components in the style manager
-        /// </summary>
-        private void CleanupStyleComponents()
-        {
-            Border border;
-            CellXf cellXf;
-            Fill fill;
-            Font font;
-            NumberFormat numberFormat;
-            int len = borders.Count - 1;
-            int i;
-            for (i = len; i >= 0; i--)
-            {
-                border = (Border)borders[i];
-                if (!IsUsedByStyle(border))
-                { borders.RemoveAt(i); }
-            }
-            len = cellXfs.Count - 1;
-            for (i = len; i >= 0; i--)
-            {
-                cellXf = (CellXf)cellXfs[i];
-                if (!IsUsedByStyle(cellXf))
-                { cellXfs.RemoveAt(i); }
-            }
-            len = fills.Count - 1;
-            for (i = len; i >= 0; i--)
-            {
-                fill = (Fill)fills[i];
-                if (!IsUsedByStyle(fill))
-                { fills.RemoveAt(i); }
-            }
-            len = fonts.Count - 1;
-            for (i = len; i >= 0; i--)
-            {
-                font = (Font)fonts[i];
-                if (!IsUsedByStyle(font))
-                { fonts.RemoveAt(i); }
-            }
-            len = numberFormats.Count - 1;
-            for (i = len; i >= 0; i--)
-            {
-                numberFormat = (NumberFormat)numberFormats[i];
-                if (!IsUsedByStyle(numberFormat))
-                { numberFormats.RemoveAt(i); }
-            }
-        }
-
-        /// <summary>
-        /// Checks whether a style component in the style manager is used by a style
-        /// </summary>
-        /// <param name="component">Component to check</param>
-        /// <returns>If true, the component is in use</returns>
-        private bool IsUsedByStyle(AbstractStyle component)
-        {
-            Style s;
-            int hash = component.GetHashCode();
-            int len = styles.Count;
-            for (int i = 0; i < len; i++)
-            {
-                s = (Style)styles[i];
-                if (component.GetType() == typeof(Border))
-                {
-                    if (s.CurrentBorder.GetHashCode() == hash)
-                    {
-                        return true;
-                    }
-                }
-                else if (component.GetType() == typeof(CellXf))
-                {
-                    if (s.CurrentCellXf.GetHashCode() == hash)
-                    {
-                        return true;
-                    }
-                }
-                else if (component.GetType() == typeof(Fill))
-                {
-                    if (s.CurrentFill.GetHashCode() == hash)
-                    {
-                        return true;
-                    }
-                }
-                else if (component.GetType() == typeof(Font))
-                {
-                    if (s.CurrentFont.GetHashCode() == hash)
-                    {
-                        return true;
-                    }
-                }
-                else if (component.GetType() == typeof(NumberFormat))
-                {
-                    if (s.CurrentNumberFormat.GetHashCode() == hash)
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    throw new StyleException("The component '" + nameof(component) + "' is not implemented yet");
-                }
-            }
-            return false;
         }
         #endregion
     }

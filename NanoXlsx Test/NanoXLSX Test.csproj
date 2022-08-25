@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\invalid_metadata.xlsx" />
+    <None Remove="Resources\invalid_metadata_app.xlsx" />
+    <None Remove="Resources\invalid_metadata_core.xlsx" />
     <None Remove="Resources\invalid_shardStrings.xlsx" />
     <None Remove="Resources\invalid_sharedStrings2.xlsx" />
     <None Remove="Resources\invalid_style.xlsx" />
@@ -23,6 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <EmbeddedResource Include="Resources\invalid_metadata_app.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_metadata_core.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_shardStrings.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_sharedStrings2.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_style.xlsx" />

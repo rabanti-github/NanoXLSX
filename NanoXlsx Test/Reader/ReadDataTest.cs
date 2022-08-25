@@ -259,6 +259,8 @@ namespace NanoXLSX_Test.Reader
         [InlineData("invalid_workbook_sheet-definition.xlsx")]
         [InlineData("invalid_worksheet.xlsx")]
         [InlineData("invalid_style.xlsx")]
+        [InlineData("invalid_metadata_app.xlsx")]
+        [InlineData("invalid_metadata_core.xlsx")]
         [InlineData("invalid_sharedStrings.xlsx")]
         [InlineData("invalid_sharedStrings2.xlsx")]
         [InlineData("missing_worksheet.xlsx")]

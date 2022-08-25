@@ -27,7 +27,7 @@ namespace NanoXLSX.Styles
         [Append(NestedProperty = true)]
         public Border CurrentBorder { get; set; }
         /// <summary>
-        /// Gets or sets the  current CellXf object of the style
+        /// Gets or sets the current CellXf object of the style
         /// </summary>
         [Append(NestedProperty = true)]
         public CellXf CurrentCellXf { get; set; }
@@ -37,18 +37,19 @@ namespace NanoXLSX.Styles
         [Append(NestedProperty = true)]
         public Fill CurrentFill { get; set; }
         /// <summary>
-        /// Gets or sets the  current Font object of the style
+        /// Gets or sets the current Font object of the style
         /// </summary>
         [Append(NestedProperty = true)]
         public Font CurrentFont { get; set; }
         /// <summary>
-        /// Gets or sets the  current NumberFormat object of the style
+        /// Gets or sets the current NumberFormat object of the style
         /// </summary>
         [Append(NestedProperty = true)]
         public NumberFormat CurrentNumberFormat { get; set; }
         /// <summary>
-        /// Gets or sets the name of the style. If not defined, the automatically calculated hash will be used as name
+        /// Gets or sets the name of the informal style. If not defined, the automatically calculated hash will be used as name
         /// </summary>
+        /// <remarks>The name is informal and not considered as an identifier, when collecting all styles for a workbook</remarks>
         [Append(Ignore = true)]
         public string Name { get; set; }
 
