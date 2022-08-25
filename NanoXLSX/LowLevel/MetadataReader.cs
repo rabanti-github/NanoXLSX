@@ -41,6 +41,30 @@ namespace NanoXLSX.LowLevel
         /// Creator of an XLSX file
         /// </summary>
         public string Creator { get; private set; }
+        /// <summary>
+        /// Description of the XLSX file
+        /// </summary>
+        public string Description { get; private set; }
+        /// <summary>
+        /// Hyperlink base of the XLSX file
+        /// </summary>
+        public string HyperlinkBase { get; private set; }
+        /// <summary>
+        /// Keywords of the XLSX file
+        /// </summary>
+        public string Keywords { get; private set; }
+        /// <summary>
+        /// Manager (responsible) of the XLSX file
+        /// </summary>
+        public string Manager { get; private set; }
+        /// <summary>
+        /// Subject of the XLSX file
+        /// </summary>
+        public string Subject { get; private set; }
+        /// <summary>
+        /// Title of the XLSX file
+        /// </summary>
+        public string Title { get; private set; }
         #endregion
 
         #region methods
@@ -71,6 +95,14 @@ namespace NanoXLSX.LowLevel
                         else if (node.LocalName.Equals("Company", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.Company = node.InnerText;
+                        }
+                        else if (node.LocalName.Equals("Manager", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.Manager = node.InnerText;
+                        }
+                        else if (node.LocalName.Equals("HyperlinkBase", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.HyperlinkBase = node.InnerText;
                         }
                     }
                 }
@@ -108,6 +140,22 @@ namespace NanoXLSX.LowLevel
                         else if (node.LocalName.Equals("Creator", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.Creator = node.InnerText;
+                        }
+                        else if (node.LocalName.Equals("Description", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.Description = node.InnerText;
+                        }
+                        else if (node.LocalName.Equals("Keywords", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.Keywords = node.InnerText;
+                        }
+                        else if (node.LocalName.Equals("Subject", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.Subject = node.InnerText;
+                        }
+                        else if (node.LocalName.Equals("Title", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.Title = node.InnerText;
                         }
                     }
                 }

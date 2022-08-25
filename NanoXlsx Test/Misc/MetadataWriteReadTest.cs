@@ -65,5 +65,59 @@ namespace NanoXLSX_Test.Misc
             Assert.Equal("creator1", givenWorkbook.WorkbookMetadata.Creator);
         }
 
+        [Fact(DisplayName = "Test of the 'Description' property when writing and reading a workbook")]
+        public void ReadDescriptionTest()
+        {
+            Workbook workbook = new Workbook();
+            workbook.WorkbookMetadata.Description = "description1";
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
+            Assert.Equal("description1", givenWorkbook.WorkbookMetadata.Description);
+        }
+
+        [Fact(DisplayName = "Test of the 'HyperlinkBase' property when writing and reading a workbook")]
+        public void ReadHyperlinkBaseTest()
+        {
+            Workbook workbook = new Workbook();
+            workbook.WorkbookMetadata.HyperlinkBase = "hyperlinkBase1";
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
+            Assert.Equal("hyperlinkBase1", givenWorkbook.WorkbookMetadata.HyperlinkBase);
+        }
+
+        [Fact(DisplayName = "Test of the 'Keywords' property when writing and reading a workbook")]
+        public void ReadKeywordsTest()
+        {
+            Workbook workbook = new Workbook();
+            workbook.WorkbookMetadata.Keywords = "keyword1;keyword2";
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
+            Assert.Equal("keyword1;keyword2", givenWorkbook.WorkbookMetadata.Keywords);
+        }
+
+        [Fact(DisplayName = "Test of the 'Manager' property when writing and reading a workbook")]
+        public void ReadManagerTest()
+        {
+            Workbook workbook = new Workbook();
+            workbook.WorkbookMetadata.Manager = "manager1";
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
+            Assert.Equal("manager1", givenWorkbook.WorkbookMetadata.Manager);
+        }
+
+        [Fact(DisplayName = "Test of the 'Subject' property when writing and reading a workbook")]
+        public void ReadSubjectTest()
+        {
+            Workbook workbook = new Workbook();
+            workbook.WorkbookMetadata.Subject = "subject1";
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
+            Assert.Equal("subject1", givenWorkbook.WorkbookMetadata.Subject);
+        }
+
+        [Fact(DisplayName = "Test of the 'Title' property when writing and reading a workbook")]
+        public void ReadTitleTest()
+        {
+            Workbook workbook = new Workbook();
+            workbook.WorkbookMetadata.Title = "title1";
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
+            Assert.Equal("title1", givenWorkbook.WorkbookMetadata.Title);
+        }
+
     }
 }

@@ -294,7 +294,13 @@ namespace NanoXLSX.LowLevel
             wb.WorkbookMetadata.Category = metadataReader.Category;
             wb.WorkbookMetadata.Company = metadataReader.Company;
             wb.WorkbookMetadata.ContentStatus = metadataReader.ContentStatus;
-             wb.SetImportState(false);
+            wb.WorkbookMetadata.Description = metadataReader.Description;
+            wb.WorkbookMetadata.HyperlinkBase = metadataReader.HyperlinkBase;
+            wb.WorkbookMetadata.Keywords = metadataReader.Keywords;
+            wb.WorkbookMetadata.Manager = metadataReader.Manager;
+            wb.WorkbookMetadata.Subject = metadataReader.Subject;
+            wb.WorkbookMetadata.Title = metadataReader.Title;
+            wb.SetImportState(false);
             return wb;
         }
 
