@@ -289,7 +289,12 @@ namespace NanoXLSX.LowLevel
                 wb.WorkbookProtectionPasswordHash = workbook.PasswordHash;
             }
             wb.WorkbookMetadata.Application = metadataReader.Application;
-            wb.SetImportState(false);
+            wb.WorkbookMetadata.ApplicationVersion = metadataReader.ApplicationVersion;
+            wb.WorkbookMetadata.Creator = metadataReader.Creator;
+            wb.WorkbookMetadata.Category = metadataReader.Category;
+            wb.WorkbookMetadata.Company = metadataReader.Company;
+            wb.WorkbookMetadata.ContentStatus = metadataReader.ContentStatus;
+             wb.SetImportState(false);
             return wb;
         }
 

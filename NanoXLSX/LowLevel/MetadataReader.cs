@@ -21,6 +21,26 @@ namespace NanoXLSX.LowLevel
         /// Application that has created an XLSX file. This is an arbitrary text and the default of this library is "NanoXLSX"
         /// </summary>
         public string Application { get; private set; }
+        /// <summary>
+        /// Version of the application that has created an XLSX file
+        /// </summary>
+        public String ApplicationVersion { get; private set; }
+        /// <summary>
+        /// Document category of an XLSX file
+        /// </summary>
+        public string Category { get; private set; }
+        /// <summary>
+        /// Responsible company of an XLSX file
+        /// </summary>
+        public string Company { get; private set; }
+        /// <summary>
+        /// Content status of an XLSX file
+        /// </summary>
+        public string ContentStatus { get; private set; }
+        /// <summary>
+        /// Creator of an XLSX file
+        /// </summary>
+        public string Creator { get; private set; }
         #endregion
 
         #region methods
@@ -44,6 +64,14 @@ namespace NanoXLSX.LowLevel
                         {
                             this.Application = node.InnerText;
                         }
+                        else if (node.LocalName.Equals("AppVersion", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.ApplicationVersion = node.InnerText;
+                        }
+                        else if (node.LocalName.Equals("Company", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.Company = node.InnerText;
+                        }
                     }
                 }
             }
@@ -60,7 +88,34 @@ namespace NanoXLSX.LowLevel
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public void ReadCoreData(MemoryStream stream)
         {
-           // throw new NotImplementedException();
+            try
+            {
+                using (stream) // Close after processing
+                {
+                    XmlDocument xr = new XmlDocument();
+                    xr.XmlResolver = null;
+                    xr.Load(stream);
+                    foreach (XmlNode node in xr.DocumentElement.ChildNodes)
+                    {
+                        if (node.LocalName.Equals("Category", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.Category = node.InnerText;
+                        }
+                        else if (node.LocalName.Equals("ContentStatus", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.ContentStatus = node.InnerText;
+                        }
+                        else if (node.LocalName.Equals("Creator", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.Creator = node.InnerText;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
+            }
         }
 
         #endregion
