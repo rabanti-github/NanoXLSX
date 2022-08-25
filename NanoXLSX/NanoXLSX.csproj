@@ -66,6 +66,7 @@
     <Compile Include="Exceptions\WorksheetException.cs" />
     <Compile Include="ImportOptions.cs" />
     <Compile Include="LowLevel\DocumentPath.cs" />
+    <Compile Include="LowLevel\MetadataReader.cs" />
     <Compile Include="LowLevel\ReaderUtils.cs" />
     <Compile Include="LowLevel\StyleReader.cs" />
     <Compile Include="LowLevel\XlsxWriter.cs" />

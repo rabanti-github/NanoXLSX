@@ -20,7 +20,7 @@ namespace NanoXLSX_Test.Workbooks
             string color2 = "FFDD22";
             workbook.AddMruColor(color1);
             workbook.AddMruColor(color2);
-            Workbook givenWorkbook = WriteAndReadWorkbook(workbook);
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             List<string> mruColors = ((List<string>)givenWorkbook.GetMruColors());
             mruColors.Sort();
             Assert.Equal(2, mruColors.Count);
@@ -35,7 +35,7 @@ namespace NanoXLSX_Test.Workbooks
         {
             Workbook workbook = new Workbook();
             workbook.Hidden = hidden;
-            Workbook givenWorkbook = WriteAndReadWorkbook(workbook);
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             Assert.Equal(hidden, givenWorkbook.Hidden);
         }
 
@@ -50,7 +50,7 @@ namespace NanoXLSX_Test.Workbooks
             workbook.AddWorksheet("sheet3");
             workbook.AddWorksheet("sheet4");
             workbook.SetSelectedWorksheet(index);
-            Workbook givenWorkbook = WriteAndReadWorkbook(workbook);
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             Assert.Equal(index, givenWorkbook.SelectedWorksheet);
         }
 
@@ -61,7 +61,7 @@ namespace NanoXLSX_Test.Workbooks
         {
             Workbook workbook = new Workbook("sheet1");
             workbook.SetWorkbookProtection(true, locked, false, null);
-            Workbook givenWorkbook = WriteAndReadWorkbook(workbook);
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             Assert.Equal(locked, givenWorkbook.LockWindowsIfProtected);
         }
 
@@ -72,7 +72,7 @@ namespace NanoXLSX_Test.Workbooks
         {
             Workbook workbook = new Workbook("sheet1");
             workbook.SetWorkbookProtection(true, false, locked, null);
-            Workbook givenWorkbook = WriteAndReadWorkbook(workbook);
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             Assert.Equal(locked, givenWorkbook.LockStructureIfProtected);
         }
 
@@ -86,7 +86,7 @@ namespace NanoXLSX_Test.Workbooks
         {
             Workbook workbook = new Workbook("sheet1");
             workbook.SetWorkbookProtection(true, false, true, plainText);
-            Workbook givenWorkbook = WriteAndReadWorkbook(workbook);
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             string hash = Utils.GeneratePasswordHash(plainText);
             if (hash == "")
             {
@@ -96,16 +96,7 @@ namespace NanoXLSX_Test.Workbooks
         }
 
 
-        private static Workbook WriteAndReadWorkbook(Workbook workbook)
-        {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                workbook.SaveAsStream(stream, true);
-                stream.Position = 0;
-                Workbook readWorkbook = Workbook.Load(stream);
-                return readWorkbook;
-            }
-        }
+
 
     }
 }

@@ -113,5 +113,16 @@ namespace NanoXLSX_Test
             return cell;
         }
 
+        public static Workbook WriteAndReadWorkbook(Workbook workbook)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                workbook.SaveAsStream(stream, true);
+                stream.Position = 0;
+                Workbook readWorkbook = Workbook.Load(stream);
+                return readWorkbook;
+            }
+        }
+
     }
 }

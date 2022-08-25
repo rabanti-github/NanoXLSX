@@ -54,6 +54,7 @@
     <Compile Include="..\NanoXLSX\Exceptions\WorksheetException.cs" Link="Exceptions\WorksheetException.cs" />
     <Compile Include="..\NanoXLSX\ImportOptions.cs" Link="ImportOptions.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\DocumentPath.cs" Link="LowLevel\DocumentPath.cs" />
+    <Compile Include="..\NanoXLSX\LowLevel\MetadataReader.cs" Link="LowLevel\MetadataReader.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\ReaderUtils.cs" Link="LowLevel\ReaderUtils.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\SharedStringsReader.cs" Link="LowLevel\SharedStringsReader.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\SortedMap.cs" Link="LowLevel\SortedMap.cs" />

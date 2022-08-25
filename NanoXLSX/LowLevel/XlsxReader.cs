@@ -28,6 +28,7 @@ namespace NanoXLSX.LowLevel
         private Dictionary<int, WorksheetReader> worksheets;
         private MemoryStream memoryStream;
         private WorkbookReader workbook;
+        private MetadataReader metadataReader;
         private ImportOptions importOptions;
         private StyleReaderContainer styleReaderContainer;
         #endregion
@@ -111,6 +112,12 @@ namespace NanoXLSX.LowLevel
                     workbook = new WorkbookReader();
                     ms = GetEntryStream("xl/workbook.xml", zf);
                     workbook.Read(ms);
+
+                    metadataReader = new MetadataReader();
+                    ms = GetEntryStream("docProps/app.xml", zf);
+                    metadataReader.ReadAppData(ms);
+                    ms = GetEntryStream("docProps/core.xml", zf);
+                    metadataReader.ReadCoreData(ms);
 
                     int worksheetIndex = 1;
                     string name;
@@ -281,6 +288,7 @@ namespace NanoXLSX.LowLevel
                 wb.SetWorkbookProtection(workbook.Protected, workbook.LockWindows, workbook.LockStructure, null);
                 wb.WorkbookProtectionPasswordHash = workbook.PasswordHash;
             }
+            wb.WorkbookMetadata.Application = metadataReader.Application;
             wb.SetImportState(false);
             return wb;
         }
