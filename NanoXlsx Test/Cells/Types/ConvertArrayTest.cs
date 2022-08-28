@@ -203,15 +203,6 @@ namespace NanoXLSX_Test.Cells.Types
                 this.Value = value;
             }
 
-            public override bool Equals(object obj)
-            {
-                if (obj == null || obj.GetType() != typeof(DummyArrayClass))
-                {
-                    return false;
-                }
-                return this.Value.Equals(((DummyArrayClass)obj).Value);
-            }
-
             public override string ToString()
             {
                 return this.Value;

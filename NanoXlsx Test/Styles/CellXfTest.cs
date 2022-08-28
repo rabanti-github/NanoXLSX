@@ -171,9 +171,6 @@ namespace NanoXLSX_Test.Styles
             Assert.Equal(typeof(StyleException), ex.GetType());
         }
 
-
-        
-
         [Fact(DisplayName = "Test of the Equals method")]
         public void EqualsTest()
         {

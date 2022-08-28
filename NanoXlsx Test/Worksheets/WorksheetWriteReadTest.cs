@@ -1,4 +1,5 @@
 ﻿using NanoXLSX;
+using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -514,6 +515,29 @@ namespace NanoXLSX_Test.Worksheets
             }
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
             Assert.Equal(hidden, givenWorksheet.Hidden);
+        }
+
+        [Fact(DisplayName = "Test of the replacement of the CellXF style part, applied on merged cells, when saving a workbook")]
+        public void MixedCellsCellXfTest()
+        {
+            Workbook workbook = new Workbook("Sheet1");
+            Style xfStyle = new Style();
+            xfStyle.CurrentCellXf.Alignment = CellXf.TextBreakValue.shrinkToFit;
+            Style style = BasicStyles.Bold.Append(xfStyle);
+            workbook.CurrentWorksheet.AddCell("", "A1", style);
+            workbook.CurrentWorksheet.AddCell("B", "A2", style);
+            workbook.CurrentWorksheet.AddCell("", "A3", style);
+            workbook.CurrentWorksheet.MergeCells(new Range("A1:A3"));
+            Assert.False(workbook.CurrentWorksheet.Cells["A1"].CellStyle.CurrentCellXf.ForceApplyAlignment);
+            Assert.False(workbook.CurrentWorksheet.Cells["A2"].CellStyle.CurrentCellXf.ForceApplyAlignment);
+            Assert.False(workbook.CurrentWorksheet.Cells["A3"].CellStyle.CurrentCellXf.ForceApplyAlignment);
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, 0);
+            Assert.True(givenWorksheet.Cells["A1"].CellStyle.CurrentCellXf.ForceApplyAlignment);
+            Assert.Equal(CellXf.TextBreakValue.shrinkToFit, givenWorksheet.Cells["A1"].CellStyle.CurrentCellXf.Alignment);
+            Assert.True(givenWorksheet.Cells["A2"].CellStyle.CurrentCellXf.ForceApplyAlignment);
+            Assert.Equal(CellXf.TextBreakValue.shrinkToFit, givenWorksheet.Cells["A2"].CellStyle.CurrentCellXf.Alignment);
+            Assert.True(givenWorksheet.Cells["A3"].CellStyle.CurrentCellXf.ForceApplyAlignment);
+            Assert.Equal(CellXf.TextBreakValue.shrinkToFit, givenWorksheet.Cells["A3"].CellStyle.CurrentCellXf.Alignment);
         }
 
 
