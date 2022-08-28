@@ -75,6 +75,11 @@ namespace NanoXLSX.LowLevel
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public void ReadAppData(MemoryStream stream)
         {
+            if (stream == null)
+            {
+                // No metadata available in xlsx file
+                return;
+            }
             try
             {
                 using (stream) // Close after processing
@@ -120,6 +125,11 @@ namespace NanoXLSX.LowLevel
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public void ReadCoreData(MemoryStream stream)
         {
+            if (stream == null)
+            {
+                // No metadata available in xlsx file
+                return;
+            }
             try
             {
                 using (stream) // Close after processing

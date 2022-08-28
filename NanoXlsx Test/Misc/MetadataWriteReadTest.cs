@@ -10,7 +10,6 @@ namespace NanoXLSX_Test.Misc
 {
     public class MetadataWriteReadTest
     {
-
         [Fact(DisplayName = "Test of the 'Application' property when writing and reading a workbook")]
         public void ReadApplicationTest()
         {
@@ -117,6 +116,18 @@ namespace NanoXLSX_Test.Misc
             workbook.WorkbookMetadata.Title = "title1";
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             Assert.Equal("title1", givenWorkbook.WorkbookMetadata.Title);
+        }
+
+        [Fact(DisplayName = "Test of writing and reading a workbook with a null WorkbookMetadata object")]
+        public void ReadNullTest()
+        {
+            Workbook workbook = new Workbook();
+            workbook.WorkbookMetadata = null;
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
+            Assert.NotNull(givenWorkbook.WorkbookMetadata);
+            Assert.Null(givenWorkbook.WorkbookMetadata.Application);
+            Assert.Null(givenWorkbook.WorkbookMetadata.Creator);
+            Assert.Null(givenWorkbook.WorkbookMetadata.Title);
         }
 
     }

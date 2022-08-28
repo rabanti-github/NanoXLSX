@@ -129,6 +129,88 @@ namespace NanoXLSX_Test.Reader
             AssertValues<uint>(cells, AssertEquals);
         }
 
+        [Fact(DisplayName = "Test of the reader functionality for byte values (cast to int)")]
+        public void ReadByteTest()
+        {
+            Dictionary<string, byte> cells = new Dictionary<string, byte>();
+            cells.Add("A1", 0);
+            cells.Add("A2", 10);
+            cells.Add("A3", 255);
+            cells.Add("A4", byte.MinValue);
+            cells.Add("A5", byte.MaxValue);
+
+            Dictionary<string, int> expected = new Dictionary<string, int>();
+            expected.Add("A1", 0);
+            expected.Add("A2", 10);
+            expected.Add("A3", 255);
+            expected.Add("A4", byte.MinValue);
+            expected.Add("A5", byte.MaxValue);
+            AssertValues<byte,int>(cells, AssertEquals, expected);
+        }
+
+        [Fact(DisplayName = "Test of the reader functionality for sbyte values (cast to int)")]
+        public void ReadSbyteTest()
+        {
+            Dictionary<string, sbyte> cells = new Dictionary<string, sbyte>();
+            cells.Add("A1", 0);
+            cells.Add("A2", 10);
+            cells.Add("A3", -10);
+            cells.Add("A4", 127);
+            cells.Add("A5", -128);
+            cells.Add("A6", sbyte.MinValue);
+            cells.Add("A7", sbyte.MaxValue);
+
+            Dictionary<string, int> expected = new Dictionary<string, int>();
+            expected.Add("A1", 0);
+            expected.Add("A2", 10);
+            expected.Add("A3", -10);
+            expected.Add("A4", 127);
+            expected.Add("A5", -128);
+            expected.Add("A6", sbyte.MinValue);
+            expected.Add("A7", sbyte.MaxValue);
+            AssertValues<sbyte, int>(cells, AssertEquals, expected);
+        }
+
+        [Fact(DisplayName = "Test of the reader functionality for short values (cast to int)")]
+        public void ReadShortTest()
+        {
+            Dictionary<string, short> cells = new Dictionary<string, short>();
+            cells.Add("A1", 0);
+            cells.Add("A2", 10);
+            cells.Add("A3", 32767);
+            cells.Add("A4", -32767);
+            cells.Add("A5", short.MinValue);
+            cells.Add("A6", short.MaxValue);
+
+            Dictionary<string, int> expected = new Dictionary<string, int>();
+            expected.Add("A1", 0);
+            expected.Add("A2", 10);
+            expected.Add("A3", 32767);
+            expected.Add("A4", -32767);
+            expected.Add("A5", short.MinValue);
+            expected.Add("A6", short.MaxValue);
+            AssertValues<short, int>(cells, AssertEquals, expected);
+        }
+
+        [Fact(DisplayName = "Test of the reader functionality for ushort values (cast to int)")]
+        public void ReadUshortTest()
+        {
+            Dictionary<string, ushort> cells = new Dictionary<string, ushort>();
+            cells.Add("A1", 0);
+            cells.Add("A2", 10);
+            cells.Add("A3", 56353);
+            cells.Add("A4", ushort.MinValue);
+            cells.Add("A5", ushort.MaxValue);
+
+            Dictionary<string, int> expected = new Dictionary<string, int>();
+            expected.Add("A1", 0);
+            expected.Add("A2", 10);
+            expected.Add("A3", 56353);
+            expected.Add("A4", ushort.MinValue);
+            expected.Add("A5", ushort.MaxValue);
+            AssertValues<ushort, int>(cells, AssertEquals, expected);
+        }
+
         [Fact(DisplayName = "Test of the reader functionality for float values")]
         public void ReadFloatTest()
         {
@@ -286,6 +368,52 @@ namespace NanoXLSX_Test.Reader
 
         private static void AssertValues<T>(Dictionary<string, T> givenCells, Action<T,T> assertionAction, Dictionary<string, T> expectedCells = null)
         {
+            Worksheet givenWorksheet = GetWorksheet(givenCells);
+            foreach (string address in givenCells.Keys)
+            {
+                Cell givenCell = givenWorksheet.GetCell(new Address(address));
+                T value;
+                if (expectedCells == null)
+                {
+                    value = givenCells[address];
+                }
+                else
+                {
+                    value = expectedCells[address];
+                }
+
+                if (value == null)
+                {
+                    Assert.Equal(Cell.CellType.EMPTY, givenCell.DataType);
+                }
+                else
+                {
+                    assertionAction.Invoke(value, (T)givenCell.Value);
+                }
+            }
+        }
+
+            private static void AssertValues<T,D>(Dictionary<string, T> givenCells, Action<D, D> assertionAction, Dictionary<string, D> expectedCells)
+        {
+            Worksheet givenWorksheet = GetWorksheet(givenCells);
+            foreach (string address in givenCells.Keys)
+            {
+                Cell givenCell = givenWorksheet.GetCell(new Address(address));
+                D givenValue = (D)givenCell.Value;
+                D expectedvalue = expectedCells[address];
+                if (givenValue == null)
+                {
+                    Assert.Equal(Cell.CellType.EMPTY, givenCell.DataType);
+                }
+                else
+                {
+                    assertionAction.Invoke(givenValue, expectedvalue);
+                }
+            }
+        }
+
+            private static Worksheet GetWorksheet<T>(Dictionary<string, T> givenCells)
+        {
             Workbook workbook = new Workbook("worksheet1");
             foreach (KeyValuePair<string, T> cell in givenCells)
             {
@@ -299,30 +427,10 @@ namespace NanoXLSX_Test.Reader
             Assert.NotNull(givenWorkbook);
             Worksheet givenWorksheet = givenWorkbook.SetCurrentWorksheet(0);
             Assert.Equal("worksheet1", givenWorksheet.SheetName);
-            foreach(string address in givenCells.Keys)
-            {
-                Cell givenCell = givenWorksheet.GetCell(new Address(address));
-                T value;
-                if (expectedCells == null)
-                {
-                    value = givenCells[address];
-                }
-                else
-                {
-                    value = expectedCells[address];
-                }
-                
-                if (value == null)
-                {
-                    Assert.Equal(Cell.CellType.EMPTY, givenCell.DataType);
-                }
-                else
-                {
-                    assertionAction.Invoke(value, (T)givenCell.Value);
-                    //Assert.Equal(value, givenCell.Value);
-                }
-            }
+            return givenWorksheet;
         }
+
+       
 
         private static void AssertApproximateDouble(double expected, double given)
         {

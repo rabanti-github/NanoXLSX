@@ -1,4 +1,5 @@
 ﻿using NanoXLSX;
+using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,6 +27,21 @@ namespace NanoXLSX_Test.Workbooks
             Assert.Equal(2, mruColors.Count);
             Assert.Equal("FF" + color1, mruColors[0]);
             Assert.Equal("FF" + color2, mruColors[1]);
+        }
+
+        [Fact(DisplayName = "Test of the (virtual) 'MruColors' property when writing and reading a workbook, neglecting the default color")]
+        public void ReadMruColorsTest2()
+        {
+            Workbook workbook = new Workbook();
+            string color1 = "AACC00";
+            string color2 = Fill.DEFAULT_COLOR; // Should not be added (black)
+            workbook.AddMruColor(color1);
+            workbook.AddMruColor(color2);
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
+            List<string> mruColors = ((List<string>)givenWorkbook.GetMruColors());
+            mruColors.Sort();
+            Assert.Single(mruColors);
+            Assert.Equal("FF" + color1, mruColors[0]);
         }
 
         [Theory(DisplayName = "Test of the 'Hidden' property when writing and reading a workbook")]

@@ -691,7 +691,6 @@ namespace NanoXLSX.LowLevel
         private void AppendXmlTag(StringBuilder sb, string value, string tagName, string nameSpace)
         {
             if (string.IsNullOrEmpty(value)) { return; }
-            if (sb == null || string.IsNullOrEmpty(tagName)) { return; }
             bool hasNoNs = string.IsNullOrEmpty(nameSpace);
             sb.Append('<');
             if (!hasNoNs)
@@ -738,7 +737,6 @@ namespace NanoXLSX.LowLevel
         /// <returns>String with formatted XML data</returns>
         private string CreateAppString()
         {
-            if (workbook.WorkbookMetadata == null) { return string.Empty; }
             Metadata md = workbook.WorkbookMetadata;
             StringBuilder sb = new StringBuilder();
             AppendXmlTag(sb, "0", "TotalTime", null);
@@ -797,7 +795,6 @@ namespace NanoXLSX.LowLevel
         /// <returns>String with formatted XML data</returns>
         private string CreateCorePropertiesString()
         {
-            if (workbook.WorkbookMetadata == null) { return string.Empty; }
             Metadata md = workbook.WorkbookMetadata;
             StringBuilder sb = new StringBuilder();
             AppendXmlTag(sb, md.Title, "title", "dc");
@@ -874,6 +871,7 @@ namespace NanoXLSX.LowLevel
             int col = 0;
             foreach (Cell item in dynamicRow.CellDefinitions)
             {
+                // Data type must be resolved
                 typeDef = " ";
                 if (item.CellStyle != null)
                 {
@@ -882,10 +880,6 @@ namespace NanoXLSX.LowLevel
                 else
                 {
                     styleDef = "";
-                }
-                if (item.DataType == Cell.CellType.DEFAULT)
-                {
-                    item.ResolveCellType(); // Recalculate the type (for handling DEFAULT)
                 }
                 if (item.DataType == Cell.CellType.BOOL)
                 {
@@ -969,10 +963,6 @@ namespace NanoXLSX.LowLevel
                 else if (valueDef == null || item.DataType == Cell.CellType.EMPTY) // Empty cell
                 {
                     sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(styleDef).Append("/>");
-                }
-                else // All other, unexpected cases
-                {
-                    sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(typeDef).Append(styleDef).Append("/>");
                 }
                 col++;
             }
@@ -1379,7 +1369,10 @@ namespace NanoXLSX.LowLevel
             List<string> tempColors = new List<string>();
             foreach (string item in this.workbook.GetMruColors())
             {
-                if (item == Fill.DEFAULT_COLOR) { continue; }
+                if (item == Fill.DEFAULT_COLOR)
+                { 
+                    continue; 
+                }
                 if (!tempColors.Contains(item)) { tempColors.Add(item); }
             }
             if (tempColors.Count > 0)
