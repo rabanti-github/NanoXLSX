@@ -377,6 +377,23 @@ namespace NanoXLSX
             return cellStyle;
         }
 
+        /// <summary>
+        /// Copies this cell into a new one. The style is considered if not null.
+        /// </summary>
+        /// <returns>Copy of this cell</returns>
+        internal Cell Copy()
+        {
+            Cell copy = new Cell();
+            copy.Value = this.Value;
+            copy.DataType = this.DataType;
+            copy.CellAddress = this.CellAddress;
+            copy.CellAddressType = this.CellAddressType;
+            if (this.cellStyle != null)
+            {
+                copy.SetStyle(this.cellStyle, true);
+            }
+            return copy;
+        }
 
         #endregion
 

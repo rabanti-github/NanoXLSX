@@ -371,22 +371,6 @@ namespace NanoXLSX
             worksheet.WorkbookReference = this;
         }
 
-        public void CopyWorksheet(Worksheet sourceWorksheet, String newWorksheetName)
-        {
-            CopyWorksheet(sourceWorksheet, newWorksheetName, false);
-        }
-
-        public void CopyWorksheet(Worksheet sourceWorksheet, String newWorksheetName, bool sanitizeSheetName)
-        {
-            Worksheet targetWorksheet = new Worksheet(newWorksheetName);
-            foreach(KeyValuePair<string,Cell> cell in sourceWorksheet.Cells)
-            {
-                targetWorksheet.AddCell(cell.Value, cell.Key, cell.Value.CellStyle);
-            }
-            // TODO: implement
-           // foreach(var x in sourceWorksheet.)
-        }
-
         /// <summary>
         /// Removes the passed style from the style sheet. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
@@ -584,11 +568,7 @@ namespace NanoXLSX
         /// <exception cref="WorksheetException">Throws a WorksheetException if the name of the worksheet is unknown</exception>
         public Worksheet SetCurrentWorksheet(string name)
         {
-            currentWorksheet = worksheets.FirstOrDefault(w => w.SheetName == name);
-            if (currentWorksheet == null)
-            {
-                throw new WorksheetException("The worksheet with the name '" + name + "' does not exist.");
-            }
+            currentWorksheet = GetWorksheet(name);
             shortener.SetCurrentWorksheetInternal(currentWorksheet);
             return currentWorksheet;
         }
@@ -601,11 +581,7 @@ namespace NanoXLSX
         /// <exception cref="WorksheetException">Throws a WorksheetException if the name of the worksheet is unknown</exception>
         public Worksheet SetCurrentWorksheet(int worksheetIndex)
         {
-            if (worksheetIndex < 0 || worksheetIndex > worksheets.Count - 1)
-            {
-                throw new RangeException("The worksheet index " + worksheetIndex + " is out of range");
-            }
-            currentWorksheet = worksheets[worksheetIndex];
+            currentWorksheet = GetWorksheet(worksheetIndex);
             shortener.SetCurrentWorksheetInternal(currentWorksheet);
             return currentWorksheet;
         }
@@ -633,11 +609,12 @@ namespace NanoXLSX
         /// <exception cref="WorksheetException">Throws a WorksheetException if the name of the worksheet is unknown</exception>
         public void SetSelectedWorksheet(string name)
         {
-            selectedWorksheet =  worksheets.FindIndex(w => w.SheetName == name);
-            if (selectedWorksheet < 0)
+            int index = worksheets.FindIndex(w => w.SheetName == name);
+            if (index < 0)
             {
-                throw new WorksheetException("The worksheet with the name '" + name + "' does not exist.");
+                throw new WorksheetException("No worksheet with the name '" + name + "' was found in this workbook.");
             }
+            selectedWorksheet = index;
         }
 
         /// <summary>
@@ -674,6 +651,37 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Gets a worksheet from this workbook by name
+        /// </summary>
+        /// <param name="name">Name of the worksheet</param>
+        /// <returns>Worksheet with the passed name</returns>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the worksheet was not found in the worksheet collection</exception>
+        public Worksheet GetWorksheet(string name)
+        {
+            int index = worksheets.FindIndex(w => w.SheetName == name);
+            if (index < 0)
+            {
+                throw new WorksheetException("No worksheet with the name '" + name + "' was found in this workbook.");
+            }
+            return worksheets[index];
+        }
+
+        /// <summary>
+        /// Gets a worksheet from this workbook by index
+        /// </summary>
+        /// <param name="index">Index of the worksheet</param>
+        /// <returns>Worksheet with the passed index</returns>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the worksheet was not found in the worksheet collection</exception>
+        public Worksheet GetWorksheet(int index)
+        {
+            if (index < 0 || index > worksheets.Count - 1)
+            {
+                throw new RangeException("The worksheet index " + index + " is out of range");
+            }
+            return worksheets[index];
+        }
+
+        /// <summary>
         /// Sets or removes the workbook protection. If protectWindows and protectStructure are both false, the workbook will not be protected
         /// </summary>
         /// <param name="state">If true, the workbook will be protected, otherwise not</param>
@@ -695,6 +703,107 @@ namespace NanoXLSX
                 UseWorkbookProtection = state;
             }
         }
+
+
+        /// <summary>
+        /// Copies a worksheet of the current workbook by its name
+        /// </summary>
+        /// <param name="sourceWorksheetName">Name of the worksheet to copy, originated in this workbook</param>
+        /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
+        /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
+        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// <returns>Copied worksheet</returns>
+        public Worksheet CopyWorksheetIntoThis(String sourceWorksheetName, String newWorksheetName, bool sanitizeSheetName = true)
+        {
+            Worksheet sourceWorksheet = GetWorksheet(sourceWorksheetName);
+            return CopyWorksheetTo(sourceWorksheet, newWorksheetName, this, sanitizeSheetName);
+        }
+
+        /// <summary>
+        /// Copies a worksheet of the current workbook by its index
+        /// </summary>
+        /// <param name="sourceWorksheetIndex">Index of the worksheet to copy, originated in this workbook</param>
+        /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
+        /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
+        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// <returns>Copied worksheet</returns>
+        public Worksheet CopyWorksheetIntoThis(int sourceWorksheetIndex, String newWorksheetName, bool sanitizeSheetName = true)
+        {
+            Worksheet sourceWorksheet = GetWorksheet(sourceWorksheetIndex);
+            return CopyWorksheetTo(sourceWorksheet, newWorksheetName, this, sanitizeSheetName);
+        }
+
+        /// <summary>
+        /// Copies a worksheet of any workbook into the current workbook
+        /// </summary>
+        /// <param name="sourceWorksheet">Worksheet to copy</param>
+        /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
+        /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
+        /// <remarks>The copy is not set as current worksheet. The existing one is kept. The source worksheet can originate from any workbook</remarks>
+        /// <returns>Copied worksheet</returns>
+        public Worksheet CopyWorksheetIntoThis(Worksheet sourceWorksheet, String newWorksheetName, bool sanitizeSheetName = true)
+        {
+            return CopyWorksheetTo(sourceWorksheet, newWorksheetName, this, sanitizeSheetName);
+        }
+
+        /// <summary>
+        /// Copies a worksheet of the current workbook by its name into another workbook
+        /// </summary>
+        /// <param name="sourceWorksheetName">Name of the worksheet to copy, originated in this workbook</param>
+        /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
+        /// <param name="targetWorkbook">Workbook to copy the worksheet into</param>
+        /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
+        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// <returns>Copied worksheet</returns>
+        public Worksheet CopyWorksheetTo(string sourceWorksheetName, String newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
+        {
+            Worksheet sourceWorksheet = GetWorksheet(sourceWorksheetName);
+            return CopyWorksheetTo(sourceWorksheet, newWorksheetName, targetWorkbook, sanitizeSheetName);
+        }
+
+        /// <summary>
+        /// Copies a worksheet of the current workbook by its index into another workbook
+        /// </summary>
+        /// <param name="sourceWorksheetIndex">Index of the worksheet to copy, originated in this workbook<</param>
+        /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
+        /// <param name="targetWorkbook">Workbook to copy the worksheet into</param>
+        /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
+        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// <returns>Copied worksheet</returns>
+        public Worksheet CopyWorksheetTo(int sourceWorksheetIndex, String newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
+        {
+            Worksheet sourceWorksheet = GetWorksheet(sourceWorksheetIndex);
+            return CopyWorksheetTo(sourceWorksheet, newWorksheetName, targetWorkbook, sanitizeSheetName);
+        }
+
+
+        /// <summary>
+        /// Copies a worksheet of any workbook into the another workbook
+        /// </summary>
+        /// <param name="sourceWorksheet">Worksheet to copy</param>
+        /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
+        /// <param name="targetWorkbook">Workbook to copy the worksheet into</param>
+        /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
+        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// <returns>Copied worksheet</returns>
+        public static Worksheet CopyWorksheetTo(Worksheet sourceWorksheet, String newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
+        {
+            if (targetWorkbook == null)
+            {
+                throw new WorksheetException("The target workbook cannot be null");
+            }
+            if (sourceWorksheet == null)
+            {
+                throw new WorksheetException("The source worksheet cannot be null");
+            }
+            Worksheet copy = sourceWorksheet.Copy();
+            copy.SetSheetName(newWorksheetName);
+            Worksheet currentWorksheet = targetWorkbook.CurrentWorksheet;
+            targetWorkbook.AddWorksheet(copy, sanitizeSheetName);
+            targetWorkbook.SetCurrentWorksheet(currentWorksheet);
+            return copy;
+        }
+
 
         /// <summary>
         /// Validates the worksheets regarding several conditions that must be met:<br/>

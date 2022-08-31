@@ -99,5 +99,20 @@ namespace NanoXLSX
             ColumnAddress = columnAddress;
         }
 
+        /// <summary>
+        /// Creates a deep copy of this column
+        /// </summary>
+        /// <returns>Copy of this column</returns>
+        internal Column Copy()
+        {
+            Column copy = new Column();
+            copy.IsHidden = this.IsHidden;
+            copy.Width = this.width;
+            copy.HasAutoFilter = this.HasAutoFilter;
+            copy.columnAddress = this.columnAddress;
+            copy.number = this.number;
+            return copy;
+        }
+
     }
 }

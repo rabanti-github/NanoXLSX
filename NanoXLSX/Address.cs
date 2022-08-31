@@ -126,6 +126,14 @@ namespace NanoXLSX
             return thisCoordinate.CompareTo(otherCoordinate);
         }
 
+        /// <summary>
+        /// Creates a (dereferenced, if applicable) deep copy of this address
+        /// </summary>
+        /// <returns>Copy of this range</returns>
+        internal Address Copy()
+        {
+            return new Address(this.Column, this.Row, this.Type);
+        }
     }
 
 }

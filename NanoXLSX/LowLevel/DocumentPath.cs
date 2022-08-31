@@ -10,7 +10,7 @@ namespace NanoXLSX.LowLevel
     /// <summary>
     /// Class to manage XML document paths
     /// </summary>
-    public class DocumentPath
+    internal class DocumentPath
     {
         /// <summary>
         /// File name of the document
@@ -38,8 +38,6 @@ namespace NanoXLSX.LowLevel
         /// <returns>Full path</returns>
         public string GetFullPath()
         {
-            if (Path == null) { return Filename; }
-            if (Path == "") { return Filename; }
             if (Path[Path.Length - 1] == System.IO.Path.AltDirectorySeparatorChar || Path[Path.Length - 1] == System.IO.Path.DirectorySeparatorChar)
             {
                 return System.IO.Path.AltDirectorySeparatorChar + Path + Filename;

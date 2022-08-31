@@ -90,6 +90,15 @@ namespace NanoXLSX
             return this.StartAddress.Equals(other.StartAddress) && this.EndAddress.Equals(other.EndAddress);
         }
 
+        /// <summary>
+        /// Creates a (dereferenced, if applicable) deep copy of this range
+        /// </summary>
+        /// <returns>Copy of this range</returns>
+        internal Range Copy()
+        {
+            return new Range(this.StartAddress.Copy(), this.EndAddress.Copy());
+        }
+
     }
 
 }
