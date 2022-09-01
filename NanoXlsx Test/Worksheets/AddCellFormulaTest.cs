@@ -121,7 +121,7 @@ namespace NanoXLSX_Test.Worksheets
             InvokeAddCellFormulaTest<string>("=B2", initialAddress.GetAddress(), worksheet.AddCellFormula, initialAddress.GetAddress(), expectedNextColumn, expectedNextRow);
         }
         
-        private void InvokeAddCellFormulaTest<T1>(string value, T1 parameter1, Action<string, T1> action, String expectedAddress, int expectedNextColumn, int expectedNextRow, Style expectedStyle = null)
+        private void InvokeAddCellFormulaTest<T1>(string value, T1 parameter1, Action<string, T1> action, string expectedAddress, int expectedNextColumn, int expectedNextRow, Style expectedStyle = null)
         {
             Assert.Empty(worksheet.Cells);
             action.Invoke(value, parameter1);
@@ -129,7 +129,7 @@ namespace NanoXLSX_Test.Worksheets
             worksheet = new Worksheet(); // Auto-reset
         }
 
-        private void InvokeAddCellFormulaTest<T1, T2>(string value, T1 parameter1, T2 parameter2, Action<string, T1, T2> action, String expectedAddress, int expectedNextColumn, int expectedNextRow, Style expectedStyle = null)
+        private void InvokeAddCellFormulaTest<T1, T2>(string value, T1 parameter1, T2 parameter2, Action<string, T1, T2> action, string expectedAddress, int expectedNextColumn, int expectedNextRow, Style expectedStyle = null)
         {
             Assert.Empty(worksheet.Cells);
             action.Invoke(value, parameter1, parameter2);
@@ -137,7 +137,7 @@ namespace NanoXLSX_Test.Worksheets
             worksheet = new Worksheet(); // Auto-reset
         }
 
-        private void InvokeAddCellFormulaTest<T1, T2, T3>(string value, T1 parameter1, T2 parameter2, T3 parameter3, Action<string, T1, T2, T3> action, String expectedAddress, int expectedNextColumn, int expectedNextRow, Style expectedStyle = null)
+        private void InvokeAddCellFormulaTest<T1, T2, T3>(string value, T1 parameter1, T2 parameter2, T3 parameter3, Action<string, T1, T2, T3> action, string expectedAddress, int expectedNextColumn, int expectedNextRow, Style expectedStyle = null)
         {
             Assert.Empty(worksheet.Cells);
             action.Invoke(value, parameter1, parameter2, parameter3);

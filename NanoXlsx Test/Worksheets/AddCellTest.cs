@@ -24,13 +24,13 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData((byte)128, 2, 2, Cell.CellType.NUMBER, "C3")]
         [InlineData(true, 5, 1, Cell.CellType.BOOL, "F2")]
         [InlineData(false, 16383, 0, Cell.CellType.BOOL, "XFD1")]
-        public void AddCellTest1(object value, int column, int row, Cell.CellType expectedType, String expectedAddress)
+        public void AddCellTest1(object value, int column, int row, Cell.CellType expectedType, string expectedAddress)
         {
             worksheet = WorksheetTest.InitWorksheet(worksheet, "D2", Worksheet.CellDirection.RowToRow);
             InvokeAddCellTest<int, int>(value, column, row, worksheet.AddCell, expectedType, expectedAddress, column, row + 1);
             Address address = new Address(column, row);
             worksheet = WorksheetTest.InitWorksheet(worksheet, "R3", Worksheet.CellDirection.ColumnToColumn);
-            InvokeAddCellTest<String>(value, address.GetAddress(), worksheet.AddCell, expectedType, expectedAddress, column + 1, row);
+            InvokeAddCellTest<string>(value, address.GetAddress(), worksheet.AddCell, expectedType, expectedAddress, column + 1, row);
         }
 
         [Theory(DisplayName = "Test of the AddCell function with value and Style (with address and column/row invocation)")]
@@ -44,7 +44,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData((byte)128, 2, 2, Cell.CellType.NUMBER, "C3")]
         [InlineData(true, 5, 1, Cell.CellType.BOOL, "F2")]
         [InlineData(false, 16383, 0, Cell.CellType.BOOL, "XFD1")]
-        public void AddCellTest2(object value, int column, int row, Cell.CellType expectedType, String expectedAddress)
+        public void AddCellTest2(object value, int column, int row, Cell.CellType expectedType, string expectedAddress)
         {
             worksheet = WorksheetTest.InitWorksheet(worksheet, "D2", Worksheet.CellDirection.RowToRow);
             InvokeAddCellTest<int, int, Style>(value, column, row, BasicStyles.BoldItalic, worksheet.AddCell, expectedType, expectedAddress, column, row + 1, BasicStyles.BoldItalic);
@@ -103,7 +103,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData((byte)128, 2, 2, Cell.CellType.NUMBER, "C3")]
         [InlineData(true, 5, 1, Cell.CellType.BOOL, "F2")]
         [InlineData(false, 16383, 0, Cell.CellType.BOOL, "XFD1")]
-        public void AddCellTest5(object value, int column, int row, Cell.CellType expectedType, String expectedAddress)
+        public void AddCellTest5(object value, int column, int row, Cell.CellType expectedType, string expectedAddress)
         {
             worksheet = WorksheetTest.InitWorksheet(worksheet, "D2", Worksheet.CellDirection.RowToRow, BasicStyles.BorderFrameHeader);
             InvokeAddCellTest<int, int>(value, column, row, worksheet.AddCell, expectedType, expectedAddress, column, row + 1, BasicStyles.BorderFrameHeader);

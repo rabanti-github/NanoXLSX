@@ -585,12 +585,51 @@ namespace NanoXLSX_Test.Workbooks
             Workbook workbook = new Workbook();
             workbook.AddMruColor("00AAFF");
             workbook.AddMruColor("AABBCC");
-            List<String> list = (List<string>)workbook.GetMruColors();
+            List<string> list = (List<string>)workbook.GetMruColors();
             Assert.Equal(2, workbook.GetMruColors().Count);
             Assert.Equal("FF00AAFF", workbook.GetMruColors()[0]);
             Assert.Equal("FFAABBCC", workbook.GetMruColors()[1]);
         }
 
+        [Fact(DisplayName = "Test of the 'GetWorksheet' function by name")]
+        public void GetWorksheetTest()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            workbook.CurrentWorksheet.AddCell("WS1", "A1");
+            workbook.AddWorksheet("worksheet2");
+            workbook.CurrentWorksheet.AddCell("WS2", "A1");
+            workbook.AddWorksheet("worksheet3");
+            workbook.CurrentWorksheet.AddCell("WS3", "A1");
+            Worksheet givenWorksheet = workbook.GetWorksheet("worksheet2");
+            Assert.Equal("WS2", givenWorksheet.Cells["A1"].Value);
+        }
+
+        [Fact(DisplayName = "Test of the 'GetWorksheet' function by index")]
+        public void GetWorksheetTest2()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            workbook.CurrentWorksheet.AddCell("WS1", "A1");
+            workbook.AddWorksheet("worksheet2");
+            workbook.CurrentWorksheet.AddCell("WS2", "A1");
+            workbook.AddWorksheet("worksheet3");
+            workbook.CurrentWorksheet.AddCell("WS3", "A1");
+            Worksheet givenWorksheet = workbook.GetWorksheet(1);
+            Assert.Equal("WS2", givenWorksheet.Cells["A1"].Value);
+        }
+
+        [Fact(DisplayName = "Test of the failing 'GetWorksheet' on a non existing worksheet name")]
+        public void GetWorksheetFailTest()
+        {
+            Workbook workbook1 = new Workbook("worksheet1");
+            Assert.ThrowsAny<WorksheetException>(() => workbook1.GetWorksheet("worksheet3"));
+        }
+
+        [Fact(DisplayName = "Test of the failing 'GetWorksheet' on a non existing worksheet index")]
+        public void GetWorksheetFailTest2()
+        {
+            Workbook workbook1 = new Workbook("worksheet1");
+            Assert.ThrowsAny<RangeException>(() => workbook1.GetWorksheet(1));
+        }
 
         private void AssertWorksheetRemoval<T>(Workbook workbook, Action<T>removalFunction, int worksheetCount, string currentWorksheet, int selectedWorksheetIndex, T worksheetToRemove, string expectedCurrentWorksheet, int expectedSelectedWorksheetIndex)
         {

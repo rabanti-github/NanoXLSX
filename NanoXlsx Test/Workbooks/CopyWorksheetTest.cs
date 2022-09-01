@@ -13,78 +13,159 @@ namespace NanoXLSX_Test.Workbooks
     public class CopyWorksheetTest
     {
 
-        [Fact(DisplayName = "Test of the 'CopyWorksheetIntoThis' function by name")]
-        public void CopyWorksheetIntoThisTest()
+        [Theory(DisplayName = "Test of the 'CopyWorksheetIntoThis' function by name")]
+        [InlineData(false, "worksheet1", "worksheet2", "copy", "copy")]
+        [InlineData(true, "worksheet1", "worksheet2", "copy", "copy")]
+        [InlineData(true, "worksheet1", "worksheet2", "worksheet1", "worksheet2")]
+        public void CopyWorksheetIntoThisTest(bool sanitize, string givenWorksheetName1, string givenSourceWsName, string copyName, string expectedTargetWsName)
         {
-            Workbook workbook1 = new Workbook("worksheet1");
+            Workbook workbook1 = new Workbook(givenWorksheetName1);
             Worksheet worksheet2 = createWorksheet();
-            worksheet2.SheetName = "worksheet2";
+            worksheet2.SheetName = givenSourceWsName;
             workbook1.AddWorksheet(worksheet2);
-            workbook1.CopyWorksheetIntoThis("worksheet2", "copy");
-            AssertCopy(workbook1, "worksheet2", workbook1, "copy");
+            workbook1.CopyWorksheetIntoThis(givenSourceWsName, copyName, sanitize);
+            AssertCopy(workbook1, givenSourceWsName, workbook1, expectedTargetWsName);
         }
 
-        [Fact(DisplayName = "Test of the 'CopyWorksheetIntoThis' function by index")]
-        public void CopyWorksheetIntoThisTest2()
+        [Fact(DisplayName = "Test of the failing 'CopyWorksheetIntoThis' (name) function when with disabled sanitation on duplicate worksheets")]
+        public void CopyWorksheetIntoThisFailTest()
         {
             Workbook workbook1 = new Workbook("worksheet1");
             Worksheet worksheet2 = createWorksheet();
             worksheet2.SheetName = "worksheet2";
             workbook1.AddWorksheet(worksheet2);
-            workbook1.CopyWorksheetIntoThis(1, "copy");
-            AssertCopy(workbook1, "worksheet2", workbook1, "copy");
+            Assert.ThrowsAny<WorksheetException>(() => workbook1.CopyWorksheetIntoThis("worksheet2", "worksheet1", false));
         }
 
-        [Fact(DisplayName = "Test of the 'CopyWorksheetIntoThis' function by reference")]
-        public void CopyWorksheetIntoThisTest3()
+        [Theory(DisplayName = "Test of the 'CopyWorksheetIntoThis' function by index")]
+        [InlineData(false, "worksheet1", "worksheet2", "copy", "copy")]
+        [InlineData(true, "worksheet1", "worksheet2", "copy", "copy")]
+        [InlineData(true, "worksheet1", "worksheet2", "worksheet1", "worksheet2")]
+        public void CopyWorksheetIntoThisTest2(bool sanitize, string givenWorksheetName1, string givenSourceWsName, string copyName, string expectedTargetWsName)
+        {
+            Workbook workbook1 = new Workbook(givenWorksheetName1);
+            Worksheet worksheet2 = createWorksheet();
+            worksheet2.SheetName = givenSourceWsName;
+            workbook1.AddWorksheet(worksheet2);
+            workbook1.CopyWorksheetIntoThis(1, copyName, sanitize);
+            AssertCopy(workbook1, givenSourceWsName, workbook1, expectedTargetWsName);
+        }
+
+        [Fact(DisplayName = "Test of the failing 'CopyWorksheetIntoThis' (index) function when with disabled sanitation on duplicate worksheets")]
+        public void CopyWorksheetIntoThisFailTest2()
         {
             Workbook workbook1 = new Workbook("worksheet1");
             Worksheet worksheet2 = createWorksheet();
             worksheet2.SheetName = "worksheet2";
             workbook1.AddWorksheet(worksheet2);
-            workbook1.CopyWorksheetIntoThis(worksheet2, "copy");
-            AssertCopy(workbook1, "worksheet2", workbook1, "copy");
+            Assert.ThrowsAny<WorksheetException>(() => workbook1.CopyWorksheetIntoThis(1, "worksheet1", false));
+        }
+
+        [Theory(DisplayName = "Test of the 'CopyWorksheetIntoThis' function by reference")]
+        [InlineData(false, "worksheet1", "worksheet2", "copy", "copy")]
+        [InlineData(true, "worksheet1", "worksheet2", "copy", "copy")]
+        [InlineData(true, "worksheet1", "worksheet2", "worksheet1", "worksheet2")]
+        public void CopyWorksheetIntoThisTest3(bool sanitize, string givenWorksheetName1, string givenSourceWsName, string copyName, string expectedTargetWsName)
+        {
+            Workbook workbook1 = new Workbook(givenWorksheetName1);
+            Worksheet worksheet2 = createWorksheet();
+            worksheet2.SheetName = givenSourceWsName;
+            workbook1.AddWorksheet(worksheet2);
+            workbook1.CopyWorksheetIntoThis(worksheet2, copyName, sanitize);
+            AssertCopy(workbook1, givenSourceWsName, workbook1, expectedTargetWsName);
+        }
+
+        [Fact(DisplayName = "Test of the failing 'CopyWorksheetIntoThis' (reference) function when with disabled sanitation on duplicate worksheets")]
+        public void CopyWorksheetIntoThisFailTest3()
+        {
+            Workbook workbook1 = new Workbook("worksheet1");
+            Worksheet worksheet2 = createWorksheet();
+            worksheet2.SheetName = "worksheet2";
+            workbook1.AddWorksheet(worksheet2);
+            Assert.ThrowsAny<WorksheetException>(() => workbook1.CopyWorksheetIntoThis(worksheet2, "worksheet1", false));
         }
 
 
-        [Fact(DisplayName = "Test of the 'CopyWorksheetTo' function by name")]
-        public void CopyWorksheetToTest()
+        [Theory(DisplayName = "Test of the 'CopyWorksheetTo' function by name")]
+        [InlineData(false, "worksheet1", "worksheet2", "copy", "copy")]
+        [InlineData(true, "worksheet1", "worksheet2", "copy", "copy")]
+        [InlineData(true, "worksheet1", "worksheet2", "worksheet1", "worksheet2")]
+        public void CopyWorksheetToTest(bool sanitize, string givenWorksheetName1, string givenSourceWsName, string copyName, string expectedTargetWsName)
         {
-            Workbook workbook1 = new Workbook("worksheet1");
-            Workbook workbook2 = new Workbook("worksheet1b");
+            Workbook workbook1 = new Workbook(givenWorksheetName1);
+            Workbook workbook2 = new Workbook(givenWorksheetName1);
             Worksheet worksheet2 = createWorksheet();
-            worksheet2.SheetName = "worksheet2";
+            worksheet2.SheetName = givenSourceWsName;
             workbook1.AddWorksheet(worksheet2);
-            workbook1.CopyWorksheetTo("worksheet2", "copy", workbook2);
-            AssertCopy(workbook1, "worksheet2", workbook2, "copy");
+            workbook1.CopyWorksheetTo(givenSourceWsName, copyName, workbook2, sanitize);
+            AssertCopy(workbook1, givenSourceWsName, workbook2, expectedTargetWsName);
         }
 
-        [Fact(DisplayName = "Test of the 'CopyWorksheetTo' function by index")]
-        public void CopyWorksheetToTest2()
+        [Fact(DisplayName = "Test of the failing 'CopyWorksheetTo' (name) function when with disabled sanitation on duplicate worksheets")]
+        public void CopyWorksheetToFailTest()
         {
             Workbook workbook1 = new Workbook("worksheet1");
-            Workbook workbook2 = new Workbook("worksheet1b");
+            Workbook workbook2 = new Workbook("worksheet1");
             Worksheet worksheet2 = createWorksheet();
             worksheet2.SheetName = "worksheet2";
             workbook1.AddWorksheet(worksheet2);
-            workbook1.CopyWorksheetTo(1, "copy", workbook2);
-            AssertCopy(workbook1, "worksheet2", workbook2, "copy");
+            Assert.ThrowsAny<WorksheetException>(() => workbook1.CopyWorksheetTo("worksheet2", "worksheet1", workbook2, false));
         }
 
-        [Fact(DisplayName = "Test of the 'CopyWorksheetTo' function by reference")]
-        public void CopyWorksheetToTest3()
+        [Theory(DisplayName = "Test of the 'CopyWorksheetTo' function by index")]
+        [InlineData(false, "worksheet1", "worksheet2", "copy", "copy")]
+        [InlineData(true, "worksheet1", "worksheet2", "copy", "copy")]
+        [InlineData(true, "worksheet1", "worksheet2", "worksheet1", "worksheet2")]
+        public void CopyWorksheetToTest2(bool sanitize, string givenWorksheetName1, string givenSourceWsName, string copyName, string expectedTargetWsName)
+        {
+            Workbook workbook1 = new Workbook(givenWorksheetName1);
+            Workbook workbook2 = new Workbook(givenWorksheetName1);
+            Worksheet worksheet2 = createWorksheet();
+            worksheet2.SheetName = givenSourceWsName;
+            workbook1.AddWorksheet(worksheet2);
+            workbook1.CopyWorksheetTo(1, copyName, workbook2, sanitize);
+            AssertCopy(workbook1, givenSourceWsName, workbook2, expectedTargetWsName);
+        }
+
+        [Fact(DisplayName = "Test of the failing 'CopyWorksheetTo' (index) function when with disabled sanitation on duplicate worksheets")]
+        public void CopyWorksheetToFailTest2()
         {
             Workbook workbook1 = new Workbook("worksheet1");
-            Workbook workbook2 = new Workbook("worksheet1b");
+            Workbook workbook2 = new Workbook("worksheet1");
             Worksheet worksheet2 = createWorksheet();
             worksheet2.SheetName = "worksheet2";
             workbook1.AddWorksheet(worksheet2);
-            Workbook.CopyWorksheetTo(worksheet2, "copy", workbook2);
-            AssertCopy(workbook1, "worksheet2", workbook2, "copy");
+            Assert.ThrowsAny<WorksheetException>(() => workbook1.CopyWorksheetTo(1, "worksheet1", workbook2, false));
+        }
+
+        [Theory(DisplayName = "Test of the 'CopyWorksheetTo' function by reference")]
+        [InlineData(false, "worksheet1", "worksheet2", "copy", "copy")]
+        [InlineData(true, "worksheet1", "worksheet2", "copy", "copy")]
+        [InlineData(true, "worksheet1", "worksheet2", "worksheet1", "worksheet2")]
+        public void CopyWorksheetToTest3(bool sanitize, string givenWorksheetName1, string givenSourceWsName, string copyName, string expectedTargetWsName)
+        {
+            Workbook workbook1 = new Workbook(givenWorksheetName1);
+            Workbook workbook2 = new Workbook(givenWorksheetName1);
+            Worksheet worksheet2 = createWorksheet();
+            worksheet2.SheetName = givenSourceWsName;
+            workbook1.AddWorksheet(worksheet2);
+            Workbook.CopyWorksheetTo(worksheet2, copyName, workbook2, sanitize);
+            AssertCopy(workbook1, givenSourceWsName, workbook2, expectedTargetWsName);
+        }
+
+        [Fact(DisplayName = "Test of the failing 'CopyWorksheetTo' (reference) function when with disabled sanitation on duplicate worksheets")]
+        public void CopyWorksheetToFailTest4()
+        {
+            Workbook workbook1 = new Workbook("worksheet1");
+            Workbook workbook2 = new Workbook("worksheet1");
+            Worksheet worksheet2 = createWorksheet();
+            worksheet2.SheetName = "worksheet2";
+            workbook1.AddWorksheet(worksheet2);
+            Assert.ThrowsAny<WorksheetException>(() => Workbook.CopyWorksheetTo(worksheet2, "worksheet1", workbook2, false));
         }
 
         [Fact(DisplayName = "Test of the failing 'CopyWorksheetTo' function when no Workbook was defined")]
-        public void CopyWorksheetToFailTest()
+        public void CopyWorksheetToFailTest5()
         {
             Workbook workbook1 = null;
             Worksheet worksheet2 = createWorksheet();
@@ -92,7 +173,7 @@ namespace NanoXLSX_Test.Workbooks
         }
 
         [Fact(DisplayName = "Test of the failing 'CopyWorksheetTo' function when no worksheet was defined")]
-        public void CopyWorksheetToFailTest2()
+        public void CopyWorksheetToFailTest6()
         {
             Workbook workbook1 = new Workbook("worksheet1");
             Worksheet worksheet2 = null;
@@ -128,7 +209,6 @@ namespace NanoXLSX_Test.Workbooks
             Workbook newWorkbook = TestUtils.WriteAndReadWorkbook(workbook2);
             Assert.Equal(workbook2.Worksheets.Count, newWorkbook.Worksheets.Count);
         }
-
 
         private void AssertWorksheetCopy(Worksheet w1, Worksheet w2)
         {
@@ -244,7 +324,6 @@ namespace NanoXLSX_Test.Workbooks
             w.SetSelectedCells(new NanoXLSX.Range("C3:C3"));
             w.UseSheetProtection = true;
             w.SetSplit(3, 2, true, new Address("F4"), Worksheet.WorksheetPane.bottomRight);
-
             return w;
         }
     }

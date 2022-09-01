@@ -39,7 +39,7 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="options">Import options to override the automatic approach of the reader. <see cref="ImportOptions"/> for information about import options.</param>
         /// <param name="path">File path of the XLSX file to load</param>
-        public XlsxReader(String path, ImportOptions options = null)
+        public XlsxReader(string path, ImportOptions options = null)
         {
             filePath = path;
             importOptions = options;

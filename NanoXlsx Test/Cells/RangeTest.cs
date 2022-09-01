@@ -20,7 +20,7 @@ namespace NanoXLSX_Test.Cells
         [InlineData("$A1", "$A$2", "$A1:$A$2")]
         [InlineData("A$1", "C$4", "A$1:C$4")]
         [InlineData("$C$3", "$A1", "$A1:$C$3")]
-        public void ConstructorTest(string startAddress, String endAddress, string expectedRange)
+        public void ConstructorTest(string startAddress, string endAddress, string expectedRange)
         {
             Address start = new Address(startAddress);
             Address end = new Address(endAddress);

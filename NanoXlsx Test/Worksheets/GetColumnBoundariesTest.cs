@@ -67,7 +67,7 @@ namespace NanoXLSX_Test.Worksheets
         [Theory(DisplayName = "Test of the GetLastColumnNumber function with an explicitly defined, empty cell besides other column definitions")]
         [InlineData("F5", 5)]
         [InlineData("A1", 4)]
-        void getLastColumnNumberTest6(String emptyCellAddress, int expectedLastColumn)
+        void getLastColumnNumberTest6(string emptyCellAddress, int expectedLastColumn)
         {
             Worksheet worksheet = new Worksheet();
             worksheet.AddHiddenColumn(3);
@@ -134,7 +134,7 @@ namespace NanoXLSX_Test.Worksheets
         [Theory(DisplayName = "Test of the GetFirstColumnNumber function with an explicitly defined, empty cell besides other column definitions")]
         [InlineData("F5", 3)]
         [InlineData("A1", 0)]
-        public void GetFirstColumnNumberTest6(String emptyCellAddress, int expectedFirstRow)
+        public void GetFirstColumnNumberTest6(string emptyCellAddress, int expectedFirstRow)
         {
             Worksheet worksheet = new Worksheet();
             worksheet.AddHiddenColumn(3);
@@ -233,7 +233,7 @@ namespace NanoXLSX_Test.Worksheets
         [Theory(DisplayName = "Test of the GetFirstDataColumnNumber and GetLastDataColumnNumber functions with an explicitly defined, empty cell besides other column definitions")]
         [InlineData("F5")]
         [InlineData("A1")]
-        public void GetFirstOrLastDataColumnNumberTest(String emptyCellAddress)
+        public void GetFirstOrLastDataColumnNumberTest(string emptyCellAddress)
         {
             Worksheet worksheet = new Worksheet();
             worksheet.AddHiddenColumn(3);

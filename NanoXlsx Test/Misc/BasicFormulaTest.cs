@@ -35,7 +35,7 @@ namespace NanoXLSX_Test.Misc
         [InlineData("worksheet1", "$A$1:C2", "AVERAGE(worksheet1!$A$1:C2)")]
         [InlineData("worksheet1", "$A$1:$C2", "AVERAGE(worksheet1!$A$1:$C2)")]
         [InlineData("worksheet1", "$A$1:$C$2", "AVERAGE(worksheet1!$A$1:$C$2)")]
-        public void AverageTest2(String worksheetName, string rangeExpression, string expectedFormula)
+        public void AverageTest2(string worksheetName, string rangeExpression, string expectedFormula)
         {
             Worksheet worksheet = new Worksheet(worksheetName);
             Range range = new Range(rangeExpression);
@@ -64,7 +64,7 @@ namespace NanoXLSX_Test.Misc
         [InlineData("worksheet3", "$A1", 10, "ROUNDUP(worksheet3!$A1,10)")]
         [InlineData("worksheet3", "$A$1", 5, "ROUNDUP(worksheet3!$A$1,5)")]
         [InlineData("worksheet3", "A1", -2, "ROUNDUP(worksheet3!A1,-2)")] // This seems to be valid
-        public void CeilTest2(String worksheetName, string addressExpression, int numberOfDecimals, string expectedFormula)
+        public void CeilTest2(string worksheetName, string addressExpression, int numberOfDecimals, string expectedFormula)
         {
             Worksheet worksheet = new Worksheet(worksheetName);
             Address address = new Address(addressExpression);
@@ -93,7 +93,7 @@ namespace NanoXLSX_Test.Misc
         [InlineData("worksheet3", "$A1", 10, "ROUNDDOWN(worksheet3!$A1,10)")]
         [InlineData("worksheet3", "$A$1", 5, "ROUNDDOWN(worksheet3!$A$1,5)")]
         [InlineData("worksheet3", "A1", -2, "ROUNDDOWN(worksheet3!A1,-2)")] // This seems to be valid
-        public void FloorTest2(String worksheetName, string addressExpression, int numberOfDecimals, string expectedFormula)
+        public void FloorTest2(string worksheetName, string addressExpression, int numberOfDecimals, string expectedFormula)
         {
             Worksheet worksheet = new Worksheet(worksheetName);
             Address address = new Address(addressExpression);
@@ -124,7 +124,7 @@ namespace NanoXLSX_Test.Misc
         [InlineData("worksheet1", "$A$1:C2", "MAX(worksheet1!$A$1:C2)")]
         [InlineData("worksheet1", "$A$1:$C2", "MAX(worksheet1!$A$1:$C2)")]
         [InlineData("worksheet1", "$A$1:$C$2", "MAX(worksheet1!$A$1:$C$2)")]
-        public void MaxTest2(String worksheetName, string rangeExpression, string expectedFormula)
+        public void MaxTest2(string worksheetName, string rangeExpression, string expectedFormula)
         {
             Worksheet worksheet = new Worksheet(worksheetName);
             Range range = new Range(rangeExpression);
@@ -155,7 +155,7 @@ namespace NanoXLSX_Test.Misc
         [InlineData("worksheet1", "$A$1:C2", "MIN(worksheet1!$A$1:C2)")]
         [InlineData("worksheet1", "$A$1:$C2", "MIN(worksheet1!$A$1:$C2)")]
         [InlineData("worksheet1", "$A$1:$C$2", "MIN(worksheet1!$A$1:$C$2)")]
-        public void MinTest2(String worksheetName, string rangeExpression, string expectedFormula)
+        public void MinTest2(string worksheetName, string rangeExpression, string expectedFormula)
         {
             Worksheet worksheet = new Worksheet(worksheetName);
             Range range = new Range(rangeExpression);
@@ -186,7 +186,7 @@ namespace NanoXLSX_Test.Misc
         [InlineData("worksheet1", "$A$1:C2", "MEDIAN(worksheet1!$A$1:C2)")]
         [InlineData("worksheet1", "$A$1:$C2", "MEDIAN(worksheet1!$A$1:$C2)")]
         [InlineData("worksheet1", "$A$1:$C$2", "MEDIAN(worksheet1!$A$1:$C$2)")]
-        public void MedianTest2(String worksheetName, string rangeExpression, string expectedFormula)
+        public void MedianTest2(string worksheetName, string rangeExpression, string expectedFormula)
         {
             Worksheet worksheet = new Worksheet(worksheetName);
             Range range = new Range(rangeExpression);
@@ -215,7 +215,7 @@ namespace NanoXLSX_Test.Misc
         [InlineData("worksheet3", "$A1", 10, "ROUND(worksheet3!$A1,10)")]
         [InlineData("worksheet3", "$A$1", 5, "ROUND(worksheet3!$A$1,5)")]
         [InlineData("worksheet3", "A1", -2, "ROUND(worksheet3!A1,-2)")] // This seems to be valid
-        public void RoundTest2(String worksheetName, string addressExpression, int numberOfDecimals, string expectedFormula)
+        public void RoundTest2(string worksheetName, string addressExpression, int numberOfDecimals, string expectedFormula)
         {
             Worksheet worksheet = new Worksheet(worksheetName);
             Address address = new Address(addressExpression);
@@ -246,7 +246,7 @@ namespace NanoXLSX_Test.Misc
         [InlineData("worksheet1", "$A$1:C2", "SUM(worksheet1!$A$1:C2)")]
         [InlineData("worksheet1", "$A$1:$C2", "SUM(worksheet1!$A$1:$C2)")]
         [InlineData("worksheet1", "$A$1:$C$2", "SUM(worksheet1!$A$1:$C$2)")]
-        public void SumTest2(String worksheetName, string rangeExpression, string expectedFormula)
+        public void SumTest2(string worksheetName, string rangeExpression, string expectedFormula)
         {
             Worksheet worksheet = new Worksheet(worksheetName);
             Range range = new Range(rangeExpression);

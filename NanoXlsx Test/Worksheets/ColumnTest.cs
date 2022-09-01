@@ -187,7 +187,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData(0, 5, "A1:F1")]
         [InlineData(1, 5, "B1:F1")]
         [InlineData(5, 1, "B1:F1")]
-        public void SetAutoFilterTest(int startColumn, int endColumn, String expectedRange)
+        public void SetAutoFilterTest(int startColumn, int endColumn, string expectedRange)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.AutoFilterRange);
@@ -202,7 +202,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("B1:F1", "B1:F1")]
         [InlineData("F1:B1", "B1:F1")]
         [InlineData("$B$1:$F$1", "B1:F1")]
-        public void SetAutoFilterTest2(String givenRange, String expectedRange)
+        public void SetAutoFilterTest2(string givenRange, string expectedRange)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.AutoFilterRange);

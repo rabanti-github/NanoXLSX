@@ -19,7 +19,7 @@ namespace NanoXLSX_Test.Styles
         [InlineData("NestedProperty", true, false, true)]
         [InlineData("NonNestedProperty", true, false, false)]
         [InlineData("UndefinedProperty", false, false, false)]
-        public void AppendAttributeTest1(String propertyName, bool expectedAttribute, bool expectedIgnore, bool expectedNested)
+        public void AppendAttributeTest1(string propertyName, bool expectedAttribute, bool expectedIgnore, bool expectedNested)
         {
 
             PropertyInfo[] propertiesInfo = typeof(DummyClass).GetProperties();

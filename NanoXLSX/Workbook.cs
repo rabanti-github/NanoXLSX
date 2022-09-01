@@ -313,7 +313,7 @@ namespace NanoXLSX
         /// <param name="sanitizeSheetName">If true, the name of the worksheet will be sanitized automatically according to the specifications of Excel</param>
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists and sanitizeSheetName is false</exception>
         /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitizeSheetName is false</exception>
-        public void AddWorksheet(String name, bool sanitizeSheetName)
+        public void AddWorksheet(string name, bool sanitizeSheetName)
         {
             if (sanitizeSheetName)
             {
@@ -671,7 +671,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="index">Index of the worksheet</param>
         /// <returns>Worksheet with the passed index</returns>
-        /// <exception cref="WorksheetException">Throws a WorksheetException if the worksheet was not found in the worksheet collection</exception>
+        /// <exception cref="WorksheetException">Throws a RangeException if the worksheet was not found in the worksheet collection</exception>
         public Worksheet GetWorksheet(int index)
         {
             if (index < 0 || index > worksheets.Count - 1)
@@ -704,7 +704,6 @@ namespace NanoXLSX
             }
         }
 
-
         /// <summary>
         /// Copies a worksheet of the current workbook by its name
         /// </summary>
@@ -713,7 +712,7 @@ namespace NanoXLSX
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
         /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
         /// <returns>Copied worksheet</returns>
-        public Worksheet CopyWorksheetIntoThis(String sourceWorksheetName, String newWorksheetName, bool sanitizeSheetName = true)
+        public Worksheet CopyWorksheetIntoThis(string sourceWorksheetName, string newWorksheetName, bool sanitizeSheetName = true)
         {
             Worksheet sourceWorksheet = GetWorksheet(sourceWorksheetName);
             return CopyWorksheetTo(sourceWorksheet, newWorksheetName, this, sanitizeSheetName);
@@ -727,7 +726,7 @@ namespace NanoXLSX
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
         /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
         /// <returns>Copied worksheet</returns>
-        public Worksheet CopyWorksheetIntoThis(int sourceWorksheetIndex, String newWorksheetName, bool sanitizeSheetName = true)
+        public Worksheet CopyWorksheetIntoThis(int sourceWorksheetIndex, string newWorksheetName, bool sanitizeSheetName = true)
         {
             Worksheet sourceWorksheet = GetWorksheet(sourceWorksheetIndex);
             return CopyWorksheetTo(sourceWorksheet, newWorksheetName, this, sanitizeSheetName);
@@ -741,7 +740,7 @@ namespace NanoXLSX
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
         /// <remarks>The copy is not set as current worksheet. The existing one is kept. The source worksheet can originate from any workbook</remarks>
         /// <returns>Copied worksheet</returns>
-        public Worksheet CopyWorksheetIntoThis(Worksheet sourceWorksheet, String newWorksheetName, bool sanitizeSheetName = true)
+        public Worksheet CopyWorksheetIntoThis(Worksheet sourceWorksheet, string newWorksheetName, bool sanitizeSheetName = true)
         {
             return CopyWorksheetTo(sourceWorksheet, newWorksheetName, this, sanitizeSheetName);
         }
@@ -755,7 +754,7 @@ namespace NanoXLSX
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
         /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
         /// <returns>Copied worksheet</returns>
-        public Worksheet CopyWorksheetTo(string sourceWorksheetName, String newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
+        public Worksheet CopyWorksheetTo(string sourceWorksheetName, string newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
         {
             Worksheet sourceWorksheet = GetWorksheet(sourceWorksheetName);
             return CopyWorksheetTo(sourceWorksheet, newWorksheetName, targetWorkbook, sanitizeSheetName);
@@ -770,7 +769,7 @@ namespace NanoXLSX
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
         /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
         /// <returns>Copied worksheet</returns>
-        public Worksheet CopyWorksheetTo(int sourceWorksheetIndex, String newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
+        public Worksheet CopyWorksheetTo(int sourceWorksheetIndex, string newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
         {
             Worksheet sourceWorksheet = GetWorksheet(sourceWorksheetIndex);
             return CopyWorksheetTo(sourceWorksheet, newWorksheetName, targetWorkbook, sanitizeSheetName);
@@ -786,7 +785,7 @@ namespace NanoXLSX
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
         /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
         /// <returns>Copied worksheet</returns>
-        public static Worksheet CopyWorksheetTo(Worksheet sourceWorksheet, String newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
+        public static Worksheet CopyWorksheetTo(Worksheet sourceWorksheet, string newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
         {
             if (targetWorkbook == null)
             {
@@ -902,7 +901,7 @@ namespace NanoXLSX
         /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
-        public static Workbook Load(String filename, ImportOptions options = null)
+        public static Workbook Load(string filename, ImportOptions options = null)
         {
             XlsxReader r = new XlsxReader(filename, options);
             r.Read();

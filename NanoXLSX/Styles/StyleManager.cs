@@ -275,7 +275,7 @@ namespace NanoXLSX.Styles
 
             for (int i = 0; i < workbook.Worksheets.Count; i++)
             {
-                foreach (KeyValuePair<String, Cell> cell in workbook.Worksheets[i].Cells)
+                foreach (KeyValuePair<string, Cell> cell in workbook.Worksheets[i].Cells)
                 {
                     if (cell.Value.CellStyle != null)
                     {

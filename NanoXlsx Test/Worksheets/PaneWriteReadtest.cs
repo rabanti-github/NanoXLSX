@@ -198,7 +198,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData(0f, Worksheet.WorksheetPane.bottomLeft, "Z15", 0)]
         [InlineData(27f, Worksheet.WorksheetPane.topRight, "$A1", 0)]
         [InlineData(100f, Worksheet.WorksheetPane.bottomRight, "$D$4", 0)]
-        public void PaneSplitTopLeftCellWriteReadTest(float height, Worksheet.WorksheetPane? activePane, String topLeftCellAddress, int sheetIndex)
+        public void PaneSplitTopLeftCellWriteReadTest(float height, Worksheet.WorksheetPane? activePane, string topLeftCellAddress, int sheetIndex)
         {
             Address topLeftCell = new Address(topLeftCellAddress);
             Workbook workbook = PrepareWorkbook(4, "test");

@@ -128,7 +128,7 @@ namespace NanoXLSX_Test.Styles
         [InlineData("3CDEF0", "FF3CDEF0")]
         [InlineData("af3cd1", "FFAF3CD1")]
         [InlineData("FFFFFF", "FFFFFFFF")]
-        public void ColorizedTextTest(String hexCode, string expectedHexCode)
+        public void ColorizedTextTest(string hexCode, string expectedHexCode)
         {
             Style style = BasicStyles.ColorizedText(hexCode);
             Assert.NotNull(style);
@@ -142,7 +142,7 @@ namespace NanoXLSX_Test.Styles
         [InlineData("AAFF")]
         [InlineData("AAFFCC22")]
         [InlineData("XXXXVV")]
-        public void ColorizedTextFailTest(String hexCode)
+        public void ColorizedTextFailTest(string hexCode)
         {
             Assert.Throws<StyleException>(() => BasicStyles.ColorizedText(hexCode));
         }
@@ -152,7 +152,7 @@ namespace NanoXLSX_Test.Styles
         [InlineData("3CDEF0", "FF3CDEF0")]
         [InlineData("af3cd1", "FFAF3CD1")]
         [InlineData("FFFFFF", "FFFFFFFF")]
-        public void ColorizedBackgroundTest(String hexCode, string expectedHexCode)
+        public void ColorizedBackgroundTest(string hexCode, string expectedHexCode)
         {
             Style style = BasicStyles.ColorizedBackground(hexCode);
             Assert.NotNull(style);
@@ -169,7 +169,7 @@ namespace NanoXLSX_Test.Styles
         [InlineData("AAFF")]
         [InlineData("AAFFCC22")]
         [InlineData("XXXXVV")]
-        public void ColorizedBackgroundFailTest(String hexCode)
+        public void ColorizedBackgroundFailTest(string hexCode)
         {
             Assert.Throws<StyleException>(() => BasicStyles.ColorizedBackground(hexCode));
         }
@@ -180,7 +180,7 @@ namespace NanoXLSX_Test.Styles
         [InlineData("Times New Roman")]
         [InlineData("Sans Serif")]
         [InlineData("Tahoma")]
-        public void FontTest(String name)
+        public void FontTest(string name)
         {
             Style style = BasicStyles.Font(name);
             Assert.Equal(name, style.CurrentFont.Name);
@@ -195,7 +195,7 @@ namespace NanoXLSX_Test.Styles
         [InlineData("Times New Roman", 409f)]
         [InlineData("Sans Serif", 50f)]
         [InlineData("Tahoma", 11f)]
-        public void FontTest2(String name, float size)
+        public void FontTest2(string name, float size)
         {
             Style style = BasicStyles.Font(name, size);
             Assert.Equal(name, style.CurrentFont.Name);
@@ -210,7 +210,7 @@ namespace NanoXLSX_Test.Styles
         [InlineData("Times New Roman", 409f, true)]
         [InlineData("Sans Serif", 50f, false)]
         [InlineData("Tahoma", 11f, true)]
-        public void FontTest3(String name, float size, bool bold)
+        public void FontTest3(string name, float size, bool bold)
         {
             Style style = BasicStyles.Font(name, size, bold);
             Assert.Equal(name, style.CurrentFont.Name);

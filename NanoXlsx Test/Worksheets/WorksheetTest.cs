@@ -299,7 +299,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("", null)]
         [InlineData(" ", " ")]
         [InlineData("test", "test")]
-        public void SheetProtectionPasswordTest(String givenValue, String expectedValue)
+        public void SheetProtectionPasswordTest(string givenValue, string expectedValue)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.SheetProtectionPassword);
@@ -1257,7 +1257,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("$XFD1")]
         [InlineData("A$1048575")]
         [InlineData("XFD1048575")]
-        public void SetCurrentCellAddressTest2(String address)
+        public void SetCurrentCellAddressTest2(string address)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Equal(0, worksheet.GetCurrentColumnNumber());
@@ -1290,7 +1290,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1:A1")]
         [InlineData("A0")]
         [InlineData("A1048577")]
-        public void SetCurrentCellAddressFailTest2(String address)
+        public void SetCurrentCellAddressFailTest2(string address)
         {
             Worksheet worksheet = new Worksheet();
             Assert.ThrowsAny<Exception>(() => worksheet.SetCurrentCellAddress(address));
@@ -1304,7 +1304,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1:R1")]
         [InlineData("$A$1:$R$1")]
         [InlineData("A1:XFD1048575")]
-        public void SetSelectedCellsTest(String addressExpression)
+        public void SetSelectedCellsTest(string addressExpression)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.SelectedCells);
@@ -1322,7 +1322,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("$A$1:$R$1")]
         [InlineData("A1:XFD1048575")]
         [InlineData(null)]
-        public void SetSelectedCellsTest2(String addressExpression)
+        public void SetSelectedCellsTest2(string addressExpression)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.SelectedCells);
@@ -1347,7 +1347,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1", "R1")]
         [InlineData("$A$1", "$R$1")]
         [InlineData("A1", "XFD1048575")]
-        public void SetSelectedCellsTest3(String startAddress, string endAddress)
+        public void SetSelectedCellsTest3(string startAddress, string endAddress)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.SelectedCells);
@@ -1364,7 +1364,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("", null, false)]
         [InlineData("x", "x", true)]
         [InlineData("***", "***", true)]
-        public void SetSheetProtectionPasswordTest(String password, String expectedPassword, bool expectedUsage)
+        public void SetSheetProtectionPasswordTest(string password, string expectedPassword, bool expectedUsage)
         {
             Worksheet worksheet = new Worksheet();
             Assert.False(worksheet.UseSheetProtection);
@@ -1391,7 +1391,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("a/b", false, null)]
         [InlineData("a\\b", false, null)]
         [InlineData("--------------------------------", false, null)]
-        public void SetSheetnameTest(String name, bool expectedValid, string expectedName)
+        public void SetSheetnameTest(string name, bool expectedValid, string expectedName)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.SheetName);
@@ -1427,7 +1427,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData(true, "a/b", true, "a_b")]
         [InlineData(true, "a\\b", true, "a_b")]
         [InlineData(true, "--------------------------------", true, "-------------------------------")]
-        public void SetSheetNameTest2(bool useSanitation, String name, bool expectedValid, string expectedName)
+        public void SetSheetNameTest2(bool useSanitation, string name, bool expectedValid, string expectedName)
         {
             Workbook workbook = new Workbook("Sheet1");
             workbook.AddWorksheet("test");

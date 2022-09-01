@@ -24,7 +24,7 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Version of the application that has created an XLSX file
         /// </summary>
-        public String ApplicationVersion { get; private set; }
+        public string ApplicationVersion { get; private set; }
         /// <summary>
         /// Document category of an XLSX file
         /// </summary>

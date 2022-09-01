@@ -923,7 +923,7 @@ namespace NanoXLSX
             IReadOnlyList<Address> addresses = cellRange.ResolveEnclosedAddresses();
             foreach (Address address in addresses)
             {
-                String key = address.GetAddress();
+                string key = address.GetAddress();
                 if (this.cells.ContainsKey(key))
                 {
                     if (style == null)
@@ -2240,17 +2240,16 @@ namespace NanoXLSX
         /// <summary>
         /// Creates a (dereferenced) deep copy of this worksheet
         /// </summary>
-        /// Not considered in the copy are the internal ID, the worksheet name and the workbook reference. 
+        /// <remarks>Not considered in the copy are the internal ID, the worksheet name and the workbook reference. 
         /// Since styles are managed in a shared repository, no dereferencing is applied (Styles are not deep-copied).<\br>
         /// Use <see cref="Workbook.CopyWorksheetTo(Worksheet, string, Workbook, bool)"/> or <see cref="Workbook.CopyWorksheetIntoThis(Worksheet, string, bool)"/> 
         /// to add a copy of worksheet to a workbook. These methods will set the internal ID, name and workbook reference.
-        /// <remarks>
         /// </remarks>
         /// <return>Copy of this worksheet</return>
         public Worksheet Copy()
         {
             Worksheet copy = new Worksheet();
-            foreach(KeyValuePair<String, Cell> cell in this.cells)
+            foreach(KeyValuePair<string, Cell> cell in this.cells)
             {
                 copy.AddCell(cell.Value.Copy(), cell.Key);
             }
@@ -2393,7 +2392,7 @@ namespace NanoXLSX
         /// <param name="name">Name to check</param>
         /// <param name="workbook">Workbook reference</param>
         /// <returns>True if the name exits, otherwise false</returns>
-        private static bool WorksheetExists(String name, Workbook workbook)
+        private static bool WorksheetExists(string name, Workbook workbook)
         {
             int len = workbook.Worksheets.Count;
             for (int i = 0; i < len; i++)

@@ -988,7 +988,7 @@ namespace NanoXLSX_Test.Reader
         [InlineData(ImportOptions.ColumnType.Date, "10000-01-01 00:00:00")]
         [InlineData(ImportOptions.ColumnType.Time, "1800-01-01 00:00:00")]
         [InlineData(ImportOptions.ColumnType.Time, "-10:00:00")]
-        void InvalidDateCastingTest(ImportOptions.ColumnType columnType, String value)
+        void InvalidDateCastingTest(ImportOptions.ColumnType columnType, string value)
         {
                 ImportOptions options = new ImportOptions();
             options.EnforceDateTimesAsNumbers = true;
@@ -1032,8 +1032,8 @@ namespace NanoXLSX_Test.Reader
             int lastRow = workbook.Worksheets[0].GetLastDataRowNumber();
             for(int r = 1; r <= lastRow; r++)
             {
-                String given = workbook.Worksheets[0].GetCell(new Address(givenValuesColumn, r)).Value.ToString();
-                String expected = workbook.Worksheets[0].GetCell(new Address(expectedValuesColumn, r)).Value.ToString();
+                string given = workbook.Worksheets[0].GetCell(new Address(givenValuesColumn, r)).Value.ToString();
+                string expected = workbook.Worksheets[0].GetCell(new Address(expectedValuesColumn, r)).Value.ToString();
                 Assert.Equal(expected, given);
             }
         }

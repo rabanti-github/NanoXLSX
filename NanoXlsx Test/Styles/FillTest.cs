@@ -64,7 +64,7 @@ namespace NanoXLSX_Test.Styles
         [Theory(DisplayName = "Test of the constructor with color and fill type")]
         [InlineData("FFAABBCC", Fill.FillType.fillColor, "FFAABBCC", "FF000000")]
         [InlineData("FF112233", Fill.FillType.patternColor, "FF000000", "FF112233")]
-        public void ConstructorTest3(String color, Fill.FillType fillType, string expectedForeground, string expectedBackground)
+        public void ConstructorTest3(string color, Fill.FillType fillType, string expectedForeground, string expectedBackground)
         {
             Fill fill = new Fill(color, fillType);
             Assert.Equal(Fill.DEFAULT_INDEXED_COLOR, fill.IndexedColor);
@@ -87,7 +87,7 @@ namespace NanoXLSX_Test.Styles
         [InlineData("x", "FFAABBCC")]
         [InlineData("FF000000", "x")]
         [InlineData("x", "y")]
-        public void ConstructorFailTest(String foreground, string background)
+        public void ConstructorFailTest(string foreground, string background)
         {
             Assert.Throws<StyleException>(() => new Fill(foreground, background));
         }
@@ -104,7 +104,7 @@ namespace NanoXLSX_Test.Styles
         [InlineData("x", Fill.FillType.patternColor)]
         [InlineData("FFAABBCCDD", Fill.FillType.patternColor)]
         [InlineData("FFAABB", Fill.FillType.patternColor)]
-        public void ConstructorFailTest2(String color, Fill.FillType fillType)
+        public void ConstructorFailTest2(string color, Fill.FillType fillType)
         {
             Assert.Throws<StyleException>(() => new Fill(color, fillType));
         }
@@ -190,7 +190,7 @@ namespace NanoXLSX_Test.Styles
         [Theory(DisplayName = "Test of the SetColor function")]
         [InlineData("FFAABBCC", Fill.FillType.fillColor, "FFAABBCC", "FF000000")]
         [InlineData("FF112233", Fill.FillType.patternColor, "FF000000", "FF112233")]
-        public void SetColorTest(String color, Fill.FillType fillType, string expectedForeground, string expectedBackground)
+        public void SetColorTest(string color, Fill.FillType fillType, string expectedForeground, string expectedBackground)
         {
             Fill fill = new Fill();
             Assert.Equal(Fill.DEFAULT_COLOR, fill.ForegroundColor);
@@ -224,7 +224,7 @@ namespace NanoXLSX_Test.Styles
         [InlineData("FFAACCDDDD", true, false, false)]
         [InlineData("FFAACCDDDD", false, false, false)]
         [InlineData("FFAACCDDDD", true, true, false)]
-        public void ValidateColorTest(String color, bool useAlpha, bool allowEmpty, bool expectedValid)
+        public void ValidateColorTest(string color, bool useAlpha, bool allowEmpty, bool expectedValid)
         {
             if (expectedValid)
             {

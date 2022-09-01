@@ -123,7 +123,7 @@ namespace NanoXLSX.Styles
         /// <param name="name">Property name</param>
         /// <param name="value">Property value</param>
         /// <param name="terminate">If true, no comma and newline will be appended</param>
-        internal static void AddPropertyAsJson(StringBuilder sb, String name, object value, bool terminate = false)
+        internal static void AddPropertyAsJson(StringBuilder sb, string name, object value, bool terminate = false)
         {
             sb.Append("\"").Append(name).Append("\": ");
             if (value == null)

@@ -360,7 +360,7 @@ namespace NanoXLSX_Test
                 }
             }
 
-            foreach(KeyValuePair<String, T> cell in values)
+            foreach(KeyValuePair<string, T> cell in values)
             {
                 Address address = new Address(cell.Key);
                 T value = (T)workbook.CurrentWorksheet.GetCell(address).Value;

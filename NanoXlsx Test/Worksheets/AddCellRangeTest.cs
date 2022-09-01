@@ -102,7 +102,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("H28:S28", RangeType.OneRow, TestType.CellList)]
         [InlineData("F14:I16", RangeType.FourColumnsThreeRows, TestType.CellList)]
         [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.CellList)]
-        public void AddCellRangeTest4(String range, RangeType type, TestType testType)
+        public void AddCellRangeTest4(string range, RangeType type, TestType testType)
         {
             NanoXLSX.Range cellRange = Cell.ResolveCellRange(range);
             ListTuple data = GetList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type, testType);
@@ -122,7 +122,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("H28:S28", RangeType.OneRow, TestType.CellList)]
         [InlineData("F14:I16", RangeType.FourColumnsThreeRows, TestType.CellList)]
         [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.CellList)]
-        public void AddCellRangeTest5(String range, RangeType type, TestType testType)
+        public void AddCellRangeTest5(string range, RangeType type, TestType testType)
         {
             NanoXLSX.Range cellRange = Cell.ResolveCellRange(range);
             ListTuple data = GetList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type, testType);
@@ -143,7 +143,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("H28:S28", RangeType.OneRow, TestType.CellList)]
         [InlineData("F14:I16", RangeType.FourColumnsThreeRows, TestType.CellList)]
         [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.CellList)]
-        public void AddCellRangeTest6(String range, RangeType type, TestType testType)
+        public void AddCellRangeTest6(string range, RangeType type, TestType testType)
         {
             NanoXLSX.Range cellRange = Cell.ResolveCellRange(range);
             ListTuple data = GetList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type, testType);
@@ -177,7 +177,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("H28:S28","H28:S29", RangeType.OneRow)]
         [InlineData("F14:I16","F14:J16", RangeType.FourColumnsThreeRows)]
         [InlineData("T12:V15", "T12:W15", RangeType.ThreeColumnsFourRows)]
-        public void AddCellRangeFailingTest2(String givenRange, string falseRange, RangeType type)
+        public void AddCellRangeFailingTest2(string givenRange, string falseRange, RangeType type)
         {
             NanoXLSX.Range cellRange = Cell.ResolveCellRange(givenRange);
             ListTuple data = GetRandomList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type);

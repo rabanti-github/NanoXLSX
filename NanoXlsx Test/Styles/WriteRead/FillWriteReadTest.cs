@@ -17,7 +17,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData("FFAADD00", 0.5f)]
         [InlineData("FFDDCC00", true)]
         [InlineData("FFAACCDD", null)]
-        public void ForegroundColorTest(String color, object value)
+        public void ForegroundColorTest(string color, object value)
         {
             Style style = new Style();
             style.CurrentFill.ForegroundColor = color;
@@ -32,7 +32,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData("FFAADD00", 0.5f)]
         [InlineData("FFDDCC00", true)]
         [InlineData("FFAACCDD", null)]
-        public void BackgroundColorTest(String color, object value)
+        public void BackgroundColorTest(string color, object value)
         {
             Style style = new Style();
             style.CurrentFill.BackgroundColor = color;

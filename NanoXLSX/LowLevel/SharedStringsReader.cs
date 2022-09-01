@@ -168,7 +168,7 @@ namespace NanoXLSX.LowLevel
             {
                 return sb.ToString();
             }
-            String text = sb.ToString();
+            string text = sb.ToString();
             StringBuilder sb2 = new StringBuilder();
             int currentTextIndex = 0;
             foreach (PhoneticInfo info in phoneticsInfo)
@@ -195,7 +195,7 @@ namespace NanoXLSX.LowLevel
             /// <summary>
             /// Transcription value
             /// </summary>
-            public String Value { get; private set; }
+            public string Value { get; private set; }
             /// <summary>
             /// Absolute start index within the original string
             /// </summary>
@@ -211,7 +211,7 @@ namespace NanoXLSX.LowLevel
             /// <param name="value">Transcription value</param>
             /// <param name="start">Absolute start index as string</param>
             /// <param name="end">Absolute end index as string</param>
-            public PhoneticInfo(string value, String start, String end)
+            public PhoneticInfo(string value, string start, string end)
             {
                     Value = value;
                     StartIndex = int.Parse(start);

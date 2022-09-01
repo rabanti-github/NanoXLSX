@@ -112,7 +112,7 @@ namespace NanoXLSX_Test.Cells
         [InlineData(5, 100, AddressType.FixedColumn, "F")]
         [InlineData(26, 100, AddressType.FixedRow, "AA")]
         [InlineData(1, 5, AddressType.FixedRowAndColumn, "B")]
-        public void GetColumnTest(int columnNumber, int rowNumber, AddressType type, String expectedColumn)
+        public void GetColumnTest(int columnNumber, int rowNumber, AddressType type, string expectedColumn)
         {
             Address address = new Address(columnNumber, rowNumber, type);
             Assert.Equal(expectedColumn, address.GetColumn());

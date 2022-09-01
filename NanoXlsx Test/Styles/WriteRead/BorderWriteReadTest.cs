@@ -28,7 +28,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData("FFDDCC00", true, false, true)]
         [InlineData("FFAACCDD", null, false, false)]
         [InlineData(null, 22, true, true)]
-        public void DiagonalColorTest(String color, object value, bool diagonalUp, bool diagonalDown)
+        public void DiagonalColorTest(string color, object value, bool diagonalUp, bool diagonalDown)
         {
             Style style = new Style();
             style.CurrentBorder.DiagonalColor = color;
@@ -50,7 +50,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData("FFDDCC00", true)]
         [InlineData("FFAACCDD", null)]
         [InlineData(null, 22)]
-        public void TopColorTest(String color, object value)
+        public void TopColorTest(string color, object value)
         {
             Style style = new Style();
             style.CurrentBorder.TopColor = color;
@@ -69,7 +69,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData("FFDDCC00", true)]
         [InlineData("FFAACCDD", null)]
         [InlineData(null, 22)]
-        public void BottomColorTest(String color, object value)
+        public void BottomColorTest(string color, object value)
         {
             Style style = new Style();
             style.CurrentBorder.BottomColor = color;
@@ -87,7 +87,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData("FFDDCC00", true)]
         [InlineData("FFAACCDD", null)]
         [InlineData(null, 22)]
-        public void LeftColorTest(String color, object value)
+        public void LeftColorTest(string color, object value)
         {
             Style style = new Style();
             style.CurrentBorder.LeftColor = color;
@@ -105,7 +105,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData("FFDDCC00", true)]
         [InlineData("FFAACCDD", null)]
         [InlineData(null, 22)]
-        public void RightColorTest(String color, object value)
+        public void RightColorTest(string color, object value)
         {
             Style style = new Style();
             style.CurrentBorder.RightColor = color;

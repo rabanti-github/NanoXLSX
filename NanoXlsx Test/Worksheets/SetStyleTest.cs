@@ -279,7 +279,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1", "C1", "B1", "test", "A1,C1")]
         [InlineData("A1", "C3", "B2", -0.25f, "A1,A2,A3,B1,B3,C1,C2,C3")]
         [InlineData("R17", "T21", "R18,R19,R20,S19", 99999l, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21")]
-        public void SetStyleTest6(String startAddressString, string endAddressString, string definedCells, object cellValue, string expectedEmptyCells)
+        public void SetStyleTest6(string startAddressString, string endAddressString, string definedCells, object cellValue, string expectedEmptyCells)
         {
             Worksheet worksheet = new Worksheet();
             AddCells(worksheet, cellValue, definedCells);
@@ -299,7 +299,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1", "C1", "B1", "test")]
         [InlineData("A1", "C3", "B2", -0.25f)]
         [InlineData("R17", "T21", "R18,R19,R20,S19", 99999l)]
-        public void SetStyleTest6b(String startAddressString, string endAddressString, string definedCells, object cellValue)
+        public void SetStyleTest6b(string startAddressString, string endAddressString, string definedCells, object cellValue)
         {
             Worksheet worksheet = new Worksheet();
             AddCells(worksheet, cellValue, definedCells);
@@ -317,7 +317,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1", "C1", "B1", "test", "A1,C1")]
         [InlineData("A1", "C3", "B2", -0.25f, "A1,A2,A3,B1,B3,C1,C2,C3")]
         [InlineData("R17", "T21", "R18,R19,R20,S19", 99999l, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21")]
-        public void SetStyleTest7(String startAddressString, string endAddressString, string definedCells, object cellValue, string expectedEmptyCells)
+        public void SetStyleTest7(string startAddressString, string endAddressString, string definedCells, object cellValue, string expectedEmptyCells)
         {
             Worksheet worksheet = new Worksheet();
             AddCells(worksheet, cellValue, definedCells, BasicStyles.Italic);
@@ -337,7 +337,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1", "C1", "B1", "test")]
         [InlineData("A1", "C3", "B2", -0.25f)]
         [InlineData("R17", "T21", "R18,R19,R20,S19", 99999l)]
-        public void SetStyleTest7b(String startAddressString, string endAddressString, string definedCells, object cellValue)
+        public void SetStyleTest7b(string startAddressString, string endAddressString, string definedCells, object cellValue)
         {
             Worksheet worksheet = new Worksheet();
             AddCells(worksheet, cellValue, definedCells, BasicStyles.Italic);
@@ -561,7 +561,7 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Throws<FormatException>(() => worksheet.SetStyle(range, BasicStyles.Bold));
         }
 
-        private void AssertCellRange(String range, Style expectedStyle, Worksheet worksheet, List<String> createdCells, int expectedSize)
+        private void AssertCellRange(string range, Style expectedStyle, Worksheet worksheet, List<string> createdCells, int expectedSize)
         {
             Assert.Equal(expectedSize, worksheet.Cells.Count);
             Range setRange = new Range(range);

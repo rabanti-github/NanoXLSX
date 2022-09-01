@@ -13,7 +13,7 @@ namespace NanoXLSX_Test.Misc
 {
     public class UtilsTest
     {
-        [Theory(DisplayName = "Test of the GetOADateTimeString function")]
+        [Theory(DisplayName = "Test of the GetOADateTimestring function")]
         [InlineData("01.01.1900 00:00:00", "1")]
         [InlineData("02.01.1900 12:35:20", "2.5245370370370401")]
         [InlineData("27.02.1900 00:00:00", "58")]
@@ -29,7 +29,7 @@ namespace NanoXLSX_Test.Misc
             CultureInfo provider = CultureInfo.InvariantCulture;
             string format = "dd.MM.yyyy HH:mm:ss";
             DateTime date = DateTime.ParseExact(dateString, format, provider);
-            String oaDate = Utils.GetOADateTimeString(date);
+            string oaDate = Utils.GetOADateTimeString(date);
             float expected = float.Parse(expectedOaDate);
             float given = float.Parse(oaDate);
             float threshold = 0.000000001f; // Ignore everything below a millisecond

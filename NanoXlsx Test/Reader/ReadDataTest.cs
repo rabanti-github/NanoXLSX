@@ -35,7 +35,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("J7", "русский язык");
             cells.Add("K7", "עברית");
             cells.Add("L7", "اَلْعَرَبِيَّة");
-            AssertValues<String>(cells, AssertEquals);
+            AssertValues<string>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for new lines in strings")]
@@ -67,7 +67,7 @@ namespace NanoXLSX_Test.Reader
             expected.Add("A10", "\r\n\r\n\r\n");
             expected.Add("A11", "\r\n\r\n\r\n");
             expected.Add("A12", "\r\n\r\n");
-            AssertValues<String>(given, AssertEquals, expected);
+            AssertValues<string>(given, AssertEquals, expected);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for null / empty values")]
