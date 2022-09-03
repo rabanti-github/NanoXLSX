@@ -5,6 +5,34 @@
     <RootNamespace>NanoXLSX_Test</RootNamespace>
 
     <IsPackable>false</IsPackable>
+
+    <Version>2.0.0</Version>
+
+    <Authors>Raphael Stoeckli</Authors>
+
+    <Company>Raphael Stoeckli</Company>
+
+    <Product>NanoXLSX</Product>
+
+    <Description>Unit Tests for NanoXLSX</Description>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <Copyright>Copyright Raphael Stoeckli © 2022</Copyright>
+
+    <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
+
+    <PackageIcon>NanoXLSX.png</PackageIcon>
+
+    <PackageIconUrl />
+
+    <RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.git</RepositoryUrl>
+
+    <PackageTags>Excel Office XLSX</PackageTags>
+
+    <RepositoryType>git</RepositoryType>
+
+    <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +51,10 @@
     <None Remove="Resources\tampered.xlsx" />
     <None Remove="Resources\unknown_border_type.xlsx" />
     <None Remove="Resources\unknown_style_enums.xlsx" />
+    <None Include="..\docs\icons\NanoXLSX.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

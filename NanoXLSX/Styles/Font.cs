@@ -135,7 +135,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the font color theme (Default is 1)
         /// </summary>
-        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the number is below 1</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the number is below 1</exception>
         [Append]
         public int ColorTheme
         {
@@ -153,7 +153,7 @@ namespace NanoXLSX.Styles
         /// Gets or sets the color code of the font color. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF.
         /// To omit the color, an empty string can be set. Empty is also default.
         /// </summary>
-        /// <exception cref="StyleException">Test of the ConvertArray methodStyleException if the passed ARGB value is not valid</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the passed ARGB value is not valid</exception>
         [Append]
         public string ColorValue { 
             get => colorValue;
