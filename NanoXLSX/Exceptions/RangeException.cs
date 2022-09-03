@@ -15,25 +15,17 @@ namespace NanoXLSX.Exceptions
     [Serializable]
     public class RangeException : Exception
     {
-        public static readonly string GENERAL = "A general range exception occurred";
-
-        /// <summary>
-        /// Gets or sets the title of the exception
-        /// </summary>
-        public string ExceptionTitle { get; set; }
-
         /// <summary>
         /// Default constructor
         /// </summary>
-        public RangeException()
+        public RangeException() : base()
         { }
         /// <summary>
         /// Constructor with passed message
         /// </summary>
         /// <param name="message">Message of the exception</param>
-        /// <param name="title">Title of the exception</param>
-        public RangeException(string title, string message)
-            : base(title + ": " + message)
-        { ExceptionTitle = title; }
+        public RangeException(string message)
+            : base( message)
+        {  }
     }
 }

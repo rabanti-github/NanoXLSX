@@ -20,13 +20,22 @@ namespace NanoXLSX
     {
         #region constants
         /// <summary>
-        /// Minimum valid OAdate value (1900-01-01)
+        /// Minimum valid OAdate value (1900-01-01). However, Excel displays this value as 1900-01-00 (day zero)
         /// </summary>
         public static readonly double MIN_OADATE_VALUE = 0d;
         /// <summary>
         /// Maximum valid OAdate value (9999-12-31)
         /// </summary>
-        public static readonly double MAX_OADATE_VALUE = 2958465.9999d;
+        public static readonly double MAX_OADATE_VALUE = 2958465.999988426d;
+        /// <summary>
+        /// First date that can be displayed by Excel. Real values before this date cannot be processed.
+        /// </summary>
+        public static readonly DateTime FIRST_ALLOWED_EXCEL_DATE = new DateTime(1900, 1, 1, 0, 0, 0);
+        /// <summary>
+        /// Last date that can be displayed by Excel. Real values after this date cannot be processed.
+        /// </summary>
+        public static readonly DateTime LAST_ALLOWED_EXCEL_DATE = new DateTime(9999, 12, 31, 23, 59, 59);
+
         /// <summary>
         /// All dates before this date are shifted in Excel by -1.0, since Excel assumes wrongly that the year 1900 is a leap year.<br/>
         /// See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
@@ -50,12 +59,35 @@ namespace NanoXLSX
         private const float SPLIT_WIDTH_POINT_OFFSET = 390f;
         private const float SPLIT_HEIGHT_POINT_OFFSET = 300f;
         private const float ROW_HEIGHT_POINT_MULTIPLIER = 1f / 3f + 1f;
+        private static readonly DateTime ROOT_DATE = new DateTime(1899, 12, 30, 0, 0, 0);
+        private static readonly double ROOT_MILLIS = (double)new DateTime(1899, 12, 30, 0, 0, 0).Ticks / TimeSpan.TicksPerMillisecond;
 
         #endregion
 
         /// <summary>
         /// Method to convert a date or date and time into the internal Excel time format (OAdate)
         /// </summary>
+        /// <param name="date">Date to process</param>
+        /// <returns>Date or date and time as number string</returns>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
+        /// <remarks>Excel assumes wrongly that the year 1900 is a leap year. There is a gap of 1.0 between 1900-02-28 and 1900-03-01. This method corrects all dates
+        /// from the first valid date (1900-01-01) to 1900-03-01. However, Excel displays the minimum valid date as 1900-01-00, although 0 is not a valid description for a day of month.
+        /// In conformance to the OAdate specifications, the maximum valid date is 9999-12-31 23:59:59 (plus 999 milliseconds).<br/>
+        ///See also: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1">
+        ///https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1</a><br/>
+        ///See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
+        ///https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a>
+        /// </remarks>
+        public static string GetOADateTimeString(DateTime date)
+        {
+            double d = GetOADateTime(date);
+            return d.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Method to convert a date or date and time into the internal Excel time format (OAdate)
+        /// </summary>
+        /// <param name="skipCheck">Optional flag to skip the validity check if set to true</param>
         /// <param name="date">Date to process</param>
         /// <returns>Date or date and time as number</returns>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
@@ -67,48 +99,62 @@ namespace NanoXLSX
         ///See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
         ///https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a>
         /// </remarks>
-        public static string GetOADateTimeString(DateTime date, IFormatProvider culture)
+        public static double GetOADateTime(DateTime date, bool skipCheck = false)
         {
-            try
+            if (!skipCheck && (date < FIRST_ALLOWED_EXCEL_DATE || date > LAST_ALLOWED_EXCEL_DATE))
             {
-                DateTime dateValue = date;
-                if (date < FIRST_VALID_EXCEL_DATE)
-                {
-                    dateValue = date.AddDays(-1); // Fix of the leap-year-1900-error
-                }
-                double d = dateValue.ToOADate();
-                if (d < MIN_OADATE_VALUE || d > MAX_OADATE_VALUE)
-                {
-                    throw new Exceptions.FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 or after 9999-12-31 are not allowed.");
-                }
-                return d.ToString("G", culture);
+                throw new Exceptions.FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 or after 9999-12-31 are not allowed.");
             }
-            catch (Exception e)
+            DateTime dateValue = date;
+            if (date < FIRST_VALID_EXCEL_DATE)
             {
-                throw new Exceptions.FormatException("ConversionException", "The date could not be transformed into Excel format (OADate).", e);
+                dateValue = date.AddDays(-1); // Fix of the leap-year-1900-error
             }
+            double currentMillis = (double)dateValue.Ticks / TimeSpan.TicksPerMillisecond;
+            return ((dateValue.Second + (dateValue.Minute * 60) + (dateValue.Hour * 3600)) / 86400d) + Math.Floor((currentMillis - ROOT_MILLIS) / 86400000d);
         }
 
         /// <summary>
         /// Method to convert a time into the internal Excel time format (OAdate without days)
         /// </summary>
-        /// <param name="time">Time to process. The date component of the timespan is neglected</param>
-        /// <param name="culture">CultureInfo for proper formatting of the decimal point</param>
-        /// <returns>Time as number</returns>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed timespan is invalid</exception>
-        /// <remarks>The time is represented by a OAdate without the date component. A time range is between &gt;0.0 (00:00:00) and &lt;1.0 (23:59:59)</remarks>
-        public static string GetOATimeString(TimeSpan time, IFormatProvider culture)
+        /// <param name="time">Time to process. The date component of the timespan is converted to the total numbers of days</param>
+        /// <returns>Time as number string</returns>
+        /// <remarks>The time is represented by a OAdate without the date component but a possible number of total days</remarks>
+        public static string GetOATimeString(TimeSpan time)
         {
-            try
+            double d = GetOATime(time);
+            return d.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Method to convert a time into the internal Excel time format (OAdate without days)
+        /// </summary>
+        /// <param name="time">Time to process. The date component of the timespan is converted to the total numbers of days</param>
+        /// <returns>Time as number</returns>
+        /// <remarks>The time is represented by a OAdate without the date component but a possible number of total days</remarks>
+        public static double GetOATime(TimeSpan time)
+        {
+            int seconds = time.Seconds + time.Minutes * 60 + time.Hours * 3600;
+            return time.Days + (double)seconds / 86400d;
+        }
+
+        /// <summary>
+        /// Method to calculate a common Date from the OA date (OLE automation) format<br/>
+        /// OA Date format starts at January 1st 1900 (actually 00.01.1900). Dates beyond this date cannot be handled by Excel under normal circumstances and will throw a FormatException
+        /// </summary>
+        /// <param name="oaDate">oaDate OA date number</param>
+        /// <returns>Converted date</returns>
+        /// <remarks>Numbers that represents dates before 1900-03-01 (number of days since 1900-01-01 = 60) are automatically modified.
+        /// Until 1900-03-01 is 1.0 added to the number to get the same date, as displayed in Excel.The reason for this is a bug in Excel.
+        /// See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
+        /// https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a></remarks>
+        public static DateTime GetDateFromOA(double oaDate)
+        {
+            if (oaDate < 60)
             {
-                int seconds = time.Seconds + time.Minutes * 60 + time.Hours * 3600;
-                double d = (double)seconds / 86400d;
-                return d.ToString("G", culture);
+                oaDate = oaDate + 1;
             }
-            catch (Exception e)
-            {
-                throw new Exceptions.FormatException("ConversionException", "The time could not be transformed into Excel format (OADate).", e);
-            }
+            return ROOT_DATE.AddSeconds(oaDate * 86400d);
         }
 
         /// <summary>
@@ -152,7 +198,7 @@ namespace NanoXLSX
         {
             if (columnWidth < Worksheet.MIN_COLUMN_WIDTH || columnWidth > Worksheet.MAX_COLUMN_WIDTH)
             {
-                throw new FormatException("The column width " + columnWidth + " is not valid. The valid range is between " + Worksheet.MIN_COLUMN_WIDTH + " and " + Worksheet.MAX_COLUMN_WIDTH);
+                throw new FormatException("The column width " + columnWidth + " is not valid. The valid range is between " + Worksheet.MIN_COLUMN_WIDTH + " and " + Worksheet.MAX_COLUMN_WIDTH) ;
             }
             if (columnWidth <= 0f || maxDigitWidth <= 0f)
             {
@@ -213,9 +259,6 @@ namespace NanoXLSX
             if (width <= 1f)
             {
                 width = 0;
-            }
-            if (width <= 1f)
-            {
                 pixels = (float)Math.Floor(width / SPLIT_WIDTH_MULTIPLIER + SPLIT_WIDTH_OFFSET);
             }
             else
@@ -243,6 +286,72 @@ namespace NanoXLSX
                 height = 0f;
             }
             return (float)Math.Floor(SPLIT_POINT_DIVIDER * height + SPLIT_HEIGHT_POINT_OFFSET);
+        }
+
+        /// <summary>
+        /// Calculates the height of a split pane in a worksheet, based on the internal value (calculated by <see cref="GetInternalPaneSplitHeight(float)"/>)
+        /// </summary>
+        /// <param name="internalHeight">Internal pane height stored in a worksheet. The minimal value is defined by <see cref="SPLIT_HEIGHT_POINT_OFFSET"/></param>
+        /// <returns>Actual pane height</returns>
+        /// <remarks>Depending on the initial height, the result value of <see cref="GetInternalPaneSplitHeight(float)"/> may not lead back to the initial value, 
+        /// since rounding is applied when calculating the internal height</remarks>
+        public static float GetPaneSplitHeight(float internalHeight)
+        {
+            if (internalHeight < 300f)
+            {
+                return 0;
+            }
+            else
+            {
+                return (internalHeight - SPLIT_HEIGHT_POINT_OFFSET) / SPLIT_POINT_DIVIDER;
+            }
+        }
+
+        /// <summary>
+        /// Calculates the width of a split pane in a worksheet, based on the internal value (calculated by <see cref="GetInternalPaneSplitWidth(float, float, float)"/>)
+        /// </summary>
+        /// <param name="internalWidth">Internal pane width stored in a worksheet. The minimal value is defined by <see cref="SPLIT_WIDTH_POINT_OFFSET"/></param>
+        /// <param name="maxDigitWidth">Maximum digit with of the default font (default is 7.0 for Calibri, size 11)</param>
+        /// <param name="textPadding">Text padding of the default font (default is 5.0 for Calibri, size 11)</param>
+        /// <returns>Actual pane width</returns>
+        /// <remarks>Depending on the initial width, the result value of <see cref="GetInternalPaneSplitWidth(float,float,float)"/> may not lead back to the initial value, 
+        /// since rounding is applied when calculating the internal width</remarks>
+        public static float GetPaneSplitWidth(float internalWidth, float maxDigitWidth = 7f, float textPadding = 5f)
+        {
+            float points = (internalWidth - SPLIT_WIDTH_POINT_OFFSET) / SPLIT_POINT_DIVIDER;
+            if (points < 0.001f)
+            {
+                return 0;
+            }
+            else
+            {
+                float width = points / SPLIT_WIDTH_POINT_MULTIPLIER;
+                return (width - textPadding - SPLIT_WIDTH_OFFSET) / maxDigitWidth;
+            }
+        }
+
+        /// <summary>
+        /// Method to generate an Excel internal password hash to protect workbooks or worksheets<br></br>This method is derived from the c++ implementation by Kohei Yoshida (<a href="http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/">http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/</a>)
+        /// </summary>
+        /// <remarks>WARNING! Do not use this method to encrypt 'real' passwords or data outside from NanoXLSX. This is only a minor security feature. Use a proper cryptography method instead.</remarks>
+        /// <param name="password">Password string in UTF-8 to encrypt</param>
+        /// <returns>16 bit hash as hex string</returns>
+        public static string GeneratePasswordHash(string password)
+        {
+            if (string.IsNullOrEmpty(password)) { return string.Empty; }
+            int passwordLength = password.Length;
+            int passwordHash = 0;
+            char character;
+            for (int i = passwordLength; i > 0; i--)
+            {
+                character = password[i - 1];
+                passwordHash = ((passwordHash >> 14) & 0x01) | ((passwordHash << 1) & 0x7fff);
+                passwordHash ^= character;
+            }
+            passwordHash = ((passwordHash >> 14) & 0x01) | ((passwordHash << 1) & 0x7fff);
+            passwordHash ^= (0x8000 | ('N' << 8) | 'K');
+            passwordHash ^= passwordLength;
+            return passwordHash.ToString("X");
         }
     }
 }

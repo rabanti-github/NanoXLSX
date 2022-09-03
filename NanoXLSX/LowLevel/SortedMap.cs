@@ -15,9 +15,9 @@ namespace NanoXLSX.LowLevel
     public class SortedMap
     {
         private int count;
-        private List<string> keyEntries;
-        private List<string> valueEntries;
-        private Dictionary<string, int> index;
+        private readonly List<string> keyEntries;
+        private readonly List<string> valueEntries;
+        private readonly Dictionary<string, int> index;
 
         /// <summary>
         /// Number of map entries
@@ -36,14 +36,6 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Gets the values of the map as values
-        /// </summary>
-        public List<string> Values
-        {
-            get { return valueEntries; }
-        }
-
-        /// <summary>
         /// Default constructor
         /// </summary>
         public SortedMap()
@@ -54,52 +46,23 @@ namespace NanoXLSX.LowLevel
             count = 0;
         }
 
-
         /// <summary>
-        /// Indexer to get the specific value by the key
+        /// Method to add a key value pair
         /// </summary>
-        /// <param name="key">Key to corresponding value. Returns null if not found</param>
-        public string this[string key]
-        {
-            get
-            {
-                if (index.ContainsKey(key))
-                {
-                    return valueEntries[index[key]];
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Adds a key value pair to the map. If the key already exists, only its index will be returned
-        /// </summary>
-        /// <param name="key">Key of the tuple</param>
-        /// <param name="value">Value of the tuple</param>
-        /// <returns>Position of the tuple in the map as index (zero-based)</returns>
-        public int Add(string key, string value)
+        /// <param name="key">Key as string</param>
+        /// <param name="value">Value as string</param>
+        /// <returns>Returns the resolved string (either added or returned from an existing entry)</returns>
+        public string Add(string key, string value)
         {
             if (index.ContainsKey(key))
             {
-                return index[key];
+                return valueEntries[index[key]];
             }
-
             index.Add(key, count);
+            count++;
             keyEntries.Add(key);
             valueEntries.Add(value);
-            count++;
-            return count - 1;
+            return value;
         }
-
-        /// <summary>
-        /// Gets whether the specified key exists in the map
-        /// </summary>
-        /// <param name="key">Key to check</param>
-        /// <returns>True if the entry exists, otherwise false</returns>
-        public bool ContainsKey(string key)
-        {
-            return index.ContainsKey(key);
-        }
-
     }
 }

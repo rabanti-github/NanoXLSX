@@ -5,6 +5,8 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
+
 namespace NanoXLSX
 {
     /// <summary>
@@ -14,6 +16,7 @@ namespace NanoXLSX
     {
         private int number;
         private string columnAddress;
+        private float width;
 
         /// <summary>
         /// Column address (A to XFD)
@@ -23,8 +26,12 @@ namespace NanoXLSX
             get { return columnAddress; }
             set
             {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new RangeException("The passed address was null or empty");
+                }
                 number = Cell.ResolveColumn(value);
-                columnAddress = value;
+                columnAddress = value.ToUpper();
             }
         }
 
@@ -53,12 +60,23 @@ namespace NanoXLSX
         /// <summary>
         /// Width of the column
         /// </summary>
-        public float Width { get; set; }
+        public float Width {
+            get { return width; }
+            set
+            {
+                if (value < Worksheet.MIN_COLUMN_WIDTH || value > Worksheet.MAX_COLUMN_WIDTH)
+                {
+                    throw new RangeException("The passed column width is out of range (" + Worksheet.MIN_COLUMN_WIDTH + " to " + Worksheet.MAX_COLUMN_WIDTH + ")");
+                }
+                width = value;
+            }
+        }
+        
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor (private, since not valid without address)
         /// </summary>
-        public Column()
+        private Column()
         {
             Width = Worksheet.DEFAULT_COLUMN_WIDTH;
         }
@@ -79,6 +97,21 @@ namespace NanoXLSX
         public Column(string columnAddress) : this()
         {
             ColumnAddress = columnAddress;
+        }
+
+        /// <summary>
+        /// Creates a deep copy of this column
+        /// </summary>
+        /// <returns>Copy of this column</returns>
+        internal Column Copy()
+        {
+            Column copy = new Column();
+            copy.IsHidden = this.IsHidden;
+            copy.Width = this.width;
+            copy.HasAutoFilter = this.HasAutoFilter;
+            copy.columnAddress = this.columnAddress;
+            copy.number = this.number;
+            return copy;
         }
 
     }

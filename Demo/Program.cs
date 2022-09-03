@@ -89,9 +89,9 @@ namespace Demo
                 PrintCellInfo(cell.Value);                                                      // Show information about the loaded cell (helper function; not part of the API)
             }
 
-            Address? lastAddress = wb.CurrentWorksheet.GetLastCellAddress().Value;               // Determine the last cell of the current worksheet
+            Address? lastAddress = wb.CurrentWorksheet.GetLastCellAddress();                     // Determine the last cell of the current worksheet
             Console.WriteLine("The last cell in the current worksheet is: " + lastAddress.ToString());
-            Address? lastdataAddress = wb.CurrentWorksheet.GetLastDataCellAddress().Value;       // Determine the last cell with data of the current worksheet
+            Address? lastdataAddress = wb.CurrentWorksheet.GetLastDataCellAddress();             // Determine the last cell with data of the current worksheet
             Console.WriteLine("The last cell with data in the current worksheet is: " + lastdataAddress.ToString());
 
             // The same as stream
@@ -163,6 +163,8 @@ namespace Demo
             workbook.WS.Formula("=A2");                                     // Add cell C1
             await workbook.SaveAsync();                                     // Save async
         }
+
+        
 
         /// <summary>
         /// This method shows the usage of AddNextCell with several data types and formulas. Furthermore, the several types of Addresses are demonstrated
@@ -277,7 +279,7 @@ namespace Demo
 
             Style s = new Style();                                                                          // Create new style
             s.CurrentFill.SetColor("FF22FF11", Fill.FillType.fillColor);                                    // Set fill color
-            s.CurrentFont.DoubleUnderline = true;                                                           // Set double underline
+            s.CurrentFont.Underline = Font.UnderlineValue.u_double;                                         // Set double underline
             s.CurrentCellXf.HorizontalAlign = CellXf.HorizontalAlignValue.center;                           // Set alignment
 
             Style s2 = s.CopyStyle();                                                                       // Copy the previously defined style
@@ -483,7 +485,7 @@ namespace Demo
             Style style = new Style();                                                            // Create a new style
             style.Append(BasicStyles.Bold);                                                       // Append a basic style (bold) 
             style.Append(BasicStyles.Underline);                                                  // Append a basic style (underline) 
-            style.Append(BasicStyles.Font("Arial Black", 20));                                    // Append a basic style (custom font) 
+            style.Append(BasicStyles.Font("Arial Black", 20f));                                   // Append a basic style (custom font) 
 
             wb.WS.Value("THIS IS A TEST", style);                                                 // Add text and the appended style
             wb.WS.Down();                                                                         // Go to a new row

@@ -17,10 +17,7 @@ namespace NanoXLSX.Styles
     public class Style : AbstractStyle
     {
         #region privateFields
-        private string name;
         private bool internalStyle;
-        private bool styleNameDefined;
-        private StyleManager styleManagerReference;
         #endregion
 
         #region properties
@@ -30,7 +27,7 @@ namespace NanoXLSX.Styles
         [Append(NestedProperty = true)]
         public Border CurrentBorder { get; set; }
         /// <summary>
-        /// Gets or sets the  current CellXf object of the style
+        /// Gets or sets the current CellXf object of the style
         /// </summary>
         [Append(NestedProperty = true)]
         public CellXf CurrentCellXf { get; set; }
@@ -40,41 +37,21 @@ namespace NanoXLSX.Styles
         [Append(NestedProperty = true)]
         public Fill CurrentFill { get; set; }
         /// <summary>
-        /// Gets or sets the  current Font object of the style
+        /// Gets or sets the current Font object of the style
         /// </summary>
         [Append(NestedProperty = true)]
         public Font CurrentFont { get; set; }
         /// <summary>
-        /// Gets or sets the  current NumberFormat object of the style
+        /// Gets or sets the current NumberFormat object of the style
         /// </summary>
         [Append(NestedProperty = true)]
         public NumberFormat CurrentNumberFormat { get; set; }
         /// <summary>
-        /// Gets or sets the name of the style. If not defined, the automatically calculated hash will be used as name
+        /// Gets or sets the name of the informal style. If not defined, the automatically calculated hash will be used as name
         /// </summary>
+        /// <remarks>The name is informal and not considered as an identifier, when collecting all styles for a workbook</remarks>
         [Append(Ignore = true)]
-        public string Name
-        {
-            get { return name; }
-            set
-            {
-                name = value;
-                styleNameDefined = true;
-            }
-        }
-
-        /// <summary>
-        /// Sets the reference of the style manager
-        /// </summary>
-        [Append(Ignore = true)]
-        public StyleManager StyleManagerReference
-        {
-            set
-            {
-                styleManagerReference = value;
-                ReorganizeStyle();
-            }
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets whether the style is system internal. Such styles are not meant to be altered
@@ -98,8 +75,7 @@ namespace NanoXLSX.Styles
             CurrentFill = new Fill();
             CurrentFont = new Font();
             CurrentNumberFormat = new NumberFormat();
-            styleNameDefined = false;
-            name = this.GetHashCode().ToString();
+            Name = this.GetHashCode().ToString();
         }
 
         /// <summary>
@@ -113,15 +89,14 @@ namespace NanoXLSX.Styles
             CurrentFill = new Fill();
             CurrentFont = new Font();
             CurrentNumberFormat = new NumberFormat();
-            styleNameDefined = false;
-            this.name = name;
+            this.Name = name;
         }
 
         /// <summary>
         /// Constructor with parameters (internal use)
         /// </summary>
         /// <param name="name">Name of the style</param>
-        /// <param name="forcedOrder">Number of the style for sorting purpose. Style will be placed to this position (internal use only)</param>
+        /// <param name="forcedOrder">Number of the style for sorting purpose. The style will be placed at this position (internal use only)</param>
         /// <param name="internalStyle">If true, the style is marked as internal</param>
         public Style(string name, int forcedOrder, bool internalStyle)
         {
@@ -130,10 +105,9 @@ namespace NanoXLSX.Styles
             CurrentFill = new Fill();
             CurrentFont = new Font();
             CurrentNumberFormat = new NumberFormat();
-            this.name = name;
+            this.Name = name;
             InternalID = forcedOrder;
             this.internalStyle = internalStyle;
-            styleNameDefined = true;
         }
         #endregion
 
@@ -146,6 +120,10 @@ namespace NanoXLSX.Styles
         /// <returns>Current style with appended style parts</returns>
         public Style Append(AbstractStyle styleToAppend)
         {
+            if (styleToAppend == null)
+            {
+                return this;
+            }
             if (styleToAppend.GetType() == typeof(Border))
             {
                 CurrentBorder.CopyProperties<Border>((Border)styleToAppend, new Border());
@@ -178,32 +156,21 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Method to reorganize / synchronize the components of this style
-        /// </summary>
-        private void ReorganizeStyle()
-        {
-            if (styleManagerReference == null) { return; }
-
-            Style newStyle = styleManagerReference.AddStyle(this);
-            CurrentBorder = newStyle.CurrentBorder;
-            CurrentCellXf = newStyle.CurrentCellXf;
-            CurrentFill = newStyle.CurrentFill;
-            CurrentFont = newStyle.CurrentFont;
-            CurrentNumberFormat = newStyle.CurrentNumberFormat;
-
-            if (!styleNameDefined)
-            {
-                name = this.GetHashCode().ToString();
-            }
-        }
-
-        /// <summary>
         /// Override toString method
         /// </summary>
         /// <returns>String of a class instance</returns>
         public override string ToString()
         {
-            return InternalID.ToString() + "->" + this.GetHashCode();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("{\n\"Style\": {\n");
+            AddPropertyAsJson(sb, "Name", Name);
+            AddPropertyAsJson(sb, "HashCode", this.GetHashCode());
+            sb.Append(CurrentBorder.ToString()).Append(",\n");
+            sb.Append(CurrentCellXf.ToString()).Append(",\n");
+            sb.Append(CurrentFill.ToString()).Append(",\n");
+            sb.Append(CurrentFont.ToString()).Append(",\n");
+            sb.Append(CurrentNumberFormat.ToString()).Append("\n}\n}");
+            return sb.ToString();
         }
 
         /// <summary>
@@ -217,9 +184,8 @@ namespace NanoXLSX.Styles
         {
             if (CurrentBorder == null || CurrentCellXf == null || CurrentFill == null || CurrentFont == null || CurrentNumberFormat == null)
             {
-                throw new StyleException("MissingReferenceException", "The hash of the style could not be created because one or more components are missing as references");
+                throw new StyleException("The hash of the style could not be created because one or more components are missing as references");
             }
-
             int p = 241;
             int r = 1;
             r *= p + this.CurrentBorder.GetHashCode();
@@ -238,7 +204,7 @@ namespace NanoXLSX.Styles
         {
             if (CurrentBorder == null || CurrentCellXf == null || CurrentFill == null || CurrentFont == null || CurrentNumberFormat == null)
             {
-                throw new StyleException("MissingReferenceException", "The style could not be copied because one or more components are missing as references");
+                throw new StyleException("The style could not be copied because one or more components are missing as references");
             }
             Style copy = new Style();
             copy.CurrentBorder = CurrentBorder.CopyBorder();

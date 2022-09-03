@@ -14,20 +14,36 @@ Project website: [https://picoxlsx.rabanti.ch](https://picoxlsx.rabanti.ch)
 
 See the **[Change Log](https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md)** for recent updates.
 
+## What's new in version 2.x
+
+There are some additional functions for workbooks and worksheets, as well as support of further data types.
+The biggest change is the full capable reader support for workbook, worksheet and style information. Also, all features are now fully unit tested. This means, that nanoXLSX is no longer in Beta state. Some key features are:
+
+* Full reader support for styles
+* Copy functions for worksheets
+* Advance import options for the reader
+* Several additional checks, exception handling and updated documentation
+
+## Roadmap
+Version 2.x of NanoXLSX was completely overhauled and a high number of (partially parametrized) unit tests with a code coverage of >99% were written to improve the quality of the library.
+However, it is not planned as a LTS version. The upcoming v3.x is supposed to introduce some important functions, like in-line cell formatting, better formula handling and additional worksheet features.
+Furthermore, it is planned to introduce more modern OOXML features like the SHA256 implementation of worksheet passwords.
+One of the main aspects of this upcoming version is a better modularization, as well as the consolidation with PicoXLS to one single code base.
+
 ## Reader Support
 
-Currently, only basic reader functionality is available:
+The reader is of NanoXLS follows the principle of "What You Can Write Is What You Can Read". Therefore, all information about workbooks, worksheets, cells and styles that can be written into an XLSX file by NanoXLSX, can also be read by it.
+There are some limitations:
 
-* Reading and casting of cell values into the appropriate data types
-* Reading of several worksheets in on workbook with names
-* Limited processing of styles (when reading) at the moment
+* A workbook or worksheet password cannot be recovered, only its hash
+* Information that is not supported by the library will be discarded
+* There are some approximations for floating point numbers. These values (e.g. pane split widths) may deviate from the originally written values
+* Numeric values are cast to the appropriate .NET types with best effort. There are import options available to enforce specific types
 * No support of other objects than spreadsheet data at the moment
-
-**Note: Styles in loaded files are only considering number formats (to determine date and time values), as well as custom formats. The scope of reader functionality may change with future versions.**
 
 ## Requirements
 
-NanoXLSX is based on PicoXLSX and was created with .NET version 4.5. Newer versions like 4.6 are working and tested. Furthermore, .NET Standard 2.0 is supported since v1.6. Older versions of.NET like 3.5 and 4.0 may also work with minor changes. Some functions introduced in .NET 4.5 were used and must be adapted in this case. 
+NanoXLSX is originally based on PicoXLSX. However, NanoXLSX is now in the development lead, whereas PicoXLSX is a subset of it. The library is currently on compatibility level with .NET version 4.5 and .NET Standard 2.0. Newer versions should of course work as well. Older versions, like .NET 3.5 have only limited support, since newer language features were used.
 
 ### .NET 4.5 or newer
 
@@ -115,3 +131,6 @@ The [demo project](https://github.com/rabanti-github/NanoXLSX/tree/master/Demo) 
 Note: The demo project of the .NET Standard version is identical and only links to the .NET >=4.5 version files.
 
 See also: [Getting started in the Wiki](https://github.com/rabanti-github/NanoXLSX/wiki/Getting-started)
+
+Hint: You will find most certainly any function, and the way how to use it, in the [Unit Test Project](https://github.com/rabanti-github/NanoXLSX/tree/master/NanoXlsx%20Test)
+

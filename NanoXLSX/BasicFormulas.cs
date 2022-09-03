@@ -162,23 +162,25 @@ namespace NanoXLSX
         /// <summary>
         /// Function to generate a Vlookup as Excel function
         /// </summary>
-        /// <param name="number">Numeric value for the lookup. Valid types are int, long, float and double</param>
+        /// <param name="number">Numeric value for the lookup. Valid types are int, uint, long, ulong, float, double, byte, sbyte, decimal, short and ushort</param>
         /// <param name="range">Matrix of the lookup</param>
-        /// <param name="columnIndex">Column index of the target column (1 based)</param>
+        /// <param name="columnIndex">Column index of the target column within the range (1 based)</param>
         /// <param name="exactMatch">If true, an exact match is applied to the lookup</param>
         /// <returns>Prepared Cell object, ready to be added to a worksheet</returns>
+        /// <exception cref="FormatException">A format exception is thrown if the value or column index is invalid</exception>
         public static Cell VLookup(object number, Range range, int columnIndex, bool exactMatch)
         { return VLookup(number, null, range, columnIndex, exactMatch); }
 
         /// <summary>
         /// Function to generate a Vlookup as Excel function
         /// </summary>
-        /// <param name="number">Numeric value for the lookup. Valid types are int, long, float and double</param>
+        /// <param name="number">Numeric value for the lookup. Valid types are int, uint, long, ulong, float, double, byte, sbyte, decimal, short and ushort</param>
         /// <param name="rangeTarget">Target worksheet of the matrix. Can be null if on the same worksheet</param>
         /// <param name="range">Matrix of the lookup</param>
-        /// <param name="columnIndex">Column index of the target column (1 based)</param>
+        /// <param name="columnIndex">Column index of the target column within the range (1 based)</param>
         /// <param name="exactMatch">If true, an exact match is applied to the lookup</param>
         /// <returns>Prepared Cell object, ready to be added to a worksheet</returns>
+        /// <exception cref="FormatException">A format exception is thrown if the value or column index is invalid</exception>
         public static Cell VLookup(object number, Worksheet rangeTarget, Range range, int columnIndex, bool exactMatch)
         { return GetVLookup(null, new Address(), number, rangeTarget, range, columnIndex, exactMatch, true); }
 
@@ -187,9 +189,10 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="address">Query address of a cell as string as source of the lookup</param>
         /// <param name="range">Matrix of the lookup</param>
-        /// <param name="columnIndex">Column index of the target column (1 based)</param>
+        /// <param name="columnIndex">Column index of the target column within the range (1 based)</param>
         /// <param name="exactMatch">If true, an exact match is applied to the lookup</param>
         /// <returns>Prepared Cell object, ready to be added to a worksheet</returns>
+        /// <exception cref="FormatException">A format exception is thrown if the column index is invalid</exception>
         public static Cell VLookup(Address address, Range range, int columnIndex, bool exactMatch)
         { return VLookup(null, address, null, range, columnIndex, exactMatch); }
 
@@ -200,9 +203,10 @@ namespace NanoXLSX
         /// <param name="address">Query address of a cell as string as source of the lookup</param>
         /// <param name="rangeTarget">Target worksheet of the matrix. Can be null if on the same worksheet</param>
         /// <param name="range">Matrix of the lookup</param>
-        /// <param name="columnIndex">Column index of the target column (1 based)</param>
+        /// <param name="columnIndex">Column index of the target column within the range (1 based)</param>
         /// <param name="exactMatch">If true, an exact match is applied to the lookup</param>
         /// <returns>Prepared Cell object, ready to be added to a worksheet</returns>
+        /// <exception cref="FormatException">A format exception is thrown if the column index is invalid</exception>
         public static Cell VLookup(Worksheet queryTarget, Address address, Worksheet rangeTarget, Range range, int columnIndex, bool exactMatch)
         {
             return GetVLookup(queryTarget, address, 0, rangeTarget, range, columnIndex, exactMatch, false);
@@ -216,12 +220,18 @@ namespace NanoXLSX
         /// <param name="number">In case of a numeric lookup, number for the lookup</param>
         /// <param name="rangeTarget">Target worksheet of the matrix. Can be null if on the same worksheet</param>
         /// <param name="range">Matrix of the lookup</param>
-        /// <param name="columnIndex">Column index of the target column (1 based)</param>
+        /// <param name="columnIndex">Column index of the target column within the range (1 based)</param>
         /// <param name="exactMatch">If true, an exact match is applied to the lookup</param>
         /// <param name="numericLookup">If true, the lookup is a numeric lookup, otherwise a reference lookup</param>
         /// <returns>Prepared Cell object, ready to be added to a worksheet</returns>
+        /// <exception cref="FormatException">A format exception is thrown if the value or column index is invalid</exception>
         private static Cell GetVLookup(Worksheet queryTarget, Address address, object number, Worksheet rangeTarget, Range range, int columnIndex, bool exactMatch, bool numericLookup)
         {
+            int rangeWidth = Math.Abs(range.EndAddress.Column - range.StartAddress.Column) + 1;
+            if (columnIndex < 1 || columnIndex > rangeWidth)
+            {
+                throw new FormatException("The column index on range " + range.ToString() + " can only be between 1 and " + rangeWidth);
+            }
             CultureInfo culture = CultureInfo.InvariantCulture;
             string arg1;
             string arg2;
@@ -229,6 +239,10 @@ namespace NanoXLSX
             string arg4;
             if (numericLookup)
             {
+                if (number == null)
+                {
+                    throw new FormatException("The lookup variable can only be a cell address or a numeric value. The passed value was null.");
+                }
                 Type t = number.GetType();
                 if (t == typeof(byte))
                 { arg1 = ((byte)number).ToString("G", culture); }
@@ -242,6 +256,8 @@ namespace NanoXLSX
                 { arg1 = ((float)number).ToString("G", culture); }
                 else if (t == typeof(int))
                 { arg1 = ((int)number).ToString("G", culture); }
+                else if (t == typeof(uint))
+                { arg1 = ((uint)number).ToString("G", culture); }
                 else if (t == typeof(long))
                 { arg1 = ((long)number).ToString("G", culture); }
                 else if (t == typeof(ulong))
@@ -252,7 +268,7 @@ namespace NanoXLSX
                 { arg1 = ((ushort)number).ToString("G", culture); }
                 else
                 {
-                    throw new FormatException("InvalidLookupType", "The lookup variable can only be a cell address or a numeric value. The value '" + number + "' is invalid.");
+                    throw new FormatException("The lookup variable can only be a cell address or a numeric value. The value '" + number + "' is invalid.");
                 }
             }
             else

@@ -6,6 +6,7 @@
  */
 
 using NanoXLSX.Exceptions;
+using System.Text;
 
 namespace NanoXLSX.Styles
 {
@@ -14,6 +15,25 @@ namespace NanoXLSX.Styles
     /// </summary>
     public class CellXf : AbstractStyle
     {
+        #region constants
+        /// <summary>
+        /// Default horizontal align value as constant
+        /// </summary>
+        public static readonly HorizontalAlignValue DEFAULT_HORIZONTAL_ALIGNMENT = HorizontalAlignValue.none;
+        /// <summary>
+        /// Default text break value as constant
+        /// </summary>
+        public static readonly TextBreakValue DEFAULT_ALIGNMENT = TextBreakValue.none;
+        /// <summary>
+        /// Default text direction value as constant
+        /// </summary>
+        public static readonly TextDirectionValue DEFAULT_TEXT_DIRECTION = TextDirectionValue.horizontal;
+        /// <summary>
+        /// Default vertical align value as constant
+        /// </summary>
+        public static readonly VerticalAlignValue DEFAULT_VERTICAL_ALIGNMENT = VerticalAlignValue.none;
+        #endregion
+
         #region enums
         /// <summary>
         /// Enum for the horizontal alignment of a cell 
@@ -87,32 +107,39 @@ namespace NanoXLSX.Styles
         #region privateFields
         private int textRotation;
         private TextDirectionValue textDirection;
+        private int indent;
         #endregion
 
         #region properties
         /// <summary>
         /// Gets or sets whether the applyAlignment property (used to merge cells) will be defined in the XF entry of the style. If true, applyAlignment will be defined
         /// </summary>
+        [Append]
         public bool ForceApplyAlignment { get; set; }
         /// <summary>
         /// Gets or sets whether the hidden property (used for protection or hiding of cells) will be defined in the XF entry of the style. If true, hidden will be defined
         /// </summary>
+        [Append]
         public bool Hidden { get; set; }
         /// <summary>
         /// Gets or sets the horizontal alignment of the style
         /// </summary>
+        [Append]
         public HorizontalAlignValue HorizontalAlign { get; set; }
         /// <summary>
         /// Gets or sets whether the locked property (used for locking / protection of cells or worksheets) will be defined in the XF entry of the style. If true, locked will be defined
         /// </summary>
+        [Append]
         public bool Locked { get; set; }
         /// <summary>
         /// Gets or sets the text break options of the style
         /// </summary>
+        [Append]
         public TextBreakValue Alignment { get; set; }
         /// <summary>
         /// Gets or sets the direction of the text within the cell
         /// </summary>
+        [Append]
         public TextDirectionValue TextDirection
         {
             get { return textDirection; }
@@ -125,6 +152,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the text rotation in degrees (from +90 to -90)
         /// </summary>
+        [Append]
         public int TextRotation
         {
             get { return textRotation; }
@@ -138,12 +166,28 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the vertical alignment of the style
         /// </summary>
+        [Append]
         public VerticalAlignValue VerticalAlign { get; set; }
 
         /// <summary>
         /// Gets or sets the indentation in case of left, right or distributed alignment. If 0, no alignment is applied
         /// </summary>
-        public int Indent { get; set; }
+        [Append]
+        public int Indent
+        {
+            get => indent;
+            set
+            {
+                if (value >= 0)
+                {
+                    indent = value;
+                }
+                else
+                {
+                    throw new StyleException("The indent value '" + value + "' is not valid. It must be >= 0");
+                }
+            }
+        }
 
         #endregion
 
@@ -153,10 +197,10 @@ namespace NanoXLSX.Styles
         /// </summary>
         public CellXf()
         {
-            HorizontalAlign = HorizontalAlignValue.none;
-            Alignment = TextBreakValue.none;
-            textDirection = TextDirectionValue.horizontal;
-            VerticalAlign = VerticalAlignValue.none;
+            HorizontalAlign = DEFAULT_HORIZONTAL_ALIGNMENT;
+            Alignment = DEFAULT_ALIGNMENT;
+            textDirection = DEFAULT_TEXT_DIRECTION;
+            VerticalAlign = DEFAULT_VERTICAL_ALIGNMENT;
             textRotation = 0;
             Indent = 0;
         }
@@ -166,9 +210,9 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Method to calculate the internal text rotation. The text direction and rotation are handled internally by the text rotation value
         /// </summary>
-        /// <returns>Returns the valid rotation in degrees for internal uses (LowLevel)</returns>
+        /// <returns>Returns the valid rotation in degrees for internal use (LowLevel)</returns>
         /// <exception cref="FormatException">Throws a FormatException if the rotation angle (-90 to 90) is out of range</exception>
-        public int CalculateInternalRotation()
+        internal int CalculateInternalRotation()
         {
             if (textRotation < -90 || textRotation > 90)
             {
@@ -176,7 +220,8 @@ namespace NanoXLSX.Styles
             }
             if (textDirection == TextDirectionValue.vertical)
             {
-                return 255;
+                textRotation = 255;
+                return textRotation;
             }
             else
             {
@@ -197,7 +242,20 @@ namespace NanoXLSX.Styles
         /// <returns>String of a class instance</returns>
         public override string ToString()
         {
-            return "StyleXF:" + this.GetHashCode();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("\"StyleXF\": {\n");
+            AddPropertyAsJson(sb, "HorizontalAlign", HorizontalAlign);
+            AddPropertyAsJson(sb, "Alignment", Alignment);
+            AddPropertyAsJson(sb, "TextDirection", TextDirection);
+            AddPropertyAsJson(sb, "TextRotation", TextRotation);
+            AddPropertyAsJson(sb, "VerticalAlign", VerticalAlign);
+            AddPropertyAsJson(sb, "ForceApplyAlignment", ForceApplyAlignment);
+            AddPropertyAsJson(sb, "Locked", Locked);
+            AddPropertyAsJson(sb, "Hidden", Hidden);
+            AddPropertyAsJson(sb, "Indent", Indent);
+            AddPropertyAsJson(sb, "HashCode", this.GetHashCode(), true);
+            sb.Append("\n}");
+            return sb.ToString();
         }
 
         /// <summary>
@@ -220,6 +278,27 @@ namespace NanoXLSX.Styles
             hashCode = hashCode * -1521134295 + Indent.GetHashCode();
             return hashCode;
         }
+
+        /// <summary>
+        /// Returns whether two instances are the same
+        /// </summary>
+        /// <param name="obj">Object to compare</param>
+        /// <returns>True if this instance and the other are the same</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is CellXf xf &&
+                   ForceApplyAlignment == xf.ForceApplyAlignment &&
+                   Hidden == xf.Hidden &&
+                   HorizontalAlign == xf.HorizontalAlign &&
+                   Locked == xf.Locked &&
+                   Alignment == xf.Alignment &&
+                   TextDirection == xf.TextDirection &&
+                   TextRotation == xf.TextRotation &&
+                   VerticalAlign == xf.VerticalAlign &&
+                   Indent == xf.Indent;
+        }
+
+
 
         /// <summary>
         /// Method to copy the current object to a new one without casting
@@ -248,15 +327,6 @@ namespace NanoXLSX.Styles
         {
             return (CellXf)Copy();
         }
-
- 
-
-
-
-
-
-
-
         #endregion
 
     }

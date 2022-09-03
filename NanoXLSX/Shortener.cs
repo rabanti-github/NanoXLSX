@@ -17,12 +17,33 @@ namespace NanoXLSX
     public class Shortener
     {
         private Worksheet currentWorksheet;
+        private readonly Workbook workbookReference;
+
+        /// <summary>
+        /// Constructor with workbook reference
+        /// </summary>
+        /// <param name="reference">Workbook reference</param>
+        public Shortener(Workbook reference)
+        {
+            this.workbookReference = reference;
+            this.currentWorksheet = reference.CurrentWorksheet;
+        }
 
         /// <summary>
         /// Sets the worksheet accessed by the shortener
         /// </summary>
         /// <param name="worksheet">Current worksheet</param>
         public void SetCurrentWorksheet(Worksheet worksheet)
+        {
+            workbookReference.SetCurrentWorksheet(worksheet);
+            currentWorksheet = worksheet;
+        }
+
+        /// <summary>
+        /// Sets the worksheet accessed by the shortener, invoked by the workbook
+        /// </summary>
+        /// <param name="worksheet">Current worksheet</param>
+        internal void SetCurrentWorksheetInternal(Worksheet worksheet)
         {
             currentWorksheet = worksheet;
         }
@@ -86,10 +107,33 @@ namespace NanoXLSX
         /// Moves the cursor the number of defined rows down
         /// </summary>
         /// <param name="numberOfRows">Number of rows to move</param>
-        public void Down(int numberOfRows)
+        /// <param name="keepColumnPosition">If true, the column position is preserved, otherwise set to 0</param>
+        public void Down(int numberOfRows, bool keepColumnPosition = false)
         {
             NullCheck();
-            currentWorksheet.GoToNextRow(numberOfRows);
+            currentWorksheet.GoToNextRow(numberOfRows, keepColumnPosition);
+        }
+
+        /// <summary>
+        /// Moves the cursor one row up
+        /// </summary>
+        /// <remarks>An exception will be thrown if the row number is below 0/></remarks>
+        public void Up()
+        {
+            NullCheck();
+            currentWorksheet.GoToNextRow(-1);
+        }
+
+        /// <summary>
+        /// Moves the cursor the number of defined rows up
+        /// </summary>
+        /// <param name="numberOfRows">Number of rows to move</param>
+        /// <param name="keepColumnosition">If true, the column position is preserved, otherwise set to 0</param>
+        /// <remarks>An exception will be thrown if the row number is below 0. Values can be also negative. However, this is the equivalent of the function <see cref="Down(int, bool)"/></remarks>
+        public void Up(int numberOfRows, bool keepColumnosition = false)
+        {
+            NullCheck();
+            currentWorksheet.GoToNextRow(-1*numberOfRows, keepColumnosition);
         }
 
         /// <summary>
@@ -105,10 +149,33 @@ namespace NanoXLSX
         /// Moves the cursor the number of defined columns to the right
         /// </summary>
         /// <param name="numberOfColumns">Number of columns to move</param>
-        public void Right(int numberOfColumns)
+        /// <param name="keepRowPosition">If true, the row position is preserved, otherwise set to 0</param></param>
+        public void Right(int numberOfColumns, bool keepRowPosition = false)
         {
             NullCheck();
-            currentWorksheet.GoToNextColumn(numberOfColumns);
+            currentWorksheet.GoToNextColumn(numberOfColumns, keepRowPosition);
+        }
+
+        /// <summary>
+        /// Moves the cursor one column to the left
+        /// </summary>
+        /// <remarks>An exception will be thrown if the column number is below 0</remarks>
+        public void Left()
+        {
+            NullCheck();
+            currentWorksheet.GoToNextColumn(-1);
+        }
+
+        /// <summary>
+        /// Moves the cursor the number of defined columns to the left
+        /// </summary>
+        /// <param name="numberOfColumns">Number of columns to move</param>
+        /// <param name="keepRowRowPosition">If true, the row position is preserved, otherwise set to 0</param>
+        /// <remarks>An exception will be thrown if the column number is below 0. Values can be also negative. However, this is the equivalent of the function <see cref="Right(int, bool)"/></remarks>
+        public void Left(int numberOfColumns, bool keepRowRowPosition = false)
+        {
+            NullCheck();
+            currentWorksheet.GoToNextColumn(-1*numberOfColumns, keepRowRowPosition);
         }
 
         /// <summary>
@@ -118,7 +185,7 @@ namespace NanoXLSX
         {
             if (currentWorksheet == null)
             {
-                throw new WorksheetException("UndefinedWorksheetException", "No worksheet was defined");
+                throw new WorksheetException("No worksheet was defined");
             }
         }
 

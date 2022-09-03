@@ -5,7 +5,10 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace NanoXLSX.Styles
 {
@@ -16,9 +19,18 @@ namespace NanoXLSX.Styles
     {
         #region constants
         /// <summary>
-        /// Default Color (foreground or background) as constant
+        /// Default Color (foreground or background)
         /// </summary>
-        public static readonly string DEFAULTCOLOR = "FF000000";
+        public static readonly string DEFAULT_COLOR = "FF000000";
+        /// <summary>
+        /// Default index color
+        /// </summary>
+        public static readonly int DEFAULT_INDEXED_COLOR = 64;
+        /// <summary>
+        /// Default pattern
+        /// </summary>
+        public static readonly PatternValue DEFAULT_PATTERN_FILL = PatternValue.none;
+
         #endregion
 
         #region enums
@@ -37,7 +49,10 @@ namespace NanoXLSX.Styles
         /// </summary>
         public enum PatternValue
         {
-            /// <summary>No pattern (default)</summary>
+            /// <summary>
+            /// No pattern (default)
+            /// </summary>
+            /// <remarks>The value none will lead to a invalidation of the foreground or background color values</remarks>
             none,
             /// <summary>Solid fill (for colors)</summary>
             solid,
@@ -54,22 +69,59 @@ namespace NanoXLSX.Styles
         }
         #endregion
 
+        #region privateFields
+        private string backgroundColor = DEFAULT_COLOR;
+        private string foregroundColor = DEFAULT_COLOR;
+        #endregion
+
         #region properties
         /// <summary>
         /// Gets or sets the background color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
-        public string BackgroundColor { get; set; }
+        /// <remarks>If a background color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.none">PatternValue.none</see>, 
+        /// the PatternFill property will be automatically set to <see cref="PatternValue.solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
+        [Append]
+        public string BackgroundColor
+        {
+            get => backgroundColor;
+            set
+            {
+                ValidateColor(value, true);
+                backgroundColor = value;
+                if (PatternFill == PatternValue.none)
+                {
+                    PatternFill = PatternValue.solid;
+                }
+            }
+        }
         /// <summary>
         /// Gets or sets the foreground color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
-        public string ForegroundColor { get; set; }
+        /// <remarks>If a foreground color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.none">PatternValue.none</see>, 
+        /// the PatternFill property will be automatically set to <see cref="PatternValue.solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
+        [Append]
+        public string ForegroundColor
+        {
+            get => foregroundColor;
+            set
+            {
+                ValidateColor(value, true);
+                foregroundColor = value;
+                if (PatternFill == PatternValue.none)
+                {
+                    PatternFill = PatternValue.solid;
+                }
+            }
+        }
         /// <summary>
         /// Gets or sets the indexed color (Default is 64)
         /// </summary>
+        [Append]
         public int IndexedColor { get; set; }
         /// <summary>
         /// Gets or sets the pattern type of the fill (Default is none)
         /// </summary>
+        [Append]
         public PatternValue PatternFill { get; set; }
         #endregion
 
@@ -79,10 +131,10 @@ namespace NanoXLSX.Styles
         /// </summary>
         public Fill()
         {
-            IndexedColor = 64;
-            PatternFill = PatternValue.none;
-            ForegroundColor = DEFAULTCOLOR;
-            BackgroundColor = DEFAULTCOLOR;
+            IndexedColor = DEFAULT_INDEXED_COLOR;
+            PatternFill = DEFAULT_PATTERN_FILL;
+            foregroundColor = DEFAULT_COLOR;
+            backgroundColor = DEFAULT_COLOR;
         }
         /// <summary>
         /// Constructor with foreground and background color
@@ -93,7 +145,7 @@ namespace NanoXLSX.Styles
         {
             BackgroundColor = background;
             ForegroundColor = foreground;
-            IndexedColor = 64;
+            IndexedColor = DEFAULT_INDEXED_COLOR;
             PatternFill = PatternValue.solid;
         }
 
@@ -101,20 +153,20 @@ namespace NanoXLSX.Styles
         /// Constructor with color value and fill type
         /// </summary>
         /// <param name="value">Color value</param>
-        /// <param name="filltype">Fill type (fill or pattern)</param>
-        public Fill(string value, FillType filltype)
+        /// <param name="fillType">Fill type (fill or pattern)</param>
+        public Fill(string value, FillType fillType)
         {
-            if (filltype == FillType.fillColor)
+            if (fillType == FillType.fillColor)
             {
-                BackgroundColor = value;
-                ForegroundColor = DEFAULTCOLOR;
+                backgroundColor = DEFAULT_COLOR;
+                ForegroundColor = value;
             }
             else
             {
-                BackgroundColor = DEFAULTCOLOR;
-                ForegroundColor = value;
+                BackgroundColor = value;
+                foregroundColor = DEFAULT_COLOR;
             }
-            IndexedColor = 64;
+            IndexedColor = DEFAULT_INDEXED_COLOR;
             PatternFill = PatternValue.solid;
         }
         #endregion
@@ -127,7 +179,15 @@ namespace NanoXLSX.Styles
         /// <returns>String of a class</returns>
         public override string ToString()
         {
-            return "Fill:" + this.GetHashCode();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("\"Fill\": {\n");
+            AddPropertyAsJson(sb, "BackgroundColor", BackgroundColor);
+            AddPropertyAsJson(sb, "ForegroundColor", ForegroundColor);
+            AddPropertyAsJson(sb, "IndexedColor", IndexedColor);
+            AddPropertyAsJson(sb, "PatternFill", PatternFill);
+            AddPropertyAsJson(sb, "HashCode", this.GetHashCode(), true);
+            sb.Append("\n}");
+            return sb.ToString();
         }
 
         /// <summary>
@@ -161,6 +221,20 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
+        /// Returns whether two instances are the same
+        /// </summary>
+        /// <param name="obj">Object to compare</param>
+        /// <returns>True if this instance and the other are the same</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Fill fill &&
+                   BackgroundColor == fill.BackgroundColor &&
+                   ForegroundColor == fill.ForegroundColor &&
+                   IndexedColor == fill.IndexedColor &&
+                   PatternFill == fill.PatternFill;
+        }
+
+        /// <summary>
         /// Method to copy the current object to a new one with casting
         /// </summary>
         /// <returns>Copy of the current object without the internal ID</returns>
@@ -178,13 +252,13 @@ namespace NanoXLSX.Styles
         {
             if (filltype == FillType.fillColor)
             {
+                backgroundColor = DEFAULT_COLOR;
                 ForegroundColor = value;
-                BackgroundColor = DEFAULTCOLOR;
             }
             else
             {
-                ForegroundColor = DEFAULTCOLOR;
                 BackgroundColor = value;
+                foregroundColor = DEFAULT_COLOR;
             }
             PatternFill = PatternValue.solid;
         }
@@ -196,14 +270,11 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <param name="pattern">Enum to process</param>
         /// <returns>The valid value of the pattern as String</returns>
-        public static string GetPatternName(PatternValue pattern)
+        internal static string GetPatternName(PatternValue pattern)
         {
             string output;
             switch (pattern)
             {
-                case PatternValue.none:
-                    output = "none";
-                    break;
                 case PatternValue.solid:
                     output = "solid";
                     break;
@@ -228,9 +299,37 @@ namespace NanoXLSX.Styles
             }
             return output;
         }
+
+        /// <summary>
+        /// Validates the passed string, whether it is a valid RGB value that can be used for Fills or Fonts
+        /// </summary>
+        /// <exception cref="StyleException">A StyleException is thrown if an invalid hex value is passed</exception>
+        /// <param name="hexCode">Hex string to check</param>
+        /// <param name="useAlpha">If true, two additional characters (total 8) are expected as alpha value</param>
+        /// <param name="allowEmpty">Optional parameter that allows null or empty as valid values</param>
+        public static void ValidateColor(string hexCode, bool useAlpha, bool allowEmpty = false)
+        {
+            if (string.IsNullOrEmpty(hexCode))
+            {
+                if (allowEmpty)
+                {
+                    return;
+                }
+                throw new StyleException("The color expression was null or empty");
+            }
+
+            int length;
+            length = useAlpha ? 8 : 6;
+            if (hexCode.Length != length)
+            {
+                throw new StyleException("The value '" + hexCode + "' is invalid. A valid value must contain six hex characters");
+            }
+            if (!Regex.IsMatch(hexCode, "[a-fA-F0-9]{6,8}"))
+            {
+                throw new StyleException("The expression '" + hexCode + "' is not a valid hex value");
+            }
+        }
         #endregion
-
-
 
     }
 }

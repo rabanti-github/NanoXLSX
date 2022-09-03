@@ -24,25 +24,41 @@ namespace NanoXLSX
         public Address StartAddress;
 
         /// <summary>
-        /// Constructor with addresses as arguments
+        /// Constructor with addresses as arguments. The addresses are automatically swapped if the start address is greater than the end address
         /// </summary>
         /// <param name="start">Start address of the range</param>
         /// <param name="end">End address of the range</param>
         public Range(Address start, Address end)
         {
-            StartAddress = start;
-            EndAddress = end;
+            if (start.CompareTo(end) < 0)
+            {
+                StartAddress = start;
+                EndAddress = end;
+            }
+            else
+            {
+                StartAddress = end;
+                EndAddress = start;
+            }
         }
 
         /// <summary>
-        /// Constructor with a range string as argument
+        /// Constructor with a range string as argument. The addresses are automatically swapped if the start address is greater than the end address
         /// </summary>
         /// <param name="range">Address range (e.g. 'A1:B12')</param>
         public Range(string range)
         {
             Range r = Cell.ResolveCellRange(range);
-            StartAddress = r.StartAddress;
-            EndAddress = r.EndAddress;
+            if (r.StartAddress.CompareTo(r.EndAddress) < 0)
+            {
+                StartAddress = r.StartAddress;
+                EndAddress = r.EndAddress;
+            }
+            else
+            {
+                StartAddress = r.EndAddress;
+                EndAddress = r.StartAddress;
+            }
         }
 
         /// <summary>
@@ -51,36 +67,8 @@ namespace NanoXLSX
         /// <returns>List of Addresses</returns>
         public IReadOnlyList<Address> ResolveEnclosedAddresses()
         {
-            int startColumn, endColumn, startRow, endRow;
-            if (StartAddress.Column <= EndAddress.Column)
-            {
-                startColumn = this.StartAddress.Column;
-                endColumn = this.EndAddress.Column;
-            }
-            else
-            {
-                endColumn = this.StartAddress.Column;
-                startColumn = this.EndAddress.Column;
-            }
-            if (StartAddress.Row <= EndAddress.Row)
-            {
-                startRow = this.StartAddress.Row;
-                endRow = this.EndAddress.Row;
-            }
-            else
-            {
-                endRow = this.StartAddress.Row;
-                startRow = this.EndAddress.Row;
-            }
-            List<Address> addresses = new List<Address>();
-            for(int c = startColumn; c <= endColumn; c++)
-            {
-                for (int r = startRow; r <= endRow; r++)
-                {
-                    addresses.Add(new Address(c, r));
-                }
-            }
-            return addresses;
+            IEnumerable<Address> range = Cell.GetCellRange(this.StartAddress, this.EndAddress);
+            return new List<Address>(range);
         }
 
         /// <summary>
@@ -90,6 +78,25 @@ namespace NanoXLSX
         public override string ToString()
         {
             return StartAddress + ":" + EndAddress;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is Range))
+            {
+                return false;
+            }
+            Range other = (Range)obj;
+            return this.StartAddress.Equals(other.StartAddress) && this.EndAddress.Equals(other.EndAddress);
+        }
+
+        /// <summary>
+        /// Creates a (dereferenced, if applicable) deep copy of this range
+        /// </summary>
+        /// <returns>Copy of this range</returns>
+        internal Range Copy()
+        {
+            return new Range(this.StartAddress.Copy(), this.EndAddress.Copy());
         }
 
     }

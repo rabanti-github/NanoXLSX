@@ -16,14 +16,9 @@ namespace NanoXLSX.Exceptions
     public class FormatException : Exception
     {
         /// <summary>
-        /// Gets or sets the title of the exception
-        /// </summary>
-        public string ExceptionTitle { get; set; }
-
-        /// <summary>
         /// Default constructor
         /// </summary>
-        public FormatException()
+        public FormatException() : base()
         { }
         /// <summary>
         /// Constructor with passed message
@@ -32,22 +27,14 @@ namespace NanoXLSX.Exceptions
         public FormatException(string message)
             : base(message)
         { }
-        /// <summary>
-        /// Constructor with passed message
-        /// </summary>
-        /// <param name="message">Message of the exception</param>
-        /// <param name="title">Title of the exception</param>
-        public FormatException(string title, string message)
-            : base(title + ": " + message)
-        { ExceptionTitle = title; }
+
         /// <summary>
         /// Constructor with passed message and inner exception
         /// </summary>
         /// <param name="message">Message of the exception</param>
         /// <param name="inner">Inner exception</param>
-        /// <param name="title">Title of the exception</param>
-        public FormatException(string title, string message, Exception inner)
+        public FormatException(string message, Exception inner)
             : base(message, inner)
-        { ExceptionTitle = title; }
+        {  }
     }
 }

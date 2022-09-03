@@ -40,9 +40,9 @@ namespace NanoXLSX.Styles
         /// <param name="reference">Reference object to decide whether the properties from the source objects are altered or not</param>
         internal void CopyProperties<T>(T source, T reference) where T : AbstractStyle
         {
-            if (GetType() != source.GetType() && GetType() != reference.GetType())
+            if (source == null || GetType() != source.GetType() && GetType() != reference.GetType())
             {
-                throw new StyleException("CopyPropertyException", "The objects of the source, target and reference for style appending are not of the same type");
+                throw new StyleException("The objects of the source, target and reference for style appending are not of the same type");
             }
             PropertyInfo[] infos = GetType().GetProperties();
             PropertyInfo sourceInfo;
@@ -64,6 +64,11 @@ namespace NanoXLSX.Styles
             }
         }
 
+        /// <summary>
+        /// Method to check whether a property is considered or skipped 
+        /// </summary>
+        /// <param name="attributes">Collection of attributes to check</param>
+        /// <returns>Returns false as soon a property of the collection is marked as ignored or nested</returns>
         private static bool HandleProperties(IEnumerable<AppendAttribute> attributes)
         {
             foreach (AppendAttribute attribute in attributes)
@@ -112,56 +117,26 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Method to cast values of the components to string values for the hash calculation (protected/internal static method)
+        /// Append a JSON property for debug purpose (used in the ToString methods) to the passed string builder
         /// </summary>
-        /// <param name="o">Value to cast</param>
-        /// <param name="sb">StringBuilder reference to put the casted object in</param>
-        /// <param name="delimiter">Delimiter character to append after the casted value</param>
-        protected static void CastValue(object o, ref StringBuilder sb, char? delimiter)
+        /// <param name="sb">String builder</param>
+        /// <param name="name">Property name</param>
+        /// <param name="value">Property value</param>
+        /// <param name="terminate">If true, no comma and newline will be appended</param>
+        internal static void AddPropertyAsJson(StringBuilder sb, string name, object value, bool terminate = false)
         {
-            if (sb == null)
+            sb.Append("\"").Append(name).Append("\": ");
+            if (value == null)
             {
-                throw new StyleException(StyleException.MISSING_REFERENCE, "The string builder to cats values is not defined");
-            }
-            if (o == null)
-            {
-                sb.Append('#');
-            }
-            else if (o is bool)
-            {
-                sb.Append((bool)o ? 1 : 0);
-            }
-            else if (o is int)
-            {
-                sb.Append((int)o);
-            }
-            else if (o is double)
-            {
-                sb.Append((double)o);
-            }
-            else if (o is float)
-            {
-                sb.Append((float)o);
-            }
-            else if (o is string)
-            {
-                sb.Append(o.ToString() == "#" ? "_#_" : (string)o);
-            }
-            else if (o is long)
-            {
-                sb.Append((long)o);
-            }
-            else if (o is char)
-            {
-                sb.Append((char)o);
+                sb.Append("\"\"");
             }
             else
             {
-                sb.Append(o);
+                sb.Append("\"").Append(value.ToString().Replace("\"", "\\\"")).Append("\"");
             }
-            if (delimiter.HasValue)
+            if (!terminate)
             {
-                sb.Append(delimiter.Value);
+                sb.Append(",\n");
             }
         }
 
@@ -181,7 +156,7 @@ namespace NanoXLSX.Styles
 
             /// <summary>
             /// Indicates whether the property annotated with the attribute is a nested property. 
-            /// Nested properties are ignored but during the copying of properties but can be broken down to its sub-properties
+            /// Nested properties are ignored during the copying of properties but can be broken down to its sub-properties
             /// </summary>
             /// <value>
             ///   <c>true</c> if a nested property, otherwise <c>false</c>.

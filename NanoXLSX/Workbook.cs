@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using NanoXLSX.Exceptions;
@@ -26,7 +27,6 @@ namespace NanoXLSX
         private string filename;
         private List<Worksheet> worksheets;
         private Worksheet currentWorksheet;
-        private StyleManager styleManager;
         private Metadata workbookMetadata;
         private string workbookProtectionPassword;
         private bool lockWindowsIfProtected;
@@ -34,10 +34,10 @@ namespace NanoXLSX
         private int selectedWorksheet;
         private Shortener shortener;
         private bool importInProgress = false;
+        private List<string> mruColors = new List<string>();
         #endregion
 
         #region properties
-
 
         /// <summary>
         /// Gets the shortener object for the current worksheet
@@ -57,8 +57,11 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets or sets the filename of the workbook
+        /// Gets or sets the filename of the workbook.
         /// </summary>
+        /// <remarks>
+        /// Note that the file name is not sanitized. If a filename is set that is not compliant to the file system, saving of the workbook may fail
+        /// </remarks>
         public string Filename
         {
             get { return filename; }
@@ -66,18 +69,16 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets whether the structure are locked if workbook is protected
+        /// Gets whether the structure are locked if workbook is protected. See also <see cref="SetWorkbookProtection"/>
         /// </summary>
-        /// <see cref="SetWorkbookProtection"/>
         public bool LockStructureIfProtected
         {
             get { return lockStructureIfProtected; }
         }
 
         /// <summary>
-        /// Gets whether the windows are locked if workbook is protected
+        /// Gets whether the windows are locked if workbook is protected. See also <see cref="SetWorkbookProtection"/> 
         /// </summary>
-        /// <see cref="SetWorkbookProtection"/> 
         public bool LockWindowsIfProtected
         {
             get { return lockWindowsIfProtected; }
@@ -101,26 +102,25 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the style manager of this workbook
-        /// </summary>
-        public StyleManager Styles
-        {
-            get { return styleManager; }
-        }
-
-        /// <summary>
         /// Gets or sets whether the workbook is protected
         /// </summary>
         public bool UseWorkbookProtection { get; set; }
 
         /// <summary>
-        /// Gets the password used for workbook protection
+        /// Gets the password used for workbook protection. See also <see cref="SetWorkbookProtection"/>
         /// </summary>
-        /// <see cref="SetWorkbookProtection"/>
+        /// <remarks>The password of this property is stored in plan text at runtime but not stored to a workbook. See also <see cref="WorkbookProtectionPasswordHash"/> for the generated hash</remarks>
         public string WorkbookProtectionPassword
         {
             get { return workbookProtectionPassword; }
         }
+
+        /// <summary>
+        /// Hash of the protected workbook, originated from <see cref="WorkbookProtectionPassword"/>
+        /// </summary>
+        /// <remarks>The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused, 
+        /// if no changes are made in the area of workbook protection (<see cref="SetWorkbookProtection(bool, bool, bool, string)"/>)</remarks>
+        public string WorkbookProtectionPasswordHash { get; internal set; }
 
         /// <summary>
         /// Gets the list of worksheets in the workbook
@@ -140,6 +140,15 @@ namespace NanoXLSX
         #endregion
 
         #region constructors
+        /// <summary>
+        /// Default constructor. No initial worksheet is created. Use <see cref="AddWorksheet(string)"/> (or overloads) to add one
+        /// </summary>
+        public Workbook()
+        {
+            Init();
+
+        }
+
         /// <summary>
         /// Constructor with additional parameter to create a default worksheet. This constructor can be used to define a workbook that is saved as stream
         /// </summary>
@@ -185,7 +194,14 @@ namespace NanoXLSX
         {
             Init();
             this.filename = filename;
-            AddWorksheet(Worksheet.SanitizeWorksheetName(sheetName, this));
+            if (sanitizeSheetName)
+            {
+                AddWorksheet(Worksheet.SanitizeWorksheetName(sheetName, this));
+            }
+            else
+            {
+                AddWorksheet(sheetName);
+            }
         }
 
         #endregion
@@ -193,22 +209,55 @@ namespace NanoXLSX
         #region methods_PICO
 
         /// <summary>
-        /// Adds a style to the style manager
+        /// Adds a color value (HEX; 6-digit RGB or 8-digit RGBA) to the MRU list
         /// </summary>
-        /// <param name="style">Style to add</param>
-        /// <returns>Returns the managed style of the style manager</returns>
-
-        public Style AddStyle(Style style)
+        /// <param name="color">RGB code in hex format (either 6 characters, e.g. FF00AC or 8 characters with leading alpha value). Alpha will be set to full opacity (FF) in case of 6 characters</param>
+        public void AddMruColor(string color)
         {
-            return styleManager.AddStyle(style);
+            if (color != null && color.Length == 6)
+            {
+                color = "FF" + color;
+            }
+            Fill.ValidateColor(color, true);
+            mruColors.Add(Utils.ToUpper(color));
         }
 
         /// <summary>
-        /// Adds a style component to a style
+        /// Gets the MRU color list
+        /// </summary>
+        /// <returns>Immutable list of color values</returns>
+        public IReadOnlyList<string> GetMruColors()
+        {
+            return mruColors;
+        }
+
+        /// <summary>
+        /// Clears the MRU color list
+        /// </summary>
+        public void ClearMruColors()
+        {
+            mruColors.Clear();
+        }
+
+        /// <summary>
+        /// Adds a style to the style repository. This method is deprecated since it has no direct impact on the generated file.
+        /// </summary>
+        /// <param name="style">Style to add</param>
+        /// <returns>Returns the managed style of the style repository</returns>
+        /// 
+        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
+        public Style AddStyle(Style style)
+        {
+            return StyleRepository.Instance.AddStyle(style);
+        }
+
+        /// <summary>
+        /// Adds a style component to a style. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="baseStyle">Style to append a component</param>
         /// <param name="newComponent">Component to add to the baseStyle</param>
-        /// <returns>Returns the managed style of the style manager</returns>
+        /// <returns>Returns the modified style of the style repository</returns>
+        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public Style AddStyleComponent(Style baseStyle, AbstractStyle newComponent)
         {
 
@@ -232,15 +281,14 @@ namespace NanoXLSX
             {
                 baseStyle.CurrentNumberFormat = (NumberFormat)newComponent;
             }
-            return styleManager.AddStyle(baseStyle);
+            return StyleRepository.Instance.AddStyle(baseStyle);
         }
-
 
         /// <summary>
         /// Adding a new Worksheet. The new worksheet will be defined as current worksheet
         /// </summary>
         /// <param name="name">Name of the new worksheet</param>
-        /// <exception cref="WorksheetException">Throws a WorksheetNameAlreadxExistsException if the name of the worksheet already exists</exception>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the name of the worksheet already exists</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if the name contains illegal characters or is out of range (length between 1 an 31 characters)</exception>
         public void AddWorksheet(string name)
         {
@@ -248,14 +296,14 @@ namespace NanoXLSX
             {
                 if (item.SheetName == name)
                 {
-                    throw new WorksheetException("WorksheetNameAlreadxExistsException", "The worksheet with the name '" + name + "' already exists.");
+                    throw new WorksheetException("The worksheet with the name '" + name + "' already exists.");
                 }
             }
-            int number = worksheets.Count + 1;
+            int number = GetNextWorksheetId();
             Worksheet newWs = new Worksheet(name, number, this);
             currentWorksheet = newWs;
             worksheets.Add(newWs);
-            shortener.SetCurrentWorksheet(currentWorksheet);
+            shortener.SetCurrentWorksheetInternal(currentWorksheet);
         }
 
         /// <summary>
@@ -265,7 +313,7 @@ namespace NanoXLSX
         /// <param name="sanitizeSheetName">If true, the name of the worksheet will be sanitized automatically according to the specifications of Excel</param>
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists and sanitizeSheetName is false</exception>
         /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitizeSheetName is false</exception>
-        public void AddWorksheet(String name, bool sanitizeSheetName)
+        public void AddWorksheet(string name, bool sanitizeSheetName)
         {
             if (sanitizeSheetName)
             {
@@ -283,55 +331,63 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="worksheet">Prepared worksheet object</param>
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists</exception>
-        /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31</exception>
+        /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31)</exception>
         public void AddWorksheet(Worksheet worksheet)
         {
-            for (int i = 0; i < worksheets.Count; i++)
+            AddWorksheet(worksheet, false);
+        }
+
+        /// <summary>
+        /// Adding a new Worksheet. The new worksheet will be defined as current worksheet
+        /// </summary>
+        /// <param name="worksheet">Prepared worksheet object</param>
+        /// <param name="sanitizeSheetName">If true, the name of the worksheet will be sanitized automatically according to the specifications of Excel</param>    
+        /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists, when sanitation is false</exception>
+        /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitation is false</exception>
+        public void AddWorksheet(Worksheet worksheet, bool sanitizeSheetName)
+        {
+            if (sanitizeSheetName)
             {
-                if (worksheets[i].SheetName == worksheet.SheetName)
+                string name = Worksheet.SanitizeWorksheetName(worksheet.SheetName, this);
+                worksheet.SheetName = name;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(worksheet.SheetName))
                 {
-                    throw new WorksheetException("WorksheetNameAlreadyExistsException", "The worksheet with the name '" + worksheet.SheetName + "' already exists.");
+                    throw new WorksheetException("The name of the passed worksheet is null or empty.");
+                }
+                for (int i = 0; i < worksheets.Count; i++)
+                {
+                    if (worksheets[i].SheetName == worksheet.SheetName)
+                    {
+                        throw new WorksheetException("The worksheet with the name '" + worksheet.SheetName + "' already exists.");
+                    }
                 }
             }
-            int number = worksheets.Count + 1;
-            worksheet.SheetID = number;
+            worksheet.SheetID = GetNextWorksheetId();
             currentWorksheet = worksheet;
             worksheets.Add(worksheet);
             worksheet.WorkbookReference = this;
         }
 
         /// <summary>
-        /// Init method called in the constructors
-        /// </summary>
-        private void Init()
-        {
-            worksheets = new List<Worksheet>();
-            styleManager = new StyleManager();
-            styleManager.AddStyle(new Style("default", 0, true));
-            Style borderStyle = new Style("default_border_style", 1, true);
-            borderStyle.CurrentBorder = BasicStyles.DottedFill_0_125.CurrentBorder;
-            borderStyle.CurrentFill = BasicStyles.DottedFill_0_125.CurrentFill;
-            styleManager.AddStyle(borderStyle);
-            workbookMetadata = new Metadata();
-            shortener = new Shortener();
-        }
-
-
-        /// <summary>
-        /// Removes the passed style from the style sheet
+        /// Removes the passed style from the style sheet. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="style">Style to remove</param>
-        /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style collection (could not be referenced)</exception>
+        /// <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
+        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(Style style)
         {
             RemoveStyle(style, false);
         }
 
         /// <summary>
-        /// Removes the defined style from the style sheet of the workbook
+        /// Removes the defined style from the style sheet of the workbook. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="styleName">Name of the style to be removed</param>
-        /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style collection (could not be referenced)</exception>
+        /// <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
+        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(string styleName)
         {
             RemoveStyle(styleName, false);
@@ -342,149 +398,78 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="style">Style to remove</param>
         /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>
-        /// <exception cref="StyleException">Throws a StyleException if the style was not found in the style collection (could not be referenced)</exception>
+        /// <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
+        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(Style style, bool onlyIfUnused)
         {
-            if (style == null)
+            if (style == null) 
             {
-                throw new StyleException("UndefinedStyleException", "The style to remove is not defined");
+                throw new StyleException("The style to remove is not defined");
             }
             RemoveStyle(style.Name, onlyIfUnused);
         }
 
         /// <summary>
-        /// Removes the defined style from the style sheet of the workbook
+        /// Removes the defined style from the style sheet of the workbook. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="styleName">Name of the style to be removed</param>
         /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>
-        /// <exception cref="StyleException">Throws an UndefinedStyleException if the style was not found in the style collection (could not be referenced)</exception>
+        /// <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
+        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(string styleName, bool onlyIfUnused)
         {
             if (string.IsNullOrEmpty(styleName))
             {
-                throw new StyleException("MissingReferenceException", "The style to remove is not defined (no name specified)");
+                throw new StyleException("The style to remove is not defined (no name specified)");
             }
-            if (onlyIfUnused)
-            {
-                bool styleInUse = false;
-                for (int i = 0; i < worksheets.Count; i++)
-                {
-                    foreach (KeyValuePair<string, Cell> cell in worksheets[i].Cells)
-                    {
-                        if (cell.Value.CellStyle == null) { continue; }
-                        if (cell.Value.CellStyle.Name == styleName)
-                        {
-                            styleInUse = true;
-                            break;
-                        }
-                    }
-                    if (styleInUse)
-                    {
-                        break;
-                    }
-                }
-                if (!styleInUse)
-                {
-                    styleManager.RemoveStyle(styleName);
-                }
-            }
-            else
-            {
-                styleManager.RemoveStyle(styleName);
-            }
+            // noOp / deprecated
         }
 
         /// <summary>
-        /// Removes the defined worksheet
+        /// Removes the defined worksheet based on its name. If the worksheet is the current or selected worksheet, the current and / or the selected worksheet will be set to the last worksheet of the workbook.
+        /// If the last worksheet is removed, the selected worksheet will be set to 0 and the current worksheet to null.
         /// </summary>
         /// <param name="name">Name of the worksheet</param>
-        /// <exception cref="WorksheetException">Throws a UnknownWorksheetException if the name of the worksheet is unknown or if removing would lead to an empty workbook.</exception>
-        /// <remarks>Note that the selected Worksheet (index) must be changed to another worksheet when the selected one is removed.</remarks>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the name of the worksheet is unknown</exception>
         public void RemoveWorksheet(string name)
         {
-            bool exists = false;
-            bool resetCurrent = false;
-            int index = 0;
-            for (int i = 0; i < worksheets.Count; i++)
+            Worksheet worksheetToRemove = worksheets.FirstOrDefault(w => w.SheetName == name);
+            if (worksheetToRemove == null)
             {
-                if (worksheets[i].SheetName == name)
-                {
-                    index = i;
-                    exists = true;
-                    break;
-                }
+                throw new WorksheetException("The worksheet with the name '" + name + "' does not exist.");
             }
-            if (!exists)
-            {
-                throw new WorksheetException("UnknownWorksheetException", "The worksheet with the name '" + name + "' does not exist.");
-            }
-            if (worksheets[index].SheetName == currentWorksheet.SheetName)
-            {
-                resetCurrent = true;
-            }
-            worksheets.RemoveAt(index);
-            if (worksheets.Count > 0)
-            {
-                for (int i = 0; i < worksheets.Count; i++)
-                {
-                    worksheets[i].SheetID = i + 1;
-                    if (resetCurrent && i == 0)
-                    {
-                        currentWorksheet = worksheets[i];
-                    }
-                }
-            }
-            else
-            {
-                currentWorksheet = null;
-            }
-            if (selectedWorksheet > worksheets.Count - 1)
-            {
-                selectedWorksheet = worksheets.Count - 1;
-            }
-            ValidateWorksheets();
+            int index = worksheets.IndexOf(worksheetToRemove);
+            bool resetCurrentWorksheet = worksheetToRemove == currentWorksheet;
+            RemoveWorksheet(index, resetCurrentWorksheet);
         }
 
         /// <summary>
-        /// Method to resolve all merged cells in all worksheets. Only the value of the very first cell of the locked cells range will be visible. The other values are still present (set to EMPTY) but will not be stored in the worksheet.
+        /// Removes the defined worksheet based on its index. If the worksheet is the current or selected worksheet, the current and / or the selected worksheet will be set to the last worksheet of the workbook.
+        /// If the last worksheet is removed, the selected worksheet will be set to 0 and the current worksheet to null.
+        /// </summary>
+        /// <param name="index">Index within the worksheets list</param>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the index is out of range</exception>
+
+        public void RemoveWorksheet(int index)
+        {
+            if (index < 0 || index >= worksheets.Count)
+            {
+                throw new WorksheetException("The worksheet index " + index + " is out of range");
+            }
+            bool resetCurrentWorksheet = worksheets[index] == currentWorksheet;
+            RemoveWorksheet(index, resetCurrentWorksheet);
+        }
+
+        /// <summary>
+        /// Method to resolve all merged cells in all worksheets. Only the value of the very first cell of the locked cells range will be visible. The other values are still present (set to EMPTY) but will not be stored in the worksheet.<br/>
+        /// This is an internal method. There is no need to use it
         /// </summary>
         /// <exception cref="StyleException">Throws a StyleException if one of the styles of the merged cells cannot be referenced or is null</exception>
-        public void ResolveMergedCells()
+        internal void ResolveMergedCells()
         {
-            Style mergeStyle = BasicStyles.MergeCellStyle;
-            int pos;
-            List<Address> addresses;
-            Cell cell;
-            foreach (Worksheet sheet in worksheets)
+            foreach (Worksheet worksheet in worksheets)
             {
-                foreach (KeyValuePair<string, Range> range in sheet.MergedCells)
-                {
-                    pos = 0;
-                    addresses = Cell.GetCellRange(range.Value.StartAddress, range.Value.EndAddress) as List<Address>;
-                    foreach (Address address in addresses)
-                    {
-                        if (!sheet.Cells.ContainsKey(address.ToString()))
-                        {
-                            cell = new Cell();
-                            cell.DataType = Cell.CellType.EMPTY;
-                            cell.RowNumber = address.Row;
-                            cell.ColumnNumber = address.Column;
-                            cell.WorksheetReference = sheet;
-                            sheet.AddCell(cell, cell.ColumnNumber, cell.RowNumber);
-                        }
-                        else
-                        {
-                            cell = sheet.Cells[address.ToString()];
-                        }
-                        if (pos != 0)
-                        {
-                            cell.DataType = Cell.CellType.EMPTY;
-                            cell.SetStyle(mergeStyle);
-                        }
-                        pos++;
-                    }
-
-                }
+                worksheet.ResolveMergedCells();
             }
         }
 
@@ -494,7 +479,6 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         public void Save()
         {
             XlsxWriter l = new XlsxWriter(this);
@@ -508,7 +492,6 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="StyleException">May throw a StyleException if one of the styles of the workbook cannot be referenced or is null. The asynchronous operation may hide the exception.</exception>
         public async Task SaveAsync()
         {
             XlsxWriter l = new XlsxWriter(this);
@@ -522,7 +505,6 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         public void SaveAs(string filename)
         {
             string backup = filename;
@@ -540,7 +522,6 @@ namespace NanoXLSX
         /// <exception cref="Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="StyleException">May throw a StyleException if one of the styles of the workbook cannot be referenced or is null. The asynchronous operation may hide the exception.</exception>
         public async Task SaveAsAsync(string fileName)
         {
             string backup = fileName;
@@ -558,7 +539,6 @@ namespace NanoXLSX
         /// <exception cref="IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
         /// <exception cref="FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         public void SaveAsStream(Stream stream, bool leaveOpen = false)
         {
             XlsxWriter l = new XlsxWriter(this);
@@ -574,7 +554,6 @@ namespace NanoXLSX
         /// <exception cref="IOException">Throws IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="StyleException">May throw a StyleException if one of the styles of the workbook cannot be referenced or is null. The asynchronous operation may hide the exception.</exception>
         public async Task SaveAsStreamAsync(Stream stream, bool leaveOpen = false)
         {
             XlsxWriter l = new XlsxWriter(this);
@@ -586,25 +565,56 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="name">Name of the worksheet</param>
         /// <returns>Returns the current worksheet</returns>
-        /// <exception cref="WorksheetException">Throws a MissingReferenceException if the name of the worksheet is unknown</exception>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the name of the worksheet is unknown</exception>
         public Worksheet SetCurrentWorksheet(string name)
         {
-            bool exists = false;
-            foreach (Worksheet item in worksheets)
-            {
-                if (item.SheetName == name)
-                {
-                    currentWorksheet = item;
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists)
-            {
-                throw new WorksheetException("MissingReferenceException", "The worksheet with the name '" + name + "' does not exist.");
-            }
-            shortener.SetCurrentWorksheet(currentWorksheet);
+            currentWorksheet = GetWorksheet(name);
+            shortener.SetCurrentWorksheetInternal(currentWorksheet);
             return currentWorksheet;
+        }
+
+        /// <summary>
+        /// Sets the current worksheet
+        /// </summary>
+        /// <param name="worksheetIndex">Zero-based worksheet index</param>
+        /// <returns>Returns the current worksheet</returns>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the name of the worksheet is unknown</exception>
+        public Worksheet SetCurrentWorksheet(int worksheetIndex)
+        {
+            currentWorksheet = GetWorksheet(worksheetIndex);
+            shortener.SetCurrentWorksheetInternal(currentWorksheet);
+            return currentWorksheet;
+        }
+
+        /// <summary>
+        /// Sets the current worksheet
+        /// </summary>
+        /// <param name="worksheet">Worksheet object (must be in the collection of worksheets)</param>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the worksheet was not found in the worksheet collection</exception>
+        public void SetCurrentWorksheet(Worksheet worksheet)
+        {
+            int index = worksheets.IndexOf(worksheet);
+            if (index < 0)
+            {
+                throw new WorksheetException("The passed worksheet object is not in the worksheet collection.");
+            }
+            currentWorksheet = worksheets[index];
+            shortener.SetCurrentWorksheetInternal(worksheet);
+        }
+
+        /// <summary>
+        /// Sets the selected worksheet in the output workbook
+        /// </summary>
+        /// <param name="name">Name of the worksheet</param>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the name of the worksheet is unknown</exception>
+        public void SetSelectedWorksheet(string name)
+        {
+            int index = worksheets.FindIndex(w => w.SheetName == name);
+            if (index < 0)
+            {
+                throw new WorksheetException("No worksheet with the name '" + name + "' was found in this workbook.");
+            }
+            selectedWorksheet = index;
         }
 
         /// <summary>
@@ -618,10 +628,57 @@ namespace NanoXLSX
         {
             if (worksheetIndex < 0 || worksheetIndex > worksheets.Count - 1)
             {
-                throw new RangeException(RangeException.GENERAL, "The worksheet index " + worksheetIndex + " is out of range");
+                throw new RangeException("The worksheet index " + worksheetIndex + " is out of range");
             }
             selectedWorksheet = worksheetIndex;
             ValidateWorksheets();
+        }
+
+        /// <summary>
+        /// Sets the selected worksheet in the output workbook
+        /// </summary>
+        /// <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>
+        /// <param name="worksheet">Worksheet object (must be in the collection of worksheets)</param>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the worksheet was not found in the worksheet collection or if it is hidden</exception>
+        public void SetSelectedWorksheet(Worksheet worksheet)
+        {
+            selectedWorksheet = worksheets.IndexOf(worksheet);
+            if (selectedWorksheet < 0)
+            {
+                throw new WorksheetException("The passed worksheet object is not in the worksheet collection.");
+            }
+            ValidateWorksheets();
+        }
+
+        /// <summary>
+        /// Gets a worksheet from this workbook by name
+        /// </summary>
+        /// <param name="name">Name of the worksheet</param>
+        /// <returns>Worksheet with the passed name</returns>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the worksheet was not found in the worksheet collection</exception>
+        public Worksheet GetWorksheet(string name)
+        {
+            int index = worksheets.FindIndex(w => w.SheetName == name);
+            if (index < 0)
+            {
+                throw new WorksheetException("No worksheet with the name '" + name + "' was found in this workbook.");
+            }
+            return worksheets[index];
+        }
+
+        /// <summary>
+        /// Gets a worksheet from this workbook by index
+        /// </summary>
+        /// <param name="index">Index of the worksheet</param>
+        /// <returns>Worksheet with the passed index</returns>
+        /// <exception cref="WorksheetException">Throws a RangeException if the worksheet was not found in the worksheet collection</exception>
+        public Worksheet GetWorksheet(int index)
+        {
+            if (index < 0 || index > worksheets.Count - 1)
+            {
+                throw new RangeException("The worksheet index " + index + " is out of range");
+            }
+            return worksheets[index];
         }
 
         /// <summary>
@@ -636,6 +693,7 @@ namespace NanoXLSX
             lockWindowsIfProtected = protectWindows;
             lockStructureIfProtected = protectStructure;
             workbookProtectionPassword = password;
+            WorkbookProtectionPasswordHash = Utils.GeneratePasswordHash(password);
             if (!protectWindows && !protectStructure)
             {
                 UseWorkbookProtection = false;
@@ -647,29 +705,104 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Sets the selected worksheet in the output workbook
+        /// Copies a worksheet of the current workbook by its name
         /// </summary>
-        /// <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>
-        /// <param name="worksheet">Worksheet object (must be in the collection of worksheets)</param>
-        /// <exception cref="WorksheetException">Throws a WorksheetException if the worksheet was not found in the worksheet collection or if it is hidden</exception>
-        public void SetSelectedWorksheet(Worksheet worksheet)
+        /// <param name="sourceWorksheetName">Name of the worksheet to copy, originated in this workbook</param>
+        /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
+        /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
+        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// <returns>Copied worksheet</returns>
+        public Worksheet CopyWorksheetIntoThis(string sourceWorksheetName, string newWorksheetName, bool sanitizeSheetName = true)
         {
-            bool check = false;
-            for (int i = 0; i < worksheets.Count; i++)
-            {
-                if (worksheets[i].Equals(worksheet))
-                {
-                    selectedWorksheet = i;
-                    check = true;
-                    break;
-                }
-            }
-            if (!check)
-            {
-                throw new WorksheetException("UnknownWorksheetException", "The passed worksheet object is not in the worksheet collection.");
-            }
-            ValidateWorksheets();
+            Worksheet sourceWorksheet = GetWorksheet(sourceWorksheetName);
+            return CopyWorksheetTo(sourceWorksheet, newWorksheetName, this, sanitizeSheetName);
         }
+
+        /// <summary>
+        /// Copies a worksheet of the current workbook by its index
+        /// </summary>
+        /// <param name="sourceWorksheetIndex">Index of the worksheet to copy, originated in this workbook</param>
+        /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
+        /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
+        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// <returns>Copied worksheet</returns>
+        public Worksheet CopyWorksheetIntoThis(int sourceWorksheetIndex, string newWorksheetName, bool sanitizeSheetName = true)
+        {
+            Worksheet sourceWorksheet = GetWorksheet(sourceWorksheetIndex);
+            return CopyWorksheetTo(sourceWorksheet, newWorksheetName, this, sanitizeSheetName);
+        }
+
+        /// <summary>
+        /// Copies a worksheet of any workbook into the current workbook
+        /// </summary>
+        /// <param name="sourceWorksheet">Worksheet to copy</param>
+        /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
+        /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
+        /// <remarks>The copy is not set as current worksheet. The existing one is kept. The source worksheet can originate from any workbook</remarks>
+        /// <returns>Copied worksheet</returns>
+        public Worksheet CopyWorksheetIntoThis(Worksheet sourceWorksheet, string newWorksheetName, bool sanitizeSheetName = true)
+        {
+            return CopyWorksheetTo(sourceWorksheet, newWorksheetName, this, sanitizeSheetName);
+        }
+
+        /// <summary>
+        /// Copies a worksheet of the current workbook by its name into another workbook
+        /// </summary>
+        /// <param name="sourceWorksheetName">Name of the worksheet to copy, originated in this workbook</param>
+        /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
+        /// <param name="targetWorkbook">Workbook to copy the worksheet into</param>
+        /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
+        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// <returns>Copied worksheet</returns>
+        public Worksheet CopyWorksheetTo(string sourceWorksheetName, string newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
+        {
+            Worksheet sourceWorksheet = GetWorksheet(sourceWorksheetName);
+            return CopyWorksheetTo(sourceWorksheet, newWorksheetName, targetWorkbook, sanitizeSheetName);
+        }
+
+        /// <summary>
+        /// Copies a worksheet of the current workbook by its index into another workbook
+        /// </summary>
+        /// <param name="sourceWorksheetIndex">Index of the worksheet to copy, originated in this workbook<</param>
+        /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
+        /// <param name="targetWorkbook">Workbook to copy the worksheet into</param>
+        /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
+        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// <returns>Copied worksheet</returns>
+        public Worksheet CopyWorksheetTo(int sourceWorksheetIndex, string newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
+        {
+            Worksheet sourceWorksheet = GetWorksheet(sourceWorksheetIndex);
+            return CopyWorksheetTo(sourceWorksheet, newWorksheetName, targetWorkbook, sanitizeSheetName);
+        }
+
+
+        /// <summary>
+        /// Copies a worksheet of any workbook into the another workbook
+        /// </summary>
+        /// <param name="sourceWorksheet">Worksheet to copy</param>
+        /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
+        /// <param name="targetWorkbook">Workbook to copy the worksheet into</param>
+        /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
+        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// <returns>Copied worksheet</returns>
+        public static Worksheet CopyWorksheetTo(Worksheet sourceWorksheet, string newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
+        {
+            if (targetWorkbook == null)
+            {
+                throw new WorksheetException("The target workbook cannot be null");
+            }
+            if (sourceWorksheet == null)
+            {
+                throw new WorksheetException("The source worksheet cannot be null");
+            }
+            Worksheet copy = sourceWorksheet.Copy();
+            copy.SetSheetName(newWorksheetName);
+            Worksheet currentWorksheet = targetWorkbook.CurrentWorksheet;
+            targetWorkbook.AddWorksheet(copy, sanitizeSheetName);
+            targetWorkbook.SetCurrentWorksheet(currentWorksheet);
+            return copy;
+        }
+
 
         /// <summary>
         /// Validates the worksheets regarding several conditions that must be met:<br/>
@@ -689,18 +822,72 @@ namespace NanoXLSX
             int worksheetCount = worksheets.Count;
             if (worksheetCount == 0)
             {
-                throw new WorksheetException("NoWorksheetsException", "The workbook must contain at least one worksheet");
+                throw new WorksheetException("The workbook must contain at least one worksheet");
             }
-            for(int i = 0; i < worksheetCount; i++)
+            for (int i = 0; i < worksheetCount; i++)
             {
                 if (worksheets[i].Hidden)
                 {
                     if (i == selectedWorksheet)
                     {
-                        throw new WorksheetException("InvalidWorksheetRefernceException", "The worksheet with the index " + selectedWorksheet + " cannot be set as selected, since it is set hidden");
+                        throw new WorksheetException("The worksheet with the index " + selectedWorksheet + " cannot be set as selected, since it is set hidden");
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Removes the worksheet at the defined index and relocates current and selected worksheet references
+        /// </summary>
+        /// <param name="index">Index within the worksheets list</param>
+        /// <param name="resetCurrentWorksheet">If true, the current worksheet will be relocated to the last worksheet in the list</param>
+        private void RemoveWorksheet(int index, bool resetCurrentWorksheet)
+        {
+            worksheets.RemoveAt(index);
+            if (worksheets.Count > 0)
+            {
+                for (int i = 0; i < worksheets.Count; i++)
+                {
+                    worksheets[i].SheetID = i + 1;
+                }
+                if (resetCurrentWorksheet)
+                {
+                    currentWorksheet = worksheets[worksheets.Count - 1];
+                }
+                if (selectedWorksheet == index || selectedWorksheet > worksheets.Count - 1)
+                {
+                    selectedWorksheet = worksheets.Count - 1;
+                }
+            }
+            else
+            {
+                currentWorksheet = null;
+                selectedWorksheet = 0;
+            }
+            ValidateWorksheets();
+        }
+
+        /// <summary>
+        /// Gets the next free worksheet ID
+        /// </summary>
+        /// <returns>Worksheet ID</returns>
+        private int GetNextWorksheetId()
+        {
+            if (worksheets.Count == 0)
+            {
+                return 1;
+            }
+            return worksheets.Max(w => w.SheetID) + 1;
+        }
+
+        /// <summary>
+        /// Init method called in the constructors
+        /// </summary>
+        private void Init()
+        {
+            worksheets = new List<Worksheet>();
+            workbookMetadata = new Metadata();
+            shortener = new Shortener(this);
         }
 
         #endregion
@@ -711,10 +898,10 @@ namespace NanoXLSX
         /// Loads a workbook from a file
         /// </summary>
         /// <param name="filename">Filename of the workbook</param>
-        /// <param name="options">Import options to override the data types of columns. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
+        /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
-        public static Workbook Load(String filename, ImportOptions options = null)
+        public static Workbook Load(string filename, ImportOptions options = null)
         {
             XlsxReader r = new XlsxReader(filename, options);
             r.Read();
@@ -725,7 +912,7 @@ namespace NanoXLSX
         /// Loads a workbook from a stream
         /// </summary>
         /// <param name="stream">Stream containing the workbook</param>
-        /// /// <param name="options">Import options to override the data types of columns. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
+        /// /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static Workbook Load(Stream stream, ImportOptions options = null)
@@ -739,7 +926,7 @@ namespace NanoXLSX
         /// Loads a workbook from a stream asynchronously
         /// </summary>
         /// <param name="stream">Stream containing the workbook</param>
-        /// /// <param name="options">Import options to override the data types of columns. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
+        /// /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static async Task<Workbook> LoadAsync(Stream stream, ImportOptions options = null)
@@ -757,7 +944,6 @@ namespace NanoXLSX
         {
             this.importInProgress = state;
         }
-
         #endregion
     }
 

@@ -28,6 +28,7 @@ namespace NanoXLSX.LowLevel
         private Dictionary<int, WorksheetReader> worksheets;
         private MemoryStream memoryStream;
         private WorkbookReader workbook;
+        private MetadataReader metadataReader;
         private ImportOptions importOptions;
         private StyleReaderContainer styleReaderContainer;
         #endregion
@@ -38,7 +39,7 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="options">Import options to override the automatic approach of the reader. <see cref="ImportOptions"/> for information about import options.</param>
         /// <param name="path">File path of the XLSX file to load</param>
-        public XlsxReader(String path, ImportOptions options = null)
+        public XlsxReader(string path, ImportOptions options = null)
         {
             filePath = path;
             importOptions = options;
@@ -89,7 +90,7 @@ namespace NanoXLSX.LowLevel
                     }
                     else
                     {
-                        throw new IOException("LoadException", "No valid stream or file path was provided to open");
+                        throw new IOException("No valid stream or file path was provided to open");
                     }
 
                     memoryStream.Position = 0;
@@ -98,7 +99,7 @@ namespace NanoXLSX.LowLevel
 
                     SharedStringsReader sharedStrings = new SharedStringsReader(importOptions);
                     ms = GetEntryStream("xl/sharedStrings.xml", zf);
-                    if (ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
+                    if (ms != null && ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
                     {
                         sharedStrings.Read(ms);
                     }
@@ -112,6 +113,12 @@ namespace NanoXLSX.LowLevel
                     ms = GetEntryStream("xl/workbook.xml", zf);
                     workbook.Read(ms);
 
+                    metadataReader = new MetadataReader();
+                    ms = GetEntryStream("docProps/app.xml", zf);
+                    metadataReader.ReadAppData(ms);
+                    ms = GetEntryStream("docProps/core.xml", zf);
+                    metadataReader.ReadCoreData(ms);
+
                     int worksheetIndex = 1;
                     string name;
                     string nameTemplate;
@@ -121,7 +128,7 @@ namespace NanoXLSX.LowLevel
                     foreach (KeyValuePair<int, WorkbookReader.WorksheetDefinition> definition in workbook.WorksheetDefinitions)
                     {
                         ms = GetEntryStream(name, zf);
-                        wr = new WorksheetReader(sharedStrings, nameTemplate, worksheetIndex, styleReaderContainer, importOptions);
+                        wr = new WorksheetReader(sharedStrings, styleReaderContainer, importOptions);
                         wr.Read(ms);
                         worksheets.Add(definition.Key, wr);
                         worksheetIndex++;
@@ -132,7 +139,7 @@ namespace NanoXLSX.LowLevel
             }
             catch (Exception ex)
             {
-                throw new IOException("LoadException", "There was an error while reading an XLSX file. Please see the inner exception:", ex);
+                throw new IOException("There was an error while reading an XLSX file. Please see the inner exception:", ex);
             }
         }
 
@@ -165,12 +172,65 @@ namespace NanoXLSX.LowLevel
                 WorkbookReader.WorksheetDefinition definition = workbook.WorksheetDefinitions[reader.Key];
                 ws = new Worksheet(definition.WorksheetName, definition.SheetID, wb);
                 ws.Hidden = definition.Hidden;
+                if (reader.Value.AutoFilterRange.HasValue)
+                {
+                    ws.SetAutoFilter(reader.Value.AutoFilterRange.Value.StartAddress.Column, reader.Value.AutoFilterRange.Value.EndAddress.Column);
+                }
+                if (reader.Value.DefaultColumnWidth.HasValue)
+                {
+                    ws.DefaultColumnWidth = reader.Value.DefaultColumnWidth.Value;
+                }
+                if (reader.Value.DefaultRowHeight.HasValue)
+                {
+                    ws.DefaultRowHeight = reader.Value.DefaultRowHeight.Value;
+                }
+                if (reader.Value.SelectedCells.HasValue)
+                {
+                    ws.SetSelectedCells(reader.Value.SelectedCells.Value);
+                }
+                foreach(Range range in reader.Value.MergedCells)
+                {
+                    ws.MergeCells(range);
+                }
+                foreach(KeyValuePair<Worksheet.SheetProtectionValue, int> sheetProtection in reader.Value.WorksheetProtection)
+                {
+                    ws.SheetProtectionValues.Add(sheetProtection.Key);
+                }
+                if (reader.Value.WorksheetProtection.Count > 0)
+                {
+                    ws.UseSheetProtection = true;
+                }
+                if (!string.IsNullOrEmpty(reader.Value.WorksheetProtectionHash))
+                {
+                    ws.SheetProtectionPasswordHash = reader.Value.WorksheetProtectionHash;
+                }
+                foreach(KeyValuePair<int,WorksheetReader.RowDefinition> row in reader.Value.Rows)
+                {
+                    if (row.Value.Hidden)
+                    {
+                        ws.AddHiddenRow(row.Key);
+                    }
+                    if (row.Value.Height.HasValue)
+                    {
+                        ws.SetRowHeight(row.Key, row.Value.Height.Value);
+                    }
+                }
+                foreach (Column column in reader.Value.Columns)
+                {
+                    if (column.Width != Worksheet.DEFAULT_COLUMN_WIDTH)
+                    {
+                        ws.SetColumnWidth(column.ColumnAddress, column.Width);
+                    }
+                    if (column.IsHidden)
+                    {
+                        ws.AddHiddenColumn(column.Number);
+                    }
+                }
                 foreach (KeyValuePair<string, Cell> cell in reader.Value.Data)
                 {
-                    cell.Value.WorksheetReference = ws;
                     if (reader.Value.StyleAssignment.ContainsKey(cell.Key))
                     {
-                        Style style = styleReaderContainer.GetStyle(reader.Value.StyleAssignment[cell.Key], true);
+                        Style style = styleReaderContainer.GetStyle(reader.Value.StyleAssignment[cell.Key]);
                         if (style != null)
                         {
                             cell.Value.SetStyle(style);
@@ -178,8 +238,68 @@ namespace NanoXLSX.LowLevel
                     }
                     ws.AddCell(cell.Value, cell.Key);
                 }
+                if (reader.Value.PaneSplitValue != null)
+                {
+                    WorksheetReader.PaneDefinition pane = reader.Value.PaneSplitValue;
+                    if (pane.FrozenState)
+                    {
+                        if (pane.YSplitDefined && !pane.XSplitDefined)
+                        {
+                            ws.SetHorizontalSplit(pane.PaneSplitRowIndex.Value, pane.FrozenState, pane.TopLeftCell, pane.ActivePane);
+                        }
+                        if (!pane.YSplitDefined && pane.XSplitDefined)
+                        {
+                            ws.SetVerticalSplit(pane.PaneSplitColumnIndex.Value, pane.FrozenState, pane.TopLeftCell, pane.ActivePane);
+                        }
+                        else if (pane.YSplitDefined && pane.XSplitDefined)
+                        {
+                            ws.SetSplit(pane.PaneSplitColumnIndex.Value, pane.PaneSplitRowIndex.Value, pane.FrozenState, pane.TopLeftCell, pane.ActivePane);
+                        }
+                    }
+                    else
+                    {
+                        if (pane.YSplitDefined && !pane.XSplitDefined)
+                        {
+                            ws.SetHorizontalSplit(pane.PaneSplitHeight.Value, pane.TopLeftCell, pane.ActivePane);
+                        }
+                        if (!pane.YSplitDefined && pane.XSplitDefined)
+                        {
+                            ws.SetVerticalSplit(pane.PaneSplitWidth.Value, pane.TopLeftCell, pane.ActivePane);
+                        }
+                        else if (pane.YSplitDefined && pane.XSplitDefined)
+                        {
+                            ws.SetSplit(pane.PaneSplitWidth, pane.PaneSplitHeight, pane.TopLeftCell, pane.ActivePane);
+                        }
+                    }
+                }
                 wb.AddWorksheet(ws);
             }
+            if (styleReaderContainer.GetMruColors().Count > 0)
+            {
+                foreach(string color in styleReaderContainer.GetMruColors())
+                {
+                    wb.AddMruColor(color);
+                }
+            }
+            wb.Hidden = workbook.Hidden;
+            wb.SetSelectedWorksheet(workbook.SelectedWorksheet);
+            if (workbook.Protected)
+            {
+                wb.SetWorkbookProtection(workbook.Protected, workbook.LockWindows, workbook.LockStructure, null);
+                wb.WorkbookProtectionPasswordHash = workbook.PasswordHash;
+            }
+            wb.WorkbookMetadata.Application = metadataReader.Application;
+            wb.WorkbookMetadata.ApplicationVersion = metadataReader.ApplicationVersion;
+            wb.WorkbookMetadata.Creator = metadataReader.Creator;
+            wb.WorkbookMetadata.Category = metadataReader.Category;
+            wb.WorkbookMetadata.Company = metadataReader.Company;
+            wb.WorkbookMetadata.ContentStatus = metadataReader.ContentStatus;
+            wb.WorkbookMetadata.Description = metadataReader.Description;
+            wb.WorkbookMetadata.HyperlinkBase = metadataReader.HyperlinkBase;
+            wb.WorkbookMetadata.Keywords = metadataReader.Keywords;
+            wb.WorkbookMetadata.Manager = metadataReader.Manager;
+            wb.WorkbookMetadata.Subject = metadataReader.Subject;
+            wb.WorkbookMetadata.Title = metadataReader.Title;
             wb.SetImportState(false);
             return wb;
         }
@@ -192,6 +312,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>MemoryStream object of the specified file</returns>
         private MemoryStream GetEntryStream(string name, ZipArchive archive)
         {
+            MemoryStream stream = null;
             for (int i = 0; i < archive.Entries.Count; i++)
             {
                 if (archive.Entries[i].FullName == name)
@@ -199,10 +320,11 @@ namespace NanoXLSX.LowLevel
                     MemoryStream ms = new MemoryStream();
                     archive.Entries[i].Open().CopyTo(ms);
                     ms.Position = 0;
-                    return ms;
+                    stream = ms;
+                    break;
                 }
             }
-            return new MemoryStream();
+            return stream;
         }
 
         #endregion

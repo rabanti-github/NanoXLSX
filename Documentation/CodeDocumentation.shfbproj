@@ -54,17 +54,15 @@
 &amp;lt%3b/ul&amp;gt%3b
 &amp;lt%3bp&amp;gt%3bSee the &amp;lt%3bstrong&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttps://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md&amp;quot%3b&amp;gt%3bChange Log&amp;lt%3b/a&amp;gt%3b&amp;lt%3b/strong&amp;gt%3b for recent updates.&amp;lt%3b/p&amp;gt%3b
 &amp;lt%3bh2&amp;gt%3bReader Support&amp;lt%3b/h2&amp;gt%3b
-Currently, only basic reader functionality is available:
-
+The reader is of NanoXLS follows the principle of &amp;quot%3bWhat You Can Write Is What You Can Read&amp;quot%3b. Therefore, all information about workbooks, worksheets, cells and styles that can be written into an XLSX file by NanoXLSX, can also be read by it.
+There are some limitations:
 &amp;lt%3bul&amp;gt%3b
-&amp;lt%3bli&amp;gt%3bReading and casting of cell values into the appropriate data types&amp;lt%3b/li&amp;gt%3b
-&amp;lt%3bli&amp;gt%3bReading of several worksheets in on workbook with names&amp;lt%3b/li&amp;gt%3b
-&amp;lt%3bli&amp;gt%3bLimited processing of styles %28when reading%29 at the moment&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bA workbook or worksheet password cannot be recovered, only its hash&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bInformation that is not supported by the library will be discarded&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bThere are some approximations for floating point numbers. These values %28e.g. pane split widths%29 may deviate from the originally written values&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bNumeric values are cast to the appropriate .NET types with best effort. There are import options available to enforce specific types&amp;lt%3b/li&amp;gt%3b
 &amp;lt%3bli&amp;gt%3bNo support of other objects than spreadsheet data at the moment&amp;lt%3b/li&amp;gt%3b
 &amp;lt%3b/ul&amp;gt%3b
-
-&amp;lt%3bp&amp;gt%3bNote: Styles in loaded files are only considering number formats %28to determine date and time values%29, as well as custom formats. The scope of reader functionality may change with future versions.&amp;lt%3b/p&amp;gt%3b
-
 
 &amp;lt%3bh2&amp;gt%3bRequirements&amp;lt%3b/h2&amp;gt%3b
 

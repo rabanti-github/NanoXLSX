@@ -5,7 +5,9 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
 using System.Collections.Generic;
+using System.Text;
 
 namespace NanoXLSX.Styles
 {
@@ -18,8 +20,38 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default font family as constant
         /// </summary>
-        public static readonly string DEFAULTFONT = "Calibri";
+        public static readonly string DEFAULT_FONT_NAME = "Calibri";
+
+        /// <summary>
+        /// Maximum possible font size
+        /// </summary>
+        public static readonly float MIN_FONT_SIZE = 1f;
+
+        /// <summary>
+        /// Minimum possible font size
+        /// </summary>
+        public static readonly float MAX_FONT_SIZE = 409f;
+
+        /// <summary>
+        /// Default font size
+        /// </summary>
+        public static readonly float DEFAULT_FONT_SIZE = 11f;
         #endregion
+
+        /// <summary>
+        /// Default font family
+        /// </summary>
+        public static readonly string DEFAULT_FONT_FAMILY = "2";
+
+        /// <summary>
+        /// Default font scheme
+        /// </summary>
+        public static readonly SchemeValue DEFAULT_FONT_SCHEME = SchemeValue.minor;
+
+        /// <summary>
+        /// Default vertical alignment
+        /// </summary>
+        public static readonly VerticalAlignValue DEFAULT_VERTICAL_ALIGN = VerticalAlignValue.none;
 
         #region enums
         /// <summary>
@@ -47,39 +79,97 @@ namespace NanoXLSX.Styles
             /// <summary>Text will be rendered normal</summary>
             none,
         }
+
+        /// <summary>
+        /// Enum for the style of the underline property of a stylized text
+        /// </summary>
+        public enum UnderlineValue
+        {
+            /// <summary>Text contains a single underline</summary>
+            u_single,
+            /// <summary>Text contains a double underline</summary>
+            u_double,
+            /// <summary>Text contains a single, accounting underline</summary>
+            singleAccounting,
+            /// <summary>Text contains a double, accounting underline</summary>
+            doubleAccounting,
+            /// <summary>Text contains no underline (default)</summary>
+            none,
+        }
         #endregion
 
         #region privateFields
-        private int size;
+        private float size;
+        private string name = DEFAULT_FONT_NAME;
+        private int colorTheme;
+        private string colorValue = "";
         #endregion
 
         #region properties
         /// <summary>
         /// Gets or sets whether the font is bold. If true, the font is declared as bold
         /// </summary>
+        [Append]
         public bool Bold { get; set; }
+        /// <summary>
+        /// Gets or sets whether the font is italic. If true, the font is declared as italic
+        /// </summary>
+        [Append]
+        public bool Italic { get; set; }
+        /// <summary>
+        /// Gets or sets whether the font is struck through. If true, the font is declared as strike-through
+        /// </summary>
+        [Append]
+        public bool Strike { get; set; }
+        /// <summary>
+        /// Gets or sets the underline style of the font. If set to <a cref="UnderlineValue.none">none</a> no underline will be applied (default)
+        /// </summary>
+        [Append]
+        public UnderlineValue Underline { get; set; } = UnderlineValue.none;
+
         /// <summary>
         /// Gets or sets the char set of the Font (Default is empty)
         /// </summary>
+        [Append]
         public string Charset { get; set; }
         /// <summary>
         /// Gets or sets the font color theme (Default is 1)
         /// </summary>
-        public int ColorTheme { get; set; }
+        /// <exception cref="StyleException">Throws a StyleException if the number is below 1</exception>
+        [Append]
+        public int ColorTheme
+        {
+            get => colorTheme;
+            set
+            {
+                if (value < 1)
+                {
+                    throw new StyleException("The color theme number " + value + " is invalid. Should be >0");
+                }
+                colorTheme = value;
+            }
+        }
         /// <summary>
-        /// Gets or sets the font color (default is empty)
+        /// Gets or sets the color code of the font color. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF.
+        /// To omit the color, an empty string can be set. Empty is also default.
         /// </summary>
-        public string ColorValue { get; set; }
-        /// <summary>
-        /// Gets or sets whether the font has a double underline. If true, the font is declared with a double underline
-        /// </summary>
-        public bool DoubleUnderline { get; set; }
+        /// <exception cref="StyleException">Throws a StyleException if the passed ARGB value is not valid</exception>
+        [Append]
+        public string ColorValue { 
+            get => colorValue;
+            set 
+            {
+                Fill.ValidateColor(value, true, true);
+                colorValue = value;
+            } 
+        }
         /// <summary>
         ///  Gets or sets the font family (Default is 2)
         /// </summary>
+        [Append]
         public string Family { get; set; }
         /// <summary>
-        /// Gets whether the font is equals the default font
+        /// Gets whether the font is equal to the default font
         /// </summary>
         [Append(Ignore = true)]
         public bool IsDefaultFont
@@ -90,44 +180,52 @@ namespace NanoXLSX.Styles
                 return Equals(temp);
             }
         }
-        /// <summary>
-        /// Gets or sets whether the font is italic. If true, the font is declared as italic
-        /// </summary>
-        public bool Italic { get; set; }
+
+
         /// <summary>
         /// Gets or sets the font name (Default is Calibri)
         /// </summary>
-        public string Name { get; set; }
+        /// <exception cref="StyleException">A StyleException is thrown if the name is null or empty</exception>
+        /// <remarks>Note that the font name is not validated whether it is a valid or existing font</remarks>
+        [Append]
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new StyleException("The font name was null or empty");
+                }
+                name = value;
+            }
+        }
         /// <summary>
         /// Gets or sets the font scheme (Default is minor)
         /// </summary>
+        [Append]
         public SchemeValue Scheme { get; set; }
         /// <summary>
-        /// Gets or sets the font size. Valid range is from 8 to 75
+        /// Gets or sets the font size. Valid range is from 1 to 409
         /// </summary>
-        public int Size
+        [Append]
+        public float Size
         {
             get { return size; }
             set
             {
-                if (value < 8)
-                { size = 8; }
-                else if (value > 75)
-                { size = 72; }
+                if (value < MIN_FONT_SIZE)
+                { size = MIN_FONT_SIZE; }
+                else if (value > MAX_FONT_SIZE)
+                { size = MAX_FONT_SIZE; }
                 else { size = value; }
             }
         }
-        /// <summary>
-        /// Gets or sets whether the font is struck through. If true, the font is declared as strike-through
-        /// </summary>
-        public bool Strike { get; set; }
-        /// <summary>
-        /// Gets or sets whether the font is underlined. If true, the font is declared as underlined
-        /// </summary>
-        public bool Underline { get; set; }
+
         /// <summary>
         /// Gets or sets the alignment of the font (Default is none)
         /// </summary>
+        [Append]
         public VerticalAlignValue VerticalAlign { get; set; }
         #endregion
 
@@ -137,14 +235,14 @@ namespace NanoXLSX.Styles
         /// </summary>
         public Font()
         {
-            size = 11;
-            Name = DEFAULTFONT;
-            Family = "2";
+            size = DEFAULT_FONT_SIZE;
+            Name = DEFAULT_FONT_NAME;
+            Family = DEFAULT_FONT_FAMILY;
             ColorTheme = 1;
             ColorValue = string.Empty;
             Charset = string.Empty;
-            Scheme = SchemeValue.minor;
-            VerticalAlign = VerticalAlignValue.none;
+            Scheme = DEFAULT_FONT_SCHEME;
+            VerticalAlign = DEFAULT_VERTICAL_ALIGN;
         }
         #endregion
 
@@ -155,7 +253,23 @@ namespace NanoXLSX.Styles
         /// <returns>String of a class</returns>
         public override string ToString()
         {
-            return "Font:" + this.GetHashCode();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("\"Font\": {\n");
+            AddPropertyAsJson(sb, "Bold", Bold);
+            AddPropertyAsJson(sb, "Charset", Charset);
+            AddPropertyAsJson(sb, "ColorTheme", ColorTheme);
+            AddPropertyAsJson(sb, "ColorValue", ColorValue);
+            AddPropertyAsJson(sb, "VerticalAlign", VerticalAlign);
+            AddPropertyAsJson(sb, "Family", Family);
+            AddPropertyAsJson(sb, "Italic", Italic);
+            AddPropertyAsJson(sb, "Name", Name);
+            AddPropertyAsJson(sb, "Scheme", Scheme);
+            AddPropertyAsJson(sb, "Size", Size);
+            AddPropertyAsJson(sb, "Strike", Strike);
+            AddPropertyAsJson(sb, "Underline", Underline);
+            AddPropertyAsJson(sb, "HashCode", this.GetHashCode(), true);
+            sb.Append("\n}");
+            return sb.ToString();
         }
 
         /// <summary>
@@ -170,7 +284,6 @@ namespace NanoXLSX.Styles
             copy.ColorTheme = ColorTheme;
             copy.ColorValue = ColorValue;
             copy.VerticalAlign = VerticalAlign;
-            copy.DoubleUnderline = DoubleUnderline;
             copy.Family = Family;
             copy.Italic = Italic;
             copy.Name = Name;
@@ -195,7 +308,6 @@ namespace NanoXLSX.Styles
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Charset);
             hashCode = hashCode * -1521134295 + ColorTheme.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ColorValue);
-            hashCode = hashCode * -1521134295 + DoubleUnderline.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Family);
             hashCode = hashCode * -1521134295 + Italic.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
@@ -204,6 +316,28 @@ namespace NanoXLSX.Styles
             hashCode = hashCode * -1521134295 + Underline.GetHashCode();
             hashCode = hashCode * -1521134295 + VerticalAlign.GetHashCode();
             return hashCode;
+        }
+
+        /// <summary>
+        /// Returns whether two instances are the same
+        /// </summary>
+        /// <param name="obj">Object to compare</param>
+        /// <returns>True if this instance and the other are the same</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Font font &&
+                   size == font.size &&
+                   Bold == font.Bold &&
+                   Italic == font.Italic &&
+                   Strike == font.Strike &&
+                   Underline == font.Underline &&
+                   Charset == font.Charset &&
+                   ColorTheme == font.ColorTheme &&
+                   ColorValue == font.ColorValue &&
+                   Family == font.Family &&
+                   Name == font.Name &&
+                   Scheme == font.Scheme &&
+                   VerticalAlign == font.VerticalAlign;
         }
 
         /// <summary>

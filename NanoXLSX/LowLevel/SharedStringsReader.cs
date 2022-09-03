@@ -20,6 +20,7 @@ namespace NanoXLSX.LowLevel
     /// </summary>
     public class SharedStringsReader
     {
+
         #region privateFields
         private readonly bool capturePhoneticCharacters = false;
         private readonly List<PhoneticInfo> phoneticsInfo = null;
@@ -67,7 +68,7 @@ namespace NanoXLSX.LowLevel
         #region constructors
 
         /// <summary>
-        /// Constructor with parameter
+        /// Constructor with parameters
         /// </summary>
         /// <param name="importOptions">Import options instance</param>
         public SharedStringsReader(ImportOptions importOptions)
@@ -121,7 +122,7 @@ namespace NanoXLSX.LowLevel
             }
             catch (Exception ex)
             {
-                throw new IOException("XMLStreamException", "The XML entry could not be read from the " + nameof(stream) +  ". Please see the inner exception:", ex);
+                throw new IOException("The XML entry could not be read from the " + nameof(stream) +  ". Please see the inner exception:", ex);
             }
         }
 
@@ -142,7 +143,7 @@ namespace NanoXLSX.LowLevel
                 }
                 return;
             }
-            
+
             if (node.LocalName.Equals("t", StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(node.InnerText))
             {
                 sb.Append(node.InnerText);
@@ -167,14 +168,14 @@ namespace NanoXLSX.LowLevel
             {
                 return sb.ToString();
             }
-            String text = sb.ToString();
+            string text = sb.ToString();
             StringBuilder sb2 = new StringBuilder();
             int currentTextIndex = 0;
             foreach (PhoneticInfo info in phoneticsInfo)
             {
-                sb2.Append(text.Substring(currentTextIndex, info.StartIndex + info.Length - currentTextIndex));
-                sb2.Append("(").Append(info.Value).Append(")");
-                currentTextIndex = info.StartIndex + info.Length;
+                    sb2.Append(text.Substring(currentTextIndex, info.StartIndex + info.Length - currentTextIndex));
+                    sb2.Append("(").Append(info.Value).Append(")");
+                    currentTextIndex = info.StartIndex + info.Length;
             }
             sb2.Append(text.Substring(currentTextIndex));
 
@@ -182,9 +183,9 @@ namespace NanoXLSX.LowLevel
             return sb2.ToString();
         }
 
-
         #endregion
 
+        #region sub-classes
         /// <summary>
         /// Class to represent a phonetic transcription of character sequence.
         /// Note: Invalid values will lead to a crash. The specifications requires a start index, an end index and a value
@@ -194,7 +195,7 @@ namespace NanoXLSX.LowLevel
             /// <summary>
             /// Transcription value
             /// </summary>
-            public String Value { get; private set; }
+            public string Value { get; private set; }
             /// <summary>
             /// Absolute start index within the original string
             /// </summary>
@@ -210,14 +211,15 @@ namespace NanoXLSX.LowLevel
             /// <param name="value">Transcription value</param>
             /// <param name="start">Absolute start index as string</param>
             /// <param name="end">Absolute end index as string</param>
-            public PhoneticInfo(string value, String start, String end)
+            public PhoneticInfo(string value, string start, string end)
             {
-                Value = value;
-                StartIndex = int.Parse(start);
-                Length = int.Parse(end) - StartIndex;
-
+                    Value = value;
+                    StartIndex = int.Parse(start);
+                    Length = int.Parse(end) - StartIndex;
+                
             }
         }
 
+        #endregion
     }
 }
