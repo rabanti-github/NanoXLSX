@@ -201,11 +201,4 @@ xcopy "$(ProjectDir)icons\favicon.ico" "$(OutputPath)icons" /Y /r /h /c</PostBui
   <ItemGroup>
     <Content Include="icons\favicon.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NanoXLSX\NanoXLSX.csproj">
-      <Name>NanoXLSX</Name>
-      <Project>{a70e40aa-98c1-453a-8030-b4798a89ebfc}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

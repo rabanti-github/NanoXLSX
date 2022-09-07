@@ -84,12 +84,68 @@ Release Date: **03.09.2022 - Major Release**
 - Overhauled the whole writer
 - Removed lot of dead code for better maintenance
 
-## v1.8.1
+
+## v1.8.7
 
 ---
 Release Date: **06.08.2022**
 
 - Fixed a bug when setting a workbook protection password
+
+## v1.8.6
+
+---
+Release Date: **02.04.2022**
+
+- Added an import option to display phonetic characters (like Ruby Characters / Furigana / Zhuyin Fuhao are now discarded) in strings
+
+Note: Phonetic characters are discarded by default. If the import option "EnforcePhoneticCharacterImport" is set to true, the phonetic transcription will be displayed in brackets, right after the characters to be transcribed
+
+## v1.8.5
+
+---
+Release Date: **27.03.2022**
+
+- Fixed a follow-up issue on finding first/last cell addresses on explicitly defined, empty cells
+- Code maintenance
+
+## v1.8.4
+
+---
+Release Date: **20.03.2022**
+
+- Fixed a regression bug, caused by changes of v1.8.3
+
+
+## v1.8.3
+
+---
+Release Date: **10.03.2022**
+
+- Added functions to determine the first cell address, column number or row number of a worksheet
+- Adapted internal style handling
+- Adapted the internal building of XML documents
+- Fixed a bug in the handling of border colors
+
+
+## v1.8.2
+
+---
+Release Date: **20.12.2021**
+
+- Added hidden property for worksheets when loading a workbook
+
+Note: The reader functionality on worksheets is not feature complete yet. Additional information like panes, splitting, column and row sizes are currently in development
+
+
+## v1.8.1
+
+---
+Release Date: **12.09.2021**
+
+- Fixed a bug when hiding worksheets
+
+Note: It is not possible anymore to remove all worksheets from a workbook, or to set a hidden one as active. This would lead to an invalid Excel file
 
 ## v1.8.0
 

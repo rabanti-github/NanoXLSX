@@ -28,6 +28,14 @@
     <FileVersion>2.0.0.0</FileVersion>
 
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <PackageIcon>NanoXLSX.png</PackageIcon>
+
+    <PackageIconUrl />
+
+    <PackageTags>XLSX Excel ExcelWriter ExcelReader Office</PackageTags>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
@@ -40,5 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NanoXLSX .NET Standard\NanoXLSX .NET Standard.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Documentation\icons\NanoXLSX.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 </Project>
