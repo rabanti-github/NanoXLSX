@@ -33,7 +33,6 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="column">Column number (zero based)</param>
         /// <param name="row">Row number (zero based)</param>
-        /// <param name="type">Referencing type of the address</param>
         public Address(int column, int row) : this(column, row, Cell.AddressType.Default)
         {
             // No actions

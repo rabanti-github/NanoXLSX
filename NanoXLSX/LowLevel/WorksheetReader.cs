@@ -620,12 +620,9 @@ namespace NanoXLSX.LowLevel
                     data = Utils.GetOATime((TimeSpan)data);
                 }
             }
-            if (importOptions.EnforceEmptyValuesAsString)
+            if (importOptions.EnforceEmptyValuesAsString && data == null)
             {
-                if (data == null)
-                {
-                    return "";
-                }
+                return "";
             }
             return data;
         }
@@ -1046,6 +1043,7 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <param name="valueType">Type of the value to be converted: Valid values are DATE and TIME</param>
+        /// <param name="resolvedType">Out parameter for the determined value type</param>
         /// <returns>Object of the type TimeSpan or null if not possible to parse</returns>
         private object GetDateTimeValue(string raw, Cell.CellType valueType, out Cell.CellType resolvedType)
         {

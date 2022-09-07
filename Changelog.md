@@ -12,13 +12,13 @@ Release Date: **03.09.2022 - Major Release**
 - Added the method SetSelectedWorksheet by name in the Workbook class
 - Added two methods GetWorksheet by name or index in the Workbook class
 - Added the methods CopyWorksheetIntoThis and CopyWorksheetTo with several overloads in the Workbook class
-- Added the function RemoveWorksheet by index with the option of resetting the current worksheet, in the Workbook class
-- Added the function SetCurrentWorksheet by index in the Workbook class
-- Added the function SetSelectedWorksheet by name in the Workbook class
+- Added the method RemoveWorksheet by index with the option of resetting the current worksheet, in the Workbook class
+- Added the method SetCurrentWorksheet by index in the Workbook class
+- Added the method SetSelectedWorksheet by name in the Workbook class
 - Added a Shortener-Class constructor with a workbook reference
-- The shortener functions Down and Right have now an option to keep row and column positions
-- Added two shortener functions Up and Left
-- Made several style assigning methods deprecated in the Workbook class (will be removed in future versions)
+- The shortener methods Down and Right have now an option to keep row and column positions
+- Added two shortener methods Up and Left
+- Made several non-functional style assigning methods deprecated in the Workbook class (will be removed in future versions)
 
 ### Worksheet
 
@@ -34,12 +34,12 @@ Release Date: **03.09.2022 - Major Release**
 
 ### Cells, Rows and Columns
 
-- In Cell, the address can now have reference modifiers ($)
+- In a Cell object, the address can now have reference modifiers ($)
 - The worksheet reference in the Cell constructor was removed. Assigning to a worksheet is now managed automatically by the worksheet when adding a cell
-- Added a property CellAddressType in Cell
+- Added a property CellAddressType in the Cell class
 - Cells can now have null as value, interpreted as empty
-- Added a new overloaded function ResolveCellCoordinate to resolve the address type as well
-- Added ValidateColumnNumber and ValidateRowNumber in Cell
+- Added a new overloaded method ResolveCellCoordinate to resolve the address type as well
+- Added the methods ValidateColumnNumber and ValidateRowNumber in the Cell class
 - In Address, the constructor with string and address type now only needs a string, since reference modifiers ($) are resolved automatically
 - Address objects are now comparable
 - Implemented better address validation
@@ -47,13 +47,13 @@ Release Date: **03.09.2022 - Major Release**
 
 ### Styles
 
-- Font has now an enum of possible underline values (e.g. instead of a bool)
-- CellXf supports now indentation
+- Font class has now an enum of possible underline values (e.g. instead of a bool)
+- CellXf class supports now indentation
 - A new, internal style repository was introduced to streamline the style management
-- Color (RGB) values are now validated (Fill class has a function ValidateColor)
+- Color (RGB) values are now validated (Fill class has a method ValidateColor)
 - Style components have now more appropriate default values
-- MRU colors are now not collected from defined style colors but from the MRU list in the workbook object
-- The ToString function of Styles and all sub parts will now give a complete outline of all elements
+- MRU colors are now not collected from defined style colors anymore, but from the MRU list in the workbook object
+- The ToString function of styles and all sub parts will now give a complete outline of all elements
 - Fixed several issues with style comparison
 - Several style default values were introduced as constants
 
@@ -68,7 +68,7 @@ Release Date: **03.09.2022 - Major Release**
 - Added global casting import options: AllNumbersToDouble, AllNumbersToDecimal, AllNumbersToInt, EverythingToString
 - Added column casting import options: Double, Decimal
 - Added global import options: EnforcePhoneticCharacterImport, EnforceEmptyValuesAsString, DateTimeFormat, TemporalCultureInfo
-- Added a meta data reader
+- Added a meta data reader for workbook meta data
 - All style elements that can be written can also be read
 - All workbook elements that can be written can also be read (exception: passwords cannot be recovered)
 - All worksheet elements that can be written can also be read (exception: passwords cannot be recovered)
@@ -77,7 +77,7 @@ Release Date: **03.09.2022 - Major Release**
 ### Misc
 - Added a unit test project with several thousand, partially parametrized test cases
 - Added several constants for boundary dates in the Utils class
-- Added several functions for pane splitting in the Utils class
+- Added several methods for pane splitting in the Utils class
 - Exposed the (legacy) password generation method in the Utils class
 - Updated documentation among the whole project
 - Exceptions have no sub-tiles anymore

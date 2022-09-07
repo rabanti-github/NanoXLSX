@@ -149,7 +149,7 @@ namespace NanoXLSX
         /// Moves the cursor the number of defined columns to the right
         /// </summary>
         /// <param name="numberOfColumns">Number of columns to move</param>
-        /// <param name="keepRowPosition">If true, the row position is preserved, otherwise set to 0</param></param>
+        /// <param name="keepRowPosition">If true, the row position is preserved, otherwise set to 0</param>
         public void Right(int numberOfColumns, bool keepRowPosition = false)
         {
             NullCheck();

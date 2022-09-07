@@ -246,7 +246,7 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Method to create the (sub) part of the workbook protection within the workbook XML document
         /// </summary>
-        /// <param name="sb">reference to the stringbuilder</param>
+        /// <param name="sb">reference to the StringBuilder</param>
         private void CreateWorkbookProtectionString(StringBuilder sb)
         {
             if (workbook.UseWorkbookProtection)
@@ -343,8 +343,8 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Method to create the enclosing part of the rows
         /// </summary>
-        /// <param name="worksheet"><s</param>
-        /// <param name="sb">reference to the stringbuilder</param>
+        /// <param name="worksheet">Worksheet to process</param>
+        /// <param name="sb">reference to the StringBuilder</param>
         private void CreateRowsString(Worksheet worksheet, StringBuilder sb)
         {
             List<DynamicRow> cellData = GetSortedSheetData(worksheet);
@@ -360,7 +360,7 @@ namespace NanoXLSX.LowLevel
         /// Method to create the (sub) part of the sheet view (selected cells and panes) within the worksheet XML document
         /// </summary>
         /// <param name="worksheet">worksheet object to process</param>
-        /// <param name="sb">reference to the stringbuilder</param>
+        /// <param name="sb">reference to the StringBuilder</param>
         private void CreateSheetViewString(Worksheet worksheet, StringBuilder sb)
         {
             sb.Append("<sheetViews><sheetView workbookViewId=\"0\"");
@@ -385,7 +385,7 @@ namespace NanoXLSX.LowLevel
         /// Method to create the (sub) part of the pane (splitting and freezing) within the worksheet XML document
         /// </summary>
         /// <param name="worksheet">worksheet object to process</param>
-        /// <param name="sb">reference to the stringbuilder</param>
+        /// <param name="sb">reference to the StringBuilder</param>
         private void CreatePaneString(Worksheet worksheet, StringBuilder sb)
         {
             if (!HasPaneSplitting(worksheet))

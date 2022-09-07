@@ -763,7 +763,7 @@ namespace NanoXLSX
         /// <summary>
         /// Copies a worksheet of the current workbook by its index into another workbook
         /// </summary>
-        /// <param name="sourceWorksheetIndex">Index of the worksheet to copy, originated in this workbook<</param>
+        /// <param name="sourceWorksheetIndex">Index of the worksheet to copy, originated in this workbook</param>
         /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
         /// <param name="targetWorkbook">Workbook to copy the worksheet into</param>
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>

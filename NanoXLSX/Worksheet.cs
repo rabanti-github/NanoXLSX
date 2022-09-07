@@ -1595,10 +1595,10 @@ namespace NanoXLSX
         {
             string key = startAddress + ":" + endAddress;
             Range value = new Range(startAddress, endAddress);
-            IReadOnlyList<Address> cells = value.ResolveEnclosedAddresses();
+            IReadOnlyList<Address> result = value.ResolveEnclosedAddresses();
             foreach(KeyValuePair<string, Range>item in mergedCells)
             {
-                if (item.Value.ResolveEnclosedAddresses().Intersect(cells).Any())
+                if (item.Value.ResolveEnclosedAddresses().Intersect(result).Any())
                 {
                     throw new RangeException("The passed range: " + value.ToString() + " contains cells that are already in the defined merge range: " + item.Key);
                 }
@@ -2241,7 +2241,7 @@ namespace NanoXLSX
         /// Creates a (dereferenced) deep copy of this worksheet
         /// </summary>
         /// <remarks>Not considered in the copy are the internal ID, the worksheet name and the workbook reference. 
-        /// Since styles are managed in a shared repository, no dereferencing is applied (Styles are not deep-copied).<\br>
+        /// Since styles are managed in a shared repository, no dereferencing is applied (Styles are not deep-copied). 
         /// Use <see cref="Workbook.CopyWorksheetTo(Worksheet, string, Workbook, bool)"/> or <see cref="Workbook.CopyWorksheetIntoThis(Worksheet, string, bool)"/> 
         /// to add a copy of worksheet to a workbook. These methods will set the internal ID, name and workbook reference.
         /// </remarks>
