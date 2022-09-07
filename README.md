@@ -1,6 +1,7 @@
 # NanoXLSX
 
-![NanoXLSX](https://github.com/rabanti-github/NanoXLSX/blob/master/Documentation/icons/NanoXLSX.png)
+![NanoXLSX](https://github.com/rabanti-github/NanoXLSX/blob/master/Documentation/icons/NanoXLSX.png)[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_shield)
+
 
 NanoXLSX is a small .NET library written in C#, to create and read Microsoft Excel files in the XLSX format (Microsoft Excel 2007 or newer) in an easy and native way
 
@@ -134,3 +135,7 @@ See also: [Getting started in the Wiki](https://github.com/rabanti-github/NanoXL
 
 Hint: You will find most certainly any function, and the way how to use it, in the [Unit Test Project](https://github.com/rabanti-github/NanoXLSX/tree/master/NanoXlsx%20Test)
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_large)
