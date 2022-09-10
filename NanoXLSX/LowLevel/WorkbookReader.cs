@@ -152,7 +152,7 @@ namespace NanoXLSX.LowLevel
                     attribute = ReaderUtils.GetAttribute(node, "activeTab");
                     if (!string.IsNullOrEmpty(attribute))
                     {
-                        this.SelectedWorksheet = int.Parse(attribute);
+                        this.SelectedWorksheet = ReaderUtils.ParseInt(attribute);
                     }
                 }
             }
@@ -171,7 +171,7 @@ namespace NanoXLSX.LowLevel
                     try
                     {
                         string sheetName = ReaderUtils.GetAttribute(node, "name", "worksheet1");
-                        int id = int.Parse(ReaderUtils.GetAttribute(node, "sheetId"), CultureInfo.InvariantCulture); // Default will rightly throw an exception
+                        int id = ReaderUtils.ParseInt(ReaderUtils.GetAttribute(node, "sheetId")); // Default will rightly throw an exception
                         string state = ReaderUtils.GetAttribute(node, "state");
                         bool hidden = false;
                         if (state != null && state.ToLower() == "hidden")

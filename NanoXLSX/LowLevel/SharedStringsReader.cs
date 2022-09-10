@@ -214,8 +214,8 @@ namespace NanoXLSX.LowLevel
             public PhoneticInfo(string value, string start, string end)
             {
                     Value = value;
-                    StartIndex = int.Parse(start);
-                    Length = int.Parse(end) - StartIndex;
+                    StartIndex = ReaderUtils.ParseInt(start);
+                    Length = ReaderUtils.ParseInt(end) - StartIndex;
                 
             }
         }

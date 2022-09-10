@@ -241,11 +241,11 @@ namespace NanoXLSX.LowLevel
                                 this.PaneSplitValue.YSplitDefined = true;
                                 if (useNumbers)
                                 {
-                                    this.PaneSplitValue.PaneSplitRowIndex = int.Parse(attribute);
+                                    this.PaneSplitValue.PaneSplitRowIndex = ReaderUtils.ParseInt(attribute);
                                 }
                                 else
                                 {
-                                    this.PaneSplitValue.PaneSplitHeight = Utils.GetPaneSplitHeight(float.Parse(attribute));
+                                    this.PaneSplitValue.PaneSplitHeight = Utils.GetPaneSplitHeight(ReaderUtils.ParseFloat(attribute));
                                 }
                             }
                             attribute = ReaderUtils.GetAttribute(paneNode, "xSplit");
@@ -254,11 +254,11 @@ namespace NanoXLSX.LowLevel
                                 this.PaneSplitValue.XSplitDefined = true;
                                 if (useNumbers)
                                 {
-                                    this.PaneSplitValue.PaneSplitColumnIndex = int.Parse(attribute);
+                                    this.PaneSplitValue.PaneSplitColumnIndex = ReaderUtils.ParseInt(attribute);
                                 }
                                 else
                                 {
-                                    this.PaneSplitValue.PaneSplitWidth = Utils.GetPaneSplitWidth(float.Parse(attribute));
+                                    this.PaneSplitValue.PaneSplitWidth = Utils.GetPaneSplitWidth(ReaderUtils.ParseFloat(attribute));
                                 }
                             }
                             attribute = ReaderUtils.GetAttribute(paneNode, "topLeftCell");
@@ -321,7 +321,7 @@ namespace NanoXLSX.LowLevel
             string attribute = ReaderUtils.GetAttribute(node, attributeName);
             if (attribute != null)
             {
-                int value = int.Parse(attribute);
+                int value = ReaderUtils.ParseInt(attribute);
                 WorksheetProtection.Add(sheetProtectionValue, value);
             }
         }
@@ -362,12 +362,12 @@ namespace NanoXLSX.LowLevel
                 string attribute = ReaderUtils.GetAttribute(formatNodes[0], "defaultColWidth");
                 if (attribute != null)
                 {
-                    this.DefaultColumnWidth = float.Parse(attribute);
+                    this.DefaultColumnWidth = ReaderUtils.ParseFloat(attribute);
                 }
                 attribute = ReaderUtils.GetAttribute(formatNodes[0], "defaultRowHeight");
                 if (attribute != null)
                 {
-                    this.DefaultRowHeight = float.Parse(attribute);
+                    this.DefaultRowHeight = ReaderUtils.ParseFloat(attribute);
                 }
             }
         }
@@ -404,14 +404,14 @@ namespace NanoXLSX.LowLevel
                 string attribute = ReaderUtils.GetAttribute(columnNode, "min");
                 if (attribute != null)
                 {
-                    min = int.Parse(attribute);
+                    min = ReaderUtils.ParseInt(attribute);
                     max = min;
                     indices.Add(min.Value);
                 }
                 attribute = ReaderUtils.GetAttribute(columnNode, "max");
                 if (attribute != null)
                 {
-                    max = int.Parse(attribute);
+                    max = ReaderUtils.ParseInt(attribute);
                 }
                 if (min != null && max.Value != min.Value)
                 {
@@ -424,7 +424,7 @@ namespace NanoXLSX.LowLevel
                 float width = Worksheet.DEFAULT_COLUMN_WIDTH;
                 if (attribute != null)
                 {
-                    width = float.Parse(attribute);
+                    width = ReaderUtils.ParseFloat(attribute);
                 }
                 attribute = ReaderUtils.GetAttribute(columnNode, "hidden");
                 bool hidden = false;
@@ -1429,14 +1429,14 @@ namespace NanoXLSX.LowLevel
             /// <param name="hiddenProperty">Hidden definition as string (directly resolved from the corresponding XML attribute)</param>
             public static void AddRowDefinition(Dictionary<int, RowDefinition> rows, string rowNumber, string heightProperty, string hiddenProperty)
             {
-                int row = int.Parse(rowNumber) - 1; // Transform to zero-based
+                int row = ReaderUtils.ParseInt(rowNumber) - 1; // Transform to zero-based
                 if (!rows.ContainsKey(row))
                 {
                     rows.Add(row, new RowDefinition());
                 }
                 if (heightProperty != null)
                 {
-                    rows[row].Height = float.Parse(heightProperty);
+                    rows[row].Height = ReaderUtils.ParseFloat(heightProperty);
                 }
                 if (hiddenProperty != null && hiddenProperty == "1")
                 {

@@ -107,7 +107,7 @@ namespace NanoXLSX.LowLevel
                     if (childNode.LocalName.Equals("numfmt", StringComparison.InvariantCultureIgnoreCase))
                     {
                         NumberFormat numberFormat = new NumberFormat();
-                        int id = int.Parse(ReaderUtils.GetAttribute(childNode, "numFmtId")); // Default will (justified) throw an exception
+                        int id = ReaderUtils.ParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId")); // Default will (justified) throw an exception
                         string code = ReaderUtils.GetAttribute(childNode, "formatCode", string.Empty);
                         numberFormat.CustomFormatID = id;
                         numberFormat.Number = NumberFormat.FormatNumber.custom;
@@ -232,7 +232,7 @@ namespace NanoXLSX.LowLevel
                         string backgroundIndex = ReaderUtils.GetAttribute(backgroundNode, "indexed");
                         if (!string.IsNullOrEmpty(backgroundIndex))
                         {
-                            fillStyle.IndexedColor = int.Parse(backgroundIndex);
+                            fillStyle.IndexedColor = ReaderUtils.ParseInt(backgroundIndex);
                         }
                     }
                 }
@@ -293,7 +293,7 @@ namespace NanoXLSX.LowLevel
                 }
                 if (ReaderUtils.GetAttributeOfChild(font, "sz", "val", out attribute))
                 {
-                    fontStyle.Size = float.Parse(attribute);
+                    fontStyle.Size = ReaderUtils.ParseFloat(attribute);
                 }
                 XmlNode colorNode = ReaderUtils.GetChildNode(font, "color");
                 if (colorNode != null)
@@ -301,7 +301,7 @@ namespace NanoXLSX.LowLevel
                     attribute = ReaderUtils.GetAttribute(colorNode, "theme");
                     if (attribute != null)
                     {
-                        fontStyle.ColorTheme = int.Parse(attribute);
+                        fontStyle.ColorTheme = ReaderUtils.ParseInt(attribute);
                     }
                     attribute = ReaderUtils.GetAttribute(colorNode, "rgb");
                    if (attribute != null)
@@ -384,12 +384,12 @@ namespace NanoXLSX.LowLevel
                             attribute = ReaderUtils.GetAttribute(alignmentNode, "indent");
                             if (attribute != null)
                             {
-                                cellXfStyle.Indent = int.Parse(attribute);
+                                cellXfStyle.Indent = ReaderUtils.ParseInt(attribute);
                             }
                             attribute = ReaderUtils.GetAttribute(alignmentNode, "textRotation");
                             if (attribute != null)
                             {
-                                int rotation = int.Parse(attribute);
+                                int rotation = ReaderUtils.ParseInt(attribute);
                                 cellXfStyle.TextRotation = rotation > 90 ? 90 - rotation : rotation;
                             }
                         }

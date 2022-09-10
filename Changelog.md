@@ -1,5 +1,12 @@
 # Change Log
 
+## v2.0.1
+
+---
+Release Date: **10.09.2022**
+
+- Fixed a bug when loading workbooks on hosts with locales different than en-US (and others)
+
 ## v2.0.0
 
 ---

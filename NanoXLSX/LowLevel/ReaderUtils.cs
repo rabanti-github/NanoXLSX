@@ -6,6 +6,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Xml;
 
@@ -86,6 +87,26 @@ namespace NanoXLSX.LowLevel
         internal static bool IsNode(XmlNode node, string name)
         {
             return node.LocalName.Equals(name, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
+        /// Parses a float independent from the culture info of the host
+        /// </summary>
+        /// <param name="rawValue">Raw number as string</param>
+        /// <returns>Parsed float</returns>
+        internal static float ParseFloat(String rawValue)
+        {
+            return float.Parse(rawValue, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Parses an int independent from the culture info of the host
+        /// </summary>
+        /// <param name="rawValue">Raw number as string</param>
+        /// <returns>Parsed int</returns>
+        internal static int ParseInt(String rawValue)
+        {
+            return int.Parse(rawValue, CultureInfo.InvariantCulture);
         }
     }
 }

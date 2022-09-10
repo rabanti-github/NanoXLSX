@@ -17,14 +17,15 @@ See the **[Change Log](https://github.com/rabanti-github/NanoXLSX/blob/master/Ch
 ## What's new in version 2.x
 
 There are some additional functions for workbooks and worksheets, as well as support of further data types.
-The biggest change is the full capable reader support for workbook, worksheet and style information. Also, all features are now fully unit tested. This means, that nanoXLSX is no longer in Beta state. Some key features are:
+The biggest change is the full capable reader support for workbook, worksheet and style information. Also, all features are now fully unit tested. This means, that NanoXLSX is no longer in Beta status, but production ready. Some key features are:
 
-* Full reader support for styles
+* Full reader support for styles, workbooks, worksheets and workbook metadata
 * Copy functions for worksheets
 * Advance import options for the reader
 * Several additional checks, exception handling and updated documentation
 
 ## Road map
+
 Version 2.x of NanoXLSX was completely overhauled and a high number of (partially parametrized) unit tests with a code coverage of >99% were written to improve the quality of the library.
 However, it is not planned as a LTS version. The upcoming v3.x is supposed to introduce some important functions, like in-line cell formatting, better formula handling and additional worksheet features.
 Furthermore, it is planned to introduce more modern OOXML features like the SHA256 implementation of worksheet passwords.
