@@ -84,6 +84,7 @@ namespace NanoXLSX
         private Style cellStyle;
         private int columnNumber;
         private int rowNumber;
+        private object value;
         #endregion
 
         #region properties
@@ -94,7 +95,8 @@ namespace NanoXLSX
         public string CellAddress
         {
             get { return ResolveCellAddress(ColumnNumber, RowNumber, CellAddressType); }
-            set {
+            set
+            {
                 AddressType addressType;
                 ResolveCellCoordinate(value, out columnNumber, out rowNumber, out addressType);
                 CellAddressType = addressType;
@@ -155,8 +157,15 @@ namespace NanoXLSX
         /// <remarks>The type has no influence on the behavior of the cell, though. It is preserved to avoid losing information on the address object of the cell</remarks>
         public AddressType CellAddressType { get; set; }
 
-        /// <summary>Gets or sets the value of the cell (generic object type)</summary>
-        public object Value { get; set; }
+        /// <summary>Gets or sets the value of the cell (generic object type). When setting a value, the <see cref="DataType"/> is automatically resolved</summary>
+        public object Value { 
+            get => this.value; 
+            set {
+                this.value = value;
+                ResolveCellType();
+            } 
+            
+        }
 
         #endregion
 
@@ -172,9 +181,17 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
+        /// <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
         public Cell(object value, CellType type)
         {
-            Value = value;
+            if (type == CellType.EMPTY)
+            {
+                this.value = null;
+            }
+            else
+            {
+                this.value = value;
+            }
             DataType = type;
             if (type == CellType.DEFAULT)
             {
@@ -188,10 +205,18 @@ namespace NanoXLSX
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address of the cell</param>
+        /// <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
         public Cell(Object value, CellType type, string address)
         {
+            if (type == CellType.EMPTY)
+            {
+                this.value = null;
+            }
+            else
+            {
+                this.value = value;
+            }
             DataType = type;
-            Value = value;
             CellAddress = address;
             if (type == CellType.DEFAULT)
             {
@@ -205,10 +230,18 @@ namespace NanoXLSX
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address struct of the cell</param>
+        /// <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
         public Cell(Object value, CellType type, Address address)
         {
+            if (type == CellType.EMPTY)
+            {
+                this.value = null;
+            }
+            else
+            {
+                this.value = value;
+            }
             DataType = type;
-            Value = value;
             columnNumber = address.Column;
             rowNumber = address.Row;
             CellAddressType = address.Type;
@@ -291,7 +324,7 @@ namespace NanoXLSX
         /// </summary>
         public void RemoveStyle()
         {
-                cellStyle = null;
+            cellStyle = null;
         }
 
         /// <summary>
@@ -299,15 +332,15 @@ namespace NanoXLSX
         /// </summary>
         public void ResolveCellType()
         {
-            if (Value == null)
+            if (this.value == null)
             {
                 DataType = CellType.EMPTY;
-                Value = null;
+                this.value = null;
                 return;
             }
-            if (DataType == CellType.FORMULA || DataType == CellType.EMPTY)
+            if (DataType == CellType.FORMULA)
             { return; }
-            Type t = Value.GetType();
+            Type t = this.value.GetType();
             if (t == typeof(bool))
             { DataType = CellType.BOOL; }
             else if (t == typeof(byte) || t == typeof(sbyte))
@@ -329,12 +362,12 @@ namespace NanoXLSX
                 DataType = CellType.DATE;
                 SetStyle(BasicStyles.DateFormat);
             }
-           
+
             else if (t == typeof(TimeSpan)) // Not native but standard
-            { 
+            {
                 DataType = CellType.TIME;
                 SetStyle(BasicStyles.TimeFormat);
-            } 
+            }
             else { DataType = CellType.STRING; } // Default (char, string, object)
         }
 
@@ -384,7 +417,7 @@ namespace NanoXLSX
         internal Cell Copy()
         {
             Cell copy = new Cell();
-            copy.Value = this.Value;
+            copy.value = this.value;
             copy.DataType = this.DataType;
             copy.CellAddress = this.CellAddress;
             copy.CellAddressType = this.CellAddressType;
@@ -417,7 +450,7 @@ namespace NanoXLSX
             foreach (T item in list)
             {
                 if (item == null)
-                { 
+                {
                     c = new Cell(null, CellType.EMPTY);
                     output.Add(c);
                     continue;
@@ -425,7 +458,7 @@ namespace NanoXLSX
                 o = item; // intermediate object is necessary to cast the types below
                 t = item.GetType();
                 if (t == typeof(Cell))
-                {  c = item as Cell; }
+                { c = item as Cell; }
                 else if (t == typeof(bool))
                 { c = new Cell((bool)o, CellType.BOOL); }
                 else if (t == typeof(byte))
@@ -451,12 +484,12 @@ namespace NanoXLSX
                 else if (t == typeof(ushort))
                 { c = new Cell((ushort)o, CellType.NUMBER); }
                 else if (t == typeof(DateTime))
-                { 
+                {
                     c = new Cell((DateTime)o, CellType.DATE);
                     c.SetStyle(BasicStyles.DateFormat);
                 }
                 else if (t == typeof(TimeSpan))
-                { 
+                {
                     c = new Cell((TimeSpan)o, CellType.TIME);
                     c.SetStyle(BasicStyles.TimeFormat);
                 }
@@ -464,7 +497,7 @@ namespace NanoXLSX
                 { c = new Cell((string)o, CellType.STRING); }
                 else // Default = unspecified object
                 {
-                     c = new Cell(o.ToString(), CellType.DEFAULT); 
+                    c = new Cell(o.ToString(), CellType.DEFAULT);
                 }
                 output.Add(c);
             }
@@ -768,7 +801,7 @@ namespace NanoXLSX
                     return AddressScope.Invalid;
                 }
             }
-            
+
         }
 
         /// <summary>

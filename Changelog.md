@@ -6,10 +6,13 @@
 Release Date: **29.09.2022**
 
 - Fixed a bug in the functions to write and read custom number formats
+- Fixed behavior of empty cells and added re-evaluation if values are set by the Value property
 - Adapted and added further tests
 - Removed several obsolete files and fixed project links
 
-Note: When defining a custom number format, now the CustomFormatCode property must always be defined as well, since an empty value leads to an invalid Workbook 
+Note: 
+- When defining a custom number format, now the CustomFormatCode property must always be defined as well, since an empty value leads to an invalid Workbook 
+- When a cell is now created (by constructor) with the type EMPTY, any passed value will be discarded in this cell
 
 ## v2.0.1
 

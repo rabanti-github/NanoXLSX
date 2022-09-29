@@ -53,8 +53,8 @@ namespace NanoXLSX_Test.Cells
         [InlineData("=B1", "=B1", CellType.FORMULA, CellType.FORMULA)]
         [InlineData("", "", CellType.DEFAULT, CellType.STRING)]
         [InlineData(null, null, CellType.DEFAULT, CellType.EMPTY)]
-        [InlineData("", "", CellType.EMPTY, CellType.EMPTY)]
-        [InlineData(11, 11, CellType.EMPTY, CellType.EMPTY)]
+        [InlineData("", null, CellType.EMPTY, CellType.EMPTY)]
+        [InlineData(11, null, CellType.EMPTY, CellType.EMPTY)]
         public void CellConstructorTest2(object givenValue, object expectedValue, CellType givenType, CellType expectedType)
         {
             Cell cell = new Cell(givenValue, givenType);
@@ -84,8 +84,8 @@ namespace NanoXLSX_Test.Cells
         [InlineData("=B1", "=B1", CellType.FORMULA, CellType.FORMULA, "$A$15", "$A$15")]
         [InlineData("", "", CellType.DEFAULT, CellType.STRING, "r1", "R1")]
         [InlineData(null, null, CellType.DEFAULT, CellType.EMPTY, "$ab$999", "$AB$999")]
-        [InlineData("", "", CellType.EMPTY, CellType.EMPTY, "c$90000", "C$90000")]
-        [InlineData(11, 11, CellType.EMPTY, CellType.EMPTY, "a17", "A17")]
+        [InlineData("", null, CellType.EMPTY, CellType.EMPTY, "c$90000", "C$90000")]
+        [InlineData(11, null, CellType.EMPTY, CellType.EMPTY, "a17", "A17")]
         public void CellConstructorTest3(object givenValue, object expectedValue, CellType givenType, CellType expectedType, string givenAddress, string expectedAddress)
         {
             Cell cell = new Cell(givenValue, givenType, givenAddress);
@@ -104,8 +104,8 @@ namespace NanoXLSX_Test.Cells
         [InlineData("=B1", "=B1", CellType.FORMULA, CellType.FORMULA, 0, 14, "A15")]
         [InlineData("", "", CellType.DEFAULT, CellType.STRING, 17, 0, "R1")]
         [InlineData(null, null, CellType.DEFAULT, CellType.EMPTY, 27, 998, "AB999")]
-        [InlineData("", "", CellType.EMPTY, CellType.EMPTY, 2, 89999, "C90000")]
-        [InlineData(11, 11, CellType.EMPTY, CellType.EMPTY, 0, 16, "A17")]
+        [InlineData("", null, CellType.EMPTY, CellType.EMPTY, 2, 89999, "C90000")]
+        [InlineData(11, null, CellType.EMPTY, CellType.EMPTY, 0, 16, "A17")]
         public void CellConstructorTest4(object givenValue, object expectedValue, CellType givenType, CellType expectedType, int givenColumn, int givenRow, string expectedAddress)
         {
             Address address = new Address(givenColumn, givenRow);
@@ -232,6 +232,20 @@ namespace NanoXLSX_Test.Cells
             Assert.Equal(typeof(StyleException), ex.GetType());
         }
 
+        [Theory(DisplayName = "Test of the set function of the Value property on changing the data type of the cell")]
+        [InlineData(0, Cell.CellType.NUMBER, "test", CellType.STRING)]
+        [InlineData(true, Cell.CellType.BOOL, 1, CellType.NUMBER)]
+        [InlineData(22.5f, Cell.CellType.NUMBER, 22, CellType.NUMBER)]
+        [InlineData("True", Cell.CellType.STRING, true, CellType.BOOL)]
+        [InlineData(null, Cell.CellType.EMPTY, 22, CellType.NUMBER)]
+        [InlineData("test", Cell.CellType.STRING, null, CellType.EMPTY)]
+        public void GetValuePropertyTest(object initialValue, Cell.CellType initialType, object givenValue, Cell.CellType expectedType)
+        {
+            Cell cell2 = new Cell(initialValue, initialType);
+            Assert.Equal(cell2.DataType, initialType);
+            cell2.Value = givenValue;
+            Assert.Equal(cell2.DataType, expectedType);
+        }
 
 
         [Fact(DisplayName = "Test of the RemoveStyle method")]
