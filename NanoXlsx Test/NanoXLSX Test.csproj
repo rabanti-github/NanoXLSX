@@ -33,6 +33,10 @@
     <RepositoryType>git</RepositoryType>
 
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
+
+    <AssemblyVersion>2.0.2.0</AssemblyVersion>
+
+    <FileVersion>2.0.2.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

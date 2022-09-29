@@ -28,8 +28,8 @@
     <PackageLicenseFile></PackageLicenseFile>
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>2.0.1.0</AssemblyVersion>
-    <FileVersion>2.0.1.0</FileVersion>
+    <AssemblyVersion>2.0.2.0</AssemblyVersion>
+    <FileVersion>2.0.2.0</FileVersion>
     <Version>2.0.1</Version>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
