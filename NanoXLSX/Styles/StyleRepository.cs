@@ -38,6 +38,11 @@ namespace NanoXLSX.Styles
         private Dictionary<int, Style> styles;
 
         /// <summary>
+        /// If true certain exceptions will be suppressed and transformations on styles are performed when a worksheet is loaded
+        /// </summary>
+        internal bool ImportInProgress { get; set; }
+
+        /// <summary>
         /// Gets the currently managed styles of the repository
         /// </summary>
         public Dictionary<int, Style> Styles { get => styles; }

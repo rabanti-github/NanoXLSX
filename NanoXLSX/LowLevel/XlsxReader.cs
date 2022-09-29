@@ -103,11 +103,12 @@ namespace NanoXLSX.LowLevel
                     {
                         sharedStrings.Read(ms);
                     }
-
+                    StyleRepository.Instance.ImportInProgress = true;
                     StyleReader styleReader = new StyleReader();
                     ms = GetEntryStream("xl/styles.xml", zf);
                     styleReader.Read(ms);
                     styleReaderContainer = styleReader.StyleReaderContainer;
+                    StyleRepository.Instance.ImportInProgress = false;
 
                     workbook = new WorkbookReader();
                     ms = GetEntryStream("xl/workbook.xml", zf);

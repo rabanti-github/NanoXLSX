@@ -1,5 +1,16 @@
 # Change Log
 
+## v2.0.2
+
+---
+Release Date: **29.09.2022**
+
+- Fixed a bug in the functions to write and read custom number formats
+- Adapted and added further tests
+- Removed several obsolete files and fixed project links
+
+Note: When defining a custom number format, now the CustomFormatCode property must always be defined as well, since an empty value leads to an invalid Workbook 
+
 ## v2.0.1
 
 ---

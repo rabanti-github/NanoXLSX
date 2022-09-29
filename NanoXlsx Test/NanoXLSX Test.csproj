@@ -51,10 +51,6 @@
     <None Remove="Resources\tampered.xlsx" />
     <None Remove="Resources\unknown_border_type.xlsx" />
     <None Remove="Resources\unknown_style_enums.xlsx" />
-    <None Include="..\docs\icons\NanoXLSX.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>
 
   <ItemGroup>

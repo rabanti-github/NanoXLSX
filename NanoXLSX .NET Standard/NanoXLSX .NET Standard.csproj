@@ -78,6 +78,7 @@
     <Compile Include="..\NanoXLSX\Styles\NumberFormat.cs" Link="Styles\NumberFormat.cs" />
     <Compile Include="..\NanoXLSX\Styles\Style.cs" Link="Styles\Style.cs" />
     <Compile Include="..\NanoXLSX\Styles\StyleManager.cs" Link="Styles\StyleManager.cs" />
+    <Compile Include="..\NanoXLSX\Styles\StyleRepository.cs" Link="Styles\StyleRepository.cs" />
     <Compile Include="..\NanoXLSX\Utils.cs" Link="Utils.cs" />
     <Compile Include="..\NanoXLSX\Workbook.cs" Link="Workbook.cs" />
     <Compile Include="..\NanoXLSX\Worksheet.cs" Link="Worksheet.cs" />
@@ -99,7 +100,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\docs\icons\NanoXLSX.png">
+    <None Include="NanoXLSX.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

@@ -6,9 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX_Test.Styles
 {
+    // Ensure that these tests are executed sequentially, since static repository methods may be called 
+    [Collection(nameof(SequentialCollection))]
     public class NumberFormatTest
     {
 
@@ -65,7 +68,7 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the CustomFormatCode property")]
-        [InlineData("")]
+        [InlineData("//")]
         [InlineData("#.###")]
         public void CustomFormatCodeTest(string value)
         {
@@ -73,6 +76,16 @@ namespace NanoXLSX_Test.Styles
             Assert.Equal(string.Empty, numberFormat.CustomFormatCode);
             numberFormat.CustomFormatCode = value;
             Assert.Equal(value, numberFormat.CustomFormatCode);
+        }
+
+        [Theory(DisplayName = "Test of the failing set function of the CustomFormatCode property on invalid values")]
+        [InlineData("")]
+        [InlineData(null)]
+        public void CustomFormatCodeFailTest(string value)
+        {
+            NumberFormat numberFormat = new NumberFormat();
+            Exception ex = Assert.Throws<FormatException>(() => numberFormat.CustomFormatCode = value);
+            Assert.Equal(typeof(FormatException), ex.GetType());
         }
 
         [Theory(DisplayName = "Test of the get and set function of the CustomFormatID property")]
@@ -303,6 +316,11 @@ namespace NanoXLSX_Test.Styles
             string s1 = numberFormat.ToString();
             numberFormat.Number = NumberFormat.FormatNumber.format_11;
             Assert.NotEqual(s1, numberFormat.ToString()); // An explicit value comparison is probably not sensible
+        }
+
+        private static object SequentialCollection()
+        {
+            throw new NotImplementedException();
         }
     }
 }

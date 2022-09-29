@@ -129,14 +129,29 @@ namespace NanoXLSX.Styles
         #endregion
 
         #region privateFields
+        private string customFormatCode;
+
         #endregion
 
         #region properties
         /// <summary>
         /// Gets or sets the custom format code in the notation of Excel
         /// </summary>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if passed value is null or empty</exception>
+        /// <remarks>Do not escape backslashes in custom format codes by double-backslashes (four in code), since escaping will be performed on saving the file. Unescaping will be also performed on loading</remarks>
         [Append]
-        public string CustomFormatCode { get; set; }
+        public string CustomFormatCode
+        {
+            get => customFormatCode;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new FormatException("A custom format code cannot be null or empty");
+                }
+                customFormatCode = value;
+            }
+        }
         /// <summary>
         /// Gets or sets the format number of the custom format. Must be higher or equal then predefined custom number (164) 
         /// </summary>
@@ -147,7 +162,7 @@ namespace NanoXLSX.Styles
             get { return customFormatID; }
             set
             {
-                if (value < CUSTOMFORMAT_START_NUMBER)
+                if (value < CUSTOMFORMAT_START_NUMBER && !StyleRepository.Instance.ImportInProgress)
                 {
                     throw new StyleException("The number '" + value + "' is not a valid custom format ID. Must be at least " + CUSTOMFORMAT_START_NUMBER);
                 }
@@ -181,7 +196,7 @@ namespace NanoXLSX.Styles
         public NumberFormat()
         {
             Number = DEFAULT_NUMBER;
-            CustomFormatCode = string.Empty;
+            customFormatCode = string.Empty;
             CustomFormatID = CUSTOMFORMAT_START_NUMBER;
         }
         #endregion
@@ -265,6 +280,34 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
+        /// Method to escape Backslashes in custom format codes.
+        /// </summary>
+        /// <param name="rawFormatCode">Raw value to escape</param>
+        /// <returns></returns>
+        internal static string EscapeFormatCode(string rawFormatCode)
+        {
+            // TODO: Add further rules, if discovered
+            return rawFormatCode.Replace("\\", "\\\\");
+        }
+
+        /// <summary>
+        /// Method to unescape a custom format code when reading a workbook
+        /// </summary>
+        /// <param name="escapedFormatCode">Escaped format code from the style definition of a read workbook</param>
+        /// <returns>Escaped format code</returns>
+        internal static string UnEscapeFormatCode(string escapedFormatCode)
+        {
+            if (!escapedFormatCode.Contains("\\"))
+            {
+                return escapedFormatCode;
+            }
+            // TODO: Add further rules, if discovered
+            string intermediateEscaped = escapedFormatCode.Replace("\\\\", "\0");
+            intermediateEscaped = intermediateEscaped.Replace("\\", "");
+            return intermediateEscaped.Replace("\0", "\\");
+        }
+
+        /// <summary>
         /// Override toString method
         /// </summary>
         /// <returns>String of a class</returns>
@@ -287,7 +330,7 @@ namespace NanoXLSX.Styles
         public override AbstractStyle Copy()
         {
             NumberFormat copy = new NumberFormat();
-            copy.CustomFormatCode = CustomFormatCode;
+            copy.customFormatCode = customFormatCode;
             copy.CustomFormatID = CustomFormatID;
             copy.Number = Number;
             return copy;

@@ -22,13 +22,29 @@ namespace NanoXLSX_Test.Styles.WriteRead
             Style style = new Style();
             style.CurrentNumberFormat.CustomFormatID = styleValue;
             style.CurrentNumberFormat.Number = NumberFormat.FormatNumber.custom; // Mandatory
+            style.CurrentNumberFormat.CustomFormatCode = "#.##"; // Mandatory
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentNumberFormat.CustomFormatID);
         }
 
+        [Theory(DisplayName = "Test of the failing save attempt of 'customFormatID' value when writing and reading a NumberFormat style with missing CustomFormatCode")]
+        [InlineData(164, "test")]
+        [InlineData(165, 0.5f)]
+        [InlineData(200, 22)]
+        [InlineData(2000, true)]
+        public void CustomFormatIDFormatFailTest(int styleValue, object value)
+        {
+            Style style = new Style();
+            style.CurrentNumberFormat.CustomFormatID = styleValue;
+            style.CurrentNumberFormat.Number = NumberFormat.FormatNumber.custom; // Mandatory
+            Assert.ThrowsAny<Exception>(() => TestUtils.SaveAndReadStyledCell(value, style, "A1"));
+        }
+
         [Theory(DisplayName = "Test of the 'customFormatCode' value when writing and reading a NumberFormat style")]
         [InlineData("#", "test")]
-        [InlineData("", 0.5f)]
+        [InlineData("\\", 0.5f)]
+        [InlineData("\\\\", "")]
+        [InlineData(" \\.\\ ", false)]
         [InlineData(" ", 22)]
         [InlineData("ABCDE", true)]
         public void CustomFormatCodeNumberFormatTest(string styleValue, object value)
@@ -74,13 +90,22 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData(NumberFormat.FormatNumber.format_47, "noDate")]
         [InlineData(NumberFormat.FormatNumber.format_48, "Æ")]
         [InlineData(NumberFormat.FormatNumber.format_49, "test")]
-        [InlineData(NumberFormat.FormatNumber.custom, 0.5f)]
         public void NumberNumberFormatTest(NumberFormat.FormatNumber styleValue, object value)
         {
             Style style = new Style();
             style.CurrentNumberFormat.Number = styleValue;
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentNumberFormat.Number);
+        }
+
+        [Fact(DisplayName = "Test of the 'formatNumber' value when writing and reading a custom NumberFormat style")]
+        public void NumberNumberFormatTest1b()
+        {
+            Style style = new Style();
+            style.CurrentNumberFormat.Number = NumberFormat.FormatNumber.custom;
+            style.CurrentNumberFormat.CustomFormatCode = "#.##";
+            Cell cell = TestUtils.SaveAndReadStyledCell(0.5f, style, "A1");
+            Assert.Equal(NumberFormat.FormatNumber.custom, cell.CellStyle.CurrentNumberFormat.Number);
         }
 
         [Theory(DisplayName = "Test of the 'formatNumber' value with date formats when writing and reading a NumberFormat style")]

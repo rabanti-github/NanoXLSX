@@ -33,8 +33,8 @@ namespace NanoXLSX
         private bool lockStructureIfProtected;
         private int selectedWorksheet;
         private Shortener shortener;
-        private bool importInProgress = false;
         private List<string> mruColors = new List<string>();
+        internal bool importInProgress = false;
         #endregion
 
         #region properties
