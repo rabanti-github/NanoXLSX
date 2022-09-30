@@ -9,6 +9,8 @@ using Xunit;
 
 namespace NanoXLSX_Test.Styles
 {
+    // Ensure that these tests are executed sequentially, since static repository methods may be called 
+    [Collection(nameof(SequentialCollection))]
     public class BasicStylesTest
     {
         [Fact(DisplayName = "Test of the static Bold style")]
@@ -239,8 +241,10 @@ namespace NanoXLSX_Test.Styles
             Assert.Throws<StyleException>(() => BasicStyles.Font(""));
         }
 
-
-
+        private static object SequentialCollection()
+        {
+            throw new NotImplementedException();
+        }
 
     }
 }

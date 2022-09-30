@@ -34,9 +34,9 @@ namespace NanoXLSX
         {
             /// <summary>Type for single characters and strings</summary>
             STRING,
-            /// <summary>Type for all numeric types (long, integer and float and double)</summary>
+            /// <summary>Type for all numeric types (long, integer, float, double, short, byte and decimal; signed and unsigned, if available)</summary>
             NUMBER,
-            /// <summary>Type for dates(Note: Dates before 1900-01-01 and after 9999-12-31 are not allowed)</summary>
+            /// <summary>Type for dates (Note: Dates before 1900-01-01 and after 9999-12-31 are not allowed)</summary>
             DATE,
             /// <summary>Type for times (Note: Internally handled as OAdate, represented by <see cref="TimeSpan"/>)</summary>
             TIME,
@@ -328,7 +328,8 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Method resets the Cell type and tries to find the actual type. This is used if a Cell was created with the CellType DEFAULT. CellTypes FORMULA and EMPTY will skip this method
+        /// Method resets the Cell type and tries to find the actual type. This is used if a Cell was created with the CellType DEFAULT or automatically if a value was set by <see cref="Value"/>. 
+        /// CellType FORMULA will skip this method and EMPTY will discard the value of the cell
         /// </summary>
         public void ResolveCellType()
         {

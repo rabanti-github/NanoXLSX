@@ -101,6 +101,8 @@ namespace NanoXLSX.Styles
         #region privateFields
         private float size;
         private string name = DEFAULT_FONT_NAME;
+        //TODO: V3> Refactor to enum according to specs
+        //OOXML: Chp.20.1.6.2(p2839ff)
         private int colorTheme;
         private string colorValue = "";
         #endregion
@@ -131,18 +133,23 @@ namespace NanoXLSX.Styles
         /// Gets or sets the char set of the Font (Default is empty)
         /// </summary>
         [Append]
-        public string Charset { get; set; }
+        //TODO: v3> Refactor to enum according to specs
+        // OOXML: Chp.19.2.1.13
+        public string Charset { get; set; } 
+
         /// <summary>
-        /// Gets or sets the font color theme (Default is 1)
+        /// Gets or sets the font color theme (Default is 1 = Light 1)
         /// </summary>
         /// <exception cref="StyleException">Throws a StyleException if the number is below 1</exception>
         [Append]
+        //TODO: v3> Refactor to enum according to specs
+        //OOXML: Chp.18.8.3 and 20.1.6.2
         public int ColorTheme
         {
             get => colorTheme;
             set
             {
-                if (value < 1)
+                if (value < 0)
                 {
                     throw new StyleException("The color theme number " + value + " is invalid. Should be >0");
                 }
@@ -164,9 +171,11 @@ namespace NanoXLSX.Styles
             } 
         }
         /// <summary>
-        ///  Gets or sets the font family (Default is 2)
+        ///  Gets or sets the font family (Default is 2 = Swiss)
         /// </summary>
         [Append]
+        //TODO: v3> Refactor to enum according to specs (18.18.94)
+        //OOXML: Chp.18.8.18 and 18.18.94
         public string Family { get; set; }
         /// <summary>
         /// Gets whether the font is equal to the default font
@@ -186,14 +195,14 @@ namespace NanoXLSX.Styles
         /// Gets or sets the font name (Default is Calibri)
         /// </summary>
         /// <exception cref="StyleException">A StyleException is thrown if the name is null or empty</exception>
-        /// <remarks>Note that the font name is not validated whether it is a valid or existing font</remarks>
+        /// <remarks>Note that the font name is not validated whether it is a valid or existing font. The font name may not exceed more than 31 characters</remarks>
         [Append]
-        public string Name
+        public string Name //OOXML: Chp.18.8.29
         {
             get { return name; }
             set
             {
-                if (string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value) && !StyleRepository.Instance.ImportInProgress)
                 {
                     throw new StyleException("The font name was null or empty");
                 }

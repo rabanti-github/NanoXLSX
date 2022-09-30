@@ -9,6 +9,8 @@ using Xunit;
 
 namespace NanoXLSX_Test.Styles
 {
+    // Ensure that these tests are executed sequentially, since static repository methods may be called 
+    [Collection(nameof(SequentialCollection))]
     public class FontTest
     {
 
@@ -175,6 +177,7 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the ColorTheme property")]
+        [InlineData(0)]
         [InlineData(1)]
         [InlineData(10)]
         public void ColorThemeTest(int value)
@@ -186,7 +189,7 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the failing set function of the ColorTheme property (invalid values)")]
-        [InlineData(0)]
+        [InlineData(-1)]
         [InlineData(-100)]
         public void ColorThemeFailTest(int value)
         {
@@ -426,6 +429,10 @@ namespace NanoXLSX_Test.Styles
             Assert.NotEqual(s1, font.ToString()); // An explicit value comparison is probably not sensible
         }
 
+        private static object SequentialCollection()
+        {
+            throw new NotImplementedException();
+        }
 
     }
 }
