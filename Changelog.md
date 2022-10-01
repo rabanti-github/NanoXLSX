@@ -1,5 +1,15 @@
 # Change Log
 
+## v2.0.3
+
+---
+Release Date: **01.10.2022**
+
+- Fixed a bug in the functions to write and read font values (styles)
+- Adapted tests according to specs
+- Updated documentation
+- Added some internal notes to prepare the development of the next mayor version
+
 ## v2.0.2
 
 ---

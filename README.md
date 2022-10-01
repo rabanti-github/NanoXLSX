@@ -66,7 +66,7 @@ The .NET version of the documentation may vary, based on the installation. If v4
 
 ## Installation
 
-### Using Nuget
+### Using NuGet
 
 By package Manager (PM):
 
