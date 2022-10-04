@@ -80,15 +80,41 @@ namespace NanoXLSX
             return StartAddress + ":" + EndAddress;
         }
 
+        /// <summary>
+        /// Compares two objects whether they are ranges and equal. The cell types (possible $ prefix) are considered 
+        /// </summary>
+        /// <param name="obj">Other object to compare</param>
+        /// <returns>True if the two objects are the same range</returns>
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is Range))
+            if (!(obj is Range))
             {
                 return false;
             }
             Range other = (Range)obj;
             return this.StartAddress.Equals(other.StartAddress) && this.EndAddress.Equals(other.EndAddress);
         }
+
+        /// <summary>
+        /// Gets the hash code of the range object according to its string representation
+        /// </summary>
+        /// <returns>Hash code of the range</returns>
+        public override int GetHashCode()
+        {
+            return this.ToString().GetHashCode();
+        }
+
+        // Operator overloads
+        public static bool operator ==(Range range1, Range range2)
+        {
+            return range1.Equals(range2);
+        }
+
+        public static bool operator !=(Range range1, Range range2)
+        {
+            return !range1.Equals(range2);
+        }
+
 
         /// <summary>
         /// Creates a (dereferenced, if applicable) deep copy of this range

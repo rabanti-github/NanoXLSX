@@ -90,7 +90,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData(NumberFormat.FormatNumber.format_47, "noDate")]
         [InlineData(NumberFormat.FormatNumber.format_48, "Æ")]
         [InlineData(NumberFormat.FormatNumber.format_49, "test")]
-        public void NumberNumberFormatTest(NumberFormat.FormatNumber styleValue, object value)
+        public void NumberFormatTest(NumberFormat.FormatNumber styleValue, object value)
         {
             Style style = new Style();
             style.CurrentNumberFormat.Number = styleValue;
@@ -99,7 +99,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
         [Fact(DisplayName = "Test of the 'formatNumber' value when writing and reading a custom NumberFormat style")]
-        public void NumberNumberFormatTest1b()
+        public void NumberFormatTest1b()
         {
             Style style = new Style();
             style.CurrentNumberFormat.Number = NumberFormat.FormatNumber.custom;

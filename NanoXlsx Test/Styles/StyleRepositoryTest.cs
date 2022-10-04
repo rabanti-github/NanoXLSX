@@ -25,7 +25,7 @@ namespace NanoXLSX_Test.Styles
             Style style = new Style();
             style.CurrentFont.Name = "Arial";
             Style result = repository.AddStyle(style);
-            Assert.Equal(1, repository.Styles.Count);
+            Assert.Single(repository.Styles);
             Assert.Equal(style.GetHashCode(), result.GetHashCode());
             Assert.Equal(style.GetHashCode(), repository.Styles[style.GetHashCode()].GetHashCode());
         }
@@ -47,8 +47,8 @@ namespace NanoXLSX_Test.Styles
             Assert.Empty(repository.Styles);
             Style style = new Style();
             style.CurrentFont.Name = "Arial";
-            Style result = repository.AddStyle(style);
-            Assert.Equal(1, repository.Styles.Count);
+            repository.AddStyle(style);
+            Assert.Single(repository.Styles);
             repository.FlushStyles();
             Assert.Empty(repository.Styles);
         }

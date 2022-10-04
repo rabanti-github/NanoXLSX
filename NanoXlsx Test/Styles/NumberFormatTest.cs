@@ -15,7 +15,7 @@ namespace NanoXLSX_Test.Styles
     public class NumberFormatTest
     {
 
-        private NumberFormat exampleStyle;
+        private readonly NumberFormat exampleStyle;
 
         public NumberFormatTest()
         {

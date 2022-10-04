@@ -14,7 +14,7 @@ namespace NanoXLSX_Test.Styles
     public class FontTest
     {
 
-        private Font exampleStyle;
+        private readonly Font exampleStyle;
 
         public FontTest()
         {

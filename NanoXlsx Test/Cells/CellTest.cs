@@ -217,7 +217,7 @@ namespace NanoXLSX_Test.Cells
             StyleRepository.Instance.FlushStyles();
             Assert.Empty(StyleRepository.Instance.Styles);
             Style style = BasicStyles.BoldItalic;
-            Style returnedStyle = cell.SetStyle(style, true);
+            cell.SetStyle(style, true);
             // Note: Assert.Equals fails here because of object reference comparison 
             Assert.True(style.Equals(cell.CellStyle));
             Assert.Empty(StyleRepository.Instance.Styles);
@@ -228,7 +228,7 @@ namespace NanoXLSX_Test.Cells
         {
             Cell intCell = new Cell(42, CellType.NUMBER, this.cellAddress);
             Style style = null;
-            Exception ex = Assert.Throws<StyleException>(() => cell.SetStyle(style));
+            Exception ex = Assert.Throws<StyleException>(() => intCell.SetStyle(style));
             Assert.Equal(typeof(StyleException), ex.GetType());
         }
 
@@ -239,12 +239,12 @@ namespace NanoXLSX_Test.Cells
         [InlineData("True", Cell.CellType.STRING, true, CellType.BOOL)]
         [InlineData(null, Cell.CellType.EMPTY, 22, CellType.NUMBER)]
         [InlineData("test", Cell.CellType.STRING, null, CellType.EMPTY)]
-        public void GetValuePropertyTest(object initialValue, Cell.CellType initialType, object givenValue, Cell.CellType expectedType)
+        public void SetValuePropertyTest(object initialValue, Cell.CellType initialType, object givenValue, Cell.CellType expectedType)
         {
             Cell cell2 = new Cell(initialValue, initialType);
             Assert.Equal(cell2.DataType, initialType);
             cell2.Value = givenValue;
-            Assert.Equal(cell2.DataType, expectedType);
+            Assert.Equal(expectedType, cell2.DataType);
         }
 
 

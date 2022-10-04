@@ -258,7 +258,7 @@ namespace NanoXLSX_Test.Misc
         [Theory(DisplayName = "Test of the VLookup function on a Range object with an arbitrary number, the column index and the option of an exact match")]
         [InlineData(11, "A1:A1", 1, false, "VLOOKUP(11,A1:A1,1,FALSE)")]
         [InlineData(0.5f, "A1:C4", 3, false, "VLOOKUP(0.5,A1:C4,3,FALSE)")]
-        [InlineData(-800l, "A10:XFD999999", 200, true, "VLOOKUP(-800,A10:XFD999999,200,TRUE)")]
+        [InlineData(-800L, "A10:XFD999999", 200, true, "VLOOKUP(-800,A10:XFD999999,200,TRUE)")]
         [InlineData(0, "X100:A1", 5, true, "VLOOKUP(0,A1:X100,5,TRUE)")]
         public void VLookupTest(object number, string rangeExpression, int columnIndex, bool exactMatch, string expectedFormula)
         {
@@ -373,9 +373,9 @@ namespace NanoXLSX_Test.Misc
         [Fact(DisplayName = "Test of the VLookup function for long as value")]
         public void VLookupLongTest()
         {
-            AssertVlookup(0l, "0");
-            AssertVlookup(-999999l, "-999999");
-            AssertVlookup(999999l, "999999");
+            AssertVlookup(0L, "0");
+            AssertVlookup(-999999L, "-999999");
+            AssertVlookup(999999L, "999999");
         }
 
         [Fact(DisplayName = "Test of the VLookup function for ulong as value")]

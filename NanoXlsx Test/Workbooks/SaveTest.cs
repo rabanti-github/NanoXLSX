@@ -151,7 +151,7 @@ namespace NanoXLSX_Test.Workbooks
         [Fact(DisplayName = "Test of the failing SaveAsStreamAsync function with a null stream")]
         public async Task SaveAsStreamAsyncFailTest2()
         {
-            string fileName = WorkbookTest.GetRandomName();
+            WorkbookTest.GetRandomName();
             Workbook workbook = new Workbook("test");
             await Assert.ThrowsAnyAsync<Exception>(() => workbook.SaveAsStreamAsync(null));
         }

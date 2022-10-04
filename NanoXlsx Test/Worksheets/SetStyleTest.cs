@@ -81,12 +81,12 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1:A5", "A2", true, "A1,A3,A4,A5", RangeRepresentation.RangeObject)]
         [InlineData("A1:C1", "B1", "test", "A1,C1", RangeRepresentation.RangeObject)]
         [InlineData("A1:C3", "B2", -0.25f, "A1,A2,A3,B1,B3,C1,C2,C3", RangeRepresentation.RangeObject)]
-        [InlineData("R17:T21", "R18,R19,R20,S19", 99999l, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21", RangeRepresentation.RangeObject)]
+        [InlineData("R17:T21", "R18,R19,R20,S19", 99999L, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21", RangeRepresentation.RangeObject)]
         [InlineData("A1:A1", "A1", 22, null, RangeRepresentation.StringExpression)]
         [InlineData("A1:A5", "A2", true, "A1,A3,A4,A5", RangeRepresentation.StringExpression)]
         [InlineData("A1:C1", "B1", "test", "A1,C1", RangeRepresentation.StringExpression)]
         [InlineData("A1:C3", "B2", -0.25f, "A1,A2,A3,B1,B3,C1,C2,C3", RangeRepresentation.StringExpression)]
-        [InlineData("R17:T21", "R18,R19,R20,S19", 99999l, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21", RangeRepresentation.StringExpression)]
+        [InlineData("R17:T21", "R18,R19,R20,S19", 99999L, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21", RangeRepresentation.StringExpression)]
         public void SetStyleTest2(string rangeString, string definedCells, object cellValue, string expectedEmptyCells, RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
@@ -111,12 +111,12 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1:A5", "A2", true, RangeRepresentation.RangeObject)]
         [InlineData("A1:C1", "B1", "test", RangeRepresentation.RangeObject)]
         [InlineData("A1:C3", "B2", -0.25f, RangeRepresentation.RangeObject)]
-        [InlineData("R17:T21", "R18,R19,R20,S19", 99999l, RangeRepresentation.RangeObject)]
+        [InlineData("R17:T21", "R18,R19,R20,S19", 99999L, RangeRepresentation.RangeObject)]
         [InlineData("A1:A1", "A1", 22, RangeRepresentation.StringExpression)]
         [InlineData("A1:A5", "A2", true, RangeRepresentation.StringExpression)]
         [InlineData("A1:C1", "B1", "test", RangeRepresentation.StringExpression)]
         [InlineData("A1:C3", "B2", -0.25f, RangeRepresentation.StringExpression)]
-        [InlineData("R17:T21", "R18,R19,R20,S19", 99999l, RangeRepresentation.StringExpression)]
+        [InlineData("R17:T21", "R18,R19,R20,S19", 99999L, RangeRepresentation.StringExpression)]
         public void SetStyleTest2b(string rangeString, string definedCells, object cellValue, RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
@@ -140,12 +140,12 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1:A5", "A2", true, "A1,A3,A4,A5", RangeRepresentation.RangeObject)]
         [InlineData("A1:C1", "B1", "test", "A1,C1", RangeRepresentation.RangeObject)]
         [InlineData("A1:C3", "B2", -0.25f, "A1,A2,A3,B1,B3,C1,C2,C3", RangeRepresentation.RangeObject)]
-        [InlineData("R17:T21", "R18,R19,R20,S19", 99999l, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21", RangeRepresentation.RangeObject)]
+        [InlineData("R17:T21", "R18,R19,R20,S19", 99999L, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21", RangeRepresentation.RangeObject)]
         [InlineData("A1:A1", "A1", 22, null, RangeRepresentation.StringExpression)]
         [InlineData("A1:A5", "A2", true, "A1,A3,A4,A5", RangeRepresentation.StringExpression)]
         [InlineData("A1:C1", "B1", "test", "A1,C1", RangeRepresentation.StringExpression)]
         [InlineData("A1:C3", "B2", -0.25f, "A1,A2,A3,B1,B3,C1,C2,C3", RangeRepresentation.StringExpression)]
-        [InlineData("R17:T21", "R18,R19,R20,S19", 99999l, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21", RangeRepresentation.StringExpression)]
+        [InlineData("R17:T21", "R18,R19,R20,S19", 99999L, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21", RangeRepresentation.StringExpression)]
         public void SetStyleTest3(string rangeString, string definedCells, object cellValue, string expectedEmptyCells, RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
@@ -170,12 +170,12 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1:A5", "A2", true, RangeRepresentation.RangeObject)]
         [InlineData("A1:C1", "B1", "test", RangeRepresentation.RangeObject)]
         [InlineData("A1:C3", "B2", -0.25f, RangeRepresentation.RangeObject)]
-        [InlineData("R17:T21", "R18,R19,R20,S19", 99999l, RangeRepresentation.RangeObject)]
+        [InlineData("R17:T21", "R18,R19,R20,S19", 99999L, RangeRepresentation.RangeObject)]
         [InlineData("A1:A1", "A1", 22, RangeRepresentation.StringExpression)]
         [InlineData("A1:A5", "A2", true, RangeRepresentation.StringExpression)]
         [InlineData("A1:C1", "B1", "test", RangeRepresentation.StringExpression)]
         [InlineData("A1:C3", "B2", -0.25f, RangeRepresentation.StringExpression)]
-        [InlineData("R17:T21", "R18,R19,R20,S19", 99999l, RangeRepresentation.StringExpression)]
+        [InlineData("R17:T21", "R18,R19,R20,S19", 99999L, RangeRepresentation.StringExpression)]
         public void SetStyleTest3b(string rangeString, string definedCells, object cellValue,RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
@@ -278,7 +278,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1", "A5", "A2", true, "A1,A3,A4,A5")]
         [InlineData("A1", "C1", "B1", "test", "A1,C1")]
         [InlineData("A1", "C3", "B2", -0.25f, "A1,A2,A3,B1,B3,C1,C2,C3")]
-        [InlineData("R17", "T21", "R18,R19,R20,S19", 99999l, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21")]
+        [InlineData("R17", "T21", "R18,R19,R20,S19", 99999L, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21")]
         public void SetStyleTest6(string startAddressString, string endAddressString, string definedCells, object cellValue, string expectedEmptyCells)
         {
             Worksheet worksheet = new Worksheet();
@@ -298,7 +298,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1", "A5", "A2", true)]
         [InlineData("A1", "C1", "B1", "test")]
         [InlineData("A1", "C3", "B2", -0.25f)]
-        [InlineData("R17", "T21", "R18,R19,R20,S19", 99999l)]
+        [InlineData("R17", "T21", "R18,R19,R20,S19", 99999L)]
         public void SetStyleTest6b(string startAddressString, string endAddressString, string definedCells, object cellValue)
         {
             Worksheet worksheet = new Worksheet();
@@ -316,7 +316,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1", "A5", "A2", true, "A1,A3,A4,A5")]
         [InlineData("A1", "C1", "B1", "test", "A1,C1")]
         [InlineData("A1", "C3", "B2", -0.25f, "A1,A2,A3,B1,B3,C1,C2,C3")]
-        [InlineData("R17", "T21", "R18,R19,R20,S19", 99999l, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21")]
+        [InlineData("R17", "T21", "R18,R19,R20,S19", 99999L, "R17,R21,S17,S18,S20,S21,T17,T18,T19,T20,T21")]
         public void SetStyleTest7(string startAddressString, string endAddressString, string definedCells, object cellValue, string expectedEmptyCells)
         {
             Worksheet worksheet = new Worksheet();
@@ -336,7 +336,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1", "A5", "A2", true)]
         [InlineData("A1", "C1", "B1", "test")]
         [InlineData("A1", "C3", "B2", -0.25f)]
-        [InlineData("R17", "T21", "R18,R19,R20,S19", 99999l)]
+        [InlineData("R17", "T21", "R18,R19,R20,S19", 99999L)]
         public void SetStyleTest7b(string startAddressString, string endAddressString, string definedCells, object cellValue)
         {
             Worksheet worksheet = new Worksheet();

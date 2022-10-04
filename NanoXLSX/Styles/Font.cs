@@ -151,7 +151,7 @@ namespace NanoXLSX.Styles
             {
                 if (value < 0)
                 {
-                    throw new StyleException("The color theme number " + value + " is invalid. Should be >0");
+                    throw new StyleException("The color theme number " + value + " is invalid. Should be >=0");
                 }
                 colorTheme = value;
             }

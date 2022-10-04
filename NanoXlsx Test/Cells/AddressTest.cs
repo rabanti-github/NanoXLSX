@@ -93,10 +93,31 @@ namespace NanoXLSX_Test.Cells
             Address currentAddress = new Address(address1);
             Address otherAddress = new Address(address2);
             bool actualEquality = currentAddress.Equals(otherAddress);
+            // Enforcing overload usage
+            bool actualEquality2 = currentAddress.Equals((object)otherAddress);
             Assert.Equal(expectedEquality, actualEquality);
+            Assert.Equal(expectedEquality, actualEquality2);
+            if (expectedEquality)
+            {
+                Assert.True(currentAddress == otherAddress);
+                Assert.False(currentAddress != otherAddress);
+            }
+            else
+            {
+                Assert.True(currentAddress != otherAddress);
+                Assert.False(currentAddress == otherAddress);
+            }
         }
 
-        [Theory(DisplayName = "Test of the GetAddress method (string output)")]
+        [Fact(DisplayName = "Test of Equals() implementation returning false on different types")]
+        public void AddressEqualsTest2()
+        {
+            Address currentAddress = new Address("A1");
+            string other = "test";
+            Assert.False(currentAddress.Equals(other));
+        }
+
+            [Theory(DisplayName = "Test of the GetAddress method (string output)")]
         [InlineData(0, 0, AddressType.Default, "A1")]
         [InlineData(4, 9, AddressType.FixedColumn, "$E10")]
         [InlineData(16383, 1048575, AddressType.FixedRow, "XFD$1048576")]
@@ -116,6 +137,40 @@ namespace NanoXLSX_Test.Cells
         {
             Address address = new Address(columnNumber, rowNumber, type);
             Assert.Equal(expectedColumn, address.GetColumn());
+        }
+
+        [Theory(DisplayName = "Test of GetHashCode() implementation")]
+        [InlineData("A1", "A1", true)]
+        [InlineData("A1", "A2", false)]
+        [InlineData("A1", "B1", false)]
+        [InlineData("$A1", "$A1", true)]
+        [InlineData("$A1", "A1", false)]
+        [InlineData("$A1", "A$1", false)]
+        [InlineData("$A1", "$A2", false)]
+        [InlineData("$A1", "$B1", false)]
+        [InlineData("$A$1", "$A$1", true)]
+        [InlineData("$A$1", "A1", false)]
+        [InlineData("$A$1", "$A1", false)]
+        [InlineData("$A$1", "$A$2", false)]
+        [InlineData("$A$1", "$B$1", false)]
+        [InlineData("A$1", "A$1", true)]
+        [InlineData("A$1", "A1", false)]
+        [InlineData("A$1", "$A1", false)]
+        [InlineData("A$1", "$A$1", false)]
+        [InlineData("A$1", "A$2", false)]
+        [InlineData("A$1", "B$1", false)]
+        public void AddressGetHashCodeTest(string address1, string address2, bool expectedEquality)
+        {
+            Address currentAddress = new Address(address1);
+            Address otherAddress = new Address(address2);
+            if (expectedEquality)
+            {
+                Assert.Equal(currentAddress.GetHashCode(), otherAddress.GetHashCode());
+            }
+            else
+            {
+                Assert.NotEqual(currentAddress.GetHashCode(), otherAddress.GetHashCode());
+            }
         }
 
         #endregion

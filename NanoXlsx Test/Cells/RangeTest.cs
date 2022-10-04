@@ -63,6 +63,16 @@ namespace NanoXLSX_Test.Cells
             NanoXLSX.Range range2 = new NanoXLSX.Range(rangeExpression2);
             bool result = range1.Equals(range2);
             Assert.Equal(expectedEquality, result);
+            if (expectedEquality)
+            {
+                Assert.True(range1 == range2);
+                Assert.False(range1 != range2);
+            }
+            else
+            {
+                Assert.True(range1 != range2);
+                Assert.False(range1 == range2);
+            }
         }
 
         [Fact(DisplayName = "Test of the Equals method returning false on invalid values")]
@@ -73,6 +83,26 @@ namespace NanoXLSX_Test.Cells
             Assert.False(result);
             result = range1.Equals("Wrong type");
             Assert.False(result);
+        }
+
+        [Theory(DisplayName = "Test of the GetHashCode method (equality of two identical objects)")]
+        [InlineData("A1:A1", "A1:A1", true)]
+        [InlineData("A1:A4", "A$1:A$4", false)]
+        [InlineData("A1:B3", "A1:B4", false)]
+        [InlineData("B3:A2", "A2:B3", true)]
+        [InlineData("B$3:A2", "A2:B$3", true)]
+        public void GetHashCodeTest(string rangeExpression1, string rangeExpression2, bool expectedEquality)
+        {
+            NanoXLSX.Range range1 = new NanoXLSX.Range(rangeExpression1);
+            NanoXLSX.Range range2 = new NanoXLSX.Range(rangeExpression2);
+            if (expectedEquality)
+            {
+                Assert.Equal(range1.GetHashCode(), range2.GetHashCode());
+            }
+            else
+            {
+                Assert.NotEqual(range1.GetHashCode(), range2.GetHashCode());
+            }
         }
     }
 }

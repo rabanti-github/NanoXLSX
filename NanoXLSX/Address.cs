@@ -103,15 +103,53 @@ namespace NanoXLSX
         /// <summary>
         /// Compares two addresses whether they are equal
         /// </summary>
-        /// <param name="o"> Other address</param>
+        /// <param name="other"> Other address</param>
         /// <returns>True if equal</returns>
-        public bool Equals(Address o)
+        public bool Equals(Address other)
         {
-            if (Row == o.Row && Column == o.Column && Type == o.Type)
+            if (Row == other.Row && Column == other.Column && Type == other.Type)
             { return true; }
 
             return false;
         }
+
+        /// <summary>
+        /// Compares two objects whether they are addresses and equal
+        /// </summary>
+        /// <param name="obj"> Other address</param>
+        /// <returns>True if not null, of the same type and equal</returns>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Address))
+            {
+                return false;
+            }
+            return Equals((Address)obj);
+        }
+
+        /// <summary>
+        /// Gets the hash code based on the string representation of the address
+        /// </summary>
+        /// <returns>Hash code of the address</returns>
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+
+
+
+        // Operator overloads
+        public static bool operator ==(Address address1, Address address2)
+        {
+            return address1.Equals(address2);
+        }
+
+        public static bool operator !=(Address address1, Address address2)
+        {
+            return !address1.Equals(address2);
+        }
+
+
 
         /// <summary>
         /// Compares two addresses using the column and row numbers

@@ -664,7 +664,7 @@ namespace NanoXLSX_Test.Workbooks
                 }
                 catch(Exception ex)
                 {
-                    Console.WriteLine("Could not delete " + expectedPath);
+                    Console.WriteLine("Could not delete " + expectedPath + ": " + ex.Message);
                 }
             }
         }

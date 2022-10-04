@@ -120,8 +120,8 @@ namespace NanoXLSX_Test.Reader
         {
             Dictionary<string, uint> cells = new Dictionary<string, uint>();
             uint imax = int.MaxValue;
-            cells.Add("A1", (uint)(imax + 1));
-            cells.Add("A2", (uint)(imax + 9999));
+            cells.Add("A1", imax + 1);
+            cells.Add("A2", imax + 9999);
             cells.Add("A3", uint.MaxValue);
             AssertValues<uint>(cells, AssertEquals);
         }
@@ -272,7 +272,6 @@ namespace NanoXLSX_Test.Reader
         public void ReadFormulaTest()
         {
             Dictionary<string, string> cells = new Dictionary<string, string>();
-            long lmax = long.MaxValue;
             cells.Add("A1", "=B2");
             cells.Add("A2", "MIN(C2:D2)");
             cells.Add("A3", "MAX(worksheet2!A1:worksheet2:A100");

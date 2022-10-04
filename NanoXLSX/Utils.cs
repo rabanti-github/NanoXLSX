@@ -198,7 +198,7 @@ namespace NanoXLSX
         {
             if (columnWidth < Worksheet.MIN_COLUMN_WIDTH || columnWidth > Worksheet.MAX_COLUMN_WIDTH)
             {
-                throw new FormatException("The column width " + columnWidth + " is not valid. The valid range is between " + Worksheet.MIN_COLUMN_WIDTH + " and " + Worksheet.MAX_COLUMN_WIDTH) ;
+                throw new FormatException("The column width " + columnWidth + " is not valid. The valid range is between " + Worksheet.MIN_COLUMN_WIDTH + " and " + Worksheet.MAX_COLUMN_WIDTH);
             }
             if (columnWidth <= 0f || maxDigitWidth <= 0f)
             {

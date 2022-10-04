@@ -17,7 +17,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData(null, 0, 0, Cell.CellType.EMPTY, "A1")]
         [InlineData("", 2, 2, Cell.CellType.STRING, "C3")]
         [InlineData("test", 5, 1, Cell.CellType.STRING, "F2")]
-        [InlineData(17l, 16383, 0, Cell.CellType.NUMBER, "XFD1")]
+        [InlineData(17L, 16383, 0, Cell.CellType.NUMBER, "XFD1")]
         [InlineData(1.02d, 0, 1048575, Cell.CellType.NUMBER, "A1048576")]
         [InlineData(-22.3f, 16383, 1048575, Cell.CellType.NUMBER, "XFD1048576")]
         [InlineData(0, 0, 0, Cell.CellType.NUMBER, "A1")]
@@ -37,7 +37,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData(null, 0, 0, Cell.CellType.EMPTY, "A1")]
         [InlineData("", 2, 2, Cell.CellType.STRING, "C3")]
         [InlineData("test", 5, 1, Cell.CellType.STRING, "F2")]
-        [InlineData(17l, 16383, 0, Cell.CellType.NUMBER, "XFD1")]
+        [InlineData(17L, 16383, 0, Cell.CellType.NUMBER, "XFD1")]
         [InlineData(1.02d, 0, 1048575, Cell.CellType.NUMBER, "A1048576")]
         [InlineData(-22.3f, 16383, 1048575, Cell.CellType.NUMBER, "XFD1048576")]
         [InlineData(0, 0, 0, Cell.CellType.NUMBER, "A1")]
@@ -96,7 +96,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData(null, 0, 0, Cell.CellType.EMPTY, "A1")]
         [InlineData("", 2, 2, Cell.CellType.STRING, "C3")]
         [InlineData("test", 5, 1, Cell.CellType.STRING, "F2")]
-        [InlineData(17l, 16383, 0, Cell.CellType.NUMBER, "XFD1")]
+        [InlineData(17L, 16383, 0, Cell.CellType.NUMBER, "XFD1")]
         [InlineData(1.02d, 0, 1048575, Cell.CellType.NUMBER, "A1048576")]
         [InlineData(-22.3f, 16383, 1048575, Cell.CellType.NUMBER, "XFD1048576")]
         [InlineData(0, 0, 0, Cell.CellType.NUMBER, "A1")]
@@ -218,39 +218,39 @@ namespace NanoXLSX_Test.Worksheets
         [Fact(DisplayName = "Test of the AddCell function where an existing cell is overwritten")]
         public void AddCellOverwriteTest()
         {
-            Worksheet worksheet = new Worksheet();
-            worksheet.AddCell("test", "C2");
-            Assert.Equal(Cell.CellType.STRING, worksheet.Cells["C2"].DataType);
-            Assert.Equal("test", worksheet.Cells["C2"].Value);
-            worksheet.AddCell(22, "C2");
-            Assert.Equal(Cell.CellType.NUMBER, worksheet.Cells["C2"].DataType);
-            Assert.Equal(22, worksheet.Cells["C2"].Value);
-            Assert.Single(worksheet.Cells);
+            Worksheet worksheet2 = new Worksheet();
+            worksheet2.AddCell("test", "C2");
+            Assert.Equal(Cell.CellType.STRING, worksheet2.Cells["C2"].DataType);
+            Assert.Equal("test", worksheet2.Cells["C2"].Value);
+            worksheet2.AddCell(22, "C2");
+            Assert.Equal(Cell.CellType.NUMBER, worksheet2.Cells["C2"].DataType);
+            Assert.Equal(22, worksheet2.Cells["C2"].Value);
+            Assert.Single(worksheet2.Cells);
         }
 
         [Fact(DisplayName = "Test of the AddCell function where existing cells are overwritten and the old cells where dates and times")]
         public void AddCellOverwriteTest2()
         {
-            Worksheet worksheet = new Worksheet();
+            Worksheet worksheet2 = new Worksheet();
             DateTime date = new DateTime(2020, 10, 5, 4, 11, 12);
             TimeSpan time = new TimeSpan(11, 12, 13);
-            worksheet.AddCell(date, "C2");
-            worksheet.AddCell(time, "C3");
-            Assert.Equal(Cell.CellType.DATE, worksheet.Cells["C2"].DataType);
-            Assert.Equal(date, worksheet.Cells["C2"].Value);
-            Assert.True(BasicStyles.DateFormat.Equals(worksheet.Cells["C2"].CellStyle));
-            Assert.Equal(Cell.CellType.TIME, worksheet.Cells["C3"].DataType);
-            Assert.Equal(time, worksheet.Cells["C3"].Value);
-            Assert.True(BasicStyles.TimeFormat.Equals(worksheet.Cells["C3"].CellStyle));
-            worksheet.AddCell(22, "C2");
-            worksheet.AddCell("test", "C3");
-            Assert.Equal(Cell.CellType.NUMBER, worksheet.Cells["C2"].DataType);
-            Assert.Equal(22, worksheet.Cells["C2"].Value);
-            Assert.Null(worksheet.Cells["C2"].CellStyle);
-            Assert.Equal(Cell.CellType.STRING, worksheet.Cells["C3"].DataType);
-            Assert.Equal("test", worksheet.Cells["C3"].Value);
-            Assert.Null(worksheet.Cells["C3"].CellStyle);
-            Assert.Equal(2, worksheet.Cells.Count);
+            worksheet2.AddCell(date, "C2");
+            worksheet2.AddCell(time, "C3");
+            Assert.Equal(Cell.CellType.DATE, worksheet2.Cells["C2"].DataType);
+            Assert.Equal(date, worksheet2.Cells["C2"].Value);
+            Assert.True(BasicStyles.DateFormat.Equals(worksheet2.Cells["C2"].CellStyle));
+            Assert.Equal(Cell.CellType.TIME, worksheet2.Cells["C3"].DataType);
+            Assert.Equal(time, worksheet2.Cells["C3"].Value);
+            Assert.True(BasicStyles.TimeFormat.Equals(worksheet2.Cells["C3"].CellStyle));
+            worksheet2.AddCell(22, "C2");
+            worksheet2.AddCell("test", "C3");
+            Assert.Equal(Cell.CellType.NUMBER, worksheet2.Cells["C2"].DataType);
+            Assert.Equal(22, worksheet2.Cells["C2"].Value);
+            Assert.Null(worksheet2.Cells["C2"].CellStyle);
+            Assert.Equal(Cell.CellType.STRING, worksheet2.Cells["C3"].DataType);
+            Assert.Equal("test", worksheet2.Cells["C3"].Value);
+            Assert.Null(worksheet2.Cells["C3"].CellStyle);
+            Assert.Equal(2, worksheet2.Cells.Count);
         }
 
 

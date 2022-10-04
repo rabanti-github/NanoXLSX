@@ -1,5 +1,14 @@
 # Change Log
 
+## v2.0.4
+
+---
+Release Date: **04.10.2022**
+
+- Fixed a bug in the reader function of dates and times on hosts with locales different than en-US (and others)
+- Added == and != operator overload on Address and Range struct
+- Code maintenance
+
 ## v2.0.3
 
 ---

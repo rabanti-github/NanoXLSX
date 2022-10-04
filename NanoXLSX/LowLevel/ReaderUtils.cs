@@ -108,5 +108,17 @@ namespace NanoXLSX.LowLevel
         {
             return int.Parse(rawValue, CultureInfo.InvariantCulture);
         }
+
+        /// <summary>
+        /// Tries to parse an int independent from the culture info of the host
+        /// </summary>
+        /// <param name="rawvalue">Raw number as string</param>
+        /// <param name="parsedValue">Parsed int</param>
+        /// <returns>True, if the parsing was successful</returns>
+        internal static bool TryParseInt(String rawvalue, out int parsedValue)
+        {
+            return int.TryParse(rawvalue, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsedValue);
+        }
+
     }
 }

@@ -852,7 +852,7 @@ namespace NanoXLSX.LowLevel
                 case string _:
                     decimal dValue;
                     string tempString = (string)data;
-                    if (decimal.TryParse(tempString, out dValue))
+                    if (decimal.TryParse(tempString, NumberStyles.Float, CultureInfo.InvariantCulture, out dValue))
                     {
                         return dValue;
                     }
@@ -904,7 +904,7 @@ namespace NanoXLSX.LowLevel
                     return (bool)data ? 1 : 0;
                 case string _:
                     int tempInt2;
-                    if (int.TryParse((string)data, out tempInt2))
+                    if (ReaderUtils.TryParseInt((string)data, out tempInt2))
                     {
                         return tempInt2;
                     }
@@ -965,7 +965,7 @@ namespace NanoXLSX.LowLevel
             bool isDateTime = false;
             if (importOptions == null || string.IsNullOrEmpty(importOptions.DateTimeFormat) || importOptions.TemporalCultureInfo == null)
             {
-                isDateTime = DateTime.TryParse(raw, out dateTime);
+                isDateTime = DateTime.TryParse(raw, ImportOptions.DEFAULT_CULTURE_INFO, DateTimeStyles.None, out dateTime);
             }
             else
             {
@@ -1024,7 +1024,7 @@ namespace NanoXLSX.LowLevel
             bool isTimeSpan = false;
             if (importOptions == null || string.IsNullOrEmpty(importOptions.TimeSpanFormat) || importOptions.TemporalCultureInfo == null)
             {
-                isTimeSpan = TimeSpan.TryParse(raw, out timeSpan);
+                isTimeSpan = TimeSpan.TryParse(raw, ImportOptions.DEFAULT_CULTURE_INFO,  out timeSpan);
             }
             else
             {
@@ -1048,7 +1048,7 @@ namespace NanoXLSX.LowLevel
         private object GetDateTimeValue(string raw, Cell.CellType valueType, out Cell.CellType resolvedType)
         {
             double dValue;
-            if (!double.TryParse(raw, out dValue))
+            if (!double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
             {
                 resolvedType = Cell.CellType.STRING;
                 return raw;
@@ -1241,8 +1241,8 @@ namespace NanoXLSX.LowLevel
             // integer section
             uint uiValue;
             int iValue;
-            bool canBeUint = uint.TryParse(raw, out uiValue);
-            bool canBeInt = int.TryParse(raw, out iValue);
+            bool canBeUint = uint.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out uiValue);
+            bool canBeInt = ReaderUtils.TryParseInt(raw, out iValue);
             if (canBeUint && !canBeInt)
             {
                 return uiValue;
@@ -1253,8 +1253,8 @@ namespace NanoXLSX.LowLevel
             }
             ulong ulValue;
             long lValue;
-            bool canBeUlong = ulong.TryParse(raw, out ulValue);
-            bool canBeLong = long.TryParse(raw, out lValue);
+            bool canBeUlong = ulong.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out ulValue);
+            bool canBeLong = long.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out lValue);
             if (canBeUlong && !canBeLong)
             {
                 return  ulValue;
@@ -1299,7 +1299,7 @@ namespace NanoXLSX.LowLevel
         private string ResolveSharedString(string raw)
         {
             int stringId;
-            if (int.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out stringId))
+            if (ReaderUtils.TryParseInt(raw, out stringId))
             {
                 string resolvedString = sharedStrings.GetString(stringId);
                 if (resolvedString == null)
@@ -1336,6 +1336,9 @@ namespace NanoXLSX.LowLevel
 
         #region subClasses
 
+        /// <summary>
+        /// Class representing a pane in the applications window
+        /// </summary>
         public class PaneDefinition
         {
             /// <summary>
@@ -1377,6 +1380,9 @@ namespace NanoXLSX.LowLevel
             /// </summary>
             public bool XSplitDefined { get; set; }
 
+            /// <summary>
+            /// Default constructor, with no active pane and the top left cell at A1
+            /// </summary>
             public PaneDefinition()
             {
                 ActivePane = null;

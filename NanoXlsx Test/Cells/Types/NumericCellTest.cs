@@ -91,8 +91,8 @@ namespace NanoXLSX_Test.Cells.Types
         }
 
         [Theory(DisplayName = "Long value cell test: Test of the cell values, as well as proper modification")]
-        [InlineData(0l)]
-        [InlineData(-999999999l)]
+        [InlineData(0L)]
+        [InlineData(-999999999L)]
         [InlineData(long.MinValue)]
         [InlineData(long.MaxValue)]
         public void LongCellTest(long value)

@@ -416,7 +416,7 @@ namespace NanoXLSX.LowLevel
                         int id = 0;
                         bool hasId;
 
-                        hasId = int.TryParse(ReaderUtils.GetAttribute(childNode, "numFmtId"), out id);
+                        hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId"), out id);
                         NumberFormat format = StyleReaderContainer.GetNumberFormat(id);
                         if (!hasId || format == null)
                         {
@@ -429,21 +429,21 @@ namespace NanoXLSX.LowLevel
                             format.InternalID = StyleReaderContainer.GetNextNumberFormatId();
                             StyleReaderContainer.AddStyleComponent(format);
                         }
-                        hasId = int.TryParse(ReaderUtils.GetAttribute(childNode, "borderId"), out id);
+                        hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "borderId"), out id);
                         Border border = StyleReaderContainer.GetBorder(id);
                         if (!hasId || border == null)
                         {
                             border = new Border();
                             border.InternalID = StyleReaderContainer.GetNextBorderId();
                         }
-                        hasId = int.TryParse(ReaderUtils.GetAttribute(childNode, "fillId"), out id);
+                        hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fillId"), out id);
                         Fill fill = StyleReaderContainer.GetFill(id);
                         if (!hasId || fill == null)
                         {
                             fill = new Fill();
                             fill.InternalID = StyleReaderContainer.GetNextFillId();
                         }
-                        hasId = int.TryParse(ReaderUtils.GetAttribute(childNode, "fontId"), out id);
+                        hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fontId"), out id);
                         Font font = StyleReaderContainer.GetFont(id);
                         if (!hasId || font == null)
                         {

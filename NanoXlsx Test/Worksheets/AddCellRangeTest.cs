@@ -244,7 +244,7 @@ namespace NanoXLSX_Test.Worksheets
             list.Add("", Cell.CellType.STRING);
             list.Add("test", Cell.CellType.STRING);
             list.Add((byte)64, Cell.CellType.NUMBER);
-            list.Add(77777l, Cell.CellType.NUMBER);
+            list.Add(77777L, Cell.CellType.NUMBER);
             list.Add(new DateTime(2020, 11, 1, 11, 22, 13, 99), Cell.CellType.DATE);
             list.Add(new TimeSpan(13, 16, 22), Cell.CellType.TIME);
             if (addNull)
@@ -270,7 +270,7 @@ namespace NanoXLSX_Test.Worksheets
             list.Add(new Cell("test2", Cell.CellType.DEFAULT, "X6"), Cell.CellType.STRING);
             list.Add(new Cell("", Cell.CellType.DEFAULT, "X7"), Cell.CellType.STRING);
             list.Add(new Cell((byte)64, Cell.CellType.DEFAULT, "X8"), Cell.CellType.NUMBER);
-            list.Add(new Cell(88888l, Cell.CellType.DEFAULT, "X9"), Cell.CellType.NUMBER);
+            list.Add(new Cell(88888L, Cell.CellType.DEFAULT, "X9"), Cell.CellType.NUMBER);
             list.Add(new Cell(new DateTime(2020, 10, 1, 11, 22, 13, 99), Cell.CellType.DEFAULT, "X10"), Cell.CellType.DATE);
             list.Add(new Cell(new TimeSpan(13, 15, 22), Cell.CellType.DEFAULT, "X11"), Cell.CellType.TIME);
             if (addNull)

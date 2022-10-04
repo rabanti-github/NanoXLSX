@@ -283,7 +283,7 @@ namespace NanoXLSX.Styles
         /// Method to escape Backslashes in custom format codes.
         /// </summary>
         /// <param name="rawFormatCode">Raw value to escape</param>
-        /// <returns></returns>
+        /// <returns>Escaped format code</returns>
         internal static string EscapeFormatCode(string rawFormatCode)
         {
             // TODO: Add further rules, if discovered
@@ -294,7 +294,7 @@ namespace NanoXLSX.Styles
         /// Method to unescape a custom format code when reading a workbook
         /// </summary>
         /// <param name="escapedFormatCode">Escaped format code from the style definition of a read workbook</param>
-        /// <returns>Escaped format code</returns>
+        /// <returns>Unescaped format code</returns>
         internal static string UnEscapeFormatCode(string escapedFormatCode)
         {
             if (!escapedFormatCode.Contains("\\"))

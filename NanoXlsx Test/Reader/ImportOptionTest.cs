@@ -126,7 +126,7 @@ namespace NanoXLSX_Test.Reader
             cells.Add("A11", null);
             cells.Add("A12", "28");
             cells.Add("A13", new Cell("=A1", Cell.CellType.FORMULA, "A13"));
-            cells.Add("A14", 8589934592l);
+            cells.Add("A14", 8589934592L);
             cells.Add("A15", 2147483650.6f);
             cells.Add("A16", 4294967294u);
             cells.Add("A17", 18446744073709551614);
@@ -144,7 +144,7 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A11", null);
             expectedCells.Add("A12", 28);
             expectedCells.Add("A13", new Cell("=A1", Cell.CellType.FORMULA, "A13"));
-            expectedCells.Add("A14", 8589934592l);
+            expectedCells.Add("A14", 8589934592L);
             expectedCells.Add("A15", 2147483650.6f);
             expectedCells.Add("A16", 4294967294u);
             expectedCells.Add("A17", 18446744073709551614);
@@ -949,7 +949,7 @@ namespace NanoXLSX_Test.Reader
         [InlineData(ImportOptions.ColumnType.Date, "en-US", "yyyy-MM-dd HH:mm:ss", "2021-08-12 12:11:10", "2021-08-12 12:11:10")]
         [InlineData(ImportOptions.ColumnType.Date, "de-DE", "dd.MM.yyyy HH:mm:ss", "12.08.2021 12:11:10", "2021-08-12 12:11:10")]
         [InlineData(ImportOptions.ColumnType.Date, "fr-FR", "dd/MM/yyyy", "12/08/2021", "2021-08-12 00:00:00")]
-        [InlineData(ImportOptions.ColumnType.Date, null, null, "12.08.2021 12:11:10", "2021-08-12 12:11:10")]
+        [InlineData(ImportOptions.ColumnType.Date, null, null, "12.08.2021 12:11:10", "2021-12-08 12:11:10")]
         [InlineData(ImportOptions.ColumnType.Time, "en-US", "hh\\:mm\\:ss", "18:11:10", "18:11:10")]
         [InlineData(ImportOptions.ColumnType.Time, "", "hh", "12", "12:00:00")]
         [InlineData(ImportOptions.ColumnType.Time, null, null, "18:11:10", "18:11:10")]
@@ -1061,9 +1061,9 @@ namespace NanoXLSX_Test.Reader
                 {
                     Assert.Equal(Cell.CellType.EMPTY, givenCell.DataType);
                 }
-                else if (expectedValue is Cell && givenCell is Cell)
+                else if (expectedValue is Cell && (givenCell != null))
                 {
-                    assertionAction.Invoke((expectedValue as Cell).Value, (givenCell as Cell).Value);
+                    assertionAction.Invoke((expectedValue as Cell).Value, (givenCell).Value);
                 }
                 else if (expectedValue is Cell)
                 {
