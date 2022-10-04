@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: 'There is a problem with NanoXLSX as follows:'
+about: I discovered a problem with NanoXLSX
 title: ''
 labels: ''
 assignees: ''
