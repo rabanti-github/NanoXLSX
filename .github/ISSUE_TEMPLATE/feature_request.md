@@ -2,7 +2,7 @@
 name: Feature request
 about: The following feature would be very nice for NanoXLSX
 title: ''
-labels: ''
+labels: enhancement
 assignees: ''
 
 ---

@@ -2,7 +2,7 @@
 name: Bug report
 about: I discovered a problem with NanoXLSX
 title: ''
-labels: ''
+labels: bug
 assignees: ''
 
 ---

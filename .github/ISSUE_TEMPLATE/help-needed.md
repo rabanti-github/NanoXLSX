@@ -2,7 +2,7 @@
 name: Help needed
 about: I'm looking for a solution with NanoXLSX but need help
 title: ''
-labels: ''
+labels: how to?
 assignees: ''
 
 ---
