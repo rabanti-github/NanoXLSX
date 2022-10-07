@@ -1,0 +1,107 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>NanoXLSX.Core_Test</RootNamespace>
+
+    <IsPackable>false</IsPackable>
+
+    <Version>2.0.4</Version>
+
+    <Authors>Raphael Stoeckli</Authors>
+
+    <Company>Raphael Stoeckli</Company>
+
+    <Product>NanoXLSX</Product>
+
+    <Description>Unit Tests for NanoXLSX.Core</Description>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <Copyright>Copyright Raphael Stoeckli © 2022</Copyright>
+
+    <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
+
+    <PackageIcon>NanoXLSX.png</PackageIcon>
+
+    <PackageIconUrl />
+
+    <RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.git</RepositoryUrl>
+
+    <PackageTags>Excel Office XLSX</PackageTags>
+
+    <RepositoryType>git</RepositoryType>
+
+    <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
+
+    <AssemblyVersion>2.0.4.0</AssemblyVersion>
+
+    <FileVersion>2.0.4.0</FileVersion>
+
+    <PackageId>NanoXLSX.Core Test</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\invalid_metadata.xlsx" />
+    <None Remove="Resources\invalid_metadata_app.xlsx" />
+    <None Remove="Resources\invalid_metadata_core.xlsx" />
+    <None Remove="Resources\invalid_shardStrings.xlsx" />
+    <None Remove="Resources\invalid_sharedStrings2.xlsx" />
+    <None Remove="Resources\invalid_style.xlsx" />
+    <None Remove="Resources\invalid_workbook.xlsx" />
+	<None Remove="Resources\invalid_workbook_sheet-definition.xlsx" />
+    <None Remove="Resources\invalid_worksheet.xlsx" />
+    <None Remove="Resources\missing_worksheet.xlsx" />
+    <None Remove="Resources\omitted_style_refs.xlsx" />
+    <None Remove="Resources\phonetics.xlsx" />
+    <None Remove="Resources\tampered.xlsx" />
+    <None Remove="Resources\unknown_border_type.xlsx" />
+    <None Remove="Resources\unknown_style_enums.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <EmbeddedResource Include="Resources\invalid_metadata_app.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_metadata_core.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_shardStrings.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_sharedStrings2.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_style.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_workbook.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_workbook_sheet-definition.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_worksheet.xlsx" />
+	  <EmbeddedResource Include="Resources\missing_worksheet.xlsx">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\omitted_style_refs.xlsx" />
+	  <EmbeddedResource Include="Resources\phonetics.xlsx" />
+	<EmbeddedResource Include="Resources\tampered.xlsx" />
+	<EmbeddedResource Include="Resources\unknown_style_enums.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="System.IO.Packaging" Version="5.0.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="1.3.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NanoXLSX\NanoXLSX.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\invalid_shardStrings.xlsx" />
+    <Resource Include="Resources\invalid_style.xlsx" />
+    <Resource Include="Resources\invalid_workbook.xlsx" />
+	<Resource Include="Resources\invalid_workbook_sheet-definition.xlsx" />
+    <Resource Include="Resources\invalid_worksheet.xlsx" />
+    <Resource Include="Resources\tampered.xlsx" />
+  </ItemGroup>
+
+</Project>
