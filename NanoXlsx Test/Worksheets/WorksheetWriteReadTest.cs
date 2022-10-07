@@ -13,7 +13,6 @@ namespace NanoXLSX_Test.Worksheets
 {
     public class WorksheetWriteReadTest
     {
-
         [Theory(DisplayName = "Test of the 'AutoFilterRange' property when writing and reading a worksheet")]
         [InlineData(null, 0)]
         [InlineData("A1:A1", 0)]

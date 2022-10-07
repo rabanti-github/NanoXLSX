@@ -12,7 +12,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using NanoXLSX.Exceptions;
-using NanoXLSX.LowLevel;
+using NanoXLSX.Internal;
 using NanoXLSX.Styles;
 
 namespace NanoXLSX

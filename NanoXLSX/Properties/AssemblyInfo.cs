@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NanoXLSX")]
+[assembly: AssemblyTitle("NanoXLSX.Core")]
 [assembly: AssemblyDescription("NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Raphael Stoeckli")]

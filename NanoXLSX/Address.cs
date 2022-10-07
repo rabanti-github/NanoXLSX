@@ -136,8 +136,6 @@ namespace NanoXLSX
             return ToString().GetHashCode();
         }
 
-
-
         // Operator overloads
         public static bool operator ==(Address address1, Address address2)
         {
@@ -148,8 +146,6 @@ namespace NanoXLSX
         {
             return !address1.Equals(address2);
         }
-
-
 
         /// <summary>
         /// Compares two addresses using the column and row numbers

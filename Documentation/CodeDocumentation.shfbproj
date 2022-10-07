@@ -24,8 +24,8 @@
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\NanoXLSX\bin\Debug\NanoXLSX.XML" />
-      <DocumentationSource sourceFile="..\NanoXLSX\bin\Debug\NanoXLSX.dll" />
+      <DocumentationSource sourceFile="..\NanoXLSX\bin\Debug\NanoXLSX.Core.dll" />
+      <DocumentationSource sourceFile="..\NanoXLSX\bin\Debug\NanoXLSX.Core.xml" />
     </DocumentationSources>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
@@ -36,7 +36,7 @@
     <PresentationStyle>VS2013</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
-    <HelpTitle>NanoXLSX Library Documentation</HelpTitle>
+    <HelpTitle>NanoXLSX Core-Library Documentation</HelpTitle>
     <ContentPlacement>BelowNamespaces</ContentPlacement>
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Internals, Privates, Protected, SealedProtected, ProtectedInternalAsProtected, EditorBrowsableNever, NonBrowsable</VisibleItems>
     <FeedbackEMailAddress>
@@ -200,5 +200,12 @@ xcopy "$(ProjectDir)icons\favicon.ico" "$(OutputPath)icons" /Y /r /h /c</PostBui
   </ItemGroup>
   <ItemGroup>
     <Content Include="icons\favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NanoXLSX .NET Standard\NanoXLSX.Core .NET Standard.csproj">
+      <Name>NanoXLSX.Core .NET Standard</Name>
+      <Project>{e9ec78d7-1db9-420c-a113-b31fc2ecdbcd}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
 </Project>

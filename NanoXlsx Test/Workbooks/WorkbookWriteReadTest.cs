@@ -12,6 +12,27 @@ namespace NanoXLSX_Test.Workbooks
 {
     public class WorkbookWriteReadTest
     {
+        [Fact(DisplayName = "Test of the correct processing of 3 strings when saving and loading a workbook")]
+        public void StringProcessingTest()
+        {
+            Workbook workbook = new Workbook("sheet1");
+            workbook.CurrentWorksheet.AddCell("Text1", "A1");
+            workbook.CurrentWorksheet.AddCell("Text2", "A2");
+            workbook.CurrentWorksheet.AddCell("", "A3");
+            workbook.CurrentWorksheet.AddCell(null, "A4"); 
+            workbook.CurrentWorksheet.AddCell("Text1", "A5");
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
+            Assert.Equal(Cell.CellType.STRING, givenWorkbook.CurrentWorksheet.Cells["A1"].DataType);
+            Assert.Equal("Text1", givenWorkbook.CurrentWorksheet.Cells["A1"].Value.ToString());
+            Assert.Equal(Cell.CellType.STRING, givenWorkbook.CurrentWorksheet.Cells["A2"].DataType);
+            Assert.Equal("Text2", givenWorkbook.CurrentWorksheet.Cells["A2"].Value.ToString());
+            Assert.Equal(Cell.CellType.STRING, givenWorkbook.CurrentWorksheet.Cells["A3"].DataType);
+            Assert.Equal("", givenWorkbook.CurrentWorksheet.Cells["A3"].Value.ToString());
+            Assert.Equal(Cell.CellType.EMPTY, givenWorkbook.CurrentWorksheet.Cells["A4"].DataType);
+            Assert.Null(givenWorkbook.CurrentWorksheet.Cells["A4"].Value);
+            Assert.Equal(Cell.CellType.STRING, givenWorkbook.CurrentWorksheet.Cells["A5"].DataType);
+            Assert.Equal("Text1", givenWorkbook.CurrentWorksheet.Cells["A5"].Value.ToString());
+        }
 
         [Fact(DisplayName = "Test of the (virtual) 'MruColors' property when writing and reading a workbook")]
         public void ReadMruColorsTest()

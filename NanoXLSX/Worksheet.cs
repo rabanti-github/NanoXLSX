@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NanoXLSX.Exceptions;
-using NanoXLSX.LowLevel;
+using NanoXLSX.Internal;
 using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoXLSX", "NanoXLSX\NanoXLSX.csproj", "{A70E40AA-98C1-453A-8030-B4798A89EBFC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoXLSX.Core", "NanoXLSX\NanoXLSX.Core.csproj", "{A70E40AA-98C1-453A-8030-B4798A89EBFC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B02BD3FD-D442-49D4-870B-D59532568417}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,15 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{724CB7BF-A98C-4A0C-855A-4CAC66231746}"
-EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "CodeDocumentation", "Documentation\CodeDocumentation.shfbproj", "{DA885E7F-9583-4B8A-8D51-AD2B0DBAC1C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX .NET Standard", "NanoXLSX .NET Standard\NanoXLSX .NET Standard.csproj", "{E9EC78D7-1DB9-420C-A113-B31FC2ECDBCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Core .NET Standard", "NanoXLSX .NET Standard\NanoXLSX.Core .NET Standard.csproj", "{E9EC78D7-1DB9-420C-A113-B31FC2ECDBCD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo .NET Standard", "Demo .NET Standard\Demo .NET Standard.csproj", "{68FC6B6C-3B78-43C1-A195-893BD09913AE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoXLSX Test", "NanoXLSX Test\NanoXLSX Test.csproj", "{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Core Test", "NanoXLSX Test\NanoXLSX.Core Test.csproj", "{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,20 +28,12 @@ Global
 		{A70E40AA-98C1-453A-8030-B4798A89EBFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A70E40AA-98C1-453A-8030-B4798A89EBFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A70E40AA-98C1-453A-8030-B4798A89EBFC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{724CB7BF-A98C-4A0C-855A-4CAC66231746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{724CB7BF-A98C-4A0C-855A-4CAC66231746}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{724CB7BF-A98C-4A0C-855A-4CAC66231746}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{724CB7BF-A98C-4A0C-855A-4CAC66231746}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DA885E7F-9583-4B8A-8D51-AD2B0DBAC1C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DA885E7F-9583-4B8A-8D51-AD2B0DBAC1C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9EC78D7-1DB9-420C-A113-B31FC2ECDBCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E9EC78D7-1DB9-420C-A113-B31FC2ECDBCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9EC78D7-1DB9-420C-A113-B31FC2ECDBCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9EC78D7-1DB9-420C-A113-B31FC2ECDBCD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68FC6B6C-3B78-43C1-A195-893BD09913AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68FC6B6C-3B78-43C1-A195-893BD09913AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68FC6B6C-3B78-43C1-A195-893BD09913AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68FC6B6C-3B78-43C1-A195-893BD09913AE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
