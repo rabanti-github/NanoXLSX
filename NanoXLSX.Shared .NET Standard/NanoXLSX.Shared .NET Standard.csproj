@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+	<PackageId>NanoXLSX.Shared</PackageId>
+	<OutputType>Library</OutputType>
+    <RootNamespace>NanoXLSX.Shared</RootNamespace>
+    <AssemblyName>NanoXLSX.Shared</AssemblyName>
+    <Authors>Raphael Stoeckli</Authors>
+    <Company>Raphael Stoeckli</Company>
+    <Product>NanoXLSX</Product>
+    <Description>Shared components (Interfaces, Utilities etc.) used by NanoXLSX and its Extensions</Description>
+    <Copyright>Copyright Raphael Stoeckli © 2022</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX.Core</PackageProjectUrl>
+    <PackageIcon>NanoXLSX.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.Core.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Excel Office XLSX</PackageTags>
+    <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX.Core/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+	
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\NanoXLSX.Shared.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\NanoXLSX.Shared\Interfaces\IFormattableText.cs" Link="Interfaces\IFormattableText.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Utils\XmlUtils.cs" Link="Utils\XmlUtils.cs" />
+  </ItemGroup>
+	
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\NanoXLSX .NET Standard\NanoXLSX.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
+</Project>

@@ -18,6 +18,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Core .NET Standard
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Core Test", "NanoXLSX Test\NanoXLSX.Core Test.csproj", "{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoXLSX.Shared", "NanoXLSX.Shared\NanoXLSX.Shared.csproj", "{5FABDD94-D8AD-4EF2-8A31-727BD6475AD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoXLSX.Shared .NET Standard", "NanoXLSX.Shared .NET Standard\NanoXLSX.Shared .NET Standard.csproj", "{D6AAD5B5-0698-41FD-992F-18085A441FC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +42,14 @@ Global
 		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FABDD94-D8AD-4EF2-8A31-727BD6475AD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FABDD94-D8AD-4EF2-8A31-727BD6475AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FABDD94-D8AD-4EF2-8A31-727BD6475AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FABDD94-D8AD-4EF2-8A31-727BD6475AD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6AAD5B5-0698-41FD-992F-18085A441FC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6AAD5B5-0698-41FD-992F-18085A441FC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6AAD5B5-0698-41FD-992F-18085A441FC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6AAD5B5-0698-41FD-992F-18085A441FC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
