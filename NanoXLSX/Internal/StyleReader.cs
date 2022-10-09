@@ -12,6 +12,7 @@ using System.Xml;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using IOException = NanoXLSX.Exceptions.IOException;
+using NanoXLS.Shared.Utils;
 
 namespace NanoXLSX.Internal
 {
@@ -107,7 +108,7 @@ namespace NanoXLSX.Internal
                     if (childNode.LocalName.Equals("numfmt", StringComparison.InvariantCultureIgnoreCase))
                     {
                         NumberFormat numberFormat = new NumberFormat();
-                        int id = ReaderUtils.ParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId")); // Default will (justified) throw an exception
+                        int id = ParserUtils.ParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId")); // Default will (justified) throw an exception
                         string code = ReaderUtils.GetAttribute(childNode, "formatCode", string.Empty);
                         code = NumberFormat.UnEscapeFormatCode(code);
                         numberFormat.CustomFormatID = id;
@@ -233,7 +234,7 @@ namespace NanoXLSX.Internal
                         string backgroundIndex = ReaderUtils.GetAttribute(backgroundNode, "indexed");
                         if (!string.IsNullOrEmpty(backgroundIndex))
                         {
-                            fillStyle.IndexedColor = ReaderUtils.ParseInt(backgroundIndex);
+                            fillStyle.IndexedColor = ParserUtils.ParseInt(backgroundIndex);
                         }
                     }
                 }
@@ -294,7 +295,7 @@ namespace NanoXLSX.Internal
                 }
                 if (ReaderUtils.GetAttributeOfChild(font, "sz", "val", out attribute))
                 {
-                    fontStyle.Size = ReaderUtils.ParseFloat(attribute);
+                    fontStyle.Size = ParserUtils.ParseFloat(attribute);
                 }
                 XmlNode colorNode = ReaderUtils.GetChildNode(font, "color");
                 if (colorNode != null)
@@ -302,7 +303,7 @@ namespace NanoXLSX.Internal
                     attribute = ReaderUtils.GetAttribute(colorNode, "theme");
                     if (attribute != null)
                     {
-                        fontStyle.ColorTheme = ReaderUtils.ParseInt(attribute);
+                        fontStyle.ColorTheme = ParserUtils.ParseInt(attribute);
                     }
                     attribute = ReaderUtils.GetAttribute(colorNode, "rgb");
                    if (attribute != null)
@@ -385,12 +386,12 @@ namespace NanoXLSX.Internal
                             attribute = ReaderUtils.GetAttribute(alignmentNode, "indent");
                             if (attribute != null)
                             {
-                                cellXfStyle.Indent = ReaderUtils.ParseInt(attribute);
+                                cellXfStyle.Indent = ParserUtils.ParseInt(attribute);
                             }
                             attribute = ReaderUtils.GetAttribute(alignmentNode, "textRotation");
                             if (attribute != null)
                             {
-                                int rotation = ReaderUtils.ParseInt(attribute);
+                                int rotation = ParserUtils.ParseInt(attribute);
                                 cellXfStyle.TextRotation = rotation > 90 ? 90 - rotation : rotation;
                             }
                         }
@@ -416,7 +417,7 @@ namespace NanoXLSX.Internal
                         int id = 0;
                         bool hasId;
 
-                        hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId"), out id);
+                        hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId"), out id);
                         NumberFormat format = StyleReaderContainer.GetNumberFormat(id);
                         if (!hasId || format == null)
                         {
@@ -429,21 +430,21 @@ namespace NanoXLSX.Internal
                             format.InternalID = StyleReaderContainer.GetNextNumberFormatId();
                             StyleReaderContainer.AddStyleComponent(format);
                         }
-                        hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "borderId"), out id);
+                        hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "borderId"), out id);
                         Border border = StyleReaderContainer.GetBorder(id);
                         if (!hasId || border == null)
                         {
                             border = new Border();
                             border.InternalID = StyleReaderContainer.GetNextBorderId();
                         }
-                        hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fillId"), out id);
+                        hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fillId"), out id);
                         Fill fill = StyleReaderContainer.GetFill(id);
                         if (!hasId || fill == null)
                         {
                             fill = new Fill();
                             fill.InternalID = StyleReaderContainer.GetNextFillId();
                         }
-                        hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fontId"), out id);
+                        hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fontId"), out id);
                         Font font = StyleReaderContainer.GetFont(id);
                         if (!hasId || font == null)
                         {

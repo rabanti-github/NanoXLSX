@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using NanoXLS.Shared.Utils;
 using NanoXLSX.Exceptions;
 using IOException = NanoXLSX.Exceptions.IOException;
 
@@ -214,8 +215,8 @@ namespace NanoXLSX.Internal
             public PhoneticInfo(string value, string start, string end)
             {
                     Value = value;
-                    StartIndex = ReaderUtils.ParseInt(start);
-                    Length = ReaderUtils.ParseInt(end) - StartIndex;
+                    StartIndex = ParserUtils.ParseInt(start);
+                    Length = ParserUtils.ParseInt(end) - StartIndex;
                 
             }
         }

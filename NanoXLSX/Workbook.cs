@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using NanoXLS.Shared.Utils;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Internal;
 using NanoXLSX.Styles;
@@ -219,7 +220,7 @@ namespace NanoXLSX
                 color = "FF" + color;
             }
             Fill.ValidateColor(color, true);
-            mruColors.Add(Utils.ToUpper(color));
+            mruColors.Add(ParserUtils.ToUpper(color));
         }
 
         /// <summary>

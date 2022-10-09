@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLS.Shared.Utils;
 using System;
 using System.Globalization;
 using System.Reflection;
@@ -143,8 +144,8 @@ namespace NanoXLSX
             {
                 throw new FormatException("The major number may not be bigger than 99999. The passed value is " + major);
             }
-            string leftPart = Utils.ToString(major);
-            string rightPart = Utils.ToString(minor) + Utils.ToString(build) + Utils.ToString(revision);
+            string leftPart = ParserUtils.ToString(major);
+            string rightPart = ParserUtils.ToString(minor) + ParserUtils.ToString(build) + ParserUtils.ToString(revision);
             rightPart = rightPart.TrimEnd('0');
             if (rightPart == "")
             { rightPart = "0"; }

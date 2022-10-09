@@ -5,7 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Internal.Interfaces;
+using NanoXLSX.Shared.Interfaces;
 using System.Collections.Generic;
 
 namespace NanoXLSX.Internal

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml;
-using NanoXLSX.Exceptions;
+using NanoXLS.Shared.Utils;
 using NanoXLSX.Styles;
 using IOException = NanoXLSX.Exceptions.IOException;
 
@@ -129,7 +129,7 @@ namespace NanoXLSX.Internal
             {
                 bool isDate;
                 bool isTime;
-                string index = i.ToString("G", CultureInfo.InvariantCulture);
+                string index = ParserUtils.ToString(i);
                 Style style = styleReaderContainer.GetStyle(i, out isDate, out isTime);
                 if (isDate)
                 {
@@ -241,11 +241,11 @@ namespace NanoXLSX.Internal
                                 this.PaneSplitValue.YSplitDefined = true;
                                 if (useNumbers)
                                 {
-                                    this.PaneSplitValue.PaneSplitRowIndex = ReaderUtils.ParseInt(attribute);
+                                    this.PaneSplitValue.PaneSplitRowIndex = ParserUtils.ParseInt(attribute);
                                 }
                                 else
                                 {
-                                    this.PaneSplitValue.PaneSplitHeight = Utils.GetPaneSplitHeight(ReaderUtils.ParseFloat(attribute));
+                                    this.PaneSplitValue.PaneSplitHeight = Utils.GetPaneSplitHeight(ParserUtils.ParseFloat(attribute));
                                 }
                             }
                             attribute = ReaderUtils.GetAttribute(paneNode, "xSplit");
@@ -254,11 +254,11 @@ namespace NanoXLSX.Internal
                                 this.PaneSplitValue.XSplitDefined = true;
                                 if (useNumbers)
                                 {
-                                    this.PaneSplitValue.PaneSplitColumnIndex = ReaderUtils.ParseInt(attribute);
+                                    this.PaneSplitValue.PaneSplitColumnIndex = ParserUtils.ParseInt(attribute);
                                 }
                                 else
                                 {
-                                    this.PaneSplitValue.PaneSplitWidth = Utils.GetPaneSplitWidth(ReaderUtils.ParseFloat(attribute));
+                                    this.PaneSplitValue.PaneSplitWidth = Utils.GetPaneSplitWidth(ParserUtils.ParseFloat(attribute));
                                 }
                             }
                             attribute = ReaderUtils.GetAttribute(paneNode, "topLeftCell");
@@ -321,7 +321,7 @@ namespace NanoXLSX.Internal
             string attribute = ReaderUtils.GetAttribute(node, attributeName);
             if (attribute != null)
             {
-                int value = ReaderUtils.ParseInt(attribute);
+                int value = ParserUtils.ParseInt(attribute);
                 WorksheetProtection.Add(sheetProtectionValue, value);
             }
         }
@@ -362,12 +362,12 @@ namespace NanoXLSX.Internal
                 string attribute = ReaderUtils.GetAttribute(formatNodes[0], "defaultColWidth");
                 if (attribute != null)
                 {
-                    this.DefaultColumnWidth = ReaderUtils.ParseFloat(attribute);
+                    this.DefaultColumnWidth = ParserUtils.ParseFloat(attribute);
                 }
                 attribute = ReaderUtils.GetAttribute(formatNodes[0], "defaultRowHeight");
                 if (attribute != null)
                 {
-                    this.DefaultRowHeight = ReaderUtils.ParseFloat(attribute);
+                    this.DefaultRowHeight = ParserUtils.ParseFloat(attribute);
                 }
             }
         }
@@ -404,14 +404,14 @@ namespace NanoXLSX.Internal
                 string attribute = ReaderUtils.GetAttribute(columnNode, "min");
                 if (attribute != null)
                 {
-                    min = ReaderUtils.ParseInt(attribute);
+                    min = ParserUtils.ParseInt(attribute);
                     max = min;
                     indices.Add(min.Value);
                 }
                 attribute = ReaderUtils.GetAttribute(columnNode, "max");
                 if (attribute != null)
                 {
-                    max = ReaderUtils.ParseInt(attribute);
+                    max = ParserUtils.ParseInt(attribute);
                 }
                 if (min != null && max.Value != min.Value)
                 {
@@ -424,7 +424,7 @@ namespace NanoXLSX.Internal
                 float width = Worksheet.DEFAULT_COLUMN_WIDTH;
                 if (attribute != null)
                 {
-                    width = ReaderUtils.ParseFloat(attribute);
+                    width = ParserUtils.ParseFloat(attribute);
                 }
                 attribute = ReaderUtils.GetAttribute(columnNode, "hidden");
                 bool hidden = false;
@@ -472,7 +472,7 @@ namespace NanoXLSX.Internal
                     }
                 }
             }
-            string key = Utils.ToUpper(address);
+            string key = ParserUtils.ToUpper(address);
             StyleAssignment[key] = styleNumber;
             Data.Add(key, ResolveCellData(value, type, styleNumber, address));
         }
@@ -852,7 +852,7 @@ namespace NanoXLSX.Internal
                 case string _:
                     decimal dValue;
                     string tempString = (string)data;
-                    if (decimal.TryParse(tempString, NumberStyles.Float, CultureInfo.InvariantCulture, out dValue))
+                    if (ParserUtils.TryParseDecimal(tempString, out dValue))
                     {
                         return dValue;
                     }
@@ -904,7 +904,7 @@ namespace NanoXLSX.Internal
                     return (bool)data ? 1 : 0;
                 case string _:
                     int tempInt2;
-                    if (ReaderUtils.TryParseInt((string)data, out tempInt2))
+                    if (ParserUtils.TryParseInt((string)data, out tempInt2))
                     {
                         return tempInt2;
                     }
@@ -1048,7 +1048,7 @@ namespace NanoXLSX.Internal
         private object GetDateTimeValue(string raw, Cell.CellType valueType, out Cell.CellType resolvedType)
         {
             double dValue;
-            if (!double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
+            if (!ParserUtils.TryParseDouble(raw, out dValue))
             {
                 resolvedType = Cell.CellType.STRING;
                 return raw;
@@ -1241,8 +1241,8 @@ namespace NanoXLSX.Internal
             // integer section
             uint uiValue;
             int iValue;
-            bool canBeUint = uint.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out uiValue);
-            bool canBeInt = ReaderUtils.TryParseInt(raw, out iValue);
+            bool canBeUint = ParserUtils.TryParseUint(raw, out uiValue);
+            bool canBeInt = ParserUtils.TryParseInt(raw, out iValue);
             if (canBeUint && !canBeInt)
             {
                 return uiValue;
@@ -1253,8 +1253,8 @@ namespace NanoXLSX.Internal
             }
             ulong ulValue;
             long lValue;
-            bool canBeUlong = ulong.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out ulValue);
-            bool canBeLong = long.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out lValue);
+            bool canBeUlong = ParserUtils.TryParseUlong(raw, out ulValue);
+            bool canBeLong = ParserUtils.TryParseLong(raw, out lValue);
             if (canBeUlong && !canBeLong)
             {
                 return  ulValue;
@@ -1267,7 +1267,7 @@ namespace NanoXLSX.Internal
             double dValue;
             float fValue;
             // float section
-            if (decimal.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out dcValue))
+            if (ParserUtils.TryParseDecimal(raw, out dcValue))
             {
                 int decimals = BitConverter.GetBytes(decimal.GetBits(dcValue)[3])[2];
                 if (decimals < 7)
@@ -1280,11 +1280,11 @@ namespace NanoXLSX.Internal
                 }
             }
             // High range float section
-            else if (float.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out fValue) && fValue >= float.MinValue && fValue <= float.MaxValue && !float.IsInfinity(fValue))
+            else if (ParserUtils.TryParseFloat(raw, out fValue) && fValue >= float.MinValue && fValue <= float.MaxValue && !float.IsInfinity(fValue))
             {
                 return fValue;
             }
-            if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
+            if (ParserUtils.TryParseDouble(raw, out dValue))
             {
                     return dValue;
             }
@@ -1299,7 +1299,7 @@ namespace NanoXLSX.Internal
         private string ResolveSharedString(string raw)
         {
             int stringId;
-            if (ReaderUtils.TryParseInt(raw, out stringId))
+            if (ParserUtils.TryParseInt(raw, out stringId))
             {
                 string resolvedString = sharedStrings.GetString(stringId);
                 if (resolvedString == null)
@@ -1435,14 +1435,14 @@ namespace NanoXLSX.Internal
             /// <param name="hiddenProperty">Hidden definition as string (directly resolved from the corresponding XML attribute)</param>
             public static void AddRowDefinition(Dictionary<int, RowDefinition> rows, string rowNumber, string heightProperty, string hiddenProperty)
             {
-                int row = ReaderUtils.ParseInt(rowNumber) - 1; // Transform to zero-based
+                int row = ParserUtils.ParseInt(rowNumber) - 1; // Transform to zero-based
                 if (!rows.ContainsKey(row))
                 {
                     rows.Add(row, new RowDefinition());
                 }
                 if (heightProperty != null)
                 {
-                    rows[row].Height = ReaderUtils.ParseFloat(heightProperty);
+                    rows[row].Height = ParserUtils.ParseFloat(heightProperty);
                 }
                 if (hiddenProperty != null && hiddenProperty == "1")
                 {

@@ -158,26 +158,6 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Transforms a string to upper case with null check and invariant culture
-        /// </summary>
-        /// <param name="input">String to transform</param>
-        /// <returns>Upper case string</returns>
-        public static string ToUpper(string input)
-        {
-            return !string.IsNullOrEmpty(input) ? input.ToUpper(INVARIANT_CULTURE) : input;
-        }
-
-        /// <summary>
-        /// Transforms an integer to an invariant sting
-        /// </summary>
-        /// <param name="input">Integer to transform</param>
-        /// <returns>Integer as string</returns>
-        public static string ToString(int input)
-        {
-            return input.ToString("G", INVARIANT_CULTURE);
-        }
-
-        /// <summary>
         /// Calculates the internal width of a column in characters. This width is used only in the XML documents of worksheets and is usually not exposed to the (Excel) end user
         /// </summary>
         /// <remarks>

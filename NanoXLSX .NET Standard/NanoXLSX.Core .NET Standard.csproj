@@ -54,7 +54,6 @@
     <Compile Include="..\NanoXLSX\Exceptions\StyleException.cs" Link="Exceptions\StyleException.cs" />
     <Compile Include="..\NanoXLSX\Exceptions\WorksheetException.cs" Link="Exceptions\WorksheetException.cs" />
     <Compile Include="..\NanoXLSX\ImportOptions.cs" Link="ImportOptions.cs" />
-    <Compile Include="..\NanoXLSX\Internal\Interfaces\IFormattableText.cs" Link="Internal\Interfaces\IFormattableText.cs" />
     <Compile Include="..\NanoXLSX\Internal\MetadataReader.cs" Link="Internal\MetadataReader.cs" />
     <Compile Include="..\NanoXLSX\Internal\ReaderUtils.cs" Link="Internal\ReaderUtils.cs" />
     <Compile Include="..\NanoXLSX\Internal\SharedStringsReader.cs" Link="Internal\SharedStringsReader.cs" />
@@ -106,5 +105,10 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NanoXLSX.Shared" Version="1.0.0.5" />
+  </ItemGroup>
+	
 </Project>
 

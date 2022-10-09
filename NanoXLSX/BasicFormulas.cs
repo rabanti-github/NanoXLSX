@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLS.Shared.Utils;
 using System;
 using System.Globalization;
 using FormatException = NanoXLSX.Exceptions.FormatException;
@@ -280,7 +281,7 @@ namespace NanoXLSX
             if (rangeTarget != null)
             { arg2 = rangeTarget.SheetName + "!" + range; }
             else { arg2 = range.ToString(); }
-            arg3 = columnIndex.ToString("G", culture);
+            arg3 = ParserUtils.ToString(columnIndex);
             if (exactMatch)
             { arg4 = "TRUE"; }
             else { arg4 = "FALSE"; }

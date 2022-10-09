@@ -89,36 +89,5 @@ namespace NanoXLSX.Internal
             return node.LocalName.Equals(name, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        /// <summary>
-        /// Parses a float independent from the culture info of the host
-        /// </summary>
-        /// <param name="rawValue">Raw number as string</param>
-        /// <returns>Parsed float</returns>
-        internal static float ParseFloat(String rawValue)
-        {
-            return float.Parse(rawValue, CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
-        /// Parses an int independent from the culture info of the host
-        /// </summary>
-        /// <param name="rawValue">Raw number as string</param>
-        /// <returns>Parsed int</returns>
-        internal static int ParseInt(String rawValue)
-        {
-            return int.Parse(rawValue, CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
-        /// Tries to parse an int independent from the culture info of the host
-        /// </summary>
-        /// <param name="rawvalue">Raw number as string</param>
-        /// <param name="parsedValue">Parsed int</param>
-        /// <returns>True, if the parsing was successful</returns>
-        internal static bool TryParseInt(String rawvalue, out int parsedValue)
-        {
-            return int.TryParse(rawvalue, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsedValue);
-        }
-
     }
 }

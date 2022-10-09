@@ -4,9 +4,10 @@
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
-using NanoXLSX.Internal.Interfaces;
 using System;
 using System.Text;
+using NanoXLSX.Shared.Interfaces;
+using NanoXLSX.Shared.Utils;
 
 namespace NanoXLSX.Internal.Structures
 {
@@ -31,7 +32,7 @@ namespace NanoXLSX.Internal.Structures
             }
             else
             {
-                string value = XlsxWriter.EscapeXmlChars(Value);
+                string value = XmlUtils.EscapeXmlChars(Value);
                 if (Char.IsWhiteSpace(value, 0) || Char.IsWhiteSpace(value, value.Length - 1))
                 {
                     sb.Append(PRESERVE_START_TAG);

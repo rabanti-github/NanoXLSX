@@ -1,11 +1,9 @@
-﻿using NanoXLSX;
+﻿using NanoXLS.Shared.Utils;
+using NanoXLSX;
 using NanoXLSX.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
@@ -245,7 +243,7 @@ namespace NanoXLSX_Test.Misc
         }
 
 
-        [Theory(DisplayName = "Test of the Utils ToUpper function")]
+        [Theory(DisplayName = "Test of the ParserUtils ToUpper function")]
         [InlineData("", "")]
         [InlineData(null, null)]
         [InlineData("123", "123")]
@@ -253,18 +251,18 @@ namespace NanoXLSX_Test.Misc
         [InlineData("ABC", "ABC")]
         public void ToUpperTest(string givenValue, string expectedValue)
         {
-            string value = Utils.ToUpper(givenValue);
+            string value = ParserUtils.ToUpper(givenValue);
             Assert.Equal(expectedValue, value);
         }
 
-        [Theory(DisplayName = "Test of the Utils ToString function")]
+        [Theory(DisplayName = "Test of the ParserUtils ToString function")]
         [InlineData(-10, "-10")]
         [InlineData(0, "0")]
         [InlineData(1, "1")]
         [InlineData(100, "100")]
         public void ToStringTest(int givenValue, string expectedValue)
         {
-            string value = Utils.ToString(givenValue);
+            string value = ParserUtils.ToString(givenValue);
             Assert.Equal(expectedValue, value);
         }
 

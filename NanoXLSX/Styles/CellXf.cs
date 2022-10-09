@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLS.Shared.Utils;
 using NanoXLSX.Exceptions;
 using System.Text;
 
@@ -216,7 +217,7 @@ namespace NanoXLSX.Styles
         {
             if (textRotation < -90 || textRotation > 90)
             {
-                throw new FormatException("The rotation value (" + Utils.ToString(textRotation) + "°) is out of range. Range is form -90° to +90°");
+                throw new FormatException("The rotation value (" + ParserUtils.ToString(textRotation) + "°) is out of range. Range is form -90° to +90°");
             }
             if (textDirection == TextDirectionValue.vertical)
             {

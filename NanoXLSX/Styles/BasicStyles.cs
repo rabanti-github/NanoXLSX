@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLS.Shared.Utils;
 using NanoXLSX.Exceptions;
 using System.Text.RegularExpressions;
 
@@ -245,7 +246,7 @@ namespace NanoXLSX.Styles
         {
             Fill.ValidateColor(rgb, false);
             Style s = new Style();
-            s.CurrentFont.ColorValue = Utils.ToUpper("FF" + rgb);
+            s.CurrentFont.ColorValue = ParserUtils.ToUpper("FF" + rgb);
             return s;
         }
 
@@ -259,7 +260,7 @@ namespace NanoXLSX.Styles
         {
             Fill.ValidateColor(rgb, false);
             Style s = new Style();
-            s.CurrentFill.SetColor(Utils.ToUpper("FF" + rgb), Fill.FillType.fillColor);
+            s.CurrentFill.SetColor(ParserUtils.ToUpper("FF" + rgb), Fill.FillType.fillColor);
 
             return s;
         }

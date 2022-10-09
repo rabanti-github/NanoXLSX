@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using NanoXLS.Shared.Utils;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Exceptions.FormatException;
@@ -665,7 +666,7 @@ namespace NanoXLSX
             {
                 throw new FormatException("The cell address is null or empty and could not be resolved");
             }
-            address = Utils.ToUpper(address);
+            address = ParserUtils.ToUpper(address);
             Regex pattern = new Regex("(^(\\$?)([A-Z]{1,3})(\\$?)([0-9]{1,7})$)");
             Match matcher = pattern.Match(address);
             if (matcher.Groups.Count != 6)

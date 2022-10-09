@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using NanoXLS.Shared.Utils;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Internal;
 using NanoXLSX.Styles;
@@ -1760,7 +1761,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws a RangeException if the passed cell range was not merged earlier</exception>
         public void RemoveMergedCells(string range)
         {
-            range = Utils.ToUpper(range);
+            range = ParserUtils.ToUpper(range);
             if (range == null || !mergedCells.ContainsKey(range))
             {
                 throw new RangeException("The cell range " + range + " was not found in the list of merged cell ranges");
@@ -2373,7 +2374,7 @@ namespace NanoXLSX
             }
             while (true)
             {
-                string numberString = Utils.ToString(number);
+                string numberString = ParserUtils.ToString(number);
                 if (numberString.Length + prefix.Length > MAX_WORKSHEET_NAME_LENGTH)
                 {
                     int endIndex = prefix.Length - (numberString.Length + prefix.Length - MAX_WORKSHEET_NAME_LENGTH);

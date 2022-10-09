@@ -39,11 +39,15 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\NanoXLSX.Core.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <CodeAnalysisRuleSet>
     </CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NanoXLSX.Shared, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NanoXLSX.Shared.1.0.0.5\lib\net45\NanoXLSX.Shared.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -66,7 +70,6 @@
     <Compile Include="Exceptions\WorksheetException.cs" />
     <Compile Include="ImportOptions.cs" />
     <Compile Include="Internal\Structures\DocumentPath.cs" />
-    <Compile Include="Internal\Interfaces\IFormattableText.cs" />
     <Compile Include="Internal\MetadataReader.cs" />
     <Compile Include="Internal\ReaderUtils.cs" />
     <Compile Include="Internal\Structures\PlainText.cs" />
@@ -96,6 +99,9 @@
     <Compile Include="Workbook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Worksheet.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

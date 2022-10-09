@@ -15,9 +15,11 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using NanoXLS.Shared.Utils;
 using NanoXLSX.Exceptions;
-using NanoXLSX.Internal.Interfaces;
 using NanoXLSX.Internal.Structures;
+using NanoXLSX.Shared.Interfaces;
+using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 using IOException = NanoXLSX.Exceptions.IOException;
@@ -97,9 +99,9 @@ namespace NanoXLSX.Internal
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("<sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"");
-            sb.Append(sharedStringsTotalCount.ToString("G", culture));
+            sb.Append(ParserUtils.ToString(sharedStringsTotalCount));
             sb.Append("\" uniqueCount=\"");
-            sb.Append(sharedStrings.Count.ToString("G", culture));
+            sb.Append(ParserUtils.ToString(sharedStrings.Count));
             sb.Append("\">");
             foreach (IFormattableText text in sharedStrings.Keys)
             {
@@ -149,16 +151,16 @@ namespace NanoXLSX.Internal
             int numFormatCount = styles.GetNumberFormatStyleNumber();
             if (numFormatCount > 0)
             {
-                sb.Append("<numFmts count=\"").Append(numFormatCount.ToString("G", culture)).Append("\">");
+                sb.Append("<numFmts count=\"").Append(ParserUtils.ToString(numFormatCount)).Append("\">");
                 sb.Append(numberFormatsString + "</numFmts>");
             }
-            sb.Append("<fonts x14ac:knownFonts=\"1\" count=\"").Append(fontCount.ToString("G", culture)).Append("\">");
+            sb.Append("<fonts x14ac:knownFonts=\"1\" count=\"").Append(ParserUtils.ToString(fontCount)).Append("\">");
             sb.Append(fontsString).Append("</fonts>");
-            sb.Append("<fills count=\"").Append(fillCount.ToString("G", culture)).Append("\">");
+            sb.Append("<fills count=\"").Append(ParserUtils.ToString(fillCount)).Append("\">");
             sb.Append(fillsString).Append("</fills>");
-            sb.Append("<borders count=\"").Append(borderCount.ToString("G", culture)).Append("\">");
+            sb.Append("<borders count=\"").Append(ParserUtils.ToString(borderCount)).Append("\">");
             sb.Append(bordersString).Append("</borders>");
-            sb.Append("<cellXfs count=\"").Append(styleCount.ToString("G", culture)).Append("\">");
+            sb.Append("<cellXfs count=\"").Append(ParserUtils.ToString(styleCount)).Append("\">");
             sb.Append(xfsStings).Append("</cellXfs>");
             if (workbook.WorkbookMetadata != null)
             {
@@ -191,7 +193,7 @@ namespace NanoXLSX.Internal
                 }
                 else
                 {
-                    sb.Append("activeTab=\"").Append(workbook.SelectedWorksheet.ToString("G", culture)).Append("\"");
+                    sb.Append("activeTab=\"").Append(ParserUtils.ToString(workbook.SelectedWorksheet)).Append("\"");
                 }
                 sb.Append("/></bookViews>");
             }
@@ -201,7 +203,7 @@ namespace NanoXLSX.Internal
             {
                 foreach (Worksheet item in workbook.Worksheets)
                 {
-                    sb.Append("<sheet r:id=\"rId").Append(item.SheetID.ToString()).Append("\" sheetId=\"").Append(item.SheetID.ToString()).Append("\" name=\"").Append(EscapeXmlAttributeChars(item.SheetName)).Append("\"");
+                    sb.Append("<sheet r:id=\"rId").Append(item.SheetID.ToString()).Append("\" sheetId=\"").Append(item.SheetID.ToString()).Append("\" name=\"").Append(XmlUtils.EscapeXmlAttributeChars(item.SheetName)).Append("\"");
                     if (item.Hidden)
                     {
                         sb.Append(" state=\"hidden\"");
@@ -271,13 +273,13 @@ namespace NanoXLSX.Internal
             {
                 // TODO: Find the right calculation to compensate baseColWidth when using pane splitting
                 sb.Append(" defaultColWidth=\"")
-             .Append(worksheet.DefaultColumnWidth.ToString("G", culture))
+             .Append(ParserUtils.ToString(worksheet.DefaultColumnWidth))
                 .Append("\"");
             }
             sb.Append(" defaultRowHeight=\"")
-             .Append(worksheet.DefaultRowHeight.ToString("G", culture))
+             .Append(ParserUtils.ToString(worksheet.DefaultRowHeight))
              .Append("\" baseColWidth=\"")
-             .Append(worksheet.DefaultColumnWidth.ToString("G", culture))
+             .Append(ParserUtils.ToString(worksheet.DefaultColumnWidth))
              .Append("\" x14ac:dyDescent=\"0.25\"/>");
 
             string colDefinitions = CreateColsString(worksheet);
@@ -380,11 +382,11 @@ namespace NanoXLSX.Internal
                 {
                     if (freeze)
                     {
-                        sb.Append(" xSplit=\"").Append(Utils.ToString(xSplit)).Append("\"");
+                        sb.Append(" xSplit=\"").Append(ParserUtils.ToString(xSplit)).Append("\"");
                     }
                     else
                     {
-                        sb.Append(" xSplit=\"").Append(CalculatePaneWidth(worksheet, xSplit).ToString("G", culture)).Append("\"");
+                        sb.Append(" xSplit=\"").Append(ParserUtils.ToString(CalculatePaneWidth(worksheet, xSplit))).Append("\"");
                     }
                     applyXSplit = true;
                 }
@@ -392,11 +394,11 @@ namespace NanoXLSX.Internal
                 {
                     if (freeze)
                     {
-                        sb.Append(" ySplit=\"").Append(Utils.ToString(ySplit)).Append("\"");
+                        sb.Append(" ySplit=\"").Append(ParserUtils.ToString(ySplit)).Append("\"");
                     }
                     else
                     {
-                        sb.Append(" ySplit=\"").Append(CalculatePaneHeight(worksheet, ySplit).ToString("G", culture)).Append("\"");
+                        sb.Append(" ySplit=\"").Append(ParserUtils.ToString(CalculatePaneHeight(worksheet, ySplit))).Append("\"");
                     }
                     applyYSplit = true;
                 }
@@ -413,12 +415,12 @@ namespace NanoXLSX.Internal
             {
                 if (worksheet.PaneSplitLeftWidth != null)
                 {
-                    sb.Append(" xSplit=\"").Append(Utils.GetInternalPaneSplitWidth(worksheet.PaneSplitLeftWidth.Value).ToString("G", culture)).Append("\"");
+                    sb.Append(" xSplit=\"").Append(ParserUtils.ToString(Utils.GetInternalPaneSplitWidth(worksheet.PaneSplitLeftWidth.Value))).Append("\"");
                     applyXSplit = true;
                 }
                 if (worksheet.PaneSplitTopHeight != null)
                 {
-                    sb.Append(" ySplit=\"").Append(Utils.GetInternalPaneSplitHeight(worksheet.PaneSplitTopHeight.Value).ToString("G", culture)).Append("\"");
+                    sb.Append(" ySplit=\"").Append(ParserUtils.ToString(Utils.GetInternalPaneSplitHeight(worksheet.PaneSplitTopHeight.Value))).Append("\"");
                     applyYSplit = true;
                 }
             }
@@ -675,7 +677,7 @@ namespace NanoXLSX.Internal
                 sb.Append(':');
             }
             sb.Append(tagName).Append(">");
-            sb.Append(EscapeXmlChars(value));
+            sb.Append(XmlUtils.EscapeXmlChars(value));
             sb.Append("</");
             if (!hasNoNs)
             {
@@ -751,9 +753,9 @@ namespace NanoXLSX.Internal
                             hidden = " hidden=\"1\"";
                         }
                     }
-                    col = (column.Key + 1).ToString("G", culture); // Add 1 for Address
+                    col = ParserUtils.ToString(column.Key + 1); // Add 1 for Address
                     float width = Utils.GetInternalColumnWidth(column.Value.Width);
-                    sb.Append("<col customWidth=\"1\" width=\"").Append(width.ToString("G", culture)).Append("\" max=\"").Append(col).Append("\" min=\"").Append(col).Append("\"").Append(hidden).Append("/>");
+                    sb.Append("<col customWidth=\"1\" width=\"").Append(ParserUtils.ToString(width)).Append("\" max=\"").Append(col).Append("\" min=\"").Append(col).Append("\"").Append(hidden).Append("/>");
                 }
                 string value = sb.ToString();
                 if (value.Length > 0)
@@ -801,7 +803,7 @@ namespace NanoXLSX.Internal
                 return string.Empty;
             }
             StringBuilder sb = new StringBuilder();
-            sb.Append("<mergeCells count=\"").Append(sheet.MergedCells.Count.ToString("G", culture)).Append("\">");
+            sb.Append("<mergeCells count=\"").Append(ParserUtils.ToString(sheet.MergedCells.Count)).Append("\">");
             foreach (KeyValuePair<string, Range> item in sheet.MergedCells)
             {
                 sb.Append("<mergeCell ref=\"").Append(item.Value.ToString()).Append("\"/>");
@@ -826,7 +828,7 @@ namespace NanoXLSX.Internal
             {
                 if (worksheet.RowHeights[rowNumber] != worksheet.DefaultRowHeight)
                 {
-                    height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + Utils.GetInternalRowHeight(worksheet.RowHeights[rowNumber]).ToString("G", culture) + "\"";
+                    height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + ParserUtils.ToString(Utils.GetInternalRowHeight(worksheet.RowHeights[rowNumber])) + "\"";
                 }
             }
             if (worksheet.HiddenRows.ContainsKey(rowNumber))
@@ -851,7 +853,7 @@ namespace NanoXLSX.Internal
                 typeDef = " ";
                 if (item.CellStyle != null)
                 {
-                    styleDef = " s=\"" + item.CellStyle.InternalID.Value.ToString("G", culture) + "\" ";
+                    styleDef = " s=\"" + ParserUtils.ToString(item.CellStyle.InternalID.Value) + "\" ";
                 }
                 else
                 {
@@ -919,11 +921,11 @@ namespace NanoXLSX.Internal
                             typeAttribute = "s";
                             if (item.Value is IFormattableText)
                             {
-                                valueDef = sharedStrings.Add((IFormattableText)item.Value, sharedStrings.Count.ToString("G", culture));
+                                valueDef = sharedStrings.Add((IFormattableText)item.Value, ParserUtils.ToString(sharedStrings.Count));
                             }
                             else
                             {
-                                valueDef = sharedStrings.Add(new PlainText(item.Value.ToString()), sharedStrings.Count.ToString("G", culture));
+                                valueDef = sharedStrings.Add(new PlainText(item.Value.ToString()), ParserUtils.ToString(sharedStrings.Count));
                             }
                             sharedStringsTotalCount++;
                         }
@@ -935,11 +937,11 @@ namespace NanoXLSX.Internal
                     sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(typeDef).Append(styleDef).Append(">");
                     if (item.DataType == Cell.CellType.FORMULA)
                     {
-                        sb.Append("<f>").Append(EscapeXmlChars(item.Value.ToString())).Append("</f>");
+                        sb.Append("<f>").Append(XmlUtils.EscapeXmlChars(item.Value.ToString())).Append("</f>");
                     }
                     else
                     {
-                        sb.Append("<v>").Append(EscapeXmlChars(valueDef)).Append("</v>");
+                        sb.Append("<v>").Append(XmlUtils.EscapeXmlChars(valueDef)).Append("</v>");
                     }
                     sb.Append("</c>");
                 }
@@ -1009,7 +1011,7 @@ namespace NanoXLSX.Internal
             foreach (KeyValuePair<Worksheet.SheetProtectionValue, int> item in actualLockingValues)
             {
                     temp = Enum.GetName(typeof(Worksheet.SheetProtectionValue), item.Key); // Note! If the enum names differs from the OOXML definitions, this method will cause invalid OOXML entries
-                    sb.Append(" ").Append(temp).Append("=\"").Append(item.Value.ToString("G", culture)).Append("\"");
+                    sb.Append(" ").Append(temp).Append("=\"").Append(ParserUtils.ToString(item.Value)).Append("\"");
             }
             if (!string.IsNullOrEmpty(sheet.SheetProtectionPasswordHash))
             {
@@ -1118,10 +1120,10 @@ namespace NanoXLSX.Internal
                 }
                 if (item.VerticalAlign == Font.VerticalAlignValue.subscript) { sb.Append("<vertAlign val=\"subscript\"/>"); }
                 else if (item.VerticalAlign == Font.VerticalAlignValue.superscript) { sb.Append("<vertAlign val=\"superscript\"/>"); }
-                sb.Append("<sz val=\"").Append(item.Size.ToString("G", culture)).Append("\"/>");
+                sb.Append("<sz val=\"").Append(ParserUtils.ToString(item.Size)).Append("\"/>");
                 if (string.IsNullOrEmpty(item.ColorValue))
                 {
-                    sb.Append("<color theme=\"").Append(item.ColorTheme.ToString("G", culture)).Append("\"/>");
+                    sb.Append("<color theme=\"").Append(ParserUtils.ToString(item.ColorTheme)).Append("\"/>");
                 }
                 else
                 {
@@ -1161,7 +1163,7 @@ namespace NanoXLSX.Internal
                 {
                     sb.Append(">");
                     sb.Append("<fgColor rgb=\"").Append(item.ForegroundColor).Append("\"/>");
-                    sb.Append("<bgColor indexed=\"").Append(item.IndexedColor.ToString("G", culture)).Append("\"/>");
+                    sb.Append("<bgColor indexed=\"").Append(ParserUtils.ToString(item.IndexedColor)).Append("\"/>");
                     sb.Append("</patternFill>");
                 }
                 else if (item.PatternFill == Fill.PatternValue.mediumGray || item.PatternFill == Fill.PatternValue.lightGray || item.PatternFill == Fill.PatternValue.gray0625 || item.PatternFill == Fill.PatternValue.darkGray)
@@ -1197,10 +1199,10 @@ namespace NanoXLSX.Internal
                 {
                     if (string.IsNullOrEmpty(item.CustomFormatCode))
                     {
-                        throw new FormatException("The number format style component with the ID " + Utils.ToString(item.CustomFormatID) + " cannot be null or empty");
+                        throw new FormatException("The number format style component with the ID " + ParserUtils.ToString(item.CustomFormatID) + " cannot be null or empty");
                     }
                     string customFormat = NumberFormat.EscapeFormatCode(item.CustomFormatCode);
-                    sb.Append("<numFmt formatCode=\"").Append(EscapeXmlAttributeChars(customFormat)).Append("\" numFmtId=\"").Append(item.CustomFormatID.ToString("G", culture)).Append("\"/>");
+                    sb.Append("<numFmt formatCode=\"").Append(XmlUtils.EscapeXmlAttributeChars(customFormat)).Append("\" numFmtId=\"").Append(ParserUtils.ToString(item.CustomFormatID)).Append("\"/>");
                 }
             }
             return sb.ToString();
@@ -1255,7 +1257,7 @@ namespace NanoXLSX.Internal
                         || style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.distributed))
                     {
                         sb2.Append(" indent=\"");
-                        sb2.Append(style.CurrentCellXf.Indent.ToString("G", culture));
+                        sb2.Append(ParserUtils.ToString(style.CurrentCellXf.Indent));
                         sb2.Append("\"");
                     }
                     if (style.CurrentCellXf.Alignment != CellXf.TextBreakValue.none)
@@ -1267,7 +1269,7 @@ namespace NanoXLSX.Internal
                     if (textRotation != 0)
                     {
                         sb2.Append(" textRotation=\"");
-                        sb2.Append(textRotation.ToString("G", culture));
+                        sb2.Append(ParserUtils.ToString(textRotation));
                         sb2.Append("\"");
                     }
                     sb2.Append("/>"); // </xf>
@@ -1293,17 +1295,17 @@ namespace NanoXLSX.Internal
                 sb.Append("<xf numFmtId=\"");
                 if (style.CurrentNumberFormat.IsCustomFormat)
                 {
-                    sb.Append(style.CurrentNumberFormat.CustomFormatID.ToString("G", culture));
+                    sb.Append(ParserUtils.ToString(style.CurrentNumberFormat.CustomFormatID));
                 }
                 else
                 {
                     formatNumber = (int)style.CurrentNumberFormat.Number;
-                    sb.Append(formatNumber.ToString("G", culture));
+                    sb.Append(ParserUtils.ToString(formatNumber));
                 }
 
-                sb.Append("\" borderId=\"").Append(style.CurrentBorder.InternalID.Value.ToString("G", culture));
-                sb.Append("\" fillId=\"").Append(style.CurrentFill.InternalID.Value.ToString("G", culture));
-                sb.Append("\" fontId=\"").Append(style.CurrentFont.InternalID.Value.ToString("G", culture));
+                sb.Append("\" borderId=\"").Append(ParserUtils.ToString(style.CurrentBorder.InternalID.Value));
+                sb.Append("\" fillId=\"").Append(ParserUtils.ToString(style.CurrentFill.InternalID.Value));
+                sb.Append("\" fontId=\"").Append(ParserUtils.ToString(style.CurrentFont.InternalID.Value));
                 if (!style.CurrentFont.IsDefaultFont)
                 {
                     sb.Append("\" applyFont=\"1");
@@ -1441,87 +1443,7 @@ namespace NanoXLSX.Internal
 
         #region staticMethods
 
-        /// <summary>
-        /// Method to escape XML characters between two XML tags
-        /// </summary>
-        /// <param name="input">Input string to process</param>
-        /// <returns>Escaped string</returns>
-        /// <remarks>Note: The XML specs allow characters up to the character value of 0x10FFFF. However, the C# char range is only up to 0xFFFF. NanoXLSX will neglect all values above this level in the sanitizing check. Illegal characters like 0x1 will be replaced with a white space (0x20)</remarks>
-        public static string EscapeXmlChars(string input)
-        {
-            if (input == null) { return ""; }
-            int len = input.Length;
-            List<int> illegalCharacters = new List<int>(len);
-            List<byte> characterTypes = new List<byte>(len);
-            int i;
-            for (i = 0; i < len; i++)
-            {
-                if ((input[i] < 0x9) || (input[i] > 0xA && input[i] < 0xD) || (input[i] > 0xD && input[i] < 0x20) || (input[i] > 0xD7FF && input[i] < 0xE000) || (input[i] > 0xFFFD))
-                {
-                    illegalCharacters.Add(i);
-                    characterTypes.Add(0);
-                    continue;
-                } // Note: XML specs allow characters up to 0x10FFFF. However, the C# char range is only up to 0xFFFF; Higher values are neglected here 
-                if (input[i] == 0x3C) // <
-                {
-                    illegalCharacters.Add(i);
-                    characterTypes.Add(1);
-                }
-                else if (input[i] == 0x3E) // >
-                {
-                    illegalCharacters.Add(i);
-                    characterTypes.Add(2);
-                }
-                else if (input[i] == 0x26) // &
-                {
-                    illegalCharacters.Add(i);
-                    characterTypes.Add(3);
-                }
-            }
-            if (illegalCharacters.Count == 0)
-            {
-                return input;
-            }
-
-            StringBuilder sb = new StringBuilder(len);
-            int lastIndex = 0;
-            len = illegalCharacters.Count;
-            for (i = 0; i < len; i++)
-            {
-                sb.Append(input.Substring(lastIndex, illegalCharacters[i] - lastIndex));
-                if (characterTypes[i] == 0)
-                {
-                    sb.Append(' '); // Whitespace as fall back on illegal character
-                }
-                else if (characterTypes[i] == 1) // replace <
-                {
-                    sb.Append("&lt;");
-                }
-                else if (characterTypes[i] == 2) // replace >
-                {
-                    sb.Append("&gt;");
-                }
-                else if (characterTypes[i] == 3) // replace &
-                {
-                    sb.Append("&amp;");
-                }
-                lastIndex = illegalCharacters[i] + 1;
-            }
-            sb.Append(input.Substring(lastIndex));
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Method to escape XML characters in an XML attribute
-        /// </summary>
-        /// <param name="input">Input string to process</param>
-        /// <returns>Escaped string</returns>
-        public static string EscapeXmlAttributeChars(string input)
-        {
-            input = EscapeXmlChars(input); // Sanitize string from illegal characters beside quotes
-            input = input.Replace("\"", "&quot;");
-            return input;
-        }
+      
         #endregion
 
         #region helperClasses

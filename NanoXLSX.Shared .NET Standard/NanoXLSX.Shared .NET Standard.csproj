@@ -24,6 +24,9 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AssemblyVersion>1.0.0.5</AssemblyVersion>
+    <FileVersion>1.0.0.5</FileVersion>
+    <Version>1.0.0.5</Version>
   </PropertyGroup>
 	
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -39,6 +42,7 @@
 
   <ItemGroup>
     <Compile Include="..\NanoXLSX.Shared\Interfaces\IFormattableText.cs" Link="Interfaces\IFormattableText.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Utils\ParserUtils.cs" Link="Utils\ParserUtils.cs" />
     <Compile Include="..\NanoXLSX.Shared\Utils\XmlUtils.cs" Link="Utils\XmlUtils.cs" />
   </ItemGroup>
 	

@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLS.Shared.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -150,7 +151,7 @@ namespace NanoXLSX.Internal
                     attribute = ReaderUtils.GetAttribute(node, "activeTab");
                     if (!string.IsNullOrEmpty(attribute))
                     {
-                        this.SelectedWorksheet = ReaderUtils.ParseInt(attribute);
+                        this.SelectedWorksheet = ParserUtils.ParseInt(attribute);
                     }
                 }
             }
@@ -169,7 +170,7 @@ namespace NanoXLSX.Internal
                     try
                     {
                         string sheetName = ReaderUtils.GetAttribute(node, "name", "worksheet1");
-                        int id = ReaderUtils.ParseInt(ReaderUtils.GetAttribute(node, "sheetId")); // Default will rightly throw an exception
+                        int id = ParserUtils.ParseInt(ReaderUtils.GetAttribute(node, "sheetId")); // Default will rightly throw an exception
                         string state = ReaderUtils.GetAttribute(node, "state");
                         bool hidden = false;
                         if (state != null && state.ToLower() == "hidden")
