@@ -9,10 +9,17 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Xml;
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
-using IOException = NanoXLSX.Exceptions.IOException;
-using NanoXLS.Shared.Utils;
+using IOException = NanoXLSX.Shared.Exceptions.IOException;
+using NanoXLSX.Shared.Utils;
+
+using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
+using static NanoXLSX.Shared.Enums.Styles.CellXfEnums;
+using static NanoXLSX.Shared.Enums.Styles.FontEnums;
+using static NanoXLSX.Shared.Enums.Styles.FillEnums;
+using static NanoXLSX.Shared.Enums.Styles.BorderEnums;
+using NanoXLSX.Themes;
 
 namespace NanoXLSX.Internal
 {
@@ -48,7 +55,7 @@ namespace NanoXLSX.Internal
         /// Reads the XML file form the passed stream and processes the style information
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         public void Read(MemoryStream stream)
         {
             try
@@ -112,7 +119,7 @@ namespace NanoXLSX.Internal
                         string code = ReaderUtils.GetAttribute(childNode, "formatCode", string.Empty);
                         code = NumberFormat.UnEscapeFormatCode(code);
                         numberFormat.CustomFormatID = id;
-                        numberFormat.Number = NumberFormat.FormatNumber.custom;
+                        numberFormat.Number = FormatNumber.custom;
                         numberFormat.InternalID = id;
                         numberFormat.CustomFormatCode = code;
                         StyleReaderContainer.AddStyleComponent(numberFormat);
@@ -178,23 +185,23 @@ namespace NanoXLSX.Internal
             /// Tries to parse a border style
             /// </summary>
             /// <param name="innerNode">Border sub-node</param>
-            /// <returns>Border type or non if parsing was not successful</returns>
-         private static Border.StyleValue ParseBorderStyle(XmlNode innerNode)
+            /// <returns>Border type or none if parsing was not successful</returns>
+         private static StyleValue ParseBorderStyle(XmlNode innerNode)
         {
             string value = ReaderUtils.GetAttribute(innerNode, "style");
             if (value != null)
             {
                 if (value.Equals("double", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return Border.StyleValue.s_double; // special handling, since double is not a valid enum value
+                    return StyleValue.s_double; // special handling, since double is not a valid enum value
                 }
-                Border.StyleValue styleType;
+                StyleValue styleType;
                 if (Enum.TryParse(value, out styleType))
                 {
                     return styleType;
                 }
             }
-            return Border.StyleValue.none;
+            return StyleValue.none;
         }
 
         /// <summary>
@@ -211,8 +218,8 @@ namespace NanoXLSX.Internal
                 string pattern = ReaderUtils.GetAttribute(innerNode, "patternType");
                 if (innerNode != null)
                 {
-                    Fill.PatternValue patternValue;
-                    if (Enum.TryParse<Fill.PatternValue>(pattern, out patternValue))
+                    PatternValue patternValue;
+                    if (Enum.TryParse<PatternValue>(pattern, out patternValue))
                     {
                         fillStyle.PatternFill = patternValue;
                     }
@@ -226,10 +233,10 @@ namespace NanoXLSX.Internal
                     XmlNode backgroundNode = ReaderUtils.GetChildNode(innerNode, "bgColor");
                     if (backgroundNode != null)
                     {
-                        string backgroundRgba = ReaderUtils.GetAttribute(backgroundNode, "rgb");
-                        if (!string.IsNullOrEmpty(backgroundRgba))
+                        string backgroundArgb = ReaderUtils.GetAttribute(backgroundNode, "rgb");
+                        if (!string.IsNullOrEmpty(backgroundArgb))
                         {
-                            fillStyle.BackgroundColor = backgroundRgba;
+                            fillStyle.BackgroundColor = backgroundArgb;
                         }
                         string backgroundIndex = ReaderUtils.GetAttribute(backgroundNode, "indexed");
                         if (!string.IsNullOrEmpty(backgroundIndex))
@@ -271,24 +278,24 @@ namespace NanoXLSX.Internal
                 }
                 if (ReaderUtils.GetAttributeOfChild(font, "u", "val", out attribute))
                 {
-                    fontStyle.Underline = Font.UnderlineValue.u_single; // default
+                    fontStyle.Underline = UnderlineValue.u_single; // default
                     switch (attribute)
                     {
                         case "double":
-                            fontStyle.Underline = Font.UnderlineValue.u_double;
+                            fontStyle.Underline = UnderlineValue.u_double;
                             break;
                         case "singleAccounting":
-                            fontStyle.Underline = Font.UnderlineValue.singleAccounting;
+                            fontStyle.Underline = UnderlineValue.singleAccounting;
                             break;
                         case "doubleAccounting":
-                            fontStyle.Underline = Font.UnderlineValue.doubleAccounting;
+                            fontStyle.Underline = UnderlineValue.doubleAccounting;
                             break;
                     }
                 }
                 if (ReaderUtils.GetAttributeOfChild(font, "vertAlign", "val", out attribute))
                 {
-                    Font.VerticalAlignValue vertAlignValue;
-                    if (Enum.TryParse<Font.VerticalAlignValue>(attribute, out vertAlignValue))
+                    VerticalTextAlignValue vertAlignValue;
+                    if (Enum.TryParse<VerticalTextAlignValue>(attribute, out vertAlignValue))
                     {
                         fontStyle.VerticalAlign = vertAlignValue;
                     }
@@ -303,7 +310,19 @@ namespace NanoXLSX.Internal
                     attribute = ReaderUtils.GetAttribute(colorNode, "theme");
                     if (attribute != null)
                     {
-                        fontStyle.ColorTheme = ParserUtils.ParseInt(attribute);
+                        int colorSchemeId = ParserUtils.ParseInt(attribute);
+                        if (colorSchemeId == 0)
+                        {
+                            fontStyle.ColorTheme = ThemeRepository.UndefinedTheme.Colors;
+                        }
+                        else if (ThemeRepository.Instance.Themes.ContainsKey(ThemeRepository.DEFAULT_THEME_ID))
+                        {
+                            fontStyle.ColorTheme = ThemeRepository.Instance.Themes[ThemeRepository.DEFAULT_THEME_ID].Colors;
+                        }
+                        else
+                        {
+                            throw new IOException("The specific color scheme ID " + colorSchemeId + " was defined but no theme was found in the XLSX file that could contain such a scheme");
+                        }
                     }
                     attribute = ReaderUtils.GetAttribute(colorNode, "rgb");
                    if (attribute != null)
@@ -317,23 +336,133 @@ namespace NanoXLSX.Internal
                 }
                 if (ReaderUtils.GetAttributeOfChild(font, "family", "val", out attribute))
                 {
-                    fontStyle.Family = attribute;
+                    switch (attribute)
+                    {
+
+                        case "0":
+                            fontStyle.Family = FontFamilyValue.NotApplicable;
+                            break;
+                        case "1":
+                            fontStyle.Family = FontFamilyValue.Roman;
+                            break;
+                        case "2":
+                            fontStyle.Family = FontFamilyValue.Swiss;
+                            break;
+                        case "3":
+                            fontStyle.Family = FontFamilyValue.Modern;
+                            break;
+                        case "4":
+                            fontStyle.Family = FontFamilyValue.Script;
+                            break;
+                        case "5":
+                            fontStyle.Family = FontFamilyValue.Decorative;
+                            break;
+                        case "6":
+                            fontStyle.Family = FontFamilyValue.Reserved1;
+                            break;
+                        case "7":
+                            fontStyle.Family = FontFamilyValue.Reserved2;
+                            break;
+                        case "8":
+                            fontStyle.Family = FontFamilyValue.Reserved3;
+                            break;
+                        case "9":
+                            fontStyle.Family = FontFamilyValue.Reserved4;
+                            break;
+                        case "10":
+                            fontStyle.Family = FontFamilyValue.Reserved5;
+                            break;
+                        case "11":
+                            fontStyle.Family = FontFamilyValue.Reserved6;
+                            break;
+                        case "12":
+                            fontStyle.Family = FontFamilyValue.Reserved7;
+                            break;
+                        case "13":
+                            fontStyle.Family = FontFamilyValue.Reserved8;
+                            break;
+                        case "14":
+                            fontStyle.Family = FontFamilyValue.Reserved9;
+                            break;
+                    }
                 }
                 if (ReaderUtils.GetAttributeOfChild(font, "scheme", "val", out attribute))
                 {
                     switch (attribute)
                     {
                         case "major":
-                            fontStyle.Scheme = Font.SchemeValue.major;
+                            fontStyle.Scheme = SchemeValue.major;
                             break;
                         case "minor":
-                            fontStyle.Scheme = Font.SchemeValue.minor;
+                            fontStyle.Scheme = SchemeValue.minor;
                             break;
                     }
                 }
                 if (ReaderUtils.GetAttributeOfChild(font, "charset", "val", out attribute))
                 {
-                    fontStyle.Charset = attribute;
+                    switch (attribute)
+                    {
+                        case "0":
+                            fontStyle.Charset = CharsetValue.ANSI;
+                            break;
+                        case "1":
+                            fontStyle.Charset = CharsetValue.Default;
+                            break;
+                        case "2":
+                            fontStyle.Charset = CharsetValue.Symbols;
+                            break;
+                        case "77":
+                            fontStyle.Charset = CharsetValue.Macintosh;
+                            break;
+                        case "128":
+                            fontStyle.Charset = CharsetValue.JIS;
+                            break;
+                        case "129":
+                            fontStyle.Charset = CharsetValue.Hangul;
+                            break;
+                        case "130":
+                            fontStyle.Charset = CharsetValue.Johab;
+                            break;
+                        case "134":
+                            fontStyle.Charset = CharsetValue.GKB;
+                            break;
+                        case "136":
+                            fontStyle.Charset = CharsetValue.Big5;
+                            break;
+                        case "161":
+                            fontStyle.Charset = CharsetValue.Greek;
+                            break;
+                        case "162":
+                            fontStyle.Charset = CharsetValue.Turkish;
+                            break;
+                        case "163":
+                            fontStyle.Charset = CharsetValue.Vietnamese;
+                            break;
+                        case "177":
+                            fontStyle.Charset = CharsetValue.Hebrew;
+                            break;
+                        case "178":
+                            fontStyle.Charset = CharsetValue.Arabic;
+                            break;
+                        case "186":
+                            fontStyle.Charset = CharsetValue.Baltic;
+                            break;
+                        case "204":
+                            fontStyle.Charset = CharsetValue.Russian;
+                            break;
+                        case "222":
+                            fontStyle.Charset = CharsetValue.Thai;
+                            break;
+                        case "238":
+                            fontStyle.Charset = CharsetValue.EasternEuropean;
+                            break;
+                        case "255":
+                            fontStyle.Charset = CharsetValue.OEM;
+                            break;
+                        default:
+                            fontStyle.Charset = CharsetValue.ApplicationDefined;
+                            break;
+                    }
                 }
 
                 fontStyle.InternalID = StyleReaderContainer.GetNextFontId();
@@ -364,22 +493,22 @@ namespace NanoXLSX.Internal
                             attribute = ReaderUtils.GetAttribute(alignmentNode, "shrinkToFit");
                             if (attribute != null && attribute == "1")
                             {
-                                cellXfStyle.Alignment = CellXf.TextBreakValue.shrinkToFit;
+                                cellXfStyle.Alignment = TextBreakValue.shrinkToFit;
                             }
                             attribute = ReaderUtils.GetAttribute(alignmentNode, "wrapText");
                             if (attribute != null && attribute == "1")
                             {
-                                cellXfStyle.Alignment = CellXf.TextBreakValue.wrapText;
+                                cellXfStyle.Alignment = TextBreakValue.wrapText;
                             }
                             attribute = ReaderUtils.GetAttribute(alignmentNode, "horizontal");
-                            CellXf.HorizontalAlignValue horizontalAlignValue;
-                            if (Enum.TryParse<CellXf.HorizontalAlignValue>(attribute, out horizontalAlignValue))
+                        HorizontalAlignValue horizontalAlignValue;
+                            if (Enum.TryParse<HorizontalAlignValue>(attribute, out horizontalAlignValue))
                             {
                                 cellXfStyle.HorizontalAlign = horizontalAlignValue;
                             }
                             attribute = ReaderUtils.GetAttribute(alignmentNode, "vertical");
-                            CellXf.VerticalAlignValue verticalAlignValue;
-                            if (Enum.TryParse<CellXf.VerticalAlignValue>(attribute, out verticalAlignValue))
+                        VerticalAlignValue verticalAlignValue;
+                            if (Enum.TryParse<VerticalAlignValue>(attribute, out verticalAlignValue))
                             {
                                 cellXfStyle.VerticalAlign = verticalAlignValue;
                             }
@@ -421,7 +550,7 @@ namespace NanoXLSX.Internal
                         NumberFormat format = StyleReaderContainer.GetNumberFormat(id);
                         if (!hasId || format == null)
                         {
-                            NumberFormat.FormatNumber formatNumber;
+                            FormatNumber formatNumber;
                             NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'
                             // Invalid values should not occur at all (malformed Excel files). 
                             // Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 

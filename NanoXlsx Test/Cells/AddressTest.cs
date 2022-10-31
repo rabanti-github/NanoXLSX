@@ -1,5 +1,6 @@
 ﻿using NanoXLSX;
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -180,22 +181,22 @@ namespace NanoXLSX_Test.Cells
         // Tests which expects an exception
 
         [Theory(DisplayName = "Fail on invalid constructor calls with an address string")]
-        [InlineData(null, typeof(NanoXLSX.Exceptions.FormatException))]
-        [InlineData("", typeof(NanoXLSX.Exceptions.FormatException))]
-        [InlineData("$", typeof(NanoXLSX.Exceptions.FormatException))]
-        [InlineData("2", typeof(NanoXLSX.Exceptions.FormatException))]
-        [InlineData("$D", typeof(NanoXLSX.Exceptions.FormatException))]
-        [InlineData("$2", typeof(NanoXLSX.Exceptions.FormatException))]
-        [InlineData("Z", typeof(NanoXLSX.Exceptions.FormatException))]
+        [InlineData(null, typeof(NanoXLSX.Shared.Exceptions.FormatException))]
+        [InlineData("", typeof(NanoXLSX.Shared.Exceptions.FormatException))]
+        [InlineData("$", typeof(NanoXLSX.Shared.Exceptions.FormatException))]
+        [InlineData("2", typeof(NanoXLSX.Shared.Exceptions.FormatException))]
+        [InlineData("$D", typeof(NanoXLSX.Shared.Exceptions.FormatException))]
+        [InlineData("$2", typeof(NanoXLSX.Shared.Exceptions.FormatException))]
+        [InlineData("Z", typeof(NanoXLSX.Shared.Exceptions.FormatException))]
         [InlineData("A1048577", typeof(RangeException))]
         [InlineData("XFE1", typeof(RangeException))]
         public void AddressConstructorFailTest(string address, Type expectedExceptionType)
         {
             Exception ex;
-            if (expectedExceptionType == typeof(NanoXLSX.Exceptions.FormatException))
+            if (expectedExceptionType == typeof(NanoXLSX.Shared.Exceptions.FormatException))
             {
                 // Common malformed addresses
-                ex = Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => new Address(address));
+                ex = Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => new Address(address));
             }
             else
             {

@@ -5,7 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;

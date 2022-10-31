@@ -7,24 +7,24 @@
 
 using System;
 
-namespace NanoXLSX.Exceptions
+namespace NanoXLSX.Shared.Exceptions
 {
     /// <summary>
-    /// Class for exceptions regarding format error incidents
+    /// Class for exceptions regarding Style incidents
     /// </summary>
     [Serializable]
-    public class FormatException : Exception
+    public class StyleException : Exception
     {
         /// <summary>
         /// Default constructor
         /// </summary>
-        public FormatException() : base()
+        public StyleException()
         { }
         /// <summary>
         /// Constructor with passed message
         /// </summary>
         /// <param name="message">Message of the exception</param>
-        public FormatException(string message)
+        public StyleException(string message)
             : base(message)
         { }
 
@@ -33,8 +33,9 @@ namespace NanoXLSX.Exceptions
         /// </summary>
         /// <param name="message">Message of the exception</param>
         /// <param name="inner">Inner exception</param>
-        public FormatException(string message, Exception inner)
+        public StyleException(string message, Exception inner)
             : base(message, inner)
-        {  }
+        { }
     }
+
 }

@@ -48,11 +48,6 @@
     <Compile Include="..\NanoXLSX\BasicFormulas.cs" Link="BasicFormulas.cs" />
     <Compile Include="..\NanoXLSX\Cell.cs" Link="Cell.cs" />
     <Compile Include="..\NanoXLSX\Column.cs" Link="Column.cs" />
-    <Compile Include="..\NanoXLSX\Exceptions\FormatException.cs" Link="Exceptions\FormatException.cs" />
-    <Compile Include="..\NanoXLSX\Exceptions\IOException.cs" Link="Exceptions\IOException.cs" />
-    <Compile Include="..\NanoXLSX\Exceptions\RangeException.cs" Link="Exceptions\RangeException.cs" />
-    <Compile Include="..\NanoXLSX\Exceptions\StyleException.cs" Link="Exceptions\StyleException.cs" />
-    <Compile Include="..\NanoXLSX\Exceptions\WorksheetException.cs" Link="Exceptions\WorksheetException.cs" />
     <Compile Include="..\NanoXLSX\ImportOptions.cs" Link="ImportOptions.cs" />
     <Compile Include="..\NanoXLSX\Internal\MetadataReader.cs" Link="Internal\MetadataReader.cs" />
     <Compile Include="..\NanoXLSX\Internal\ReaderUtils.cs" Link="Internal\ReaderUtils.cs" />
@@ -62,6 +57,7 @@
     <Compile Include="..\NanoXLSX\Internal\Structures\SortedMap.cs" Link="Internal\Structures\SortedMap.cs" />
     <Compile Include="..\NanoXLSX\Internal\StyleReader.cs" Link="Internal\StyleReader.cs" />
     <Compile Include="..\NanoXLSX\Internal\StyleReaderContainer.cs" Link="Internal\StyleReaderContainer.cs" />
+    <Compile Include="..\NanoXLSX\Internal\ThemeReader.cs" Link="Internal\ThemeReader.cs" />
     <Compile Include="..\NanoXLSX\Internal\WorkbookReader.cs" Link="Internal\WorkbookReader.cs" />
     <Compile Include="..\NanoXLSX\Internal\WorksheetReader.cs" Link="Internal\WorksheetReader.cs" />
     <Compile Include="..\NanoXLSX\Internal\XlsxReader.cs" Link="Internal\XlsxReader.cs" />
@@ -80,6 +76,11 @@
     <Compile Include="..\NanoXLSX\Styles\Style.cs" Link="Styles\Style.cs" />
     <Compile Include="..\NanoXLSX\Styles\StyleManager.cs" Link="Styles\StyleManager.cs" />
     <Compile Include="..\NanoXLSX\Styles\StyleRepository.cs" Link="Styles\StyleRepository.cs" />
+    <Compile Include="..\NanoXLSX\Themes\ColorScheme.cs" Link="Themes\ColorScheme.cs" />
+    <Compile Include="..\NanoXLSX\Themes\SrgbColor.cs" Link="Themes\SrgbColor.cs" />
+    <Compile Include="..\NanoXLSX\Themes\SystemColor.cs" Link="Themes\SystemColor.cs" />
+    <Compile Include="..\NanoXLSX\Themes\Theme.cs" Link="Themes\Theme.cs" />
+    <Compile Include="..\NanoXLSX\Themes\ThemeRepository.cs" Link="Themes\ThemeRepository.cs" />
     <Compile Include="..\NanoXLSX\Utils.cs" Link="Utils.cs" />
     <Compile Include="..\NanoXLSX\Workbook.cs" Link="Workbook.cs" />
     <Compile Include="..\NanoXLSX\Worksheet.cs" Link="Worksheet.cs" />
@@ -87,17 +88,13 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="System.IO.Packaging" Version="4.7.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
 		<Reference Include="System.IO.Compression" />
 		<Reference Include="WindowsBase" />
 	</ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="NanoXLSX.png">
@@ -107,7 +104,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NanoXLSX.Shared" Version="1.0.0.5" />
+    <ProjectReference Include="..\NanoXLSX.Shared .NET Standard\NanoXLSX.Shared .NET Standard.csproj" />
   </ItemGroup>
 	
 </Project>

@@ -45,9 +45,6 @@
     </CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NanoXLSX.Shared, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NanoXLSX.Shared.1.0.0.5\lib\net45\NanoXLSX.Shared.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -63,17 +60,13 @@
     <Compile Include="BasicFormulas.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Column.cs" />
-    <Compile Include="Exceptions\FormatException.cs" />
-    <Compile Include="Exceptions\IOException.cs" />
-    <Compile Include="Exceptions\RangeException.cs" />
-    <Compile Include="Exceptions\StyleException.cs" />
-    <Compile Include="Exceptions\WorksheetException.cs" />
     <Compile Include="ImportOptions.cs" />
     <Compile Include="Internal\Structures\DocumentPath.cs" />
     <Compile Include="Internal\MetadataReader.cs" />
     <Compile Include="Internal\ReaderUtils.cs" />
     <Compile Include="Internal\Structures\PlainText.cs" />
     <Compile Include="Internal\StyleReader.cs" />
+    <Compile Include="Internal\ThemeReader.cs" />
     <Compile Include="Internal\XlsxWriter.cs" />
     <Compile Include="Internal\XlsxReader.cs" />
     <Compile Include="Internal\SharedStringsReader.cs" />
@@ -95,6 +88,11 @@
     <Compile Include="Styles\Style.cs" />
     <Compile Include="Internal\StyleReaderContainer.cs" />
     <Compile Include="Styles\StyleRepository.cs" />
+    <Compile Include="Themes\ColorScheme.cs" />
+    <Compile Include="Themes\SrgbColor.cs" />
+    <Compile Include="Themes\SystemColor.cs" />
+    <Compile Include="Themes\Theme.cs" />
+    <Compile Include="Themes\ThemeRepository.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Workbook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -102,6 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NanoXLSX.Shared .NET Standard\NanoXLSX.Shared .NET Standard.csproj">
+      <Project>{d6aad5b5-0698-41fd-992f-18085a441fc7}</Project>
+      <Name>NanoXLSX.Shared .NET Standard</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

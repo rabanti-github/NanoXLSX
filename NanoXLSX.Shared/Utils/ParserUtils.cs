@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NanoXLS.Shared.Utils
+namespace NanoXLSX.Shared.Utils
 {
     /// <summary>
     /// Class providing static methods to parse string values to specific types or to print object as language neutral string

@@ -1,4 +1,5 @@
-﻿using NanoXLSX.Exceptions;
+﻿using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using static NanoXLSX.Shared.Enums.Styles.BorderEnums;
+using static NanoXLSX.Shared.Enums.Styles.FillEnums;
+using static NanoXLSX.Shared.Enums.Styles.FontEnums;
+using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
 
 namespace NanoXLSX_Test.Styles
 {
@@ -43,7 +48,7 @@ namespace NanoXLSX_Test.Styles
         {
             Style style = BasicStyles.Underline;
             Assert.NotNull(style);
-            Assert.Equal(Font.UnderlineValue.u_single, style.CurrentFont.Underline);
+            Assert.Equal(UnderlineValue.u_single, style.CurrentFont.Underline);
         }
 
         [Fact(DisplayName = "Test of the static DoubleUnderline style")]
@@ -51,7 +56,7 @@ namespace NanoXLSX_Test.Styles
         {
             Style style = BasicStyles.DoubleUnderline;
             Assert.NotNull(style);
-            Assert.Equal(Font.UnderlineValue.u_double, style.CurrentFont.Underline);
+            Assert.Equal(UnderlineValue.u_double, style.CurrentFont.Underline);
         }
 
         [Fact(DisplayName = "Test of the static Strike style")]
@@ -67,7 +72,7 @@ namespace NanoXLSX_Test.Styles
         {
             Style style = BasicStyles.TimeFormat;
             Assert.NotNull(style);
-            Assert.Equal(NumberFormat.FormatNumber.format_21, style.CurrentNumberFormat.Number);
+            Assert.Equal(FormatNumber.format_21, style.CurrentNumberFormat.Number);
         }
 
         [Fact(DisplayName = "Test of the static DateFormat style")]
@@ -75,7 +80,7 @@ namespace NanoXLSX_Test.Styles
         {
             Style style = BasicStyles.DateFormat;
             Assert.NotNull(style);
-            Assert.Equal(NumberFormat.FormatNumber.format_14, style.CurrentNumberFormat.Number);
+            Assert.Equal(FormatNumber.format_14, style.CurrentNumberFormat.Number);
         }
 
         [Fact(DisplayName = "Test of the static RoundFormat style")]
@@ -83,7 +88,7 @@ namespace NanoXLSX_Test.Styles
         {
             Style style = BasicStyles.RoundFormat;
             Assert.NotNull(style);
-            Assert.Equal(NumberFormat.FormatNumber.format_1, style.CurrentNumberFormat.Number);
+            Assert.Equal(FormatNumber.format_1, style.CurrentNumberFormat.Number);
         }
 
         [Fact(DisplayName = "Test of the static MergeCell style")]
@@ -99,7 +104,7 @@ namespace NanoXLSX_Test.Styles
         {
             Style style = BasicStyles.DottedFill_0_125;
             Assert.NotNull(style);
-            Assert.Equal(Fill.PatternValue.gray125, style.CurrentFill.PatternFill);
+            Assert.Equal(PatternValue.gray125, style.CurrentFill.PatternFill);
         }
 
         [Fact(DisplayName = "Test of the static BorderFrame style")]
@@ -107,10 +112,10 @@ namespace NanoXLSX_Test.Styles
         {
             Style style = BasicStyles.BorderFrame;
             Assert.NotNull(style);
-            Assert.Equal(Border.StyleValue.thin, style.CurrentBorder.TopStyle);
-            Assert.Equal(Border.StyleValue.thin, style.CurrentBorder.BottomStyle);
-            Assert.Equal(Border.StyleValue.thin, style.CurrentBorder.LeftStyle);
-            Assert.Equal(Border.StyleValue.thin, style.CurrentBorder.RightStyle);
+            Assert.Equal(StyleValue.thin, style.CurrentBorder.TopStyle);
+            Assert.Equal(StyleValue.thin, style.CurrentBorder.BottomStyle);
+            Assert.Equal(StyleValue.thin, style.CurrentBorder.LeftStyle);
+            Assert.Equal(StyleValue.thin, style.CurrentBorder.RightStyle);
         }
 
         [Fact(DisplayName = "Test of the static BorderFrameHeader style")]
@@ -118,10 +123,10 @@ namespace NanoXLSX_Test.Styles
         {
             Style style = BasicStyles.BorderFrameHeader;
             Assert.NotNull(style);
-            Assert.Equal(Border.StyleValue.thin, style.CurrentBorder.TopStyle);
-            Assert.Equal(Border.StyleValue.medium, style.CurrentBorder.BottomStyle);
-            Assert.Equal(Border.StyleValue.thin, style.CurrentBorder.LeftStyle);
-            Assert.Equal(Border.StyleValue.thin, style.CurrentBorder.RightStyle);
+            Assert.Equal(StyleValue.thin, style.CurrentBorder.TopStyle);
+            Assert.Equal(StyleValue.medium, style.CurrentBorder.BottomStyle);
+            Assert.Equal(StyleValue.thin, style.CurrentBorder.LeftStyle);
+            Assert.Equal(StyleValue.thin, style.CurrentBorder.RightStyle);
             Assert.True(style.CurrentFont.Bold);
         }
 
@@ -160,7 +165,7 @@ namespace NanoXLSX_Test.Styles
             Assert.NotNull(style);
             Assert.Equal(expectedHexCode, style.CurrentFill.ForegroundColor);
             Assert.Equal(Fill.DEFAULT_COLOR, style.CurrentFill.BackgroundColor);
-            Assert.Equal(Fill.PatternValue.solid, style.CurrentFill.PatternFill);
+            Assert.Equal(PatternValue.solid, style.CurrentFill.PatternFill);
 
         }
 

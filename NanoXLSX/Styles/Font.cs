@@ -5,16 +5,21 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Interfaces;
+using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Utils;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using static NanoXLSX.Shared.Enums.Styles.FontEnums;
+using NanoXLSX.Themes;
 
 namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Class representing a Font entry. The Font entry is used to define text formatting
     /// </summary>
-    public class Font : AbstractStyle
+    public class Font : AbstractStyle, IFont
     {
         #region constants
         /// <summary>
@@ -41,7 +46,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default font family
         /// </summary>
-        public static readonly string DEFAULT_FONT_FAMILY = "2";
+        public static readonly FontFamilyValue DEFAULT_FONT_FAMILY = FontFamilyValue.Swiss;
 
         /// <summary>
         /// Default font scheme
@@ -51,51 +56,10 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default vertical alignment
         /// </summary>
-        public static readonly VerticalAlignValue DEFAULT_VERTICAL_ALIGN = VerticalAlignValue.none;
+        public static readonly VerticalTextAlignValue DEFAULT_VERTICAL_ALIGN = VerticalTextAlignValue.none;
 
         #region enums
-        /// <summary>
-        /// Enum for the font scheme
-        /// </summary>
-        public enum SchemeValue
-        {
-            /// <summary>Font scheme is major</summary>
-            major,
-            /// <summary>Font scheme is minor (default)</summary>
-            minor,
-            /// <summary>No Font scheme is used</summary>
-            none,
-        }
-        /// <summary>
-        /// Enum for the vertical alignment of the text from base line
-        /// </summary>
-        public enum VerticalAlignValue
-        {
-            // baseline, // Maybe not used in Excel
-            /// <summary>Text will be rendered as subscript</summary>
-            subscript,
-            /// <summary>Text will be rendered as superscript</summary>
-            superscript,
-            /// <summary>Text will be rendered normal</summary>
-            none,
-        }
 
-        /// <summary>
-        /// Enum for the style of the underline property of a stylized text
-        /// </summary>
-        public enum UnderlineValue
-        {
-            /// <summary>Text contains a single underline</summary>
-            u_single,
-            /// <summary>Text contains a double underline</summary>
-            u_double,
-            /// <summary>Text contains a single, accounting underline</summary>
-            singleAccounting,
-            /// <summary>Text contains a double, accounting underline</summary>
-            doubleAccounting,
-            /// <summary>Text contains no underline (default)</summary>
-            none,
-        }
         #endregion
 
         #region privateFields
@@ -103,11 +67,14 @@ namespace NanoXLSX.Styles
         private string name = DEFAULT_FONT_NAME;
         //TODO: V3> Refactor to enum according to specs
         //OOXML: Chp.20.1.6.2(p2839ff)
-        private int colorTheme;
         private string colorValue = "";
+        private IColorScheme colorTheme;
         #endregion
 
         #region properties
+
+
+
         /// <summary>
         /// Gets or sets whether the font is bold. If true, the font is declared as bold
         /// </summary>
@@ -130,45 +97,42 @@ namespace NanoXLSX.Styles
         public UnderlineValue Underline { get; set; } = UnderlineValue.none;
 
         /// <summary>
-        /// Gets or sets the char set of the Font (Default is empty)
+        /// Gets or sets the char set of the Font (Default is Application defined / not defined)
         /// </summary>
         [Append]
         //TODO: v3> Refactor to enum according to specs
         // OOXML: Chp.19.2.1.13
-        public string Charset { get; set; } 
+        public CharsetValue Charset { get; set; } = CharsetValue.ApplicationDefined;
 
         /// <summary>
-        /// Gets or sets the font color theme (Default is 1 = Light 1)
+        /// Gets or sets the font color theme, represented by a color scheme
         /// </summary>
-        /// <exception cref="StyleException">Throws a StyleException if the number is below 1</exception>
         [Append]
-        //TODO: v3> Refactor to enum according to specs
+        //TODO: v3> Reeference to Theming
         //OOXML: Chp.18.8.3 and 20.1.6.2
-        public int ColorTheme
-        {
-            get => colorTheme;
-            set
-            {
-                if (value < 0)
+        public IColorScheme ColorTheme { 
+            get => colorTheme; 
+            set {
+                if (value == null)
                 {
-                    throw new StyleException("The color theme number " + value + " is invalid. Should be >=0");
+                    throw new StyleException("A color theme cannot be null");
                 }
-                colorTheme = value;
-            }
-        }
+                colorTheme = value; 
+            } }
         /// <summary>
         /// Gets or sets the color code of the font color. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF.
         /// To omit the color, an empty string can be set. Empty is also default.
         /// </summary>
         /// <exception cref="StyleException">Throws a StyleException if the passed ARGB value is not valid</exception>
         [Append]
-        public string ColorValue { 
+        public string ColorValue
+        {
             get => colorValue;
-            set 
+            set
             {
-                Fill.ValidateColor(value, true, true);
+                Validators.ValidateColor(value, true, true);
                 colorValue = value;
-            } 
+            }
         }
         /// <summary>
         ///  Gets or sets the font family (Default is 2 = Swiss)
@@ -176,7 +140,7 @@ namespace NanoXLSX.Styles
         [Append]
         //TODO: v3> Refactor to enum according to specs (18.18.94)
         //OOXML: Chp.18.8.18 and 18.18.94
-        public string Family { get; set; }
+        public FontFamilyValue Family { get; set; }
         /// <summary>
         /// Gets whether the font is equal to the default font
         /// </summary>
@@ -235,7 +199,8 @@ namespace NanoXLSX.Styles
         /// Gets or sets the alignment of the font (Default is none)
         /// </summary>
         [Append]
-        public VerticalAlignValue VerticalAlign { get; set; }
+        public VerticalTextAlignValue VerticalAlign { get; set; }
+
         #endregion
 
         #region constructors
@@ -247,9 +212,8 @@ namespace NanoXLSX.Styles
             size = DEFAULT_FONT_SIZE;
             Name = DEFAULT_FONT_NAME;
             Family = DEFAULT_FONT_FAMILY;
-            ColorTheme = 1;
+            ColorTheme = ThemeRepository.GetThemeOrDefault().Colors;
             ColorValue = string.Empty;
-            Charset = string.Empty;
             Scheme = DEFAULT_FONT_SCHEME;
             VerticalAlign = DEFAULT_VERTICAL_ALIGN;
         }
@@ -314,10 +278,10 @@ namespace NanoXLSX.Styles
             int hashCode = -924704582;
             hashCode = hashCode * -1521134295 + size.GetHashCode();
             hashCode = hashCode * -1521134295 + Bold.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Charset);
+            hashCode = hashCode * -1521134295 + Charset.GetHashCode();
             hashCode = hashCode * -1521134295 + ColorTheme.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ColorValue);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Family);
+            hashCode = hashCode * -1521134295 + Family.GetHashCode();
             hashCode = hashCode * -1521134295 + Italic.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
             hashCode = hashCode * -1521134295 + Scheme.GetHashCode();

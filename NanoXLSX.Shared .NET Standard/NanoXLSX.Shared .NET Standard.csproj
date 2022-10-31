@@ -24,9 +24,9 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <AssemblyVersion>1.0.0.5</AssemblyVersion>
-    <FileVersion>1.0.0.5</FileVersion>
-    <Version>1.0.0.5</Version>
+    <AssemblyVersion>1.0.0.10</AssemblyVersion>
+    <FileVersion>1.0.0.10</FileVersion>
+    <Version>1.0.0.10</Version>
   </PropertyGroup>
 	
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -41,8 +41,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\NanoXLSX.Shared\Enums\Styles\BorderEnums.cs" Link="Enums\Styles\BorderEnums.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Enums\Styles\CellXfEnums.cs" Link="Enums\Styles\CellXfEnums.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Enums\Styles\FillEnums.cs" Link="Enums\Styles\FillEnums.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Enums\Styles\FontEnums.cs" Link="Enums\Styles\FontEnums.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Enums\Styles\NumberFormatEnums.cs" Link="Enums\Styles\NumberFormatEnums.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Exceptions\FormatException.cs" Link="Exceptions\FormatException.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Exceptions\IOException.cs" Link="Exceptions\IOException.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Exceptions\RangeException.cs" Link="Exceptions\RangeException.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Exceptions\StyleException.cs" Link="Exceptions\StyleException.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Exceptions\WorksheetException.cs" Link="Exceptions\WorksheetException.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Interfaces\IColor.cs" Link="Interfaces\IColor.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Interfaces\IColorScheme.cs" Link="Interfaces\IColorScheme.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Interfaces\IFont.cs" Link="Interfaces\IFont.cs" />
     <Compile Include="..\NanoXLSX.Shared\Interfaces\IFormattableText.cs" Link="Interfaces\IFormattableText.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Interfaces\ITypedColor.cs" Link="Interfaces\ITypedColor.cs" />
     <Compile Include="..\NanoXLSX.Shared\Utils\ParserUtils.cs" Link="Utils\ParserUtils.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Utils\Validators.cs" Link="Utils\Validators.cs" />
     <Compile Include="..\NanoXLSX.Shared\Utils\XmlUtils.cs" Link="Utils\XmlUtils.cs" />
   </ItemGroup>
 	
@@ -57,11 +72,6 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Utils\" />
   </ItemGroup>
 
 </Project>

@@ -5,10 +5,12 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Utils;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using static NanoXLSX.Shared.Enums.Styles.FillEnums;
 
 namespace NanoXLSX.Styles
 {
@@ -34,39 +36,7 @@ namespace NanoXLSX.Styles
         #endregion
 
         #region enums
-        /// <summary>
-        /// Enum for the type of the color
-        /// </summary>
-        public enum FillType
-        {
-            /// <summary>Color defines a pattern color </summary>
-            patternColor,
-            /// <summary>Color defines a solid fill color </summary>
-            fillColor,
-        }
-        /// <summary>
-        /// Enum for the pattern values
-        /// </summary>
-        public enum PatternValue
-        {
-            /// <summary>
-            /// No pattern (default)
-            /// </summary>
-            /// <remarks>The value none will lead to a invalidation of the foreground or background color values</remarks>
-            none,
-            /// <summary>Solid fill (for colors)</summary>
-            solid,
-            /// <summary>Dark gray fill</summary>
-            darkGray,
-            /// <summary>Medium gray fill</summary>
-            mediumGray,
-            /// <summary>Light gray fill</summary>
-            lightGray,
-            /// <summary>6.25% gray fill</summary>
-            gray0625,
-            /// <summary>12.5% gray fill</summary>
-            gray125,
-        }
+
         #endregion
 
         #region privateFields
@@ -86,7 +56,7 @@ namespace NanoXLSX.Styles
             get => backgroundColor;
             set
             {
-                ValidateColor(value, true);
+                Validators.ValidateColor(value, true);
                 backgroundColor = value;
                 if (PatternFill == PatternValue.none)
                 {
@@ -105,7 +75,7 @@ namespace NanoXLSX.Styles
             get => foregroundColor;
             set
             {
-                ValidateColor(value, true);
+                Validators.ValidateColor(value, true);
                 foregroundColor = value;
                 if (PatternFill == PatternValue.none)
                 {
@@ -300,35 +270,7 @@ namespace NanoXLSX.Styles
             return output;
         }
 
-        /// <summary>
-        /// Validates the passed string, whether it is a valid RGB value that can be used for Fills or Fonts
-        /// </summary>
-        /// <exception cref="StyleException">A StyleException is thrown if an invalid hex value is passed</exception>
-        /// <param name="hexCode">Hex string to check</param>
-        /// <param name="useAlpha">If true, two additional characters (total 8) are expected as alpha value</param>
-        /// <param name="allowEmpty">Optional parameter that allows null or empty as valid values</param>
-        public static void ValidateColor(string hexCode, bool useAlpha, bool allowEmpty = false)
-        {
-            if (string.IsNullOrEmpty(hexCode))
-            {
-                if (allowEmpty)
-                {
-                    return;
-                }
-                throw new StyleException("The color expression was null or empty");
-            }
 
-            int length;
-            length = useAlpha ? 8 : 6;
-            if (hexCode.Length != length)
-            {
-                throw new StyleException("The value '" + hexCode + "' is invalid. A valid value must contain six hex characters");
-            }
-            if (!Regex.IsMatch(hexCode, "[a-fA-F0-9]{6,8}"))
-            {
-                throw new StyleException("The expression '" + hexCode + "' is not a valid hex value");
-            }
-        }
         #endregion
 
     }

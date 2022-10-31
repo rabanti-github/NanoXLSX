@@ -15,14 +15,19 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using NanoXLS.Shared.Utils;
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Utils;
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Internal.Structures;
 using NanoXLSX.Shared.Interfaces;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
-using FormatException = NanoXLSX.Exceptions.FormatException;
-using IOException = NanoXLSX.Exceptions.IOException;
+using static NanoXLSX.Shared.Enums.Styles.BorderEnums;
+using static NanoXLSX.Shared.Enums.Styles.CellXfEnums;
+using static NanoXLSX.Shared.Enums.Styles.FillEnums;
+using static NanoXLSX.Shared.Enums.Styles.FontEnums;
+using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
+using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
+using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
 namespace NanoXLSX.Internal
 {
@@ -253,7 +258,7 @@ namespace NanoXLSX.Internal
         /// </summary>
         /// <param name="worksheet">worksheet object to process</param>
         /// <returns>Raw XML string</returns>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         private string CreateWorksheetPart(Worksheet worksheet)
         {
             worksheet.RecalculateAutoFilter();
@@ -509,9 +514,9 @@ namespace NanoXLSX.Internal
         /// <summary>
         /// Method to save the workbook
         /// </summary>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         /// <remarks>The StyleException should never happen in this state if the internally managed style collection was not tampered. </remarks>
         public void Save()
@@ -531,7 +536,7 @@ namespace NanoXLSX.Internal
         /// <summary>
         /// Method to save the workbook asynchronous.
         /// </summary>
-        /// <remarks>Possible Exceptions are <see cref="Exceptions.IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="Exceptions.FormatException"></see> and <see cref="StyleException">StyleException</see>. These exceptions may not emerge directly if using the async method since async/await adds further abstraction layers.</remarks>
+        /// <remarks>Possible Exceptions are <see cref="NanoXLSX.Shared.Exceptions.IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="NanoXLSX.Shared.Exceptions.FormatException"></see> and <see cref="StyleException">StyleException</see>. These exceptions may not emerge directly if using the async method since async/await adds further abstraction layers.</remarks>
         /// <returns>Async Task</returns>
         public async Task SaveAsync()
         {
@@ -818,7 +823,7 @@ namespace NanoXLSX.Internal
         /// <param name="dynamicRow">Dynamic row with List of cells, heights and hidden states</param>
         /// <param name="worksheet">Worksheet to process</param>
         /// <returns>Formatted row string</returns>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         private string CreateRowString(DynamicRow dynamicRow, Worksheet worksheet)
         {
             int rowNumber = dynamicRow.RowNumber;
@@ -1036,7 +1041,7 @@ namespace NanoXLSX.Internal
                 else if (item.DiagonalDown && item.DiagonalUp) { sb.Append("<border diagonalDown=\"1\" diagonalUp=\"1\">"); }
                 else { sb.Append("<border>"); }
 
-                if (item.LeftStyle != Border.StyleValue.none)
+                if (item.LeftStyle != StyleValue.none)
                 {
                     sb.Append("<left style=\"" + Border.GetStyleName(item.LeftStyle) + "\">");
                     if (!string.IsNullOrEmpty(item.LeftColor)) { sb.Append("<color rgb=\"").Append(item.LeftColor).Append("\"/>"); }
@@ -1047,7 +1052,7 @@ namespace NanoXLSX.Internal
                 {
                     sb.Append("<left/>");
                 }
-                if (item.RightStyle != Border.StyleValue.none)
+                if (item.RightStyle != StyleValue.none)
                 {
                     sb.Append("<right style=\"").Append(Border.GetStyleName(item.RightStyle)).Append("\">");
                     if (!string.IsNullOrEmpty(item.RightColor)) { sb.Append("<color rgb=\"").Append(item.RightColor).Append("\"/>"); }
@@ -1058,7 +1063,7 @@ namespace NanoXLSX.Internal
                 {
                     sb.Append("<right/>");
                 }
-                if (item.TopStyle != Border.StyleValue.none)
+                if (item.TopStyle != StyleValue.none)
                 {
                     sb.Append("<top style=\"").Append(Border.GetStyleName(item.TopStyle)).Append("\">");
                     if (!string.IsNullOrEmpty(item.TopColor)) { sb.Append("<color rgb=\"").Append(item.TopColor).Append("\"/>"); }
@@ -1069,7 +1074,7 @@ namespace NanoXLSX.Internal
                 {
                     sb.Append("<top/>");
                 }
-                if (item.BottomStyle != Border.StyleValue.none)
+                if (item.BottomStyle != StyleValue.none)
                 {
                     sb.Append("<bottom style=\"").Append(Border.GetStyleName(item.BottomStyle)).Append("\">");
                     if (!string.IsNullOrEmpty(item.BottomColor)) { sb.Append("<color rgb=\"").Append(item.BottomColor).Append("\"/>"); }
@@ -1080,7 +1085,7 @@ namespace NanoXLSX.Internal
                 {
                     sb.Append("<bottom/>");
                 }
-                if (item.DiagonalStyle != Border.StyleValue.none)
+                if (item.DiagonalStyle != StyleValue.none)
                 {
                     sb.Append("<diagonal style=\"").Append(Border.GetStyleName(item.DiagonalStyle)).Append("\">");
                     if (!string.IsNullOrEmpty(item.DiagonalColor)) { sb.Append("<color rgb=\"").Append(item.DiagonalColor).Append("\"/>"); }
@@ -1111,19 +1116,19 @@ namespace NanoXLSX.Internal
                 if (item.Bold) { sb.Append("<b/>"); }
                 if (item.Italic) { sb.Append("<i/>"); }
                 if (item.Strike) { sb.Append("<strike/>"); }
-                if (item.Underline != Font.UnderlineValue.none)
+                if (item.Underline != UnderlineValue.none)
                 {
-                    if (item.Underline == Font.UnderlineValue.u_double) { sb.Append("<u val=\"double\"/>"); }
-                    else if (item.Underline == Font.UnderlineValue.singleAccounting) { sb.Append("<u val=\"singleAccounting\"/>"); }
-                    else if (item.Underline == Font.UnderlineValue.doubleAccounting) { sb.Append("<u val=\"doubleAccounting\"/>"); }
+                    if (item.Underline == UnderlineValue.u_double) { sb.Append("<u val=\"double\"/>"); }
+                    else if (item.Underline == UnderlineValue.singleAccounting) { sb.Append("<u val=\"singleAccounting\"/>"); }
+                    else if (item.Underline == UnderlineValue.doubleAccounting) { sb.Append("<u val=\"doubleAccounting\"/>"); }
                     else { sb.Append("<u/>"); }
                 }
-                if (item.VerticalAlign == Font.VerticalAlignValue.subscript) { sb.Append("<vertAlign val=\"subscript\"/>"); }
-                else if (item.VerticalAlign == Font.VerticalAlignValue.superscript) { sb.Append("<vertAlign val=\"superscript\"/>"); }
+                if (item.VerticalAlign == VerticalTextAlignValue.subscript) { sb.Append("<vertAlign val=\"subscript\"/>"); }
+                else if (item.VerticalAlign == VerticalTextAlignValue.superscript) { sb.Append("<vertAlign val=\"superscript\"/>"); }
                 sb.Append("<sz val=\"").Append(ParserUtils.ToString(item.Size)).Append("\"/>");
                 if (string.IsNullOrEmpty(item.ColorValue))
                 {
-                    sb.Append("<color theme=\"").Append(ParserUtils.ToString(item.ColorTheme)).Append("\"/>");
+                    sb.Append("<color theme=\"").Append(ParserUtils.ToString(item.ColorTheme.GetSchemeId())).Append("\"/>");
                 }
                 else
                 {
@@ -1131,14 +1136,14 @@ namespace NanoXLSX.Internal
                 }
                 sb.Append("<name val=\"").Append(item.Name).Append("\"/>");
                 sb.Append("<family val=\"").Append(item.Family).Append("\"/>");
-                if (item.Scheme != Font.SchemeValue.none)
+                if (item.Scheme != SchemeValue.none)
                 {
-                    if (item.Scheme == Font.SchemeValue.major)
+                    if (item.Scheme == SchemeValue.major)
                     { sb.Append("<scheme val=\"major\"/>"); }
-                    else if (item.Scheme == Font.SchemeValue.minor)
+                    else if (item.Scheme == SchemeValue.minor)
                     { sb.Append("<scheme val=\"minor\"/>"); }
                 }
-                if (!string.IsNullOrEmpty(item.Charset))
+                if (item.Charset != CharsetValue.Default)
                 {
                     sb.Append("<charset val=\"").Append(item.Charset).Append("\"/>");
                 }
@@ -1159,14 +1164,14 @@ namespace NanoXLSX.Internal
             {
                 sb.Append("<fill>");
                 sb.Append("<patternFill patternType=\"").Append(Fill.GetPatternName(item.PatternFill)).Append("\"");
-                if (item.PatternFill == Fill.PatternValue.solid)
+                if (item.PatternFill == PatternValue.solid)
                 {
                     sb.Append(">");
                     sb.Append("<fgColor rgb=\"").Append(item.ForegroundColor).Append("\"/>");
                     sb.Append("<bgColor indexed=\"").Append(ParserUtils.ToString(item.IndexedColor)).Append("\"/>");
                     sb.Append("</patternFill>");
                 }
-                else if (item.PatternFill == Fill.PatternValue.mediumGray || item.PatternFill == Fill.PatternValue.lightGray || item.PatternFill == Fill.PatternValue.gray0625 || item.PatternFill == Fill.PatternValue.darkGray)
+                else if (item.PatternFill == PatternValue.mediumGray || item.PatternFill == PatternValue.lightGray || item.PatternFill == PatternValue.gray0625 || item.PatternFill == PatternValue.darkGray)
                 {
                     sb.Append(">");
                     sb.Append("<fgColor rgb=\"").Append(item.ForegroundColor).Append("\"/>");
@@ -1224,45 +1229,45 @@ namespace NanoXLSX.Internal
                 textRotation = style.CurrentCellXf.CalculateInternalRotation();
                 alignmentString = string.Empty;
                 protectionString = string.Empty;
-                if (style.CurrentCellXf.HorizontalAlign != CellXf.HorizontalAlignValue.none || style.CurrentCellXf.VerticalAlign != CellXf.VerticalAlignValue.none || style.CurrentCellXf.Alignment != CellXf.TextBreakValue.none || textRotation != 0)
+                if (style.CurrentCellXf.HorizontalAlign != HorizontalAlignValue.none || style.CurrentCellXf.VerticalAlign != VerticalAlignValue.none || style.CurrentCellXf.Alignment != TextBreakValue.none || textRotation != 0)
                 {
                     sb2.Clear();
                     sb2.Append("<alignment");
-                    if (style.CurrentCellXf.HorizontalAlign != CellXf.HorizontalAlignValue.none)
+                    if (style.CurrentCellXf.HorizontalAlign != HorizontalAlignValue.none)
                     {
                         sb2.Append(" horizontal=\"");
-                        if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.center) { sb2.Append("center"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.right) { sb2.Append("right"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.centerContinuous) { sb2.Append("centerContinuous"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.distributed) { sb2.Append("distributed"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.fill) { sb2.Append("fill"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.general) { sb2.Append("general"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.justify) { sb2.Append("justify"); }
+                        if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.center) { sb2.Append("center"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.right) { sb2.Append("right"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.centerContinuous) { sb2.Append("centerContinuous"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.distributed) { sb2.Append("distributed"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.fill) { sb2.Append("fill"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.general) { sb2.Append("general"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.justify) { sb2.Append("justify"); }
                         else { sb2.Append("left"); }
                         sb2.Append("\"");
                     }
-                    if (style.CurrentCellXf.VerticalAlign != CellXf.VerticalAlignValue.none)
+                    if (style.CurrentCellXf.VerticalAlign != VerticalAlignValue.none)
                     {
                         sb2.Append(" vertical=\"");
-                        if (style.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.center) { sb2.Append("center"); }
-                        else if (style.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.distributed) { sb2.Append("distributed"); }
-                        else if (style.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.justify) { sb2.Append("justify"); }
-                        else if (style.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.top) { sb2.Append("top"); }
+                        if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.center) { sb2.Append("center"); }
+                        else if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.distributed) { sb2.Append("distributed"); }
+                        else if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.justify) { sb2.Append("justify"); }
+                        else if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.top) { sb2.Append("top"); }
                         else { sb2.Append("bottom"); }
                         sb2.Append("\"");
                     }
                     if (style.CurrentCellXf.Indent > 0 &&
-                        (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.left
-                        || style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.right
-                        || style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.distributed))
+                        (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.left
+                        || style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.right
+                        || style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.distributed))
                     {
                         sb2.Append(" indent=\"");
                         sb2.Append(ParserUtils.ToString(style.CurrentCellXf.Indent));
                         sb2.Append("\"");
                     }
-                    if (style.CurrentCellXf.Alignment != CellXf.TextBreakValue.none)
+                    if (style.CurrentCellXf.Alignment != TextBreakValue.none)
                     {
-                        if (style.CurrentCellXf.Alignment == CellXf.TextBreakValue.shrinkToFit) { sb2.Append(" shrinkToFit=\"1"); }
+                        if (style.CurrentCellXf.Alignment == TextBreakValue.shrinkToFit) { sb2.Append(" shrinkToFit=\"1"); }
                         else { sb2.Append(" wrapText=\"1"); }
                         sb2.Append("\"");
                     }
@@ -1310,7 +1315,7 @@ namespace NanoXLSX.Internal
                 {
                     sb.Append("\" applyFont=\"1");
                 }
-                if (style.CurrentFill.PatternFill != Fill.PatternValue.none)
+                if (style.CurrentFill.PatternFill != PatternValue.none)
                 {
                     sb.Append("\" applyFill=\"1");
                 }
@@ -1326,7 +1331,7 @@ namespace NanoXLSX.Internal
                 {
                     sb.Append("\" applyProtection=\"1");
                 }
-                if (style.CurrentNumberFormat.Number != NumberFormat.FormatNumber.none)
+                if (style.CurrentNumberFormat.Number != FormatNumber.none)
                 {
                     sb.Append("\" applyNumberFormat=\"1\"");
                 }

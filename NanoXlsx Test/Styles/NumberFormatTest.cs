@@ -1,4 +1,5 @@
-﻿using NanoXLSX.Exceptions;
+﻿using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using FormatException = NanoXLSX.Exceptions.FormatException;
+using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
+using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 
 namespace NanoXLSX_Test.Styles
 {
@@ -21,45 +23,45 @@ namespace NanoXLSX_Test.Styles
         {
             exampleStyle = new NumberFormat();
             exampleStyle.CustomFormatCode = "#.###";
-            exampleStyle.Number = NumberFormat.FormatNumber.format_10;
+            exampleStyle.Number = FormatNumber.format_10;
             exampleStyle.CustomFormatID = 170;
         }
 
         [Theory(DisplayName = "Test of the get and set function of the FormatNumber property")]
-        [InlineData(NumberFormat.FormatNumber.none)]
-        [InlineData(NumberFormat.FormatNumber.format_1)]
-        [InlineData(NumberFormat.FormatNumber.format_2)]
-        [InlineData(NumberFormat.FormatNumber.format_3)]
-        [InlineData(NumberFormat.FormatNumber.format_4)]
-        [InlineData(NumberFormat.FormatNumber.format_5)]
-        [InlineData(NumberFormat.FormatNumber.format_6)]
-        [InlineData(NumberFormat.FormatNumber.format_7)]
-        [InlineData(NumberFormat.FormatNumber.format_8)]
-        [InlineData(NumberFormat.FormatNumber.format_9)]
-        [InlineData(NumberFormat.FormatNumber.format_10)]
-        [InlineData(NumberFormat.FormatNumber.format_11)]
-        [InlineData(NumberFormat.FormatNumber.format_12)]
-        [InlineData(NumberFormat.FormatNumber.format_13)]
-        [InlineData(NumberFormat.FormatNumber.format_14)]
-        [InlineData(NumberFormat.FormatNumber.format_15)]
-        [InlineData(NumberFormat.FormatNumber.format_16)]
-        [InlineData(NumberFormat.FormatNumber.format_17)]
-        [InlineData(NumberFormat.FormatNumber.format_18)]
-        [InlineData(NumberFormat.FormatNumber.format_19)]
-        [InlineData(NumberFormat.FormatNumber.format_20)]
-        [InlineData(NumberFormat.FormatNumber.format_21)]
-        [InlineData(NumberFormat.FormatNumber.format_22)]
-        [InlineData(NumberFormat.FormatNumber.format_37)]
-        [InlineData(NumberFormat.FormatNumber.format_38)]
-        [InlineData(NumberFormat.FormatNumber.format_39)]
-        [InlineData(NumberFormat.FormatNumber.format_40)]
-        [InlineData(NumberFormat.FormatNumber.format_45)]
-        [InlineData(NumberFormat.FormatNumber.format_46)]
-        [InlineData(NumberFormat.FormatNumber.format_47)]
-        [InlineData(NumberFormat.FormatNumber.format_48)]
-        [InlineData(NumberFormat.FormatNumber.format_49)]
-        [InlineData(NumberFormat.FormatNumber.custom)]
-        public void FormatNumberTest(NumberFormat.FormatNumber number)
+        [InlineData(FormatNumber.none)]
+        [InlineData(FormatNumber.format_1)]
+        [InlineData(FormatNumber.format_2)]
+        [InlineData(FormatNumber.format_3)]
+        [InlineData(FormatNumber.format_4)]
+        [InlineData(FormatNumber.format_5)]
+        [InlineData(FormatNumber.format_6)]
+        [InlineData(FormatNumber.format_7)]
+        [InlineData(FormatNumber.format_8)]
+        [InlineData(FormatNumber.format_9)]
+        [InlineData(FormatNumber.format_10)]
+        [InlineData(FormatNumber.format_11)]
+        [InlineData(FormatNumber.format_12)]
+        [InlineData(FormatNumber.format_13)]
+        [InlineData(FormatNumber.format_14)]
+        [InlineData(FormatNumber.format_15)]
+        [InlineData(FormatNumber.format_16)]
+        [InlineData(FormatNumber.format_17)]
+        [InlineData(FormatNumber.format_18)]
+        [InlineData(FormatNumber.format_19)]
+        [InlineData(FormatNumber.format_20)]
+        [InlineData(FormatNumber.format_21)]
+        [InlineData(FormatNumber.format_22)]
+        [InlineData(FormatNumber.format_37)]
+        [InlineData(FormatNumber.format_38)]
+        [InlineData(FormatNumber.format_39)]
+        [InlineData(FormatNumber.format_40)]
+        [InlineData(FormatNumber.format_45)]
+        [InlineData(FormatNumber.format_46)]
+        [InlineData(FormatNumber.format_47)]
+        [InlineData(FormatNumber.format_48)]
+        [InlineData(FormatNumber.format_49)]
+        [InlineData(FormatNumber.custom)]
+        public void FormatNumberTest(FormatNumber number)
         {
             NumberFormat numberFormat = new NumberFormat();
             Assert.Equal(NumberFormat.DEFAULT_NUMBER, numberFormat.Number); // default is none
@@ -111,10 +113,10 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get function of the IsCustomFormat property")]
-        [InlineData(NumberFormat.FormatNumber.none, false)]
-        [InlineData(NumberFormat.FormatNumber.format_10, false)]
-        [InlineData(NumberFormat.FormatNumber.custom, true)]
-        public void IsCustomFormatTest(NumberFormat.FormatNumber number, bool expectedResult)
+        [InlineData(FormatNumber.none, false)]
+        [InlineData(FormatNumber.format_10, false)]
+        [InlineData(FormatNumber.custom, true)]
+        public void IsCustomFormatTest(FormatNumber number, bool expectedResult)
         {
             NumberFormat numberFormat = new NumberFormat();
             Assert.False(numberFormat.IsCustomFormat);
@@ -123,96 +125,96 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the IsDateFormat method")]
-        [InlineData(NumberFormat.FormatNumber.none, false)]
-        [InlineData(NumberFormat.FormatNumber.format_1, false)]
-        [InlineData(NumberFormat.FormatNumber.format_2, false)]
-        [InlineData(NumberFormat.FormatNumber.format_3, false)]
-        [InlineData(NumberFormat.FormatNumber.format_4, false)]
-        [InlineData(NumberFormat.FormatNumber.format_5, false)]
-        [InlineData(NumberFormat.FormatNumber.format_6, false)]
-        [InlineData(NumberFormat.FormatNumber.format_7, false)]
-        [InlineData(NumberFormat.FormatNumber.format_8, false)]
-        [InlineData(NumberFormat.FormatNumber.format_9, false)]
-        [InlineData(NumberFormat.FormatNumber.format_10, false)]
-        [InlineData(NumberFormat.FormatNumber.format_11, false)]
-        [InlineData(NumberFormat.FormatNumber.format_12, false)]
-        [InlineData(NumberFormat.FormatNumber.format_13, false)]
-        [InlineData(NumberFormat.FormatNumber.format_14, true)]
-        [InlineData(NumberFormat.FormatNumber.format_15, true)]
-        [InlineData(NumberFormat.FormatNumber.format_16, true)]
-        [InlineData(NumberFormat.FormatNumber.format_17, true)]
-        [InlineData(NumberFormat.FormatNumber.format_18, false)]
-        [InlineData(NumberFormat.FormatNumber.format_19, false)]
-        [InlineData(NumberFormat.FormatNumber.format_20, false)]
-        [InlineData(NumberFormat.FormatNumber.format_21, false)]
-        [InlineData(NumberFormat.FormatNumber.format_22, true)]
-        [InlineData(NumberFormat.FormatNumber.format_37, false)]
-        [InlineData(NumberFormat.FormatNumber.format_38, false)]
-        [InlineData(NumberFormat.FormatNumber.format_39, false)]
-        [InlineData(NumberFormat.FormatNumber.format_40, false)]
-        [InlineData(NumberFormat.FormatNumber.format_45, false)]
-        [InlineData(NumberFormat.FormatNumber.format_46, false)]
-        [InlineData(NumberFormat.FormatNumber.format_47, false)]
-        [InlineData(NumberFormat.FormatNumber.format_48, false)]
-        [InlineData(NumberFormat.FormatNumber.format_49, false)]
-        [InlineData(NumberFormat.FormatNumber.custom, false)]
-        public void IsDateFormatTest(NumberFormat.FormatNumber number, bool expectedDate)
+        [InlineData(FormatNumber.none, false)]
+        [InlineData(FormatNumber.format_1, false)]
+        [InlineData(FormatNumber.format_2, false)]
+        [InlineData(FormatNumber.format_3, false)]
+        [InlineData(FormatNumber.format_4, false)]
+        [InlineData(FormatNumber.format_5, false)]
+        [InlineData(FormatNumber.format_6, false)]
+        [InlineData(FormatNumber.format_7, false)]
+        [InlineData(FormatNumber.format_8, false)]
+        [InlineData(FormatNumber.format_9, false)]
+        [InlineData(FormatNumber.format_10, false)]
+        [InlineData(FormatNumber.format_11, false)]
+        [InlineData(FormatNumber.format_12, false)]
+        [InlineData(FormatNumber.format_13, false)]
+        [InlineData(FormatNumber.format_14, true)]
+        [InlineData(FormatNumber.format_15, true)]
+        [InlineData(FormatNumber.format_16, true)]
+        [InlineData(FormatNumber.format_17, true)]
+        [InlineData(FormatNumber.format_18, false)]
+        [InlineData(FormatNumber.format_19, false)]
+        [InlineData(FormatNumber.format_20, false)]
+        [InlineData(FormatNumber.format_21, false)]
+        [InlineData(FormatNumber.format_22, true)]
+        [InlineData(FormatNumber.format_37, false)]
+        [InlineData(FormatNumber.format_38, false)]
+        [InlineData(FormatNumber.format_39, false)]
+        [InlineData(FormatNumber.format_40, false)]
+        [InlineData(FormatNumber.format_45, false)]
+        [InlineData(FormatNumber.format_46, false)]
+        [InlineData(FormatNumber.format_47, false)]
+        [InlineData(FormatNumber.format_48, false)]
+        [InlineData(FormatNumber.format_49, false)]
+        [InlineData(FormatNumber.custom, false)]
+        public void IsDateFormatTest(FormatNumber number, bool expectedDate)
         {
             Assert.Equal(expectedDate, NumberFormat.IsDateFormat(number));
         }
 
         [Theory(DisplayName = "Test of the IsTimeFormat method")]
-        [InlineData(NumberFormat.FormatNumber.none, false)]
-        [InlineData(NumberFormat.FormatNumber.format_1, false)]
-        [InlineData(NumberFormat.FormatNumber.format_2, false)]
-        [InlineData(NumberFormat.FormatNumber.format_3, false)]
-        [InlineData(NumberFormat.FormatNumber.format_4, false)]
-        [InlineData(NumberFormat.FormatNumber.format_5, false)]
-        [InlineData(NumberFormat.FormatNumber.format_6, false)]
-        [InlineData(NumberFormat.FormatNumber.format_7, false)]
-        [InlineData(NumberFormat.FormatNumber.format_8, false)]
-        [InlineData(NumberFormat.FormatNumber.format_9, false)]
-        [InlineData(NumberFormat.FormatNumber.format_10, false)]
-        [InlineData(NumberFormat.FormatNumber.format_11, false)]
-        [InlineData(NumberFormat.FormatNumber.format_12, false)]
-        [InlineData(NumberFormat.FormatNumber.format_13, false)]
-        [InlineData(NumberFormat.FormatNumber.format_14, false)]
-        [InlineData(NumberFormat.FormatNumber.format_15, false)]
-        [InlineData(NumberFormat.FormatNumber.format_16, false)]
-        [InlineData(NumberFormat.FormatNumber.format_17, false)]
-        [InlineData(NumberFormat.FormatNumber.format_18, true)]
-        [InlineData(NumberFormat.FormatNumber.format_19, true)]
-        [InlineData(NumberFormat.FormatNumber.format_20, true)]
-        [InlineData(NumberFormat.FormatNumber.format_21, true)]
-        [InlineData(NumberFormat.FormatNumber.format_22, false)]
-        [InlineData(NumberFormat.FormatNumber.format_37, false)]
-        [InlineData(NumberFormat.FormatNumber.format_38, false)]
-        [InlineData(NumberFormat.FormatNumber.format_39, false)]
-        [InlineData(NumberFormat.FormatNumber.format_40, false)]
-        [InlineData(NumberFormat.FormatNumber.format_45, true)]
-        [InlineData(NumberFormat.FormatNumber.format_46, true)]
-        [InlineData(NumberFormat.FormatNumber.format_47, true)]
-        [InlineData(NumberFormat.FormatNumber.format_48, false)]
-        [InlineData(NumberFormat.FormatNumber.format_49, false)]
-        [InlineData(NumberFormat.FormatNumber.custom, false)]
-        public void IsTimeFormatTest(NumberFormat.FormatNumber number, bool expectedTime)
+        [InlineData(FormatNumber.none, false)]
+        [InlineData(FormatNumber.format_1, false)]
+        [InlineData(FormatNumber.format_2, false)]
+        [InlineData(FormatNumber.format_3, false)]
+        [InlineData(FormatNumber.format_4, false)]
+        [InlineData(FormatNumber.format_5, false)]
+        [InlineData(FormatNumber.format_6, false)]
+        [InlineData(FormatNumber.format_7, false)]
+        [InlineData(FormatNumber.format_8, false)]
+        [InlineData(FormatNumber.format_9, false)]
+        [InlineData(FormatNumber.format_10, false)]
+        [InlineData(FormatNumber.format_11, false)]
+        [InlineData(FormatNumber.format_12, false)]
+        [InlineData(FormatNumber.format_13, false)]
+        [InlineData(FormatNumber.format_14, false)]
+        [InlineData(FormatNumber.format_15, false)]
+        [InlineData(FormatNumber.format_16, false)]
+        [InlineData(FormatNumber.format_17, false)]
+        [InlineData(FormatNumber.format_18, true)]
+        [InlineData(FormatNumber.format_19, true)]
+        [InlineData(FormatNumber.format_20, true)]
+        [InlineData(FormatNumber.format_21, true)]
+        [InlineData(FormatNumber.format_22, false)]
+        [InlineData(FormatNumber.format_37, false)]
+        [InlineData(FormatNumber.format_38, false)]
+        [InlineData(FormatNumber.format_39, false)]
+        [InlineData(FormatNumber.format_40, false)]
+        [InlineData(FormatNumber.format_45, true)]
+        [InlineData(FormatNumber.format_46, true)]
+        [InlineData(FormatNumber.format_47, true)]
+        [InlineData(FormatNumber.format_48, false)]
+        [InlineData(FormatNumber.format_49, false)]
+        [InlineData(FormatNumber.custom, false)]
+        public void IsTimeFormatTest(FormatNumber number, bool expectedTime)
         {
             Assert.Equal(expectedTime, NumberFormat.IsTimeFormat(number));
         }
 
         [Theory(DisplayName = "Test of the TryParseFormatNumber method")]
-        [InlineData(0, NumberFormat.FormatRange.defined_format, NumberFormat.FormatNumber.none)]
-        [InlineData(-1, NumberFormat.FormatRange.invalid, NumberFormat.FormatNumber.none)]
-        [InlineData(22, NumberFormat.FormatRange.defined_format, NumberFormat.FormatNumber.format_22)]
-        [InlineData(23, NumberFormat.FormatRange.undefined, NumberFormat.FormatNumber.none)]
-        [InlineData(163, NumberFormat.FormatRange.undefined, NumberFormat.FormatNumber.none)]
-        [InlineData(164, NumberFormat.FormatRange.defined_format, NumberFormat.FormatNumber.custom)]
-        [InlineData(165, NumberFormat.FormatRange.custom_format, NumberFormat.FormatNumber.custom)]
-        [InlineData(700, NumberFormat.FormatRange.custom_format, NumberFormat.FormatNumber.custom)]
-        public void TryParseFormatNumberTest(int givenNumber, NumberFormat.FormatRange expectedRange, NumberFormat.FormatNumber expectedFormatNumber)
+        [InlineData(0, FormatRange.defined_format, FormatNumber.none)]
+        [InlineData(-1, FormatRange.invalid, FormatNumber.none)]
+        [InlineData(22, FormatRange.defined_format, FormatNumber.format_22)]
+        [InlineData(23, FormatRange.undefined, FormatNumber.none)]
+        [InlineData(163, FormatRange.undefined, FormatNumber.none)]
+        [InlineData(164, FormatRange.defined_format, FormatNumber.custom)]
+        [InlineData(165, FormatRange.custom_format, FormatNumber.custom)]
+        [InlineData(700, FormatRange.custom_format, FormatNumber.custom)]
+        public void TryParseFormatNumberTest(int givenNumber, FormatRange expectedRange, FormatNumber expectedFormatNumber)
         {
-            NumberFormat.FormatNumber number;
-            NumberFormat.FormatRange range = NumberFormat.TryParseFormatNumber(givenNumber, out number);
+            FormatNumber number;
+            FormatRange range = NumberFormat.TryParseFormatNumber(givenNumber, out number);
             Assert.Equal(expectedRange, range);
             Assert.Equal(expectedFormatNumber, number);
         }
@@ -228,7 +230,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2()
         {
             NumberFormat style2 = (NumberFormat)exampleStyle.Copy();
-            style2.Number = NumberFormat.FormatNumber.format_15;
+            style2.Number = FormatNumber.format_15;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -279,7 +281,7 @@ namespace NanoXLSX_Test.Styles
         public void GetHashCodeTest2()
         {
             NumberFormat copy = (NumberFormat)exampleStyle.Copy();
-            copy.Number = NumberFormat.FormatNumber.format_14;
+            copy.Number = FormatNumber.format_14;
             Assert.NotEqual(exampleStyle.GetHashCode(), copy.GetHashCode());
         }
 
@@ -314,7 +316,7 @@ namespace NanoXLSX_Test.Styles
         {
             NumberFormat numberFormat = new NumberFormat();
             string s1 = numberFormat.ToString();
-            numberFormat.Number = NumberFormat.FormatNumber.format_11;
+            numberFormat.Number = FormatNumber.format_11;
             Assert.NotEqual(s1, numberFormat.ToString()); // An explicit value comparison is probably not sensible
         }
 

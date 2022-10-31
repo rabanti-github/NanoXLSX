@@ -1,11 +1,14 @@
-﻿using NanoXLSX.Exceptions;
+﻿using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
+using NanoXLSX.Themes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using static NanoXLSX.Shared.Enums.Styles.FontEnums;
 
 namespace NanoXLSX_Test.Styles
 {
@@ -18,19 +21,22 @@ namespace NanoXLSX_Test.Styles
 
         public FontTest()
         {
+            Theme theme = new Theme(1);
+            theme.Colors = new ColorScheme(10);
+           
             exampleStyle = new Font();
             exampleStyle.Bold = true;
             exampleStyle.Italic = true;
-            exampleStyle.Underline = Font.UnderlineValue.u_double;
+            exampleStyle.Underline = UnderlineValue.u_double;
             exampleStyle.Strike = true;
-            exampleStyle.Charset = "ASCII";
+            exampleStyle.Charset = CharsetValue.ANSI;
             exampleStyle.Size = 15;
             exampleStyle.Name = "Arial";
-            exampleStyle.Family = "X";
-            exampleStyle.ColorTheme = 10;
+            exampleStyle.Family = FontFamilyValue.Script;
+            exampleStyle.ColorTheme = theme.Colors;
             exampleStyle.ColorValue = "FF22AACC";
-            exampleStyle.Scheme = Font.SchemeValue.minor;
-            exampleStyle.VerticalAlign = Font.VerticalAlignValue.subscript;
+            exampleStyle.Scheme = SchemeValue.minor;
+            exampleStyle.VerticalAlign = VerticalTextAlignValue.subscript;
         }
 
 
@@ -38,9 +44,9 @@ namespace NanoXLSX_Test.Styles
         public void DefaultValuesTest()
         {
             Assert.Equal(11f, Font.DEFAULT_FONT_SIZE);
-            Assert.Equal("2", Font.DEFAULT_FONT_FAMILY);
-            Assert.Equal(Font.SchemeValue.minor, Font.DEFAULT_FONT_SCHEME);
-            Assert.Equal(Font.VerticalAlignValue.none, Font.DEFAULT_VERTICAL_ALIGN);
+            Assert.Equal(FontFamilyValue.Swiss, Font.DEFAULT_FONT_FAMILY);
+            Assert.Equal(SchemeValue.minor, Font.DEFAULT_FONT_SCHEME);
+            Assert.Equal(VerticalTextAlignValue.none, Font.DEFAULT_VERTICAL_ALIGN);
             Assert.Equal("Calibri", Font.DEFAULT_FONT_NAME);
         }
 
@@ -55,8 +61,8 @@ namespace NanoXLSX_Test.Styles
             Assert.Equal(Font.DEFAULT_FONT_SCHEME, font.Scheme);
             Assert.Equal(Font.DEFAULT_VERTICAL_ALIGN, font.VerticalAlign);
             Assert.Equal("", font.ColorValue);
-            Assert.Equal("", font.Charset);
-            Assert.Equal(1, font.ColorTheme);
+            Assert.Equal(CharsetValue.ApplicationDefined, font.Charset);
+            Assert.Equal(1, font.ColorTheme.GetSchemeId());
         }
 
 
@@ -83,15 +89,15 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the Underline property")]
-        [InlineData(Font.UnderlineValue.none)]
-        [InlineData(Font.UnderlineValue.doubleAccounting)]
-        [InlineData(Font.UnderlineValue.singleAccounting)]
-        [InlineData(Font.UnderlineValue.u_double)]
-        [InlineData(Font.UnderlineValue.u_single)]
-        public void UnderlineTest(Font.UnderlineValue value)
+        [InlineData(UnderlineValue.none)]
+        [InlineData(UnderlineValue.doubleAccounting)]
+        [InlineData(UnderlineValue.singleAccounting)]
+        [InlineData(UnderlineValue.u_double)]
+        [InlineData(UnderlineValue.u_single)]
+        public void UnderlineTest(UnderlineValue value)
         {
             Font font = new Font();
-            Assert.Equal(Font.UnderlineValue.none, font.Underline);
+            Assert.Equal(UnderlineValue.none, font.Underline);
             font.Underline = value;
             Assert.Equal(value, font.Underline);
         }
@@ -108,12 +114,30 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the Charset property")]
-        [InlineData("")]
-        [InlineData("ASCII")]
-        public void CharsetTest(string value)
+        [InlineData(CharsetValue.ANSI)]
+        [InlineData(CharsetValue.ApplicationDefined)]
+        [InlineData(CharsetValue.Arabic)]
+        [InlineData(CharsetValue.Baltic)]
+        [InlineData(CharsetValue.Big5)]
+        [InlineData(CharsetValue.Default)]
+        [InlineData(CharsetValue.EasternEuropean)]
+        [InlineData(CharsetValue.GKB)]
+        [InlineData(CharsetValue.Greek)]
+        [InlineData(CharsetValue.Hangul)]
+        [InlineData(CharsetValue.Hebrew)]
+        [InlineData(CharsetValue.JIS)]
+        [InlineData(CharsetValue.Johab)]
+        [InlineData(CharsetValue.Macintosh)]
+        [InlineData(CharsetValue.OEM)]
+        [InlineData(CharsetValue.Russian)]
+        [InlineData(CharsetValue.Symbols)]
+        [InlineData(CharsetValue.Thai)]
+        [InlineData(CharsetValue.Turkish)]
+        [InlineData(CharsetValue.Vietnamese)]
+        public void CharsetTest(CharsetValue value)
         {
             Font font = new Font();
-            Assert.Equal(string.Empty, font.Charset);
+            Assert.Equal(CharsetValue.ApplicationDefined, font.Charset);
             font.Charset = value;
             Assert.Equal(value, font.Charset);
         }
@@ -166,9 +190,20 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the Family property")]
-        [InlineData("")]
-        [InlineData("4")]
-        public void FamilyTest(string value)
+        [InlineData(FontFamilyValue.NotApplicable)]
+        [InlineData(FontFamilyValue.Roman)]
+        [InlineData(FontFamilyValue.Swiss)]
+        [InlineData(FontFamilyValue.Modern)]
+        [InlineData(FontFamilyValue.Script)]
+        [InlineData(FontFamilyValue.Decorative)]
+        [InlineData(FontFamilyValue.Reserved1)]
+        [InlineData(FontFamilyValue.Reserved2)]
+        [InlineData(FontFamilyValue.Reserved3)]
+        [InlineData(FontFamilyValue.Reserved4)]
+        [InlineData(FontFamilyValue.Reserved5)]
+        [InlineData(FontFamilyValue.Reserved6)]
+        [InlineData(FontFamilyValue.Reserved7)]
+        public void FamilyTest(FontFamilyValue value)
         {
             Font font = new Font();
             Assert.Equal(Font.DEFAULT_FONT_FAMILY, font.Family);
@@ -183,18 +218,18 @@ namespace NanoXLSX_Test.Styles
         public void ColorThemeTest(int value)
         {
             Font font = new Font();
-            Assert.Equal(1, font.ColorTheme); // 1 is default
-            font.ColorTheme = value;
-            Assert.Equal(value, font.ColorTheme);
+            Assert.Equal(1, font.ColorTheme.GetSchemeId()); // 1 is default
+
+            ColorScheme expectedScheme = new ColorScheme(value);
+            font.ColorTheme = expectedScheme;
+            Assert.Equal(expectedScheme, font.ColorTheme);
         }
 
-        [Theory(DisplayName = "Test of the failing set function of the ColorTheme property (invalid values)")]
-        [InlineData(-1)]
-        [InlineData(-100)]
-        public void ColorThemeFailTest(int value)
+        [Fact(DisplayName = "Test of the failing set function of the ColorTheme property on null")]
+        public void ColorThemeFailTest()
         {
             Font font = new Font();
-            Exception ex = Assert.Throws<StyleException>(() => font.ColorTheme = value);
+            Exception ex = Assert.Throws<StyleException>(() => font.ColorTheme = null);
             Assert.Equal(typeof(StyleException), ex.GetType());
         }
 
@@ -222,10 +257,10 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the Scheme property")]
-        [InlineData(Font.SchemeValue.major)]
-        [InlineData(Font.SchemeValue.minor)]
-        [InlineData(Font.SchemeValue.none)]
-        public void SchmeTest(Font.SchemeValue value)
+        [InlineData(SchemeValue.major)]
+        [InlineData(SchemeValue.minor)]
+        [InlineData(SchemeValue.none)]
+        public void SchmeTest(SchemeValue value)
         {
             Font font = new Font();
             Assert.Equal(Font.DEFAULT_FONT_SCHEME, font.Scheme); // default is minor
@@ -234,10 +269,10 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the VerticalAlign property")]
-        [InlineData(Font.VerticalAlignValue.none)]
-        [InlineData(Font.VerticalAlignValue.subscript)]
-        [InlineData(Font.VerticalAlignValue.superscript)]
-        public void VerticalAlignTest(Font.VerticalAlignValue value)
+        [InlineData(VerticalTextAlignValue.none)]
+        [InlineData(VerticalTextAlignValue.subscript)]
+        [InlineData(VerticalTextAlignValue.superscript)]
+        public void VerticalAlignTest(VerticalTextAlignValue value)
         {
             Font font = new Font();
             Assert.Equal(Font.DEFAULT_VERTICAL_ALIGN, font.VerticalAlign); // default is none
@@ -289,7 +324,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2c()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.Underline = Font.UnderlineValue.doubleAccounting;
+            style2.Underline = UnderlineValue.doubleAccounting;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -305,7 +340,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2f()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.Charset = "XYZ";
+            style2.Charset = CharsetValue.Big5;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -329,7 +364,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2i()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.Family = "999";
+            style2.Family = FontFamilyValue.Reserved5;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -337,7 +372,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2j()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.ColorTheme = 22;
+            style2.ColorTheme = new ColorScheme(22);
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -353,7 +388,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2l()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.Scheme = Font.SchemeValue.none;
+            style2.Scheme = SchemeValue.none;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -361,7 +396,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2m()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.VerticalAlign = Font.VerticalAlignValue.none;
+            style2.VerticalAlign = VerticalTextAlignValue.none;
             Assert.False(exampleStyle.Equals(style2));
         }
 

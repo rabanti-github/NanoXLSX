@@ -7,7 +7,7 @@
 
 using System.Runtime.CompilerServices;
 using System.Text;
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Exceptions;
 
 namespace NanoXLSX.Styles
 {

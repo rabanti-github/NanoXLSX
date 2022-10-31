@@ -11,10 +11,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using NanoXLS.Shared.Utils;
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Utils;
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Internal;
 using NanoXLSX.Styles;
+using NanoXLSX.Shared.Utils;
 
 namespace NanoXLSX
 {
@@ -210,7 +211,7 @@ namespace NanoXLSX
         #region methods_PICO
 
         /// <summary>
-        /// Adds a color value (HEX; 6-digit RGB or 8-digit RGBA) to the MRU list
+        /// Adds a color value (HEX; 6-digit RGB or 8-digit ARGB) to the MRU list
         /// </summary>
         /// <param name="color">RGB code in hex format (either 6 characters, e.g. FF00AC or 8 characters with leading alpha value). Alpha will be set to full opacity (FF) in case of 6 characters</param>
         public void AddMruColor(string color)
@@ -219,7 +220,7 @@ namespace NanoXLSX
             {
                 color = "FF" + color;
             }
-            Fill.ValidateColor(color, true);
+            Validators.ValidateColor(color, true);
             mruColors.Add(ParserUtils.ToUpper(color));
         }
 
@@ -290,7 +291,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="name">Name of the new worksheet</param>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the name of the worksheet already exists</exception>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the name contains illegal characters or is out of range (length between 1 an 31 characters)</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the name contains illegal characters or is out of range (length between 1 an 31 characters)</exception>
         public void AddWorksheet(string name)
         {
             foreach (Worksheet item in worksheets)
@@ -313,7 +314,7 @@ namespace NanoXLSX
         /// <param name="name">Name of the new worksheet</param>
         /// <param name="sanitizeSheetName">If true, the name of the worksheet will be sanitized automatically according to the specifications of Excel</param>
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists and sanitizeSheetName is false</exception>
-        /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitizeSheetName is false</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitizeSheetName is false</exception>
         public void AddWorksheet(string name, bool sanitizeSheetName)
         {
             if (sanitizeSheetName)
@@ -332,7 +333,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="worksheet">Prepared worksheet object</param>
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists</exception>
-        /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31)</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31)</exception>
         public void AddWorksheet(Worksheet worksheet)
         {
             AddWorksheet(worksheet, false);
@@ -344,7 +345,7 @@ namespace NanoXLSX
         /// <param name="worksheet">Prepared worksheet object</param>
         /// <param name="sanitizeSheetName">If true, the name of the worksheet will be sanitized automatically according to the specifications of Excel</param>    
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists, when sanitation is false</exception>
-        /// <exception cref="Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitation is false</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitation is false</exception>
         public void AddWorksheet(Worksheet worksheet, bool sanitizeSheetName)
         {
             if (sanitizeSheetName)
@@ -477,9 +478,9 @@ namespace NanoXLSX
         /// <summary>
         /// Saves the workbook
         /// </summary>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         public void Save()
         {
             XlsxWriter l = new XlsxWriter(this);
@@ -490,9 +491,9 @@ namespace NanoXLSX
         /// Saves the workbook asynchronous.
         /// </summary>
         /// <returns>Task object (void)</returns>
-        /// <exception cref="Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
         public async Task SaveAsync()
         {
             XlsxWriter l = new XlsxWriter(this);
@@ -503,9 +504,9 @@ namespace NanoXLSX
         /// Saves the workbook with the defined name
         /// </summary>
         /// <param name="filename">filename of the saved workbook</param>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         public void SaveAs(string filename)
         {
             string backup = filename;
@@ -520,9 +521,9 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="fileName">filename of the saved workbook</param>
         /// <returns>Task object (void)</returns>
-        /// <exception cref="Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
         public async Task SaveAsAsync(string fileName)
         {
             string backup = fileName;
@@ -901,7 +902,7 @@ namespace NanoXLSX
         /// <param name="filename">Filename of the workbook</param>
         /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         public static Workbook Load(string filename, ImportOptions options = null)
         {
             XlsxReader r = new XlsxReader(filename, options);
@@ -915,7 +916,7 @@ namespace NanoXLSX
         /// <param name="stream">Stream containing the workbook</param>
         /// /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         public static Workbook Load(Stream stream, ImportOptions options = null)
         {
             XlsxReader r = new XlsxReader(stream, options);
@@ -929,7 +930,7 @@ namespace NanoXLSX
         /// <param name="stream">Stream containing the workbook</param>
         /// /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         public static async Task<Workbook> LoadAsync(Stream stream, ImportOptions options = null)
         {
             XlsxReader r = new XlsxReader(stream, options);

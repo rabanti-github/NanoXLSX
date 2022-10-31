@@ -346,14 +346,14 @@ namespace NanoXLSX_Test.Reader
         {
             // Note: all referenced (embedded) files contains invalid XML documents (malformed, missing start or end tags, missing attributes)
             Stream stream = TestUtils.GetResource(invalidFile);
-            Assert.Throws<NanoXLSX.Exceptions.IOException>(() => Workbook.Load(stream));
+            Assert.Throws<NanoXLSX.Shared.Exceptions.IOException>(() => Workbook.Load(stream));
         }
 
         [Fact(DisplayName = "Test of the reader functionality on an invalid stream")]
         public void ReadInvalidStreamTest()
         {
             Stream nullStream = null;
-            Assert.Throws<NanoXLSX.Exceptions.IOException>(() => Workbook.Load(nullStream));
+            Assert.Throws<NanoXLSX.Shared.Exceptions.IOException>(() => Workbook.Load(nullStream));
         }
 
 

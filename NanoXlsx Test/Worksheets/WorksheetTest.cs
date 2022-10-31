@@ -1,5 +1,5 @@
 using NanoXLSX;
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using static NanoXLSX.Worksheet;
-using FormatException = NanoXLSX.Exceptions.FormatException;
+using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 using Range = NanoXLSX.Range;
 
 namespace NanoXLSX_Test.Worksheets
@@ -69,7 +69,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("................................")]
         public void ConstructorFailingTest(string name)
         {
-            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => new Worksheet(name));
+            Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => new Worksheet(name));
         }
 
 
@@ -83,7 +83,7 @@ namespace NanoXLSX_Test.Worksheets
         public void ConstructorFailingTest2(string name, int id)
         {
             Workbook workbook = new Workbook("test.xlsx", "sheet2");
-            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => new Worksheet(name, id, workbook));
+            Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => new Worksheet(name, id, workbook));
         }
 
         [Fact(DisplayName = "Test of the get function of the AutoFilterRang property")]
@@ -165,7 +165,7 @@ namespace NanoXLSX_Test.Worksheets
         public void DefaultColumnWidthTest2(float value)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Throws<NanoXLSX.Exceptions.RangeException>(() => worksheet.DefaultColumnWidth = value);
+            Assert.Throws<NanoXLSX.Shared.Exceptions.RangeException>(() => worksheet.DefaultColumnWidth = value);
         }
 
         [Theory(DisplayName = "Test of the DefaultRowHeight property")]
@@ -187,7 +187,7 @@ namespace NanoXLSX_Test.Worksheets
         public void DefaultRowHeightTest2(float value)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Throws<NanoXLSX.Exceptions.RangeException>(() => worksheet.DefaultRowHeight = value);
+            Assert.Throws<NanoXLSX.Shared.Exceptions.RangeException>(() => worksheet.DefaultRowHeight = value);
         }
 
         [Fact(DisplayName = "Test of the get function of the HiddenRows property")]
@@ -260,8 +260,8 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(0, worksheet.SheetID);
             worksheet.SheetID = 12;
             Assert.Equal(12, worksheet.SheetID);
-            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => worksheet.SheetID = 0);
-            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => worksheet.SheetID = -1);
+            Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => worksheet.SheetID = 0);
+            Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => worksheet.SheetID = -1);
         }
 
         [Theory(DisplayName = "Test of the  SheetName property")]
@@ -290,8 +290,8 @@ namespace NanoXLSX_Test.Worksheets
         public void NameFailTest(string name)
         {
             Worksheet worksheet = new Worksheet();
-            Exception ex = Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => worksheet.SheetName = name);
-            Assert.Equal(typeof(NanoXLSX.Exceptions.FormatException), ex.GetType());
+            Exception ex = Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => worksheet.SheetName = name);
+            Assert.Equal(typeof(NanoXLSX.Shared.Exceptions.FormatException), ex.GetType());
         }
 
         [Theory(DisplayName = "Test of the get function of the SheetProtectionPassword property")]

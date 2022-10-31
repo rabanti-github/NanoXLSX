@@ -5,9 +5,14 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLS.Shared.Utils;
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Utils;
+using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Utils;
 using System.Text.RegularExpressions;
+using static NanoXLSX.Shared.Enums.Styles.BorderEnums;
+using static NanoXLSX.Shared.Enums.Styles.FillEnums;
+using static NanoXLSX.Shared.Enums.Styles.FontEnums;
+using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
 
 namespace NanoXLSX.Styles
 {
@@ -149,7 +154,7 @@ namespace NanoXLSX.Styles
                     if (underline == null)
                     {
                         underline = new Style();
-                        underline.CurrentFont.Underline = Styles.Font.UnderlineValue.u_single;
+                        underline.CurrentFont.Underline = UnderlineValue.u_single;
                     }
                     s = underline;
                     break;
@@ -157,7 +162,7 @@ namespace NanoXLSX.Styles
                     if (doubleUnderline == null)
                     {
                         doubleUnderline = new Style();
-                        doubleUnderline.CurrentFont.Underline = Styles.Font.UnderlineValue.u_double;
+                        doubleUnderline.CurrentFont.Underline = UnderlineValue.u_double;
                     }
                     s = doubleUnderline;
                     break;
@@ -173,7 +178,7 @@ namespace NanoXLSX.Styles
                     if (dateFormat == null)
                     {
                         dateFormat = new Style();
-                        dateFormat.CurrentNumberFormat.Number = NumberFormat.FormatNumber.format_14;
+                        dateFormat.CurrentNumberFormat.Number = FormatNumber.format_14;
                     }
                     s = dateFormat;
                     break;
@@ -181,7 +186,7 @@ namespace NanoXLSX.Styles
                     if (timeFormat == null)
                     {
                         timeFormat = new Style();
-                        timeFormat.CurrentNumberFormat.Number = NumberFormat.FormatNumber.format_21;
+                        timeFormat.CurrentNumberFormat.Number = FormatNumber.format_21;
                     }
                     s = timeFormat;
                     break;
@@ -189,7 +194,7 @@ namespace NanoXLSX.Styles
                     if (roundFormat == null)
                     {
                         roundFormat = new Style();
-                        roundFormat.CurrentNumberFormat.Number = NumberFormat.FormatNumber.format_1;
+                        roundFormat.CurrentNumberFormat.Number = FormatNumber.format_1;
                     }
                     s = roundFormat;
                     break;
@@ -197,10 +202,10 @@ namespace NanoXLSX.Styles
                     if (borderFrame == null)
                     {
                         borderFrame = new Style();
-                        borderFrame.CurrentBorder.TopStyle = Border.StyleValue.thin;
-                        borderFrame.CurrentBorder.BottomStyle = Border.StyleValue.thin;
-                        borderFrame.CurrentBorder.LeftStyle = Border.StyleValue.thin;
-                        borderFrame.CurrentBorder.RightStyle = Border.StyleValue.thin;
+                        borderFrame.CurrentBorder.TopStyle = StyleValue.thin;
+                        borderFrame.CurrentBorder.BottomStyle = StyleValue.thin;
+                        borderFrame.CurrentBorder.LeftStyle = StyleValue.thin;
+                        borderFrame.CurrentBorder.RightStyle = StyleValue.thin;
                     }
                     s = borderFrame;
                     break;
@@ -208,10 +213,10 @@ namespace NanoXLSX.Styles
                     if (borderFrameHeader == null)
                     {
                         borderFrameHeader = new Style();
-                        borderFrameHeader.CurrentBorder.TopStyle = Border.StyleValue.thin;
-                        borderFrameHeader.CurrentBorder.BottomStyle = Border.StyleValue.medium;
-                        borderFrameHeader.CurrentBorder.LeftStyle = Border.StyleValue.thin;
-                        borderFrameHeader.CurrentBorder.RightStyle = Border.StyleValue.thin;
+                        borderFrameHeader.CurrentBorder.TopStyle = StyleValue.thin;
+                        borderFrameHeader.CurrentBorder.BottomStyle = StyleValue.medium;
+                        borderFrameHeader.CurrentBorder.LeftStyle = StyleValue.thin;
+                        borderFrameHeader.CurrentBorder.RightStyle = StyleValue.thin;
                         borderFrameHeader.CurrentFont.Bold = true;
                     }
                     s = borderFrameHeader;
@@ -220,7 +225,7 @@ namespace NanoXLSX.Styles
                     if (dottedFill_0_125 == null)
                     {
                         dottedFill_0_125 = new Style();
-                        dottedFill_0_125.CurrentFill.PatternFill = Fill.PatternValue.gray125;
+                        dottedFill_0_125.CurrentFill.PatternFill = PatternValue.gray125;
                     }
                     s = dottedFill_0_125;
                     break;
@@ -244,7 +249,7 @@ namespace NanoXLSX.Styles
         /// <exception cref="StyleException">A StyleException is thrown if an invalid hex value is passed</exception>
         public static Style ColorizedText(string rgb)
         {
-            Fill.ValidateColor(rgb, false);
+            Validators.ValidateColor(rgb, false);
             Style s = new Style();
             s.CurrentFont.ColorValue = ParserUtils.ToUpper("FF" + rgb);
             return s;
@@ -258,9 +263,9 @@ namespace NanoXLSX.Styles
         /// <exception cref="StyleException">A StyleException is thrown if an invalid hex value is passed</exception>
         public static Style ColorizedBackground(string rgb)
         {
-            Fill.ValidateColor(rgb, false);
+            Validators.ValidateColor(rgb, false);
             Style s = new Style();
-            s.CurrentFill.SetColor(ParserUtils.ToUpper("FF" + rgb), Fill.FillType.fillColor);
+            s.CurrentFill.SetColor(ParserUtils.ToUpper("FF" + rgb), FillType.fillColor);
 
             return s;
         }

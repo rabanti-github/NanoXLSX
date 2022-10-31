@@ -7,9 +7,7 @@
 
 using System;
 using System.Globalization;
-using System.Runtime.CompilerServices;
-using NanoXLSX.Exceptions;
-using FormatException = NanoXLSX.Exceptions.FormatException;
+using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 
 namespace NanoXLSX
 {
@@ -69,7 +67,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="date">Date to process</param>
         /// <returns>Date or date and time as number string</returns>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
         /// <remarks>Excel assumes wrongly that the year 1900 is a leap year. There is a gap of 1.0 between 1900-02-28 and 1900-03-01. This method corrects all dates
         /// from the first valid date (1900-01-01) to 1900-03-01. However, Excel displays the minimum valid date as 1900-01-00, although 0 is not a valid description for a day of month.
         /// In conformance to the OAdate specifications, the maximum valid date is 9999-12-31 23:59:59 (plus 999 milliseconds).<br/>
@@ -90,7 +88,7 @@ namespace NanoXLSX
         /// <param name="skipCheck">Optional flag to skip the validity check if set to true</param>
         /// <param name="date">Date to process</param>
         /// <returns>Date or date and time as number</returns>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
         /// <remarks>Excel assumes wrongly that the year 1900 is a leap year. There is a gap of 1.0 between 1900-02-28 and 1900-03-01. This method corrects all dates
         /// from the first valid date (1900-01-01) to 1900-03-01. However, Excel displays the minimum valid date as 1900-01-00, although 0 is not a valid description for a day of month.
         /// In conformance to the OAdate specifications, the maximum valid date is 9999-12-31 23:59:59 (plus 999 milliseconds).<br/>
@@ -103,7 +101,7 @@ namespace NanoXLSX
         {
             if (!skipCheck && (date < FIRST_ALLOWED_EXCEL_DATE || date > LAST_ALLOWED_EXCEL_DATE))
             {
-                throw new Exceptions.FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 or after 9999-12-31 are not allowed.");
+                throw new FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 or after 9999-12-31 are not allowed.");
             }
             DateTime dateValue = date;
             if (date < FIRST_VALID_EXCEL_DATE)

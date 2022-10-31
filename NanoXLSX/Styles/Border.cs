@@ -5,8 +5,10 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Shared.Utils;
 using System.Collections.Generic;
 using System.Text;
+using static NanoXLSX.Shared.Enums.Styles.BorderEnums;
 
 namespace NanoXLSX.Styles
 {
@@ -39,40 +41,7 @@ namespace NanoXLSX.Styles
 
 
         #region enums
-        /// <summary>
-        /// Enum for the border style
-        /// </summary>
-        public enum StyleValue
-        {
-            /// <summary>no border</summary>
-            none,
-            /// <summary>hair border</summary>
-            hair,
-            /// <summary>dotted border</summary>
-            dotted,
-            /// <summary>dashed border with double-dots</summary>
-            dashDotDot,
-            /// <summary>dash-dotted border</summary>
-            dashDot,
-            /// <summary>dashed border</summary>
-            dashed,
-            /// <summary>thin border</summary>
-            thin,
-            /// <summary>medium-dashed border with double-dots</summary>
-            mediumDashDotDot,
-            /// <summary>slant dash-dotted border</summary>
-            slantDashDot,
-            /// <summary>medium dash-dotted border</summary>
-            mediumDashDot,
-            /// <summary>medium dashed border</summary>
-            mediumDashed,
-            /// <summary>medium border</summary>
-            medium,
-            /// <summary>thick border</summary>
-            thick,
-            /// <summary>double border</summary>
-            s_double,
-        }
+
         #endregion
 
         #region properties
@@ -84,7 +53,7 @@ namespace NanoXLSX.Styles
         {
             get => bottomColor; set
             {
-                Fill.ValidateColor(value, true, true);
+                Validators.ValidateColor(value, true, true);
                 bottomColor = value;
             }
         }
@@ -102,7 +71,7 @@ namespace NanoXLSX.Styles
             get => diagonalColor;
             set
             {
-                Fill.ValidateColor(value, true, true);
+                Validators.ValidateColor(value, true, true);
                 diagonalColor = value;
             }
         }
@@ -130,7 +99,7 @@ namespace NanoXLSX.Styles
             get => leftColor;
             set
             {
-                Fill.ValidateColor(value, true, true);
+                Validators.ValidateColor(value, true, true);
                 leftColor = value;
             }
         }
@@ -148,7 +117,7 @@ namespace NanoXLSX.Styles
             get => rightColor; 
             set
             {
-                Fill.ValidateColor(value, true, true);
+                Validators.ValidateColor(value, true, true);
                 rightColor = value;
             }
         }
@@ -165,7 +134,7 @@ namespace NanoXLSX.Styles
         {
             get => topColor; set
             {
-                Fill.ValidateColor(value, true, true);
+                Validators.ValidateColor(value, true, true);
                 topColor = value;
             }
         }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
 
 namespace NanoXLSX_Test.Styles.WriteRead
 {
@@ -21,7 +22,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         {
             Style style = new Style();
             style.CurrentNumberFormat.CustomFormatID = styleValue;
-            style.CurrentNumberFormat.Number = NumberFormat.FormatNumber.custom; // Mandatory
+            style.CurrentNumberFormat.Number = FormatNumber.custom; // Mandatory
             style.CurrentNumberFormat.CustomFormatCode = "#.##"; // Mandatory
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentNumberFormat.CustomFormatID);
@@ -36,7 +37,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         {
             Style style = new Style();
             style.CurrentNumberFormat.CustomFormatID = styleValue;
-            style.CurrentNumberFormat.Number = NumberFormat.FormatNumber.custom; // Mandatory
+            style.CurrentNumberFormat.Number = FormatNumber.custom; // Mandatory
             Assert.ThrowsAny<Exception>(() => TestUtils.SaveAndReadStyledCell(value, style, "A1"));
         }
 
@@ -51,46 +52,46 @@ namespace NanoXLSX_Test.Styles.WriteRead
         {
             Style style = new Style();
             style.CurrentNumberFormat.CustomFormatCode = styleValue;
-            style.CurrentNumberFormat.Number = NumberFormat.FormatNumber.custom; // Mandatory
+            style.CurrentNumberFormat.Number = FormatNumber.custom; // Mandatory
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentNumberFormat.CustomFormatCode);
-            Assert.Equal(NumberFormat.FormatNumber.custom, cell.CellStyle.CurrentNumberFormat.Number);
+            Assert.Equal(FormatNumber.custom, cell.CellStyle.CurrentNumberFormat.Number);
             Assert.True(cell.CellStyle.CurrentNumberFormat.IsCustomFormat);
         }
 
         [Theory(DisplayName = "Test of the 'formatNumber' value when writing and reading a NumberFormat style")]
-        [InlineData(NumberFormat.FormatNumber.format_1, "test")]
-        [InlineData(NumberFormat.FormatNumber.format_2, 0.5f)]
-        [InlineData(NumberFormat.FormatNumber.format_3, 22)]
-        [InlineData(NumberFormat.FormatNumber.format_4, true)]
-        [InlineData(NumberFormat.FormatNumber.format_5, "")]
-        [InlineData(NumberFormat.FormatNumber.format_6, -1)]
-        [InlineData(NumberFormat.FormatNumber.format_7, -22.222f)]
-        [InlineData(NumberFormat.FormatNumber.format_8, false)]
-        [InlineData(NumberFormat.FormatNumber.format_9, 0)]
-        [InlineData(NumberFormat.FormatNumber.format_10, "Æ")]
-        [InlineData(NumberFormat.FormatNumber.format_11, "test")]
-        [InlineData(NumberFormat.FormatNumber.format_12, 0.5f)]
-        [InlineData(NumberFormat.FormatNumber.format_13, 22)]
-        [InlineData(NumberFormat.FormatNumber.format_14, true)]
-        [InlineData(NumberFormat.FormatNumber.format_15, "")]
-        [InlineData(NumberFormat.FormatNumber.format_16, -1)]
-        [InlineData(NumberFormat.FormatNumber.format_17, -22.222f)]
-        [InlineData(NumberFormat.FormatNumber.format_18, false)]
-        [InlineData(NumberFormat.FormatNumber.format_19, "noDate")]
-        [InlineData(NumberFormat.FormatNumber.format_20, "Æ")]
-        [InlineData(NumberFormat.FormatNumber.format_21, "test")]
-        [InlineData(NumberFormat.FormatNumber.format_22, "noDate")]
-        [InlineData(NumberFormat.FormatNumber.format_37, 22)]
-        [InlineData(NumberFormat.FormatNumber.format_38, true)]
-        [InlineData(NumberFormat.FormatNumber.format_39, "")]
-        [InlineData(NumberFormat.FormatNumber.format_40, -1)]
-        [InlineData(NumberFormat.FormatNumber.format_45, -22.222f)]
-        [InlineData(NumberFormat.FormatNumber.format_46, false)]
-        [InlineData(NumberFormat.FormatNumber.format_47, "noDate")]
-        [InlineData(NumberFormat.FormatNumber.format_48, "Æ")]
-        [InlineData(NumberFormat.FormatNumber.format_49, "test")]
-        public void NumberFormatTest(NumberFormat.FormatNumber styleValue, object value)
+        [InlineData(FormatNumber.format_1, "test")]
+        [InlineData(FormatNumber.format_2, 0.5f)]
+        [InlineData(FormatNumber.format_3, 22)]
+        [InlineData(FormatNumber.format_4, true)]
+        [InlineData(FormatNumber.format_5, "")]
+        [InlineData(FormatNumber.format_6, -1)]
+        [InlineData(FormatNumber.format_7, -22.222f)]
+        [InlineData(FormatNumber.format_8, false)]
+        [InlineData(FormatNumber.format_9, 0)]
+        [InlineData(FormatNumber.format_10, "Æ")]
+        [InlineData(FormatNumber.format_11, "test")]
+        [InlineData(FormatNumber.format_12, 0.5f)]
+        [InlineData(FormatNumber.format_13, 22)]
+        [InlineData(FormatNumber.format_14, true)]
+        [InlineData(FormatNumber.format_15, "")]
+        [InlineData(FormatNumber.format_16, -1)]
+        [InlineData(FormatNumber.format_17, -22.222f)]
+        [InlineData(FormatNumber.format_18, false)]
+        [InlineData(FormatNumber.format_19, "noDate")]
+        [InlineData(FormatNumber.format_20, "Æ")]
+        [InlineData(FormatNumber.format_21, "test")]
+        [InlineData(FormatNumber.format_22, "noDate")]
+        [InlineData(FormatNumber.format_37, 22)]
+        [InlineData(FormatNumber.format_38, true)]
+        [InlineData(FormatNumber.format_39, "")]
+        [InlineData(FormatNumber.format_40, -1)]
+        [InlineData(FormatNumber.format_45, -22.222f)]
+        [InlineData(FormatNumber.format_46, false)]
+        [InlineData(FormatNumber.format_47, "noDate")]
+        [InlineData(FormatNumber.format_48, "Æ")]
+        [InlineData(FormatNumber.format_49, "test")]
+        public void NumberFormatTest(FormatNumber styleValue, object value)
         {
             Style style = new Style();
             style.CurrentNumberFormat.Number = styleValue;
@@ -102,19 +103,19 @@ namespace NanoXLSX_Test.Styles.WriteRead
         public void NumberFormatTest1b()
         {
             Style style = new Style();
-            style.CurrentNumberFormat.Number = NumberFormat.FormatNumber.custom;
+            style.CurrentNumberFormat.Number = FormatNumber.custom;
             style.CurrentNumberFormat.CustomFormatCode = "#.##";
             Cell cell = TestUtils.SaveAndReadStyledCell(0.5f, style, "A1");
-            Assert.Equal(NumberFormat.FormatNumber.custom, cell.CellStyle.CurrentNumberFormat.Number);
+            Assert.Equal(FormatNumber.custom, cell.CellStyle.CurrentNumberFormat.Number);
         }
 
         [Theory(DisplayName = "Test of the 'formatNumber' value with date formats when writing and reading a NumberFormat style")]
-        [InlineData(NumberFormat.FormatNumber.format_14, 1000, "26.09.1902")]
-        [InlineData(NumberFormat.FormatNumber.format_15, 1000, "26.09.1902")]
-        [InlineData(NumberFormat.FormatNumber.format_16, 1000, "26.09.1902")]
-        [InlineData(NumberFormat.FormatNumber.format_17, 1000, "26.09.1902")]
-        [InlineData(NumberFormat.FormatNumber.format_22, 1000, "26.09.1902")]
-        public void NumberNumberFormatTest2(NumberFormat.FormatNumber styleValue, int value, string expected)
+        [InlineData(FormatNumber.format_14, 1000, "26.09.1902")]
+        [InlineData(FormatNumber.format_15, 1000, "26.09.1902")]
+        [InlineData(FormatNumber.format_16, 1000, "26.09.1902")]
+        [InlineData(FormatNumber.format_17, 1000, "26.09.1902")]
+        [InlineData(FormatNumber.format_22, 1000, "26.09.1902")]
+        public void NumberNumberFormatTest2(FormatNumber styleValue, int value, string expected)
         {
             DateTime expectedValue = DateTime.ParseExact(expected, "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
             Style style = new Style();
@@ -125,13 +126,13 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
         [Theory(DisplayName = "Test of the 'formatNumber' value with time formats when writing and reading a NumberFormat style")]
-        [InlineData(NumberFormat.FormatNumber.format_19, 0.5, "12:00:00")]
-        [InlineData(NumberFormat.FormatNumber.format_20, 0.5, "12:00:00")]
-        [InlineData(NumberFormat.FormatNumber.format_21, 0.5, "12:00:00")]
-        [InlineData(NumberFormat.FormatNumber.format_45, 0.5, "12:00:00")]
-        [InlineData(NumberFormat.FormatNumber.format_46, 0.5, "12:00:00")]
-        [InlineData(NumberFormat.FormatNumber.format_47, 0.5, "12:00:00")]
-        public void NumberNumberFormatTest3(NumberFormat.FormatNumber styleValue, float value, string expected)
+        [InlineData(FormatNumber.format_19, 0.5, "12:00:00")]
+        [InlineData(FormatNumber.format_20, 0.5, "12:00:00")]
+        [InlineData(FormatNumber.format_21, 0.5, "12:00:00")]
+        [InlineData(FormatNumber.format_45, 0.5, "12:00:00")]
+        [InlineData(FormatNumber.format_46, 0.5, "12:00:00")]
+        [InlineData(FormatNumber.format_47, 0.5, "12:00:00")]
+        public void NumberNumberFormatTest3(FormatNumber styleValue, float value, string expected)
         {
             TimeSpan expectedValue = TimeSpan.ParseExact(expected, "hh\\:mm\\:ss", System.Globalization.CultureInfo.InvariantCulture);
             Style style = new Style();

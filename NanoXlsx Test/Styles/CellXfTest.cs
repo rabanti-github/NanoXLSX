@@ -1,4 +1,6 @@
-﻿using NanoXLSX.Exceptions;
+﻿using NanoXLSX.Shared.Enums.Styles;
+using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
@@ -19,10 +21,10 @@ namespace NanoXLSX_Test.Styles
             exampleStyle.Hidden = true;
             exampleStyle.Locked = true;
             exampleStyle.ForceApplyAlignment = true;
-            exampleStyle.HorizontalAlign = CellXf.HorizontalAlignValue.left;
-            exampleStyle.VerticalAlign = CellXf.VerticalAlignValue.center;
-            exampleStyle.TextDirection = CellXf.TextDirectionValue.horizontal;
-            exampleStyle.Alignment = CellXf.TextBreakValue.shrinkToFit;
+            exampleStyle.HorizontalAlign = CellXfEnums.HorizontalAlignValue.left;
+            exampleStyle.VerticalAlign = CellXfEnums.VerticalAlignValue.center;
+            exampleStyle.TextDirection = CellXfEnums.TextDirectionValue.horizontal;
+            exampleStyle.Alignment = CellXfEnums.TextBreakValue.shrinkToFit;
             exampleStyle.TextRotation = 75;
             exampleStyle.Indent = 3;
         }
@@ -61,16 +63,16 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the HorizontalAlign property")]
-        [InlineData(CellXf.HorizontalAlignValue.center)]
-        [InlineData(CellXf.HorizontalAlignValue.centerContinuous)]
-        [InlineData(CellXf.HorizontalAlignValue.distributed)]
-        [InlineData(CellXf.HorizontalAlignValue.fill)]
-        [InlineData(CellXf.HorizontalAlignValue.general)]
-        [InlineData(CellXf.HorizontalAlignValue.justify)]
-        [InlineData(CellXf.HorizontalAlignValue.left)]
-        [InlineData(CellXf.HorizontalAlignValue.none)]
-        [InlineData(CellXf.HorizontalAlignValue.right)]
-        public void HorizontalAlignTest(CellXf.HorizontalAlignValue value)
+        [InlineData(CellXfEnums.HorizontalAlignValue.center)]
+        [InlineData(CellXfEnums.HorizontalAlignValue.centerContinuous)]
+        [InlineData(CellXfEnums.HorizontalAlignValue.distributed)]
+        [InlineData(CellXfEnums.HorizontalAlignValue.fill)]
+        [InlineData(CellXfEnums.HorizontalAlignValue.general)]
+        [InlineData(CellXfEnums.HorizontalAlignValue.justify)]
+        [InlineData(CellXfEnums.HorizontalAlignValue.left)]
+        [InlineData(CellXfEnums.HorizontalAlignValue.none)]
+        [InlineData(CellXfEnums.HorizontalAlignValue.right)]
+        public void HorizontalAlignTest(CellXfEnums.HorizontalAlignValue value)
         {
             CellXf cellXf = new CellXf();
             Assert.Equal(CellXf.DEFAULT_HORIZONTAL_ALIGNMENT, cellXf.HorizontalAlign); // none is default
@@ -79,13 +81,13 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the VerticalAlign property")]
-        [InlineData(CellXf.VerticalAlignValue.bottom)]
-        [InlineData(CellXf.VerticalAlignValue.center)]
-        [InlineData(CellXf.VerticalAlignValue.distributed)]
-        [InlineData(CellXf.VerticalAlignValue.justify)]
-        [InlineData(CellXf.VerticalAlignValue.none)]
-        [InlineData(CellXf.VerticalAlignValue.top)]
-        public void VerticalAlignTest(CellXf.VerticalAlignValue value)
+        [InlineData(CellXfEnums.VerticalAlignValue.bottom)]
+        [InlineData(CellXfEnums.VerticalAlignValue.center)]
+        [InlineData(CellXfEnums.VerticalAlignValue.distributed)]
+        [InlineData(CellXfEnums.VerticalAlignValue.justify)]
+        [InlineData(CellXfEnums.VerticalAlignValue.none)]
+        [InlineData(CellXfEnums.VerticalAlignValue.top)]
+        public void VerticalAlignTest(CellXfEnums.VerticalAlignValue value)
         {
             CellXf cellXf = new CellXf();
             Assert.Equal(CellXf.DEFAULT_VERTICAL_ALIGNMENT, cellXf.VerticalAlign); // none is default
@@ -95,15 +97,15 @@ namespace NanoXLSX_Test.Styles
 
 
         [Theory(DisplayName = "Test of the get and set function of the HorizontalAlign property")]
-        [InlineData(CellXf.TextDirectionValue.horizontal)]
-        [InlineData(CellXf.TextDirectionValue.vertical)]
-        public void TextDirectionTest(CellXf.TextDirectionValue value)
+        [InlineData(CellXfEnums.TextDirectionValue.horizontal)]
+        [InlineData(CellXfEnums.TextDirectionValue.vertical)]
+        public void TextDirectionTest(CellXfEnums.TextDirectionValue value)
         {
             CellXf cellXf = new CellXf();
             Assert.Equal(CellXf.DEFAULT_TEXT_DIRECTION, cellXf.TextDirection); // horizontal is default
             cellXf.TextDirection = value;
             Assert.Equal(value, cellXf.TextDirection);
-            if (value == CellXf.TextDirectionValue.vertical)
+            if (value == CellXfEnums.TextDirectionValue.vertical)
             {
                 Assert.Equal(255, cellXf.TextRotation);
             }
@@ -134,15 +136,15 @@ namespace NanoXLSX_Test.Styles
         {
             CellXf cellXf = new CellXf();
             Assert.Equal(0, cellXf.TextRotation); // 0 is default
-            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => cellXf.TextRotation = value);
+            Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => cellXf.TextRotation = value);
         }
 
 
         [Theory(DisplayName = "Test of the get and set function of the Align property")]
-        [InlineData(CellXf.TextBreakValue.none)]
-        [InlineData(CellXf.TextBreakValue.shrinkToFit)]
-        [InlineData(CellXf.TextBreakValue.wrapText)]
-        public void AlignTest(CellXf.TextBreakValue value)
+        [InlineData(CellXfEnums.TextBreakValue.none)]
+        [InlineData(CellXfEnums.TextBreakValue.shrinkToFit)]
+        [InlineData(CellXfEnums.TextBreakValue.wrapText)]
+        public void AlignTest(CellXfEnums.TextBreakValue value)
         {
             CellXf cellXf = new CellXf();
             Assert.Equal(CellXf.DEFAULT_ALIGNMENT, cellXf.Alignment); // none is default
@@ -198,7 +200,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2c()
         {
             CellXf style2 = (CellXf)exampleStyle.Copy();
-            style2.HorizontalAlign = CellXf.HorizontalAlignValue.right;
+            style2.HorizontalAlign = CellXfEnums.HorizontalAlignValue.right;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -206,7 +208,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2d()
         {
             CellXf style2 = (CellXf)exampleStyle.Copy();
-            style2.VerticalAlign = CellXf.VerticalAlignValue.top;
+            style2.VerticalAlign = CellXfEnums.VerticalAlignValue.top;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -222,7 +224,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2f()
         {
             CellXf style2 = (CellXf)exampleStyle.Copy();
-            style2.TextDirection = CellXf.TextDirectionValue.vertical;
+            style2.TextDirection = CellXfEnums.TextDirectionValue.vertical;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -238,7 +240,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2h()
         {
             CellXf style2 = (CellXf)exampleStyle.Copy();
-            style2.Alignment = CellXf.TextBreakValue.none;
+            style2.Alignment = CellXfEnums.TextBreakValue.none;
             Assert.False(exampleStyle.Equals(style2));
         }
 

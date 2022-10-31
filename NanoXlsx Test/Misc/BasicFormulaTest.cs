@@ -1,12 +1,11 @@
 ﻿using NanoXLSX;
-using NanoXLSX.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using FormatException = NanoXLSX.Exceptions.FormatException;
+using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 using Range = NanoXLSX.Range;
 
 namespace NanoXLSX_Test.Misc

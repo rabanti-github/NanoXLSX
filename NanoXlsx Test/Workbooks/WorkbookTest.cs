@@ -1,5 +1,6 @@
 ﻿using NanoXLSX;
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using FormatException = NanoXLSX.Exceptions.FormatException;
+using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 
 namespace NanoXLSX_Test.Workbooks
 {

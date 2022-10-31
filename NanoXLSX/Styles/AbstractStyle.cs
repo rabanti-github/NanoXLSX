@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Exceptions;
 
 namespace NanoXLSX.Styles
 {

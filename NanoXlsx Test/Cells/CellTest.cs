@@ -1,5 +1,6 @@
-﻿using NanoXLSX;
-using NanoXLSX.Exceptions;
+﻿
+using NanoXLSX;
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
 using NanoXLSX_Test.Cells.Types;
 using System;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using static NanoXLSX.Shared.Enums.Styles.CellXfEnums;
 using static NanoXLSX.Cell;
 
 namespace NanoXLSX_Test.Cells
@@ -393,13 +395,13 @@ namespace NanoXLSX_Test.Cells
         {
             Style style = new Style();
             style.CurrentFont.Italic = true;
-            style.CurrentCellXf.HorizontalAlign = CellXf.HorizontalAlignValue.justify;
+            style.CurrentCellXf.HorizontalAlign = HorizontalAlignValue.justify;
             Cell cell = utils.CreateVariantCell<string>("test", this.cellAddress, style);
             cell.SetCellLockedState(isLocked, isHidden);
             Assert.Equal(isLocked, cell.CellStyle.CurrentCellXf.Locked);
             Assert.Equal(isHidden, cell.CellStyle.CurrentCellXf.Hidden);
             Assert.True(cell.CellStyle.CurrentFont.Italic);
-            Assert.Equal(CellXf.HorizontalAlignValue.justify, cell.CellStyle.CurrentCellXf.HorizontalAlign);
+            Assert.Equal(HorizontalAlignValue.justify, cell.CellStyle.CurrentCellXf.HorizontalAlign);
         }
 
         [Theory(DisplayName = "Test of the GetCellRange method with string as range")]
@@ -523,12 +525,12 @@ namespace NanoXLSX_Test.Cells
         [Fact(DisplayName = "Test of the failing ResolveCellRange method")]
         public void ResolveCellRangeTest2()
         {
-            Exception ex = Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => Cell.ResolveCellRange(null));
-            Assert.Equal(typeof(NanoXLSX.Exceptions.FormatException), ex.GetType());
-            ex = Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => Cell.ResolveCellRange(""));
-            Assert.Equal(typeof(NanoXLSX.Exceptions.FormatException), ex.GetType());
-            ex = Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => Cell.ResolveCellRange("C3"));
-            Assert.Equal(typeof(NanoXLSX.Exceptions.FormatException), ex.GetType());
+            Exception ex = Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => Cell.ResolveCellRange(null));
+            Assert.Equal(typeof(NanoXLSX.Shared.Exceptions.FormatException), ex.GetType());
+            ex = Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => Cell.ResolveCellRange(""));
+            Assert.Equal(typeof(NanoXLSX.Shared.Exceptions.FormatException), ex.GetType());
+            ex = Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => Cell.ResolveCellRange("C3"));
+            Assert.Equal(typeof(NanoXLSX.Shared.Exceptions.FormatException), ex.GetType());
         }
 
         [Theory(DisplayName = "Test of the ResolveColumn method")]

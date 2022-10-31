@@ -72,7 +72,7 @@ namespace NanoXLSX.Internal
         /// Reads the XML file form the passed stream and processes the AppData section
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         public void ReadAppData(MemoryStream stream)
         {
             if (stream == null)
@@ -122,7 +122,7 @@ namespace NanoXLSX.Internal
         /// Reads the XML file form the passed stream and processes the Core section
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         public void ReadCoreData(MemoryStream stream)
         {
             if (stream == null)

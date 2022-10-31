@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
-using NanoXLS.Shared.Utils;
-using NanoXLSX.Exceptions;
-using IOException = NanoXLSX.Exceptions.IOException;
+using NanoXLSX.Shared.Utils;
+using NanoXLSX.Shared.Exceptions;
+using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
 namespace NanoXLSX.Internal
 {
@@ -92,7 +92,7 @@ namespace NanoXLSX.Internal
         /// Reads the XML file form the passed stream and processes the shared strings table
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         public void Read(Stream stream)
         {
             try
@@ -191,7 +191,7 @@ namespace NanoXLSX.Internal
         /// Class to represent a phonetic transcription of character sequence.
         /// Note: Invalid values will lead to a crash. The specifications requires a start index, an end index and a value
         /// </summary>
-        private class PhoneticInfo
+        sealed class PhoneticInfo
         {
             /// <summary>
             /// Transcription value

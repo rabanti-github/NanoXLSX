@@ -6,37 +6,26 @@
  */
 
 using System;
-using System.Runtime.CompilerServices;
 
-namespace NanoXLSX.Exceptions
+namespace NanoXLSX.Shared.Exceptions
 {
     /// <summary>
-    /// Class for exceptions regarding worksheet incidents
+    /// Class for exceptions regarding range incidents (e.g. out-of-range)
     /// </summary>
     [Serializable]
-    public class WorksheetException : Exception
+    public class RangeException : Exception
     {
         /// <summary>
         /// Default constructor
         /// </summary>
-        public WorksheetException()
+        public RangeException() : base()
         { }
         /// <summary>
         /// Constructor with passed message
         /// </summary>
         /// <param name="message">Message of the exception</param>
-        public WorksheetException(string message)
-            : base(message)
+        public RangeException(string message)
+            : base( message)
         {  }
     }
-
-    #region doc
-    /// <summary>
-    /// Sub-namespace for exceptions
-    /// </summary>
-    [CompilerGenerated]
-    class NamespaceDoc // This class is only for documentation purpose (Sandcastle)
-    { }
-    #endregion
-
 }

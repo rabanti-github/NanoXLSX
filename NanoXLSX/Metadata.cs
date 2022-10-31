@@ -5,11 +5,11 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLS.Shared.Utils;
+using NanoXLSX.Shared.Utils;
 using System;
 using System.Globalization;
 using System.Reflection;
-using FormatException = NanoXLSX.Exceptions.FormatException;
+using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 
 namespace NanoXLSX
 {
@@ -99,7 +99,7 @@ namespace NanoXLSX
         /// <summary>
         /// Checks the format of the passed version string. Allowed values are null, empty and fractions from 0.0  to 99999.99999 (max. number of digits before and after the period is 5)
         /// </summary>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the version string is malformed</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the version string is malformed</exception>
         private void CheckVersion()
         {
             if (string.IsNullOrEmpty(applicationVersion))
@@ -133,7 +133,7 @@ namespace NanoXLSX
         /// <param name="build">Build number</param>
         /// <param name="revision">Revision number</param>
         /// <returns>Formatted version number (e.g. 1.0 or 55.987)</returns>
-        /// <exception cref="Exceptions.FormatException">Throws a FormatException if the major number is too long or one of the numbers is negative</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the major number is too long or one of the numbers is negative</exception>
         public static string ParseVersion(int major, int minor, int build, int revision)
         {
             if (major < 0 || minor < 0 || build < 0 || revision < 0)

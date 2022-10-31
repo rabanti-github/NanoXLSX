@@ -5,14 +5,16 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
+using NanoXLSX.Themes;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
-using IOException = NanoXLSX.Exceptions.IOException;
+using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
 namespace NanoXLSX.Internal
 {
@@ -64,7 +66,7 @@ namespace NanoXLSX.Internal
         /// <summary>
         /// Reads the XLSX file from a file path or a file stream
         /// </summary>
-        /// <exception cref="Exceptions.IOException">
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">
         /// Throws IOException in case of an error
         /// </exception>
         public void Read()
@@ -102,6 +104,19 @@ namespace NanoXLSX.Internal
                     if (ms != null && ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
                     {
                         sharedStrings.Read(ms);
+                    }
+                    Dictionary<int, string> themeStreamNames = GetSequentialStreamNames("xl/theme/theme", zf);
+                    if (themeStreamNames.Count > 0)
+                    {
+                        // There is not really a definition whether multiple themes can be managed in one workbook.
+                        // the suffix number (e.g. theme1) indicates it. Anyway, if multiple are occurring, they will be read and written
+                        foreach(KeyValuePair<int,string> streamName in themeStreamNames)
+                        {
+                            ThemeReader themeReader = new ThemeReader();
+                            ms = GetEntryStream(streamName.Value, zf);
+                            themeReader.Read(ms, streamName.Key);
+                            ThemeRepository.Instance.Themes.Add(streamName.Key, themeReader.CurrentTheme);
+                        }
                     }
                     StyleRepository.Instance.ImportInProgress = true;
                     StyleReader styleReader = new StyleReader();
@@ -147,7 +162,7 @@ namespace NanoXLSX.Internal
         /// <summary>
         /// Reads the XLSX file from a file path or a file stream asynchronous
         /// </summary>
-        /// <exception cref="Exceptions.IOException">
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">
         /// May throw an IOException in case of an error. The asynchronous operation may hide the exception.
         /// </exception>
         /// <returns>Task object (void)</returns>
@@ -326,6 +341,28 @@ namespace NanoXLSX.Internal
                 }
             }
             return stream;
+        }
+
+        private Dictionary<int,string> GetSequentialStreamNames(string namePrefix, ZipArchive archive)
+        {
+            Dictionary<int, string> files = new Dictionary<int, string>();
+            int index = 1; // Assumption: There is no file that has the index 0 in its name
+            MemoryStream ms = null;
+            while(true)
+            {
+                string name = namePrefix + ParserUtils.ToString(index) + ".xml";
+                ms = GetEntryStream(name, archive);
+                if (ms != null)
+                {
+                    files.Add(index, name);
+                }
+                else
+                {
+                    break;
+                }
+                index++;
+            }
+            return files;
         }
 
         #endregion

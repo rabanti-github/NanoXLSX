@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml;
-using NanoXLS.Shared.Utils;
+using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
-using IOException = NanoXLSX.Exceptions.IOException;
+using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
 namespace NanoXLSX.Internal
 {
@@ -147,7 +147,7 @@ namespace NanoXLSX.Internal
         /// Reads the XML file form the passed stream and processes the worksheet data
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         public void Read(MemoryStream stream)
         {
             try

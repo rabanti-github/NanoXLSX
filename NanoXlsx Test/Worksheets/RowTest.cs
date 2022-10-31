@@ -1,5 +1,5 @@
 using NanoXLSX;
-using NanoXLSX.Exceptions;
+using NanoXLSX.Shared.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

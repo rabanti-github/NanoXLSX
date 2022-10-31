@@ -1,11 +1,10 @@
-﻿using NanoXLS.Shared.Utils;
+﻿using NanoXLSX.Shared.Utils;
 using NanoXLSX;
-using NanoXLSX.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Xunit;
-using FormatException = NanoXLSX.Exceptions.FormatException;
+using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 
 namespace NanoXLSX_Test.Misc
 {
