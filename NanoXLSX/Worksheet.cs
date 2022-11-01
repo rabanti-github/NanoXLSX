@@ -160,7 +160,7 @@ namespace NanoXLSX
         private Workbook workbookReference;
         private string sheetProtectionPassword = null;
         private string sheetProtectionPasswordHash = null;
-        private Range? selectedCells;
+        private List<Range> selectedCells;
         private bool? freezeSplitPanes;
         private float? paneSplitLeftWidth;
         private float? paneSplitTopHeight;
@@ -260,9 +260,28 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the cell range of selected cells of this worksheet. Null if no cells are selected
+        /// Returns either null (if no cells are selected), or the first defined range of selected cells
         /// </summary>
-        public Range? SelectedCells
+        /// <remarks>Use <see cref="SelectedCellRanges"/> to get all defined ranges</remarks>
+        [Obsolete("This method is a deprecated subset of the function SelectedCellRanges. SelectedCellRanges will get this function name in a future version. Therefore, the type will change")]
+        public Range? SelectedCells { 
+            get 
+            {
+                if (selectedCells.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return selectedCells[0];
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets all ranges of selected cells of this worksheet. An empty list is returned if no cells are selected
+        /// </summary>
+        public List<Range> SelectedCellRanges
         {
             get { return selectedCells; }
         }
@@ -454,6 +473,7 @@ namespace NanoXLSX
             sheetProtectionValues = new List<SheetProtectionValue>();
             hiddenRows = new Dictionary<int, bool>();
             columns = new Dictionary<int, Column>();
+            selectedCells = new List<Range>();
             activeStyle = null;
             workbookReference = null;
         }
@@ -1787,7 +1807,7 @@ namespace NanoXLSX
         /// </summary>
         public void RemoveSelectedCells()
         {
-            selectedCells = null;
+            selectedCells.Clear();
         }
 
         /// <summary>
@@ -1974,39 +1994,73 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Sets the selected cells on this worksheet
+        /// Sets a single range of selected cells on this worksheet. All existing ranges will be removed
         /// </summary>
-        /// <param name="range">Cell range to select</param>
+        /// <param name="range">Range to set as single cell range for selected cells</param>
+        [Obsolete("This method is a deprecated subset of the function AddSelectedCells. It will be removed in a future version")]
         public void SetSelectedCells(Range range)
         {
-            selectedCells = range;
+            RemoveSelectedCells();
+            AddSelectedCells(range);
         }
 
         /// <summary>
-        /// Sets the selected cells on this worksheet
+        /// Sets a single range of selected cells on this worksheet. All existing ranges will be removed
         /// </summary>
-        /// <param name="startAddress">Start address of the range</param>
-        /// <param name="endAddress">End address of the range</param>
+        /// <param name="startAddress">Start address of the range to set as single cell range for selected cells</param>
+        /// <param name="endAddress">End address of the range to set as single cell range for selected cells</param>
+        [Obsolete("This method is a deprecated subset of the function AddSelectedCells. It will be removed in a future version")]
         public void SetSelectedCells(Address startAddress, Address endAddress)
         {
-            selectedCells = new Range(startAddress, endAddress);
+            SetSelectedCells(new Range(startAddress, endAddress));
         }
 
         /// <summary>
-        /// Sets the selected cells on this worksheet. Null removes the selected cell range
+        /// Sets a single range of selected cells on this worksheet. All existing ranges will be removed. Null will remove all selected cells
         /// </summary>
-        /// <param name="range">Cell range to select</param>
+        /// <param name="range">Range as string to set as single cell range for selected cells, or null to remove the selected cells</param>
+        [Obsolete("This method is a deprecated subset of the function AddSelectedCells. It will be removed in a future version")]
         public void SetSelectedCells(string range)
         {
             if (range == null)
             {
-                selectedCells = null;
+                selectedCells.Clear();
+                return;
             }
-            else
+            SetSelectedCells(new Range(range));
+        }
+
+        /// <summary>
+        /// Adds a range to the selected cells on this worksheet
+        /// </summary>
+        /// <param name="range">Cell range to be added as selected cells</param>
+        public void AddSelectedCells(Range range)
+        {
+            selectedCells.Add(range);
+        }
+
+        /// <summary>
+        /// Adds a range to the selected cells on this worksheet
+        /// </summary>
+        /// <param name="startAddress">Start address of the range to add</param>
+        /// <param name="endAddress">End address of the range to add</param>
+        public void AddSelectedCells(Address startAddress, Address endAddress)
+        {
+            selectedCells.Add(new Range(startAddress, endAddress));
+        }
+
+        /// <summary>
+        /// Adds a range to the selected cells on this worksheet. Null or empty as value will be ignored
+        /// </summary>
+        /// <param name="range">Cell range to add as selected cells</param>
+        public void AddSelectedCells(string range)
+        {
+            if (range != null)
             {
-                selectedCells = Cell.ResolveCellRange(range);
+                selectedCells.Add(Cell.ResolveCellRange(range));
             }
         }
+
 
         /// <summary>
         /// Sets or removes the password for worksheet protection. If set, UseSheetProtection will be also set to true
@@ -2292,9 +2346,12 @@ namespace NanoXLSX
             {
                 copy.rowHeights.Add(row.Key, row.Value);
             }
-            if (this.selectedCells.HasValue)
+            if (this.selectedCells.Count > 0)
             {
-                copy.selectedCells = this.selectedCells.Value.Copy();
+                foreach(Range selectedCellRange in this.selectedCells)
+                {
+                    copy.AddSelectedCells(selectedCellRange.Copy());
+                }
             }
             copy.sheetProtectionPassword = this.sheetProtectionPassword;
             copy.sheetProtectionPasswordHash = this.sheetProtectionPasswordHash;

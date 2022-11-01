@@ -370,12 +370,19 @@ namespace NanoXLSX.LowLevel
             }
             sb.Append(">");
             CreatePaneString(worksheet, sb);
-            if (worksheet.SelectedCells != null)
+            if (worksheet.SelectedCellRanges.Count > 0)
             {
                 sb.Append("<selection sqref=\"");
-                sb.Append(worksheet.SelectedCells.Value.ToString());
+                for (int i = 0; i < worksheet.SelectedCellRanges.Count; i++)
+                {
+                    sb.Append(worksheet.SelectedCellRanges[i].ToString());
+                    if (i < worksheet.SelectedCellRanges.Count - 1)
+                    {
+                        sb.Append(" ");
+                    }
+                }
                 sb.Append("\" activeCell=\"");
-                sb.Append(worksheet.SelectedCells.Value.StartAddress.ToString());
+                sb.Append(worksheet.SelectedCellRanges[0].StartAddress.ToString());
                 sb.Append("\"/>");
             }
             sb.Append("</sheetView></sheetViews>");

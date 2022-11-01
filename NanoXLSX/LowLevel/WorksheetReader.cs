@@ -77,7 +77,7 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Gets the selected cells (panes are currently not considered)
         /// </summary>
-        public Range? SelectedCells { get; private set; } = null;
+        public List<Range> SelectedCells { get; private set; } = new List<Range>();
 
         /// <summary>
         /// Gets the applicable worksheet protection values
@@ -213,13 +213,24 @@ namespace NanoXLSX.LowLevel
                                 string attribute = ReaderUtils.GetAttribute(selectionNode, "sqref");
                                 if (attribute != null)
                                 {
-                                    if (attribute.Contains(":"))
+                                    if (attribute.Contains(" "))
                                     {
-                                        this.SelectedCells = new Range(attribute);
+                                        // Multiple ranges
+                                        string[] ranges = attribute.Split(' ');
+                                        foreach(string range in ranges)
+                                        {
+                                            this.SelectedCells.Add(new Range(range));
+                                        }
+                                    }
+                                    else if (attribute.Contains(":"))
+                                    {
+                                        // One range
+                                        this.SelectedCells.Add(new Range(attribute));
                                     }
                                     else
                                     {
-                                        this.SelectedCells = new Range(attribute + ":" + attribute);
+                                        // One cell
+                                        this.SelectedCells.Add(new Range(attribute + ":" + attribute));
                                     }
                                 }
                             }
