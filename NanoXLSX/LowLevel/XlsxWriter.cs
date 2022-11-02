@@ -286,7 +286,7 @@ namespace NanoXLSX.LowLevel
             {
                 sb.Append("<dimension ref=\"").Append(new Range(worksheet.GetFirstCellAddress().Value, worksheet.GetLastCellAddress().Value)).Append("\"/>");
             }
-            if (worksheet.SelectedCells != null || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null || worksheet.Hidden)
+            if (worksheet.SelectedCellRanges.Count > 0 || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null || worksheet.Hidden)
             {
                 CreateSheetViewString(worksheet, sb);
             }

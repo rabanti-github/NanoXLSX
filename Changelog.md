@@ -1,5 +1,18 @@
 # Change Log
 
+## v2.1.0
+
+---
+Release Date: **03.11.2022**
+
+- Added a several methods in the Worksheet class to add multiple ranges of selected cells
+- Fixed a bug in the reader function to read worksheets with multiple ranges of selected cells
+- Fixed a bug in several readers to cope (internally) with bools, represented by numbers and textual expressions
+- Updated example in demo
+
+Note: It seems that newer versions of Excel stores boolean attributes internally now as texts (true/false) and not anymore as numbers (1/0).
+      This release adds compatibility to read this newer format but will currently store files still in the old format
+
 ## v2.0.4
 
 ---
