@@ -332,7 +332,7 @@ namespace NanoXLSX.LowLevel
             string attribute = ReaderUtils.GetAttribute(node, attributeName);
             if (attribute != null)
             {
-                int value = ReaderUtils.ParseInt(attribute);
+                int value = ReaderUtils.ParseBinaryBool(attribute);
                 WorksheetProtection.Add(sheetProtectionValue, value);
             }
         }
@@ -439,9 +439,13 @@ namespace NanoXLSX.LowLevel
                 }
                 attribute = ReaderUtils.GetAttribute(columnNode, "hidden");
                 bool hidden = false;
-                if (attribute != null && attribute == "1")
+                if (attribute != null)
                 {
-                    hidden = true;
+                    int value = ReaderUtils.ParseBinaryBool(attribute);
+                    if (value == 1)
+                    {
+                        hidden = true;
+                    }
                 }
                 foreach (int index in indices)
                 {
@@ -1455,9 +1459,13 @@ namespace NanoXLSX.LowLevel
                 {
                     rows[row].Height = ReaderUtils.ParseFloat(heightProperty);
                 }
-                if (hiddenProperty != null && hiddenProperty == "1")
+                if (hiddenProperty != null)
                 {
-                    rows[row].Hidden = true;
+                    int value = ReaderUtils.ParseBinaryBool(hiddenProperty);
+                    if (value == 1)
+                    {
+                        rows[row].Hidden = true;
+                    }
                 }
             }
         }

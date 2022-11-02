@@ -130,13 +130,21 @@ namespace NanoXLSX.LowLevel
                 Border borderStyle = new Border();
                 string diagonalDown = ReaderUtils.GetAttribute(border, "diagonalDown");
                 string diagonalUp = ReaderUtils.GetAttribute(border, "diagonalUp");
-                if (diagonalDown != null && diagonalDown == "1")
+                if (diagonalDown != null)
                 {
-                    borderStyle.DiagonalDown = true;
+                    int value = ReaderUtils.ParseBinaryBool(diagonalDown);
+                    if (value == 1)
+                    {
+                        borderStyle.DiagonalDown = true;
+                    }
                 }
-                if (diagonalUp != null && diagonalUp == "1")
+                if (diagonalUp != null)
                 {
-                    borderStyle.DiagonalUp = true;
+                    int value = ReaderUtils.ParseBinaryBool(diagonalUp);
+                    if (value == 1)
+                    {
+                        borderStyle.DiagonalUp = true;
+                    }
                 }
                 XmlNode innerNode = ReaderUtils.GetChildNode(border, "diagonal");
                 if (innerNode != null)
@@ -170,7 +178,7 @@ namespace NanoXLSX.LowLevel
                 }
                 borderStyle.InternalID = StyleReaderContainer.GetNextBorderId();
                 StyleReaderContainer.AddStyleComponent(borderStyle);
-            }
+                }
         }
 
             /// <summary>
@@ -351,115 +359,133 @@ namespace NanoXLSX.LowLevel
                 {
                     if (ReaderUtils.IsNode(childNode, "xf"))
                     {
-                        CellXf cellXfStyle = new CellXf();
-                        string attribute = ReaderUtils.GetAttribute(childNode, "applyAlignment");
-                        if (attribute != null && attribute == "1")
+                    CellXf cellXfStyle = new CellXf();
+                    string attribute = ReaderUtils.GetAttribute(childNode, "applyAlignment");
+                    if (attribute != null)
+                    {
+                        int value = ReaderUtils.ParseBinaryBool(attribute);
+                        cellXfStyle.ForceApplyAlignment = value == 1;
+                    }
+                    XmlNode alignmentNode = ReaderUtils.GetChildNode(childNode, "alignment");
+                    if (alignmentNode != null)
+                    {
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "shrinkToFit");
+                        if (attribute != null)
                         {
-                            cellXfStyle.ForceApplyAlignment = true;
-                        }
-                        XmlNode alignmentNode = ReaderUtils.GetChildNode(childNode, "alignment");
-                        if (alignmentNode != null)
-                        {
-                            attribute = ReaderUtils.GetAttribute(alignmentNode, "shrinkToFit");
-                            if (attribute != null && attribute == "1")
+                            int value = ReaderUtils.ParseBinaryBool(attribute);
+                            if (value == 1)
                             {
                                 cellXfStyle.Alignment = CellXf.TextBreakValue.shrinkToFit;
                             }
-                            attribute = ReaderUtils.GetAttribute(alignmentNode, "wrapText");
-                            if (attribute != null && attribute == "1")
+                                
+                        }
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "wrapText");
+                        if (attribute != null)
+                        {
+                            int value = ReaderUtils.ParseBinaryBool(attribute);
+                            if (value == 1)
                             {
                                 cellXfStyle.Alignment = CellXf.TextBreakValue.wrapText;
-                            }
-                            attribute = ReaderUtils.GetAttribute(alignmentNode, "horizontal");
-                            CellXf.HorizontalAlignValue horizontalAlignValue;
-                            if (Enum.TryParse<CellXf.HorizontalAlignValue>(attribute, out horizontalAlignValue))
-                            {
-                                cellXfStyle.HorizontalAlign = horizontalAlignValue;
-                            }
-                            attribute = ReaderUtils.GetAttribute(alignmentNode, "vertical");
-                            CellXf.VerticalAlignValue verticalAlignValue;
-                            if (Enum.TryParse<CellXf.VerticalAlignValue>(attribute, out verticalAlignValue))
-                            {
-                                cellXfStyle.VerticalAlign = verticalAlignValue;
-                            }
-                            attribute = ReaderUtils.GetAttribute(alignmentNode, "indent");
-                            if (attribute != null)
-                            {
-                                cellXfStyle.Indent = ReaderUtils.ParseInt(attribute);
-                            }
-                            attribute = ReaderUtils.GetAttribute(alignmentNode, "textRotation");
-                            if (attribute != null)
-                            {
-                                int rotation = ReaderUtils.ParseInt(attribute);
-                                cellXfStyle.TextRotation = rotation > 90 ? 90 - rotation : rotation;
-                            }
+                            } 
                         }
-                        XmlNode protectionNode = ReaderUtils.GetChildNode(childNode, "protection");
-                        if (protectionNode != null)
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "horizontal");
+                        CellXf.HorizontalAlignValue horizontalAlignValue;
+                        if (Enum.TryParse<CellXf.HorizontalAlignValue>(attribute, out horizontalAlignValue))
                         {
-                            attribute = ReaderUtils.GetAttribute(protectionNode, "hidden");
-                            if (attribute != null && attribute == "1")
+                            cellXfStyle.HorizontalAlign = horizontalAlignValue;
+                        }
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "vertical");
+                        CellXf.VerticalAlignValue verticalAlignValue;
+                        if (Enum.TryParse<CellXf.VerticalAlignValue>(attribute, out verticalAlignValue))
+                        {
+                            cellXfStyle.VerticalAlign = verticalAlignValue;
+                        }
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "indent");
+                        if (attribute != null)
+                        {
+                            cellXfStyle.Indent = ReaderUtils.ParseInt(attribute);
+                        }
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "textRotation");
+                        if (attribute != null)
+                        {
+                            int rotation = ReaderUtils.ParseInt(attribute);
+                            cellXfStyle.TextRotation = rotation > 90 ? 90 - rotation : rotation;
+                        }
+                    }
+                    XmlNode protectionNode = ReaderUtils.GetChildNode(childNode, "protection");
+                    if (protectionNode != null)
+                    {
+                        attribute = ReaderUtils.GetAttribute(protectionNode, "hidden");
+                        if (attribute != null)
+                        {
+                            int value = ReaderUtils.ParseBinaryBool(attribute);
+                            if (value == 1)
                             {
                                 cellXfStyle.Hidden = true;
                             }
-                            attribute = ReaderUtils.GetAttribute(protectionNode, "locked");
-                            if (attribute != null && attribute == "1")
+                        }
+                        attribute = ReaderUtils.GetAttribute(protectionNode, "locked");
+                        if (attribute != null)
+                        {
+                            int value = ReaderUtils.ParseBinaryBool(attribute);
+                            if (value  == 1)
                             {
                                 cellXfStyle.Locked = true;
                             }
                         }
+                    }
 
-                        cellXfStyle.InternalID = StyleReaderContainer.GetNextCellXFId();
-                        StyleReaderContainer.AddStyleComponent(cellXfStyle);
+                    cellXfStyle.InternalID = StyleReaderContainer.GetNextCellXFId();
+                    StyleReaderContainer.AddStyleComponent(cellXfStyle);
 
-                        Style style = new Style();
-                        int id = 0;
-                        bool hasId;
+                    Style style = new Style();
+                    int id = 0;
+                    bool hasId;
 
-                        hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId"), out id);
-                        NumberFormat format = StyleReaderContainer.GetNumberFormat(id);
-                        if (!hasId || format == null)
-                        {
-                            NumberFormat.FormatNumber formatNumber;
-                            NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'
-                            // Invalid values should not occur at all (malformed Excel files). 
-                            // Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 
-                            format = new NumberFormat();
-                            format.Number = formatNumber;
-                            format.InternalID = StyleReaderContainer.GetNextNumberFormatId();
-                            StyleReaderContainer.AddStyleComponent(format);
-                        }
-                        hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "borderId"), out id);
-                        Border border = StyleReaderContainer.GetBorder(id);
-                        if (!hasId || border == null)
-                        {
-                            border = new Border();
-                            border.InternalID = StyleReaderContainer.GetNextBorderId();
-                        }
-                        hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fillId"), out id);
-                        Fill fill = StyleReaderContainer.GetFill(id);
-                        if (!hasId || fill == null)
-                        {
-                            fill = new Fill();
-                            fill.InternalID = StyleReaderContainer.GetNextFillId();
-                        }
-                        hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fontId"), out id);
-                        Font font = StyleReaderContainer.GetFont(id);
-                        if (!hasId || font == null)
-                        {
-                            font = new Font();
-                            font.InternalID = StyleReaderContainer.GetNextFontId();
-                        }
+                    hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId"), out id);
+                    NumberFormat format = StyleReaderContainer.GetNumberFormat(id);
+                    if (!hasId || format == null)
+                    {
+                        NumberFormat.FormatNumber formatNumber;
+                        NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'
+                        // Invalid values should not occur at all (malformed Excel files). 
+                        // Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 
+                        format = new NumberFormat();
+                        format.Number = formatNumber;
+                        format.InternalID = StyleReaderContainer.GetNextNumberFormatId();
+                        StyleReaderContainer.AddStyleComponent(format);
+                    }
+                    hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "borderId"), out id);
+                    Border border = StyleReaderContainer.GetBorder(id);
+                    if (!hasId || border == null)
+                    {
+                        border = new Border();
+                        border.InternalID = StyleReaderContainer.GetNextBorderId();
+                    }
+                    hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fillId"), out id);
+                    Fill fill = StyleReaderContainer.GetFill(id);
+                    if (!hasId || fill == null)
+                    {
+                        fill = new Fill();
+                        fill.InternalID = StyleReaderContainer.GetNextFillId();
+                    }
+                    hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fontId"), out id);
+                    Font font = StyleReaderContainer.GetFont(id);
+                    if (!hasId || font == null)
+                    {
+                        font = new Font();
+                        font.InternalID = StyleReaderContainer.GetNextFontId();
+                    }
 
-                        // TODO: Implement other style information
-                        style.CurrentNumberFormat = format;
-                        style.CurrentBorder = border;
-                        style.CurrentFill = fill;
-                        style.CurrentFont = font;
-                        style.CurrentCellXf = cellXfStyle;
-                        style.InternalID = StyleReaderContainer.GetNextStyleId();
+                    // TODO: Implement other style information
+                    style.CurrentNumberFormat = format;
+                    style.CurrentBorder = border;
+                    style.CurrentFill = fill;
+                    style.CurrentFont = font;
+                    style.CurrentCellXf = cellXfStyle;
+                    style.InternalID = StyleReaderContainer.GetNextStyleId();
 
-                        StyleReaderContainer.AddStyleComponent(style);
+                    StyleReaderContainer.AddStyleComponent(style);
                     }
                 }
         }
