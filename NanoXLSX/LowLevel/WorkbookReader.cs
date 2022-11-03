@@ -120,19 +120,13 @@ namespace NanoXLSX.LowLevel
             if (attribute != null)
             {
                 int value = ReaderUtils.ParseBinaryBool(attribute);
-                if (value == 1)
-                {
-                    this.LockWindows = true;
-                }
+                this.LockWindows = value == 1;
             }
             attribute = ReaderUtils.GetAttribute(node, "lockStructure");
             if (attribute != null)
             {
                 int value = ReaderUtils.ParseBinaryBool(attribute);
-                if (value == 1)
-                {
-                    this.LockStructure = true;
-                }
+                this.LockStructure = value == 1;
             }
             attribute = ReaderUtils.GetAttribute(node, "workbookPassword");
             if (attribute != null)

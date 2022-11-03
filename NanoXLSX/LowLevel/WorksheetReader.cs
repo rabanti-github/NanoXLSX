@@ -5,13 +5,12 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml;
-using NanoXLSX.Exceptions;
-using NanoXLSX.Styles;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.LowLevel
@@ -219,12 +218,12 @@ namespace NanoXLSX.LowLevel
                                         string[] ranges = attribute.Split(' ');
                                         foreach (string range in ranges)
                                         {
-                                            GetSelectedCells(range);
+                                            CollectSelectedCells(range);
                                         }
                                     }
                                     else
                                     {
-                                        GetSelectedCells(attribute);
+                                        CollectSelectedCells(attribute);
                                     }
                                     
                                 }
@@ -284,10 +283,10 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Resolves the selected cells of a range or a soingl cell
+        /// Resolves the selected cells of a range or a single cell
         /// </summary>
-        /// <param name="attribute">raw range/cell as string</param>
-        private void GetSelectedCells(string attribute)
+        /// <param name="attribute">Raw range/cell as string</param>
+        private void CollectSelectedCells(string attribute)
         {
             if (attribute.Contains(":"))
             {
@@ -1475,10 +1474,8 @@ namespace NanoXLSX.LowLevel
                 if (hiddenProperty != null)
                 {
                     int value = ReaderUtils.ParseBinaryBool(hiddenProperty);
-                    if (value == 1)
-                    {
-                        rows[row].Hidden = true;
-                    }
+                    rows[row].Hidden = value == 1;
+                    
                 }
             }
         }
