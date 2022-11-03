@@ -217,21 +217,16 @@ namespace NanoXLSX.LowLevel
                                     {
                                         // Multiple ranges
                                         string[] ranges = attribute.Split(' ');
-                                        foreach(string range in ranges)
+                                        foreach (string range in ranges)
                                         {
-                                            this.SelectedCells.Add(new Range(range));
+                                            GetSelectedCells(range);
                                         }
-                                    }
-                                    else if (attribute.Contains(":"))
-                                    {
-                                        // One range
-                                        this.SelectedCells.Add(new Range(attribute));
                                     }
                                     else
                                     {
-                                        // One cell
-                                        this.SelectedCells.Add(new Range(attribute + ":" + attribute));
+                                        GetSelectedCells(attribute);
                                     }
+                                    
                                 }
                             }
                         }
@@ -285,6 +280,24 @@ namespace NanoXLSX.LowLevel
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Resolves the selected cells of a range or a soingl cell
+        /// </summary>
+        /// <param name="attribute">raw range/cell as string</param>
+        private void GetSelectedCells(string attribute)
+        {
+            if (attribute.Contains(":"))
+            {
+                // One range
+                this.SelectedCells.Add(new Range(attribute));
+            }
+            else
+            {
+                // One cell
+                this.SelectedCells.Add(new Range(attribute + ":" + attribute));
             }
         }
 

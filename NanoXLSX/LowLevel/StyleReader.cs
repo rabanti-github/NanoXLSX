@@ -233,10 +233,10 @@ namespace NanoXLSX.LowLevel
                     XmlNode backgroundNode = ReaderUtils.GetChildNode(innerNode, "bgColor");
                     if (backgroundNode != null)
                     {
-                        string backgroundRgba = ReaderUtils.GetAttribute(backgroundNode, "rgb");
-                        if (!string.IsNullOrEmpty(backgroundRgba))
+                        string backgroundArgb = ReaderUtils.GetAttribute(backgroundNode, "rgb");
+                        if (!string.IsNullOrEmpty(backgroundArgb))
                         {
-                            fillStyle.BackgroundColor = backgroundRgba;
+                            fillStyle.BackgroundColor = backgroundArgb;
                         }
                         string backgroundIndex = ReaderUtils.GetAttribute(backgroundNode, "indexed");
                         if (!string.IsNullOrEmpty(backgroundIndex))

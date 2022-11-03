@@ -209,7 +209,7 @@ namespace NanoXLSX
         #region methods_PICO
 
         /// <summary>
-        /// Adds a color value (HEX; 6-digit RGB or 8-digit RGBA) to the MRU list
+        /// Adds a color value (HEX; 6-digit RGB or 8-digit ARGB) to the MRU list
         /// </summary>
         /// <param name="color">RGB code in hex format (either 6 characters, e.g. FF00AC or 8 characters with leading alpha value). Alpha will be set to full opacity (FF) in case of 6 characters</param>
         public void AddMruColor(string color)
