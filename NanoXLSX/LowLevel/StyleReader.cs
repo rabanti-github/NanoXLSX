@@ -108,8 +108,7 @@ namespace NanoXLSX.LowLevel
                     {
                         NumberFormat numberFormat = new NumberFormat();
                         int id = ReaderUtils.ParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId")); // Default will (justified) throw an exception
-                        string code = ReaderUtils.GetAttribute(childNode, "formatCode", string.Empty);
-                        code = NumberFormat.UnEscapeFormatCode(code);
+                        string code = ReaderUtils.GetAttribute(childNode, "formatCode", string.Empty); // Code is not un-escaped
                         numberFormat.CustomFormatID = id;
                         numberFormat.Number = NumberFormat.FormatNumber.custom;
                         numberFormat.InternalID = id;

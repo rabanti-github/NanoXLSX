@@ -2055,7 +2055,7 @@ namespace NanoXLSX
         /// <param name="range">Cell range to add as selected cells</param>
         public void AddSelectedCells(string range)
         {
-            if (range != null)
+            if (!string.IsNullOrEmpty(range))
             {
                 selectedCells.Add(Cell.ResolveCellRange(range));
             }

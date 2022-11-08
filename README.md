@@ -41,6 +41,7 @@ There are some limitations:
 * There are some approximations for floating point numbers. These values (e.g. pane split widths) may deviate from the originally written values
 * Numeric values are cast to the appropriate .NET types with best effort. There are import options available to enforce specific types
 * No support of other objects than spreadsheet data at the moment
+* Due to the potential high complexity, custom number format codes are currently not automatically escaped on writing or un-escaped on reading
 
 ## Requirements
 

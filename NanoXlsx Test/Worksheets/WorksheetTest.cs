@@ -1297,7 +1297,7 @@ namespace NanoXLSX_Test.Worksheets
         }
 
 
-        [Theory(DisplayName = "Test of the SetSelectedCells function with range objects")]
+        [Theory(DisplayName = "Test of the SetSelectedCells function with range objects --> OBSOLETE")]
         [InlineData("A1:A1")]
         [InlineData("B2:C10")]
         [InlineData("A1:A10")]
@@ -1313,7 +1313,32 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(range.ToString(), worksheet.SelectedCells.Value.ToString());
         }
 
-        [Theory(DisplayName = "Test of the SetSelectedCells function with strings")]
+        [Theory(DisplayName = "Test of the AddSelectedCells function with range objects")]
+        [InlineData("A1:A1", 1)]
+        [InlineData("B2:C10", 1)]
+        [InlineData("A1:A10", 1)]
+        [InlineData("A1:R1", 1)]
+        [InlineData("$A$1:$R$1", 1)]
+        [InlineData("A1:XFD1048575", 1)]
+        [InlineData("A1:A1,B2:D2", 2)]
+        [InlineData("B2:C10,D1:F6,F8:F10", 3)]
+        [InlineData("A1:A10,A12", 2)]
+        [InlineData("A1:R1,S1:S1", 2)]
+        [InlineData("$A$1:$R$1,$S$1:$S$4,X10", 3)]
+        public void AddSelectedCellsTest(string rangeExpresions, int expectedRangeCount)
+        {
+            string[] rangeStrings = rangeExpresions.Split(',');
+            Worksheet worksheet = new Worksheet();
+            Assert.Empty(worksheet.SelectedCellRanges);
+            foreach (string range in rangeStrings)
+            {
+                Range r = GetRangeFromExpression(range);
+                worksheet.AddSelectedCells(r);
+            }
+            AssertSelectedCellRanges(expectedRangeCount, rangeStrings, worksheet);
+        }
+
+        [Theory(DisplayName = "Test of the SetSelectedCells function with strings  --> OBSOLETE")]
         [InlineData("A1:A1")]
         [InlineData("B2:C10")]
         [InlineData("C10:B5")]
@@ -1338,8 +1363,33 @@ namespace NanoXLSX_Test.Worksheets
             }
         }
 
+        [Theory(DisplayName = "Test of the AddSelectedCells function with strings")]
+        [InlineData("A1:A1", 1)]
+        [InlineData("B2:C10", 1)]
+        [InlineData("A1:A10", 1)]
+        [InlineData("A1:R1", 1)]
+        [InlineData("$A$1:$R$1", 1)]
+        [InlineData("A1:XFD1048575", 1)]
+        [InlineData("A1:A1,B2:D2", 2)]
+        [InlineData("B2:C10,D1:F6,F8:F10", 3)]
+        [InlineData("A1:A10,A12:A12", 2)]
+        [InlineData("A1:R1,S1:S1", 2)]
+        [InlineData("$A$1:$R$1,$S$1:$S$4,X10:X10", 3)]
+        [InlineData("A1:A1,B2:D2,", 2)] // Empty string should be ignored
+        public void AddSelectedCellsTest2(string rangeExpresions, int expectedRangeCount)
+        {
+            string[] rangeStrings = rangeExpresions.Split(',');
+            Worksheet worksheet = new Worksheet();
+            Assert.Empty(worksheet.SelectedCellRanges);
+            foreach (string range in rangeStrings)
+            {
+                worksheet.AddSelectedCells(range);
+            }
+            AssertSelectedCellRanges(expectedRangeCount, rangeStrings, worksheet);
+        }
 
-        [Theory(DisplayName = "Test of the SetSelectedCells function with address objects")]
+
+        [Theory(DisplayName = "Test of the SetSelectedCells function with address objects  --> OBSOLETE")]
         [InlineData("A1", "A1")]
         [InlineData("B2", "C10")]
         [InlineData("C10", "B5")]
@@ -1357,6 +1407,36 @@ namespace NanoXLSX_Test.Worksheets
             worksheet.SetSelectedCells(start, end);
             Assert.Equal(range.StartAddress.GetAddress(), worksheet.SelectedCells.Value.StartAddress.GetAddress());
             Assert.Equal(range.EndAddress.GetAddress(), worksheet.SelectedCells.Value.EndAddress.GetAddress());
+        }
+
+        [Theory(DisplayName = "Test of the AddSelectedCells function with address objects")]
+        [InlineData("A1", "A1")]
+        [InlineData("B2", "C10")]
+        [InlineData("C10", "B5")]
+        [InlineData("A1", "A10")]
+        [InlineData("A1", "R1")]
+        [InlineData("$A$1", "$R$1")]
+        [InlineData("A1", "XFD1048575")]
+        [InlineData("A1,B1", "A1,B1")]
+        [InlineData("B2,D5", "C10,E10")]
+        [InlineData("C10,C20", "B5,B20")]
+        [InlineData("A1,B2,C3", "A10,B20,C30")]
+        [InlineData("$A$1,$X$1", "$R$1,$Y$2")]
+        public void AddSelectedCellsTest3(string startAddressString, string endAddressString)
+        {
+            Worksheet worksheet = new Worksheet();
+            string[] startAddresses = startAddressString.Split(',');
+            string[] endAddresses = endAddressString.Split(',');
+            Assert.Empty(worksheet.SelectedCellRanges);
+            string[] expectedRanges = new string[startAddresses.Length];
+            for(int i = 0; i < startAddresses.Length; i++)
+            {
+                expectedRanges[i] = startAddresses[i] + ":" + endAddresses[i];
+                Address start = new Address(startAddresses[i]);
+                Address end = new Address(endAddresses[i]);
+                worksheet.AddSelectedCells(start, end);
+            }
+            AssertSelectedCellRanges(startAddresses.Length, expectedRanges, worksheet);
         }
 
         [Theory(DisplayName = "Test of the SetSheetProtectionPassword function")]
@@ -1506,6 +1586,34 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Empty(worksheet.Columns);
             Assert.Null(worksheet.ActiveStyle);
             Assert.Null(worksheet.ActivePane);
+        }
+
+        private static Range GetRangeFromExpression(string range)
+        {
+            Range r;
+            if (range.Contains(":"))
+            {
+                r = new Range(range);
+            }
+            else
+            {
+                r = new Range(range + ":" + range);
+            }
+            return r;
+        }
+
+        private static void AssertSelectedCellRanges(int expectedRangeCount, string[] ranges, Worksheet worksheet)
+        {
+            Assert.Equal(expectedRangeCount, worksheet.SelectedCellRanges.Count);
+            foreach (string range in ranges)
+            {
+                if (string.IsNullOrEmpty(range))
+                {
+                    continue;
+                }
+                Range r = GetRangeFromExpression(range);
+                Assert.Contains(r, worksheet.SelectedCellRanges);
+            }
         }
 
     }

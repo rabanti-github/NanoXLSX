@@ -3,15 +3,19 @@
 ## v2.1.0
 
 ---
-Release Date: **03.11.2022**
+Release Date: **08.11.2022**
 
 - Added a several methods in the Worksheet class to add multiple ranges of selected cells
 - Fixed a bug in the reader function to read worksheets with multiple ranges of selected cells
 - Fixed a bug in several readers to cope (internally) with bools, represented by numbers and textual expressions
+- Removed internal escaping of custom number format codes for now
 - Updated example in demo
 
-Note: It seems that newer versions of Excel stores boolean attributes internally now as texts (true/false) and not anymore as numbers (1/0).
+Note: It seems that newer versions of Excel may store boolean attributes internally now as texts (true/false) and not anymore as numbers (1/0).
       This release adds compatibility to read this newer format but will currently store files still in the old format
+
+Note 2: The incomplete internal escaping of custom number format codes was removed due to the potential high complexity. 
+        Escaping must be performed currently by hand, according to OOXML specs: Part 1 - Fundamentals And Markup Language Reference, Chapter 18.8.31 
 
 ## v2.0.4
 

@@ -297,6 +297,23 @@ namespace NanoXLSX_Test.Reader
             }
         }
 
+        [Fact(DisplayName = "Test of the reader functionality for newer Excel formats, where booleans are defined by expressions and not integers anymore")]
+        public void ReadNewFormatTest()
+        {
+            // Note: This test mainly checks the validity of the reader functionality and not the actual data
+            // The values may change (test must be adapted)
+            Stream stream = TestUtils.GetResource("new_format.xlsx");
+            Workbook workbook = Workbook.Load(stream);
+            Assert.Contains(Worksheet.SheetProtectionValue.objects, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.scenarios, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.autoFilter, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.insertColumns, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.insertHyperlinks, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.deleteRows, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.sort, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.autoFilter, workbook.CurrentWorksheet.SheetProtectionValues);
+        }
+
         [Theory(DisplayName = "Test of the reader functionality on invalid / unexpected values")]
         [InlineData("A1", Cell.CellType.STRING, "Test")]
         [InlineData("B1", Cell.CellType.STRING, "x")]
@@ -330,6 +347,21 @@ namespace NanoXLSX_Test.Reader
             Workbook workbook = Workbook.Load(stream);
             Assert.Equal(expectedType, workbook.Worksheets[0].Cells[cellAddress].DataType);
             Assert.Equal(expectedValue, workbook.Worksheets[0].Cells[cellAddress].Value);
+        }
+
+        [Fact(DisplayName = "Test of the reader functionality on invalid / unexpected sheet protection values (should not crash)")]
+        public void ReadInvalidSheetProtectionValuesTest()
+        {
+            // Note: Sheet protection contains unexpected values (-1, 2, f, no, <empty>)
+            Stream stream = TestUtils.GetResource("tampered.xlsx");
+            Workbook workbook = Workbook.Load(stream);
+            Assert.Contains(Worksheet.SheetProtectionValue.objects, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.scenarios, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.autoFilter, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.insertColumns, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.insertHyperlinks, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.deleteRows, workbook.CurrentWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.autoFilter, workbook.CurrentWorksheet.SheetProtectionValues);
         }
 
         [Theory(DisplayName = "Test of the failing reader functionality on invalid XML content")]
