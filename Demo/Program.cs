@@ -399,14 +399,16 @@ namespace Demo
         {
             Workbook workbook = new Workbook("test8.xlsx", "Sheet*1", true);  				            // Create new workbook with invalid sheet name (*); Auto-Sanitizing will replace * with _
             workbook.CurrentWorksheet.AddNextCell("Test");              								// Add cell A1
-            workbook.CurrentWorksheet.SetSelectedCells("A5:B10");										// Set the selection to the range A5:B10
+            workbook.CurrentWorksheet.AddSelectedCells("A5:B10");										// Set the selection to the range A5:B10
+            workbook.CurrentWorksheet.AddSelectedCells("D2:D2");                                        // Add another cell as selected on this worksheet
             workbook.AddWorksheet("Sheet2");															// Create new worksheet
             workbook.CurrentWorksheet.AddNextCell("Test2");              								// Add cell A1
             Range range = new Range(new Address(1, 1), new Address(3, 3));			                    // Create a cell range for the selection B2:D4
-            workbook.CurrentWorksheet.SetSelectedCells(range);											// Set the selection to the range
+            workbook.CurrentWorksheet.SetSelectedCells(range);											// Set the selection to the range (deprecated method to clear all previous definitions)
             workbook.AddWorksheet("Sheet2", true);							                            // Create new worksheet with already existing name; The name will be changed to Sheet21 due to auto-sanitizing (appending of 1)
             workbook.CurrentWorksheet.AddNextCell("Test3");              								// Add cell A1
-            workbook.CurrentWorksheet.SetSelectedCells(new Address(2, 2), new Address(4, 4));	        // Set the selection to the range C3:E5
+            workbook.CurrentWorksheet.AddSelectedCells(new Address(2, 2), new Address(4, 4));	        // Set the selection to the range C3:E5
+            workbook.CurrentWorksheet.AddSelectedCells(new Address(5, 1), new Address(5, 1));	        // Set the selection to F2 as range
             workbook.SetSelectedWorksheet(1);															// Set the second Tab as selected (zero-based: 1)
             workbook.Save();                                            								// Save the workbook
         }

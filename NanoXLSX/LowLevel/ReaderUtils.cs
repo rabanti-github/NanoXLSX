@@ -90,7 +90,7 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Parses a float independent from the culture info of the host
+        /// Parses a float independent of the culture info of the host
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <returns>Parsed float</returns>
@@ -100,7 +100,7 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Parses an int independent from the culture info of the host
+        /// Parses an int independent of the culture info of the host
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <returns>Parsed int</returns>
@@ -110,7 +110,41 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Tries to parse an int independent from the culture info of the host
+        /// Parses a bool as a binary number either based on an int (0/1) or a string expression (true/ false), independent of the culture info of the host
+        /// </summary>
+        /// <param name="rawValue">Raw number or expression as string</param>
+        /// <returns>Parsed bool as number (0 = false, 1 = true)</returns>
+        internal static int ParseBinaryBool(String rawValue)
+        {
+            if (string.IsNullOrEmpty(rawValue))
+            {
+                return 0;
+            }
+            int value;
+            if (TryParseInt(rawValue, out value))
+            {
+                if (value >= 1)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            rawValue = rawValue.ToLower();
+            if (rawValue == "true")
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Tries to parse an int independent of the culture info of the host
         /// </summary>
         /// <param name="rawvalue">Raw number as string</param>
         /// <param name="parsedValue">Parsed int</param>

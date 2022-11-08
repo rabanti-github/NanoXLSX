@@ -6,7 +6,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Version>2.0.4</Version>
+    <Version>2.1.0</Version>
 
     <Authors>Raphael Stoeckli</Authors>
 
@@ -34,9 +34,9 @@
 
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
 
-    <AssemblyVersion>2.0.4.0</AssemblyVersion>
+    <AssemblyVersion>2.1.4.0</AssemblyVersion>
 
-    <FileVersion>2.0.4.0</FileVersion>
+    <FileVersion>2.1.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -50,6 +50,7 @@
 	<None Remove="Resources\invalid_workbook_sheet-definition.xlsx" />
     <None Remove="Resources\invalid_worksheet.xlsx" />
     <None Remove="Resources\missing_worksheet.xlsx" />
+    <None Remove="Resources\new_format.xlsx" />
     <None Remove="Resources\omitted_style_refs.xlsx" />
     <None Remove="Resources\phonetics.xlsx" />
     <None Remove="Resources\tampered.xlsx" />
@@ -69,6 +70,7 @@
 	  <EmbeddedResource Include="Resources\missing_worksheet.xlsx">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\new_format.xlsx" />
 	  <EmbeddedResource Include="Resources\omitted_style_refs.xlsx" />
 	  <EmbeddedResource Include="Resources\phonetics.xlsx" />
 	<EmbeddedResource Include="Resources\tampered.xlsx" />

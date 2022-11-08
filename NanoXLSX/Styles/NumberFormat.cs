@@ -135,10 +135,11 @@ namespace NanoXLSX.Styles
 
         #region properties
         /// <summary>
-        /// Gets or sets the custom format code in the notation of Excel
+        /// Gets or sets the raw custom format code in the notation of Excel. <b>The code is not escaped or un-escaped (on workbook loading)</b>
         /// </summary>
         /// <exception cref="Exceptions.FormatException">Throws a FormatException if passed value is null or empty</exception>
-        /// <remarks>Do not escape backslashes in custom format codes by double-backslashes (four in code), since escaping will be performed on saving the file. Unescaping will be also performed on loading</remarks>
+        /// <remarks>Currently, there is no auto-escaping applied to custom format strings. For instance, to add a white space, internally it is escaped by a backspace (\ ).
+        /// To get a valid custom format code, this escaping must be applied manually, according to OOXML specs: Part 1 - Fundamentals And Markup Language Reference, Chapter 18.8.31</remarks>
         [Append]
         public string CustomFormatCode
         {
@@ -277,34 +278,6 @@ namespace NanoXLSX.Styles
                 formatNumber = FormatNumber.custom;
                 return FormatRange.custom_format;
             }
-        }
-
-        /// <summary>
-        /// Method to escape Backslashes in custom format codes.
-        /// </summary>
-        /// <param name="rawFormatCode">Raw value to escape</param>
-        /// <returns>Escaped format code</returns>
-        internal static string EscapeFormatCode(string rawFormatCode)
-        {
-            // TODO: Add further rules, if discovered
-            return rawFormatCode.Replace("\\", "\\\\");
-        }
-
-        /// <summary>
-        /// Method to unescape a custom format code when reading a workbook
-        /// </summary>
-        /// <param name="escapedFormatCode">Escaped format code from the style definition of a read workbook</param>
-        /// <returns>Unescaped format code</returns>
-        internal static string UnEscapeFormatCode(string escapedFormatCode)
-        {
-            if (!escapedFormatCode.Contains("\\"))
-            {
-                return escapedFormatCode;
-            }
-            // TODO: Add further rules, if discovered
-            string intermediateEscaped = escapedFormatCode.Replace("\\\\", "\0");
-            intermediateEscaped = intermediateEscaped.Replace("\\", "");
-            return intermediateEscaped.Replace("\0", "\\");
         }
 
         /// <summary>

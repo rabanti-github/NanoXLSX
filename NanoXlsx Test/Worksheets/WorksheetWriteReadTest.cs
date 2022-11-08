@@ -341,7 +341,58 @@ namespace NanoXLSX_Test.Worksheets
             }
         }
 
-        [Fact(DisplayName = "Test of the 'SheetID'  property when writing and reading a worksheet")]
+        [Theory(DisplayName = "Test of the 'SelectedCellRanges' property when writing and reading a worksheet")]
+        [InlineData(null, 0)]
+        [InlineData("A1:A1", 0)]
+        [InlineData("A1:C1", 0)]
+        [InlineData("B1:D1", 0)]
+        [InlineData(null, 1)]
+        [InlineData("A1:A1", 1)]
+        [InlineData("A1:C1", 2)]
+        [InlineData("B1:D1", 3)]
+        [InlineData("A1:A1,B1:B1", 0)]
+        [InlineData("A1:C1,D1:F2", 0)]
+        [InlineData("B1:D1,A1:A1,F3:F4", 0)]
+        [InlineData("A1:A1,B1:B1", 1)]
+        [InlineData("A1:C1,D1:F2", 2)]
+        [InlineData("B1:D1,A1:A1,F3:F4", 3)]
+        public void SelectedCellRangesWriteReadTest(string selectedCellsRanges, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            string[] ranges = null;
+            if (selectedCellsRanges != null)
+            {
+                ranges = selectedCellsRanges.Split(',');
+                foreach(string range in ranges)
+                {
+                    Range range2 = new Range(range);
+                    for (int i = 0; i <= sheetIndex; i++)
+                    {
+                        if (sheetIndex == i)
+                        {
+                            workbook.SetCurrentWorksheet(i);
+                            workbook.CurrentWorksheet.AddSelectedCells(range2);
+                        }
+                    }
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            if (selectedCellsRanges == null)
+            {
+                Assert.Empty(givenWorksheet.SelectedCellRanges);
+            }
+            else
+            {
+                Assert.Equal(ranges.Length, givenWorksheet.SelectedCellRanges.Count);
+                foreach(string range in ranges)
+                {
+                    Assert.Contains(new Range(range), givenWorksheet.SelectedCellRanges);
+                }
+            }
+
+        }
+
+            [Fact(DisplayName = "Test of the 'SheetID'  property when writing and reading a worksheet")]
         public void SheetIDWriteReadTest()
         {
             Workbook workbook = new Workbook();

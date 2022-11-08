@@ -5,13 +5,12 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml;
-using NanoXLSX.Exceptions;
-using NanoXLSX.Styles;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.LowLevel
@@ -77,7 +76,7 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Gets the selected cells (panes are currently not considered)
         /// </summary>
-        public Range? SelectedCells { get; private set; } = null;
+        public List<Range> SelectedCells { get; private set; } = new List<Range>();
 
         /// <summary>
         /// Gets the applicable worksheet protection values
@@ -213,14 +212,20 @@ namespace NanoXLSX.LowLevel
                                 string attribute = ReaderUtils.GetAttribute(selectionNode, "sqref");
                                 if (attribute != null)
                                 {
-                                    if (attribute.Contains(":"))
+                                    if (attribute.Contains(" "))
                                     {
-                                        this.SelectedCells = new Range(attribute);
+                                        // Multiple ranges
+                                        string[] ranges = attribute.Split(' ');
+                                        foreach (string range in ranges)
+                                        {
+                                            CollectSelectedCells(range);
+                                        }
                                     }
                                     else
                                     {
-                                        this.SelectedCells = new Range(attribute + ":" + attribute);
+                                        CollectSelectedCells(attribute);
                                     }
+                                    
                                 }
                             }
                         }
@@ -278,6 +283,24 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
+        /// Resolves the selected cells of a range or a single cell
+        /// </summary>
+        /// <param name="attribute">Raw range/cell as string</param>
+        private void CollectSelectedCells(string attribute)
+        {
+            if (attribute.Contains(":"))
+            {
+                // One range
+                this.SelectedCells.Add(new Range(attribute));
+            }
+            else
+            {
+                // One cell
+                this.SelectedCells.Add(new Range(attribute + ":" + attribute));
+            }
+        }
+
+        /// <summary>
         /// Gets the sheet protection values of the current worksheets
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
@@ -321,7 +344,7 @@ namespace NanoXLSX.LowLevel
             string attribute = ReaderUtils.GetAttribute(node, attributeName);
             if (attribute != null)
             {
-                int value = ReaderUtils.ParseInt(attribute);
+                int value = ReaderUtils.ParseBinaryBool(attribute);
                 WorksheetProtection.Add(sheetProtectionValue, value);
             }
         }
@@ -428,9 +451,13 @@ namespace NanoXLSX.LowLevel
                 }
                 attribute = ReaderUtils.GetAttribute(columnNode, "hidden");
                 bool hidden = false;
-                if (attribute != null && attribute == "1")
+                if (attribute != null)
                 {
-                    hidden = true;
+                    int value = ReaderUtils.ParseBinaryBool(attribute);
+                    if (value == 1)
+                    {
+                        hidden = true;
+                    }
                 }
                 foreach (int index in indices)
                 {
@@ -1444,9 +1471,11 @@ namespace NanoXLSX.LowLevel
                 {
                     rows[row].Height = ReaderUtils.ParseFloat(heightProperty);
                 }
-                if (hiddenProperty != null && hiddenProperty == "1")
+                if (hiddenProperty != null)
                 {
-                    rows[row].Hidden = true;
+                    int value = ReaderUtils.ParseBinaryBool(hiddenProperty);
+                    rows[row].Hidden = value == 1;
+                    
                 }
             }
         }

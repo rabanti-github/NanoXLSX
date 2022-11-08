@@ -286,7 +286,7 @@ namespace NanoXLSX.LowLevel
             {
                 sb.Append("<dimension ref=\"").Append(new Range(worksheet.GetFirstCellAddress().Value, worksheet.GetLastCellAddress().Value)).Append("\"/>");
             }
-            if (worksheet.SelectedCells != null || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null || worksheet.Hidden)
+            if (worksheet.SelectedCellRanges.Count > 0 || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null || worksheet.Hidden)
             {
                 CreateSheetViewString(worksheet, sb);
             }
@@ -370,12 +370,19 @@ namespace NanoXLSX.LowLevel
             }
             sb.Append(">");
             CreatePaneString(worksheet, sb);
-            if (worksheet.SelectedCells != null)
+            if (worksheet.SelectedCellRanges.Count > 0)
             {
                 sb.Append("<selection sqref=\"");
-                sb.Append(worksheet.SelectedCells.Value.ToString());
+                for (int i = 0; i < worksheet.SelectedCellRanges.Count; i++)
+                {
+                    sb.Append(worksheet.SelectedCellRanges[i].ToString());
+                    if (i < worksheet.SelectedCellRanges.Count - 1)
+                    {
+                        sb.Append(" ");
+                    }
+                }
                 sb.Append("\" activeCell=\"");
-                sb.Append(worksheet.SelectedCells.Value.StartAddress.ToString());
+                sb.Append(worksheet.SelectedCellRanges[0].StartAddress.ToString());
                 sb.Append("\"/>");
             }
             sb.Append("</sheetView></sheetViews>");
@@ -1216,8 +1223,9 @@ namespace NanoXLSX.LowLevel
                     {
                         throw new FormatException("The number format style component with the ID " + Utils.ToString(item.CustomFormatID) + " cannot be null or empty");
                     }
-                    string customFormat = NumberFormat.EscapeFormatCode(item.CustomFormatCode);
-                    sb.Append("<numFmt formatCode=\"").Append(EscapeXmlAttributeChars(customFormat)).Append("\" numFmtId=\"").Append(item.CustomFormatID.ToString("G", culture)).Append("\"/>");
+                    // OOXML: Escaping according to Chp.18.8.31
+                    // TODO: v3> Add a custom format builder
+                    sb.Append("<numFmt formatCode=\"").Append(EscapeXmlAttributeChars(item.CustomFormatCode)).Append("\" numFmtId=\"").Append(item.CustomFormatID.ToString("G", culture)).Append("\"/>");
                 }
             }
             return sb.ToString();
