@@ -62,6 +62,7 @@ There are some limitations:
 &amp;lt%3bli&amp;gt%3bThere are some approximations for floating point numbers. These values %28e.g. pane split widths%29 may deviate from the originally written values&amp;lt%3b/li&amp;gt%3b
 &amp;lt%3bli&amp;gt%3bNumeric values are cast to the appropriate .NET types with best effort. There are import options available to enforce specific types&amp;lt%3b/li&amp;gt%3b
 &amp;lt%3bli&amp;gt%3bNo support of other objects than spreadsheet data at the moment&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bDue to the potential high complexity, custom number format codes are currently not automatically escaped on writing or un-escaped on reading&amp;lt%3b/li&amp;gt%3b
 &amp;lt%3b/ul&amp;gt%3b
 
 &amp;lt%3bh2&amp;gt%3bRequirements&amp;lt%3b/h2&amp;gt%3b

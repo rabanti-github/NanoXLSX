@@ -208,7 +208,7 @@ namespace Demo
         {
             Workbook workbook = new Workbook(false);                    // Create new workbook
             workbook.AddWorksheet("Sheet1");                            // Add a new Worksheet and set it as current sheet
-            workbook.CurrentWorksheet.AddNextCell("月曜日");            // Add cell A1 (Unicode)
+            workbook.CurrentWorksheet.AddNextCell("月曜日");             // Add cell A1 (Unicode)
             workbook.CurrentWorksheet.AddNextCell(-987);                // Add cell B1
             workbook.CurrentWorksheet.AddNextCell(false);               // Add cell C1
             workbook.CurrentWorksheet.GoToNextRow();                    // Go to Row 2
@@ -397,20 +397,20 @@ namespace Demo
         /// </summary>
         private static void Demo8()
         {
-            Workbook workbook = new Workbook("test8.xlsx", "Sheet*1", true);  				            // Create new workbook with invalid sheet name (*); Auto-Sanitizing will replace * with _
-            workbook.CurrentWorksheet.AddNextCell("Test");              								// Add cell A1
-            workbook.CurrentWorksheet.AddSelectedCells("A5:B10");										// Set the selection to the range A5:B10
+            Workbook workbook = new Workbook("test8.xlsx", "Sheet*1", true);                            // Create new workbook with invalid sheet name (*); Auto-Sanitizing will replace * with _
+            workbook.CurrentWorksheet.AddNextCell("Test");                                              // Add cell A1
+            workbook.CurrentWorksheet.AddSelectedCells("A5:B10");                                       // Set the selection to the range A5:B10
             workbook.CurrentWorksheet.AddSelectedCells("D2:D2");                                        // Add another cell as selected on this worksheet
-            workbook.AddWorksheet("Sheet2");															// Create new worksheet
-            workbook.CurrentWorksheet.AddNextCell("Test2");              								// Add cell A1
-            Range range = new Range(new Address(1, 1), new Address(3, 3));			                    // Create a cell range for the selection B2:D4
-            workbook.CurrentWorksheet.SetSelectedCells(range);											// Set the selection to the range (deprecated method to clear all previous definitions)
-            workbook.AddWorksheet("Sheet2", true);							                            // Create new worksheet with already existing name; The name will be changed to Sheet21 due to auto-sanitizing (appending of 1)
-            workbook.CurrentWorksheet.AddNextCell("Test3");              								// Add cell A1
-            workbook.CurrentWorksheet.AddSelectedCells(new Address(2, 2), new Address(4, 4));	        // Set the selection to the range C3:E5
-            workbook.CurrentWorksheet.AddSelectedCells(new Address(5, 1), new Address(5, 1));	        // Set the selection to F2 as range
-            workbook.SetSelectedWorksheet(1);															// Set the second Tab as selected (zero-based: 1)
-            workbook.Save();                                            								// Save the workbook
+            workbook.AddWorksheet("Sheet2");                                                            // Create new worksheet
+            workbook.CurrentWorksheet.AddNextCell("Test2");                                             // Add cell A1
+            Range range = new Range(new Address(1, 1), new Address(3, 3));                              // Create a cell range for the selection B2:D4
+            workbook.CurrentWorksheet.SetSelectedCells(range);                                          // Set the selection to the range (deprecated method to clear all previous definitions)
+            workbook.AddWorksheet("Sheet2", true);                                                      // Create new worksheet with already existing name; The name will be changed to Sheet21 due to auto-sanitizing (appending of 1)
+            workbook.CurrentWorksheet.AddNextCell("Test3");                                             // Add cell A1
+            workbook.CurrentWorksheet.AddSelectedCells(new Address(2, 2), new Address(4, 4));           // Set the selection to the range C3:E5
+            workbook.CurrentWorksheet.AddSelectedCells(new Address(5, 1), new Address(5, 1));           // Set the selection to F2 as range
+            workbook.SetSelectedWorksheet(1);                                                           // Set the second Tab as selected (zero-based: 1)
+            workbook.Save();                                                                            // Save the workbook
         }
 
         /// <summary>
@@ -572,12 +572,12 @@ namespace Demo
             wb.Hidden = true;                                                               // Set the workbook hidden (Set visible again in another, visible workbook)
             wb.Save();                                                                      // Save the workbook
 
-            Workbook wb2 = new Workbook("demo13(hidden_worksheet).xlsx", "visible");       // Create a new workbook
+            Workbook wb2 = new Workbook("demo13(hidden_worksheet).xlsx", "visible");        // Create a new workbook
             wb2.CurrentWorksheet.AddNextCell("Visible Worksheet");
             wb2.AddWorksheet("hidden");                                                     // Create new worksheet
             wb2.CurrentWorksheet.AddNextCell("Hidden Worksheet");
             wb2.CurrentWorksheet.Hidden = true;                                             // Set the current worksheet hidden
-            wb2.Save();                                                                    // Save the workbook
+            wb2.Save();                                                                     // Save the workbook
         }
 
         #region Utils
