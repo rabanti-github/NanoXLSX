@@ -1325,9 +1325,9 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1:A10,A12", 2)]
         [InlineData("A1:R1,S1:S1", 2)]
         [InlineData("$A$1:$R$1,$S$1:$S$4,X10", 3)]
-        public void AddSelectedCellsTest(string rangeExpresions, int expectedRangeCount)
+        public void AddSelectedCellsTest(string rangeExpressions, int expectedRangeCount)
         {
-            string[] rangeStrings = rangeExpresions.Split(',');
+            string[] rangeStrings = rangeExpressions.Split(',');
             Worksheet worksheet = new Worksheet();
             Assert.Empty(worksheet.SelectedCellRanges);
             foreach (string range in rangeStrings)
@@ -1376,9 +1376,9 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1:R1,S1:S1", 2)]
         [InlineData("$A$1:$R$1,$S$1:$S$4,X10:X10", 3)]
         [InlineData("A1:A1,B2:D2,", 2)] // Empty string should be ignored
-        public void AddSelectedCellsTest2(string rangeExpresions, int expectedRangeCount)
+        public void AddSelectedCellsTest2(string rangeExpressions, int expectedRangeCount)
         {
-            string[] rangeStrings = rangeExpresions.Split(',');
+            string[] rangeStrings = rangeExpressions.Split(',');
             Worksheet worksheet = new Worksheet();
             Assert.Empty(worksheet.SelectedCellRanges);
             foreach (string range in rangeStrings)
