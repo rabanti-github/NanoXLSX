@@ -326,7 +326,7 @@ namespace NanoXLSX_Test.Worksheets
                     if (sheetIndex == i)
                     {
                         workbook.SetCurrentWorksheet(i);
-                        workbook.CurrentWorksheet.SetSelectedCells(range.Value);
+                        workbook.CurrentWorksheet.AddSelectedCells(range.Value);
                     }
                 }
             }
@@ -337,7 +337,7 @@ namespace NanoXLSX_Test.Worksheets
             }
             else
             {
-                Assert.Equal(range.Value, givenWorksheet.SelectedCells);
+                Assert.Contains(range.Value, givenWorksheet.SelectedCells);
             }
         }
 

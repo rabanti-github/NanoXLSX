@@ -200,9 +200,12 @@ namespace NanoXLSX.Internal
                 {
                     ws.DefaultRowHeight = reader.Value.DefaultRowHeight.Value;
                 }
-                if (reader.Value.SelectedCells.HasValue)
+                if (reader.Value.SelectedCells.Count > 0)
                 {
-                    ws.SetSelectedCells(reader.Value.SelectedCells.Value);
+                    foreach(Range range in reader.Value.SelectedCells)
+                    {
+                        ws.AddSelectedCells(range);
+                    }
                 }
                 foreach(Range range in reader.Value.MergedCells)
                 {

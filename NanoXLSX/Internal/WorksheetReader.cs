@@ -77,7 +77,7 @@ namespace NanoXLSX.Internal
         /// <summary>
         /// Gets the selected cells (panes are currently not considered)
         /// </summary>
-        public Range? SelectedCells { get; private set; } = null;
+        public List<Range> SelectedCells { get; private set; } = new List<Range>();
 
         /// <summary>
         /// Gets the applicable worksheet protection values
@@ -208,19 +208,25 @@ namespace NanoXLSX.Internal
                         XmlNodeList selectionNodes = sheetView.ChildNodes;
                         if (selectionNodes != null && selectionNodes.Count > 0)
                         {
-                            foreach(XmlNode selectionNode in selectionNodes)
+                            foreach (XmlNode selectionNode in selectionNodes)
                             {
                                 string attribute = ReaderUtils.GetAttribute(selectionNode, "sqref");
                                 if (attribute != null)
                                 {
-                                    if (attribute.Contains(":"))
+                                    if (attribute.Contains(" "))
                                     {
-                                        this.SelectedCells = new Range(attribute);
+                                        // Multiple ranges
+                                        string[] ranges = attribute.Split(' ');
+                                        foreach (string range in ranges)
+                                        {
+                                            CollectSelectedCells(range);
+                                        }
                                     }
                                     else
                                     {
-                                        this.SelectedCells = new Range(attribute + ":" + attribute);
+                                        CollectSelectedCells(attribute);
                                     }
+
                                 }
                             }
                         }
@@ -278,6 +284,24 @@ namespace NanoXLSX.Internal
         }
 
         /// <summary>
+        /// Resolves the selected cells of a range or a single cell
+        /// </summary>
+        /// <param name="attribute">Raw range/cell as string</param>
+        private void CollectSelectedCells(string attribute)
+        {
+            if (attribute.Contains(":"))
+            {
+                // One range
+                this.SelectedCells.Add(new Range(attribute));
+            }
+            else
+            {
+                // One cell
+                this.SelectedCells.Add(new Range(attribute + ":" + attribute));
+            }
+        }
+
+        /// <summary>
         /// Gets the sheet protection values of the current worksheets
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
@@ -321,7 +345,7 @@ namespace NanoXLSX.Internal
             string attribute = ReaderUtils.GetAttribute(node, attributeName);
             if (attribute != null)
             {
-                int value = ParserUtils.ParseInt(attribute);
+                int value = ParserUtils.ParseBinaryBool(attribute);
                 WorksheetProtection.Add(sheetProtectionValue, value);
             }
         }
@@ -428,9 +452,13 @@ namespace NanoXLSX.Internal
                 }
                 attribute = ReaderUtils.GetAttribute(columnNode, "hidden");
                 bool hidden = false;
-                if (attribute != null && attribute == "1")
+                if (attribute != null)
                 {
-                    hidden = true;
+                    int value = ParserUtils.ParseBinaryBool(attribute);
+                    if (value == 1)
+                    {
+                        hidden = true;
+                    }
                 }
                 foreach (int index in indices)
                 {
@@ -1444,9 +1472,10 @@ namespace NanoXLSX.Internal
                 {
                     rows[row].Height = ParserUtils.ParseFloat(heightProperty);
                 }
-                if (hiddenProperty != null && hiddenProperty == "1")
+                if (hiddenProperty != null)
                 {
-                    rows[row].Hidden = true;
+                    int value = ParserUtils.ParseBinaryBool(hiddenProperty);
+                    rows[row].Hidden = value == 1;
                 }
             }
         }

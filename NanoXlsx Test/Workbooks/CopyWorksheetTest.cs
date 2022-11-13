@@ -321,7 +321,7 @@ namespace NanoXLSX_Test.Workbooks
             w.SetActiveStyle(s2);
             w.SetAutoFilter("B1:C2");
             w.SetCurrentCellAddress("D5");
-            w.SetSelectedCells(new NanoXLSX.Range("C3:C3"));
+            w.AddSelectedCells(new NanoXLSX.Range("C3:C3"));
             w.UseSheetProtection = true;
             w.SetSplit(3, 2, true, new Address("F4"), Worksheet.WorksheetPane.bottomRight);
             return w;

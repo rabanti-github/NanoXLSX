@@ -246,11 +246,11 @@ namespace NanoXLSX_Test.Worksheets
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.SelectedCells);
-            worksheet.SetSelectedCells("B2:D4");
-            NanoXLSX.Range ExpectedRange = new NanoXLSX.Range("B2:D4");
-            Assert.Equal(ExpectedRange, worksheet.SelectedCells);
-            worksheet.RemoveSelectedCells();
-            Assert.Null(worksheet.SelectedCells);
+            worksheet.AddSelectedCells("B2:D4");
+            NanoXLSX.Range expectedRange = new NanoXLSX.Range("B2:D4");
+            Assert.Contains(expectedRange, worksheet.SelectedCells);
+            worksheet.ClearSelectedCells();
+            Assert.Empty(worksheet.SelectedCells);
         }
 
         [Fact(DisplayName = "Test of the SheetID property, as well as failing if invalid")]
@@ -1178,9 +1178,9 @@ namespace NanoXLSX_Test.Worksheets
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.SelectedCells);
-            worksheet.SetSelectedCells("B2:D3");
-            Assert.Equal("B2:D3", worksheet.SelectedCells.Value.ToString());
-            worksheet.RemoveSelectedCells();
+            worksheet.AddSelectedCells("B2:D3");
+            Assert.Contains(new Range("B2:D3"), worksheet.SelectedCells);
+            worksheet.ClearSelectedCells();
             Assert.Null(worksheet.SelectedCells);
         }
 
@@ -1309,8 +1309,8 @@ namespace NanoXLSX_Test.Worksheets
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.SelectedCells);
             Range range = new Range(addressExpression);
-            worksheet.SetSelectedCells(range);
-            Assert.Equal(range.ToString(), worksheet.SelectedCells.Value.ToString());
+            worksheet.AddSelectedCells(range);
+            Assert.Contains(range, worksheet.SelectedCells);
         }
 
         [Theory(DisplayName = "Test of the SetSelectedCells function with strings")]
@@ -1326,7 +1326,7 @@ namespace NanoXLSX_Test.Worksheets
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.SelectedCells);
-            worksheet.SetSelectedCells(addressExpression);
+            worksheet.AddSelectedCells(addressExpression);
             if (addressExpression == null)
             {
                 Assert.Null(worksheet.SelectedCells);
@@ -1334,7 +1334,7 @@ namespace NanoXLSX_Test.Worksheets
             else
             {
                 Range range = new Range(addressExpression);
-                Assert.Equal(range.ToString(), worksheet.SelectedCells.Value.ToString());
+                Assert.Contains(range, worksheet.SelectedCells);
             }
         }
 
@@ -1354,9 +1354,8 @@ namespace NanoXLSX_Test.Worksheets
             Address start = new Address(startAddress);
             Address end = new Address(endAddress);
             Range range = new Range(start, end);
-            worksheet.SetSelectedCells(start, end);
-            Assert.Equal(range.StartAddress.GetAddress(), worksheet.SelectedCells.Value.StartAddress.GetAddress());
-            Assert.Equal(range.EndAddress.GetAddress(), worksheet.SelectedCells.Value.EndAddress.GetAddress());
+            worksheet.AddSelectedCells(start, end);
+            Assert.Contains(range, worksheet.SelectedCells);
         }
 
         [Theory(DisplayName = "Test of the SetSheetProtectionPassword function")]

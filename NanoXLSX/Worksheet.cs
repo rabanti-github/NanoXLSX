@@ -161,7 +161,7 @@ namespace NanoXLSX
         private Workbook workbookReference;
         private string sheetProtectionPassword = null;
         private string sheetProtectionPasswordHash = null;
-        private Range? selectedCells;
+        private List<Range> selectedCells;
         private bool? freezeSplitPanes;
         private float? paneSplitLeftWidth;
         private float? paneSplitTopHeight;
@@ -261,9 +261,9 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the cell range of selected cells of this worksheet. Null if no cells are selected
+        /// Gets the cell ranges of selected cells of this worksheet. Returns ans empty list if no cells are selected
         /// </summary>
-        public Range? SelectedCells
+        public List<Range> SelectedCells
         {
             get { return selectedCells; }
         }
@@ -452,6 +452,7 @@ namespace NanoXLSX
             defaultRowHeight = DEFAULT_ROW_HEIGHT;
             rowHeights = new Dictionary<int, float>();
             mergedCells = new Dictionary<string, Range>();
+            selectedCells = new List<Range>();
             sheetProtectionValues = new List<SheetProtectionValue>();
             hiddenRows = new Dictionary<int, bool>();
             columns = new Dictionary<int, Column>();
@@ -1784,14 +1785,6 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Removes the cell selection of this worksheet
-        /// </summary>
-        public void RemoveSelectedCells()
-        {
-            selectedCells = null;
-        }
-
-        /// <summary>
         /// Removes the defined, non-standard row height
         /// </summary>
         /// <param name="rowNumber">Row number (zero-based)</param>
@@ -1975,38 +1968,103 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Sets the selected cells on this worksheet
+        /// Adds a range to the selected cells on this worksheet
         /// </summary>
-        /// <param name="range">Cell range to select</param>
-        public void SetSelectedCells(Range range)
+        /// <param name="range">Cell range to add</param>
+        public void AddSelectedCells(Range range)
         {
-            selectedCells = range;
+            if (!selectedCells.Contains(range))
+            {
+                selectedCells.Add(range);
+            }
         }
 
         /// <summary>
-        /// Sets the selected cells on this worksheet
+        /// Adds a range to the selected cells on this worksheet
         /// </summary>
         /// <param name="startAddress">Start address of the range</param>
         /// <param name="endAddress">End address of the range</param>
-        public void SetSelectedCells(Address startAddress, Address endAddress)
+        public void AddSelectedCells(Address startAddress, Address endAddress)
         {
-            selectedCells = new Range(startAddress, endAddress);
+            AddSelectedCells(new Range(startAddress, endAddress));
         }
 
         /// <summary>
-        /// Sets the selected cells on this worksheet. Null removes the selected cell range
+        /// Adds a range or cell address to the selected cells on this worksheet
         /// </summary>
-        /// <param name="range">Cell range to select</param>
-        public void SetSelectedCells(string range)
+        /// <param name="rangeOrAddress">Cell range or address to add</param>
+        public void AddSelectedCells(string rangeOrAddress)
         {
-            if (range == null)
+            Range? resolved = ParseRange(rangeOrAddress);
+            if (resolved != null)
             {
-                selectedCells = null;
+                AddSelectedCells(resolved.Value);
             }
-            else
+        }
+
+        /// <summary>
+        /// Adds a single cell address to the selected cells on this worksheet
+        /// </summary>
+        /// <param name="address">Cell address to add</param>
+        public void AddSelectedCells(Address address)
+        {
+            AddSelectedCells(new Range(address, address));
+        }
+
+        /// <summary>
+        /// Removes all cell selections of this worksheet
+        /// </summary>
+        public void ClearSelectedCells()
+        {
+            selectedCells.Clear();
+        }
+
+        /// <summary>
+        /// Removes the given range from the selected cell ranges of this worksheet, if existing
+        /// </summary>
+        /// <param name="range">Range to remove</param>
+        public void RemoveSelectedCells(Range range)
+        {
+            for (int i = selectedCells.Count - 1; i > 0; i--)
             {
-                selectedCells = Cell.ResolveCellRange(range);
+                if (selectedCells[i] == range)
+                {
+                    SelectedCells.RemoveAt(i);
+                    break;
+                }
             }
+        }
+
+        /// <summary>
+        /// Removes the given range or cell address from the selected cell ranges of this worksheet, if existing
+        /// </summary>
+        /// <param name="rangeOrAddress">Range or cell address to remove</param>
+        public void RemoveSelectedCells(String rangeOrAddress)
+        {
+            Range? resolved = ParseRange(rangeOrAddress);
+            if (resolved != null)
+            {
+                RemoveSelectedCells(resolved.Value);
+            }
+        }
+
+        /// <summary>
+        /// Removes the given range from the selected cell ranges of this worksheet, if existing
+        /// </summary>
+        /// <param name="startAddress">Start address of the range to remove</param>
+        /// <param name="endAddress">End address of the range to remove</param>
+        public void RemoveSelectedCells(Address startAddress, Address endAddress)
+        {
+            RemoveSelectedCells(new Range(startAddress, endAddress));
+        }
+
+        /// <summary>
+        /// Removes the given address from the selected cell ranges of this worksheet, if existing
+        /// </summary>
+        /// <param name="address">Address of the range to remove</param>
+        public void RemoveSelectedCells(Address address)
+        {
+            RemoveSelectedCells(new Range(address, address));
         }
 
         /// <summary>
@@ -2293,9 +2351,9 @@ namespace NanoXLSX
             {
                 copy.rowHeights.Add(row.Key, row.Value);
             }
-            if (this.selectedCells.HasValue)
+            foreach(Range range in selectedCells)
             {
-                copy.selectedCells = this.selectedCells.Value.Copy();
+                copy.AddSelectedCells(range);
             }
             copy.sheetProtectionPassword = this.sheetProtectionPassword;
             copy.sheetProtectionPasswordHash = this.sheetProtectionPasswordHash;
@@ -2343,6 +2401,30 @@ namespace NanoXLSX
                 { sb.Append(c); }
             }
             return GetUnusedWorksheetName(sb.ToString(), workbook);
+        }
+
+        /// <summary>
+        /// Parses a string to a range. If the string is a single address, the range consists of this as start and end address
+        /// </summary>
+        /// <param name="rangeOrAddress">Range or address expression</param>
+        /// <returns>Range or null if the </returns>
+        private static Range? ParseRange(string rangeOrAddress)
+        {
+            if (string.IsNullOrEmpty(rangeOrAddress))
+            {
+                return null;
+            }
+            Range range;
+            if (rangeOrAddress.Contains(":"))
+            {
+                range = Cell.ResolveCellRange(rangeOrAddress);
+            }
+            else
+            {
+                Address address = Cell.ResolveCellCoordinate(rangeOrAddress);
+                range = new Range(address, address);
+            }
+            return range;
         }
 
         /// <summary>
