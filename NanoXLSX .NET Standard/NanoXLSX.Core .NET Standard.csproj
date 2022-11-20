@@ -49,19 +49,24 @@
     <Compile Include="..\NanoXLSX\Cell.cs" Link="Cell.cs" />
     <Compile Include="..\NanoXLSX\Column.cs" Link="Column.cs" />
     <Compile Include="..\NanoXLSX\ImportOptions.cs" Link="ImportOptions.cs" />
-    <Compile Include="..\NanoXLSX\Internal\MetadataReader.cs" Link="Internal\MetadataReader.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Readers\MetadataReader.cs" Link="Internal\Readers\MetadataReader.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Readers\SharedStringsReader.cs" Link="Internal\Readers\SharedStringsReader.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Readers\StyleReader.cs" Link="Internal\Readers\StyleReader.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Readers\ThemeReader.cs" Link="Internal\Readers\ThemeReader.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Readers\WorkbookReader.cs" Link="Internal\Readers\WorkbookReader.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Readers\WorksheetReader.cs" Link="Internal\Readers\WorksheetReader.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Readers\XlsxReader.cs" Link="Internal\Readers\XlsxReader.cs" />
     <Compile Include="..\NanoXLSX\Internal\ReaderUtils.cs" Link="Internal\ReaderUtils.cs" />
-    <Compile Include="..\NanoXLSX\Internal\SharedStringsReader.cs" Link="Internal\SharedStringsReader.cs" />
     <Compile Include="..\NanoXLSX\Internal\Structures\DocumentPath.cs" Link="Internal\Structures\DocumentPath.cs" />
     <Compile Include="..\NanoXLSX\Internal\Structures\PlainText.cs" Link="Internal\Structures\PlainText.cs" />
     <Compile Include="..\NanoXLSX\Internal\Structures\SortedMap.cs" Link="Internal\Structures\SortedMap.cs" />
-    <Compile Include="..\NanoXLSX\Internal\StyleReader.cs" Link="Internal\StyleReader.cs" />
     <Compile Include="..\NanoXLSX\Internal\StyleReaderContainer.cs" Link="Internal\StyleReaderContainer.cs" />
-    <Compile Include="..\NanoXLSX\Internal\ThemeReader.cs" Link="Internal\ThemeReader.cs" />
-    <Compile Include="..\NanoXLSX\Internal\WorkbookReader.cs" Link="Internal\WorkbookReader.cs" />
-    <Compile Include="..\NanoXLSX\Internal\WorksheetReader.cs" Link="Internal\WorksheetReader.cs" />
-    <Compile Include="..\NanoXLSX\Internal\XlsxReader.cs" Link="Internal\XlsxReader.cs" />
-    <Compile Include="..\NanoXLSX\Internal\XlsxWriter.cs" Link="Internal\XlsxWriter.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Writers\MetadataWriter.cs" Link="Internal\Writers\MetadataWriter.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Writers\StyleWriter.cs" Link="Internal\Writers\StyleWriter.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Writers\ThemeWriter.cs" Link="Internal\Writers\ThemeWriter.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Writers\WorkbookWriter.cs" Link="Internal\Writers\WorkbookWriter.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Writers\WorksheetWriter.cs" Link="Internal\Writers\WorksheetWriter.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Writers\XlsxWriter.cs" Link="Internal\Writers\XlsxWriter.cs" />
     <Compile Include="..\NanoXLSX\Metadata.cs" Link="Metadata.cs" />
     <Compile Include="..\NanoXLSX\Range.cs" Link="Range.cs" />
     <Compile Include="..\NanoXLSX\Shortener.cs" Link="Shortener.cs" />

@@ -16,6 +16,8 @@ using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Internal;
 using NanoXLSX.Styles;
 using NanoXLSX.Shared.Utils;
+using NanoXLSX.Internal.Readers;
+using NanoXLSX.Internal.Writers;
 
 namespace NanoXLSX
 {

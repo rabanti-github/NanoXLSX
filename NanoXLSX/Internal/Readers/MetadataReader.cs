@@ -9,7 +9,7 @@ using System;
 using System.IO;
 using System.Xml;
 
-namespace NanoXLSX.Internal
+namespace NanoXLSX.Internal.Readers
 {
     /// <summary>
     /// Class representing a reader for the metadata files (docProps) of XLSX files

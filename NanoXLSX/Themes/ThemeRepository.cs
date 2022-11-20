@@ -20,6 +20,15 @@ namespace NanoXLSX.Themes
         /// </summary>
         public const int DEFAULT_THEME_ID = 1;
 
+        /// <summary>
+        /// Default theme ID, stated in the workbook document
+        /// </summary>
+        /// <remarks>According to the official OOXML documentation (part 1, chapter 18.2.28) the version consists of the application version and build where the excel file was created.
+        /// The value was extracted from a valid Excel file, created with Excel 2019. However, although '16' can be assumed to be the Version of Excel 2019, 
+        /// the build part '6925' cannot be originated, is not reflecting the retrieved application build version, and seems not to be listed publicly
+        /// </remarks>
+        public const string DEFAULT_THEME_VERSION = "166925";
+
         public static Theme UndefinedTheme { get; } = Theme.GetDefaultTheme();
 
         public Dictionary<int, Theme> Themes { get; } = new Dictionary<int, Theme>();
@@ -38,6 +47,10 @@ namespace NanoXLSX.Themes
             }
         }
 
+        /// <summary>
+        /// Gets the defined theme with the ID of <see cref="DEFAULT_THEME_ID"/> or the <see cref="Theme.GetDefaultTheme"/> if not theme was defined whit that ID
+        /// </summary>
+        /// <returns></returns>
         public static Theme GetThemeOrDefault()
         {
             if (Instance.Themes.ContainsKey(DEFAULT_THEME_ID))

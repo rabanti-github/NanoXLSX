@@ -6,6 +6,7 @@
  */
 using System;
 using System.Text;
+using NanoXLSX.Internal.Writers;
 using NanoXLSX.Shared.Interfaces;
 using NanoXLSX.Shared.Utils;
 

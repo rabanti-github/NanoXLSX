@@ -21,7 +21,7 @@ namespace NanoXLSX_Test.Styles
 
         public FontTest()
         {
-            Theme theme = new Theme(1);
+            Theme theme = new Theme(1, "default");
             theme.Colors = new ColorScheme(10);
            
             exampleStyle = new Font();

@@ -14,6 +14,9 @@ namespace NanoXLSX.Shared.Interfaces
     /// </summary>
     public interface ITypedColor<T> : IColor
     {
+        /// <summary>
+        /// Sets or gets the color vale of the type <typeparamref name="T"/>
+        /// </summary>
         T ColorValue { get; set; }
     }
 }

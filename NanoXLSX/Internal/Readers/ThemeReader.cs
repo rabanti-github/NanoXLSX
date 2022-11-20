@@ -10,7 +10,7 @@ using NanoXLSX.Shared.Interfaces;
 using NanoXLSX.Themes;
 using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
-namespace NanoXLSX.Internal
+namespace NanoXLSX.Internal.Readers
 {
     public class ThemeReader
     {
@@ -23,7 +23,7 @@ namespace NanoXLSX.Internal
         /// Reads the XML file form the passed stream and processes the theme file (if available)
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
-        /// <param name="number">NUmber of the theme. Default is 1</param>
+        /// <param name="number">Number of the theme. Default is 1</param>
         /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         public void Read(MemoryStream stream, int number)
         {
@@ -31,12 +31,14 @@ namespace NanoXLSX.Internal
             {
                 using (stream) // Close after processing
                 {
-                    CurrentTheme = new Theme(number);
-                    ColorScheme colorScheme = new ColorScheme(number);
-                    CurrentTheme.Colors = colorScheme;
                     XmlDocument xr = new XmlDocument();
                     xr.XmlResolver = null;
                     xr.Load(stream);
+                    XmlNodeList themes = xr.GetElementsByTagName("theme");
+                    string themeName = ReaderUtils.GetAttribute(themes[0], "name"); // If this fails, something is completely wrong
+                    CurrentTheme = new Theme(number, themeName);
+                    ColorScheme colorScheme = new ColorScheme(number);
+                    CurrentTheme.Colors = colorScheme;
                     XmlNodeList colors = xr.GetElementsByTagName("clrScheme");
                     foreach (XmlNode color in colors)
                     {
@@ -85,33 +87,6 @@ namespace NanoXLSX.Internal
                             }
                             
                         }
-                        
-                        /*
-                        string rowAttribute = ReaderUtils.GetAttribute(row, "r");
-                        if (rowAttribute != null)
-                        {
-                            string nameAttribute = ReaderUtils.GetAttribute(row, "name");
-                            RowDefinition.AddRowDefinition(Rows, rowAttribute, null, hiddenAttribute);
-                            string heightAttribute = ReaderUtils.GetAttribute(row, "ht");
-                            RowDefinition.AddRowDefinition(Rows, rowAttribute, heightAttribute, null);
-                        }
-                        if (row.HasChildNodes)
-                        {
-                            foreach (XmlNode rowChild in row.ChildNodes)
-                            {
-                                ReadCell(rowChild);
-                            }
-                        }
-                    }
-                    GetSheetView(xr);
-                    GetMergedCells(xr);
-                    GetSheetFormats(xr);
-                    GetAutoFilters(xr);
-                    GetColumns(xr);
-                    GetSheetProtection(xr);
-                        
-                }
-                    */
                     }
                 }
             }
@@ -147,19 +122,22 @@ namespace NanoXLSX.Internal
         /// </summary>
         /// <param name="innerNode">Color scheme sub-node</param>
         /// <returns>System color</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an invalid value</exception>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.StyleException">Throws IOException in case of an invalid value</exception>
         private static SystemColor.Value ParseSystemColor(XmlNode innerNode)
         {
             string value = ReaderUtils.GetAttribute(innerNode, "val");
-            if (value != null)
+            if (string.IsNullOrEmpty(value))
             {
-                SystemColor.Value systemColor;
-                if (Enum.TryParse(value, out systemColor))
-                {
-                    return systemColor;
-                }
+                throw new IOException("The system color entry was null or empty");
             }
-            throw new IOException("The system color entry'" + value + "' is not valid");
+            try
+            {
+                return SystemColor.MapStringToValue(value);
+            }
+            catch(Exception ex)
+            {
+                throw new IOException("The system color entry '" + value + "' could not be parsed", ex);
+            }
         }
 
         #endregion

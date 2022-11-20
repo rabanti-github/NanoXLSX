@@ -5,7 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-namespace NanoXLSX.Internal
+namespace NanoXLSX.Internal.Readers
 {
     using NanoXLSX.Shared.Utils;
     using NanoXLSX.Styles;

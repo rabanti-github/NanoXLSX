@@ -1,15 +1,22 @@
-﻿using NanoXLSX.Shared.Interfaces;
+﻿/*
+ * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
+ * Copyright Raphael Stoeckli © 2022
+ * This library is licensed under the MIT License.
+ * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
+ */
+
+using NanoXLSX.Shared.Interfaces;
 using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Utils;
 using static NanoXLSX.Themes.SystemColor;
 
 namespace NanoXLSX.Themes
 {
+    /// <summary>
+    /// Class representing a predefined system color for certain purposes or target areas in the UI
+    /// </summary>
     public class SystemColor : ITypedColor<Value>
     {
-        public Value ColorValue { get; set; } = Value.WindowText;
-
-        public string StringValue { get { return MapValueToString(this.ColorValue); } }
-
         public enum Value
         {
             ///<summary>3D Dark System Color: Specifies a Dark shadow color for three-dimensional display elements</summary>
@@ -74,6 +81,63 @@ namespace NanoXLSX.Themes
             WindowText,
         }
 
+
+        private string lastColor = "000000";
+        
+        /// <summary>
+        /// Gets or sets the enum value of the system color
+        /// </summary>
+        public Value ColorValue { get; set; } = Value.WindowText;
+
+        /// <summary>
+        /// Gets the internal OOXML string value of the enum, defined in <see cref="ColorValue"/>
+        /// </summary>
+        public string StringValue { get { return MapValueToString(this.ColorValue); } }
+
+        /// <summary>
+        /// Color value that was last computed by the generating application
+        /// </summary>
+        public string LastColor
+        {
+            get => lastColor; 
+            set
+            {
+                Validators.ValidateColor(value, false);
+                lastColor = value;
+            }
+        }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public SystemColor()
+        {
+        }
+
+        /// <summary>
+        /// Constructor with value as parameter
+        /// </summary>
+        /// <param name="value">Color value of the system color</param>
+        public SystemColor(Value value) : this()
+        {
+            this.ColorValue = value;
+        }
+
+        /// <summary>
+        /// Constructor with all parameters
+        /// </summary>
+        /// <param name="value">Color value of the system color</param>
+        /// <param name="lastColor">Last computed value</param>
+        public SystemColor(Value value, string lastColor) : this(value)
+        {
+            this.LastColor = lastColor;
+        }
+
+        /// <summary>
+        /// Maps the enum value of the system color to the OOXML value
+        /// </summary>
+        /// <param name="value">Enum value</param>
+        /// <returns>String value that can be placed in an XML document</returns>
         private static string MapValueToString(Value value)
         {
             switch (value)
@@ -113,7 +177,12 @@ namespace NanoXLSX.Themes
             }
         }
 
-        private static Value MapStringToValue(string value)
+        /// <summary>
+        /// Maps a OOXML string value (from an XML document) to the corresponding enum value
+        /// </summary>
+        /// <param name="value">OOXML string value</param>
+        /// <returns>Enum value</returns>
+        internal static Value MapStringToValue(string value)
         {
             switch (value)
             {

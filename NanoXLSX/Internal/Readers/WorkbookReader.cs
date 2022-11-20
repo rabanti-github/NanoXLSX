@@ -12,7 +12,7 @@ using System.IO;
 using System.Xml;
 using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
-namespace NanoXLSX.Internal
+namespace NanoXLSX.Internal.Readers
 {
     /// <summary>
     /// Class representing a reader to decompile a workbook in an XLSX files

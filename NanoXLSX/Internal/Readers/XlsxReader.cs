@@ -16,7 +16,7 @@ using System.IO.Compression;
 using System.Threading.Tasks;
 using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
-namespace NanoXLSX.Internal
+namespace NanoXLSX.Internal.Readers
 {
     /// <summary>
     /// Class representing a reader to decompile XLSX files

@@ -14,7 +14,7 @@ using NanoXLSX.Shared.Utils;
 using NanoXLSX.Shared.Exceptions;
 using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
-namespace NanoXLSX.Internal
+namespace NanoXLSX.Internal.Readers
 {
     /// <summary>
     /// Class representing a reader for the shared strings table of XLSX files
