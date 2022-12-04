@@ -31,6 +31,7 @@ namespace NanoXLSX.Internal.Readers
         private MemoryStream memoryStream;
         private WorkbookReader workbook;
         private MetadataReader metadataReader;
+        private ThemeReader themeReader;
         private ImportOptions importOptions;
         private StyleReaderContainer styleReaderContainer;
         #endregion
@@ -109,13 +110,14 @@ namespace NanoXLSX.Internal.Readers
                     if (themeStreamNames.Count > 0)
                     {
                         // There is not really a definition whether multiple themes can be managed in one workbook.
-                        // the suffix number (e.g. theme1) indicates it. Anyway, if multiple are occurring, they will be read and written
+                        // the suffix number (e.g. theme1) indicates it. However, no examples were found and therefore
+                        // (currently) only the first occurring theme will be read  
                         foreach(KeyValuePair<int,string> streamName in themeStreamNames)
                         {
-                            ThemeReader themeReader = new ThemeReader();
+                            themeReader = new ThemeReader();
                             ms = GetEntryStream(streamName.Value, zf);
                             themeReader.Read(ms, streamName.Key);
-                            ThemeRepository.Instance.Themes.Add(streamName.Key, themeReader.CurrentTheme);
+                            break;
                         }
                     }
                     StyleRepository.Instance.ImportInProgress = true;
@@ -319,6 +321,10 @@ namespace NanoXLSX.Internal.Readers
             wb.WorkbookMetadata.Manager = metadataReader.Manager;
             wb.WorkbookMetadata.Subject = metadataReader.Subject;
             wb.WorkbookMetadata.Title = metadataReader.Title;
+            if (themeReader != null)
+            {
+                wb.WorkbookTheme = themeReader.CurrentTheme;
+            }
             wb.SetImportState(false);
             return wb;
         }

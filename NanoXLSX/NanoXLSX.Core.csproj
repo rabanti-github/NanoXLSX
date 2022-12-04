@@ -97,7 +97,6 @@
     <Compile Include="Themes\SrgbColor.cs" />
     <Compile Include="Themes\SystemColor.cs" />
     <Compile Include="Themes\Theme.cs" />
-    <Compile Include="Themes\ThemeRepository.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Workbook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

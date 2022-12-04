@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLS.Shared.Enums.Schemes;
 using static NanoXLSX.Shared.Enums.Styles.FontEnums;
 
 namespace NanoXLSX.Shared.Interfaces
@@ -19,7 +20,7 @@ namespace NanoXLSX.Shared.Interfaces
         bool Strike { get; set; }
         UnderlineValue Underline { get; set; }
         CharsetValue Charset { get; set; }
-        IColorScheme ColorTheme { get; set; }
+        ThemeEnums.ColorSchemeElement ColorTheme { get; set; }
         string ColorValue { get; set; }
         FontFamilyValue Family { get; set; }
         string Name { get; set; }

@@ -245,7 +245,7 @@ namespace NanoXLSX_Test.Worksheets
         public void SelectedCellsTest()
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Null(worksheet.SelectedCells);
+            Assert.Empty(worksheet.SelectedCells);
             worksheet.AddSelectedCells("B2:D4");
             NanoXLSX.Range expectedRange = new NanoXLSX.Range("B2:D4");
             Assert.Contains(expectedRange, worksheet.SelectedCells);
@@ -1177,11 +1177,11 @@ namespace NanoXLSX_Test.Worksheets
         public void RemoveSelectedCellsTest()
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Null(worksheet.SelectedCells);
+            Assert.Empty(worksheet.SelectedCells);
             worksheet.AddSelectedCells("B2:D3");
             Assert.Contains(new Range("B2:D3"), worksheet.SelectedCells);
             worksheet.ClearSelectedCells();
-            Assert.Null(worksheet.SelectedCells);
+            Assert.Empty(worksheet.SelectedCells);
         }
 
         [Theory(DisplayName = "Test of the RemoveAllowedActionOnSheetProtection function")]
@@ -1307,7 +1307,7 @@ namespace NanoXLSX_Test.Worksheets
         public void SetSelectedCellsTest(string addressExpression)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Null(worksheet.SelectedCells);
+            Assert.Empty(worksheet.SelectedCells);
             Range range = new Range(addressExpression);
             worksheet.AddSelectedCells(range);
             Assert.Contains(range, worksheet.SelectedCells);
@@ -1325,11 +1325,11 @@ namespace NanoXLSX_Test.Worksheets
         public void SetSelectedCellsTest2(string addressExpression)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Null(worksheet.SelectedCells);
+            Assert.Empty(worksheet.SelectedCells);
             worksheet.AddSelectedCells(addressExpression);
             if (addressExpression == null)
             {
-                Assert.Null(worksheet.SelectedCells);
+                Assert.Empty(worksheet.SelectedCells);
             }
             else
             {
@@ -1350,7 +1350,7 @@ namespace NanoXLSX_Test.Worksheets
         public void SetSelectedCellsTest3(string startAddress, string endAddress)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Null(worksheet.SelectedCells);
+            Assert.Empty(worksheet.SelectedCells);
             Address start = new Address(startAddress);
             Address end = new Address(endAddress);
             Range range = new Range(start, end);

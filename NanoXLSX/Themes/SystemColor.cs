@@ -9,6 +9,8 @@ using NanoXLSX.Shared.Interfaces;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Utils;
 using static NanoXLSX.Themes.SystemColor;
+using System;
+using System.Collections.Generic;
 
 namespace NanoXLSX.Themes
 {
@@ -219,6 +221,21 @@ namespace NanoXLSX.Themes
                 default:
                     throw new StyleException(value + " is not a valid system color value");
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is SystemColor color &&
+                   ColorValue == color.ColorValue &&
+                   LastColor == color.LastColor;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1425985453;
+            hashCode = hashCode * -1521134295 + ColorValue.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LastColor);
+            return hashCode;
         }
     }
 }

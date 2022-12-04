@@ -48,7 +48,7 @@ namespace NanoXLSX.Internal.Writers
             ParseColor(sb, "accent4", scheme.Accent4);
             ParseColor(sb, "accent5", scheme.Accent5);
             ParseColor(sb, "accent6", scheme.Accent6);
-            ParseColor(sb, "hlink", scheme.HyperLink);
+            ParseColor(sb, "hlink", scheme.Hyperlink);
             ParseColor(sb, "folHlink", scheme.FollowedHyperlink);
             sb.Append("</clrScheme>");
         }

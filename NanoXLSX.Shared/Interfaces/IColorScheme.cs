@@ -23,9 +23,7 @@ namespace NanoXLSX.Shared.Interfaces
         IColor Accent4 { get; set; }
         IColor Accent5 { get; set; }
         IColor Accent6 { get; set; }
-        IColor HyperLink { get; set; }
+        IColor Hyperlink { get; set; }
         IColor FollowedHyperlink { get; set; }
-
-        int GetSchemeId();
     }
 }

@@ -34,10 +34,18 @@ namespace NanoXLSX.Internal.Writers
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">");
-            sb.Append("<workbookPr defaultThemeVersion=\"");
-            sb.Append(ThemeRepository.DEFAULT_THEME_VERSION);
-            // TODO: add further workbook properties here
-            sb.Append("\"/>");
+            
+            if (workbook.WorkbookTheme == null  || workbook.WorkbookTheme.DefaultTheme)
+            {
+                sb.Append("<workbookPr defaultThemeVersion=\"");
+                sb.Append(Theme.DEFAULT_THEME_VERSION);
+                // TODO: add further workbook properties here
+                sb.Append("\"/>");
+            }
+            else
+            {
+                sb.Append("<workbookPr />");
+            }
             if (workbook.SelectedWorksheet > 0 || workbook.Hidden)
             {
                 sb.Append("<bookViews><workbookView ");

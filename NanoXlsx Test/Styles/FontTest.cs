@@ -1,4 +1,5 @@
-﻿using NanoXLSX.Shared.Exceptions;
+﻿using NanoXLS.Shared.Enums.Schemes;
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
 using NanoXLSX.Themes;
@@ -20,10 +21,7 @@ namespace NanoXLSX_Test.Styles
         private readonly Font exampleStyle;
 
         public FontTest()
-        {
-            Theme theme = new Theme(1, "default");
-            theme.Colors = new ColorScheme(10);
-           
+        {          
             exampleStyle = new Font();
             exampleStyle.Bold = true;
             exampleStyle.Italic = true;
@@ -33,7 +31,7 @@ namespace NanoXLSX_Test.Styles
             exampleStyle.Size = 15;
             exampleStyle.Name = "Arial";
             exampleStyle.Family = FontFamilyValue.Script;
-            exampleStyle.ColorTheme = theme.Colors;
+            exampleStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent5;
             exampleStyle.ColorValue = "FF22AACC";
             exampleStyle.Scheme = SchemeValue.minor;
             exampleStyle.VerticalAlign = VerticalTextAlignValue.subscript;
@@ -61,8 +59,8 @@ namespace NanoXLSX_Test.Styles
             Assert.Equal(Font.DEFAULT_FONT_SCHEME, font.Scheme);
             Assert.Equal(Font.DEFAULT_VERTICAL_ALIGN, font.VerticalAlign);
             Assert.Equal("", font.ColorValue);
-            Assert.Equal(CharsetValue.ApplicationDefined, font.Charset);
-            Assert.Equal(1, font.ColorTheme.GetSchemeId());
+            Assert.Equal(CharsetValue.Default, font.Charset);
+            Assert.Equal(ThemeEnums.ColorSchemeElement.dark1, font.ColorTheme);
         }
 
 
@@ -137,7 +135,7 @@ namespace NanoXLSX_Test.Styles
         public void CharsetTest(CharsetValue value)
         {
             Font font = new Font();
-            Assert.Equal(CharsetValue.ApplicationDefined, font.Charset);
+            Assert.Equal(CharsetValue.Default, font.Charset);
             font.Charset = value;
             Assert.Equal(value, font.Charset);
         }
@@ -212,25 +210,24 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the ColorTheme property")]
-        [InlineData(0)]
-        [InlineData(1)]
-        [InlineData(10)]
-        public void ColorThemeTest(int value)
+        [InlineData(ThemeEnums.ColorSchemeElement.dark1)]
+        [InlineData(ThemeEnums.ColorSchemeElement.light1)]
+        [InlineData(ThemeEnums.ColorSchemeElement.dark2)]
+        [InlineData(ThemeEnums.ColorSchemeElement.light2)]
+        [InlineData(ThemeEnums.ColorSchemeElement.accent1)]
+        [InlineData(ThemeEnums.ColorSchemeElement.accent2)]
+        [InlineData(ThemeEnums.ColorSchemeElement.accent3)]
+        [InlineData(ThemeEnums.ColorSchemeElement.accent4)]
+        [InlineData(ThemeEnums.ColorSchemeElement.accent5)]
+        [InlineData(ThemeEnums.ColorSchemeElement.accent6)]
+        [InlineData(ThemeEnums.ColorSchemeElement.hyperlink)]
+        [InlineData(ThemeEnums.ColorSchemeElement.followedHyperlink)]
+        public void ColorThemeTest(ThemeEnums.ColorSchemeElement element)
         {
             Font font = new Font();
-            Assert.Equal(1, font.ColorTheme.GetSchemeId()); // 1 is default
-
-            ColorScheme expectedScheme = new ColorScheme(value);
-            font.ColorTheme = expectedScheme;
-            Assert.Equal(expectedScheme, font.ColorTheme);
-        }
-
-        [Fact(DisplayName = "Test of the failing set function of the ColorTheme property on null")]
-        public void ColorThemeFailTest()
-        {
-            Font font = new Font();
-            Exception ex = Assert.Throws<StyleException>(() => font.ColorTheme = null);
-            Assert.Equal(typeof(StyleException), ex.GetType());
+            Assert.Equal(ThemeEnums.ColorSchemeElement.dark1, font.ColorTheme); // dark1 is default
+            font.ColorTheme = element;
+            Assert.Equal(element, font.ColorTheme);
         }
 
         [Theory(DisplayName = "Test of the get and set function of the ColorValue property")]
@@ -372,7 +369,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2j()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.ColorTheme = new ColorScheme(22);
+            style2.ColorTheme = ThemeEnums.ColorSchemeElement.light2;
             Assert.False(exampleStyle.Equals(style2));
         }
 

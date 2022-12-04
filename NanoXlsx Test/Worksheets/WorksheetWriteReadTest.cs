@@ -333,7 +333,7 @@ namespace NanoXLSX_Test.Worksheets
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
             if (selectedCellsRange == null)
             {
-                Assert.Null(givenWorksheet.SelectedCells);
+                Assert.Empty(givenWorksheet.SelectedCells);
             }
             else
             {

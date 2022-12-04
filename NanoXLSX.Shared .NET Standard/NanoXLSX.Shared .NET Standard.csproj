@@ -46,6 +46,7 @@
     <Compile Include="..\NanoXLSX.Shared\Enums\Styles\FillEnums.cs" Link="Enums\Styles\FillEnums.cs" />
     <Compile Include="..\NanoXLSX.Shared\Enums\Styles\FontEnums.cs" Link="Enums\Styles\FontEnums.cs" />
     <Compile Include="..\NanoXLSX.Shared\Enums\Styles\NumberFormatEnums.cs" Link="Enums\Styles\NumberFormatEnums.cs" />
+    <Compile Include="..\NanoXLSX.Shared\Enums\Themes\ThemeEnums.cs" Link="Enums\Themes\ThemeEnums.cs" />
     <Compile Include="..\NanoXLSX.Shared\Exceptions\FormatException.cs" Link="Exceptions\FormatException.cs" />
     <Compile Include="..\NanoXLSX.Shared\Exceptions\IOException.cs" Link="Exceptions\IOException.cs" />
     <Compile Include="..\NanoXLSX.Shared\Exceptions\RangeException.cs" Link="Exceptions\RangeException.cs" />

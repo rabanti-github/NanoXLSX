@@ -7,6 +7,7 @@
 
 namespace NanoXLSX.Internal.Readers
 {
+    using NanoXLS.Shared.Enums.Schemes;
     using NanoXLSX.Shared.Utils;
     using NanoXLSX.Styles;
     using NanoXLSX.Themes;
@@ -301,21 +302,48 @@ namespace NanoXLSX.Internal.Readers
                 XmlNode colorNode = ReaderUtils.GetChildNode(font, "color");
                 if (colorNode != null)
                 {
+
                     attribute = ReaderUtils.GetAttribute(colorNode, "theme");
                     if (attribute != null)
                     {
-                        int colorSchemeId = ParserUtils.ParseInt(attribute);
-                        if (colorSchemeId == 0)
+                        switch (attribute)
                         {
-                            fontStyle.ColorTheme = ThemeRepository.UndefinedTheme.Colors;
-                        }
-                        else if (ThemeRepository.Instance.Themes.ContainsKey(ThemeRepository.DEFAULT_THEME_ID))
-                        {
-                            fontStyle.ColorTheme = ThemeRepository.Instance.Themes[ThemeRepository.DEFAULT_THEME_ID].Colors;
-                        }
-                        else
-                        {
-                            throw new IOException("The specific color scheme ID " + colorSchemeId + " was defined but no theme was found in the XLSX file that could contain such a scheme");
+                            case "0":
+                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.dark1;
+                                break;
+                            case "1":
+                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.light1;
+                                break;
+                            case "2":
+                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.dark2;
+                                break;
+                            case "3":
+                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.light2;
+                                break;
+                            case "4":
+                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent1;
+                                break;
+                            case "5":
+                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent2;
+                                break;
+                            case "6":
+                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent3;
+                                break;
+                            case "7":
+                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent4;
+                                break;
+                            case "8":
+                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent5;
+                                break;
+                            case "9":
+                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent6;
+                                break;
+                            case "10":
+                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.hyperlink;
+                                break;
+                            case "11":
+                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.followedHyperlink;
+                                break;
                         }
                     }
                     attribute = ReaderUtils.GetAttribute(colorNode, "rgb");
@@ -492,34 +520,34 @@ namespace NanoXLSX.Internal.Readers
                             {
                                 cellXfStyle.Alignment = TextBreakValue.shrinkToFit;
                             }
-                            attribute = ReaderUtils.GetAttribute(alignmentNode, "wrapText");
-                            if (attribute != null && attribute == "1")
-                            {
-                                cellXfStyle.Alignment = TextBreakValue.wrapText;
-                            }
-                            attribute = ReaderUtils.GetAttribute(alignmentNode, "horizontal");
-                            HorizontalAlignValue horizontalAlignValue;
-                            if (Enum.TryParse<HorizontalAlignValue>(attribute, out horizontalAlignValue))
-                            {
-                                cellXfStyle.HorizontalAlign = horizontalAlignValue;
-                            }
-                            attribute = ReaderUtils.GetAttribute(alignmentNode, "vertical");
-                            VerticalAlignValue verticalAlignValue;
-                            if (Enum.TryParse<VerticalAlignValue>(attribute, out verticalAlignValue))
-                            {
-                                cellXfStyle.VerticalAlign = verticalAlignValue;
-                            }
-                            attribute = ReaderUtils.GetAttribute(alignmentNode, "indent");
-                            if (attribute != null)
-                            {
-                                cellXfStyle.Indent = ParserUtils.ParseInt(attribute);
-                            }
-                            attribute = ReaderUtils.GetAttribute(alignmentNode, "textRotation");
-                            if (attribute != null)
-                            {
-                                int rotation = ParserUtils.ParseInt(attribute);
-                                cellXfStyle.TextRotation = rotation > 90 ? 90 - rotation : rotation;
-                            }
+                        }
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "wrapText");
+                        if (attribute != null && attribute == "1")
+                        {
+                            cellXfStyle.Alignment = TextBreakValue.wrapText;
+                        }
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "horizontal");
+                        HorizontalAlignValue horizontalAlignValue;
+                        if (Enum.TryParse<HorizontalAlignValue>(attribute, out horizontalAlignValue))
+                        {
+                            cellXfStyle.HorizontalAlign = horizontalAlignValue;
+                        }
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "vertical");
+                        VerticalAlignValue verticalAlignValue;
+                        if (Enum.TryParse<VerticalAlignValue>(attribute, out verticalAlignValue))
+                        {
+                            cellXfStyle.VerticalAlign = verticalAlignValue;
+                        }
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "indent");
+                        if (attribute != null)
+                        {
+                            cellXfStyle.Indent = ParserUtils.ParseInt(attribute);
+                        }
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "textRotation");
+                        if (attribute != null)
+                        {
+                            int rotation = ParserUtils.ParseInt(attribute);
+                            cellXfStyle.TextRotation = rotation > 90 ? 90 - rotation : rotation;
                         }
                     }
                     XmlNode protectionNode = ReaderUtils.GetChildNode(childNode, "protection");

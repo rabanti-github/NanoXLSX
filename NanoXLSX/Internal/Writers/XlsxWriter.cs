@@ -22,9 +22,7 @@ using NanoXLSX.Shared.Interfaces;
 using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 using IOException = NanoXLSX.Shared.Exceptions.IOException;
-using NanoXLSX.Internal.Writers;
 using NanoXLSX.Themes;
-using NanoXLSX.Internal.Readers;
 
 namespace NanoXLSX.Internal.Writers
 {
@@ -41,6 +39,7 @@ namespace NanoXLSX.Internal.Writers
         private static DocumentPath APP_PROPERTIES = new DocumentPath("app.xml", "docProps/");
         private static DocumentPath CORE_PROPERTIES = new DocumentPath("core.xml", "docProps/");
         private static DocumentPath SHARED_STRINGS = new DocumentPath("sharedStrings.xml", "xl/");
+        private static DocumentPath THEME = new DocumentPath("theme1.xml", "xl/theme/");
         #endregion
 
         #region privateFields
@@ -165,7 +164,6 @@ namespace NanoXLSX.Internal.Writers
 
         private Dictionary<string, Dictionary<string, PackagePart>> packageParts = new Dictionary<string, Dictionary<string, PackagePart>>();
         private Dictionary<int, DocumentPath> worksheetPaths = new Dictionary<int, DocumentPath>();
-        private Dictionary<int, DocumentPath> themePaths = new Dictionary<int, DocumentPath>();
         private Package package = null;
 
         private void PreparePackage()
@@ -218,30 +216,13 @@ namespace NanoXLSX.Internal.Writers
                 }
             }
 
-            if (ThemeRepository.Instance.Themes.Count == 0)
+            if (workbook.WorkbookTheme != null)
             {
-                DocumentPath path = new DocumentPath("theme1.xml", "xl/theme");
-                CreatePackagePart(workbookPart, 
-                    path, 
+                CreatePackagePart(workbookPart,
+                    THEME,
                     @"application/vnd.openxmlformats-officedocument.theme+xml",
-                    @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme", 
+                    @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme",
                     ref xlIndex);
-                themePaths.Add(ThemeRepository.DEFAULT_THEME_ID, path);
-            }
-            else
-            {
-                foreach (KeyValuePair<int, Theme> theme in ThemeRepository.Instance.Themes)
-                {
-                    // index is already 1-based
-                    String fileName = "theme" + ParserUtils.ToString(theme.Key) + ".xml";
-                    DocumentPath path = new DocumentPath(fileName, "xl/theme");
-                    CreatePackagePart(workbookPart, 
-                        path, 
-                        @"application/vnd.openxmlformats-officedocument.theme+xml",
-                        @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme",
-                        ref xlIndex);
-                    themePaths.Add(theme.Key, path);
-                }
             }
 
             CreatePackagePart(workbookPart,  
@@ -260,23 +241,32 @@ namespace NanoXLSX.Internal.Writers
 
         private PackagePart CreatePackagePart(object relationshipParent , DocumentPath documentPath, string contentType, string relationshipType, ref int index)
         {
-            Uri uri = new Uri(documentPath.GetFullPath(), UriKind.Relative);
-            PackagePart part = this.package.CreatePart(uri, contentType, CompressionOption.Normal);
-            if (!packageParts.ContainsKey(documentPath.Path))
+            try
             {
-                packageParts.Add(documentPath.Path, new Dictionary<string, PackagePart>());
-            }
-            packageParts[documentPath.Path].Add(documentPath.Filename, part);
-            if (relationshipParent == null || relationshipParent is Package)
+
+
+                Uri uri = new Uri(documentPath.GetFullPath(), UriKind.Relative);
+                PackagePart part = this.package.CreatePart(uri, contentType, CompressionOption.Normal);
+                if (!packageParts.ContainsKey(documentPath.Path))
+                {
+                    packageParts.Add(documentPath.Path, new Dictionary<string, PackagePart>());
+                }
+                packageParts[documentPath.Path].Add(documentPath.Filename, part);
+                if (relationshipParent == null || relationshipParent is Package)
+                {
+                    this.package.CreateRelationship(uri, TargetMode.Internal, relationshipType, "rId" + ParserUtils.ToString(index));
+                }
+                else if (relationshipParent is PackagePart)
+                {
+                    ((PackagePart)relationshipParent).CreateRelationship(uri, TargetMode.Internal, relationshipType, "rId" + ParserUtils.ToString(index));
+                }
+                index++;
+
+                return part;
+            }catch(Exception ex)
             {
-                this.package.CreateRelationship(uri, TargetMode.Internal, relationshipType, "rId" + ParserUtils.ToString(index));
+                throw ex;
             }
-            else if (relationshipParent is PackagePart)
-            {
-                ((PackagePart)relationshipParent).CreateRelationship(uri, TargetMode.Internal, relationshipType, "rId" + ParserUtils.ToString(index));  
-            }
-            index++;
-            return part;
         }
 
         public void SaveAsStream(Stream stream, bool leaveOpen = false)
@@ -334,23 +324,12 @@ namespace NanoXLSX.Internal.Writers
                     }
 
                     // Theme
-                    if (ThemeRepository.Instance.Themes.Count > 0)
-                    {
-                        foreach (KeyValuePair<int, Theme> theme in ThemeRepository.Instance.Themes)
-                        {
-                            ThemeWriter themeWriter = new ThemeWriter();
-                            part = packageParts[themePaths[theme.Key].Path][themePaths[theme.Key].Filename];
-                            AppendXmlToPackagePart(themeWriter.CreateThemeDocument(theme.Value), part);
-                        }
-                    }
-                    else
+                    if (workbook.WorkbookTheme != null)
                     {
                         ThemeWriter themeWriter = new ThemeWriter();
-                        part = packageParts[themePaths[ThemeRepository.DEFAULT_THEME_ID].Path][themePaths[ThemeRepository.DEFAULT_THEME_ID].Filename];
-                        AppendXmlToPackagePart(themeWriter.CreateThemeDocument(ThemeRepository.UndefinedTheme), part);
+                        part = packageParts[THEME.Path][THEME.Filename];
+                        AppendXmlToPackagePart(themeWriter.CreateThemeDocument(workbook.WorkbookTheme), part);
                     }
-
-
                     package.Flush();
                     package.Close();
                     if (!leaveOpen)

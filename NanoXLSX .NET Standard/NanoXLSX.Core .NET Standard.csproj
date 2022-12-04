@@ -85,7 +85,6 @@
     <Compile Include="..\NanoXLSX\Themes\SrgbColor.cs" Link="Themes\SrgbColor.cs" />
     <Compile Include="..\NanoXLSX\Themes\SystemColor.cs" Link="Themes\SystemColor.cs" />
     <Compile Include="..\NanoXLSX\Themes\Theme.cs" Link="Themes\Theme.cs" />
-    <Compile Include="..\NanoXLSX\Themes\ThemeRepository.cs" Link="Themes\ThemeRepository.cs" />
     <Compile Include="..\NanoXLSX\Utils.cs" Link="Utils.cs" />
     <Compile Include="..\NanoXLSX\Workbook.cs" Link="Workbook.cs" />
     <Compile Include="..\NanoXLSX\Worksheet.cs" Link="Worksheet.cs" />

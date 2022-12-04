@@ -13,11 +13,10 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Internal;
 using NanoXLSX.Styles;
-using NanoXLSX.Shared.Utils;
 using NanoXLSX.Internal.Readers;
 using NanoXLSX.Internal.Writers;
+using NanoXLSX.Themes;
 
 namespace NanoXLSX
 {
@@ -140,6 +139,11 @@ namespace NanoXLSX
         /// </summary>
         /// <remarks>A hidden workbook can only be made visible, using another, already visible Excel window</remarks>
         public bool Hidden { get; set; }
+
+        /// <summary>
+        /// Gets or sets the theme of the workbook. The default is defined by <see cref="Theme.GetDefaultTheme"/>. However, the theme can be nullified
+        /// </summary>
+        public Theme WorkbookTheme { get; set; } = Theme.GetDefaultTheme();
 
         #endregion
 

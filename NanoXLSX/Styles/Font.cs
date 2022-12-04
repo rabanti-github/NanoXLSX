@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Text;
 using static NanoXLSX.Shared.Enums.Styles.FontEnums;
 using NanoXLSX.Themes;
+using NanoXLS.Shared.Enums.Schemes;
 
 namespace NanoXLSX.Styles
 {
@@ -68,7 +69,7 @@ namespace NanoXLSX.Styles
         //TODO: V3> Refactor to enum according to specs
         //OOXML: Chp.20.1.6.2(p2839ff)
         private string colorValue = "";
-        private IColorScheme colorTheme;
+        private ThemeEnums.ColorSchemeElement colorTheme;
         #endregion
 
         #region properties
@@ -97,12 +98,12 @@ namespace NanoXLSX.Styles
         public UnderlineValue Underline { get; set; } = UnderlineValue.none;
 
         /// <summary>
-        /// Gets or sets the char set of the Font (Default is Application defined / not defined)
+        /// Gets or sets the char set of the Font
         /// </summary>
         [Append]
         //TODO: v3> Refactor to enum according to specs
         // OOXML: Chp.19.2.1.13
-        public CharsetValue Charset { get; set; } = CharsetValue.ApplicationDefined;
+        public CharsetValue Charset { get; set; } = CharsetValue.Default;
 
         /// <summary>
         /// Gets or sets the font color theme, represented by a color scheme
@@ -110,7 +111,7 @@ namespace NanoXLSX.Styles
         [Append]
         //TODO: v3> Reeference to Theming
         //OOXML: Chp.18.8.3 and 20.1.6.2
-        public IColorScheme ColorTheme { 
+        public ThemeEnums.ColorSchemeElement ColorTheme { 
             get => colorTheme; 
             set {
                 if (value == null)
@@ -212,7 +213,7 @@ namespace NanoXLSX.Styles
             size = DEFAULT_FONT_SIZE;
             Name = DEFAULT_FONT_NAME;
             Family = DEFAULT_FONT_FAMILY;
-            ColorTheme = ThemeRepository.GetThemeOrDefault().Colors;
+            ColorTheme = ThemeEnums.ColorSchemeElement.dark1;
             ColorValue = string.Empty;
             Scheme = DEFAULT_FONT_SCHEME;
             VerticalAlign = DEFAULT_VERTICAL_ALIGN;

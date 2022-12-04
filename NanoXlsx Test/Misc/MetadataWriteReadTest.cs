@@ -8,6 +8,8 @@ using Xunit;
 
 namespace NanoXLSX_Test.Misc
 {
+    // Ensure that these tests are executed sequentially, since static repository methods may be called 
+    [Collection(nameof(SequentialCollection))]
     public class MetadataWriteReadTest
     {
         [Fact(DisplayName = "Test of the 'Application' property when writing and reading a workbook")]

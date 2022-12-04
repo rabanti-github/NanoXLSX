@@ -7,6 +7,8 @@
 
 using NanoXLSX.Shared.Interfaces;
 using NanoXLSX.Shared.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace NanoXLSX.Themes
 {
@@ -61,5 +63,15 @@ namespace NanoXLSX.Themes
             return "FF" + colorValue;
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is SrgbColor color &&
+                   ColorValue == color.ColorValue;
+        }
+
+        public override int GetHashCode()
+        {
+            return 800285905 + EqualityComparer<string>.Default.GetHashCode(ColorValue);
+        }
     }
 }

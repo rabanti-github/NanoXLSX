@@ -6,8 +6,10 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Xml;
 
 namespace NanoXLSX.Internal
@@ -17,14 +19,14 @@ namespace NanoXLSX.Internal
     /// </summary>
     public static class ReaderUtils
     {
-        /// <summary>
-        /// Gets the XML attribute of the passed XML node by its name
-        /// </summary>
-        /// <param name="node">XML node that contains the attribute</param>
-        /// <param name="targetName">Name of the target attribute</param>
-        /// <param name="fallbackValue">Optional fallback value if the attribute was not found. Default is null</param>
-        /// <returns>Attribute value as string or default value if not found (can be null)</returns>
-        public static string GetAttribute(XmlNode node, string targetName, string fallbackValue = null)
+            /// <summary>
+            /// Gets the XML attribute of the passed XML node by its name
+            /// </summary>
+            /// <param name="node">XML node that contains the attribute</param>
+            /// <param name="targetName">Name of the target attribute</param>
+            /// <param name="fallbackValue">Optional fallback value if the attribute was not found. Default is null</param>
+            /// <returns>Attribute value as string or default value if not found (can be null)</returns>
+            public static string GetAttribute(XmlNode node, string targetName, string fallbackValue = null)
         {
             if (node.Attributes == null || node.Attributes.Count == 0)
             {
@@ -87,6 +89,43 @@ namespace NanoXLSX.Internal
         internal static bool IsNode(XmlNode node, string name)
         {
             return node.LocalName.Equals(name, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
+        /// Gets the prefix of an XML element with a target element name. If no prefix is defined, an empty string is returned
+        /// </summary>
+        /// <param name="document">XML document</param>
+        /// <param name="targetName">Name of the target XML element</param>
+        /// <returns>Prefix or empty</returns>
+        internal static string DiscoverPrefix(XmlDocument document, string targetName)
+        {
+            foreach(XmlNode node in document.ChildNodes)
+            {
+                if (node.LocalName == targetName)
+                {
+                    return node.Prefix;
+                }
+            }
+            return "";
+        }
+
+        /// <summary>
+        /// Gets an XmlNodeList of the given name from the given document, either with or without prefix
+        /// </summary>
+        /// <param name="document">XML document</param>
+        /// <param name="tagName">Name of the target XML element without prefix</param>
+        /// <param name="prefix">prefix (without training colon) or empty</param>
+        /// <returns>XmlNodeList of the found elements with the tag name</returns>
+        internal static XmlNodeList GetElementsByTagName(XmlDocument document, string tagName, string prefix)
+        {
+            if (string.IsNullOrEmpty(prefix))
+            {
+                return document.GetElementsByTagName(tagName);
+            }
+            else
+            {
+                return document.GetElementsByTagName(prefix + ":" + tagName);
+            }
         }
 
     }

@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\Themes\ThemeEnums.cs" />
     <Compile Include="Enums\Styles\BorderEnums.cs" />
     <Compile Include="Enums\Styles\CellXfEnums.cs" />
     <Compile Include="Enums\Styles\FillEnums.cs" />

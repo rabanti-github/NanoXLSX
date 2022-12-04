@@ -179,7 +179,7 @@ namespace NanoXLSX.Internal.Writers
                 sb.Append("<sz val=\"").Append(ParserUtils.ToString(item.Size)).Append("\"/>");
                 if (string.IsNullOrEmpty(item.ColorValue))
                 {
-                    sb.Append("<color theme=\"").Append(ParserUtils.ToString(item.ColorTheme.GetSchemeId())).Append("\"/>");
+                    sb.Append("<color theme=\"").Append(ParserUtils.ToString((int)item.ColorTheme)).Append("\"/>");
                 }
                 else
                 {
@@ -194,7 +194,7 @@ namespace NanoXLSX.Internal.Writers
                     else if (item.Scheme == SchemeValue.minor)
                     { sb.Append("<scheme val=\"minor\"/>"); }
                 }
-                if (item.Charset != CharsetValue.Default && item.Charset != CharsetValue.ApplicationDefined)
+                if (item.Charset != CharsetValue.Default)
                 {
                     sb.Append("<charset val=\"").Append(ParserUtils.ToString((int)item.Charset)).Append("\"/>");
                 }

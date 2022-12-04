@@ -34,12 +34,13 @@ namespace NanoXLSX.Internal.Readers
                     XmlDocument xr = new XmlDocument();
                     xr.XmlResolver = null;
                     xr.Load(stream);
-                    XmlNodeList themes = xr.GetElementsByTagName("theme");
+                    string prefix = ReaderUtils.DiscoverPrefix(xr, "theme");
+                    XmlNodeList themes = ReaderUtils.GetElementsByTagName(xr, "theme", prefix);
                     string themeName = ReaderUtils.GetAttribute(themes[0], "name"); // If this fails, something is completely wrong
                     CurrentTheme = new Theme(number, themeName);
-                    ColorScheme colorScheme = new ColorScheme(number);
+                    ColorScheme colorScheme = new ColorScheme();
                     CurrentTheme.Colors = colorScheme;
-                    XmlNodeList colors = xr.GetElementsByTagName("clrScheme");
+                    XmlNodeList colors = ReaderUtils.GetElementsByTagName(xr, "clrScheme", prefix);
                     foreach (XmlNode color in colors)
                     {
                         XmlNodeList colorNodes = color.ChildNodes;
@@ -79,7 +80,7 @@ namespace NanoXLSX.Internal.Readers
                                     colorScheme.Accent6 = ParseColor(colorNode.ChildNodes);
                                     break;
                                 case "hlink":
-                                    colorScheme.HyperLink = ParseColor(colorNode.ChildNodes);
+                                    colorScheme.Hyperlink = ParseColor(colorNode.ChildNodes);
                                     break;
                                 case "folHlink":
                                     colorScheme.FollowedHyperlink = ParseColor(colorNode.ChildNodes);

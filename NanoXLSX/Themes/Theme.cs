@@ -18,6 +18,19 @@ namespace NanoXLSX.Themes
     /// </summary>
     public class Theme
     {
+
+        #region constants
+        /// <summary>
+        /// Default theme ID, stated in the workbook document
+        /// </summary>
+        /// <remarks>According to the official OOXML documentation (part 1, chapter 18.2.28) the version consists of the application version and build where the excel file was created.
+        /// The value was extracted from a valid Excel file, created with Excel 2019. However, although '16' can be assumed to be the Version of Excel 2019, 
+        /// the build part '6925' cannot be originated, is not reflecting the retrieved application build version, and seems not to be listed publicly
+        /// </remarks>
+        public const string DEFAULT_THEME_VERSION = "166925";
+
+        #endregion
+
         /// <summary>
         /// Gets or sets the name of the theme
         /// </summary>
@@ -30,6 +43,12 @@ namespace NanoXLSX.Themes
         /// Gets or sets the internal ID of the theme. The value is usually identical to <see cref="ThemeRepository.DEFAULT_THEME_ID"/>
         /// </summary>
         public int ID { get; set; }
+
+        /// <summary>
+        /// Gets whether the theme is defined as copy or reference to the application default theme.
+        /// </summary>
+        /// <remarks>This indication and the default theme (<see cref="Theme.GetDefaultTheme"/>) may still deviate from the actual default theme of the application</remarks>
+        public bool DefaultTheme { get; private set; }
 
         /// <summary>
         /// Constructor with parameters
@@ -48,8 +67,9 @@ namespace NanoXLSX.Themes
         /// <returns>Theme with default values according to the default theme of Office 2019 (may be deviating)</returns>
         internal static Theme GetDefaultTheme()
         {
-            Theme theme = new Theme(ThemeRepository.DEFAULT_THEME_ID, "default");
-            ColorScheme colors = new ColorScheme(1);
+            Theme theme = new Theme(1, "default");
+            theme.DefaultTheme = true;
+            ColorScheme colors = new ColorScheme();
             colors.Name = "default";
             colors.Dark1 = new SystemColor(SystemColor.Value.WindowText);
             colors.Light1 = new SystemColor(SystemColor.Value.Window, "FFFFFF");
@@ -61,10 +81,25 @@ namespace NanoXLSX.Themes
             colors.Accent4 = new SrgbColor("FFC000");
             colors.Accent5 = new SrgbColor("5B9BD5");
             colors.Accent6 = new SrgbColor("70AD47");
-            colors.HyperLink = new SrgbColor("0563C1");
+            colors.Hyperlink = new SrgbColor("0563C1");
             colors.FollowedHyperlink = new SrgbColor("954F72");
             theme.Colors = colors;
             return theme;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Theme theme &&
+                   Name == theme.Name &&
+                   EqualityComparer<ColorScheme>.Default.Equals(Colors, theme.Colors);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1172093127;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ColorScheme>.Default.GetHashCode(Colors);
+            return hashCode;
         }
     }
 }

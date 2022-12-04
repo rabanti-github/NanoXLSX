@@ -99,7 +99,7 @@ namespace NanoXLSX_Test
         {
             return SaveAndReadStyledCell(value, value, style, targetCellAddress);
         }
-            public static Cell SaveAndReadStyledCell(object givenValue, object expectedValue, Style style, string targetCellAddress)
+        public static Cell SaveAndReadStyledCell(object givenValue, object expectedValue, Style style, string targetCellAddress)
         {
             Workbook workbook = new Workbook(false);
             workbook.AddWorksheet("sheet1");
