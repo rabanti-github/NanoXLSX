@@ -283,7 +283,7 @@ namespace NanoXLSX_Test.Misc
             Assert.Equal(expectedDate, date);
         }
 
-        [Theory(DisplayName = "Test of the GeneratePasswordHash function")]
+        [Theory(DisplayName = "Test of the GeneratePasswordHash function (legacy)")]
         [InlineData("x", "CEBA")]
         [InlineData("Test@1-2,3!", "F767")]
         [InlineData(" ", "CE0A")]
