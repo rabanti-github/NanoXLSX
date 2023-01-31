@@ -16,7 +16,7 @@ namespace NanoXLSX.Shared.Utils
     /// Class providing static methods to manipulate XML during packing or unpacking
     /// </summary>
     /// <remarks>Methods in this class should only be used by the library components and not called by user code</remarks>
-    public class XmlUtils
+    public static class XmlUtils
     {
 
         /// <summary>
@@ -99,12 +99,6 @@ namespace NanoXLSX.Shared.Utils
             input = EscapeXmlChars(input); // Sanitize string from illegal characters beside quotes
             input = input.Replace("\"", "&quot;");
             return input;
-        }
-
-
-        private XmlUtils()
-        {
-            // Do not instantiate
         }
     }
 }

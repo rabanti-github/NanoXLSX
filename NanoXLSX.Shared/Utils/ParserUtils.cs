@@ -18,7 +18,7 @@ namespace NanoXLSX.Shared.Utils
     /// Class providing static methods to parse string values to specific types or to print object as language neutral string
     /// </summary>
     /// <remarks>Methods in this class should only be used by the library components and not called by user code</remarks>
-    public class ParserUtils
+    public static class ParserUtils
     {
         #region constants
 
@@ -191,11 +191,6 @@ namespace NanoXLSX.Shared.Utils
         public static bool TryParseDouble(string rawValue, out double parsedValue)
         {
             return double.TryParse(rawValue, NumberStyles.Any, INVARIANT_CULTURE, out parsedValue);
-        }
-
-        private ParserUtils()
-        {
-            // Do not instantiate
         }
     }
 }
