@@ -381,6 +381,14 @@ namespace NanoXLSX_Test.Reader
             Assert.Throws<NanoXLSX.Exceptions.IOException>(() => Workbook.Load(stream));
         }
 
+        [Fact(DisplayName = "Reading chartsheets works")]
+        public void ReadChartsheetStreamTest()
+        {
+            Stream nullStream = null;
+            Stream stream = TestUtils.GetResource("chartsheet.xlsx");
+            var workbook = Workbook.Load(File.OpenRead(@"C:\_dev\NanoXLSX\NanoXlsx Test\Resources\chartsheet.xlsx"));
+        }
+
         [Fact(DisplayName = "Test of the reader functionality on an invalid stream")]
         public void ReadInvalidStreamTest()
         {
