@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
 using IOException = NanoXLSX.Exceptions.IOException;
 
@@ -126,8 +127,17 @@ namespace NanoXLSX.LowLevel
                     WorksheetReader wr;
                     nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
                     name = "xl/worksheets/" + nameTemplate;
+
+                    var relationships = new RelationshipReader();
+                    relationships.Read(GetEntryStream("xl/_rels/workbook.xml.rels", zf));
+                    
                     foreach (KeyValuePair<int, WorkbookReader.WorksheetDefinition> definition in workbook.WorksheetDefinitions)
                     {
+                        var relationship = relationships.Relationships.SingleOrDefault(r => r.Id == definition.Value.RelId);
+                        if (relationship != null)
+                        {
+                            name = "xl/" + relationship.Target;
+                        }
                         ms = GetEntryStream(name, zf);
                         wr = new WorksheetReader(sharedStrings, styleReaderContainer, importOptions);
                         wr.Read(ms);

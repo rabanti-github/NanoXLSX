@@ -102,6 +102,7 @@
 	<Resource Include="Resources\invalid_workbook_sheet-definition.xlsx" />
     <Resource Include="Resources\invalid_worksheet.xlsx" />
     <Resource Include="Resources\tampered.xlsx" />
+    <EmbeddedResource Include="Resources\chartsheet.xlsx" />
   </ItemGroup>
 
 </Project>

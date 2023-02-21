@@ -63,6 +63,7 @@
     <Compile Include="..\NanoXLSX\LowLevel\StyleReaderContainer.cs" Link="LowLevel\StyleReaderContainer.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\WorkbookReader.cs" Link="LowLevel\WorkbookReader.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\WorksheetReader.cs" Link="LowLevel\WorksheetReader.cs" />
+    <Compile Include="..\NanoXLSX\LowLevel\RelationshipReader.cs" Link="LowLevel\RelationshipReader.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\XlsxReader.cs" Link="LowLevel\XlsxReader.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\XlsxWriter.cs" Link="LowLevel\XlsxWriter.cs" />
     <Compile Include="..\NanoXLSX\Metadata.cs" Link="Metadata.cs" />
@@ -106,4 +107,3 @@
     </None>
   </ItemGroup>
 </Project>
-
