@@ -48,6 +48,14 @@ namespace NanoXLSX.LowLevel
                     var id = ReaderUtils.GetAttribute(relationship, "Id");
                     var type = ReaderUtils.GetAttribute(relationship, "Type");
                     var target = ReaderUtils.GetAttribute(relationship, "Target");
+                    if (target.StartsWith("/"))
+                    {
+                        target = target.TrimStart('/');
+                    }
+                    if (!target.StartsWith("xl/"))
+                    {
+                        target = "xl/" + target;
+                    }
                     Relationships.Add(
                         new Relationship
                         {

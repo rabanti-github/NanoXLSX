@@ -126,7 +126,7 @@ namespace NanoXLSX.LowLevel
                     string nameTemplate;
                     WorksheetReader wr;
                     nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
-                    name = "xl/worksheets/" + nameTemplate;
+                    name = "xl/worksheets/" + nameTemplate; // default
 
                     var relationships = new RelationshipReader();
                     relationships.Read(GetEntryStream("xl/_rels/workbook.xml.rels", zf));
@@ -136,12 +136,14 @@ namespace NanoXLSX.LowLevel
                         var relationship = relationships.Relationships.SingleOrDefault(r => r.Id == definition.Value.RelId);
                         if (relationship != null)
                         {
-                            name = "xl/" + relationship.Target;
+                            // relationship resolution
+                            name = relationship.Target;
                         }
                         ms = GetEntryStream(name, zf);
                         wr = new WorksheetReader(sharedStrings, styleReaderContainer, importOptions);
                         wr.Read(ms);
                         worksheets.Add(definition.Key, wr);
+                        // fallback resolution
                         worksheetIndex++;
                         nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
                         name = "xl/worksheets/" + nameTemplate;
