@@ -20,6 +20,9 @@ namespace NanoXLSX.LowLevel
     {
         #region properties
 
+        /// <summary>
+        /// List of workbook relationship entries
+        /// </summary>
         public List<Relationship> Relationships { get; set; } = new List<Relationship>();
 
         #endregion
@@ -27,6 +30,11 @@ namespace NanoXLSX.LowLevel
 
         #region functions
 
+        /// <summary>
+        /// Reads the XML file form the passed stream and processes the workbook relationship document
+        /// </summary>
+        /// <param name="stream">Stream of the XML file</param>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public void Read(MemoryStream stream)
         {
             if (stream == null) return;
@@ -45,9 +53,9 @@ namespace NanoXLSX.LowLevel
                 var relationships = xr.GetElementsByTagName("Relationship");
                 foreach (XmlNode relationship in relationships)
                 {
-                    var id = ReaderUtils.GetAttribute(relationship, "Id");
-                    var type = ReaderUtils.GetAttribute(relationship, "Type");
-                    var target = ReaderUtils.GetAttribute(relationship, "Target");
+                    string id = ReaderUtils.GetAttribute(relationship, "Id");
+                    string type = ReaderUtils.GetAttribute(relationship, "Type");
+                    string target = ReaderUtils.GetAttribute(relationship, "Target");
                     if (target.StartsWith("/"))
                     {
                         target = target.TrimStart('/');
@@ -73,11 +81,25 @@ namespace NanoXLSX.LowLevel
 
         #endregion
 
+        #region sub-classes
+        /// <summary>
+        /// Class to represent a workbook relation
+        /// </summary>
         public class Relationship
         {
+            /// <summary>
+            /// UD of the relation
+            /// </summary>
             public string Id { get; set; }
+            /// <summary>
+            /// Type of the relation
+            /// </summary>
             public string Type { get; set; }
+            /// <summary>
+            /// Target of the relation
+            /// </summary>
             public string Target { get; set; }
         }
+        #endregion
     }
 }

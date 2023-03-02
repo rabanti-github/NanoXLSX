@@ -373,6 +373,7 @@ namespace NanoXLSX_Test.Reader
         [InlineData("invalid_metadata_core.xlsx")]
         [InlineData("invalid_sharedStrings.xlsx")]
         [InlineData("invalid_sharedStrings2.xlsx")]
+        [InlineData("invalid_relationship.xlsx")]
         [InlineData("missing_worksheet.xlsx")]
         public void FailingReadInvalidDataTest(string invalidFile)
         {
