@@ -11,7 +11,7 @@
     <Product>NanoXLSX</Product>
     <Company>Raphael Stoeckli</Company>
     <Authors>Raphael Stoeckli</Authors>
-    <Copyright>Copyright Raphael Stoeckli © 2022</Copyright>
+    <Copyright>Copyright Raphael Stoeckli © 2023</Copyright>
     <Description>NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way
 </Description>
 
@@ -28,9 +28,9 @@
     <PackageLicenseFile></PackageLicenseFile>
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
-    <Version>2.1.0</Version>
+    <AssemblyVersion>2.1.1.0</AssemblyVersion>
+    <FileVersion>2.1.1.0</FileVersion>
+    <Version>2.1.1</Version>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -63,6 +63,7 @@
     <Compile Include="..\NanoXLSX\LowLevel\StyleReaderContainer.cs" Link="LowLevel\StyleReaderContainer.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\WorkbookReader.cs" Link="LowLevel\WorkbookReader.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\WorksheetReader.cs" Link="LowLevel\WorksheetReader.cs" />
+    <Compile Include="..\NanoXLSX\LowLevel\RelationshipReader.cs" Link="LowLevel\RelationshipReader.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\XlsxReader.cs" Link="LowLevel\XlsxReader.cs" />
     <Compile Include="..\NanoXLSX\LowLevel\XlsxWriter.cs" Link="LowLevel\XlsxWriter.cs" />
     <Compile Include="..\NanoXLSX\Metadata.cs" Link="Metadata.cs" />
@@ -106,4 +107,3 @@
     </None>
   </ItemGroup>
 </Project>
-

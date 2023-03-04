@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2022
+ * Copyright Raphael Stoeckli © 2023
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
 using IOException = NanoXLSX.Exceptions.IOException;
 
@@ -125,13 +126,24 @@ namespace NanoXLSX.LowLevel
                     string nameTemplate;
                     WorksheetReader wr;
                     nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
-                    name = "xl/worksheets/" + nameTemplate;
+                    name = "xl/worksheets/" + nameTemplate; // default
+
+                    var relationships = new RelationshipReader();
+                    relationships.Read(GetEntryStream("xl/_rels/workbook.xml.rels", zf));
+                    
                     foreach (KeyValuePair<int, WorkbookReader.WorksheetDefinition> definition in workbook.WorksheetDefinitions)
                     {
+                        var relationship = relationships.Relationships.SingleOrDefault(r => r.Id == definition.Value.RelId);
+                        if (relationship != null)
+                        {
+                            // relationship resolution
+                            name = relationship.Target;
+                        }
                         ms = GetEntryStream(name, zf);
                         wr = new WorksheetReader(sharedStrings, styleReaderContainer, importOptions);
                         wr.Read(ms);
                         worksheets.Add(definition.Key, wr);
+                        // fallback resolution
                         worksheetIndex++;
                         nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
                         name = "xl/worksheets/" + nameTemplate;

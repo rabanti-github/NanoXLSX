@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2022
+ * Copyright Raphael Stoeckli © 2023
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -174,13 +174,14 @@ namespace NanoXLSX.LowLevel
                     {
                         string sheetName = ReaderUtils.GetAttribute(node, "name", "worksheet1");
                         int id = ReaderUtils.ParseInt(ReaderUtils.GetAttribute(node, "sheetId")); // Default will rightly throw an exception
+                        string relId = ReaderUtils.GetAttribute(node, "r:id");
                         string state = ReaderUtils.GetAttribute(node, "state");
                         bool hidden = false;
                         if (state != null && state.ToLower() == "hidden")
                         {
                             hidden = true;
                         }
-                        WorksheetDefinition definition = new WorksheetDefinition(id, sheetName);
+                        WorksheetDefinition definition = new WorksheetDefinition(id, sheetName, relId);
                         definition.Hidden = hidden;
                         WorksheetDefinitions.Add(id, definition);
                     }
@@ -213,16 +214,22 @@ namespace NanoXLSX.LowLevel
             /// Internal worksheet ID
             /// </summary>
             public int SheetID { get; set; }
+            
+            /// <summary>
+            /// Reference ID
+            /// </summary>
+            public string RelId { get; set; }
 
             /// <summary>
             /// Default constructor with parameters
             /// </summary>
             /// <param name="id">Internal ID</param>
             /// <param name="name">Worksheet name</param>
-            public WorksheetDefinition(int id, string name)
+            public WorksheetDefinition(int id, string name, string relId)
             {
                 this.SheetID = id;
                 this.WorksheetName = name;
+                this.RelId = relId;
             }
         }
 
