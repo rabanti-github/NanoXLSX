@@ -382,13 +382,25 @@ namespace NanoXLSX_Test.Reader
             Assert.Throws<NanoXLSX.Exceptions.IOException>(() => Workbook.Load(stream));
         }
 
-        [Fact(DisplayName = "Test of the workbook reader if the only worksheet is a chart")]
-        public void ReadChartsheetStreamTest()
+        [Fact(DisplayName = "Test of the workbook reader if the only workbook entry is a chart")]
+        public void ReadChartsheetTest()
         {
             Stream stream = TestUtils.GetResource("chartsheet.xlsx");
             var workbook = Workbook.Load(stream);
             Assert.Single(workbook.Worksheets);
             Assert.Empty(workbook.Worksheets[0].Cells); 
+        }
+
+        [Fact(DisplayName = "Test of the workbook reader if the workbook contains worksheets chats and embedded charts")]
+        public void ReadChartsheetTest2()
+        {
+            // Note: Sheet1 and Sheet3 contains data. Diagram1 (worksheet2) is just a chart and should be empty
+            Stream stream = TestUtils.GetResource("chartsheet2.xlsx");
+            var workbook = Workbook.Load(stream);
+            Assert.Equal(3, workbook.Worksheets.Count);
+            Assert.True(workbook.GetWorksheet("Sheet1").Cells.Count > 0);
+            Assert.Empty(workbook.GetWorksheet("Diagram1").Cells);
+            Assert.True(workbook.GetWorksheet("Sheet3").Cells.Count > 0);
         }
 
         [Fact(DisplayName = "Test of the reader functionality on an invalid stream")]

@@ -6,7 +6,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Version>2.1.0</Version>
+    <Version>2.1.1</Version>
 
     <Authors>Raphael Stoeckli</Authors>
 
@@ -18,7 +18,7 @@
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <Copyright>Copyright Raphael Stoeckli © 2022</Copyright>
+    <Copyright>Copyright Raphael Stoeckli © 2023</Copyright>
 
     <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
 
@@ -34,12 +34,13 @@
 
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
 
-    <AssemblyVersion>2.1.4.0</AssemblyVersion>
+    <AssemblyVersion>2.1.1.0</AssemblyVersion>
 
-    <FileVersion>2.1.0.0</FileVersion>
+    <FileVersion>2.1.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\chartsheet2.xlsx" />
     <None Remove="Resources\invalid_metadata.xlsx" />
     <None Remove="Resources\invalid_metadata_app.xlsx" />
     <None Remove="Resources\invalid_metadata_core.xlsx" />
@@ -60,6 +61,7 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <EmbeddedResource Include="Resources\chartsheet2.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_app.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_core.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_relationship.xlsx" />
