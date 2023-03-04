@@ -5,7 +5,7 @@
 ---
 Release Date: **04.03.2023**
 
-- Fixed a bug regarding when a workbook contains charts instead of worksheets. Bug fix provided by Iivari Mokelainen
+- Fixed a bug when a workbook contains charts instead of worksheets. Bug fix provided by Iivari Mokelainen
 - Minor code maintenance
 
 ## v2.1.0
