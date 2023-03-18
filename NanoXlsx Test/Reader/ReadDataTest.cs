@@ -386,7 +386,7 @@ namespace NanoXLSX_Test.Reader
         public void ReadChartsheetTest()
         {
             Stream stream = TestUtils.GetResource("chartsheet.xlsx");
-            var workbook = Workbook.Load(stream);
+            Workbook workbook = Workbook.Load(stream);
             Assert.Single(workbook.Worksheets);
             Assert.Empty(workbook.Worksheets[0].Cells); 
         }
@@ -396,7 +396,7 @@ namespace NanoXLSX_Test.Reader
         {
             // Note: Sheet1 and Sheet3 contains data. Diagram1 (worksheet2) is just a chart and should be empty
             Stream stream = TestUtils.GetResource("chartsheet2.xlsx");
-            var workbook = Workbook.Load(stream);
+            Workbook workbook = Workbook.Load(stream);
             Assert.Equal(3, workbook.Worksheets.Count);
             Assert.True(workbook.GetWorksheet("Sheet1").Cells.Count > 0);
             Assert.Empty(workbook.GetWorksheet("Diagram1").Cells);

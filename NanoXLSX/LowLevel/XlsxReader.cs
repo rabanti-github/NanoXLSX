@@ -128,12 +128,12 @@ namespace NanoXLSX.LowLevel
                     nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
                     name = "xl/worksheets/" + nameTemplate; // default
 
-                    var relationships = new RelationshipReader();
+                    RelationshipReader relationships = new RelationshipReader();
                     relationships.Read(GetEntryStream("xl/_rels/workbook.xml.rels", zf));
-                    
+
                     foreach (KeyValuePair<int, WorkbookReader.WorksheetDefinition> definition in workbook.WorksheetDefinitions)
                     {
-                        var relationship = relationships.Relationships.SingleOrDefault(r => r.Id == definition.Value.RelId);
+                        RelationshipReader.Relationship relationship = relationships.Relationships.SingleOrDefault(r => r.Id == definition.Value.RelId);
                         if (relationship != null)
                         {
                             // relationship resolution
@@ -147,6 +147,10 @@ namespace NanoXLSX.LowLevel
                         worksheetIndex++;
                         nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
                         name = "xl/worksheets/" + nameTemplate;
+                    }
+                    if (this.worksheets.Count == 0)
+                    {
+                        throw new IOException("No worksheet was found in the workbook");
                     }
                 }
             }
