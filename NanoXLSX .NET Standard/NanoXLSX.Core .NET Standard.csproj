@@ -11,7 +11,7 @@
     <Product>NanoXLSX</Product>
     <Company>Raphael Stoeckli</Company>
     <Authors>Raphael Stoeckli</Authors>
-    <Copyright>Copyright Raphael Stoeckli © 2022</Copyright>
+    <Copyright>Copyright Raphael Stoeckli © 2023</Copyright>
     <Description>NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way
 </Description>
 
@@ -50,6 +50,7 @@
     <Compile Include="..\NanoXLSX\Column.cs" Link="Column.cs" />
     <Compile Include="..\NanoXLSX\ImportOptions.cs" Link="ImportOptions.cs" />
     <Compile Include="..\NanoXLSX\Internal\Readers\MetadataReader.cs" Link="Internal\Readers\MetadataReader.cs" />
+    <Compile Include="..\NanoXLSX\Internal\Readers\RelationshipReader.cs" Link="Internal\Readers\RelationshipReader.cs" />
     <Compile Include="..\NanoXLSX\Internal\Readers\SharedStringsReader.cs" Link="Internal\Readers\SharedStringsReader.cs" />
     <Compile Include="..\NanoXLSX\Internal\Readers\StyleReader.cs" Link="Internal\Readers\StyleReader.cs" />
     <Compile Include="..\NanoXLSX\Internal\Readers\ThemeReader.cs" Link="Internal\Readers\ThemeReader.cs" />

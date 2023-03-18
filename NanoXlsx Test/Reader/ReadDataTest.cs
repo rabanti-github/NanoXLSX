@@ -341,12 +341,34 @@ namespace NanoXLSX_Test.Reader
         [InlineData("invalid_metadata_core.xlsx")]
         [InlineData("invalid_sharedStrings.xlsx")]
         [InlineData("invalid_sharedStrings2.xlsx")]
+        [InlineData("invalid_relationship.xlsx")]
         [InlineData("missing_worksheet.xlsx")]
         public void FailingReadInvalidDataTest(string invalidFile)
         {
             // Note: all referenced (embedded) files contains invalid XML documents (malformed, missing start or end tags, missing attributes)
             Stream stream = TestUtils.GetResource(invalidFile);
             Assert.Throws<NanoXLSX.Shared.Exceptions.IOException>(() => Workbook.Load(stream));
+        }
+
+        [Fact(DisplayName = "Test of the workbook reader if the only workbook entry is a chart")]
+        public void ReadChartsheetTest()
+        {
+            Stream stream = TestUtils.GetResource("chartsheet.xlsx");
+            Workbook workbook = Workbook.Load(stream);
+            Assert.Single(workbook.Worksheets);
+            Assert.Empty(workbook.Worksheets[0].Cells);
+        }
+
+        [Fact(DisplayName = "Test of the workbook reader if the workbook contains worksheets chats and embedded charts")]
+        public void ReadChartsheetTest2()
+        {
+            // Note: Sheet1 and Sheet3 contains data. Diagram1 (worksheet2) is just a chart and should be empty
+            Stream stream = TestUtils.GetResource("chartsheet2.xlsx");
+            Workbook workbook = Workbook.Load(stream);
+            Assert.Equal(3, workbook.Worksheets.Count);
+            Assert.True(workbook.GetWorksheet("Sheet1").Cells.Count > 0);
+            Assert.Empty(workbook.GetWorksheet("Diagram1").Cells);
+            Assert.True(workbook.GetWorksheet("Sheet3").Cells.Count > 0);
         }
 
         [Fact(DisplayName = "Test of the reader functionality on an invalid stream")]
@@ -389,7 +411,7 @@ namespace NanoXLSX_Test.Reader
             }
         }
 
-            private static void AssertValues<T,D>(Dictionary<string, T> givenCells, Action<D, D> assertionAction, Dictionary<string, D> expectedCells)
+        private static void AssertValues<T,D>(Dictionary<string, T> givenCells, Action<D, D> assertionAction, Dictionary<string, D> expectedCells)
         {
             Worksheet givenWorksheet = GetWorksheet(givenCells);
             foreach (string address in givenCells.Keys)
@@ -408,7 +430,7 @@ namespace NanoXLSX_Test.Reader
             }
         }
 
-            private static Worksheet GetWorksheet<T>(Dictionary<string, T> givenCells)
+        private static Worksheet GetWorksheet<T>(Dictionary<string, T> givenCells)
         {
             Workbook workbook = new Workbook("worksheet1");
             foreach (KeyValuePair<string, T> cell in givenCells)

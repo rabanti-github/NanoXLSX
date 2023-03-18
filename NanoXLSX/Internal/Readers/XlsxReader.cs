@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2022
+ * Copyright Raphael Stoeckli © 2023
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
 using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
@@ -137,21 +138,33 @@ namespace NanoXLSX.Internal.Readers
                     ms = GetEntryStream("docProps/core.xml", zf);
                     metadataReader.ReadCoreData(ms);
 
-                    int worksheetIndex = 1;
-                    string name;
-                    string nameTemplate;
+                    RelationshipReader relationships = new RelationshipReader();
+                    relationships.Read(GetEntryStream("xl/_rels/workbook.xml.rels", zf));
+
+                  //  int worksheetIndex = 1;
+                  //  string name;
+                  //  string nameTemplate;
                     WorksheetReader wr;
-                    nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
-                    name = "xl/worksheets/" + nameTemplate;
+                 //   nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
+                 //   name = "xl/worksheets/" + nameTemplate;
                     foreach (KeyValuePair<int, WorkbookReader.WorksheetDefinition> definition in workbook.WorksheetDefinitions)
                     {
-                        ms = GetEntryStream(name, zf);
+                        RelationshipReader.Relationship relationship = relationships.Relationships.SingleOrDefault(r => r.Id == definition.Value.RelId);
+                        if (relationship == null)
+                        {
+                            throw new IOException("There was an error while reading an XLSX file. The relationship target of the worksheet with the RelID " + definition.Value.RelId + " was not found");
+                        }
+                        ms = GetEntryStream(relationship.Target, zf);
                         wr = new WorksheetReader(sharedStrings, styleReaderContainer, importOptions);
                         wr.Read(ms);
                         worksheets.Add(definition.Key, wr);
-                        worksheetIndex++;
-                        nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
-                        name = "xl/worksheets/" + nameTemplate;
+                      //  worksheetIndex++;
+                        //nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
+                      //  name = "xl/worksheets/" + nameTemplate;
+                    }
+                    if (this.worksheets.Count == 0)
+                    {
+                        throw new IOException("No worksheet was found in the workbook");
                     }
                 }
             }

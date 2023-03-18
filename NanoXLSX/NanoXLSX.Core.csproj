@@ -61,6 +61,7 @@
     <Compile Include="Cell.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="ImportOptions.cs" />
+    <Compile Include="Internal\Readers\RelationshipReader.cs" />
     <Compile Include="Internal\Structures\DocumentPath.cs" />
     <Compile Include="Internal\Readers\MetadataReader.cs" />
     <Compile Include="Internal\ReaderUtils.cs" />

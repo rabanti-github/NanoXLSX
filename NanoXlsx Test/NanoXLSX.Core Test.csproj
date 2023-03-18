@@ -18,7 +18,7 @@
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <Copyright>Copyright Raphael Stoeckli © 2022</Copyright>
+    <Copyright>Copyright Raphael Stoeckli © 2023</Copyright>
 
     <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
 
@@ -42,9 +42,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\chartsheet.xlsx" />
+    <None Remove="Resources\chartsheet2.xlsx" />
     <None Remove="Resources\invalid_metadata.xlsx" />
     <None Remove="Resources\invalid_metadata_app.xlsx" />
     <None Remove="Resources\invalid_metadata_core.xlsx" />
+    <None Remove="Resources\invalid_relationship.xlsx" />
     <None Remove="Resources\invalid_shardStrings.xlsx" />
     <None Remove="Resources\invalid_sharedStrings2.xlsx" />
     <None Remove="Resources\invalid_style.xlsx" />
@@ -52,6 +55,7 @@
 	<None Remove="Resources\invalid_workbook_sheet-definition.xlsx" />
     <None Remove="Resources\invalid_worksheet.xlsx" />
     <None Remove="Resources\missing_worksheet.xlsx" />
+    <None Remove="Resources\new_format.xlsx" />
     <None Remove="Resources\omitted_style_refs.xlsx" />
     <None Remove="Resources\phonetics.xlsx" />
     <None Remove="Resources\tampered.xlsx" />
@@ -60,8 +64,11 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <EmbeddedResource Include="Resources\chartsheet.xlsx" />
+	  <EmbeddedResource Include="Resources\chartsheet2.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_app.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_core.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_relationship.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_shardStrings.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_sharedStrings2.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_style.xlsx" />
@@ -71,6 +78,7 @@
 	  <EmbeddedResource Include="Resources\missing_worksheet.xlsx">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\new_format.xlsx" />
 	  <EmbeddedResource Include="Resources\omitted_style_refs.xlsx" />
 	  <EmbeddedResource Include="Resources\phonetics.xlsx" />
 	<EmbeddedResource Include="Resources\tampered.xlsx" />
