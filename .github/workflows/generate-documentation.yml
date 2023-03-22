@@ -16,7 +16,7 @@ jobs:
     - name: Install SHFB
       uses: Bassman2/setup-SHFB@v1
       with:
-        version: v2021.4.9.0
+        version: 2023.3.4.0
 
     - name: Generate documentation
       run: shfb --project Documentation/CodeDocumentation.shfbproj
