@@ -12,22 +12,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Download artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: build-artifact
-
     - name: Install SHFB
       run: choco install sandcastlehelpfilebuilder
 
     - name: Generate documentation
-      run: shfb --project CodeDocumentation.shfbproj
+      run: shfb --project Documentation/CodeDocumentation.shfbproj
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: documentation
-        path: CodeDocumentation/build/*
+        path: Documentation/build/*
         if-no-files-found: error
+
     - name: Move documentation to docs folder
-      run: mv CodeDocumentation/build/* docs/
+      run: mv Documentation/build/* docs/
