@@ -19,7 +19,7 @@ jobs:
         version: 2023.3.4.0
 
     - name: Generate documentation
-      run: shfb --project Documentation/CodeDocumentation.shfbproj
+      run: msbuild Documentation/CodeDocumentation.shfbproj /p:configuration="Release" /m /verbosity:minimal
       
     - name: Clean up docs folder
       shell: powershell
