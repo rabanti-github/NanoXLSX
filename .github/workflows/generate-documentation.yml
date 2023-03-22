@@ -1,0 +1,33 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifact
+
+    - name: Install SHFB
+      run: choco install sandcastlehelpfilebuilder
+
+    - name: Generate documentation
+      run: shfb --project CodeDocumentation.shfbproj
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: documentation
+        path: CodeDocumentation/build/*
+        if-no-files-found: error
+    - name: Move documentation to docs folder
+      run: mv CodeDocumentation/build/* docs/
