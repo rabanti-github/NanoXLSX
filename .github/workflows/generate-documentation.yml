@@ -6,12 +6,14 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
-
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - name: Install checkout
+      uses: actions/checkout@v3
+  
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
 
     - name: Install SHFB
       uses: Bassman2/setup-SHFB@v1
