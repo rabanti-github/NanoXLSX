@@ -6,11 +6,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
+
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Install Chocolatey
+      run: |
+        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
     - name: Install SHFB
       run: choco install sandcastlehelpfilebuilder
@@ -26,4 +31,4 @@ jobs:
         if-no-files-found: error
 
     - name: Move documentation to docs folder
-      run: mv Documentation/build/* docs/
+      run: Move-Item -Path Documentation/build/* -Destination docs/
