@@ -410,6 +410,16 @@ namespace NanoXLSX_Test.Reader
             Assert.Throws<NanoXLSX.Exceptions.IOException>(() => Workbook.Load(nullStream));
         }
 
+        [Fact(DisplayName = "Read a large-ish amount from excel file and get the decimals right")]
+        public void ReadSemiLargeNumberWithoutRounding()
+        {
+            Stream stream = TestUtils.GetResource("semi-large-amount.xlsx");
+            Workbook workbook = Workbook.Load(stream);
+            Worksheet worksheet = workbook.CurrentWorksheet;
+
+            var actual = worksheet.Cells["A1"].Value;
+            Assert.Equal(4372449.78m, actual);
+        }
 
         private static void AssertEquals<T>(T expected, T given)
         {
