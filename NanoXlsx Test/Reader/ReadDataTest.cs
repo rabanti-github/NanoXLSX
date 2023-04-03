@@ -414,7 +414,10 @@ namespace NanoXLSX_Test.Reader
         public void ReadSemiLargeNumberWithoutRounding()
         {
             Stream stream = TestUtils.GetResource("semi-large-amount.xlsx");
-            Workbook workbook = Workbook.Load(stream);
+            Workbook workbook = Workbook.Load(stream, new ImportOptions
+            {
+                GlobalEnforcingType = ImportOptions.GlobalType.AllSingleToDecimal
+            });
             Worksheet worksheet = workbook.CurrentWorksheet;
 
             var actual = worksheet.Cells["A1"].Value;

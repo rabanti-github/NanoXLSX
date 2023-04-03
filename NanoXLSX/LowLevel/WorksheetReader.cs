@@ -1296,7 +1296,18 @@ namespace NanoXLSX.LowLevel
             // float section
             if (decimal.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out dcValue))
             {
-                return dcValue;
+                if (importOptions?.GlobalEnforcingType == ImportOptions.GlobalType.AllSingleToDecimal)
+                    return dcValue;
+
+                int decimals = BitConverter.GetBytes(decimal.GetBits(dcValue)[3])[2];
+                if (decimals < 7)
+                {
+                    return decimal.ToSingle(dcValue);
+                }
+                else
+                {
+                    return decimal.ToDouble(dcValue);
+                }
             }
             // High range float section
             else if (float.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out fValue) && fValue >= float.MinValue && fValue <= float.MaxValue && !float.IsInfinity(fValue))
