@@ -24,8 +24,8 @@
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\NanoXLSX\bin\Debug\NanoXLSX.XML" />
-      <DocumentationSource sourceFile="..\NanoXLSX\bin\Debug\NanoXLSX.dll" />
+      <DocumentationSource sourceFile="..\NanoXLSX .NET Standard\bin\Debug\net45\NanoXLSX.xml" />
+      <DocumentationSource sourceFile="..\NanoXLSX .NET Standard\bin\Debug\net45\NanoXLSX.dll" />
     </DocumentationSources>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
@@ -41,7 +41,7 @@
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Internals, Privates, Protected, SealedProtected, ProtectedInternalAsProtected, EditorBrowsableNever, NonBrowsable</VisibleItems>
     <FeedbackEMailAddress>
     </FeedbackEMailAddress>
-    <CopyrightText>Copyright Raphael Stoeckli &amp;#169%3b 2022</CopyrightText>
+    <CopyrightText>Copyright Raphael Stoeckli &amp;#169%3b 2023</CopyrightText>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
     <ProjectSummary>&amp;lt%3bp&amp;gt%3bNanoXLSX is a small .NET / C# library to create and read XLSX files %28Microsoft Excel 2007 or newer%29 in an easy and native way&amp;lt%3b/p&amp;gt%3b

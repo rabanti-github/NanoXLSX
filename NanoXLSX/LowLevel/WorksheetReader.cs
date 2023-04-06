@@ -1296,6 +1296,9 @@ namespace NanoXLSX.LowLevel
             // float section
             if (decimal.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out dcValue))
             {
+                if (importOptions?.GlobalEnforcingType == ImportOptions.GlobalType.AllSingleToDecimal)
+                    return dcValue;
+
                 int decimals = BitConverter.GetBytes(decimal.GetBits(dcValue)[3])[2];
                 if (decimals < 7)
                 {

@@ -1,0 +1,41 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+    - name: Install checkout
+      uses: actions/checkout@v3
+      
+    - name: Build NanoXLSX project
+      run: dotnet build "NanoXLSX .NET Standard/NanoXLSX .NET Standard.csproj" -c Debug
+  
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Install SHFB
+      uses: Bassman2/setup-SHFB@v1
+      with:
+        version: 2023.3.4.0
+
+    - name: Generate documentation
+      run: msbuild Documentation/CodeDocumentation.shfbproj /p:configuration="Release" /m /verbosity:minimal
+      
+    - name: Clean up docs folder
+      shell: powershell
+      run: Remove-Item -Path docs/* -Recurse -Force
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: documentation
+        path: NanoXLSX/NanoXLSX/docs/*
+        if-no-files-found: error
+
+    - name: Move documentation to docs folder
+      run: Move-Item -Path Documentation/build/* -Destination docs/
