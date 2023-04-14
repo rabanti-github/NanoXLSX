@@ -650,8 +650,6 @@ namespace NanoXLSX_Test.Workbooks
             Assert.Equal(expectedSelectedWorksheetIndex, workbook.SelectedWorksheet);
         }
 
-
-
         public static void AssertExistingFile(string expectedPath, bool deleteAfterAssertion)
         {
             FileInfo fi = new FileInfo(expectedPath);

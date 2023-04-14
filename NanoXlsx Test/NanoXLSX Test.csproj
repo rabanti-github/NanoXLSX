@@ -55,6 +55,7 @@
     <None Remove="Resources\new_format.xlsx" />
     <None Remove="Resources\omitted_style_refs.xlsx" />
     <None Remove="Resources\phonetics.xlsx" />
+    <None Remove="Resources\semi-large-amount.xlsx" />
     <None Remove="Resources\tampered.xlsx" />
     <None Remove="Resources\unknown_border_type.xlsx" />
     <None Remove="Resources\unknown_style_enums.xlsx" />
@@ -71,6 +72,7 @@
 	  <EmbeddedResource Include="Resources\invalid_workbook.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_workbook_sheet-definition.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_worksheet.xlsx" />
+	  <EmbeddedResource Include="Resources\semi-large-amount.xlsx" />
 	  <EmbeddedResource Include="Resources\missing_worksheet.xlsx">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
