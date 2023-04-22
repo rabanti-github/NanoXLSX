@@ -2,40 +2,67 @@ name: Generate Documentation
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+    paths-ignore: 
+      - 'docs/**'
+      - '.github/**'
 
 jobs:
   build:
     runs-on: windows-2022
-
+      
     steps:
     - name: Install checkout
       uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.PUSH_TOKEN }}
       
+    - name: Check build origin and author
+      id: check_build_origin_and_author
+      shell: powershell
+      run: |
+        $email = git config --global user.email
+        $name = git config --global user.name
+        if ($email -eq "actions@github.com" -and $name -eq "GitHub Actions") {
+          echo "build_origin=skip" >> $env:GITHUB_ENV
+          Write-Host "Skipping step because the last commit was system triggered"
+          echo "build_origin=skip" >> $env:GITHUB_ENV
+          exit 0
+        } else {
+          echo "build_origin=pass" >> $env:GITHUB_ENV
+          exit 0
+        }
+
     - name: Build NanoXLSX project
+      if: ${{ env.build_origin }} == 'pass'
       run: dotnet build "NanoXLSX .NET Standard/NanoXLSX .NET Standard.csproj" -c Debug
   
     - name: Add msbuild to PATH
+      if: ${{ env.build_origin }} == 'pass'
       uses: microsoft/setup-msbuild@v1.1
 
     - name: Install SHFB
+      if: ${{ env.build_origin }} == 'pass'
       uses: Bassman2/setup-SHFB@v1
       with:
         version: 2023.3.4.0
 
     - name: Generate documentation
+      if: ${{ env.build_origin }} == 'pass'
       run: msbuild Documentation/CodeDocumentation.shfbproj /p:configuration="Release" /m /verbosity:minimal
-      
+    
+    - name: Push changes to GitHub
+      if: ${{ env.build_origin }} == 'pass'
+      env:
+        GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+        git add docs
+        git commit -m "Update documentation"
+        git push
+    
     - name: Clean up docs folder
       shell: powershell
       run: Remove-Item -Path docs/* -Recurse -Force
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: documentation
-        path: NanoXLSX/NanoXLSX/docs/*
-        if-no-files-found: error
-
-    - name: Move documentation to docs folder
-      run: Move-Item -Path Documentation/build/* -Destination docs/
