@@ -57,7 +57,7 @@ namespace NanoXLSX
             /// </summary>
             EverythingToString,
             /// <summary>
-            /// All numbers that can be parsed as decimal are returned as decimal
+            /// All single numbers that can be parsed as decimal are cast to decimal
             /// </summary>
             AllSingleToDecimal
         }

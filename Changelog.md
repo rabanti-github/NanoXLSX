@@ -1,5 +1,14 @@
 # Change Log
 
+## v2.2.0
+
+---
+Release Date: **23.04.2023**
+
+- Added new import option to cast all single values into decimals. Feature implementation provided by Tim M. Madsen
+- Adapted hex color validation (clarified number of necessary characters)
+- Internal changes of build processes (Documentation generation is performed now by a GitHub Action)
+
 ## v2.1.1
 
 ---
@@ -145,7 +154,7 @@ Release Date: **03.09.2022 - Major Release**
 - Added several methods for pane splitting in the Utils class
 - Exposed the (legacy) password generation method in the Utils class
 - Updated documentation among the whole project
-- Exceptions have no sub-tiles anymore
+- Exceptions have no sub titles anymore
 - Overhauled the whole writer
 - Removed lot of dead code for better maintenance
 
@@ -162,7 +171,7 @@ Release Date: **06.08.2022**
 ---
 Release Date: **02.04.2022**
 
-- Added an import option to display phonetic characters (like Ruby Characters / Furigana / Zhuyin Fuhao are now discarded) in strings
+- Added an import option to display phonetic characters (like Ruby Characters / Furigana / Zhuyin / Pinyin are now discarded) in strings
 
 Note: Phonetic characters are discarded by default. If the import option "EnforcePhoneticCharacterImport" is set to true, the phonetic transcription will be displayed in brackets, right after the characters to be transcribed
 
@@ -225,7 +234,7 @@ Release Date: **10.07.2021**
 - Fixed the internal representation of column widths and row heights
 - Minor code maintenance
 
-Note: The column widths and row heights may change slightly with this release, since now the actual (internal) width and height is applied when setting a non-standard column width or row height
+Note: The column widths and row heights may change slightly with this release, since the actual (internal) width and height is now applied when setting a non-standard column width or row height
 
 ## v1.7.0
 
@@ -319,6 +328,7 @@ Release Date: **01.12.2019**
 
 - Fixed a bug of reorganized worksheets (when deleted in Excel)
 - Fixed a bug in the handling of shared strings
+- Minor code maintenance
 
 ## v1.3.3
 
