@@ -6,7 +6,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Version>2.1.1</Version>
+    <Version>2.2.0</Version>
 
     <Authors>Raphael Stoeckli</Authors>
 
@@ -34,13 +34,14 @@
 
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
 
-    <AssemblyVersion>2.1.1.0</AssemblyVersion>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
 
-    <FileVersion>2.1.1.0</FileVersion>
+    <FileVersion>2.2.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\chartsheet2.xlsx" />
+    <None Remove="Resources\empty_worksheet.xlsx" />
     <None Remove="Resources\invalid_metadata.xlsx" />
     <None Remove="Resources\invalid_metadata_app.xlsx" />
     <None Remove="Resources\invalid_metadata_core.xlsx" />
@@ -55,6 +56,7 @@
     <None Remove="Resources\new_format.xlsx" />
     <None Remove="Resources\omitted_style_refs.xlsx" />
     <None Remove="Resources\phonetics.xlsx" />
+    <None Remove="Resources\semi-large-amount.xlsx" />
     <None Remove="Resources\tampered.xlsx" />
     <None Remove="Resources\unknown_border_type.xlsx" />
     <None Remove="Resources\unknown_style_enums.xlsx" />
@@ -68,9 +70,11 @@
 	  <EmbeddedResource Include="Resources\invalid_shardStrings.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_sharedStrings2.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_style.xlsx" />
+	  <EmbeddedResource Include="Resources\empty_worksheet.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_workbook.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_workbook_sheet-definition.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_worksheet.xlsx" />
+	  <EmbeddedResource Include="Resources\semi-large-amount.xlsx" />
 	  <EmbeddedResource Include="Resources\missing_worksheet.xlsx">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>

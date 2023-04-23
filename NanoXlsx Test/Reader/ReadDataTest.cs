@@ -374,7 +374,9 @@ namespace NanoXLSX_Test.Reader
         [InlineData("invalid_sharedStrings.xlsx")]
         [InlineData("invalid_sharedStrings2.xlsx")]
         [InlineData("invalid_relationship.xlsx")]
+        [InlineData("empty_worksheet.xlsx")]
         [InlineData("missing_worksheet.xlsx")]
+
         public void FailingReadInvalidDataTest(string invalidFile)
         {
             // Note: all referenced (embedded) files contains invalid XML documents (malformed, missing start or end tags, missing attributes)
@@ -410,6 +412,19 @@ namespace NanoXLSX_Test.Reader
             Assert.Throws<NanoXLSX.Exceptions.IOException>(() => Workbook.Load(nullStream));
         }
 
+        [Fact(DisplayName = "Read a large-ish amount from excel file and get the decimals right")]
+        public void ReadSemiLargeNumberWithoutRounding()
+        {
+            Stream stream = TestUtils.GetResource("semi-large-amount.xlsx");
+            Workbook workbook = Workbook.Load(stream, new ImportOptions
+            {
+                GlobalEnforcingType = ImportOptions.GlobalType.AllSingleToDecimal
+            });
+            Worksheet worksheet = workbook.CurrentWorksheet;
+
+            var actual = worksheet.Cells["A1"].Value;
+            Assert.Equal(4372449.78m, actual);
+        }
 
         private static void AssertEquals<T>(T expected, T given)
         {

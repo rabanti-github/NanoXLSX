@@ -92,11 +92,11 @@ The .NET version of the documentation may vary, based on the installation. If v4
 &amp;lt%3bh3&amp;gt%3bUsing NuGet&amp;lt%3b/h3&amp;gt%3b
 
 By Package Manager:&amp;lt%3bbr/&amp;gt%3b
-&amp;lt%3bpre&amp;gt%3b&amp;lt%3bcode&amp;gt%3bInstall-Package PicoXLSX&amp;lt%3b/code&amp;gt%3b&amp;lt%3b/pre&amp;gt%3b
+&amp;lt%3bpre&amp;gt%3b&amp;lt%3bcode&amp;gt%3bInstall-Package NanoXLSX&amp;lt%3b/code&amp;gt%3b&amp;lt%3b/pre&amp;gt%3b
 &amp;lt%3bbr/&amp;gt%3b
 &amp;lt%3bbr/&amp;gt%3b
 By .NET CLI:&amp;lt%3bbr/&amp;gt%3b
-&amp;lt%3bpre&amp;gt%3b&amp;lt%3bcode&amp;gt%3bdotnet add package PicoXLSX&amp;lt%3b/code&amp;gt%3b&amp;lt%3b/pre&amp;gt%3b
+&amp;lt%3bpre&amp;gt%3b&amp;lt%3bcode&amp;gt%3bdotnet add package NanoXLSX&amp;lt%3b/code&amp;gt%3b&amp;lt%3b/pre&amp;gt%3b
 
 &amp;lt%3bh3&amp;gt%3bAs DLL&amp;lt%3b/h3&amp;gt%3b
 

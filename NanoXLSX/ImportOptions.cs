@@ -55,7 +55,11 @@ namespace NanoXLSX
             /// <summary>
             /// Every cell is cast to a string
             /// </summary>
-            EverythingToString
+            EverythingToString,
+            /// <summary>
+            /// All single numbers that can be parsed as decimal are cast to decimal
+            /// </summary>
+            AllSingleToDecimal
         }
 
         /// <summary>

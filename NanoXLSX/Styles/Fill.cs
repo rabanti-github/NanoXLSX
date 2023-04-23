@@ -318,11 +318,10 @@ namespace NanoXLSX.Styles
                 throw new StyleException("The color expression was null or empty");
             }
 
-            int length;
-            length = useAlpha ? 8 : 6;
+            int length = useAlpha ? 8 : 6;
             if (hexCode.Length != length)
             {
-                throw new StyleException("The value '" + hexCode + "' is invalid. A valid value must contain six hex characters");
+                throw new StyleException("The value '" + hexCode + "' is invalid. A valid value must contain " + length + " hex characters");
             }
             if (!Regex.IsMatch(hexCode, "[a-fA-F0-9]{6,8}"))
             {
