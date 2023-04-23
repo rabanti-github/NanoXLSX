@@ -47,6 +47,10 @@ jobs:
       uses: Bassman2/setup-SHFB@v1
       with:
         version: 2023.3.4.0
+        
+    - name: Clean up docs folder
+      shell: powershell
+      run: Remove-Item -Path docs/* -Recurse -Force
 
     - name: Generate documentation
       if: ${{ env.build_origin }} == 'pass'
