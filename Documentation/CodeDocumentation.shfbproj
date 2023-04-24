@@ -102,7 +102,6 @@ Simply place the NanoXLSX DLL into your .NET project and add a reference to it. 
 
 Place all .CS files from the NanoXLSX source folder and its sub-folders into your project.  In case of the .NET &amp;amp%3bgt%3b=4.5 version, the necessary dependencies have to be referenced as well.
 
-
 &amp;lt%3bh2&amp;gt%3bUsage %28Quick Start%29&amp;lt%3b/h2&amp;gt%3b
 
 &amp;lt%3bh2&amp;gt%3bQuick Start %28shortened syntax%29&amp;lt%3b/h2&amp;gt%3b
