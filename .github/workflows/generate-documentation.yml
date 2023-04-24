@@ -63,7 +63,7 @@ jobs:
       run: |
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
-        git add docs
+        git add -f docs/
         git commit -m "Update documentation"
         git push
     
