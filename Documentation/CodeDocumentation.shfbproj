@@ -87,14 +87,20 @@ Please note that the demo project of the .NET Standard version will not work in 
 &amp;lt%3bh3&amp;gt%3bDocumentation project&amp;lt%3b/h3&amp;gt%3b
 If you want to compile the documentation project %28folder: Documentation%3b project file: shfbproj%29, you need also the &amp;lt%3bstrong&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttps://github.com/EWSoftware/SHFB&amp;quot%3b&amp;gt%3bSandcastle Help File Builder %28SHFB%29&amp;lt%3b/a&amp;gt%3b&amp;lt%3b/strong&amp;gt%3b. It is also freely available. But you don’t need the documentation project to build the NanoXLSX library.
 &amp;lt%3bp&amp;gt%3bThe .NET version of the documentation may vary, based on the installation. If v4.5 is not available, upgrade to target to a newer version, like v4.6&amp;lt%3b/p&amp;gt%3b
+
+&amp;lt%3bh3&amp;gt%3bUtility dependencies&amp;lt%3b/h3&amp;gt%3b
+&amp;lt%3bp&amp;gt%3bThe Test project and GitHub Actions may also require dependencies like unit testing frameworks or workflow steps. However, &amp;lt%3bb&amp;gt%3bnone of these dependencies are essential to build the library&amp;lt%3b/b&amp;gt%3b. They are just utilities. The test dependencies ensure efficient unit testing and code coverage. The GitHub Actions dependencies are used for the automatization of releases and API documentation&amp;lt%3b/p&amp;gt%3b
+
 &amp;lt%3bh2&amp;gt%3bInstallation&amp;lt%3b/h2&amp;gt%3b
 
 &amp;lt%3bh3&amp;gt%3bUsing NuGet&amp;lt%3b/h3&amp;gt%3b
 
 &amp;lt%3bh4&amp;gt%3bBy Package Manager:&amp;lt%3b/h4&amp;gt%3b
-&amp;lt%3bpre&amp;gt%3bInstall-Package PicoXLSX&amp;lt%3b/pre&amp;gt%3b
+&amp;lt%3bpre style=&amp;quot%3bpadding:1em%3bcolor:Blue%3bbackground-color:LightGray%3b&amp;quot%3b&amp;gt%3bInstall-Package PicoXLSX&amp;lt%3b/pre&amp;gt%3b
+
 &amp;lt%3bh4&amp;gt%3bBy .NET CLI:&amp;lt%3b/h4&amp;gt%3b
-&amp;lt%3bpre&amp;gt%3bdotnet add package PicoXLSX&amp;lt%3b/pre&amp;gt%3b
+&amp;lt%3bpre style=&amp;quot%3bpadding:1em%3bcolor:Blue%3bbackground-color:LightGray%3b&amp;quot%3b&amp;gt%3bdotnet add package PicoXLSX&amp;lt%3b/pre&amp;gt%3b
+
 &amp;lt%3bh3&amp;gt%3bAs DLL&amp;lt%3b/h3&amp;gt%3b
 
 Simply place the NanoXLSX DLL into your .NET project and add a reference to it. Please keep in mind that the .NET version of your solution must match with the runtime version of the NanoXLSX DLL %28currently compiled with 4.5 and .NET Standard 2.0%29.
@@ -102,10 +108,11 @@ Simply place the NanoXLSX DLL into your .NET project and add a reference to it. 
 
 Place all .CS files from the NanoXLSX source folder and its sub-folders into your project.  In case of the .NET &amp;amp%3bgt%3b=4.5 version, the necessary dependencies have to be referenced as well.
 
+
 &amp;lt%3bh2&amp;gt%3bUsage %28Quick Start%29&amp;lt%3b/h2&amp;gt%3b
 
 &amp;lt%3bh2&amp;gt%3bQuick Start %28shortened syntax%29&amp;lt%3b/h2&amp;gt%3b
-&amp;lt%3bpre&amp;gt%3b
+&amp;lt%3bpre style=&amp;quot%3bpadding:1em%3bcolor:Blue%3bbackground-color:LightGray%3b&amp;quot%3b&amp;gt%3b
 Workbook workbook = new Workbook%28&amp;amp%3bquot%3bmyWorkbook.xlsx&amp;amp%3bquot%3b, &amp;amp%3bquot%3bSheet1&amp;amp%3bquot%3b%29%3b         // Create new workbook with a worksheet called Sheet1
  workbook.WS.Value%28&amp;amp%3bquot%3bSome Data&amp;amp%3bquot%3b%29%3b                                        // Add cell A1
  workbook.WS.Formula%28&amp;amp%3bquot%3b=A1&amp;amp%3bquot%3b%29%3b                                            // Add formula to cell B1
@@ -113,8 +120,9 @@ Workbook workbook = new Workbook%28&amp;amp%3bquot%3bmyWorkbook.xlsx&amp;amp%3bq
  workbook.WS.Value%28DateTime.Now, Style.BasicStyles.Bold%29%3b               // Add formatted value to cell A2
  workbook.Save%28%29%3b                                                       // Save the workbook as myWorkbook.xlsx
 &amp;lt%3b/pre&amp;gt%3b
+
 &amp;lt%3bh2&amp;gt%3bQuick Start %28regular syntax%29&amp;lt%3b/h2&amp;gt%3b
-&amp;lt%3bpre&amp;gt%3b
+&amp;lt%3bpre style=&amp;quot%3bpadding:1em%3bcolor:Blue%3bbackground-color:LightGray%3b&amp;quot%3b&amp;gt%3b
 Workbook workbook = new Workbook%28&amp;amp%3bquot%3bmyWorkbook.xlsx&amp;amp%3bquot%3b, &amp;amp%3bquot%3bSheet1&amp;amp%3bquot%3b%29%3b         // Create new workbook with a worksheet called Sheet1
  workbook.CurrentWorksheet.AddNextCell%28&amp;amp%3bquot%3bSome Data&amp;amp%3bquot%3b%29%3b                    // Add cell A1
  workbook.CurrentWorksheet.AddNextCell%2842%29%3b                             // Add cell B1
@@ -124,7 +132,7 @@ Workbook workbook = new Workbook%28&amp;amp%3bquot%3bmyWorkbook.xlsx&amp;amp%3bq
 &amp;lt%3b/pre&amp;gt%3b
 
 &amp;lt%3bh2&amp;gt%3bQuick Start %28read%29&amp;lt%3b/h2&amp;gt%3b
-&amp;lt%3bpre&amp;gt%3b 
+&amp;lt%3bpre style=&amp;quot%3bpadding:1em%3bcolor:Blue%3bbackground-color:LightGray%3b&amp;quot%3b&amp;gt%3b 
 Workbook wb = Workbook.Load%28&amp;quot%3bbasic.xlsx&amp;quot%3b%29%3b                             // Read the workbook
  System.Console.WriteLine%28&amp;quot%3bcontains worksheet name: &amp;quot%3b + wb.CurrentWorksheet.SheetName%29%3b
  foreach %28KeyValuePair&amp;lt%3bstring, Cell&amp;gt%3b cell in wb.CurrentWorksheet.Cells%29

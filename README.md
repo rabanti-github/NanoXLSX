@@ -1,6 +1,8 @@
 # NanoXLSX ![NanoXLSX](https://github.com/rabanti-github/NanoXLSX/blob/master/Documentation/icons/NanoXLSX.png)
 
-![nuget](https://img.shields.io/nuget/v/NanoXLSX.svg?maxAge=86400)![license](https://img.shields.io/github/license/rabanti-github/NanoXlsx.svg)[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_shield)
+![nuget](https://img.shields.io/nuget/v/NanoXLSX.svg?maxAge=86400)
+![license](https://img.shields.io/github/license/rabanti-github/NanoXlsx.svg)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_shield)
 
 NanoXLSX is a small .NET library written in C#, to create and read Microsoft Excel files in the XLSX format (Microsoft Excel 2007 or newer) in an easy and native way
 
@@ -64,6 +66,10 @@ Please note that the demo project of the .NET Standard version will not work in 
 If you want to compile the documentation project (folder: Documentation; project file: shfbproj), you need also the **[Sandcastle Help File Builder (SHFB)](https://github.com/EWSoftware/SHFB)**. It is also freely available. But you don't need the documentation project to build the NanoXLSX library.
 
 The .NET version of the documentation may vary, based on the installation. If v4.5 is not available, upgrade to target to a newer version, like v4.6
+
+### Utility dependencies
+
+The Test project and GitHub Actions may also require dependencies like unit testing frameworks or workflow steps. However, **none of these dependencies are essential to build the library**. They are just utilities. The test dependencies ensure efficient unit testing and code coverage. The GitHub Actions dependencies are used for the automatization of releases and API documentation
 
 ## Installation
 
