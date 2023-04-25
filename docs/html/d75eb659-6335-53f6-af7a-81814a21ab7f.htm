@@ -14,21 +14,22 @@ The NuGet package <b>does not require dependencies</b><h3>.NET Standard</h3>
 Please note that the demo project of the .NET Standard version will not work in Visual Studio 2017. To get the build working, unload the demo project of the .NET Standard version.
 </p><h3>Documentation project</h3>
 If you want to compile the documentation project (folder: Documentation; project file: shfbproj), you need also the <strong><a href="https://github.com/EWSoftware/SHFB">Sandcastle Help File Builder (SHFB)</a></strong>. It is also freely available. But you don’t need the documentation project to build the NanoXLSX library.
-<p>The .NET version of the documentation may vary, based on the installation. If v4.5 is not available, upgrade to target to a newer version, like v4.6</p><h2>Installation</h2><h3>Using NuGet</h3><h4>By Package Manager:</h4><pre>Install-Package PicoXLSX</pre><h4>By .NET CLI:</h4><pre>dotnet add package PicoXLSX</pre><h3>As DLL</h3>
+<p>The .NET version of the documentation may vary, based on the installation. If v4.5 is not available, upgrade to target to a newer version, like v4.6</p><h3>Utility dependencies</h3><p>The Test project and GitHub Actions may also require dependencies like unit testing frameworks or workflow steps. However, <b>none of these dependencies are essential to build the library</b>. They are just utilities. The test dependencies ensure efficient unit testing and code coverage. The GitHub Actions dependencies are used for the automatization of releases and API documentation</p><h2>Installation</h2><h3>Using NuGet</h3><h4>By Package Manager:</h4><pre style="padding:1em;color:Blue;background-color:LightGray;">Install-Package PicoXLSX</pre><h4>By .NET CLI:</h4><pre style="padding:1em;color:Blue;background-color:LightGray;">dotnet add package PicoXLSX</pre><h3>As DLL</h3>
 
 Simply place the NanoXLSX DLL into your .NET project and add a reference to it. Please keep in mind that the .NET version of your solution must match with the runtime version of the NanoXLSX DLL (currently compiled with 4.5 and .NET Standard 2.0).
 <h3>As source files</h3>
 
 Place all .CS files from the NanoXLSX source folder and its sub-folders into your project.  In case of the .NET &gt;=4.5 version, the necessary dependencies have to be referenced as well.
 
-<h2>Usage (Quick Start)</h2><h2>Quick Start (shortened syntax)</h2><pre>
+
+<h2>Usage (Quick Start)</h2><h2>Quick Start (shortened syntax)</h2><pre style="padding:1em;color:Blue;background-color:LightGray;">
 Workbook workbook = new Workbook("myWorkbook.xlsx", "Sheet1");         // Create new workbook with a worksheet called Sheet1
  workbook.WS.Value("Some Data");                                        // Add cell A1
  workbook.WS.Formula("=A1");                                            // Add formula to cell B1
  workbook.WS.Down();                                                    // Go to row 2
  workbook.WS.Value(DateTime.Now, Style.BasicStyles.Bold);               // Add formatted value to cell A2
  workbook.Save();                                                       // Save the workbook as myWorkbook.xlsx
-</pre><h2>Quick Start (regular syntax)</h2><pre>
+</pre><h2>Quick Start (regular syntax)</h2><pre style="padding:1em;color:Blue;background-color:LightGray;">
 Workbook workbook = new Workbook("myWorkbook.xlsx", "Sheet1");         // Create new workbook with a worksheet called Sheet1
  workbook.CurrentWorksheet.AddNextCell("Some Data");                    // Add cell A1
  workbook.CurrentWorksheet.AddNextCell(42);                             // Add cell B1
