@@ -1,5 +1,16 @@
 # Change Log
 
+## v2.3.0
+
+---
+Release Date: **07.09.2023**
+
+- Added worksheet option for zoom factors
+- Added worksheet option for view types (e.g. page break preview)
+- Added worksheet option to show or hide grid lines
+- Added worksheet option to show or hide columns and row headers
+- Added worksheet option to show or hide rulers in page layout view type 
+
 ## v2.2.0
 
 ---

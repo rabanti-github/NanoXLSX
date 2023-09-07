@@ -16,7 +16,7 @@ using Range = NanoXLSX.Range;
 
 namespace Demo
 {
-    class Program
+    sealed class Program
     {
 
         private Program()
