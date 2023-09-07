@@ -9,7 +9,7 @@ using Xunit;
 
 namespace NanoXLSX_Test.Worksheets
 {
-    public class PaneTest
+    public class ViewTest
     {
 
         [Fact(DisplayName = "Test of the get function of the PaneSplitTopHeight property")]
@@ -360,6 +360,129 @@ namespace NanoXLSX_Test.Worksheets
             worksheet.SetSplit(5, 5, true, new Address("R6"), Worksheet.WorksheetPane.bottomLeft);
             worksheet.ResetSplit();
             AssertInitializedPaneSplit(worksheet);
+        }
+        
+        [Fact(DisplayName = "Test of the get function of the ShowGridLine property")]
+        public void ShowGridLinesTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.True(worksheet.ShowGridLines);
+            worksheet.ShowGridLines = false;
+            Assert.False(worksheet.ShowGridLines);
+        }
+
+        [Fact(DisplayName = "Test of the get function of the ShowRowColumnHeaders property")]
+        public void ShowRowColumnHeadersTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.True(worksheet.ShowRowColumnHeaders);
+            worksheet.ShowRowColumnHeaders = false;
+            Assert.False(worksheet.ShowRowColumnHeaders);
+        }
+
+        [Fact(DisplayName = "Test of the get function of the ShowRuler property")]
+        public void ShowRulerTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.True(worksheet.ShowRuler);
+            worksheet.ShowRuler = false;
+            Assert.False(worksheet.ShowRuler);
+        }
+
+        [Theory(DisplayName = "Test of the get function of the ViewType property")]
+        [InlineData(Worksheet.SheetViewType.normal)]
+        [InlineData(Worksheet.SheetViewType.pageBreakPreview)]
+        [InlineData(Worksheet.SheetViewType.pageLayout)]
+        public void ViewTypeTest(Worksheet.SheetViewType viewType)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Equal(Worksheet.SheetViewType.normal, worksheet.ViewType);
+            worksheet.ViewType = viewType;
+            Assert.Equal(viewType, worksheet.ViewType);
+        }
+
+        [Theory(DisplayName = "Test of the get function of the ZoomFactor property on the current view type")]
+        [InlineData(0)]
+        [InlineData(10)]
+        [InlineData(23)]
+        [InlineData(100)]
+        [InlineData(255)]
+        [InlineData(399)]
+        [InlineData(400)]
+        public void ZoomFactorTest(int zoomFactor)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Equal(100, worksheet.ZoomFactor);
+            worksheet.ZoomFactor = zoomFactor;
+            Assert.Equal(zoomFactor, worksheet.ZoomFactor);
+        }
+
+        [Fact(DisplayName = "Test of the get function of the ZoomFactor and ZoomFactors properties when the view type changes")]
+        public void ZoomFactorTest2()
+        {
+            int normalZoomFactor = 120;
+            int pageBreakZoomFactor = 50;
+            int pageLayoutZoomFactor = 400;
+
+            Worksheet worksheet = new Worksheet();
+            Assert.Single(worksheet.ZoomFactors);
+            Assert.Equal(100, worksheet.ZoomFactor);
+            Assert.Equal(Worksheet.SheetViewType.normal, worksheet.ViewType);
+            worksheet.ZoomFactor = normalZoomFactor;
+            worksheet.ViewType = Worksheet.SheetViewType.pageBreakPreview;
+            worksheet.ZoomFactor = pageBreakZoomFactor;
+            worksheet.ViewType = Worksheet.SheetViewType.pageLayout;
+            worksheet.ZoomFactor = pageLayoutZoomFactor;
+
+            Assert.Equal(3, worksheet.ZoomFactors.Count);
+            Assert.Equal(normalZoomFactor, worksheet.ZoomFactors[Worksheet.SheetViewType.normal]);
+            Assert.Equal(pageBreakZoomFactor, worksheet.ZoomFactors[Worksheet.SheetViewType.pageBreakPreview]);
+            Assert.Equal(pageLayoutZoomFactor, worksheet.ZoomFactors[Worksheet.SheetViewType.pageLayout]);
+        }
+
+        [Theory(DisplayName = "Test of the failing ZoomFactor set function")]
+        [InlineData(-1)]
+        [InlineData(-99)]
+        [InlineData(1)]
+        [InlineData(9)]
+        [InlineData(401)]
+        [InlineData(999)]
+        public void ZoomFactorFailTest(int zoomFactor)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Equal(100, worksheet.ZoomFactor);
+            Assert.Throws<WorksheetException>(() => worksheet.ZoomFactor = zoomFactor);
+        }
+
+        [Theory(DisplayName = "Test of the SetZoomFactor function")]
+        [InlineData(0, Worksheet.SheetViewType.normal)]
+        [InlineData(10, Worksheet.SheetViewType.pageBreakPreview)]
+        [InlineData(23, Worksheet.SheetViewType.pageLayout)]
+        [InlineData(101, Worksheet.SheetViewType.normal)]
+        [InlineData(255, Worksheet.SheetViewType.pageBreakPreview)]
+        [InlineData(399, Worksheet.SheetViewType.pageLayout)]
+        [InlineData(400, Worksheet.SheetViewType.normal)]
+        public void SetZoomFactorTest(int zoomFactor, Worksheet.SheetViewType viewType)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Equal(100, worksheet.ZoomFactor);
+            worksheet.SetZoomFactor(viewType, zoomFactor);
+            Assert.Equal(zoomFactor, worksheet.ZoomFactors[viewType]);
+        }
+
+        [Theory(DisplayName = "Test of the failing ZoomFactor set function")]
+        [InlineData(-1, Worksheet.SheetViewType.normal)]
+        [InlineData(-99, Worksheet.SheetViewType.pageBreakPreview)]
+        [InlineData(1, Worksheet.SheetViewType.normal)]
+        [InlineData(9, Worksheet.SheetViewType.normal)]
+        [InlineData(401, Worksheet.SheetViewType.pageLayout)]
+        [InlineData(999, Worksheet.SheetViewType.normal)]
+        public void SetZoomFactorFailTest(int zoomFactor, Worksheet.SheetViewType viewType)
+        {
+            Worksheet worksheet = new Worksheet();
+            AssertInitializedPaneSplit(worksheet);
+            Assert.Equal(100, worksheet.ZoomFactor);
+            Assert.Throws<WorksheetException>(() => worksheet.SetZoomFactor(viewType, zoomFactor));
         }
 
         private static void AssertInitializedPaneSplit(Worksheet worksheet)

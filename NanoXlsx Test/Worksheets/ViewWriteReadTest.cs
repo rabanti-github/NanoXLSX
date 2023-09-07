@@ -9,7 +9,7 @@ using Xunit;
 
 namespace NanoXLSX_Test.Worksheets
 {
-    public class PaneWriteReadtest
+    public class ViewWriteReadtest
     {
 
         [Theory(DisplayName = "Test of the 'PaneSplitTopHeight' property when writing and reading a worksheet")]
@@ -293,6 +293,132 @@ namespace NanoXLSX_Test.Worksheets
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
             asserColumnSplit(columnNumber, freeze, givenWorksheet, true);
             assertRowSplit(rowNumber, freeze, givenWorksheet);
+        }
+
+        [Theory(DisplayName = "Test of the 'ShowGrodLines' property, when writing and reading a worksheet")]
+        [InlineData(true, 0)]
+        [InlineData(false, 0)]
+        [InlineData(true, 2)]
+        [InlineData(false, 2)]
+        public void ShowGridLinesWriteReadTest(bool showGridLines, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            workbook.SetCurrentWorksheet(sheetIndex);
+            workbook.CurrentWorksheet.ShowGridLines = showGridLines;
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.Equal(showGridLines, givenWorksheet.ShowGridLines);
+        }
+
+        [Theory(DisplayName = "Test of the 'ShowRowColumnHeaders' property, when writing and reading a worksheet")]
+        [InlineData(true, 0)]
+        [InlineData(false, 0)]
+        [InlineData(true, 2)]
+        [InlineData(false, 2)]
+        public void ShowRowColumnHeadersWriteReadTest(bool showRowColumnHeaders, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            workbook.SetCurrentWorksheet(sheetIndex);
+            workbook.CurrentWorksheet.ShowRowColumnHeaders = showRowColumnHeaders;
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.Equal(showRowColumnHeaders, givenWorksheet.ShowRowColumnHeaders);
+        }
+
+        [Theory(DisplayName = "Test of the 'ShowRuler' property, when writing and reading a worksheet")]
+        [InlineData(true, true, Worksheet.SheetViewType.pageLayout, 0)]
+        [InlineData(false, true, Worksheet.SheetViewType.pageBreakPreview, 0)]
+        [InlineData(true, true, Worksheet.SheetViewType.normal, 2)]
+        [InlineData(false, false, Worksheet.SheetViewType.pageLayout, 2)]
+        [InlineData(true, true, Worksheet.SheetViewType.pageBreakPreview, 2)]
+        [InlineData(false, true, Worksheet.SheetViewType.normal, 1)]
+        public void ShowRulerWriteReadTest(bool showRuler, bool expectedShowRuler, Worksheet.SheetViewType viewType, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            workbook.SetCurrentWorksheet(sheetIndex);
+            workbook.CurrentWorksheet.ViewType = viewType;
+            workbook.CurrentWorksheet.ShowRuler = showRuler;
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.Equal(viewType, givenWorksheet.ViewType);
+            Assert.Equal(expectedShowRuler, givenWorksheet.ShowRuler);
+        }
+
+        [Theory(DisplayName = "Test of the 'ViewType' property, when writing and reading a worksheet")]
+        [InlineData(Worksheet.SheetViewType.pageLayout, 0)]
+        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 0)]
+        [InlineData(Worksheet.SheetViewType.normal,0)]
+        [InlineData(Worksheet.SheetViewType.pageLayout, 2)]
+        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 2)]
+        [InlineData(Worksheet.SheetViewType.normal, 2)]
+        public void ViewTypeWriteReadTest(Worksheet.SheetViewType viewType, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            workbook.SetCurrentWorksheet(sheetIndex);
+            workbook.CurrentWorksheet.ViewType = viewType;
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.Equal(viewType, givenWorksheet.ViewType);
+        }
+
+        [Theory(DisplayName = "Test of the 'ZoomFactor' property, when writing and reading a worksheet")]
+        [InlineData(Worksheet.SheetViewType.normal, 0, 0)]
+        [InlineData(Worksheet.SheetViewType.normal, 10, 2)]
+        [InlineData(Worksheet.SheetViewType.normal, 100, 0)]
+        [InlineData(Worksheet.SheetViewType.normal, 250, 2)]
+        [InlineData(Worksheet.SheetViewType.normal, 400, 0)]
+        [InlineData(Worksheet.SheetViewType.pageLayout, 0, 2)]
+        [InlineData(Worksheet.SheetViewType.pageLayout, 10, 0)]
+        [InlineData(Worksheet.SheetViewType.pageLayout, 100, 2)]
+        [InlineData(Worksheet.SheetViewType.pageLayout, 250, 0)]
+        [InlineData(Worksheet.SheetViewType.pageLayout, 400, 2)]
+        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 0, 0)]
+        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 10, 2)]
+        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 100, 0)]
+        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 250, 2)]
+        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 400, 0)]
+        public void ZoomfactorWriteReadTest(Worksheet.SheetViewType viewType, int zoomFactor, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            workbook.SetCurrentWorksheet(sheetIndex);
+            workbook.CurrentWorksheet.ViewType = viewType;
+            workbook.CurrentWorksheet.ZoomFactor = zoomFactor;
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.Equal(viewType, givenWorksheet.ViewType);
+            Assert.Equal(zoomFactor, givenWorksheet.ZoomFactor);
+        }
+
+        [Theory(DisplayName = "Test of the 'SetZoomFactor' function, when writing and reading a worksheet")]
+        [InlineData(Worksheet.SheetViewType.pageLayout, Worksheet.SheetViewType.normal, 0, 0)]
+        [InlineData(Worksheet.SheetViewType.pageBreakPreview, Worksheet.SheetViewType.normal, 10, 2)]
+        [InlineData(Worksheet.SheetViewType.pageLayout, Worksheet.SheetViewType.normal, 100, 0)]
+        [InlineData(Worksheet.SheetViewType.pageBreakPreview, Worksheet.SheetViewType.normal, 250, 2)]
+        [InlineData(Worksheet.SheetViewType.pageLayout, Worksheet.SheetViewType.normal, 400, 0)]
+        [InlineData(Worksheet.SheetViewType.normal, Worksheet.SheetViewType.pageLayout, 0, 2)]
+        [InlineData(Worksheet.SheetViewType.pageBreakPreview, Worksheet.SheetViewType.pageLayout, 10, 0)]
+        [InlineData(Worksheet.SheetViewType.normal, Worksheet.SheetViewType.pageLayout, 100, 2)]
+        [InlineData(Worksheet.SheetViewType.pageBreakPreview, Worksheet.SheetViewType.pageLayout, 250, 0)]
+        [InlineData(Worksheet.SheetViewType.normal, Worksheet.SheetViewType.pageLayout, 400, 2)]
+        [InlineData(Worksheet.SheetViewType.normal, Worksheet.SheetViewType.pageBreakPreview, 0, 0)]
+        [InlineData(Worksheet.SheetViewType.pageLayout, Worksheet.SheetViewType.pageBreakPreview, 10, 2)]
+        [InlineData(Worksheet.SheetViewType.normal, Worksheet.SheetViewType.pageBreakPreview, 100, 0)]
+        [InlineData(Worksheet.SheetViewType.pageLayout, Worksheet.SheetViewType.pageBreakPreview, 250, 2)]
+        [InlineData(Worksheet.SheetViewType.normal, Worksheet.SheetViewType.pageBreakPreview, 400, 0)]
+        public void SetZoomFactorWriteReadTest(Worksheet.SheetViewType initialViewType, Worksheet.SheetViewType additionalViewType, int zoomFactor, int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            workbook.SetCurrentWorksheet(sheetIndex);
+            workbook.CurrentWorksheet.ViewType = initialViewType;
+            workbook.CurrentWorksheet.SetZoomFactor(additionalViewType, zoomFactor);
+            workbook.SaveAs("c:\\purge-temp\\testZoom.xlsx");
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            if (initialViewType != Worksheet.SheetViewType.normal && additionalViewType != Worksheet.SheetViewType.normal)
+            {
+                Assert.Equal(3, givenWorksheet.ZoomFactors.Count);
+                Assert.Equal(100, givenWorksheet.ZoomFactors[Worksheet.SheetViewType.normal]);
+            }
+            else
+            {
+                Assert.Equal(2, givenWorksheet.ZoomFactors.Count);
+            }
+            Assert.Equal(zoomFactor, givenWorksheet.ZoomFactors[additionalViewType]);
+            Assert.Equal(100, givenWorksheet.ZoomFactors[initialViewType]);
         }
 
         private static void asserColumnSplit(int columnNumber, bool freeze, Worksheet givenWorksheet, bool xyApplied)

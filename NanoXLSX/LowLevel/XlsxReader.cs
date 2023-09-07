@@ -189,6 +189,15 @@ namespace NanoXLSX.LowLevel
                 WorkbookReader.WorksheetDefinition definition = workbook.WorksheetDefinitions[reader.Key];
                 ws = new Worksheet(definition.WorksheetName, definition.SheetID, wb);
                 ws.Hidden = definition.Hidden;
+                ws.ViewType = reader.Value.ViewType;
+                ws.ShowGridLines = reader.Value.ShowGridLines;
+                ws.ShowRowColumnHeaders = reader.Value.ShowRowColHeaders;
+                ws.ShowRuler = reader.Value.ShowRuler;
+                ws.ZoomFactor = reader.Value.CurrentZoomScale;
+                foreach(KeyValuePair<Worksheet.SheetViewType, int> zoomFactor in reader.Value.ZoomFactors)
+                {
+                    ws.SetZoomFactor(zoomFactor.Key, zoomFactor.Value);
+                }
                 if (reader.Value.AutoFilterRange.HasValue)
                 {
                     ws.SetAutoFilter(reader.Value.AutoFilterRange.Value.StartAddress.Column, reader.Value.AutoFilterRange.Value.EndAddress.Column);
@@ -292,6 +301,7 @@ namespace NanoXLSX.LowLevel
                         }
                     }
                 }
+                
                 wb.AddWorksheet(ws);
             }
             if (styleReaderContainer.GetMruColors().Count > 0)

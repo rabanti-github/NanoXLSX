@@ -286,7 +286,8 @@ namespace NanoXLSX.LowLevel
             {
                 sb.Append("<dimension ref=\"").Append(new Range(worksheet.GetFirstCellAddress().Value, worksheet.GetLastCellAddress().Value)).Append("\"/>");
             }
-            if (worksheet.SelectedCellRanges.Count > 0 || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null || worksheet.Hidden)
+            if (worksheet.SelectedCellRanges.Count > 0 || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null ||
+                worksheet.Hidden || worksheet.ZoomFactor != 100 || worksheet.ZoomFactors.Count > 1 || !worksheet.ShowGridLines || !worksheet.ShowRuler || !worksheet.ShowRowColumnHeaders || worksheet.ViewType != Worksheet.SheetViewType.normal)
             {
                 CreateSheetViewString(worksheet, sb);
             }
@@ -367,6 +368,54 @@ namespace NanoXLSX.LowLevel
             if (workbook.SelectedWorksheet == worksheet.SheetID - 1 && !worksheet.Hidden)
             {
                 sb.Append(" tabSelected=\"1\"");
+            }
+            if (worksheet.ViewType != Worksheet.SheetViewType.normal)
+            {
+                if (worksheet.ViewType == Worksheet.SheetViewType.pageLayout)
+                {
+                    if (worksheet.ShowRuler)
+                    {
+                        sb.Append(" showRuler=\"1\"");
+                    }
+                    else
+                    {
+                        sb.Append(" showRuler=\"0\"");
+                    }
+                    sb.Append(" view=\"pageLayout\"");
+
+                }
+                else if (worksheet.ViewType == Worksheet.SheetViewType.pageBreakPreview)
+                {
+                    sb.Append(" view=\"pageBreakPreview\"");
+                }
+            }
+            if (!worksheet.ShowGridLines)
+            {
+                sb.Append(" showGridLines=\"0\"");
+            }
+            if (!worksheet.ShowRowColumnHeaders)
+            {
+                sb.Append("  showRowColHeaders=\"0\"");
+            }
+            sb.Append(" zoomScale=\"").Append(worksheet.ZoomFactor.ToString("G", culture)).Append("\"");
+            foreach (KeyValuePair<Worksheet.SheetViewType, int> scaleFactor in worksheet.ZoomFactors)
+            {
+                if (scaleFactor.Key == worksheet.ViewType)
+                {
+                    continue;
+                }
+                if (scaleFactor.Key == Worksheet.SheetViewType.normal)
+                {
+                    sb.Append(" zoomScaleNormal=\"").Append(scaleFactor.Value.ToString("G", culture)).Append("\"");
+                }
+                else if (scaleFactor.Key == Worksheet.SheetViewType.pageBreakPreview)
+                {
+                    sb.Append(" zoomScaleSheetLayoutView=\"").Append(scaleFactor.Value.ToString("G", culture)).Append("\"");
+                }
+                else if (scaleFactor.Key == Worksheet.SheetViewType.pageLayout)
+                {
+                    sb.Append(" zoomScalePageLayoutView=\"").Append(scaleFactor.Value.ToString("G", culture)).Append("\"");
+                }
             }
             sb.Append(">");
             CreatePaneString(worksheet, sb);
@@ -919,15 +968,12 @@ namespace NanoXLSX.LowLevel
                 // Date parsing
                 else if (item.DataType == Cell.CellType.DATE)
                 {
-                    typeAttribute = "d";
                     DateTime date = (DateTime)item.Value;
                     valueDef = Utils.GetOADateTimeString(date);
                 }
                 // Time parsing
                 else if (item.DataType == Cell.CellType.TIME)
                 {
-                    typeAttribute = "d";
-                    // TODO: 'd' is probably an outdated attribute (to be checked for dates and times)
                     TimeSpan time = (TimeSpan)item.Value;
                     valueDef = Utils.GetOATimeString(time);
                 }
@@ -1553,9 +1599,9 @@ namespace NanoXLSX.LowLevel
         /// <summary>
         /// Class representing a row that is either empty or containing cells. Empty rows can also carry information about height or visibility
         /// </summary>
-        private class DynamicRow
+        private sealed class DynamicRow
         {
-            private List<Cell> cellDefinitions;
+            private readonly List<Cell> cellDefinitions;
             public int RowNumber { get; set; }
 
             /// <summary>
