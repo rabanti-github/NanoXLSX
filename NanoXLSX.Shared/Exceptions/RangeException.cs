@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.Runtime.Serialization;
 
 namespace NanoXLSX.Shared.Exceptions
 {
@@ -27,5 +28,15 @@ namespace NanoXLSX.Shared.Exceptions
         public RangeException(string message)
             : base( message)
         {  }
+
+        /// <summary>
+        /// Constructor for deserialization purpose
+        /// </summary>
+        /// <param name="info">Serialization info instance</param>
+        /// <param name="context">Streaming context</param>
+        protected RangeException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

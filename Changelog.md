@@ -1,5 +1,25 @@
 # Change Log
 
+## v2.3.0
+
+---
+Release Date: **07.09.2023**
+
+- Added worksheet option for zoom factors
+- Added worksheet option for view types (e.g. page break preview)
+- Added worksheet option to show or hide grid lines
+- Added worksheet option to show or hide columns and row headers
+- Added worksheet option to show or hide rulers in page layout view type 
+
+## v2.2.0
+
+---
+Release Date: **23.04.2023**
+
+- Added new import option to cast all single values into decimals. Feature implementation provided by Tim M. Madsen
+- Adapted hex color validation (clarified number of necessary characters)
+- Internal changes of build processes (Documentation generation is performed now by a GitHub Action)
+
 ## v2.1.1
 
 ---
@@ -145,7 +165,7 @@ Release Date: **03.09.2022 - Major Release**
 - Added several methods for pane splitting in the Utils class
 - Exposed the (legacy) password generation method in the Utils class
 - Updated documentation among the whole project
-- Exceptions have no sub-tiles anymore
+- Exceptions have no sub titles anymore
 - Overhauled the whole writer
 - Removed lot of dead code for better maintenance
 
@@ -162,7 +182,7 @@ Release Date: **06.08.2022**
 ---
 Release Date: **02.04.2022**
 
-- Added an import option to display phonetic characters (like Ruby Characters / Furigana / Zhuyin Fuhao are now discarded) in strings
+- Added an import option to display phonetic characters (like Ruby Characters / Furigana / Zhuyin / Pinyin are now discarded) in strings
 
 Note: Phonetic characters are discarded by default. If the import option "EnforcePhoneticCharacterImport" is set to true, the phonetic transcription will be displayed in brackets, right after the characters to be transcribed
 

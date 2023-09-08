@@ -94,6 +94,35 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         public PaneDefinition PaneSplitValue { get; private set; }
 
+        /// <summary>
+        /// Gets whether grid lines are shown
+        /// </summary>
+        public bool ShowGridLines { get; private set; } = true; // default
+
+        /// <summary>
+        /// Gets whether column and row headers are shown
+        /// </summary>
+        public bool ShowRowColHeaders { get; private set; } = true; // default
+
+        /// <summary>
+        /// Gets whether rulers are shown in view type: pageLayout
+        /// </summary>
+        public bool ShowRuler { get; private set; } = true; // default
+
+        /// <summary>
+        /// Gets the sheet view type of the current worksheet
+        /// </summary>
+        public Worksheet.SheetViewType ViewType { get; private set; } = Worksheet.SheetViewType.normal; // default
+        /// <summary>
+        /// Gets the zoom factor of the current view type
+        /// </summary>
+        public int CurrentZoomScale { get; private set; } = 100; // default
+        /// <summary>
+        /// Gets all preserved zoom factors of the worksheet
+        /// </summary>
+        public Dictionary<Worksheet.SheetViewType, int> ZoomFactors { get; private set; } = new Dictionary<Worksheet.SheetViewType, int>();
+
+
         #endregion
 
         #region constructors
@@ -200,9 +229,57 @@ namespace NanoXLSX.Internal.Readers
             if (sheetViewsNodes != null && sheetViewsNodes.Count > 0)
             {
                 XmlNodeList sheetViewNodes = sheetViewsNodes[0].ChildNodes;
+                string attribute;
                 // Go through all possible views
-                foreach(XmlNode sheetView in sheetViewNodes)
+                foreach (XmlNode sheetView in sheetViewNodes)
                 {
+                    attribute = ReaderUtils.GetAttribute(sheetView, "view");
+                    if (attribute != null)
+                    {
+                        Worksheet.SheetViewType viewType;
+                        if (Enum.TryParse<Worksheet.SheetViewType>(attribute, out viewType))
+                        {
+                            ViewType = viewType;
+                        }
+                    }
+                    attribute = ReaderUtils.GetAttribute(sheetView, "zoomScale");
+                    if (attribute != null)
+                    {
+                        CurrentZoomScale = ParserUtils.ParseInt(attribute);
+                    }
+                    attribute = ReaderUtils.GetAttribute(sheetView, "zoomScaleNormal");
+                    if (attribute != null)
+                    {
+                        int scale = ParserUtils.ParseInt(attribute);
+                        ZoomFactors.Add(Worksheet.SheetViewType.normal, scale);
+                    }
+                    attribute = ReaderUtils.GetAttribute(sheetView, "zoomScalePageLayoutView");
+                    if (attribute != null)
+                    {
+                        int scale = ParserUtils.ParseInt(attribute);
+                        ZoomFactors.Add(Worksheet.SheetViewType.pageLayout, scale);
+                    }
+                    attribute = ReaderUtils.GetAttribute(sheetView, "zoomScaleSheetLayoutView");
+                    if (attribute != null)
+                    {
+                        int scale = ParserUtils.ParseInt(attribute);
+                        ZoomFactors.Add(Worksheet.SheetViewType.pageBreakPreview, scale);
+                    }
+                    attribute = ReaderUtils.GetAttribute(sheetView, "showGridLines");
+                    if (attribute != null)
+                    {
+                        ShowGridLines = ParserUtils.ParseBinaryBool(attribute) == 1;
+                    }
+                    attribute = ReaderUtils.GetAttribute(sheetView, "showRowColHeaders");
+                    if (attribute != null)
+                    {
+                        ShowRowColHeaders = ParserUtils.ParseBinaryBool(attribute) == 1;
+                    }
+                    attribute = ReaderUtils.GetAttribute(sheetView, "showRuler");
+                    if (attribute != null)
+                    {
+                        ShowRuler = ParserUtils.ParseBinaryBool(attribute) == 1;
+                    }
                     if (sheetView.LocalName.Equals("sheetView", StringComparison.InvariantCultureIgnoreCase))
                     {
                         XmlNodeList selectionNodes = sheetView.ChildNodes;
@@ -210,7 +287,7 @@ namespace NanoXLSX.Internal.Readers
                         {
                             foreach (XmlNode selectionNode in selectionNodes)
                             {
-                                string attribute = ReaderUtils.GetAttribute(selectionNode, "sqref");
+                                attribute = ReaderUtils.GetAttribute(selectionNode, "sqref");
                                 if (attribute != null)
                                 {
                                     if (attribute.Contains(" "))
@@ -233,7 +310,7 @@ namespace NanoXLSX.Internal.Readers
                         XmlNode paneNode = ReaderUtils.GetChildNode(sheetView, "pane");
                         if (paneNode != null)
                         {
-                            string attribute = ReaderUtils.GetAttribute(paneNode, "state");
+                            attribute = ReaderUtils.GetAttribute(paneNode, "state");
                             bool useNumbers = false;
                             this.PaneSplitValue = new PaneDefinition();
                             if (attribute != null)

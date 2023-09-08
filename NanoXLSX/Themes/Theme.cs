@@ -40,7 +40,7 @@ namespace NanoXLSX.Themes
         /// </summary>
         public ColorScheme Colors { get; set; }
         /// <summary>
-        /// Gets or sets the internal ID of the theme. The value is usually identical to <see cref="ThemeRepository.DEFAULT_THEME_ID"/>
+        /// Gets or sets the internal ID of the theme
         /// </summary>
         public int ID { get; set; }
 

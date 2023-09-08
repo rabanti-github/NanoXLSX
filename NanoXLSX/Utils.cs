@@ -28,18 +28,18 @@ namespace NanoXLSX
         /// <summary>
         /// First date that can be displayed by Excel. Real values before this date cannot be processed.
         /// </summary>
-        public static readonly DateTime FIRST_ALLOWED_EXCEL_DATE = new DateTime(1900, 1, 1, 0, 0, 0);
+        public static readonly DateTime FIRST_ALLOWED_EXCEL_DATE = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
         /// <summary>
         /// Last date that can be displayed by Excel. Real values after this date cannot be processed.
         /// </summary>
-        public static readonly DateTime LAST_ALLOWED_EXCEL_DATE = new DateTime(9999, 12, 31, 23, 59, 59);
+        public static readonly DateTime LAST_ALLOWED_EXCEL_DATE = new DateTime(9999, 12, 31, 23, 59, 59, DateTimeKind.Unspecified);
 
         /// <summary>
         /// All dates before this date are shifted in Excel by -1.0, since Excel assumes wrongly that the year 1900 is a leap year.<br/>
         /// See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
         /// https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a>
         /// </summary>
-        public static readonly DateTime FIRST_VALID_EXCEL_DATE = new DateTime(1900, 3, 1);
+        public static readonly DateTime FIRST_VALID_EXCEL_DATE = new DateTime(1900, 3, 1, 0, 0, 0, DateTimeKind.Unspecified);
 
         /// <summary>
         /// Constant for number conversion. The invariant culture (represents mostly the US numbering scheme) ensures that no culture-specific 
@@ -57,8 +57,8 @@ namespace NanoXLSX
         private const float SPLIT_WIDTH_POINT_OFFSET = 390f;
         private const float SPLIT_HEIGHT_POINT_OFFSET = 300f;
         private const float ROW_HEIGHT_POINT_MULTIPLIER = 1f / 3f + 1f;
-        private static readonly DateTime ROOT_DATE = new DateTime(1899, 12, 30, 0, 0, 0);
-        private static readonly double ROOT_MILLIS = (double)new DateTime(1899, 12, 30, 0, 0, 0).Ticks / TimeSpan.TicksPerMillisecond;
+        private static readonly DateTime ROOT_DATE = new DateTime(1899, 12, 30, 0, 0, 0, DateTimeKind.Unspecified);
+        private static readonly double ROOT_MILLIS = (double)new DateTime(1899, 12, 30, 0, 0, 0, DateTimeKind.Unspecified).Ticks / TimeSpan.TicksPerMillisecond;
 
         #endregion
 

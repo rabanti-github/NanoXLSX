@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -23,6 +24,8 @@ namespace NanoXLSX.Shared_Test.Misc
             Assert.Equal("test", exception.Message);
             Assert.Null(exception.InnerException);
 
+            AssertExceptionSerialization<FormatException>(exception);
+
             ArgumentException inner = new ArgumentException("inner message");
             exception = new FormatException("test", inner);
             Assert.Equal("test", exception.Message);
@@ -42,6 +45,8 @@ namespace NanoXLSX.Shared_Test.Misc
             Assert.Equal("test", exception.Message);
             Assert.Null(exception.InnerException);
 
+            AssertExceptionSerialization<IOException>(exception);
+
             ArgumentException inner = new ArgumentException("inner message");
             exception = new IOException("test", inner);
             Assert.Equal("test", exception.Message);
@@ -60,6 +65,8 @@ namespace NanoXLSX.Shared_Test.Misc
             exception = new RangeException("test");
             Assert.Equal("test", exception.Message);
             Assert.Null(exception.InnerException);
+
+            AssertExceptionSerialization<RangeException>(exception);
         }
 
         [Fact(DisplayName = "Test of the  StyleException (summary)")]
@@ -72,6 +79,8 @@ namespace NanoXLSX.Shared_Test.Misc
             exception = new StyleException("test");
             Assert.Equal("test", exception.Message);
             Assert.Null(exception.InnerException);
+
+            AssertExceptionSerialization<StyleException>(exception);
 
             ArgumentException inner = new ArgumentException("inner message");
             exception = new StyleException("test", inner);
@@ -91,6 +100,23 @@ namespace NanoXLSX.Shared_Test.Misc
             exception = new WorksheetException("test");
             Assert.Equal("test", exception.Message);
             Assert.Null(exception.InnerException);
+
+            AssertExceptionSerialization<WorksheetException>(exception);
+        }
+
+        public static void AssertExceptionSerialization<TException>(TException originalException) where TException : Exception
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            TException deserializedException;
+
+            using (var stream = new System.IO.MemoryStream())
+            {
+                formatter.Serialize(stream, originalException);
+
+                stream.Seek(0, System.IO.SeekOrigin.Begin);
+                deserializedException = (TException)formatter.Deserialize(stream);
+            }
+            Assert.Equal(originalException.Message, deserializedException.Message);
         }
 
     }

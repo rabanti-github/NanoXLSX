@@ -7,6 +7,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 
 namespace NanoXLSX.Shared.Exceptions
 {
@@ -28,6 +29,16 @@ namespace NanoXLSX.Shared.Exceptions
         public WorksheetException(string message)
             : base(message)
         {  }
+
+        /// <summary>
+        /// Constructor for deserialization purpose
+        /// </summary>
+        /// <param name="info">Serialization info instance</param>
+        /// <param name="context">Streaming context</param>
+        protected WorksheetException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 
     #region doc

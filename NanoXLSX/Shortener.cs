@@ -108,6 +108,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="numberOfRows">Number of rows to move</param>
         /// <param name="keepColumnPosition">If true, the column position is preserved, otherwise set to 0</param>
+        /// <remarks>An exception will be thrown if the row number is below 0. Values (number of rows) can be also negative. However, this is the equivalent of the function <see cref="Down(int, bool)"/></remarks>
         public void Down(int numberOfRows, bool keepColumnPosition = false)
         {
             NullCheck();
@@ -128,12 +129,12 @@ namespace NanoXLSX
         /// Moves the cursor the number of defined rows up
         /// </summary>
         /// <param name="numberOfRows">Number of rows to move</param>
-        /// <param name="keepColumnosition">If true, the column position is preserved, otherwise set to 0</param>
+        /// <param name="keepColumnPosition">If true, the column position is preserved, otherwise set to 0</param>
         /// <remarks>An exception will be thrown if the row number is below 0. Values can be also negative. However, this is the equivalent of the function <see cref="Down(int, bool)"/></remarks>
-        public void Up(int numberOfRows, bool keepColumnosition = false)
+        public void Up(int numberOfRows, bool keepColumnPosition = false)
         {
             NullCheck();
-            currentWorksheet.GoToNextRow(-1*numberOfRows, keepColumnosition);
+            currentWorksheet.GoToNextRow(-1*numberOfRows, keepColumnPosition);
         }
 
         /// <summary>
