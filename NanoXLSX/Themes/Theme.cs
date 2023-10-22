@@ -47,7 +47,7 @@ namespace NanoXLSX.Themes
         /// <summary>
         /// Gets whether the theme is defined as copy or reference to the application default theme.
         /// </summary>
-        /// <remarks>This indication and the default theme (<see cref="Theme.GetDefaultTheme"/>) may still deviate from the actual default theme of the application</remarks>
+        /// <remarks>This indication and the default theme (<see cref="Theme.GetDefaultTheme"/>) may still deviate from the actual default theme defined by the handling application (e.g. Excel)</remarks>
         public bool DefaultTheme { get; private set; }
 
         /// <summary>
@@ -59,16 +59,29 @@ namespace NanoXLSX.Themes
         {
             this.ID = id;
             this.Name = name;
+            this.Colors = GetDefaultColorScheme();
         }
 
+
         /// <summary>
-        /// Gets the default theme if no theme was explicitly defined. This theme will be stored into an XLSX file of not otherwise defined
+        /// Gets the default theme if no theme was explicitly defined. This theme will be stored into an XLSX file if not otherwise defined
         /// </summary>
         /// <returns>Theme with default values according to the default theme of Office 2019 (may be deviating)</returns>
         internal static Theme GetDefaultTheme()
         {
             Theme theme = new Theme(1, "default");
             theme.DefaultTheme = true;
+            ColorScheme colors = GetDefaultColorScheme();
+            theme.Colors = colors;
+            return theme;
+        }
+
+        /// <summary>
+        /// Gets the default color scheme if no scheme was explicitly defined. This theme will be incorporated into the default theem of an XLSX file if not otherwise defined 
+        /// </summary>
+        /// <returns>Color scheme with default values according to the default color scheme of Office 2019 (may be deviating)</returns>
+        internal static ColorScheme GetDefaultColorScheme()
+        {
             ColorScheme colors = new ColorScheme();
             colors.Name = "default";
             colors.Dark1 = new SystemColor(SystemColor.Value.WindowText);
@@ -83,8 +96,7 @@ namespace NanoXLSX.Themes
             colors.Accent6 = new SrgbColor("70AD47");
             colors.Hyperlink = new SrgbColor("0563C1");
             colors.FollowedHyperlink = new SrgbColor("954F72");
-            theme.Colors = colors;
-            return theme;
+            return colors;
         }
 
         public override bool Equals(object obj)

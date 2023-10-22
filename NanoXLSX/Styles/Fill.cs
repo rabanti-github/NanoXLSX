@@ -214,7 +214,7 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Sets the color and the depending fill type
+        /// Sets the color and the depending on fill type
         /// </summary>
         /// <param name="value">color value</param>
         /// <param name="filltype">fill type (fill or pattern)</param>

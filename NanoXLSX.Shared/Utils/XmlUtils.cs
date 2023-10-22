@@ -34,6 +34,15 @@ namespace NanoXLSX.Shared.Utils
             int i;
             for (i = 0; i < len; i++)
             {
+                if (char.IsSurrogate(input[i]) && i + 1 < len && char.IsSurrogatePair(input[i], input[i + 1]))
+                {
+                    illegalCharacters.Add(i);
+                    characterTypes.Add(4);
+                    illegalCharacters.Add(i+1); // Skip next character
+                    characterTypes.Add(5);
+                    i++;
+                    continue;
+                }
                 if ((input[i] < 0x9) || (input[i] > 0xA && input[i] < 0xD) || (input[i] > 0xD && input[i] < 0x20) || (input[i] > 0xD7FF && input[i] < 0xE000) || (input[i] > 0xFFFD))
                 {
                     illegalCharacters.Add(i);
@@ -82,6 +91,15 @@ namespace NanoXLSX.Shared.Utils
                 else if (characterTypes[i] == 3) // replace &
                 {
                     sb.Append("&amp;");
+                }
+                else if (characterTypes[i] == 4)
+                {
+                    int codePoint = char.ConvertToUtf32(input[illegalCharacters[i]], input[illegalCharacters[i + 1]]);
+                    sb.Append($"&#x{codePoint:X};");
+                }
+                else if (characterTypes[i] == 5)
+                {
+                    // Ignore character
                 }
                 lastIndex = illegalCharacters[i] + 1;
             }

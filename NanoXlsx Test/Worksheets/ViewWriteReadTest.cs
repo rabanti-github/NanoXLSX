@@ -295,7 +295,7 @@ namespace NanoXLSX_Test.Worksheets
             assertRowSplit(rowNumber, freeze, givenWorksheet);
         }
 
-        [Theory(DisplayName = "Test of the 'ShowGrodLines' property, when writing and reading a worksheet")]
+        [Theory(DisplayName = "Test of the 'ShowGridLines' property, when writing and reading a worksheet")]
         [InlineData(true, 0)]
         [InlineData(false, 0)]
         [InlineData(true, 2)]
@@ -373,7 +373,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData(Worksheet.SheetViewType.pageBreakPreview, 100, 0)]
         [InlineData(Worksheet.SheetViewType.pageBreakPreview, 250, 2)]
         [InlineData(Worksheet.SheetViewType.pageBreakPreview, 400, 0)]
-        public void ZoomfactorWriteReadTest(Worksheet.SheetViewType viewType, int zoomFactor, int sheetIndex)
+        public void ZoomFactorWriteReadTest(Worksheet.SheetViewType viewType, int zoomFactor, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
             workbook.SetCurrentWorksheet(sheetIndex);

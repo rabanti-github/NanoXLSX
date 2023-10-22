@@ -153,7 +153,7 @@ Release Date: **03.09.2022 - Major Release**
 - Added global casting import options: AllNumbersToDouble, AllNumbersToDecimal, AllNumbersToInt, EverythingToString
 - Added column casting import options: Double, Decimal
 - Added global import options: EnforcePhoneticCharacterImport, EnforceEmptyValuesAsString, DateTimeFormat, TemporalCultureInfo
-- Added a meta data reader for workbook meta data
+- Added a metadata reader for workbook metadata
 - All style elements that can be written can also be read
 - All workbook elements that can be written can also be read (exception: passwords cannot be recovered)
 - All worksheet elements that can be written can also be read (exception: passwords cannot be recovered)

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace NanoXLSX.Core_Test.Themes
 {
-    public class ColorSchmeTest
+    public class ColorSchemeTest
     {
 
 

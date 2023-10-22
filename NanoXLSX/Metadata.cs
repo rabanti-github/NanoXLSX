@@ -14,7 +14,7 @@ using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 namespace NanoXLSX
 {
     /// <summary>
-    /// Class representing the meta data of a workbook
+    /// Class representing the metadata of a workbook
     /// </summary>
     public class Metadata
     {
@@ -62,7 +62,7 @@ namespace NanoXLSX
         /// </summary>
         public string Description { get; set; }
         /// <summary>
-        /// Gets or sets the hyper-link base of the document.
+        /// Gets or sets the hyperlink base of the document.
         /// </summary>
         public string HyperlinkBase { get; set; }
         /// <summary>
@@ -117,7 +117,7 @@ namespace NanoXLSX
             }
             if (!state)
             {
-                throw new FormatException("The format of the version in the meta data is wrong (" + applicationVersion + "). Should be in the format and a range from '0.0' to '99999.99999'");
+                throw new FormatException("The format of the version in the metadata is wrong (" + applicationVersion + "). Should be in the format and a range from '0.0' to '99999.99999'");
             }
         }
         #endregion

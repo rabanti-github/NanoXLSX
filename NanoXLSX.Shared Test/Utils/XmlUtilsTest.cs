@@ -44,20 +44,18 @@ namespace NanoXLSX.Shared_Test.Utils
             Assert.Equal(expectedOutput, result);
         }
 
-       [Theory(DisplayName = "Test of the EscapeXmlAttributeChars function with special characters")]
-      // [InlineData("\x01", " ")]        // Invalid control character
-      // [InlineData("\x02", " ")]        // Invalid control character
-      // [InlineData("\x10", " ")]        // Invalid control character
-      // [InlineData("\x1F", " ")]        // Invalid control character
-        
-        //[InlineData("\xD800", " ")]      // Invalid high surrogate
+        [Theory(DisplayName = "Test of the EscapeXmlAttributeChars function with special characters")]
+        [InlineData("\x01", " ")]        // Invalid control character
+        [InlineData("\x02", " ")]        // Invalid control character
+        [InlineData("\x10", " ")]        // Invalid control character
+        [InlineData("\x1F", " ")]        // Invalid control character
+        [InlineData("\xD800", "\xFFFD\xFFFD")]    // Invalid high surrogate (deliberate invalid input)
+        [InlineData("\uDBFF", "\xFFFD\xFFFD")]    // Invalid high surrogate (deliberate invalid input)
+        [InlineData("\uDC00", "\xFFFD\xFFFD")]    // Invalid low surrogate (deliberate invalid input)
+        [InlineData("\uDFFF", "\xFFFD\xFFFD")]    // Invalid low surrogate (deliberate invalid input)
         [InlineData("\uD835\uDC00", "&#x1D400;")] // Valid surrogate pair representing a Unicode character
-
-                                                  //  [InlineData("\uDBFF", " ")]      // Invalid high surrogate
-                                                  //  [InlineData("\uDC00", " ")]      // Invalid low surrogate
-                                                  //  [InlineData("\uDFFF", " ")]      // Invalid low surrogate
-                                                  //  [InlineData("\uFFFE", " ")]      // Invalid character
-                                                  //  [InlineData("\uFFFF", " ")]      // Invalid character
+        [InlineData("\uFFFE", " ")]      // Invalid character
+        [InlineData("\uFFFF", " ")]      // Invalid character
         public void EscapeXmlAttributeCharsSpecialCharactersTest(string input, string expectedOutput)
         {
             string result = XmlUtils.EscapeXmlAttributeChars(input);

@@ -60,7 +60,7 @@ namespace NanoXLSX_Test.Styles
             Assert.Equal(Font.DEFAULT_VERTICAL_ALIGN, font.VerticalAlign);
             Assert.Equal("", font.ColorValue);
             Assert.Equal(CharsetValue.Default, font.Charset);
-            Assert.Equal(ThemeEnums.ColorSchemeElement.dark1, font.ColorTheme);
+            Assert.Equal(ThemeEnums.ColorSchemeElement.light1, font.ColorTheme);
         }
 
 
@@ -225,7 +225,7 @@ namespace NanoXLSX_Test.Styles
         public void ColorThemeTest(ThemeEnums.ColorSchemeElement element)
         {
             Font font = new Font();
-            Assert.Equal(ThemeEnums.ColorSchemeElement.dark1, font.ColorTheme); // dark1 is default
+            Assert.Equal(ThemeEnums.ColorSchemeElement.light1, font.ColorTheme); // light1 is default
             font.ColorTheme = element;
             Assert.Equal(element, font.ColorTheme);
         }

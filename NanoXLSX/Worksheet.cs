@@ -880,7 +880,7 @@ namespace NanoXLSX
         #region methods_AddCellRange
 
         /// <summary>
-        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be cast to a String. 
+        /// Adds a list of object values to a defined cell range. If the type of the particular value does not match with one of the supported data types, it will be cast to a String. 
         /// Prepared objects of the type Cell will not be cast but adjusted
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
@@ -895,7 +895,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be cast to a String. 
+        /// Adds a list of object values to a defined cell range. If the type of the particular value does not match with one of the supported data types, it will be cast to a String. 
         /// Prepared objects of the type Cell will not be cast but adjusted
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
@@ -912,7 +912,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be cast to a String. 
+        /// Adds a list of object values to a defined cell range. If the type of the particular value does not match with one of the supported data types, it will be cast to a String. 
         /// Prepared objects of the type Cell will not be cast but adjusted
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
@@ -928,7 +928,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Adds a list of object values to a defined cell range. If the type of the a particular value does not match with one of the supported data types, it will be cast to a String. 
+        /// Adds a list of object values to a defined cell range. If the type of the particular value does not match with one of the supported data types, it will be cast to a String. 
         /// Prepared objects of the type Cell will not be cast but adjusted
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>

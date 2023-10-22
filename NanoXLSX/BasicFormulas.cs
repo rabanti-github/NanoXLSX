@@ -18,7 +18,7 @@ namespace NanoXLSX
     public static class BasicFormulas
     {
         /// <summary>
-        /// Returns a cell with a average formula
+        /// Returns a cell with an average formula
         /// </summary>
         /// <param name="range">Cell range to apply the average operation to</param>
         /// <returns>Prepared Cell object, ready to be added to a worksheet</returns>
@@ -26,7 +26,7 @@ namespace NanoXLSX
         { return Average(null, range); }
 
         /// <summary>
-        /// Returns a cell with a average formula
+        /// Returns a cell with an average formula
         /// </summary>
         /// <param name="target">Target worksheet of the average operation. Can be null if on the same worksheet</param>
         /// <param name="range">Cell range to apply the average operation to</param>

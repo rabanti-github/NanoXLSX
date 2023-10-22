@@ -213,7 +213,7 @@ namespace NanoXLSX.Styles
             size = DEFAULT_FONT_SIZE;
             Name = DEFAULT_FONT_NAME;
             Family = DEFAULT_FONT_FAMILY;
-            ColorTheme = ThemeEnums.ColorSchemeElement.dark1;
+            ColorTheme = ThemeEnums.ColorSchemeElement.light1;
             ColorValue = string.Empty;
             Scheme = DEFAULT_FONT_SCHEME;
             VerticalAlign = DEFAULT_VERTICAL_ALIGN;

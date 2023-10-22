@@ -14,6 +14,7 @@ namespace NanoXLSX_Test.Worksheets
 {
     public class WorksheetWriteReadTest
     {
+
         [Theory(DisplayName = "Test of the 'AutoFilterRange' property when writing and reading a worksheet")]
         [InlineData(null, 0)]
         [InlineData("A1:A1", 0)]
@@ -339,6 +340,28 @@ namespace NanoXLSX_Test.Worksheets
             {
                 Assert.Contains(range.Value, givenWorksheet.SelectedCells);
             }
+        }
+
+        [Fact(DisplayName = "Test of the 'SelectedCells' property when writing and reading a worksheet with multiple ranges of selected cells")]
+        public void SelectedCellsWriteReadTest2()
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            Range range1 =  new Range("A1:C1");
+            Range range2 = new Range("F3:I4");
+            for (int i = 0; i <= 2; i++)
+            {
+                if (i == 2)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    workbook.CurrentWorksheet.AddSelectedCells(range1);
+                    workbook.CurrentWorksheet.AddSelectedCells(range2);
+                }
+            }
+            
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, 2);
+            Assert.Contains(range1, givenWorksheet.SelectedCells);
+            Assert.Contains(range2, givenWorksheet.SelectedCells);
+
         }
 
         [Fact(DisplayName = "Test of the 'SheetID'  property when writing and reading a worksheet")]
