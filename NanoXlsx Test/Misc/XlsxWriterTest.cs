@@ -45,6 +45,7 @@ namespace NanoXLSX_Test.Misc
         [InlineData("සඳුදා", "සඳුදා")]
         [InlineData("ހޯމަ ދުވަސް", "ހޯމަ ދުވަސް")]
         [InlineData("x\uD835\uDC00x", "x𝐀x")] // Surrogates test
+        [InlineData("x\x0x", "x x")] // Replacement test
         public void StringValueWriteReadTest(string givenString, string expectedString)
         {
             Workbook workbook = new Workbook("worksheet1");

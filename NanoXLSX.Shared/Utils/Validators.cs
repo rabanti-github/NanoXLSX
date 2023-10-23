@@ -7,7 +7,7 @@ namespace NanoXLSX.Shared.Utils
     public static class Validators
     {
         /// <summary>
-        /// Validates the passed string, whether it is a valid RGB value that can be used for Fills or Fonts
+        /// Validates the passed string, whether it is a valid RGB or ARGB value that can be used for Fills or Fonts
         /// </summary>
         /// <exception cref="StyleException">A StyleException is thrown if an invalid hex value is passed</exception>
         /// <param name="hexCode">Hex string to check</param>

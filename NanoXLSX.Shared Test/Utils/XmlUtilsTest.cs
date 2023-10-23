@@ -11,6 +11,9 @@ namespace NanoXLSX.Shared_Test.Utils
     public class XmlUtilsTest
     {
         [Theory(DisplayName = "Test of the EscapeXmlChars function")]
+        [InlineData(null, "")]
+        [InlineData("", "")]
+        [InlineData(" ", " ")]
         [InlineData("This is a test & string", "This is a test &amp; string")]
         [InlineData("This is a <tag>", "This is a &lt;tag&gt;")]
         [InlineData("This is a >tag<", "This is a &gt;tag&lt;")]
