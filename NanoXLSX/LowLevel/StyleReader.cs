@@ -214,9 +214,9 @@ namespace NanoXLSX.LowLevel
             {
                 Fill fillStyle = new Fill();
                 XmlNode innerNode = ReaderUtils.GetChildNode(fill, "patternFill");
-                string pattern = ReaderUtils.GetAttribute(innerNode, "patternType");
                 if (innerNode != null)
                 {
+                    string pattern = ReaderUtils.GetAttribute(innerNode, "patternType");
                     Fill.PatternValue patternValue;
                     if (Enum.TryParse<Fill.PatternValue>(pattern, out patternValue))
                     {
