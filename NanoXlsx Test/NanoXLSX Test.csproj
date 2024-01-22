@@ -6,7 +6,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Version>2.3.0</Version>
+    <Version>2.3.1</Version>
 
     <Authors>Raphael Stoeckli</Authors>
 
@@ -18,7 +18,7 @@
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <Copyright>Copyright Raphael Stoeckli © 2023</Copyright>
+    <Copyright>Copyright Raphael Stoeckli © 2024</Copyright>
 
     <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
 
@@ -34,9 +34,9 @@
 
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
 
-    <AssemblyVersion>2.3.0.0</AssemblyVersion>
+    <AssemblyVersion>2.3.1.0</AssemblyVersion>
 
-    <FileVersion>2.3.0.0</FileVersion>
+    <FileVersion>2.3.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

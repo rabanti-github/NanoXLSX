@@ -406,7 +406,6 @@ namespace NanoXLSX_Test.Worksheets
             workbook.SetCurrentWorksheet(sheetIndex);
             workbook.CurrentWorksheet.ViewType = initialViewType;
             workbook.CurrentWorksheet.SetZoomFactor(additionalViewType, zoomFactor);
-            workbook.SaveAs("c:\\purge-temp\\testZoom.xlsx");
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
             if (initialViewType != Worksheet.SheetViewType.normal && additionalViewType != Worksheet.SheetViewType.normal)
             {
