@@ -79,7 +79,7 @@ namespace NanoXLSX.Shared.Utils
         /// <returns>Parsed int</returns>
         public static int ParseInt(string rawValue)
         {
-            return int.Parse(rawValue, INVARIANT_CULTURE);
+            return int.Parse(rawValue, NumberStyles.Any, INVARIANT_CULTURE);
         }
 
         /// <summary>
