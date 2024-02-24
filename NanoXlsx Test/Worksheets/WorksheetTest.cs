@@ -742,10 +742,10 @@ namespace NanoXLSX_Test.Worksheets
             worksheet.AddHiddenRow(0);
             worksheet.AddHiddenRow(1);
             worksheet.SetRowHeight(10, 22.2f);
-            worksheet.AddCell("test", "E5");
+            worksheet.AddCell("test", "E7");
             Address? address = worksheet.GetLastDataCellAddress();
             Assert.NotNull(address);
-            Assert.Equal("E5", address.Value.GetAddress());
+            Assert.Equal("E7", address.Value.GetAddress());
         }
 
         [Fact(DisplayName = "Test of the GetLastDataCellAddress function with defined columns and rows where cells are defined above the last column and row")]
@@ -799,52 +799,53 @@ namespace NanoXLSX_Test.Worksheets
         public void GetFirstCellAddressTest2()
         {
             Worksheet worksheet = new Worksheet();
-            worksheet.AddHiddenColumn(1);
             worksheet.AddHiddenColumn(2);
             worksheet.AddHiddenColumn(3);
+            worksheet.AddHiddenColumn(4);
             worksheet.AddHiddenRow(1);
             worksheet.AddHiddenRow(2);
             Address? address = worksheet.GetFirstCellAddress();
             Assert.NotNull(address);
-            Assert.Equal("B2", address.Value.GetAddress());
+            Assert.Equal("C2", address.Value.GetAddress());
         }
 
         [Fact(DisplayName = "Test of the GetFirstCellAddress function with an empty worksheet but defined columns and rows with gaps")]
         public void GetFirstCellAddressTest3()
         {
             Worksheet worksheet = new Worksheet();
-            worksheet.AddHiddenColumn(1);
             worksheet.AddHiddenColumn(2);
+            worksheet.AddHiddenColumn(3);
             worksheet.AddHiddenColumn(10);
-            worksheet.AddHiddenRow(1);
-            worksheet.AddHiddenRow(2);
+            worksheet.AddHiddenRow(3);
+            worksheet.AddHiddenRow(4);
             worksheet.SetRowHeight(10, 22.2f);
             Address? address = worksheet.GetFirstCellAddress();
             Assert.NotNull(address);
-            Assert.Equal("B2", address.Value.GetAddress());
+            Assert.Equal("C4", address.Value.GetAddress());
         }
 
         [Fact(DisplayName = "Test of the GetFirstCellAddress function with defined columns and rows where cells are defined above the first column and row")]
         public void GetFirstCellAddressTest4()
         {
             Worksheet worksheet = new Worksheet();
-            worksheet.AddHiddenColumn(1);
-            worksheet.AddHiddenColumn(2);
+            worksheet.AddHiddenColumn(3);
+            worksheet.AddHiddenColumn(4);
             worksheet.AddHiddenColumn(10);
-            worksheet.AddHiddenRow(1);
-            worksheet.AddHiddenRow(2);
+            worksheet.AddHiddenRow(4);
+            worksheet.AddHiddenRow(5);
             worksheet.SetRowHeight(10, 22.2f);
-            worksheet.AddCell("test", "B2");
+            worksheet.AddCell("test", "R5");
+            worksheet.AddCell("test", "F11");
             Address? address = worksheet.GetFirstCellAddress();
             Assert.NotNull(address);
-            Assert.Equal("B2", address.Value.GetAddress());
+            Assert.Equal("D5", address.Value.GetAddress());
         }
 
         [Fact(DisplayName = "Test of the GetFirstCellAddress function with defined columns and rows where cells are defined below the first column and row")]
         public void GetFirstCellAddressTest5()
         {
             Worksheet worksheet = new Worksheet();
-            worksheet.AddHiddenColumn(3);
+            worksheet.AddHiddenColumn(2);
             worksheet.AddHiddenColumn(4);
             worksheet.AddHiddenColumn(10);
             worksheet.AddHiddenRow(3);
@@ -853,7 +854,7 @@ namespace NanoXLSX_Test.Worksheets
             worksheet.AddCell("test", "E5");
             Address? address = worksheet.GetFirstCellAddress();
             Assert.NotNull(address);
-            Assert.Equal("D4", address.Value.GetAddress());
+            Assert.Equal("C4", address.Value.GetAddress());
         }
 
         [Theory(DisplayName = "Test of the GetFirstDataCellAddress function with an empty worksheet")]
@@ -900,10 +901,11 @@ namespace NanoXLSX_Test.Worksheets
             worksheet.AddHiddenRow(2);
             worksheet.AddHiddenRow(3);
             worksheet.SetRowHeight(4, 22.2f);
-            worksheet.AddCell("test", "E5");
+            worksheet.AddCell("test", "E6");
+            worksheet.AddCell("test", "H9");
             Address? address = worksheet.GetFirstDataCellAddress();
             Assert.NotNull(address);
-            Assert.Equal("E5", address.Value.GetAddress());
+            Assert.Equal("E6", address.Value.GetAddress());
         }
 
         [Fact(DisplayName = "Test of the GetFirstDataCellAddress function with defined columns and rows where cells are defined below the first column and row")]
@@ -916,10 +918,11 @@ namespace NanoXLSX_Test.Worksheets
             worksheet.AddHiddenRow(1);
             worksheet.AddHiddenRow(2);
             worksheet.SetRowHeight(10, 22.2f);
-            worksheet.AddCell("test", "C3");
+            worksheet.AddCell("test", "C5");
+            worksheet.AddCell("test", "D7");
             Address? address = worksheet.GetFirstDataCellAddress();
             Assert.NotNull(address);
-            Assert.Equal("C3", address.Value.GetAddress());
+            Assert.Equal("C5", address.Value.GetAddress());
         }
 
         [Theory(DisplayName = "Test of the MergeCells function")]
