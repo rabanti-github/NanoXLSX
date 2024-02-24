@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2023
+ * Copyright Raphael Stoeckli © 2024
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -917,7 +917,7 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Decimal value or original value if not possible to convert</returns>
         private object ConvertToDecimal(object data)
         {
-            IConvertible converter = null;
+            IConvertible converter;
             switch (data)
             {
                 case double _:
@@ -1067,7 +1067,7 @@ namespace NanoXLSX.Internal.Readers
         private DateTime? TryParseDate(string raw)
         {
             DateTime dateTime;
-            bool isDateTime = false;
+            bool isDateTime;
             if (importOptions == null || string.IsNullOrEmpty(importOptions.DateTimeFormat) || importOptions.TemporalCultureInfo == null)
             {
                 isDateTime = DateTime.TryParse(raw, ImportOptions.DEFAULT_CULTURE_INFO, DateTimeStyles.None, out dateTime);
@@ -1126,7 +1126,7 @@ namespace NanoXLSX.Internal.Readers
         private TimeSpan? TryParseTime(string raw)
         {
             TimeSpan timeSpan;
-            bool isTimeSpan = false;
+            bool isTimeSpan;
             if (importOptions == null || string.IsNullOrEmpty(importOptions.TimeSpanFormat) || importOptions.TemporalCultureInfo == null)
             {
                 isTimeSpan = TimeSpan.TryParse(raw, ImportOptions.DEFAULT_CULTURE_INFO,  out timeSpan);

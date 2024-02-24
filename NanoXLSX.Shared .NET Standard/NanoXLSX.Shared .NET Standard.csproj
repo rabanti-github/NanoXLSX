@@ -10,7 +10,7 @@
     <Company>Raphael Stoeckli</Company>
     <Product>NanoXLSX</Product>
     <Description>Shared components (Interfaces, Utilities etc.) used by NanoXLSX and its Extensions</Description>
-    <Copyright>Copyright Raphael Stoeckli © 2023</Copyright>
+    <Copyright>Copyright Raphael Stoeckli © 2024</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX.Core</PackageProjectUrl>
     <PackageIcon>NanoXLSX.png</PackageIcon>

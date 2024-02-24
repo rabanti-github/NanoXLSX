@@ -1,5 +1,23 @@
 # Change Log
 
+## v2.3.2
+
+---
+Release Date: **24.02.2024**
+
+- Fixed a bug when reading min and max values in the GetLastDataColumnNumber function. Bug fix provided by pokorny
+- Code maintenance 
+
+## v2.3.1
+
+---
+Release Date: **22.01.2024**
+
+- Fixed a bug when reading fill styles. Bug fix provided by Marq Watkin 
+- Fixed a bug regarding casting floats to integers, in the worksheet reader. Bug fix provided by wappenull
+- Removed broken debug code in tests
+- Code maintenance 
+
 ## v2.3.0
 
 ---

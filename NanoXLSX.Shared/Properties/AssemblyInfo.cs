@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Raphael Stoeckli")]
 [assembly: AssemblyProduct("NanoXLSX")]
-[assembly: AssemblyCopyright("Copyright Raphael Stoeckli © 2023")]
+[assembly: AssemblyCopyright("Copyright Raphael Stoeckli © 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

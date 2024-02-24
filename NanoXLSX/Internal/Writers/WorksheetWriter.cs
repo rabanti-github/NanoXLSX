@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2023
+ * Copyright Raphael Stoeckli © 2024
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -118,8 +118,8 @@ namespace NanoXLSX.Internal.Writers
             StringBuilder sb = new StringBuilder();
             sb.Append("<row r=\"").Append((rowNumber + 1).ToString()).Append("\"").Append(height).Append(hidden).Append(">");
             string typeAttribute;
-            string styleDef = "";
-            string typeDef = "";
+            string styleDef;
+            string typeDef;
             string valueDef = "";
             bool boolValue;
 
