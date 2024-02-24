@@ -6,7 +6,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Version>2.3.2</Version>
+    <Version>2.3.3</Version>
 
     <Authors>Raphael Stoeckli</Authors>
 
@@ -34,7 +34,7 @@
 
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
 
-    <AssemblyVersion>2.3.2.0</AssemblyVersion>
+    <AssemblyVersion>2.3.3.0</AssemblyVersion>
 
     <FileVersion>2.3.2.0</FileVersion>
   </PropertyGroup>
