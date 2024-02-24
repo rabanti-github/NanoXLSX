@@ -915,7 +915,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Decimal value or original value if not possible to convert</returns>
         private object ConvertToDecimal(object data)
         {
-            IConvertible converter = null;
+            IConvertible converter;
             switch (data)
             {
                 case double _:
@@ -1065,7 +1065,7 @@ namespace NanoXLSX.LowLevel
         private DateTime? TryParseDate(string raw)
         {
             DateTime dateTime;
-            bool isDateTime = false;
+            bool isDateTime;
             if (importOptions == null || string.IsNullOrEmpty(importOptions.DateTimeFormat) || importOptions.TemporalCultureInfo == null)
             {
                 isDateTime = DateTime.TryParse(raw, ImportOptions.DEFAULT_CULTURE_INFO, DateTimeStyles.None, out dateTime);
@@ -1124,7 +1124,7 @@ namespace NanoXLSX.LowLevel
         private TimeSpan? TryParseTime(string raw)
         {
             TimeSpan timeSpan;
-            bool isTimeSpan = false;
+            bool isTimeSpan;
             if (importOptions == null || string.IsNullOrEmpty(importOptions.TimeSpanFormat) || importOptions.TemporalCultureInfo == null)
             {
                 isTimeSpan = TimeSpan.TryParse(raw, ImportOptions.DEFAULT_CULTURE_INFO,  out timeSpan);

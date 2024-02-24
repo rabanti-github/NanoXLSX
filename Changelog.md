@@ -1,5 +1,13 @@
 # Change Log
 
+## v2.3.2
+
+---
+Release Date: **24.02.2024**
+
+- Fixed a bug when reading min and max values in the GetLastDataColumnNumber function. Bug fix provided by pokorny
+- Code maintenance 
+
 ## v2.3.1
 
 ---

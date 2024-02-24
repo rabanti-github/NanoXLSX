@@ -438,7 +438,7 @@ namespace NanoXLSX.LowLevel
                     StyleReaderContainer.AddStyleComponent(cellXfStyle);
 
                     Style style = new Style();
-                    int id = 0;
+                    int id;
                     bool hasId;
 
                     hasId = ReaderUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId"), out id);

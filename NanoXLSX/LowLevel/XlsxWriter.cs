@@ -919,8 +919,8 @@ namespace NanoXLSX.LowLevel
             StringBuilder sb = new StringBuilder();
             sb.Append("<row r=\"").Append((rowNumber + 1).ToString()).Append("\"").Append(height).Append(hidden).Append(">");
             string typeAttribute;
-            string styleDef = "";
-            string typeDef = "";
+            string styleDef;
+            string typeDef;
             string valueDef = "";
             bool boolValue;
 
