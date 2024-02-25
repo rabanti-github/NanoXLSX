@@ -1,5 +1,13 @@
 # Change Log
 
+## v2.3.3
+
+---
+Release Date: **24.02.2024**
+
+- Fixed a bug in the GetFirstDataCellAddress function
+- Fixed test cases 
+
 ## v2.3.2
 
 ---

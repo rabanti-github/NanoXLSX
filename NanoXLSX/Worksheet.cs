@@ -1249,7 +1249,7 @@ namespace NanoXLSX
         public Address? GetFirstDataCellAddress()
         {
             int firstRow = GetFirstDataRowNumber();
-            int firstColumn = GetLastDataColumnNumber();
+            int firstColumn = GetFirstDataColumnNumber();
             if (firstRow < 0 || firstColumn < 0)
             {
                 return null;
