@@ -55,4 +55,4 @@ However, to ensure a good experience for everyone (library users, developers, or
   * Introduces (inline) hard-coded values that are either already defined as constants or could be substituted by an existing enum or similar code parts
   * Code that is clearly copied from somewhere else or is AI generated
     * External sources: Ensure compliance with the licenses. Don’t use code that may have a more restrictive license than NanoXLSX (MIT) or that has no license declaration
-    * AI: That’s great! But please, revise the code, check it, and remove unnecessary comments. Ensure that this code could not cause a licensing issue too  
+    * AI: That’s great! But please, revise the code, check it, and remove unnecessary comments. Ensure that this code cannot cause a licensing issue too  
