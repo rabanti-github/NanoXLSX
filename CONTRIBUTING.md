@@ -54,5 +54,5 @@ However, to ensure a good experience for everyone (library users, developers, or
   * Uses cryptic variable or function names (`CalcAmount` may be OK as function name , but `GT56R` may not)
   * Introduces (inline) hard-coded values that are either already defined as constants or could be substituted by an existing enum or similar code parts
   * Code that is clearly copied from somewhere else or is AI generated
-    * External sources: Ensure compliance with the licenses. Don’t use code that may have a more restrictive license than NanoXLSX (MIT) or that have no license declaration
+    * External sources: Ensure compliance with the licenses. Don’t use code that may have a more restrictive license than NanoXLSX (MIT) or that has no license declaration
     * AI: That’s great! But please, revise the code, check it, and remove unnecessary comments. Ensure that this code could not cause a licensing issue too  
