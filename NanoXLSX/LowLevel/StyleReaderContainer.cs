@@ -170,16 +170,7 @@ namespace NanoXLSX.LowLevel
         {
             return cellXfs.Count;
         }
-
-        /// <summary>
-        /// Gets the next internal id of a number format component
-        /// </summary>
-        /// <returns>Next id of the component type (collected in this class)</returns>
-        public int GetNextNumberFormatId()
-        {
-                return numberFormats.Count;
-        }
-
+    
         /// <summary>
         /// Gets the next internal id of a border component
         /// </summary>
