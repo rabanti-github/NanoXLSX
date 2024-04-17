@@ -4,7 +4,7 @@ using NanoXLSX.LowLevel;
 using NanoXLSX.Styles;
 using Xunit;
 
-namespace NanoXLSX_Test.LowLevel
+namespace NanoXLSX_Test.Reader
 {
     [Collection(nameof(SequentialCollection))]
     public class StyleReaderTest
@@ -77,7 +77,7 @@ namespace NanoXLSX_Test.LowLevel
         }
 
         [Theory(DisplayName = "Test of dynamically created number formats from styles containing numFmtId")]
-		[InlineData(1)]
+        [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
         [InlineData(4)]
@@ -90,7 +90,7 @@ namespace NanoXLSX_Test.LowLevel
         [InlineData(11)]
         [InlineData(12)]
         [InlineData(13)]
-		public void NumberFormatNotInSourceAreNotPresent(int formatId)
+        public void NumberFormatNotInSourceAreNotPresent(int formatId)
         {
             using (MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
             {
@@ -102,7 +102,7 @@ namespace NanoXLSX_Test.LowLevel
             }
         }
 
-		[Fact(DisplayName = "Test of reusing dynamically created number formats from styles containing numFmtId")]
+        [Fact(DisplayName = "Test of reusing dynamically created number formats from styles containing numFmtId")]
         public void ImplicitNumberFormatBeingReUsed()
         {
             using (MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
