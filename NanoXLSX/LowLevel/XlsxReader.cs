@@ -70,32 +70,81 @@ namespace NanoXLSX.LowLevel
         /// </exception>
         public void Read()
         {
+            using (memoryStream = new MemoryStream())
+            {
+                ZipArchive zf;
+                if (inputStream == null && !string.IsNullOrEmpty(filePath))
+                {
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                    {
+                        fs.CopyTo(memoryStream);
+                    }
+                }
+                else if (inputStream != null)
+                {
+                    using (inputStream)
+                    {
+                        inputStream.CopyTo(memoryStream);
+                    }
+                }
+                else
+                {
+                    throw new IOException("No valid stream or file path was provided to open");
+                }
+
+                memoryStream.Position = 0;
+                zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
+
+                ReadZip(zf);
+            }
+        }
+
+
+        /// <summary>
+        /// Reads the XLSX file from a file path or a file stream asynchronous
+        /// </summary>
+        /// <exception cref="Exceptions.IOException">
+        /// May throw an IOException in case of an error. The asynchronous operation may hide the exception.
+        /// </exception>
+        /// <returns>Task object (void)</returns>
+        public async Task ReadAsync()
+        {
+            using (memoryStream = new MemoryStream())
+            {
+                ZipArchive zf;
+                if (inputStream == null && !string.IsNullOrEmpty(filePath))
+                {
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                    {
+                        await fs.CopyToAsync(memoryStream);
+                    }
+                }
+                else if (inputStream != null)
+                {
+                    using (inputStream)
+                    {
+                        await inputStream.CopyToAsync(memoryStream);
+                    }
+                }
+                else
+                {
+                    throw new IOException("No valid stream or file path was provided to open");
+                }
+
+                memoryStream.Position = 0;
+                zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
+
+                await Task.Run(() =>
+                {
+                    ReadZip(zf);
+                }).ConfigureAwait(false);
+            }
+        }
+
+        private void ReadZip(ZipArchive zf)
+        {
             try
             {
-                using (memoryStream = new MemoryStream())
-                {
-                    ZipArchive zf;
-                    if (inputStream == null && !string.IsNullOrEmpty(filePath))
-                    {
-                        using (FileStream fs = new FileStream(filePath, FileMode.Open))
-                        {
-                            fs.CopyTo(memoryStream);
-                        }
-                    }
-                    else if (inputStream != null)
-                    {
-                        using (inputStream)
-                        {
-                            inputStream.CopyTo(memoryStream);
-                        }
-                    }
-                    else
-                    {
-                        throw new IOException("No valid stream or file path was provided to open");
-                    }
-
-                    memoryStream.Position = 0;
-                    zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
                     MemoryStream ms;
 
                     SharedStringsReader sharedStrings = new SharedStringsReader(importOptions);
@@ -152,27 +201,11 @@ namespace NanoXLSX.LowLevel
                     {
                         throw new IOException("No worksheet was found in the workbook");
                     }
-                }
             }
             catch (Exception ex)
             {
                 throw new IOException("There was an error while reading an XLSX file. Please see the inner exception:", ex);
             }
-        }
-
-        /// <summary>
-        /// Reads the XLSX file from a file path or a file stream asynchronous
-        /// </summary>
-        /// <exception cref="Exceptions.IOException">
-        /// May throw an IOException in case of an error. The asynchronous operation may hide the exception.
-        /// </exception>
-        /// <returns>Task object (void)</returns>
-        public async Task ReadAsync()
-        {
-            await Task.Run(() =>
-            {
-                Read();
-            }).ConfigureAwait(false);
         }
 
         /// <summary>
