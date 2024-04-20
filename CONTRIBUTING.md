@@ -2,7 +2,7 @@
 ## How to contribute to NanoXLSX
 
 ### Preamble
-Thank yo very much for your interest in NanoXLSX. This library is maintained completely based on community effort and is not backed by a company or organization. Any contribution is highly appreciated and helps to increase the quality and relevance of NanoXLSX, [PicoXLSX](https://github.com/rabanti-github/PicoXLSX) and [NanoXLSX4J](https://github.com/rabanti-github/NanoXLSX4j).
+Thank you very much for your interest in NanoXLSX. This library is maintained completely based on community effort and is currently not backed by a company or organization. Any contribution is highly appreciated and helps to increase the quality and relevance of NanoXLSX, [PicoXLSX](https://github.com/rabanti-github/PicoXLSX) and [NanoXLSX4J](https://github.com/rabanti-github/NanoXLSX4j).
 
 However, to ensure a good experience for everyone (library users, developers, or other contributors), we kindly ask to follow the recommendations in this document when contributing to the library
 
@@ -10,8 +10,9 @@ However, to ensure a good experience for everyone (library users, developers, or
 
 #### General
 * Please use one of the provided issue templates if applicable
-* Please use English as common language. If you don't feel confident about this, don't worry. [DeepL]( https://www.deepl.com/translator) or other online translators can help to write an issue quite decent
-* Please only open an issue if you are willing to reply to upcoming questions or request for clarification. Abandoned issues may be closed after some weeks or months
+* Please use English as common language. If you don't feel confident about this, don't worry. [DeepL]( https://www.deepl.com/translator) or other online translators can help to write an issue quite smoothly
+* Please only open an issue if that issue may be relevant to you or another party, and if you are willing to reply to upcoming questions or request for clarification. Abandoned or irrelevant issues may be closed after some weeks or months
+* Please provide enough information to help us understanding the issue or to reproduce it
 
 #### Reporting a bug
 
@@ -32,18 +33,18 @@ However, to ensure a good experience for everyone (library users, developers, or
 
 * The best way to start a PR process is to open an issue first. Create the PR and link the PR in the issue. In this issue, the topic of the PR can be described and discussed
 * If no issue is created, please provide exact information in the PR header, what the changes are supposed to achieve
-* Please only create a PR if you are willing to react to possible change requests (CR). PRs that could be fixed, but CRs are ignored by the creator may be closed after some time
-* Please set the branch **dev-pr** as base of your PR. This is a branch solely designated to PRs and is used to checkout and test the changes before merging them to dev and later to master
+* Please only create a PR if you are willing to react to possible change requests (CR). PRs that could be fixed, but CRs are ignored by the creator may be closed after some time. Of course, we will try to support fixing CRs as good as possible
+* Please set the branch **dev-pr** as base of your PR. This is a branch solely designated to PRs and is used to checkout and test the changes before merging them to dev and later to master. We may change the PR base without notice, if not on dev-pr
   
 ### PRs that probably cannot be accepted or needs rework
 
 * No description what the PR is supposed to achieve (add at least a message that a bug was found, and this PR fixes it, if applicable)
-* PR is only applying code formatting or doing refactoring without any functional changes (please consider opening a feature request / issue instead to discuss code styles or formatting)
+* PR is only applying code formatting or doing refactoring without any functional changes (please consider opening a feature request / issue instead, to discuss code styles or formatting)
 * PR breaks existing unit tests (please fix the tests according to your changes if the original implementation leads to a wrong result) 
 * PR removes public functionality (part of the API)
 * PR alters the behavior of a public API function radically, without addressing a bug (please open an issue first to discuss the options about a possible broken API function)
 * PR adds proprietary functionality that is not compatible with the OOXML standard (XLSX)
-* PR solves a particular problem at one specific location of the library but does not cover other instances that have the exact same issue (may be addressed as PR comment)
+* PR solves a particular problem at one specific location of the library but does not cover other instances that have the exact same issue (may be addressed by a PR comment)
 * PR introduces an external  NuGet dependency or assumes the availability of a specific non-standard system library or resource
 * Obscure / *unclean* PRs:
   * Defines unclear functions or uses .NET feature in a confusing manner, without explanation
@@ -55,4 +56,4 @@ However, to ensure a good experience for everyone (library users, developers, or
   * Introduces (inline) hard-coded values that are either already defined as constants or could be substituted by an existing enum or similar code parts
   * Code that is clearly copied from somewhere else or is AI generated
     * External sources: Ensure compliance with the licenses. Don’t use code that may have a more restrictive license than NanoXLSX (MIT) or that has no license declaration
-    * AI: That’s great! But please, revise the code, check it, and remove unnecessary comments. Ensure that this code cannot cause a licensing issue too  
+    * AI: That’s great, and we love what AI can achieve nowadays! But please, revise the code, check it, and remove unnecessary comments. Ensure that this code cannot cause a licensing issue too  
