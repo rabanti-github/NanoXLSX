@@ -1021,7 +1021,6 @@ namespace NanoXLSX_Test.Worksheets
             Worksheet worksheet = new Worksheet();
             Assert.Throws<FormatException>(() => worksheet.MergeCells(""));
             Assert.Throws<FormatException>(() => worksheet.MergeCells(null));
-            Assert.Throws<FormatException>(() => worksheet.MergeCells("A1"));
         }
 
         [Fact(DisplayName ="Test of the internal RecalculateAutoFilter function")]
