@@ -1,5 +1,13 @@
 # Change Log
 
+## v2.3.4
+
+---
+Release Date: **21.04.2024**
+
+- Fixed a bug when the column auto-filter is a single cell address. Bug fix provided by pokorny
+- Fixed a bug regarding style enumeration when reading a workbook. Bug fix provided by Martin Stránský
+- Adapted test cases 
 
 ## v2.3.3
 

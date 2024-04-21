@@ -597,7 +597,7 @@ namespace Demo
             }
             else
             {
-                Console.Write(cell.CellStyle.CurrentNumberFormat.Number + ")\n");
+                Console.Write("ID:" + cell.CellStyle.InternalID + ", (number format:" + cell.CellStyle.CurrentNumberFormat.Number + ")\n");
             }
         }
         # endregion

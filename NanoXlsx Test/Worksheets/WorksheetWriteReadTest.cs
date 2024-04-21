@@ -19,10 +19,12 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("A1:A1", 0)]
         [InlineData("A1:C1", 0)]
         [InlineData("B1:D1", 0)]
+        [InlineData("A1", 0)]
         [InlineData(null, 1)]
         [InlineData("A1:A1", 1)]
         [InlineData("A1:C1", 2)]
         [InlineData("B1:D1", 3)]
+        [InlineData("B1", 2)]
         public void AutoFilterRangeWriteReadTest(string autoFilterRange, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");

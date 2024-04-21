@@ -483,7 +483,15 @@ namespace NanoXLSX.LowLevel
                 string autoFilterRef = ReaderUtils.GetAttribute(autoFilterNodes[0], "ref");
                 if (autoFilterRef != null)
                 {
-                    this.AutoFilterRange = new Range(autoFilterRef);
+                    if (autoFilterRef.Contains(":"))
+                    {
+                        this.AutoFilterRange = new Range(autoFilterRef);
+                    }
+                    else
+                    {
+                        Address address = new Address(autoFilterRef);
+                        this.AutoFilterRange = new Range(address, address);
+                    }
                 }
             }
         }
