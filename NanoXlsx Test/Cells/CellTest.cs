@@ -513,6 +513,7 @@ namespace NanoXLSX_Test.Cells
         [InlineData("C3:C4", "C3", "C4")]
         [InlineData("$a1:Z$10", "$A1", "Z$10")]
         [InlineData("$R$9:a2", "A2", "$R$9")]
+        [InlineData("A1", "A1", "A1")]
         public void ResolveCellRangeTest(string rangeString, string expectedStartAddress, string expectedEndAddress) 
         {
             NanoXLSX.Range range = Cell.ResolveCellRange(rangeString);
@@ -528,8 +529,6 @@ namespace NanoXLSX_Test.Cells
             Exception ex = Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => Cell.ResolveCellRange(null));
             Assert.Equal(typeof(NanoXLSX.Shared.Exceptions.FormatException), ex.GetType());
             ex = Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => Cell.ResolveCellRange(""));
-            Assert.Equal(typeof(NanoXLSX.Shared.Exceptions.FormatException), ex.GetType());
-            ex = Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => Cell.ResolveCellRange("C3"));
             Assert.Equal(typeof(NanoXLSX.Shared.Exceptions.FormatException), ex.GetType());
         }
 

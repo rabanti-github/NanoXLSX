@@ -202,6 +202,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("B1:F1", "B1:F1")]
         [InlineData("F1:B1", "B1:F1")]
         [InlineData("$B$1:$F$1", "B1:F1")]
+        [InlineData("A1", "A1:A1")]
         public void SetAutoFilterTest2(string givenRange, string expectedRange)
         {
             Worksheet worksheet = new Worksheet();
@@ -227,7 +228,6 @@ namespace NanoXLSX_Test.Worksheets
         [Theory(DisplayName = "Test of the failing SetAutoFilter function on an invalid string expression")]
         [InlineData("")]
         [InlineData(null)]
-        [InlineData("A1")]
         [InlineData(":")]
         public void SetAutoFilterFailingTest2(string range)
         {

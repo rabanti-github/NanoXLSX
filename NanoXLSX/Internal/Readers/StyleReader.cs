@@ -582,7 +582,7 @@ namespace NanoXLSX.Internal.Readers
                                                                                  // Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 
                         format = new NumberFormat();
                         format.Number = formatNumber;
-                        format.InternalID = StyleReaderContainer.GetNextNumberFormatId();
+                        format.InternalID = id;
                         StyleReaderContainer.AddStyleComponent(format);
                     }
                     hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "borderId"), out id);

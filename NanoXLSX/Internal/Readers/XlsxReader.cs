@@ -77,96 +77,12 @@ namespace NanoXLSX.Internal.Readers
             {
                 using (memoryStream = new MemoryStream())
                 {
-                    ZipArchive zf;
-                    if (inputStream == null && !string.IsNullOrEmpty(filePath))
-                    {
-                        using (FileStream fs = new FileStream(filePath, FileMode.Open))
-                        {
-                            fs.CopyTo(memoryStream);
-                        }
-                    }
-                    else if (inputStream != null)
-                    {
-                        using (inputStream)
-                        {
-                            inputStream.CopyTo(memoryStream);
-                        }
-                    }
-                    else
-                    {
-                        throw new IOException("No valid stream or file path was provided to open");
-                    }
-
-                    memoryStream.Position = 0;
-                    zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
-                    MemoryStream ms;
-
-                    SharedStringsReader sharedStrings = new SharedStringsReader(importOptions);
-                    ms = GetEntryStream("xl/sharedStrings.xml", zf);
-                    if (ms != null && ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
-                    {
-                        sharedStrings.Read(ms);
-                    }
-                    Dictionary<int, string> themeStreamNames = GetSequentialStreamNames("xl/theme/theme", zf);
-                    if (themeStreamNames.Count > 0)
-                    {
-                        // There is not really a definition whether multiple themes can be managed in one workbook.
-                        // the suffix number (e.g. theme1) indicates it. However, no examples were found and therefore
-                        // (currently) only the first occurring theme will be read  
-                        foreach(KeyValuePair<int,string> streamName in themeStreamNames)
-                        {
-                            themeReader = new ThemeReader();
-                            ms = GetEntryStream(streamName.Value, zf);
-                            themeReader.Read(ms, streamName.Key);
-                            break;
-                        }
-                    }
-                    StyleRepository.Instance.ImportInProgress = true;
-                    StyleReader styleReader = new StyleReader();
-                    ms = GetEntryStream("xl/styles.xml", zf);
-                    styleReader.Read(ms);
-                    styleReaderContainer = styleReader.StyleReaderContainer;
-                    StyleRepository.Instance.ImportInProgress = false;
-
-                    workbook = new WorkbookReader();
-                    ms = GetEntryStream("xl/workbook.xml", zf);
-                    workbook.Read(ms);
-
-                    metadataReader = new MetadataReader();
-                    ms = GetEntryStream("docProps/app.xml", zf);
-                    metadataReader.ReadAppData(ms);
-                    ms = GetEntryStream("docProps/core.xml", zf);
-                    metadataReader.ReadCoreData(ms);
-
-                    RelationshipReader relationships = new RelationshipReader();
-                    relationships.Read(GetEntryStream("xl/_rels/workbook.xml.rels", zf));
-
-                  //  int worksheetIndex = 1;
-                  //  string name;
-                  //  string nameTemplate;
-                    WorksheetReader wr;
-                 //   nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
-                 //   name = "xl/worksheets/" + nameTemplate;
-                    foreach (KeyValuePair<int, WorkbookReader.WorksheetDefinition> definition in workbook.WorksheetDefinitions)
-                    {
-                        RelationshipReader.Relationship relationship = relationships.Relationships.SingleOrDefault(r => r.Id == definition.Value.RelId);
-                        if (relationship == null)
-                        {
-                            throw new IOException("There was an error while reading an XLSX file. The relationship target of the worksheet with the RelID " + definition.Value.RelId + " was not found");
-                        }
-                        ms = GetEntryStream(relationship.Target, zf);
-                        wr = new WorksheetReader(sharedStrings, styleReaderContainer, importOptions);
-                        wr.Read(ms);
-                        worksheets.Add(definition.Key, wr);
-                      //  worksheetIndex++;
-                        //nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
-                      //  name = "xl/worksheets/" + nameTemplate;
-                    }
-                    if (this.worksheets.Count == 0)
-                    {
-                        throw new IOException("No worksheet was found in the workbook");
-                    }
+                    ReadInternal().GetAwaiter().GetResult();
                 }
+            }
+            catch (IOException ex)
+            {
+                throw; // rethrow
             }
             catch (Exception ex)
             {
@@ -175,7 +91,7 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Reads the XLSX file from a file path or a file stream asynchronous
+        /// Reads the XLSX file from a file path or a file stream asynchronously
         /// </summary>
         /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">
         /// May throw an IOException in case of an error. The asynchronous operation may hide the exception.
@@ -183,10 +99,21 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Task object (void)</returns>
         public async Task ReadAsync()
         {
-            await Task.Run(() =>
+            try
             {
-                Read();
-            }).ConfigureAwait(false);
+                using (memoryStream = new MemoryStream())
+                {
+                    await ReadInternal();
+                }
+            }
+            catch (IOException ex)
+            {
+                throw; // rethrow
+            }
+            catch (Exception ex)
+            {
+                throw new IOException("There was an error while reading an XLSX file. Please see the inner exception:", ex);
+            }
         }
 
         /// <summary>
@@ -349,6 +276,116 @@ namespace NanoXLSX.Internal.Readers
             }
             wb.SetImportState(false);
             return wb;
+        }
+
+        /// <summary>
+        /// Reads a file or stream asynchronously
+        /// </summary>
+        /// <returns>Asynchronous task (void)</returns>
+        private async Task ReadInternal()
+        {
+            ZipArchive zf;
+            if (inputStream == null && !string.IsNullOrEmpty(filePath))
+            {
+                using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                {
+                    await fs.CopyToAsync(memoryStream);
+                }
+            }
+            else if (inputStream != null)
+            {
+                using (inputStream)
+                {
+                    await inputStream.CopyToAsync(memoryStream);
+                }
+            }
+            else
+            {
+                throw new IOException("No valid stream or file path was provided to open");
+            }
+
+            memoryStream.Position = 0;
+            zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
+
+            await Task.Run(() =>
+            {
+                ReadZip(zf);
+            }).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Reads all compressed workbook entries in the provided ZipArchive
+        /// </summary>
+        /// <param name="zf">Zip archive, containing the workbook</param>
+        private void ReadZip(ZipArchive zf)
+        {
+            MemoryStream ms;
+
+            SharedStringsReader sharedStrings = new SharedStringsReader(importOptions);
+            ms = GetEntryStream("xl/sharedStrings.xml", zf);
+            if (ms != null && ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
+            {
+                sharedStrings.Read(ms);
+            }
+            Dictionary<int, string> themeStreamNames = GetSequentialStreamNames("xl/theme/theme", zf);
+            if (themeStreamNames.Count > 0)
+            {
+                // There is not really a definition whether multiple themes can be managed in one workbook.
+                // the suffix number (e.g. theme1) indicates it. However, no examples were found and therefore
+                // (currently) only the first occurring theme will be read  
+                foreach (KeyValuePair<int, string> streamName in themeStreamNames)
+                {
+                    themeReader = new ThemeReader();
+                    ms = GetEntryStream(streamName.Value, zf);
+                    themeReader.Read(ms, streamName.Key);
+                    break;
+                }
+            }
+            StyleRepository.Instance.ImportInProgress = true;
+            StyleReader styleReader = new StyleReader();
+            ms = GetEntryStream("xl/styles.xml", zf);
+            styleReader.Read(ms);
+            styleReaderContainer = styleReader.StyleReaderContainer;
+            StyleRepository.Instance.ImportInProgress = false;
+
+            workbook = new WorkbookReader();
+            ms = GetEntryStream("xl/workbook.xml", zf);
+            workbook.Read(ms);
+
+            metadataReader = new MetadataReader();
+            ms = GetEntryStream("docProps/app.xml", zf);
+            metadataReader.ReadAppData(ms);
+            ms = GetEntryStream("docProps/core.xml", zf);
+            metadataReader.ReadCoreData(ms);
+
+            RelationshipReader relationships = new RelationshipReader();
+            relationships.Read(GetEntryStream("xl/_rels/workbook.xml.rels", zf));
+
+            //  int worksheetIndex = 1;
+            //  string name;
+            //  string nameTemplate;
+            WorksheetReader wr;
+            //   nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
+            //   name = "xl/worksheets/" + nameTemplate;
+            foreach (KeyValuePair<int, WorkbookReader.WorksheetDefinition> definition in workbook.WorksheetDefinitions)
+            {
+                RelationshipReader.Relationship relationship = relationships.Relationships.SingleOrDefault(r => r.Id == definition.Value.RelId);
+                if (relationship == null)
+                {
+                    throw new IOException("There was an error while reading an XLSX file. The relationship target of the worksheet with the RelID " + definition.Value.RelId + " was not found");
+                }
+                ms = GetEntryStream(relationship.Target, zf);
+                wr = new WorksheetReader(sharedStrings, styleReaderContainer, importOptions);
+                wr.Read(ms);
+                worksheets.Add(definition.Key, wr);
+                //  worksheetIndex++;
+                //nameTemplate = "sheet" + worksheetIndex.ToString(CultureInfo.InvariantCulture) + ".xml";
+                //  name = "xl/worksheets/" + nameTemplate;
+            }
+            if (this.worksheets.Count == 0)
+            {
+                throw new IOException("No worksheet was found in the workbook");
+            }
         }
 
         /// <summary>

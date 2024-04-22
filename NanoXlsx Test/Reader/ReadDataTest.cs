@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test.Reader
@@ -348,6 +349,26 @@ namespace NanoXLSX_Test.Reader
             // Note: all referenced (embedded) files contains invalid XML documents (malformed, missing start or end tags, missing attributes)
             Stream stream = TestUtils.GetResource(invalidFile);
             Assert.Throws<NanoXLSX.Shared.Exceptions.IOException>(() => Workbook.Load(stream));
+        }
+
+        [Theory(DisplayName = "Test of the failing asynchronous reader functionality on invalid XML content")]
+        [InlineData("invalid_workbook.xlsx")]
+        [InlineData("invalid_workbook_sheet-definition.xlsx")]
+        [InlineData("invalid_worksheet.xlsx")]
+        [InlineData("invalid_style.xlsx")]
+        [InlineData("invalid_metadata_app.xlsx")]
+        [InlineData("invalid_metadata_core.xlsx")]
+        [InlineData("invalid_sharedStrings.xlsx")]
+        [InlineData("invalid_sharedStrings2.xlsx")]
+        [InlineData("invalid_relationship.xlsx")]
+        [InlineData("empty_worksheet.xlsx")]
+        [InlineData("missing_worksheet.xlsx")]
+
+        public async Task FailingAsyncReadInvalidDataTest(string invalidFile)
+        {
+            // Note: all referenced (embedded) files contains invalid XML documents (malformed, missing start or end tags, missing attributes)
+            Stream stream = TestUtils.GetResource(invalidFile);
+            await Assert.ThrowsAsync<NanoXLSX.Shared.Exceptions.IOException>(() => Workbook.LoadAsync(stream));
         }
 
         [Fact(DisplayName = "Test of the workbook reader if the only workbook entry is a chart")]

@@ -1,30 +1,41 @@
 # Change Log
 
+## v2.4.0
+
+---
+Release Date: **21.04.2024**
+
+- Added handling to load workbooks from files asynchronously. Concept provided by John Leyva
+- Fixed a bug when loading a workbook asynchronously from a stream. Bug fix provided by John Leyva
+- Fixed a bug when the column auto-filter is a single cell address. Bug fix provided by Lukáš Pokorný
+- Fixed a bug regarding style enumeration when reading a workbook. Bug fix provided by Martin Stránský
+- Added new  and adapted existing test cases
+
 ## v2.3.3
 
 ---
 Release Date: **24.02.2024**
 
 - Fixed a bug in the GetFirstDataCellAddress function
-- Fixed test cases 
+- Fixed test cases
 
 ## v2.3.2
 
 ---
 Release Date: **24.02.2024**
 
-- Fixed a bug when reading min and max values in the GetLastDataColumnNumber function. Bug fix provided by pokorny
-- Code maintenance 
+- Fixed a bug when reading min and max values in the GetLastDataColumnNumber function. Bug fix provided by Lukáš Pokorný
+- Code maintenance
 
 ## v2.3.1
 
 ---
 Release Date: **22.01.2024**
 
-- Fixed a bug when reading fill styles. Bug fix provided by Marq Watkin 
+- Fixed a bug when reading fill styles. Bug fix provided by Marq Watkin
 - Fixed a bug regarding casting floats to integers, in the worksheet reader. Bug fix provided by wappenull
 - Removed broken debug code in tests
-- Code maintenance 
+- Code maintenance
 
 ## v2.3.0
 
@@ -35,7 +46,7 @@ Release Date: **07.09.2023**
 - Added worksheet option for view types (e.g. page break preview)
 - Added worksheet option to show or hide grid lines
 - Added worksheet option to show or hide columns and row headers
-- Added worksheet option to show or hide rulers in page layout view type 
+- Added worksheet option to show or hide rulers in page layout view type
 
 ## v2.2.0
 
@@ -68,8 +79,8 @@ Release Date: **08.11.2022**
 Note: It seems that newer versions of Excel may store boolean attributes internally now as texts (true/false) and not anymore as numbers (1/0).
       This release adds compatibility to read this newer format but will currently store files still in the old format
 
-Note 2: The incomplete internal escaping of custom number format codes was removed due to the potential high complexity. 
-        Escaping must be performed currently by hand, according to OOXML specs: Part 1 - Fundamentals And Markup Language Reference, Chapter 18.8.31 
+Note 2: The incomplete internal escaping of custom number format codes was removed due to the potential high complexity.
+        Escaping must be performed currently by hand, according to OOXML specs: Part 1 - Fundamentals And Markup Language Reference, Chapter 18.8.31
 
 ## v2.0.4
 
@@ -100,8 +111,9 @@ Release Date: **29.09.2022**
 - Adapted and added further tests
 - Removed several obsolete files and fixed project links
 
-Note: 
-- When defining a custom number format, now the CustomFormatCode property must always be defined as well, since an empty value leads to an invalid Workbook 
+Note:
+
+- When defining a custom number format, now the CustomFormatCode property must always be defined as well, since an empty value leads to an invalid Workbook
 - When a cell is now created (by constructor) with the type EMPTY, any passed value will be discarded in this cell
 
 ## v2.0.1
@@ -186,6 +198,7 @@ Release Date: **03.09.2022 - Major Release**
 - Better handling of dates and times, especially with invalid (too low and too high numbers) values
 
 ### Misc
+
 - Added a unit test project with several thousand, partially parametrized test cases
 - Added several constants for boundary dates in the Utils class
 - Added several methods for pane splitting in the Utils class
@@ -194,7 +207,6 @@ Release Date: **03.09.2022 - Major Release**
 - Exceptions have no sub titles anymore
 - Overhauled the whole writer
 - Removed lot of dead code for better maintenance
-
 
 ## v1.8.7
 
@@ -227,7 +239,6 @@ Release Date: **20.03.2022**
 
 - Fixed a regression bug, caused by changes of v1.8.3
 
-
 ## v1.8.3
 
 ---
@@ -238,7 +249,6 @@ Release Date: **10.03.2022**
 - Adapted the internal building of XML documents
 - Fixed a bug in the handling of border colors
 
-
 ## v1.8.2
 
 ---
@@ -247,7 +257,6 @@ Release Date: **20.12.2021**
 - Added hidden property for worksheets when loading a workbook
 
 Note: The reader functionality on worksheets is not feature complete yet. Additional information like panes, splitting, column and row sizes are currently in development
-
 
 ## v1.8.1
 

@@ -41,16 +41,18 @@ namespace NanoXLSX_Test.Workbooks
             WorkbookTest.AssertExistingFile(name, true);
         }
 
-        private static string CreateWorksheet(string worksheetName, Dictionary<string, object>data)
+        [Fact(DisplayName = "Test of the LoadAsync function with a file name")]
+        public async Task LoadAsyncFileTest()
         {
-            string name = WorkbookTest.GetRandomName();
-            Workbook workbook = new Workbook(worksheetName);
-            foreach(KeyValuePair<string, object> cell in data)
+            Dictionary<string, object> data = CreateSampleData();
+            string name = CreateWorksheet("test1", data);
+            Workbook workbook = await Workbook.LoadAsync(name);
+            Assert.Equal("test1", workbook.Worksheets[0].SheetName);
+            foreach (KeyValuePair<string, object> item in data)
             {
-                workbook.CurrentWorksheet.AddCell(cell.Value, cell.Key);
+                Assert.Equal(item.Value, workbook.Worksheets[0].GetCell(new Address(item.Key)).Value);
             }
-            workbook.SaveAs(name);
-            return name;
+            WorkbookTest.AssertExistingFile(name, true);
         }
 
         [Fact(DisplayName = "Test of the LoadAsync function with a stream")]
@@ -66,6 +68,18 @@ namespace NanoXLSX_Test.Workbooks
                 Assert.Equal(item.Value, workbook.Worksheets[0].GetCell(new Address(item.Key)).Value);
             }
             WorkbookTest.AssertExistingFile(name, true);
+        }
+
+        private static string CreateWorksheet(string worksheetName, Dictionary<string, object> data)
+        {
+            string name = WorkbookTest.GetRandomName();
+            Workbook workbook = new Workbook(worksheetName);
+            foreach (KeyValuePair<string, object> cell in data)
+            {
+                workbook.CurrentWorksheet.AddCell(cell.Value, cell.Key);
+            }
+            workbook.SaveAs(name);
+            return name;
         }
 
         private static Dictionary<string, object> CreateSampleData()

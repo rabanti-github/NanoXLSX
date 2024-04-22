@@ -708,6 +708,10 @@ namespace NanoXLSX
             {
                 throw new FormatException("The cell range is null or empty and could not be resolved");
             }
+            if (!range.Contains(":"))
+            {
+                return new Range(ResolveCellCoordinate(range), ResolveCellCoordinate(range));
+            }
             string[] split = range.Split(':');
             if (split.Length != 2)
             {
