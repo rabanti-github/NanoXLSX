@@ -1,5 +1,14 @@
 # Change Log
 
+## v2.5.0
+
+---
+Release Date: **22.07.2024**
+
+- Adapted handling of the font scheme in styles. The scheme is now determined automatically
+- Added column option to define a default column style
+- Added tests
+
 ## v2.4.0
 
 ---
