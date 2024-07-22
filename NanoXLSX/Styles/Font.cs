@@ -18,9 +18,24 @@ namespace NanoXLSX.Styles
     {
         #region constants
         /// <summary>
+        /// The default font name that is declared as Major Font (See <see cref="Font.SchemeValue"/>)
+        /// </summary>
+        public static readonly string DEFAULT_MAJOR_FONT = "Calibri Light";
+
+        /// <summary>
+        /// The default font name that is declared as Minor Font (See <see cref="Font.SchemeValue"/>)
+        /// </summary>
+        public static readonly string DEFAULT_MINOR_FONT = "Calibri";
+
+        /// <summary>
         /// Default font family as constant
         /// </summary>
-        public static readonly string DEFAULT_FONT_NAME = "Calibri";
+        public static readonly string DEFAULT_FONT_NAME = DEFAULT_MINOR_FONT;
+
+        /// <summary>
+        /// Default font scheme
+        /// </summary>
+        public static readonly SchemeValue DEFAULT_FONT_SCHEME = SchemeValue.minor;
 
         /// <summary>
         /// Maximum possible font size
@@ -36,7 +51,6 @@ namespace NanoXLSX.Styles
         /// Default font size
         /// </summary>
         public static readonly float DEFAULT_FONT_SIZE = 11f;
-        #endregion
 
         /// <summary>
         /// Default font family
@@ -44,14 +58,11 @@ namespace NanoXLSX.Styles
         public static readonly string DEFAULT_FONT_FAMILY = "2";
 
         /// <summary>
-        /// Default font scheme
-        /// </summary>
-        public static readonly SchemeValue DEFAULT_FONT_SCHEME = SchemeValue.minor;
-
-        /// <summary>
         /// Default vertical alignment
         /// </summary>
         public static readonly VerticalAlignValue DEFAULT_VERTICAL_ALIGN = VerticalAlignValue.none;
+
+        #endregion
 
         #region enums
         /// <summary>
@@ -202,11 +213,8 @@ namespace NanoXLSX.Styles
             get { return name; }
             set
             {
-                if (string.IsNullOrEmpty(value) && !StyleRepository.Instance.ImportInProgress)
-                {
-                    throw new StyleException("The font name was null or empty");
-                }
                 name = value;
+                ValidateFontScheme();
             }
         }
         /// <summary>
@@ -255,7 +263,31 @@ namespace NanoXLSX.Styles
         }
         #endregion
 
-        #region methods            
+        #region methods  
+
+        /// <summary>
+        /// Validates the font name and sets the scheme automatically
+        /// </summary>
+        private void ValidateFontScheme()
+        {
+            if ((string.IsNullOrEmpty(name)) && !StyleRepository.Instance.ImportInProgress)
+            {
+                throw new StyleException("The font name was null or empty");
+            }
+            if (name.Equals(DEFAULT_MINOR_FONT))
+            {
+                Scheme = SchemeValue.minor;
+            }
+            else if (name.Equals(DEFAULT_MAJOR_FONT))
+            {
+                Scheme = SchemeValue.major;
+            }
+            else
+            {
+                Scheme = SchemeValue.none;
+            }
+        }
+
         /// <summary>
         /// Override toString method
         /// </summary>

@@ -543,11 +543,24 @@ namespace NanoXLSX.LowLevel
                         hidden = true;
                     }
                 }
+                attribute = ReaderUtils.GetAttribute(columnNode, "style");
+                Style defaultStyle = null;
+                if (attribute != null)
+				{
+                    if (resolvedStyles.ContainsKey(attribute))
+					{
+                        defaultStyle = resolvedStyles[attribute];
+					}
+				}
                 foreach (int index in indices)
                 {
                     Column column = new Column(index - 1); // Transform to zero-based
                     column.Width = width;
                     column.IsHidden = hidden;
+                    if (defaultStyle != null)
+					{
+                        column.SetDefaultColumnStyle(defaultStyle);
+					}
                     this.Columns.Add(column);
                 }
             }

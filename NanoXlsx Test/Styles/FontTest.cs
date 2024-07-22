@@ -254,6 +254,17 @@ namespace NanoXLSX_Test.Styles
             font.Name = "XYZ";
             Assert.False(font.IsDefaultFont);
         }
+        [Theory(DisplayName = "Test of the automatic assignment of font schemes on font names")]
+        [InlineData("Calibri", Font.SchemeValue.minor)]
+        [InlineData("Calibri Light", Font.SchemeValue.major)]
+        [InlineData("Arial", Font.SchemeValue.none)]
+        [InlineData("---", Font.SchemeValue.none)] // Not a font but a valid string
+        public void ValidateFontSchemeTest(string fontName, Font.SchemeValue scheme)
+        {
+            Font font = new Font();
+            font.Name = fontName;
+            Assert.Equal(scheme, font.Scheme);
+        }
 
         [Fact(DisplayName = "Test of the CopyFont function")]
         public void CopyFontTest()

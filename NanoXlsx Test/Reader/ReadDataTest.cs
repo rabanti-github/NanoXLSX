@@ -447,6 +447,15 @@ namespace NanoXLSX_Test.Reader
             Assert.Equal(4372449.78m, actual);
         }
 
+        [Fact(DisplayName = "Test of the AutoFilter behavior when a worksheet is read on an address instead of a range")]
+        public void AutoFilterReadTest()
+        {
+            // The file contains an auto filter on Column "A1", described as an address instead of a range
+            Stream stream = TestUtils.GetResource("autofilter.xlsx");
+            Workbook workbook = Workbook.Load(stream);
+            Assert.Equal(new NanoXLSX.Range("A1:A1").ToString(), workbook.Worksheets[0].AutoFilterRange.Value.ToString());
+        }
+
         private static void AssertEquals<T>(T expected, T given)
         {
             Assert.Equal(expected, given);

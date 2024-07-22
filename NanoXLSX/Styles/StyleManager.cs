@@ -80,8 +80,6 @@ namespace NanoXLSX.Styles
             return borders.Count;
         }
 
-
-
         /* ****************************** */
 
         /// <summary>
@@ -283,6 +281,14 @@ namespace NanoXLSX.Styles
                         workbook.Worksheets[i].Cells[cell.Key].SetStyle(resolvedStyle, true);
                     }
                 }
+                foreach(KeyValuePair<int, Column> column in workbook.Worksheets[i].Columns)
+				{
+                    if (column.Value.DefaultColumnStyle != null)
+					{
+                        Style resolvedStyle = styleManager.AddStyle(column.Value.DefaultColumnStyle);
+                        workbook.Worksheets[i].Columns[column.Key].SetDefaultColumnStyle(resolvedStyle, true);
+					}
+				}
             }
             return styleManager;
         }

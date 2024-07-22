@@ -2040,6 +2040,42 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Sets the default column style of the passed column address
+        /// </summary>
+        /// <param name="columnAddress">Column address (A - XFD)</param>
+        /// <param name="style">Style to set as default. If null, the style is cleared</param>
+        /// <returns>Assigned style or null if cleared</returns>
+        /// <exception cref="RangeException">Throws a RangeException:<br></br>a) If the passed column address is out of range<br></br>b) if the column width is out of range (0 - 255.0)</exception>
+        public Style SetColumnDefaultStyle(string columnAddress, Style style)
+		{
+            int columnNumber = Cell.ResolveColumn(columnAddress);
+            return SetColumnDefaultStyle(columnNumber, style);
+        }
+
+        /// <summary>
+        /// Sets the default column style of the passed column number (zero-based)
+        /// </summary>
+        /// <param name="columnNumber">Column number (zero-based, from 0 to 16383)</param>
+        /// <param name="style">Style to set as default. If null, the style is cleared</param>
+        /// <returns>Assigned style or null if cleared</returns>
+        /// <exception cref="RangeException">Throws a RangeException:<br></br>a) If the passed column number is out of range<br></br>b) if the column width is out of range (0 - 255.0)</exception>
+        public Style SetColumnDefaultStyle(int columnNumber, Style style)
+        {
+            Cell.ValidateColumnNumber(columnNumber);
+            if (this.columns.ContainsKey(columnNumber))
+            {
+                return this.columns[columnNumber].SetDefaultColumnStyle(style);
+            }
+            else
+            {
+                Column c = new Column(columnNumber);
+                Style returnStyle = c.SetDefaultColumnStyle(style);
+                this.columns.Add(columnNumber, c);
+                return returnStyle;
+            }
+        }
+
+        /// <summary>
         /// Set the current cell address
         /// </summary>
         /// <param name="columnNumber">Column number (zero based)</param>
