@@ -1308,26 +1308,26 @@ namespace NanoXLSX
                     return cells.Max(x => x.Value.ColumnNumber);
                 }
             }
-            List<Cell> nonEmptyCells = cells.Values.Where(x => x.Value != null).ToList();
+            List<Cell> nonEmptyCells = cells.Values.Where(x => x.Value != null && x.Value.ToString() != string.Empty).ToList();
             if (nonEmptyCells.Count == 0)
             {
                 return -1;
             }
             if (row && min)
             {
-                return nonEmptyCells.Where(x => x.Value.ToString() != string.Empty).Min(x => x.RowNumber);
+                return nonEmptyCells.Min(x => x.RowNumber);
             }
             else if (row)
             {
-                return nonEmptyCells.Where(x => x.Value.ToString() != string.Empty).Max(x => x.RowNumber);
+                return nonEmptyCells.Max(x => x.RowNumber);
             }
             else if (min)
             {
-                return nonEmptyCells.Where(x => x.Value.ToString() != string.Empty).Min(x => x.ColumnNumber);
+                return nonEmptyCells.Min(x => x.ColumnNumber);
             }
             else
             {
-                return nonEmptyCells.Where(x => x.Value.ToString() != string.Empty).Max(x => x.ColumnNumber);
+                return nonEmptyCells.Max(x => x.ColumnNumber);
             }
         }
 
