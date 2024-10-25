@@ -25,7 +25,7 @@
 
     <AssemblyVersion>2.5.1.0</AssemblyVersion>
 
-    <FileVersion>2.5.0.0</FileVersion>
+    <FileVersion>2.5.1.0</FileVersion>
 
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 
