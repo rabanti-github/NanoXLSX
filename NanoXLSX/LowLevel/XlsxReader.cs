@@ -283,30 +283,31 @@ namespace NanoXLSX.LowLevel
         private async Task ReadInternal()
         {
             ZipArchive zf;
-            if (inputStream == null && !string.IsNullOrEmpty(filePath))
-            {
-                using (FileStream fs = new FileStream(filePath, FileMode.Open))
-                {
-                    await fs.CopyToAsync(memoryStream);
-                }
-            }
-            else if (inputStream != null)
-            {
-                using (inputStream)
-                {
-                    await inputStream.CopyToAsync(memoryStream);
-                }
-            }
-            else
-            {
-                throw new IOException("No valid stream or file path was provided to open");
-            }
-
-            memoryStream.Position = 0;
-            zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
 
             await Task.Run(() =>
             {
+                if (inputStream == null && !string.IsNullOrEmpty(filePath))
+                {
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                    {
+                        fs.CopyTo(memoryStream);
+                    }
+                }
+                else if (inputStream != null)
+                {
+                    using (inputStream)
+                    {
+                      inputStream.CopyTo(memoryStream);
+                    }
+                }
+                else
+                {
+                    throw new IOException("No valid stream or file path was provided to open");
+                }
+
+                memoryStream.Position = 0;
+                zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
+
                 ReadZip(zf);
             }).ConfigureAwait(false);
         }
