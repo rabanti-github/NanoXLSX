@@ -384,7 +384,12 @@ namespace NanoXLSX.Internal.Writers
                     }
                     col = ParserUtils.ToString(column.Key + 1); // Add 1 for Address
                     float width = Utils.GetInternalColumnWidth(column.Value.Width);
-                    sb.Append("<col customWidth=\"1\" width=\"").Append(ParserUtils.ToString(width)).Append("\" max=\"").Append(col).Append("\" min=\"").Append(col).Append("\"").Append(hidden).Append("/>");
+                    sb.Append("<col customWidth=\"1\" width=\"").Append(ParserUtils.ToString(width)).Append("\" max=\"").Append(col).Append("\" min=\"").Append(col).Append("\"");
+                    if (column.Value.DefaultColumnStyle != null)
+                    {
+                        sb.Append(" style=\"").Append(column.Value.DefaultColumnStyle.InternalID.Value.ToString("G", CULTURE)).Append("\"");
+                    }
+                    sb.Append(hidden).Append("/>");
                 }
                 string value = sb.ToString();
                 if (value.Length > 0)

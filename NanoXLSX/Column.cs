@@ -6,6 +6,7 @@
  */
 
 using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Styles;
 
 namespace NanoXLSX
 {
@@ -17,6 +18,7 @@ namespace NanoXLSX
         private int number;
         private string columnAddress;
         private float width;
+        private Style defaultColumnStyle;
 
         /// <summary>
         /// Column address (A to XFD)
@@ -71,7 +73,38 @@ namespace NanoXLSX
                 width = value;
             }
         }
-        
+
+        /// <summary>
+        /// Gets the default style of the column
+        /// </summary>
+        public Style DefaultColumnStyle
+        {
+            get { return this.defaultColumnStyle; }
+        }
+
+        /// <summary>
+        /// Sets the default style of the column
+        /// </summary>
+        /// <param name="defaultColumnStyle">Style to assign as default column style. Can be null (to clear)</param>
+        /// <param name="unmanaged">Internally used: If true, the style repository is not invoked and only the style object of the cell is updated. Do not use!</param>
+        /// <returns>If the passed style already exists in the repository, the existing one will be returned, otherwise the passed one</returns>
+        public Style SetDefaultColumnStyle(Style defaultColumnStyle, bool unmanaged = false)
+        {
+            if (defaultColumnStyle == null)
+            {
+                this.defaultColumnStyle = null;
+                return null;
+            }
+            if (unmanaged)
+            {
+                this.defaultColumnStyle = defaultColumnStyle;
+            }
+            else
+            {
+                this.defaultColumnStyle = StyleRepository.Instance.AddStyle(defaultColumnStyle);
+            }
+            return this.defaultColumnStyle;
+        }
 
         /// <summary>
         /// Default constructor (private, since not valid without address)
@@ -79,6 +112,7 @@ namespace NanoXLSX
         private Column()
         {
             Width = Worksheet.DEFAULT_COLUMN_WIDTH;
+            defaultColumnStyle = null;
         }
 
         /// <summary>
@@ -111,6 +145,7 @@ namespace NanoXLSX
             copy.HasAutoFilter = this.HasAutoFilter;
             copy.columnAddress = this.columnAddress;
             copy.number = this.number;
+            copy.defaultColumnStyle = this.defaultColumnStyle;
             return copy;
         }
 

@@ -524,11 +524,13 @@ namespace NanoXLSX_Test.Cells
         }
 
         [Fact(DisplayName = "Test of the failing ResolveCellRange method")]
-        public void ResolveCellRangeTest2()
+        public void ResolveCellRangeFailTest()
         {
             Exception ex = Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => Cell.ResolveCellRange(null));
             Assert.Equal(typeof(NanoXLSX.Shared.Exceptions.FormatException), ex.GetType());
             ex = Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => Cell.ResolveCellRange(""));
+            Assert.Equal(typeof(NanoXLSX.Shared.Exceptions.FormatException), ex.GetType());
+            ex = Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => Cell.ResolveCellRange("A2:B3:C4"));
             Assert.Equal(typeof(NanoXLSX.Shared.Exceptions.FormatException), ex.GetType());
         }
 

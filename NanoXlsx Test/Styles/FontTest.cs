@@ -1,4 +1,5 @@
 ﻿using NanoXLS.Shared.Enums.Schemes;
+using NanoXLSX.Shared.Enums.Styles;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
@@ -285,6 +286,18 @@ namespace NanoXLSX_Test.Styles
             font.Italic = true;
             font.Name = "XYZ";
             Assert.False(font.IsDefaultFont);
+        }
+
+        [Theory(DisplayName = "Test of the automatic assignment of font schemes on font names")]
+        [InlineData("Calibri",  FontEnums.SchemeValue.minor)]
+        [InlineData("Calibri Light", FontEnums.SchemeValue.major)]
+        [InlineData("Arial", FontEnums.SchemeValue.none)]
+        [InlineData("---", FontEnums.SchemeValue.none)] // Not a font but a valid string
+        public void ValidateFontSchemeTest(string fontName, FontEnums.SchemeValue scheme)
+        {
+            Font font = new Font();
+            font.Name = fontName;
+            Assert.Equal(scheme, font.Scheme);
         }
 
         [Fact(DisplayName = "Test of the CopyFont function")]

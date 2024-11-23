@@ -1,5 +1,6 @@
 using NanoXLSX;
 using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -331,6 +332,43 @@ namespace NanoXLSX_Test.Worksheets
             worksheet.AddCell(false, "C3");
             List<Cell> column = worksheet.GetColumn(1).ToList();
             Assert.Empty(column);
+        }
+
+        [Fact(DisplayName = "Test of the SetDefaultColumnStyle function with with a style and resetting it")]
+        public void SetDefaultColumnStyleTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Equal(0, worksheet.Columns.Count);
+            Style style1 = BasicStyles.Font("Calibri Light", 13).Append(BasicStyles.BoldItalic);
+            Style style2 = BasicStyles.Font("Arial", 11).Append(BasicStyles.DoubleUnderline);
+            worksheet.SetColumnDefaultStyle(0, style1);
+            worksheet.SetColumnDefaultStyle("B", style2);
+            Assert.Equal(2, worksheet.Columns.Count);
+            Assert.Equal(style1.GetHashCode(), worksheet.Columns[0].DefaultColumnStyle.GetHashCode());
+            Assert.Equal(style2.GetHashCode(), worksheet.Columns[1].DefaultColumnStyle.GetHashCode());
+            worksheet.SetColumnDefaultStyle(0, null);
+            worksheet.SetColumnDefaultStyle("B", null);
+            Assert.Equal(2, worksheet.Columns.Count); // No removal so far
+            Assert.Null(worksheet.Columns[0].DefaultColumnStyle);
+            Assert.Null(worksheet.Columns[1].DefaultColumnStyle);
+        }
+        [Theory(DisplayName = "Test of the failing SetDefaultColumnStyle function")]
+        [InlineData(-1)]
+        [InlineData(16384)]
+        public void SetDefaultColumnStyleFailTest(int column)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Throws<RangeException>(() => worksheet.SetColumnDefaultStyle(column, BasicStyles.Bold));
+        }
+        [Theory(DisplayName = "Test of the failing SetDefaultColumnStyle function with column address")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(":")]
+        [InlineData("XFE")]
+        public void SetDefaultColumnStyleFailTest2(string columnAddress)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.ThrowsAny<Exception>(() => worksheet.SetColumnDefaultStyle(columnAddress, BasicStyles.Bold));
         }
 
         private void AssertColumnValues(List<Cell> givenList, List<object> expectedValues)

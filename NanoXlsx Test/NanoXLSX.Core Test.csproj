@@ -42,6 +42,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\autofilter.xlsx" />
     <None Remove="Resources\chartsheet.xlsx" />
     <None Remove="Resources\chartsheet2.xlsx" />
     <None Remove="Resources\invalid_metadata.xlsx" />
@@ -64,6 +65,7 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <EmbeddedResource Include="Resources\autofilter.xlsx" />
 	  <EmbeddedResource Include="Resources\chartsheet.xlsx" />
 	  <EmbeddedResource Include="Resources\chartsheet2.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_app.xlsx" />

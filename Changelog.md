@@ -1,5 +1,17 @@
 # Change Log
 
+## v2.5.1
+---
+Release Date: **26.10.2024**
+- Fixed a bug regarding the determination of the first data cell in an empty worksheet. Bug fix provided by Martin Stránský
+
+## v2.5.0
+---
+Release Date: **22.07.2024**
+- Adapted handling of the font scheme in styles. The scheme is now determined automatically
+- Added column option to define a default column style
+- Added tests
+
 ## v2.4.0
 
 ---

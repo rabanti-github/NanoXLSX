@@ -308,6 +308,7 @@ namespace NanoXLSX_Test.Workbooks
             w.SetRowHeight(2, 50.6f);
             w.AddHiddenColumn(1);
             w.AddHiddenColumn(3);
+            w.SetColumnDefaultStyle(1, BasicStyles.Font("Comic Sans", 42));
             w.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.sort);
             w.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.autoFilter);
             w.SetSheetProtectionPassword("pwd");

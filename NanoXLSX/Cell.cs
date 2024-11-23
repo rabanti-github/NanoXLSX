@@ -757,29 +757,14 @@ namespace NanoXLSX
         {
             ValidateColumnNumber(columnNumber);
             // A - XFD
-            int j = 0;
-            int k = 0;
-            int l = 0;
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i <= columnNumber; i++)
+            columnNumber++;
+            while (columnNumber > 0)
             {
-                if (j > 25)
-                {
-                    k++;
-                    j = 0;
-                }
-                if (k > 25)
-                {
-                    l++;
-                    k = 0;
-                }
-                j++;
+                columnNumber--;
+                sb.Insert(0, (char)('A' + (columnNumber % 26)));
+                columnNumber /= 26;
             }
-            if (l > 0)
-            { sb.Append((char)(l + ASCII_OFFSET)); }
-            if (k > 0)
-            { sb.Append((char)(k + ASCII_OFFSET)); }
-            sb.Append((char)(j + ASCII_OFFSET));
             return sb.ToString();
         }
 

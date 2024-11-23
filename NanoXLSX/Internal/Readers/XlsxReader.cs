@@ -195,6 +195,10 @@ namespace NanoXLSX.Internal.Readers
                     {
                         ws.AddHiddenColumn(column.Number);
                     }
+                    if (column.DefaultColumnStyle != null)
+                    {
+                        ws.SetColumnDefaultStyle(column.ColumnAddress, column.DefaultColumnStyle);
+                    }
                 }
                 foreach (KeyValuePair<string, Cell> cell in reader.Value.Data)
                 {

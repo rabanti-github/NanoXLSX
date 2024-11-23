@@ -52,23 +52,23 @@ namespace NanoXLSX_Test.Worksheets
         }
 
         [Theory(DisplayName = "Test of the 'Columns' property when writing and reading a worksheet")]
-        [InlineData("", 0, true, false)]
-        [InlineData("0", 0, true, false)]
-        [InlineData("0,1,2", 0, true, false)]
-        [InlineData("1,3,5", 0, true, false)]
-        [InlineData("", 1, true, false)]
-        [InlineData("0", 1, true, false)]
-        [InlineData("0,1,2", 2, true, false)]
-        [InlineData("1,3,5", 3, true, false)]
-        [InlineData("", 0, false, true)]
-        [InlineData("0", 0, false, true)]
-        [InlineData("0,1,2", 0, false, true)]
-        [InlineData("1,3,5", 0, false, true)]
-        [InlineData("", 1, false, true)]
-        [InlineData("0", 1, false, true)]
-        [InlineData("0,1,2", 2, false, true)]
-        [InlineData("1,3,5", 3, false, true)]
-        public void ColumnsWriteReadTest(string columnDefinitions, int sheetIndex, bool setWidth, bool setHidden)
+        [InlineData("", 0, true, false, false)]
+        [InlineData("0", 0, true, false, true)]
+        [InlineData("0,1,2", 0, true, false, false)]
+        [InlineData("1,3,5", 0, true, false, true)]
+        [InlineData("", 1, true, false, false)]
+        [InlineData("0", 1, true, false, true)]
+        [InlineData("0,1,2", 2, true, false, false)]
+        [InlineData("1,3,5", 3, true, false, true)]
+        [InlineData("", 0, false, true, false)]
+        [InlineData("0", 0, false, true, true)]
+        [InlineData("0,1,2", 0, false, true, false)]
+        [InlineData("1,3,5", 0, false, true, true)]
+        [InlineData("", 1, false, true, false)]
+        [InlineData("0", 1, false, true, false)]
+        [InlineData("0,1,2", 2, false, true, true)]
+        [InlineData("1,3,5", 3, false, true, false)]
+        public void ColumnsWriteReadTest(string columnDefinitions, int sheetIndex, bool setWidth, bool setHidden, bool setStyle)
         {
             string[] tokens = columnDefinitions.Split(',');
             List<int> columnIndices = new List<int>();
@@ -78,6 +78,12 @@ namespace NanoXLSX_Test.Worksheets
                 {
                     columnIndices.Add(int.Parse(token));
                 }
+            }
+            Style defaultStyle = null;
+            Style expectedStyle = null;
+            if (setStyle)
+            {
+                defaultStyle = BasicStyles.BoldItalic.Append(BasicStyles.Font("Arial", 13));
             }
             Workbook workbook = PrepareWorkbook(4, "test");
             for (int i = 0; i <= sheetIndex; i++)
@@ -95,6 +101,7 @@ namespace NanoXLSX_Test.Worksheets
                         {
                             workbook.CurrentWorksheet.AddHiddenColumn(index);
                         }
+                        expectedStyle = workbook.CurrentWorksheet.SetColumnDefaultStyle(index, defaultStyle);
                     }
                 }
             }
@@ -111,6 +118,14 @@ namespace NanoXLSX_Test.Worksheets
                 if (setHidden)
                 {
                     Assert.True(column.Value.IsHidden);
+                }
+                if (setStyle)
+                {
+                    Assert.Equal(expectedStyle.GetHashCode(), column.Value.DefaultColumnStyle.GetHashCode());
+                }
+                else
+                {
+                    Assert.Null(column.Value.DefaultColumnStyle);
                 }
             }
         }
