@@ -535,6 +535,8 @@ namespace NanoXLSX_Test.Cells
         [Theory(DisplayName = "Test of the ResolveColumn method")]
         [InlineData("A", 0)]
         [InlineData("c", 2)]
+        [InlineData("zE", 680)]
+        [InlineData("aAm", 714)]
         [InlineData("XFD", 16383)]
         public void ResolveColumnTest(string address, int expectedColumn)
         {
@@ -556,6 +558,8 @@ namespace NanoXLSX_Test.Cells
         [Theory(DisplayName = "Test of the ResolveColumnAddress method")]
         [InlineData(0, "A")]
         [InlineData(2, "C")]
+        [InlineData(680, "ZE")]
+        [InlineData(714, "AAM")]
         [InlineData(16383, "XFD")]
         public void ResolveColumnAddressTest(int columnNumber, string expectedAddress)
         {

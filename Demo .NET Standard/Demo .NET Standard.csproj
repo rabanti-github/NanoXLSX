@@ -48,6 +48,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NanoXLSX .NET Standard\NanoXLSX .NET Standard.csproj" />
-    <ProjectReference Include="..\NanoXLSX\NanoXLSX.csproj" />
   </ItemGroup>
 </Project>
