@@ -24,8 +24,8 @@
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\NanoXLSX .NET Standard\bin\Debug\net45\NanoXLSX.xml" />
-      <DocumentationSource sourceFile="..\NanoXLSX .NET Standard\bin\Debug\net45\NanoXLSX.dll" />
+      <DocumentationSource sourceFile="..\NanoXLSX\bin\Debug\net45\NanoXLSX.xml" />
+      <DocumentationSource sourceFile="..\NanoXLSX\bin\Debug\net45\NanoXLSX.dll" />
     </DocumentationSources>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>

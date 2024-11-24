@@ -1,44 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>NanoXLSX_Test</RootNamespace>
-
+    <Title>NanoXLSX Test</Title>
     <IsPackable>false</IsPackable>
-
-    <Version>2.5.1</Version>
-
     <Authors>Raphael Stoeckli</Authors>
-
     <Company>Raphael Stoeckli</Company>
-
     <Product>NanoXLSX</Product>
-
     <Description>Unit Tests for NanoXLSX</Description>
-
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-
     <Copyright>Copyright Raphael Stoeckli © 2024</Copyright>
-
     <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
-
     <PackageIcon>NanoXLSX.png</PackageIcon>
-
     <PackageIconUrl />
-
     <RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.git</RepositoryUrl>
-
     <PackageTags>Excel Office XLSX</PackageTags>
-
     <RepositoryType>git</RepositoryType>
-
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
-
+    <Version>2.5.1</Version>
     <AssemblyVersion>2.5.1.0</AssemblyVersion>
-
     <FileVersion>2.5.1.0</FileVersion>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="Resources\autofilter.xlsx" />
     <None Remove="Resources\chartsheet2.xlsx" />
@@ -62,7 +44,6 @@
     <None Remove="Resources\unknown_border_type.xlsx" />
     <None Remove="Resources\unknown_style_enums.xlsx" />
   </ItemGroup>
-
   <ItemGroup>
 	  <EmbeddedResource Include="Resources\autofilter.xlsx" />
 	  <EmbeddedResource Include="Resources\chartsheet2.xlsx" />
@@ -86,7 +67,6 @@
 	<EmbeddedResource Include="Resources\tampered.xlsx" />
 	<EmbeddedResource Include="Resources\unknown_style_enums.xlsx" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="System.IO.Packaging" Version="5.0.0" />
@@ -100,11 +80,9 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\NanoXLSX\NanoXLSX.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Resource Include="Resources\invalid_shardStrings.xlsx" />
     <Resource Include="Resources\invalid_style.xlsx" />
@@ -114,5 +92,4 @@
     <Resource Include="Resources\tampered.xlsx" />
     <EmbeddedResource Include="Resources\chartsheet.xlsx" />
   </ItemGroup>
-
 </Project>
