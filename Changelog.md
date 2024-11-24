@@ -1,6 +1,6 @@
 # Change Log
 
-## v2.5.2
+## v2.5.2 
 
 ---
 Release Date: **24.11.2024**
@@ -14,7 +14,7 @@ Release Date: **24.11.2024**
 
 ---
 Release Date: **26.10.2024**
-- Fixed a bug regarding the determination of the first data cell in an empty worksheet. Bug fix provided by Martin Stránský
+- Fixed a bug regarding the determination of the first data cell in an empty worksheet. Bug fix provided by Martin StrÃ¡nskÃ½
 
 ## v2.5.0
 
@@ -33,7 +33,7 @@ Release Date: **21.04.2024**
 - Added handling to load workbooks from files asynchronously. Concept provided by John Leyva
 - Fixed a bug when loading a workbook asynchronously from a stream. Bug fix provided by John Leyva
 - Fixed a bug when the column auto-filter is a single cell address. Bug fix provided by pokorny
-- Fixed a bug regarding style enumeration when reading a workbook. Bug fix provided by Martin Stránský
+- Fixed a bug regarding style enumeration when reading a workbook. Bug fix provided by Martin StrÃ¡nskÃ½
 - Added new  and adapted existing test cases 
 
 ## v2.3.3
