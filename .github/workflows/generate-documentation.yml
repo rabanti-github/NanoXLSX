@@ -36,7 +36,7 @@ jobs:
 
     - name: Build NanoXLSX project
       if: ${{ env.build_origin }} == 'pass'
-      run: dotnet build "NanoXLSX .NET Standard/NanoXLSX .NET Standard.csproj" -c Debug
+      run: dotnet build "NanoXLSX/NanoXLSX.csproj" -c Debug
   
     - name: Add msbuild to PATH
       if: ${{ env.build_origin }} == 'pass'
