@@ -3,9 +3,11 @@
 ## v2.5.2
 
 ---
-Release Date: **23.11.2024**
+Release Date: **24.11.2024**
 
 - Fixed a bug of the column address (letter) resolution. Column letters above 'Z' were resolved incorrectly
+- Changed async handing of the workbook reader, to avoid deadlocks. Change provided by Jarren Long
+- Simplified project structure (unified .Net 4.x and Standard). Change provided by Jarren Long
 - Added tests for column address resolution
 
 ## v2.5.1
