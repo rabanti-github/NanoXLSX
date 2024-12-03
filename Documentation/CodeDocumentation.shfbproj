@@ -24,8 +24,8 @@
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\NanoXLSX\bin\Debug\NanoXLSX.Core.dll" />
-      <DocumentationSource sourceFile="..\NanoXLSX\bin\Debug\NanoXLSX.Core.xml" />
+      <DocumentationSource sourceFile="..\NanoXLSX.Shared\NanoXLSX.Shared.csproj" />
+      <DocumentationSource sourceFile="..\NanoXLSX\NanoXLSX.Core.csproj" />
     </DocumentationSources>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
@@ -204,12 +204,5 @@ xcopy "$(ProjectDir)icons\favicon.ico" "$(OutputPath)icons" /Y /r /h /c</PostBui
   </ItemGroup>
   <ItemGroup>
     <Content Include="icons\favicon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NanoXLSX .NET Standard\NanoXLSX.Core .NET Standard.csproj">
-      <Name>NanoXLSX.Core .NET Standard</Name>
-      <Project>{e9ec78d7-1db9-420c-a113-b31fc2ecdbcd}</Project>
-      <Private>True</Private>
-    </ProjectReference>
   </ItemGroup>
 </Project>

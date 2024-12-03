@@ -14,15 +14,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "CodeDocumentation", "Documentation\CodeDocumentation.shfbproj", "{DA885E7F-9583-4B8A-8D51-AD2B0DBAC1C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Core .NET Standard", "NanoXLSX .NET Standard\NanoXLSX.Core .NET Standard.csproj", "{E9EC78D7-1DB9-420C-A113-B31FC2ECDBCD}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Core Test", "NanoXLSX Test\NanoXLSX.Core Test.csproj", "{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoXLSX.Shared", "NanoXLSX.Shared\NanoXLSX.Shared.csproj", "{5FABDD94-D8AD-4EF2-8A31-727BD6475AD2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Shared .NET Standard", "NanoXLSX.Shared .NET Standard\NanoXLSX.Shared .NET Standard.csproj", "{D6AAD5B5-0698-41FD-992F-18085A441FC7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoXLSX.Shared Test", "NanoXLSX.Shared Test\NanoXLSX.Shared Test.csproj", "{04C9B02F-B107-4C0A-8936-3A45AED6AA87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Shared Test", "NanoXLSX.Shared Test\NanoXLSX.Shared Test.csproj", "{04C9B02F-B107-4C0A-8936-3A45AED6AA87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,10 +32,6 @@ Global
 		{A70E40AA-98C1-453A-8030-B4798A89EBFC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DA885E7F-9583-4B8A-8D51-AD2B0DBAC1C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DA885E7F-9583-4B8A-8D51-AD2B0DBAC1C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9EC78D7-1DB9-420C-A113-B31FC2ECDBCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9EC78D7-1DB9-420C-A113-B31FC2ECDBCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9EC78D7-1DB9-420C-A113-B31FC2ECDBCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9EC78D7-1DB9-420C-A113-B31FC2ECDBCD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62E81C9A-2275-40C6-95AB-80AC4ACCE22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -48,10 +40,6 @@ Global
 		{5FABDD94-D8AD-4EF2-8A31-727BD6475AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FABDD94-D8AD-4EF2-8A31-727BD6475AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FABDD94-D8AD-4EF2-8A31-727BD6475AD2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6AAD5B5-0698-41FD-992F-18085A441FC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6AAD5B5-0698-41FD-992F-18085A441FC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6AAD5B5-0698-41FD-992F-18085A441FC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6AAD5B5-0698-41FD-992F-18085A441FC7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04C9B02F-B107-4C0A-8936-3A45AED6AA87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{04C9B02F-B107-4C0A-8936-3A45AED6AA87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04C9B02F-B107-4C0A-8936-3A45AED6AA87}.Release|Any CPU.ActiveCfg = Release|Any CPU

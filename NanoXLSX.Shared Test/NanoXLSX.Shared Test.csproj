@@ -1,10 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>NanoXLSX.Shared_Test</RootNamespace>
-
+    <Title>NanoXLSX.Shared Test</Title>
     <IsPackable>false</IsPackable>
+    <Authors>Raphael Stoeckli</Authors>
+    <Company>Raphael Stoeckli</Company>
+    <Product>NanoXLSX</Product>
+    <Description>Unit Tests for NanoXLSX.Shared</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright Raphael Stoeckli © 2024</Copyright>
+    <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
+    <PackageIcon>NanoXLSX.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.git</RepositoryUrl>
+    <PackageTags>Excel Office XLSX</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
+    <Version>3.0.0</Version>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
