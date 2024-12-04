@@ -25,7 +25,7 @@
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\NanoXLSX.Shared\NanoXLSX.Shared.csproj" />
-      <DocumentationSource sourceFile="..\NanoXLSX\NanoXLSX.Core.csproj" />
+      <DocumentationSource sourceFile="..\NanoXLSX.Core\NanoXLSX.Core.csproj" />
     </DocumentationSources>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
