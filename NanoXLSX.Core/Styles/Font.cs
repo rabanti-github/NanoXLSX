@@ -5,15 +5,13 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Shared.Interfaces;
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Utils;
-using System;
 using System.Collections.Generic;
 using System.Text;
-using static NanoXLSX.Shared.Enums.Styles.FontEnums;
-using NanoXLSX.Themes;
 using NanoXLS.Shared.Enums.Schemes;
+using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Interfaces;
+using NanoXLSX.Shared.Utils;
+using static NanoXLSX.Shared.Enums.Styles.FontEnums;
 
 namespace NanoXLSX.Styles
 {
@@ -37,7 +35,7 @@ namespace NanoXLSX.Styles
         /// Default font size
         /// </summary>
         public static readonly float DEFAULT_FONT_SIZE = 11f;
-        
+
         /// <summary>
         /// The default font name that is declared as Major Font (See <see cref="Font.SchemeValue"/>)
         /// </summary>
@@ -120,15 +118,18 @@ namespace NanoXLSX.Styles
         [Append]
         //TODO: v3> Reeference to Theming
         //OOXML: Chp.18.8.3 and 20.1.6.2
-        public ThemeEnums.ColorSchemeElement ColorTheme { 
-            get => colorTheme; 
-            set {
+        public ThemeEnums.ColorSchemeElement ColorTheme
+        {
+            get => colorTheme;
+            set
+            {
                 if (value == null)
                 {
                     throw new StyleException("A color theme cannot be null");
                 }
-                colorTheme = value; 
-            } }
+                colorTheme = value;
+            }
+        }
         /// <summary>
         /// Gets or sets the color code of the font color. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF.
         /// To omit the color, an empty string can be set. Empty is also default.

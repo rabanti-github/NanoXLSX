@@ -10,7 +10,7 @@
 		<Company>Raphael Stoeckli</Company>
 		<Authors>Raphael Stoeckli</Authors>
 		<Copyright>Copyright Raphael Stoeckli © 2024</Copyright>
-		<Description>NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way</Description>
+		<Description>NanoXLSX Shared contains interfaces, enums and classes that are shared among all NanoXLSX packages</Description>
 		<PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.git</RepositoryUrl>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -24,9 +24,10 @@
 		<FileVersion>3.0.0.0</FileVersion>
 		<RepositoryType>git</RepositoryType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<PackageIcon>NanoXLSX.png</PackageIcon>
+		<PackageIcon>NanoXLSXlib.png</PackageIcon>
 		<PackageIconUrl />
 		<PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
 		<PackageReference Include="System.IO.Packaging" Version="4.7.0" />
@@ -44,10 +45,6 @@
 		<Reference Include="WindowsBase" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="NanoXLSX.png" Pack="true" PackagePath="\" />
-		<None Include="NanoXLSX.png">
-		  <Pack>True</Pack>
-		  <PackagePath></PackagePath>
-		</None>
+		<None Include="NanoXLSXlib.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 </Project>

@@ -5,9 +5,10 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Shared.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using NanoXLSX.Shared.Exceptions;
 using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
 
 namespace NanoXLSX.Styles
@@ -29,9 +30,6 @@ namespace NanoXLSX.Styles
 
         #endregion
         private int customFormatID;
-        #region enums
-
-        #endregion
 
         #region privateFields
         private string customFormatCode;
@@ -53,7 +51,7 @@ namespace NanoXLSX.Styles
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new FormatException("A custom format code cannot be null or empty");
+                    throw new Shared.Exceptions.FormatException("A custom format code cannot be null or empty");
                 }
                 customFormatCode = value;
             }

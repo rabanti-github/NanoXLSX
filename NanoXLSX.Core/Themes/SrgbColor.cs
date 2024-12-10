@@ -5,10 +5,9 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using System.Collections.Generic;
 using NanoXLSX.Shared.Interfaces;
 using NanoXLSX.Shared.Utils;
-using System;
-using System.Collections.Generic;
 
 namespace NanoXLSX.Themes
 {
@@ -23,12 +22,13 @@ namespace NanoXLSX.Themes
         /// <summary>
         /// Gets or sets the sRGB value (Hex code of RGB)
         /// </summary>
-        public string ColorValue 
-        { get => colorValue;
-            set 
+        public string ColorValue
+        {
+            get => colorValue;
+            set
             {
                 Validators.ValidateColor(value, false);
-                colorValue = value; 
+                colorValue = value;
             }
         }
 

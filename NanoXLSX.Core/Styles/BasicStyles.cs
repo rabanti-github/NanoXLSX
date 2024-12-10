@@ -6,9 +6,6 @@
  */
 
 using NanoXLSX.Shared.Utils;
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Utils;
-using System.Text.RegularExpressions;
 using static NanoXLSX.Shared.Enums.Styles.BorderEnums;
 using static NanoXLSX.Shared.Enums.Styles.FillEnums;
 using static NanoXLSX.Shared.Enums.Styles.FontEnums;

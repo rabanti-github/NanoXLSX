@@ -22,29 +22,6 @@
     <FileVersion>3.0.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-	  <EmbeddedResource Include="Resources\chartsheet.xlsx" />
-	  <EmbeddedResource Include="Resources\chartsheet2.xlsx" />
-	  <EmbeddedResource Include="Resources\empty_worksheet.xlsx" />
-	  <EmbeddedResource Include="Resources\semi-large-amount.xlsx" />
-	  <EmbeddedResource Include="Resources\autofilter.xlsx" />
-	  <EmbeddedResource Include="Resources\invalid_style.xlsx" />
-	  <EmbeddedResource Include="Resources\invalid_workbook.xlsx" />
-	  <EmbeddedResource Include="Resources\invalid_workbook_sheet-definition.xlsx" />
-	  <EmbeddedResource Include="Resources\invalid_worksheet.xlsx" />
-	  <EmbeddedResource Include="Resources\tampered.xlsx" />
-	  <EmbeddedResource Include="Resources\invalid_metadata_app.xlsx" />
-	  <EmbeddedResource Include="Resources\invalid_metadata_core.xlsx" />
-	  <EmbeddedResource Include="Resources\invalid_relationship.xlsx" />
-	  <EmbeddedResource Include="Resources\invalid_shardStrings.xlsx" />
-	  <EmbeddedResource Include="Resources\invalid_sharedStrings2.xlsx" />
-	  <EmbeddedResource Include="Resources\missing_worksheet.xlsx" />
-	  <EmbeddedResource Include="Resources\unknown_style_enums.xlsx" />
-	  <EmbeddedResource Include="Resources\new_format.xlsx" />
-	  <EmbeddedResource Include="Resources\omitted_style_refs.xlsx" />
-	  <EmbeddedResource Include="Resources\phonetics.xlsx" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="System.IO.Packaging" Version="5.0.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -59,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NanoXLSX.Core\NanoXLSX.Core.csproj" />
+    <ProjectReference Include="..\NanoXLSX.Writer\NanoXLSX.Writer.csproj" />
   </ItemGroup>
 
 </Project>

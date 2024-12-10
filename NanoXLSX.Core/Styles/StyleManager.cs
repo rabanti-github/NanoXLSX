@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using NanoXLSX.Shared.Exceptions;
 
 namespace NanoXLSX.Styles
 {

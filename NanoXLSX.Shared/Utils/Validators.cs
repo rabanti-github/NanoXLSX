@@ -1,5 +1,5 @@
-﻿using NanoXLSX.Shared.Exceptions;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
+using NanoXLSX.Shared.Exceptions;
 
 
 namespace NanoXLSX.Shared.Utils

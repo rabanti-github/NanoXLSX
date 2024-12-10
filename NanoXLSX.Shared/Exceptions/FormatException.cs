@@ -36,7 +36,7 @@ namespace NanoXLSX.Shared.Exceptions
         /// <param name="inner">Inner exception</param>
         public FormatException(string message, Exception inner)
             : base(message, inner)
-        {  }
+        { }
 
         /// <summary>
         /// Constructor for deserialization purpose

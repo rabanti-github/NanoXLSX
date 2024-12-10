@@ -196,20 +196,6 @@ namespace NanoXLSX_Test.Workbooks
             AssertWorksheetCopy(w1, w2);
         }
 
-        [Fact(DisplayName = "Test of the 'CopyWorksheetTo' function for proper saving")]
-        public void CopyWorksheetSaveTest()
-        {
-            Workbook workbook1 = new Workbook("worksheet1");
-            Workbook workbook2 = new Workbook("worksheet1b");
-            Worksheet worksheet2 = createWorksheet();
-            worksheet2.SheetName = "worksheet2";
-            workbook1.AddWorksheet(worksheet2);
-            Workbook.CopyWorksheetTo(worksheet2, "copy", workbook2);
-
-            Workbook newWorkbook = TestUtils.WriteAndReadWorkbook(workbook2);
-            Assert.Equal(workbook2.Worksheets.Count, newWorkbook.Worksheets.Count);
-        }
-
         private void AssertWorksheetCopy(Worksheet w1, Worksheet w2)
         {
             IEnumerable<string> keys = w1.Cells.Keys.AsEnumerable();

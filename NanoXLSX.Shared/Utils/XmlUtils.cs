@@ -38,7 +38,7 @@ namespace NanoXLSX.Shared.Utils
                 {
                     illegalCharacters.Add(i);
                     characterTypes.Add(4);
-                    illegalCharacters.Add(i+1); // Skip next character
+                    illegalCharacters.Add(i + 1); // Skip next character
                     characterTypes.Add(5);
                     i++;
                     continue;

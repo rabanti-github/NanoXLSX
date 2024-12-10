@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<RootNamespace>NanoXLSX</RootNamespace>
+		<AssemblyName>NanoXLSX.Writer</AssemblyName>
+		<PackageId>NanoXLSX.Writer</PackageId>
+		<OutputType>Library</OutputType>
+		<TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+		<Title>NanoXLSX.Writer</Title>
+		<Product>NanoXLSX</Product>
+		<Company>Raphael Stoeckli</Company>
+		<Authors>Raphael Stoeckli</Authors>
+		<Copyright>Copyright Raphael Stoeckli © 2024</Copyright>
+		<Description>NanoXLSX Writer contains the extension methods to store XLSX files</Description>
+		<PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.git</RepositoryUrl>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageTags>Excel Office XLSX Writer</PackageTags>
+		<Version>3.0.0.0</Version>
+		<AssemblyVersion>3.0.0.0</AssemblyVersion>
+		<FileVersion>3.0.0.0</FileVersion>
+		<RepositoryType>git</RepositoryType>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<PackageIcon>NanoXLSXlib.png</PackageIcon>
+		<PackageIconUrl />
+		<PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+		<PackageReference Include="System.IO.Packaging" Version="4.7.0" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+	</ItemGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+		<Reference Include="System" />
+		<Reference Include="System.Core" />
+		<Reference Include="System.IO.Compression" />
+		<Reference Include="System.Xml.Linq" />
+		<Reference Include="System.Data.DataSetExtensions" />
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="System.Data" />
+		<Reference Include="System.Xml" />
+		<Reference Include="WindowsBase" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="NanoXLSXlib.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+		<ProjectReference Include="..\NanoXLSX.Shared\NanoXLSX.Shared.csproj" />
+		<ProjectReference Include="..\NanoXLSX.Core\NanoXLSX.Core.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<PackageReference Include="NanoXLSX.Shared" Version="3.0.0" />
+		<PackageReference Include="NanoXLSX.Core" Version="3.0.0" />
+	</ItemGroup>
+</Project>

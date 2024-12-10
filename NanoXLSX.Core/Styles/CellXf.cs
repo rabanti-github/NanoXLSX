@@ -5,9 +5,9 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Shared.Utils;
-using NanoXLSX.Shared.Exceptions;
 using System.Text;
+using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Utils;
 using static NanoXLSX.Shared.Enums.Styles.CellXfEnums;
 
 namespace NanoXLSX.Styles
@@ -34,10 +34,6 @@ namespace NanoXLSX.Styles
         /// Default vertical align value as constant
         /// </summary>
         public static readonly VerticalAlignValue DEFAULT_VERTICAL_ALIGNMENT = VerticalAlignValue.none;
-        #endregion
-
-        #region enums
-
         #endregion
 
         #region privateFields

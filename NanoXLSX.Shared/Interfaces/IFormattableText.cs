@@ -5,7 +5,6 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
 using System.Text;
 
 namespace NanoXLSX.Shared.Interfaces
@@ -24,6 +23,6 @@ namespace NanoXLSX.Shared.Interfaces
         /// XML tags to be enclosed by &lt;si&gt;&lt;/si&gt;...&lt;/si&gt; within the shared stings document</remarks>
         void AddFormattedValue(StringBuilder sb);
 
-        
+
     }
 }

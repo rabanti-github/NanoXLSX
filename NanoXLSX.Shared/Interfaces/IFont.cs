@@ -26,6 +26,6 @@ namespace NanoXLSX.Shared.Interfaces
         string Name { get; set; }
         SchemeValue Scheme { get; set; }
         float Size { get; set; }
-        VerticalTextAlignValue  VerticalAlign { get; set; }
+        VerticalTextAlignValue VerticalAlign { get; set; }
     }
 }

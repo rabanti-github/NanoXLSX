@@ -7,15 +7,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using NanoXLSX.Shared.Utils;
 using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
-using NanoXLSX.Internal.Readers;
-using NanoXLSX.Internal.Writers;
 using NanoXLSX.Themes;
 
 namespace NanoXLSX
@@ -37,7 +33,7 @@ namespace NanoXLSX
         private int selectedWorksheet;
         private Shortener shortener;
         private List<string> mruColors = new List<string>();
-        internal bool importInProgress = false;
+        internal bool importInProgress = false; // Used by NanoXLSX.Reader
         #endregion
 
         #region properties
@@ -410,7 +406,7 @@ namespace NanoXLSX
         [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(Style style, bool onlyIfUnused)
         {
-            if (style == null) 
+            if (style == null)
             {
                 throw new StyleException("The style to remove is not defined");
             }
@@ -479,93 +475,6 @@ namespace NanoXLSX
             {
                 worksheet.ResolveMergedCells();
             }
-        }
-
-        /// <summary>
-        /// Saves the workbook
-        /// </summary>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
-        /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        public void Save()
-        {
-            XlsxWriter l = new XlsxWriter(this);
-            l.Save();
-        }
-
-        /// <summary>
-        /// Saves the workbook asynchronous.
-        /// </summary>
-        /// <returns>Task object (void)</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
-        public async Task SaveAsync()
-        {
-            XlsxWriter l = new XlsxWriter(this);
-            await l.SaveAsync();
-        }
-
-        /// <summary>
-        /// Saves the workbook with the defined name
-        /// </summary>
-        /// <param name="filename">filename of the saved workbook</param>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
-        /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        public void SaveAs(string filename)
-        {
-            string backup = filename;
-            this.filename = filename;
-            XlsxWriter l = new XlsxWriter(this);
-            l.Save();
-            this.filename = backup;
-        }
-
-        /// <summary>
-        /// Saves the workbook with the defined name asynchronous.
-        /// </summary>
-        /// <param name="fileName">filename of the saved workbook</param>
-        /// <returns>Task object (void)</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
-        public async Task SaveAsAsync(string fileName)
-        {
-            string backup = fileName;
-            filename = fileName;
-            XlsxWriter l = new XlsxWriter(this);
-            await l.SaveAsync();
-            filename = backup;
-        }
-
-        /// <summary>
-        /// Save the workbook to a writable stream
-        /// </summary>
-        /// <param name="stream">Writable stream</param>
-        /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
-        /// <exception cref="IOException">Throws IOException in case of an error</exception>
-        /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        public void SaveAsStream(Stream stream, bool leaveOpen = false)
-        {
-            XlsxWriter l = new XlsxWriter(this);
-            l.SaveAsStream(stream, leaveOpen);
-        }
-
-        /// <summary>
-        /// Save the workbook to a writable stream asynchronous.
-        /// </summary>
-        /// <param name="stream">>Writable stream</param>
-        /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
-        /// <returns>Task object (void)</returns>
-        /// <exception cref="IOException">Throws IOException in case of an error. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
-        /// <exception cref="FormatException">May throw a FormatException if a handled date cannot be translated to (Excel internal) OADate. The asynchronous operation may hide the exception.</exception>
-        public async Task SaveAsStreamAsync(Stream stream, bool leaveOpen = false)
-        {
-            XlsxWriter l = new XlsxWriter(this);
-            await l.SaveAsStreamAsync(stream, leaveOpen);
         }
 
         /// <summary>
@@ -898,74 +807,6 @@ namespace NanoXLSX
             shortener = new Shortener(this);
         }
 
-        #endregion
-
-        #region methods_NANO
-
-        /// <summary>
-        /// Loads a workbook from a file
-        /// </summary>
-        /// <param name="filename">Filename of the workbook</param>
-        /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
-        /// <returns>Workbook object</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
-        public static Workbook Load(string filename, ImportOptions options = null)
-        {
-            XlsxReader r = new XlsxReader(filename, options);
-            r.Read();
-            return r.GetWorkbook();
-        }
-
-        /// <summary>
-        /// Loads a workbook from a stream
-        /// </summary>
-        /// <param name="stream">Stream containing the workbook</param>
-        /// /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
-        /// <returns>Workbook object</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
-        public static Workbook Load(Stream stream, ImportOptions options = null)
-        {
-            XlsxReader r = new XlsxReader(stream, options);
-            r.Read();
-            return r.GetWorkbook();
-        }
-
-        /// <summary>
-        /// Loads a workbook from a file asynchronously
-        /// </summary>
-        /// <param name="filename">Filename of the workbook</param>
-        /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
-        /// <returns>Workbook object</returns>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
-        public static async Task<Workbook> LoadAsync(string filename, ImportOptions options = null)
-        {
-            XlsxReader r = new XlsxReader(filename, options);
-            await r.ReadAsync();
-            return r.GetWorkbook();
-        }
-
-        /// <summary>
-        /// Loads a workbook from a stream asynchronously
-        /// </summary>
-        /// <param name="stream">Stream containing the workbook</param>
-        /// /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
-        /// <returns>Workbook object</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
-        public static async Task<Workbook> LoadAsync(Stream stream, ImportOptions options = null)
-        {
-            XlsxReader r = new XlsxReader(stream, options);
-            await r.ReadAsync();
-            return r.GetWorkbook();
-        }
-
-        /// <summary>
-        /// Sets the import state. If an import is in progress, no validity checks on are performed to avoid conflicts by incomplete data (e.g. hidden worksheets)
-        /// </summary>
-        /// <param name="state">True if an import is in progress, otherwise false</param>
-        internal void SetImportState(bool state)
-        {
-            this.importInProgress = state;
-        }
         #endregion
     }
 

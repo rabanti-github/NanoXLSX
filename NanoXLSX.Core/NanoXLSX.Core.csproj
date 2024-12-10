@@ -54,17 +54,17 @@
 		<Reference Include="WindowsBase" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Include="C:\purge-temp\NanoXlsxV3\NanoXLSX.Core\.editorconfig" />
 		<None Include="README.md" Pack="true" PackagePath="\" />
 		<None Include="NanoXLSX.png" Pack="true" PackagePath="\" />
-		<None Include="NanoXLSX.png">
-		  <Pack>True</Pack>
-		  <PackagePath></PackagePath>
-		</None>
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
 		<ProjectReference Include="..\NanoXLSX.Shared\NanoXLSX.Shared.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
 		<PackageReference Include="NanoXLSX.Shared" Version="3.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\purge-temp\NanoXlsxV3\NanoXLSX.Core\.editorconfig" />
 	</ItemGroup>
 </Project>

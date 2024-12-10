@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using NanoXLSX.Shared.Utils;
 using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 
@@ -159,13 +159,15 @@ namespace NanoXLSX
         public AddressType CellAddressType { get; set; }
 
         /// <summary>Gets or sets the value of the cell (generic object type). When setting a value, the <see cref="DataType"/> is automatically resolved</summary>
-        public object Value { 
-            get => this.value; 
-            set {
+        public object Value
+        {
+            get => this.value;
+            set
+            {
                 this.value = value;
                 ResolveCellType();
-            } 
-            
+            }
+
         }
 
         #endregion

@@ -134,7 +134,7 @@ namespace NanoXLSX
         public void Up(int numberOfRows, bool keepColumnPosition = false)
         {
             NullCheck();
-            currentWorksheet.GoToNextRow(-1*numberOfRows, keepColumnPosition);
+            currentWorksheet.GoToNextRow(-1 * numberOfRows, keepColumnPosition);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace NanoXLSX
         public void Left(int numberOfColumns, bool keepRowRowPosition = false)
         {
             NullCheck();
-            currentWorksheet.GoToNextColumn(-1*numberOfColumns, keepRowRowPosition);
+            currentWorksheet.GoToNextColumn(-1 * numberOfColumns, keepRowRowPosition);
         }
 
         /// <summary>

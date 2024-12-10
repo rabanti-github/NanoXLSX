@@ -5,11 +5,9 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Utils;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.RegularExpressions;
+using NanoXLSX.Shared.Utils;
 using static NanoXLSX.Shared.Enums.Styles.FillEnums;
 
 namespace NanoXLSX.Styles

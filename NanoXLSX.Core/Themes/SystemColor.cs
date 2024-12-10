@@ -5,12 +5,11 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Shared.Interfaces;
+using System.Collections.Generic;
 using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Interfaces;
 using NanoXLSX.Shared.Utils;
 using static NanoXLSX.Themes.SystemColor;
-using System;
-using System.Collections.Generic;
 
 namespace NanoXLSX.Themes
 {
@@ -85,7 +84,7 @@ namespace NanoXLSX.Themes
 
 
         private string lastColor = "000000";
-        
+
         /// <summary>
         /// Gets or sets the enum value of the system color
         /// </summary>
@@ -101,7 +100,7 @@ namespace NanoXLSX.Themes
         /// </summary>
         public string LastColor
         {
-            get => lastColor; 
+            get => lastColor;
             set
             {
                 Validators.ValidateColor(value, false);
@@ -188,36 +187,36 @@ namespace NanoXLSX.Themes
         {
             switch (value)
             {
-                case "3dDkShadow" : return Value.ThreeDimensionalDarkShadow;
-                case "3dLight" : return Value.ThreeDimensionalLight;
-                case "activeBorder" : return Value.ActiveBorder;
-                case "activeCaption" : return Value.ActiveCaption;
-                case "appWorkspace" : return Value.AppWorkspace;
-                case "background" : return Value.Background;
-                case "btnFace" : return Value.ButtonFace;
-                case "btnHighlight" : return Value.ButtonHighlight;
-                case "btnShadow" : return Value.ButtonShadow;
-                case "btnText" : return Value.ButtonText;
-                case "captionText" : return Value.CaptionText;
-                case "gradientActiveCaption" : return Value.GradientActiveCaption;
-                case "gradientInactiveCaption" : return Value.GradientInactiveCaption;
-                case "grayText" : return Value.GrayText;
-                case "highlight" : return Value.Highlight;
-                case "highlightText" : return Value.HighlightText;
-                case "hotLight" : return Value.HotLight;
-                case "inactiveBorder" : return Value.InactiveBorder;
-                case "inactiveCaption" : return Value.InactiveCaption;
-                case "inactiveCaptionText" : return Value.InactiveCaptionText;
-                case "infoBk" : return Value.InfoBackground;
-                case "infoText" : return Value.InfoText;
-                case "menu" : return Value.Menu;
-                case "menuBar" : return Value.MenuBar;
-                case "menuHighlight" : return Value.MenuHighlight;
-                case "menuText" : return Value.MenuText;
-                case "scrollBar" : return Value.ScrollBar;
-                case "window" : return Value.Window;
-                case "windowFrame" : return Value.WindowFrame;
-                case "windowText" : return Value.WindowText;
+                case "3dDkShadow": return Value.ThreeDimensionalDarkShadow;
+                case "3dLight": return Value.ThreeDimensionalLight;
+                case "activeBorder": return Value.ActiveBorder;
+                case "activeCaption": return Value.ActiveCaption;
+                case "appWorkspace": return Value.AppWorkspace;
+                case "background": return Value.Background;
+                case "btnFace": return Value.ButtonFace;
+                case "btnHighlight": return Value.ButtonHighlight;
+                case "btnShadow": return Value.ButtonShadow;
+                case "btnText": return Value.ButtonText;
+                case "captionText": return Value.CaptionText;
+                case "gradientActiveCaption": return Value.GradientActiveCaption;
+                case "gradientInactiveCaption": return Value.GradientInactiveCaption;
+                case "grayText": return Value.GrayText;
+                case "highlight": return Value.Highlight;
+                case "highlightText": return Value.HighlightText;
+                case "hotLight": return Value.HotLight;
+                case "inactiveBorder": return Value.InactiveBorder;
+                case "inactiveCaption": return Value.InactiveCaption;
+                case "inactiveCaptionText": return Value.InactiveCaptionText;
+                case "infoBk": return Value.InfoBackground;
+                case "infoText": return Value.InfoText;
+                case "menu": return Value.Menu;
+                case "menuBar": return Value.MenuBar;
+                case "menuHighlight": return Value.MenuHighlight;
+                case "menuText": return Value.MenuText;
+                case "scrollBar": return Value.ScrollBar;
+                case "window": return Value.Window;
+                case "windowFrame": return Value.WindowFrame;
+                case "windowText": return Value.WindowText;
                 default:
                     throw new StyleException(value + " is not a valid system color value");
             }

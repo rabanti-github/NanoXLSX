@@ -28,7 +28,7 @@ namespace NanoXLSX.Shared.Exceptions
         /// <param name="message">Message of the exception</param>
         public WorksheetException(string message)
             : base(message)
-        {  }
+        { }
 
         /// <summary>
         /// Constructor for deserialization purpose

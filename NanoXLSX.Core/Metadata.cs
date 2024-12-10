@@ -5,10 +5,9 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Shared.Utils;
 using System;
-using System.Globalization;
 using System.Reflection;
+using NanoXLSX.Shared.Utils;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 
 namespace NanoXLSX

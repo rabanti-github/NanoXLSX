@@ -4,7 +4,6 @@
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
-using NanoXLSX.Shared.Interfaces;
 
 namespace NanoXLSX.Shared.Enums.Styles
 {

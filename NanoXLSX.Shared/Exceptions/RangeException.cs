@@ -26,8 +26,8 @@ namespace NanoXLSX.Shared.Exceptions
         /// </summary>
         /// <param name="message">Message of the exception</param>
         public RangeException(string message)
-            : base( message)
-        {  }
+            : base(message)
+        { }
 
         /// <summary>
         /// Constructor for deserialization purpose
