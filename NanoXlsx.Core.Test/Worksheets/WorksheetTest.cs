@@ -12,7 +12,7 @@ using static NanoXLSX.Worksheet;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 using Range = NanoXLSX.Range;
 
-namespace NanoXLSX_Test.Worksheets
+namespace NanoXLSX.Test.Worksheets
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]

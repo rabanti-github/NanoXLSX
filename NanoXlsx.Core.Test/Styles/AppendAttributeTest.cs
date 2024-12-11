@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NanoXLSX_Test.Styles
+namespace NanoXLSX.Test.Styles
 {
     public class AppendAttributeTest
     {

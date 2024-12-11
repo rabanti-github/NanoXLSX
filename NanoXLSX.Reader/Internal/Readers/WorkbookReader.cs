@@ -222,6 +222,7 @@ namespace NanoXLSX.Internal.Readers
             /// </summary>
             /// <param name="id">Internal ID</param>
             /// <param name="name">Worksheet name</param>
+            /// <param name="relId">Relation ID</param>
             public WorksheetDefinition(int id, string name, string relId)
             {
                 this.SheetID = id;

@@ -10,7 +10,7 @@ using Xunit;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 using Range = NanoXLSX.Range;
 
-namespace NanoXLSX_Test.Worksheets
+namespace NanoXLSX.Test.Worksheets
 {
     public class SetStyleTest
     {

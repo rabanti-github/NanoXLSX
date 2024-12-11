@@ -96,8 +96,11 @@ namespace NanoXLSX_Test.Reader
         {
             Dictionary<string, ulong> cells = new Dictionary<string, ulong>();
             long lmax = long.MaxValue;
+#pragma warning disable S3949 // Calculations should not overflow
             cells.Add("A1", (ulong)(lmax + 1));
+#pragma warning disable S3949 // Calculations should not overflow
             cells.Add("A2", (ulong)(lmax + 9999));
+#pragma warning restore S3949 // Calculations should not overflow
             cells.Add("A3", ulong.MaxValue);
             AssertValues<ulong>(cells, AssertEquals);
         }

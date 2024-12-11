@@ -38,6 +38,7 @@ namespace NanoXLSX
         /// Saves the workbook with the defined name
         /// </summary>
         /// <param name="filename">filename of the saved workbook</param>
+        /// <param name="workbook">Workbook reference</param>
         /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="NanoXLSX.Shared.Exceptions.RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
         /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
@@ -54,6 +55,7 @@ namespace NanoXLSX
         /// Saves the workbook with the defined name asynchronous.
         /// </summary>
         /// <param name="fileName">filename of the saved workbook</param>
+        /// <param name="workbook">Workbook reference</param>
         /// <returns>Task object (void)</returns>
         /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="NanoXLSX.Shared.Exceptions.RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>
@@ -72,6 +74,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="stream">Writable stream</param>
         /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
+        /// <param name="workbook">Workbook reference</param>
         /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="NanoXLSX.Shared.Exceptions.RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
         /// <exception cref="FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
@@ -86,6 +89,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="stream">>Writable stream</param>
         /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
+        /// <param name="workbook">Workbook reference</param>
         /// <returns>Task object (void)</returns>
         /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /// <exception cref="NanoXLSX.Shared.Exceptions.RangeException">May throw a RangeException if the start or end address of a handled cell range was out of range. The asynchronous operation may hide the exception.</exception>

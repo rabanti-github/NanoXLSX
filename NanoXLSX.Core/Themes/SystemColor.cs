@@ -60,9 +60,9 @@ namespace NanoXLSX.Themes
             InactiveCaption,
             ///<summary>Inactive Caption Text System Color: Specifies the color of text in an inactive caption</summary>
             InactiveCaptionText,
-            ///<summary>Info Back System Color: Specifies the background color for tooltip controls</summary>
+            ///<summary>Info Back System Color: Specifies the background color for tool tip controls</summary>
             InfoBackground,
-            ///<summary>Info Text System Color: Specifies the text color for tooltip controls</summary>
+            ///<summary>Info Text System Color: Specifies the text color for tool tip controls</summary>
             InfoText,
             ///<summary>Menu System Color: Specifies the menu background color</summary>
             Menu,

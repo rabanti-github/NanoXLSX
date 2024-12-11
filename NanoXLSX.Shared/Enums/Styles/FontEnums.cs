@@ -5,19 +5,14 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Shared.Interfaces;
+using NanoXLSX.Shared.Interfaces.Styles;
 
-namespace NanoXLSX.Shared.Enums.Styles
+namespace NanoXLSX.Styles
 {
     /// <summary>
-    /// Class providing shared enums used by implementations of the <see cref="IFont"/> interface
+    /// Enum for the font scheme, used by implementations of the <see cref="IFont"/>
     /// </summary>
-    public static class FontEnums
-    {
-        /// <summary>
-        /// Enum for the font scheme
-        /// </summary>
-        public enum SchemeValue
+    public enum SchemeValue
         {
             /// <summary>Font scheme is major</summary>
             major,
@@ -26,10 +21,10 @@ namespace NanoXLSX.Shared.Enums.Styles
             /// <summary>No Font scheme is used</summary>
             none,
         }
-        /// <summary>
-        /// Enum for the vertical alignment of the text from baseline
-        /// </summary>
-        public enum VerticalTextAlignValue
+    /// <summary>
+    /// Enum for the vertical alignment of the text from baseline, used by implementations of the <see cref="IFont"/>
+    /// </summary>
+    public enum VerticalTextAlignValue
         {
             // baseline, // Maybe not used in Excel
             /// <summary>Text will be rendered as subscript</summary>
@@ -40,10 +35,10 @@ namespace NanoXLSX.Shared.Enums.Styles
             none,
         }
 
-        /// <summary>
-        /// Enum for the style of the underline property of a stylized text
-        /// </summary>
-        public enum UnderlineValue
+    /// <summary>
+    /// Enum for the style of the underline property of a stylized text, used by implementations of the <see cref="IFont"/>
+    /// </summary>
+    public enum UnderlineValue
         {
             /// <summary>Text contains a single underline</summary>
             u_single,
@@ -57,10 +52,10 @@ namespace NanoXLSX.Shared.Enums.Styles
             none,
         }
 
-        /// <summary>
-        /// Enum for the charset definitions of a font
-        /// </summary>
-        public enum CharsetValue
+    /// <summary>
+    /// Enum for the charset definitions of a font, used by implementations of the <see cref="IFont"/>
+    /// </summary>
+    public enum CharsetValue
         {
             /// <summary>
             /// Application-defined (any other value than the defined enum values; can be ignored)
@@ -79,7 +74,7 @@ namespace NanoXLSX.Shared.Enums.Styles
             /// </summary>
             Symbols = 2,
             /// <summary>
-            /// Macintos chartset, Standard Roman
+            /// Macintosh charset, Standard Roman
             /// </summary>
             Macintosh = 77,
             /// <summary>
@@ -144,10 +139,10 @@ namespace NanoXLSX.Shared.Enums.Styles
             OEM = 255
         }
 
-        /// <summary>
-        /// Enum for the font family, according to the simple type definition of W3C
-        /// </summary>
-        public enum FontFamilyValue
+    /// <summary>
+    /// Enum for the font family, according to the simple type definition of W3C. Used by implementations of the <see cref="IFont"/>
+    /// </summary>
+    public enum FontFamilyValue
         {
             /// <summary>
             /// The family is not defined or not applicable
@@ -210,5 +205,4 @@ namespace NanoXLSX.Shared.Enums.Styles
             /// </summary>
             Reserved9 = 14,
         }
-    }
 }

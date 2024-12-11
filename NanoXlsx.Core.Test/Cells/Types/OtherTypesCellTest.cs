@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Xunit;
 using static NanoXLSX.Cell;
 
-namespace NanoXLSX_Test.Cells.Types
+namespace NanoXLSX.Test.Cells.Types
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]

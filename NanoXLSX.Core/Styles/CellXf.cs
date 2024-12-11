@@ -6,16 +6,16 @@
  */
 
 using System.Text;
+using NanoXLSX.Shared.Interfaces.Styles;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Utils;
-using static NanoXLSX.Shared.Enums.Styles.CellXfEnums;
 
 namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Class representing an XF entry. The XF entry is used to make reference to other style instances like Border or Fill and for the positioning of the cell content
     /// </summary>
-    public class CellXf : AbstractStyle
+    public class CellXf : AbstractStyle, ICellXf
     {
         #region constants
         /// <summary>

@@ -5,17 +5,15 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-namespace NanoXLSX.Shared.Enums.Styles
+using NanoXLSX.Shared.Interfaces.Styles;
+
+namespace NanoXLSX.Styles
 {
+
     /// <summary>
-    /// Class providing shared enums used by implementations of the <see cref="IBorder"/> interface // TODO: Define interface
+    /// Enum for the border style, used by implementations of the <see cref="IBorder"/> interface
     /// </summary>
-    public static class BorderEnums
-    {
-        /// <summary>
-        /// Enum for the border style
-        /// </summary>
-        public enum StyleValue
+    public enum StyleValue
         {
             /// <summary>no border</summary>
             none,
@@ -46,5 +44,4 @@ namespace NanoXLSX.Shared.Enums.Styles
             /// <summary>double border</summary>
             s_double,
         }
-    }
 }

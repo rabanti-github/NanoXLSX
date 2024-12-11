@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using static NanoXLSX_Test.Worksheets.RowTest;
+using static NanoXLSX.Test.Worksheets.RowTest;
 
-namespace NanoXLSX_Test.Worksheets
+namespace NanoXLSX.Test.Worksheets
 {
     public class GetRowBoundariesTest
     {

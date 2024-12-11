@@ -12,6 +12,9 @@ namespace NanoXLSX.Shared.Interfaces
     /// </summary>
     public interface IColor
     {
+        /// <summary>
+        /// Color value. This may be a system defined name or a value like an ARGB value
+        /// </summary>
         string StringValue { get; }
     }
 }

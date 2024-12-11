@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NanoXLSX.Core_Test.Themes
+namespace NanoXLSX.Core.Test.Themes
 {
     public class ColorSchemeTest
     {
@@ -94,7 +94,7 @@ namespace NanoXLSX.Core_Test.Themes
             scheme1.Accent4 = null;
             scheme1.Accent5 = new SrgbColor("FFAABB");
             scheme1.Accent6 = new SrgbColor("FFAABB");
-            scheme1.Hyperlink = new SrgbColor("FFAABB"); ;
+            scheme1.Hyperlink = new SrgbColor("FFAABB");
             scheme1.FollowedHyperlink = new SrgbColor("FFAABB");
 
             ColorScheme scheme2 = new ColorScheme();
@@ -109,7 +109,7 @@ namespace NanoXLSX.Core_Test.Themes
             scheme2.Accent4 = null;
             scheme2.Accent5 = new SrgbColor("FFAABB");
             scheme2.Accent6 = new SrgbColor("FFAABB");
-            scheme2.Hyperlink = new SrgbColor("FFAABB"); ;
+            scheme2.Hyperlink = new SrgbColor("FFAABB");
             scheme2.FollowedHyperlink = new SrgbColor("FFAABB");
 
             Assert.True(scheme1.Equals(scheme2));

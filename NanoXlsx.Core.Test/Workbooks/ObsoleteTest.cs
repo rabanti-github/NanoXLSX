@@ -1,6 +1,5 @@
 ﻿using NanoXLSX;
 using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NanoXLSX_Test.Workbooks
+namespace NanoXLSX.Test.Workbooks
 {
     /// <summary>
     /// Note: All tests of this class are just for code coverage. The tested functions will be removed in the future
@@ -47,7 +46,7 @@ namespace NanoXLSX_Test.Workbooks
                     style = new CellXf();
                     break;
                 case "Fill":
-                    style = new Fill() { PatternFill = NanoXLSX.Shared.Enums.Styles.FillEnums.PatternValue.gray125 };
+                    style = new Fill() { PatternFill = PatternValue.gray125 };
                     break;
                 case "Font":
                     style = new Font();

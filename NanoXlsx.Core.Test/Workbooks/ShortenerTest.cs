@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NanoXLSX_Test
+namespace NanoXLSX.Test
 {
     public class ShortenerTest
     {

@@ -7,13 +7,8 @@
 
 using NanoXLSX.Shared.Interfaces;
 
-namespace NanoXLS.Shared.Enums.Schemes
+namespace NanoXLS.Schemes
 {
-    /// <summary>
-    /// Class providing shared enums used by theme instances, or as references to parts of such theme instances  
-    /// </summary>
-    public class ThemeEnums
-    {
         /// <summary>
         /// Enum to define the sequence index of color scheme element, used in the implementations of <see cref="IColorScheme"/>
         /// </summary>
@@ -44,5 +39,4 @@ namespace NanoXLS.Shared.Enums.Schemes
             /// <summary>Followed Hyperlink</summary>
             followedHyperlink = 11
         }
-    }
 }

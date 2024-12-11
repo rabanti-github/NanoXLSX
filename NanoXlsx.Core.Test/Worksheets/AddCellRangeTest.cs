@@ -1,6 +1,5 @@
 ﻿using NanoXLSX;
 using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NanoXLSX_Test.Worksheets
+namespace NanoXLSX.Test.Worksheets
 {
     public class AddCellRangeTest
     {

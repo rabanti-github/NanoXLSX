@@ -10,14 +10,9 @@ namespace NanoXLSX.Internal.Readers
     using System;
     using System.IO;
     using System.Xml;
-    using NanoXLS.Shared.Enums.Schemes;
+    using NanoXLS.Schemes;
     using NanoXLSX.Shared.Utils;
     using NanoXLSX.Styles;
-    using static NanoXLSX.Shared.Enums.Styles.BorderEnums;
-    using static NanoXLSX.Shared.Enums.Styles.CellXfEnums;
-    using static NanoXLSX.Shared.Enums.Styles.FillEnums;
-    using static NanoXLSX.Shared.Enums.Styles.FontEnums;
-    using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
     using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
     /// <summary>
@@ -308,40 +303,40 @@ namespace NanoXLSX.Internal.Readers
                         switch (attribute)
                         {
                             case "0":
-                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.dark1;
+                                fontStyle.ColorTheme = ColorSchemeElement.dark1;
                                 break;
                             case "1":
-                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.light1;
+                                fontStyle.ColorTheme = ColorSchemeElement.light1;
                                 break;
                             case "2":
-                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.dark2;
+                                fontStyle.ColorTheme = ColorSchemeElement.dark2;
                                 break;
                             case "3":
-                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.light2;
+                                fontStyle.ColorTheme = ColorSchemeElement.light2;
                                 break;
                             case "4":
-                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent1;
+                                fontStyle.ColorTheme = ColorSchemeElement.accent1;
                                 break;
                             case "5":
-                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent2;
+                                fontStyle.ColorTheme = ColorSchemeElement.accent2;
                                 break;
                             case "6":
-                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent3;
+                                fontStyle.ColorTheme = ColorSchemeElement.accent3;
                                 break;
                             case "7":
-                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent4;
+                                fontStyle.ColorTheme = ColorSchemeElement.accent4;
                                 break;
                             case "8":
-                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent5;
+                                fontStyle.ColorTheme = ColorSchemeElement.accent5;
                                 break;
                             case "9":
-                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent6;
+                                fontStyle.ColorTheme = ColorSchemeElement.accent6;
                                 break;
                             case "10":
-                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.hyperlink;
+                                fontStyle.ColorTheme = ColorSchemeElement.hyperlink;
                                 break;
                             case "11":
-                                fontStyle.ColorTheme = ThemeEnums.ColorSchemeElement.followedHyperlink;
+                                fontStyle.ColorTheme = ColorSchemeElement.followedHyperlink;
                                 break;
                         }
                     }

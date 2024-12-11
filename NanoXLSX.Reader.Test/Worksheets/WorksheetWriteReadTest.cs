@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using static NanoXLSX.Shared.Enums.Styles.CellXfEnums;
 using Range = NanoXLSX.Range;
 
 namespace NanoXLSX_Test.Worksheets

@@ -7,8 +7,14 @@ using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
 {
+    /// <summary>
+    /// Class representing a reader for theme definitions of XLSX files.
+    /// </summary>
     public class ThemeReader
     {
+        /// <summary>
+        /// Currently active theme
+        /// </summary>
         public Theme CurrentTheme { get; set; }
 
 

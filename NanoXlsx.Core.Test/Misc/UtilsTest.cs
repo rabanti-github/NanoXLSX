@@ -4,7 +4,7 @@ using System.Globalization;
 using Xunit;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 
-namespace NanoXLSX_Test.Misc
+namespace NanoXLSX.Test.Misc
 {
     public class UtilsTest
     {

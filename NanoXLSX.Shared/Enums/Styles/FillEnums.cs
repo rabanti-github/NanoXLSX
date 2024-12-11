@@ -5,27 +5,24 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-namespace NanoXLSX.Shared.Enums.Styles
+using NanoXLSX.Shared.Interfaces.Styles;
+
+namespace NanoXLSX.Styles
 {
     /// <summary>
-    /// Class providing shared enums used by implementations of the <see cref="IFill"/> interface // TODO: Define interface
+    /// Enum for the type of the color, used by implementations of the <see cref="IFill"/> interface
     /// </summary>
-    public static class FillEnums
-    {
-        /// <summary>
-        /// Enum for the type of the color
-        /// </summary>
-        public enum FillType
+    public enum FillType
         {
             /// <summary>Color defines a pattern color </summary>
             patternColor,
             /// <summary>Color defines a solid fill color </summary>
             fillColor,
         }
-        /// <summary>
-        /// Enum for the pattern values
-        /// </summary>
-        public enum PatternValue
+    /// <summary>
+    /// Enum for the pattern values, used by implementations of the <see cref="IFill"/> interface
+    /// </summary>
+    public enum PatternValue
         {
             /// <summary>
             /// No pattern (default)
@@ -45,5 +42,4 @@ namespace NanoXLSX.Shared.Enums.Styles
             /// <summary>12.5% gray fill</summary>
             gray125,
         }
-    }
 }

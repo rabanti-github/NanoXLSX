@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace NanoXLSX_Test
+namespace NanoXLSX.Test
 {
     [CollectionDefinition(nameof(SequentialCollection), DisableParallelization = true)]
     public class SequentialCollection

@@ -1,8 +1,6 @@
-﻿using NanoXLS.Shared.Enums.Schemes;
+﻿using NanoXLS.Schemes;
 using NanoXLSX;
-using NanoXLSX.Shared.Enums.Styles;
 using NanoXLSX.Styles;
-using NanoXLSX.Themes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,12 +47,12 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
         [Theory(DisplayName = "Test of the 'underline' value when writing and reading a Font style")]
-        [InlineData(FontEnums.UnderlineValue.u_single, "test")]
-        [InlineData(FontEnums.UnderlineValue.u_double, 0.5f)]
-        [InlineData(FontEnums.UnderlineValue.doubleAccounting, true)]
-        [InlineData(FontEnums.UnderlineValue.singleAccounting, 42)]
-        [InlineData(FontEnums.UnderlineValue.none, "")]
-        public void UnderlineFontTest(FontEnums.UnderlineValue styleValue, object value)
+        [InlineData(UnderlineValue.u_single, "test")]
+        [InlineData(UnderlineValue.u_double, 0.5f)]
+        [InlineData(UnderlineValue.doubleAccounting, true)]
+        [InlineData(UnderlineValue.singleAccounting, 42)]
+        [InlineData(UnderlineValue.none, "")]
+        public void UnderlineFontTest(UnderlineValue styleValue, object value)
         {
             Style style = new Style();
             style.CurrentFont.Underline = styleValue;
@@ -63,10 +61,10 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
         [Theory(DisplayName = "Test of the 'vertical alignment' value when writing and reading a Font style")]
-        [InlineData(FontEnums.VerticalTextAlignValue.subscript, "test")]
-        [InlineData(FontEnums.VerticalTextAlignValue.superscript, 0.5f)]
-        [InlineData(FontEnums.VerticalTextAlignValue.none, true)]
-        public void VerticalAlignFontTest(FontEnums.VerticalTextAlignValue styleValue, object value)
+        [InlineData(VerticalTextAlignValue.subscript, "test")]
+        [InlineData(VerticalTextAlignValue.superscript, 0.5f)]
+        [InlineData(VerticalTextAlignValue.none, true)]
+        public void VerticalAlignFontTest(VerticalTextAlignValue styleValue, object value)
         {
             Style style = new Style();
             style.CurrentFont.VerticalAlign = styleValue;
@@ -87,20 +85,20 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
         [Theory(DisplayName = "Test of the 'theme' value when writing and reading a Font style")]
-        [InlineData(ThemeEnums.ColorSchemeElement.dark1, "test")]
-        [InlineData(ThemeEnums.ColorSchemeElement.light1, 0.5f)]
-        [InlineData(ThemeEnums.ColorSchemeElement.dark2, true)]
-        [InlineData(ThemeEnums.ColorSchemeElement.light2, 42)]
-        [InlineData(ThemeEnums.ColorSchemeElement.accent1, false)]
-        [InlineData(ThemeEnums.ColorSchemeElement.accent2, null)]
-        [InlineData(ThemeEnums.ColorSchemeElement.accent3, " ")]
-        [InlineData(ThemeEnums.ColorSchemeElement.accent4, -3.33f)]
-        [InlineData(ThemeEnums.ColorSchemeElement.accent5, 0)]
-        [InlineData(ThemeEnums.ColorSchemeElement.accent6, "")]
-        [InlineData(ThemeEnums.ColorSchemeElement.hyperlink, "test")]
-        [InlineData(ThemeEnums.ColorSchemeElement.followedHyperlink, 0.5f)]
+        [InlineData(ColorSchemeElement.dark1, "test")]
+        [InlineData(ColorSchemeElement.light1, 0.5f)]
+        [InlineData(ColorSchemeElement.dark2, true)]
+        [InlineData(ColorSchemeElement.light2, 42)]
+        [InlineData(ColorSchemeElement.accent1, false)]
+        [InlineData(ColorSchemeElement.accent2, null)]
+        [InlineData(ColorSchemeElement.accent3, " ")]
+        [InlineData(ColorSchemeElement.accent4, -3.33f)]
+        [InlineData(ColorSchemeElement.accent5, 0)]
+        [InlineData(ColorSchemeElement.accent6, "")]
+        [InlineData(ColorSchemeElement.hyperlink, "test")]
+        [InlineData(ColorSchemeElement.followedHyperlink, 0.5f)]
 
-        public void ThemeFontTest(ThemeEnums.ColorSchemeElement element, object value)
+        public void ThemeFontTest(ColorSchemeElement element, object value)
         {
             Style style = new Style();
             style.CurrentFont.ColorTheme = element;
@@ -131,22 +129,22 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
         [Theory(DisplayName = "Test of the 'family' value when writing and reading a Font style")]
-        [InlineData(FontEnums.FontFamilyValue.Decorative, "test", "test")]
-        [InlineData(FontEnums.FontFamilyValue.Modern, 0.5f, 0.5f)]
-        [InlineData(FontEnums.FontFamilyValue.Roman, true, true)]
-        [InlineData(FontEnums.FontFamilyValue.Script, 42, 42)]
-        [InlineData(FontEnums.FontFamilyValue.Swiss, null, null)]
-        [InlineData(FontEnums.FontFamilyValue.NotApplicable, "", "")]
-        [InlineData(FontEnums.FontFamilyValue.Reserved1, -0.55f, -0.55f)]
-        [InlineData(FontEnums.FontFamilyValue.Reserved2, "test", "test")]
-        [InlineData(FontEnums.FontFamilyValue.Reserved3, false, false)]
-        [InlineData(FontEnums.FontFamilyValue.Reserved4, 0, 0)]
-        [InlineData(FontEnums.FontFamilyValue.Reserved5, long.MaxValue, long.MaxValue)]
-        [InlineData(FontEnums.FontFamilyValue.Reserved6, float.MinValue, float.MinValue)]
-        [InlineData(FontEnums.FontFamilyValue.Reserved7, uint.MaxValue, uint.MaxValue)]
-        [InlineData(FontEnums.FontFamilyValue.Reserved8, ulong.MaxValue, ulong.MaxValue)]
-        [InlineData(FontEnums.FontFamilyValue.Reserved9, SByte.MaxValue, 127)]
-        public void FamilyFontTest(FontEnums.FontFamilyValue styleValue, object givenValue, object expectdValue)
+        [InlineData(FontFamilyValue.Decorative, "test", "test")]
+        [InlineData(FontFamilyValue.Modern, 0.5f, 0.5f)]
+        [InlineData(FontFamilyValue.Roman, true, true)]
+        [InlineData(FontFamilyValue.Script, 42, 42)]
+        [InlineData(FontFamilyValue.Swiss, null, null)]
+        [InlineData(FontFamilyValue.NotApplicable, "", "")]
+        [InlineData(FontFamilyValue.Reserved1, -0.55f, -0.55f)]
+        [InlineData(FontFamilyValue.Reserved2, "test", "test")]
+        [InlineData(FontFamilyValue.Reserved3, false, false)]
+        [InlineData(FontFamilyValue.Reserved4, 0, 0)]
+        [InlineData(FontFamilyValue.Reserved5, long.MaxValue, long.MaxValue)]
+        [InlineData(FontFamilyValue.Reserved6, float.MinValue, float.MinValue)]
+        [InlineData(FontFamilyValue.Reserved7, uint.MaxValue, uint.MaxValue)]
+        [InlineData(FontFamilyValue.Reserved8, ulong.MaxValue, ulong.MaxValue)]
+        [InlineData(FontFamilyValue.Reserved9, SByte.MaxValue, 127)]
+        public void FamilyFontTest(FontFamilyValue styleValue, object givenValue, object expectdValue)
         {
             Style style = new Style();
             
@@ -157,9 +155,9 @@ namespace NanoXLSX_Test.Styles.WriteRead
 
 
         [Theory(DisplayName = "Test of the 'scheme' value when writing and reading a Font style")]
-        [InlineData(FontEnums.SchemeValue.minor, "test")]
-        [InlineData(FontEnums.SchemeValue.major, 0.5f)]
-        public void SchemeFontTest(FontEnums.SchemeValue styleValue, object value)
+        [InlineData(SchemeValue.minor, "test")]
+        [InlineData(SchemeValue.major, 0.5f)]
+        public void SchemeFontTest(SchemeValue styleValue, object value)
         {
             Style style = new Style();
             style.CurrentFont.Scheme = styleValue;
@@ -168,27 +166,27 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
         [Theory(DisplayName = "Test of the 'charset' value when writing and reading a Font style")]
-        [InlineData(FontEnums.CharsetValue.ANSI, "test", "test")]
-        [InlineData(FontEnums.CharsetValue.ApplicationDefined, 0.5f, 0.5f)]
-        [InlineData(FontEnums.CharsetValue.Arabic, true, true)]
-        [InlineData(FontEnums.CharsetValue.Baltic, 42, 42)]
-        [InlineData(FontEnums.CharsetValue.Big5, null, null)]
-        [InlineData(FontEnums.CharsetValue.Default, "", "")]
-        [InlineData(FontEnums.CharsetValue.EasternEuropean, -0.55d, -0.55f)]
-        [InlineData(FontEnums.CharsetValue.GKB, false, false)]
-        [InlineData(FontEnums.CharsetValue.Greek, int.MaxValue, int.MaxValue)]
-        [InlineData(FontEnums.CharsetValue.Hangul, double.MaxValue, double.MaxValue)]
-        [InlineData(FontEnums.CharsetValue.Hebrew, float.MinValue, float.MinValue)]
-        [InlineData(FontEnums.CharsetValue.JIS, SByte.MaxValue, 127)]
-        [InlineData(FontEnums.CharsetValue.Johab, uint.MaxValue, uint.MaxValue)]
-        [InlineData(FontEnums.CharsetValue.Macintosh, long.MaxValue, long.MaxValue)]
-        [InlineData(FontEnums.CharsetValue.OEM, ulong.MaxValue, ulong.MaxValue)]
-        [InlineData(FontEnums.CharsetValue.Russian, -1, -1)]
-        [InlineData(FontEnums.CharsetValue.Symbols, uint.MinValue, 0)]
-        [InlineData(FontEnums.CharsetValue.Thai, " ", " ")]
-        [InlineData(FontEnums.CharsetValue.Turkish, 0.0f, 0)]
-        [InlineData(FontEnums.CharsetValue.Vietnamese, 0x0, 0)]
-        public void CharsetFontTest(FontEnums.CharsetValue styleValue, object givenValue, object expectedValue)
+        [InlineData(CharsetValue.ANSI, "test", "test")]
+        [InlineData(CharsetValue.ApplicationDefined, 0.5f, 0.5f)]
+        [InlineData(CharsetValue.Arabic, true, true)]
+        [InlineData(CharsetValue.Baltic, 42, 42)]
+        [InlineData(CharsetValue.Big5, null, null)]
+        [InlineData(CharsetValue.Default, "", "")]
+        [InlineData(CharsetValue.EasternEuropean, -0.55d, -0.55f)]
+        [InlineData(CharsetValue.GKB, false, false)]
+        [InlineData(CharsetValue.Greek, int.MaxValue, int.MaxValue)]
+        [InlineData(CharsetValue.Hangul, double.MaxValue, double.MaxValue)]
+        [InlineData(CharsetValue.Hebrew, float.MinValue, float.MinValue)]
+        [InlineData(CharsetValue.JIS, SByte.MaxValue, 127)]
+        [InlineData(CharsetValue.Johab, uint.MaxValue, uint.MaxValue)]
+        [InlineData(CharsetValue.Macintosh, long.MaxValue, long.MaxValue)]
+        [InlineData(CharsetValue.OEM, ulong.MaxValue, ulong.MaxValue)]
+        [InlineData(CharsetValue.Russian, -1, -1)]
+        [InlineData(CharsetValue.Symbols, uint.MinValue, 0)]
+        [InlineData(CharsetValue.Thai, " ", " ")]
+        [InlineData(CharsetValue.Turkish, 0.0f, 0)]
+        [InlineData(CharsetValue.Vietnamese, 0x0, 0)]
+        public void CharsetFontTest(CharsetValue styleValue, object givenValue, object expectedValue)
         {
             Style style = new Style();
             style.CurrentFont.Charset = styleValue;

@@ -5,15 +5,12 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-namespace NanoXLSX.Shared.Enums.Styles
+using NanoXLSX.Shared.Interfaces.Styles;
+
+namespace NanoXLSX.Styles
 {
-    /// <summary>
-    /// Class providing shared enums used by implementations of the <see cref="INumberFormat"/> interface // TODO: Define interface
-    /// </summary>
-    public static class NumberFormatEnums
-    {
         /// <summary>
-        /// Enum for predefined number formats
+        /// Enum for predefined number formats, used by implementations of the <see cref="INumberFormat"/> interface
         /// </summary>
         /// <remarks>There are other predefined formats (e.g. 43 and 44) that are not listed. The declaration of such formats is done in the number formats section of the style document, 
         /// whereas the officially listed ones are implicitly used and not declared in the style document</remarks>
@@ -87,10 +84,10 @@ namespace NanoXLSX.Shared.Enums.Styles
             custom = 164,
         }
 
-        /// <summary>
-        /// Range or validity of the format number
-        /// </summary>
-        public enum FormatRange
+    /// <summary>
+    /// Range or validity of the format number, used by implementations of the <see cref="INumberFormat"/> interface
+    /// </summary>
+    public enum FormatRange
         {
             /// <summary>
             /// Format from 0 to 164 (with gaps)
@@ -109,5 +106,4 @@ namespace NanoXLSX.Shared.Enums.Styles
             /// </summary>
             undefined,
         }
-    }
 }

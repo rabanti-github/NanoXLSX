@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NanoXLSX_Test.Cells
+namespace NanoXLSX.Test.Cells
 {
     public class ColumnTest
     {

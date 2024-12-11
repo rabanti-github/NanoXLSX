@@ -1,5 +1,4 @@
-﻿using NanoXLSX.Shared.Enums.Styles;
-using NanoXLSX.Shared.Exceptions;
+﻿using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
 using System;
@@ -9,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NanoXLSX_Test.Styles
+namespace NanoXLSX.Test.Styles
 {
     public class FillTest
     {
@@ -23,13 +22,13 @@ namespace NanoXLSX_Test.Styles
             exampleStyle.BackgroundColor = "FFAABB00";
             exampleStyle.ForegroundColor = "1188FF00";
             exampleStyle.IndexedColor = 99;
-            exampleStyle.PatternFill = FillEnums.PatternValue.darkGray;
+            exampleStyle.PatternFill = PatternValue.darkGray;
 
             comparisonStyle = new Fill();
             exampleStyle.BackgroundColor = "77CCBB00";
             exampleStyle.ForegroundColor = "DD33CC00";
             exampleStyle.IndexedColor = 32;
-            exampleStyle.PatternFill = FillEnums.PatternValue.lightGray;
+            exampleStyle.PatternFill = PatternValue.lightGray;
         }
 
 
@@ -38,7 +37,7 @@ namespace NanoXLSX_Test.Styles
         {
             Assert.Equal("FF000000", Fill.DEFAULT_COLOR);
             Assert.Equal(64, Fill.DEFAULT_INDEXED_COLOR);
-            Assert.Equal(FillEnums.PatternValue.none, Fill.DEFAULT_PATTERN_FILL);
+            Assert.Equal(PatternValue.none, Fill.DEFAULT_PATTERN_FILL);
         }
 
 
@@ -57,20 +56,20 @@ namespace NanoXLSX_Test.Styles
         {
             Fill fill = new Fill("FFAABBCC", "FF001122");
             Assert.Equal(Fill.DEFAULT_INDEXED_COLOR, fill.IndexedColor);
-            Assert.Equal(FillEnums.PatternValue.solid, fill.PatternFill);
+            Assert.Equal(PatternValue.solid, fill.PatternFill);
             Assert.Equal("FFAABBCC", fill.ForegroundColor);
             Assert.Equal("FF001122", fill.BackgroundColor);
         }
 
 
         [Theory(DisplayName = "Test of the constructor with color and fill type")]
-        [InlineData("FFAABBCC", FillEnums.FillType.fillColor, "FFAABBCC", "FF000000")]
-        [InlineData("FF112233", FillEnums.FillType.patternColor, "FF000000", "FF112233")]
-        public void ConstructorTest3(string color, FillEnums.FillType fillType, string expectedForeground, string expectedBackground)
+        [InlineData("FFAABBCC", FillType.fillColor, "FFAABBCC", "FF000000")]
+        [InlineData("FF112233", FillType.patternColor, "FF000000", "FF112233")]
+        public void ConstructorTest3(string color, FillType fillType, string expectedForeground, string expectedBackground)
         {
             Fill fill = new Fill(color, fillType);
             Assert.Equal(Fill.DEFAULT_INDEXED_COLOR, fill.IndexedColor);
-            Assert.Equal(FillEnums.PatternValue.solid, fill.PatternFill);
+            Assert.Equal(PatternValue.solid, fill.PatternFill);
             Assert.Equal(expectedForeground, fill.ForegroundColor);
             Assert.Equal(expectedBackground, fill.BackgroundColor);
         }
@@ -96,17 +95,17 @@ namespace NanoXLSX_Test.Styles
 
 
         [Theory(DisplayName = "Test of the failing constructor with color and fill type")]
-        [InlineData("", FillEnums.FillType.fillColor)]
-        [InlineData(null, FillEnums.FillType.fillColor)]
-        [InlineData("x", FillEnums.FillType.fillColor)]
-        [InlineData("FFAABBCCDD", FillEnums.FillType.fillColor)]
-        [InlineData("FFAABB", FillEnums.FillType.fillColor)]
-        [InlineData("", FillEnums.FillType.patternColor)]
-        [InlineData(null, FillEnums.FillType.patternColor)]
-        [InlineData("x", FillEnums.FillType.patternColor)]
-        [InlineData("FFAABBCCDD", FillEnums.FillType.patternColor)]
-        [InlineData("FFAABB", FillEnums.FillType.patternColor)]
-        public void ConstructorFailTest2(string color, FillEnums.FillType fillType)
+        [InlineData("", FillType.fillColor)]
+        [InlineData(null, FillType.fillColor)]
+        [InlineData("x", FillType.fillColor)]
+        [InlineData("FFAABBCCDD", FillType.fillColor)]
+        [InlineData("FFAABB", FillType.fillColor)]
+        [InlineData("", FillType.patternColor)]
+        [InlineData(null, FillType.patternColor)]
+        [InlineData("x", FillType.patternColor)]
+        [InlineData("FFAABBCCDD", FillType.patternColor)]
+        [InlineData("FFAABB", FillType.patternColor)]
+        public void ConstructorFailTest2(string color, FillType fillType)
         {
             Assert.Throws<StyleException>(() => new Fill(color, fillType));
         }
@@ -174,14 +173,14 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the PatternFill property")]
-        [InlineData(FillEnums.PatternValue.darkGray)]
-        [InlineData(FillEnums.PatternValue.gray0625)]
-        [InlineData(FillEnums.PatternValue.gray125)]
-        [InlineData(FillEnums.PatternValue.lightGray)]
-        [InlineData(FillEnums.PatternValue.mediumGray)]
-        [InlineData(FillEnums.PatternValue.none)]
-        [InlineData(FillEnums.PatternValue.solid)]
-        public void PatternFillTest(FillEnums.PatternValue value)
+        [InlineData(PatternValue.darkGray)]
+        [InlineData(PatternValue.gray0625)]
+        [InlineData(PatternValue.gray125)]
+        [InlineData(PatternValue.lightGray)]
+        [InlineData(PatternValue.mediumGray)]
+        [InlineData(PatternValue.none)]
+        [InlineData(PatternValue.solid)]
+        public void PatternFillTest(PatternValue value)
         {
             Fill fill = new Fill();
             Assert.Equal(Fill.DEFAULT_PATTERN_FILL, fill.PatternFill); // default is none
@@ -190,17 +189,17 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the SetColor function")]
-        [InlineData("FFAABBCC", FillEnums.FillType.fillColor, "FFAABBCC", "FF000000")]
-        [InlineData("FF112233", FillEnums.FillType.patternColor, "FF000000", "FF112233")]
-        public void SetColorTest(string color, FillEnums.FillType fillType, string expectedForeground, string expectedBackground)
+        [InlineData("FFAABBCC", FillType.fillColor, "FFAABBCC", "FF000000")]
+        [InlineData("FF112233", FillType.patternColor, "FF000000", "FF112233")]
+        public void SetColorTest(string color, FillType fillType, string expectedForeground, string expectedBackground)
         {
             Fill fill = new Fill();
             Assert.Equal(Fill.DEFAULT_COLOR, fill.ForegroundColor);
             Assert.Equal(Fill.DEFAULT_COLOR, fill.BackgroundColor);
-            Assert.Equal(FillEnums.PatternValue.none, fill.PatternFill);
+            Assert.Equal(PatternValue.none, fill.PatternFill);
             fill.SetColor(color, fillType);
             Assert.Equal(Fill.DEFAULT_INDEXED_COLOR, fill.IndexedColor);
-            Assert.Equal(FillEnums.PatternValue.solid, fill.PatternFill);
+            Assert.Equal(PatternValue.solid, fill.PatternFill);
             Assert.Equal(expectedForeground, fill.ForegroundColor);
             Assert.Equal(expectedBackground, fill.BackgroundColor);
         }
@@ -282,7 +281,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2d()
         {
             Fill style2 = (Fill)exampleStyle.Copy();
-            style2.PatternFill = FillEnums.PatternValue.solid;
+            style2.PatternFill = PatternValue.solid;
             Assert.False(exampleStyle.Equals(style2));
         }
 

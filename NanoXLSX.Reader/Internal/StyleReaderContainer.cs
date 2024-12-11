@@ -236,7 +236,7 @@ namespace NanoXLSX.Internal
                     return fonts[index];
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Ignore
             }

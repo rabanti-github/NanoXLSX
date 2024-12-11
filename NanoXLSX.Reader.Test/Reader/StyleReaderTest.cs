@@ -72,7 +72,7 @@ namespace NanoXLSX_Test.Reader
                 styleReader.Read(memStream);
 
                 NumberFormat numberFormat = styleReader.StyleReaderContainer.GetNumberFormat(formatId);
-                Assert.NotSame(null, numberFormat);
+                Assert.NotNull(numberFormat);
             }
         }
 
@@ -98,7 +98,7 @@ namespace NanoXLSX_Test.Reader
                 styleReader.Read(memStream);
 
                 NumberFormat numberFormat = styleReader.StyleReaderContainer.GetNumberFormat(formatId);
-                Assert.Same(null, numberFormat);
+                Assert.Null(numberFormat);
             }
         }
 
@@ -127,10 +127,10 @@ namespace NanoXLSX_Test.Reader
                 styleReader.Read(memStream);
                 Assert.Equal(15, styleReader.StyleReaderContainer.StyleCount);
 
-                NanoXLSX.Shared.Enums.Styles.NumberFormatEnums.FormatNumber formatNumber = styleReader.StyleReaderContainer.GetStyle(14, out var isDateStyle, out _).CurrentNumberFormat.Number;
+                FormatNumber formatNumber = styleReader.StyleReaderContainer.GetStyle(14, out var isDateStyle, out _).CurrentNumberFormat.Number;
 
-                Assert.Equal(true, isDateStyle);
-                Assert.Equal(NanoXLSX.Shared.Enums.Styles.NumberFormatEnums.FormatNumber.format_14, formatNumber);
+                Assert.True(isDateStyle);
+                Assert.Equal(FormatNumber.format_14, formatNumber);
             }
         }
     }

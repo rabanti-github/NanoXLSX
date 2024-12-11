@@ -1,5 +1,4 @@
 ﻿using NanoXLSX;
-using NanoXLSX.Shared.Enums.Styles;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
@@ -39,10 +38,10 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
         [Theory(DisplayName = "Test of the 'Alignment' value when writing and reading a CellXF style")]
-        [InlineData(CellXfEnums.TextBreakValue.shrinkToFit, "test")]
-        [InlineData(CellXfEnums.TextBreakValue.wrapText, 0.5f)]
-        [InlineData(CellXfEnums.TextBreakValue.none, true)]
-        public void AlignmentCellXfTest(CellXfEnums.TextBreakValue styleValue, object value)
+        [InlineData(TextBreakValue.shrinkToFit, "test")]
+        [InlineData(TextBreakValue.wrapText, 0.5f)]
+        [InlineData(TextBreakValue.none, true)]
+        public void AlignmentCellXfTest(TextBreakValue styleValue, object value)
         {
             Style style = new Style();
             style.CurrentCellXf.Alignment = styleValue;
@@ -51,16 +50,16 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
         [Theory(DisplayName = "Test of the 'HorizontalAlign' value when writing and reading a CellXF style")]
-        [InlineData(CellXfEnums.HorizontalAlignValue.justify, "test")]
-        [InlineData(CellXfEnums.HorizontalAlignValue.center, 0.5f)]
-        [InlineData(CellXfEnums.HorizontalAlignValue.centerContinuous, true)]
-        [InlineData(CellXfEnums.HorizontalAlignValue.distributed, 22)]
-        [InlineData(CellXfEnums.HorizontalAlignValue.fill, false)]
-        [InlineData(CellXfEnums.HorizontalAlignValue.general, "")]
-        [InlineData(CellXfEnums.HorizontalAlignValue.left, -2.11f)]
-        [InlineData(CellXfEnums.HorizontalAlignValue.right, "test")]
-        [InlineData(CellXfEnums.HorizontalAlignValue.none, " ")]
-        public void HorizontalAlignCellXfTest(CellXfEnums.HorizontalAlignValue styleValue, object value)
+        [InlineData(HorizontalAlignValue.justify, "test")]
+        [InlineData(HorizontalAlignValue.center, 0.5f)]
+        [InlineData(HorizontalAlignValue.centerContinuous, true)]
+        [InlineData(HorizontalAlignValue.distributed, 22)]
+        [InlineData(HorizontalAlignValue.fill, false)]
+        [InlineData(HorizontalAlignValue.general, "")]
+        [InlineData(HorizontalAlignValue.left, -2.11f)]
+        [InlineData(HorizontalAlignValue.right, "test")]
+        [InlineData(HorizontalAlignValue.none, " ")]
+        public void HorizontalAlignCellXfTest(HorizontalAlignValue styleValue, object value)
         {
             Style style = new Style();
             style.CurrentCellXf.HorizontalAlign = styleValue;
@@ -69,13 +68,13 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
         [Theory(DisplayName = "Test of the 'VerticalAlign' value when writing and reading a CellXF style")]
-        [InlineData(CellXfEnums.VerticalAlignValue.justify, "test")]
-        [InlineData(CellXfEnums.VerticalAlignValue.center, 0.5f)]
-        [InlineData(CellXfEnums.VerticalAlignValue.bottom, true)]
-        [InlineData(CellXfEnums.VerticalAlignValue.top, 22)]
-        [InlineData(CellXfEnums.VerticalAlignValue.distributed, false)]
-        [InlineData(CellXfEnums.VerticalAlignValue.none, " ")]
-        public void VerticalAlignCellXfTest(CellXfEnums.VerticalAlignValue styleValue, object value)
+        [InlineData(VerticalAlignValue.justify, "test")]
+        [InlineData(VerticalAlignValue.center, 0.5f)]
+        [InlineData(VerticalAlignValue.bottom, true)]
+        [InlineData(VerticalAlignValue.top, 22)]
+        [InlineData(VerticalAlignValue.distributed, false)]
+        [InlineData(VerticalAlignValue.none, " ")]
+        public void VerticalAlignCellXfTest(VerticalAlignValue styleValue, object value)
         {
             Style style = new Style();
             style.CurrentCellXf.VerticalAlign = styleValue;
@@ -84,23 +83,23 @@ namespace NanoXLSX_Test.Styles.WriteRead
         }
 
         [Theory(DisplayName = "Test of the 'Indent' value when writing and reading a CellXF style")]
-        [InlineData(0, CellXfEnums.HorizontalAlignValue.left, 0, "test")]
-        [InlineData(0, CellXfEnums.HorizontalAlignValue.right, 0, "test")]
-        [InlineData(0, CellXfEnums.HorizontalAlignValue.distributed, 0, "test")]
-        [InlineData(0, CellXfEnums.HorizontalAlignValue.center, 0, "test")]
-        [InlineData(1, CellXfEnums.HorizontalAlignValue.left, 1, 0.5f)]
-        [InlineData(1, CellXfEnums.HorizontalAlignValue.right, 1, 0.5f)]
-        [InlineData(1, CellXfEnums.HorizontalAlignValue.distributed, 1, 0.5f)]
-        [InlineData(1, CellXfEnums.HorizontalAlignValue.center, 0, 0.5f)]
-        [InlineData(5, CellXfEnums.HorizontalAlignValue.left, 5, true)]
-        [InlineData(5, CellXfEnums.HorizontalAlignValue.right, 5, true)]
-        [InlineData(5, CellXfEnums.HorizontalAlignValue.distributed, 5, true)]
-        [InlineData(5, CellXfEnums.HorizontalAlignValue.center, 0, true)]
-        [InlineData(64, CellXfEnums.HorizontalAlignValue.left, 64, 22)]
-        [InlineData(64, CellXfEnums.HorizontalAlignValue.right, 64, 22)]
-        [InlineData(64, CellXfEnums.HorizontalAlignValue.distributed, 64, 22)]
-        [InlineData(64, CellXfEnums.HorizontalAlignValue.center, 0, 22)]
-        public void IndentCellXfTest(int styleValue, CellXfEnums.HorizontalAlignValue alignValue, int expectedIndent, object value)
+        [InlineData(0, HorizontalAlignValue.left, 0, "test")]
+        [InlineData(0, HorizontalAlignValue.right, 0, "test")]
+        [InlineData(0, HorizontalAlignValue.distributed, 0, "test")]
+        [InlineData(0, HorizontalAlignValue.center, 0, "test")]
+        [InlineData(1, HorizontalAlignValue.left, 1, 0.5f)]
+        [InlineData(1, HorizontalAlignValue.right, 1, 0.5f)]
+        [InlineData(1, HorizontalAlignValue.distributed, 1, 0.5f)]
+        [InlineData(1, HorizontalAlignValue.center, 0, 0.5f)]
+        [InlineData(5, HorizontalAlignValue.left, 5, true)]
+        [InlineData(5, HorizontalAlignValue.right, 5, true)]
+        [InlineData(5, HorizontalAlignValue.distributed, 5, true)]
+        [InlineData(5, HorizontalAlignValue.center, 0, true)]
+        [InlineData(64, HorizontalAlignValue.left, 64, 22)]
+        [InlineData(64, HorizontalAlignValue.right, 64, 22)]
+        [InlineData(64, HorizontalAlignValue.distributed, 64, 22)]
+        [InlineData(64, HorizontalAlignValue.center, 0, 22)]
+        public void IndentCellXfTest(int styleValue, HorizontalAlignValue alignValue, int expectedIndent, object value)
         {
             Style style = new Style();
             style.CurrentCellXf.HorizontalAlign = alignValue;

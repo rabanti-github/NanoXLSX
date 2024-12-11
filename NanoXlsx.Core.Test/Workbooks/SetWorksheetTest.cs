@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NanoXLSX_Test.Workbooks
+namespace NanoXLSX.Test.Workbooks
 {
     public class SetWorksheetTest
     {

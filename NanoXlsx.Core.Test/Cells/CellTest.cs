@@ -2,17 +2,16 @@
 using NanoXLSX;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
-using NanoXLSX_Test.Cells.Types;
+using NanoXLSX.Test.Cells.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using static NanoXLSX.Shared.Enums.Styles.CellXfEnums;
 using static NanoXLSX.Cell;
 
-namespace NanoXLSX_Test.Cells
+namespace NanoXLSX.Test.Cells
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]

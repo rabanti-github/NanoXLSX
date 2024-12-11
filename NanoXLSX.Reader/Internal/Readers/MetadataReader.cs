@@ -77,7 +77,7 @@ namespace NanoXLSX.Internal.Readers
         {
             if (stream == null)
             {
-                // No metadatan available in xlsx file
+                // No metadata available in xlsx file
                 return;
             }
             try
@@ -127,7 +127,7 @@ namespace NanoXLSX.Internal.Readers
         {
             if (stream == null)
             {
-                // No metadatan available in xlsx file
+                // No metadata available in xlsx file
                 return;
             }
             try

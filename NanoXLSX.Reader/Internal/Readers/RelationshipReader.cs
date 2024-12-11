@@ -35,7 +35,7 @@ namespace NanoXLSX.Internal.Readers
         /// Reads the XML file form the passed stream and processes the workbook relationship document
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
-        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="IOException">Throws IOException in case of an error</exception>
         public void Read(MemoryStream stream)
         {
             if (stream == null) return;

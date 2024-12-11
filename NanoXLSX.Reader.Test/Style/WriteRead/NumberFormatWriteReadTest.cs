@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
 
 namespace NanoXLSX_Test.Styles.WriteRead
 {

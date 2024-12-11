@@ -4,6 +4,9 @@ using NanoXLSX.Shared.Exceptions;
 
 namespace NanoXLSX.Shared.Utils
 {
+    /// <summary>
+    /// Class providing general validator methods 
+    /// </summary>
     public static class Validators
     {
         /// <summary>

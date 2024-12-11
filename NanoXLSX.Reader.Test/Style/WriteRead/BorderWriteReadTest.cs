@@ -1,5 +1,4 @@
-using NanoXLSX;
-using NanoXLSX.Shared.Enums.Styles;
+﻿using NanoXLSX;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
@@ -33,14 +32,14 @@ namespace NanoXLSX_Test.Styles.WriteRead
         {
             Style style = new Style();
             style.CurrentBorder.DiagonalColor = color;
-            style.CurrentBorder.DiagonalStyle = BorderEnums.StyleValue.dashDot;
+            style.CurrentBorder.DiagonalStyle = StyleValue.dashDot;
             style.CurrentBorder.DiagonalUp = diagonalUp;
             style.CurrentBorder.DiagonalDown = diagonalDown;
 
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.DiagonalColor);
-            Assert.Equal(BorderEnums.StyleValue.dashDot, cell.CellStyle.CurrentBorder.DiagonalStyle);
+            Assert.Equal(StyleValue.dashDot, cell.CellStyle.CurrentBorder.DiagonalStyle);
             Assert.Equal(diagonalUp, cell.CellStyle.CurrentBorder.DiagonalUp);
             Assert.Equal(diagonalDown, cell.CellStyle.CurrentBorder.DiagonalDown);
         }
@@ -55,12 +54,12 @@ namespace NanoXLSX_Test.Styles.WriteRead
         {
             Style style = new Style();
             style.CurrentBorder.TopColor = color;
-            style.CurrentBorder.TopStyle = BorderEnums.StyleValue.s_double;
+            style.CurrentBorder.TopStyle = StyleValue.s_double;
 
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.TopColor);
-            Assert.Equal(BorderEnums.StyleValue.s_double, cell.CellStyle.CurrentBorder.TopStyle);
+            Assert.Equal(StyleValue.s_double, cell.CellStyle.CurrentBorder.TopStyle);
         }
 
 
@@ -74,12 +73,12 @@ namespace NanoXLSX_Test.Styles.WriteRead
         {
             Style style = new Style();
             style.CurrentBorder.BottomColor = color;
-            style.CurrentBorder.BottomStyle = BorderEnums.StyleValue.thin;
+            style.CurrentBorder.BottomStyle = StyleValue.thin;
 
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.BottomColor);
-            Assert.Equal(BorderEnums.StyleValue.thin, cell.CellStyle.CurrentBorder.BottomStyle);
+            Assert.Equal(StyleValue.thin, cell.CellStyle.CurrentBorder.BottomStyle);
         }
 
         [Theory(DisplayName = "Test of the 'left' value when writing and reading a Border style")]
@@ -92,12 +91,12 @@ namespace NanoXLSX_Test.Styles.WriteRead
         {
             Style style = new Style();
             style.CurrentBorder.LeftColor = color;
-            style.CurrentBorder.LeftStyle = BorderEnums.StyleValue.dashDotDot;
+            style.CurrentBorder.LeftStyle = StyleValue.dashDotDot;
 
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.LeftColor);
-            Assert.Equal(BorderEnums.StyleValue.dashDotDot, cell.CellStyle.CurrentBorder.LeftStyle);
+            Assert.Equal(StyleValue.dashDotDot, cell.CellStyle.CurrentBorder.LeftStyle);
         }
 
         [Theory(DisplayName = "Test of the 'right' value when writing and reading a Border style")]
@@ -110,30 +109,30 @@ namespace NanoXLSX_Test.Styles.WriteRead
         {
             Style style = new Style();
             style.CurrentBorder.RightColor = color;
-            style.CurrentBorder.RightStyle = BorderEnums.StyleValue.dashed;
+            style.CurrentBorder.RightStyle = StyleValue.dashed;
 
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.RightColor);
-            Assert.Equal(BorderEnums.StyleValue.dashed, cell.CellStyle.CurrentBorder.RightStyle);
+            Assert.Equal(StyleValue.dashed, cell.CellStyle.CurrentBorder.RightStyle);
         }
 
         [Theory(DisplayName = "Test of the 'styleValue' property when writing and reading a Font style")]
-        [InlineData(BorderEnums.StyleValue.dashDotDot, BorderDirection.Bottom)]
-        [InlineData(BorderEnums.StyleValue.dashDot, BorderDirection.Top)]
-        [InlineData(BorderEnums.StyleValue.dashed, BorderDirection.Left)]
-        [InlineData(BorderEnums.StyleValue.dotted, BorderDirection.Right)]
-        [InlineData(BorderEnums.StyleValue.hair, BorderDirection.Diagonal)]
-        [InlineData(BorderEnums.StyleValue.medium, BorderDirection.Bottom)]
-        [InlineData(BorderEnums.StyleValue.mediumDashDot, BorderDirection.Top)]
-        [InlineData(BorderEnums.StyleValue.mediumDashDotDot, BorderDirection.Left)]
-        [InlineData(BorderEnums.StyleValue.mediumDashed, BorderDirection.Right)]
-        [InlineData(BorderEnums.StyleValue.slantDashDot, BorderDirection.Diagonal)]
-        [InlineData(BorderEnums.StyleValue.thin, BorderDirection.Bottom)]
-        [InlineData(BorderEnums.StyleValue.s_double, BorderDirection.Top)]
-        [InlineData(BorderEnums.StyleValue.thick, BorderDirection.Left)]
-        [InlineData(BorderEnums.StyleValue.none, BorderDirection.Right)]
-        public void BorderStyleTest(BorderEnums.StyleValue styleValue, BorderDirection direction)
+        [InlineData(StyleValue.dashDotDot, BorderDirection.Bottom)]
+        [InlineData(StyleValue.dashDot, BorderDirection.Top)]
+        [InlineData(StyleValue.dashed, BorderDirection.Left)]
+        [InlineData(StyleValue.dotted, BorderDirection.Right)]
+        [InlineData(StyleValue.hair, BorderDirection.Diagonal)]
+        [InlineData(StyleValue.medium, BorderDirection.Bottom)]
+        [InlineData(StyleValue.mediumDashDot, BorderDirection.Top)]
+        [InlineData(StyleValue.mediumDashDotDot, BorderDirection.Left)]
+        [InlineData(StyleValue.mediumDashed, BorderDirection.Right)]
+        [InlineData(StyleValue.slantDashDot, BorderDirection.Diagonal)]
+        [InlineData(StyleValue.thin, BorderDirection.Bottom)]
+        [InlineData(StyleValue.s_double, BorderDirection.Top)]
+        [InlineData(StyleValue.thick, BorderDirection.Left)]
+        [InlineData(StyleValue.none, BorderDirection.Right)]
+        public void BorderStyleTest(StyleValue styleValue, BorderDirection direction)
         {
             Style style = new Style();
             switch (direction)

@@ -1,18 +1,15 @@
-﻿using NanoXLS.Shared.Enums.Schemes;
-using NanoXLSX.Shared.Enums.Styles;
-using NanoXLSX.Shared.Exceptions;
+﻿using NanoXLS.Schemes;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
-using NanoXLSX.Themes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using static NanoXLSX.Shared.Enums.Styles.FontEnums;
 
-namespace NanoXLSX_Test.Styles
+
+namespace NanoXLSX.Test.Styles
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]
@@ -32,7 +29,7 @@ namespace NanoXLSX_Test.Styles
             exampleStyle.Size = 15;
             exampleStyle.Name = "Arial";
             exampleStyle.Family = FontFamilyValue.Script;
-            exampleStyle.ColorTheme = ThemeEnums.ColorSchemeElement.accent5;
+            exampleStyle.ColorTheme = ColorSchemeElement.accent5;
             exampleStyle.ColorValue = "FF22AACC";
             exampleStyle.Scheme = SchemeValue.minor;
             exampleStyle.VerticalAlign = VerticalTextAlignValue.subscript;
@@ -61,7 +58,7 @@ namespace NanoXLSX_Test.Styles
             Assert.Equal(Font.DEFAULT_VERTICAL_ALIGN, font.VerticalAlign);
             Assert.Equal("", font.ColorValue);
             Assert.Equal(CharsetValue.Default, font.Charset);
-            Assert.Equal(ThemeEnums.ColorSchemeElement.light1, font.ColorTheme);
+            Assert.Equal(ColorSchemeElement.light1, font.ColorTheme);
         }
 
 
@@ -211,22 +208,22 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the get and set function of the ColorTheme property")]
-        [InlineData(ThemeEnums.ColorSchemeElement.dark1)]
-        [InlineData(ThemeEnums.ColorSchemeElement.light1)]
-        [InlineData(ThemeEnums.ColorSchemeElement.dark2)]
-        [InlineData(ThemeEnums.ColorSchemeElement.light2)]
-        [InlineData(ThemeEnums.ColorSchemeElement.accent1)]
-        [InlineData(ThemeEnums.ColorSchemeElement.accent2)]
-        [InlineData(ThemeEnums.ColorSchemeElement.accent3)]
-        [InlineData(ThemeEnums.ColorSchemeElement.accent4)]
-        [InlineData(ThemeEnums.ColorSchemeElement.accent5)]
-        [InlineData(ThemeEnums.ColorSchemeElement.accent6)]
-        [InlineData(ThemeEnums.ColorSchemeElement.hyperlink)]
-        [InlineData(ThemeEnums.ColorSchemeElement.followedHyperlink)]
-        public void ColorThemeTest(ThemeEnums.ColorSchemeElement element)
+        [InlineData(ColorSchemeElement.dark1)]
+        [InlineData(ColorSchemeElement.light1)]
+        [InlineData(ColorSchemeElement.dark2)]
+        [InlineData(ColorSchemeElement.light2)]
+        [InlineData(ColorSchemeElement.accent1)]
+        [InlineData(ColorSchemeElement.accent2)]
+        [InlineData(ColorSchemeElement.accent3)]
+        [InlineData(ColorSchemeElement.accent4)]
+        [InlineData(ColorSchemeElement.accent5)]
+        [InlineData(ColorSchemeElement.accent6)]
+        [InlineData(ColorSchemeElement.hyperlink)]
+        [InlineData(ColorSchemeElement.followedHyperlink)]
+        public void ColorThemeTest(ColorSchemeElement element)
         {
             Font font = new Font();
-            Assert.Equal(ThemeEnums.ColorSchemeElement.light1, font.ColorTheme); // light1 is default
+            Assert.Equal(ColorSchemeElement.light1, font.ColorTheme); // light1 is default
             font.ColorTheme = element;
             Assert.Equal(element, font.ColorTheme);
         }
@@ -289,11 +286,11 @@ namespace NanoXLSX_Test.Styles
         }
 
         [Theory(DisplayName = "Test of the automatic assignment of font schemes on font names")]
-        [InlineData("Calibri",  FontEnums.SchemeValue.minor)]
-        [InlineData("Calibri Light", FontEnums.SchemeValue.major)]
-        [InlineData("Arial", FontEnums.SchemeValue.none)]
-        [InlineData("---", FontEnums.SchemeValue.none)] // Not a font but a valid string
-        public void ValidateFontSchemeTest(string fontName, FontEnums.SchemeValue scheme)
+        [InlineData("Calibri",  SchemeValue.minor)]
+        [InlineData("Calibri Light", SchemeValue.major)]
+        [InlineData("Arial", SchemeValue.none)]
+        [InlineData("---", SchemeValue.none)] // Not a font but a valid string
+        public void ValidateFontSchemeTest(string fontName, SchemeValue scheme)
         {
             Font font = new Font();
             font.Name = fontName;
@@ -382,7 +379,7 @@ namespace NanoXLSX_Test.Styles
         public void EqualsTest2j()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.ColorTheme = ThemeEnums.ColorSchemeElement.light2;
+            style2.ColorTheme = ColorSchemeElement.light2;
             Assert.False(exampleStyle.Equals(style2));
         }
 

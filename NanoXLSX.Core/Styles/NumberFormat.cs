@@ -8,15 +8,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using NanoXLSX.Shared.Interfaces.Styles;
 using NanoXLSX.Shared.Exceptions;
-using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
 
 namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Class representing a NumberFormat entry. The NumberFormat entry is used to define cell formats like currency or date
     /// </summary>
-    public class NumberFormat : AbstractStyle
+    public class NumberFormat : AbstractStyle, INumberFormat
     {
         #region constants
         /// <summary>
@@ -38,7 +38,7 @@ namespace NanoXLSX.Styles
 
         #region properties
         /// <summary>
-        /// Gets or sets the raw custom format code in the notation of Excel. <b>The code is not escaped or un-escaped (on workbook loading)</b>
+        /// Gets or sets the raw custom format code in the notation of Excel. <b>The code is not escaped or unescaped (on workbook loading)</b>
         /// </summary>
         /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if passed value is null or empty</exception>
         /// <remarks>Currently, there is no auto-escaping applied to custom format strings. For instance, to add a white space, internally it is escaped by a backspace (\ ).

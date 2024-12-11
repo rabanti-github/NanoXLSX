@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Xunit;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 
-namespace NanoXLSX.Shared_Test.Misc
+namespace NanoXLSX.Shared.Test.Misc
 {
     public class ExceptionTest
     {

@@ -7,15 +7,15 @@
 
 using System.Collections.Generic;
 using System.Text;
+using NanoXLSX.Shared.Interfaces.Styles;
 using NanoXLSX.Shared.Utils;
-using static NanoXLSX.Shared.Enums.Styles.FillEnums;
 
 namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Class representing a Fill (background) entry. The Fill entry is used to define background colors and fill patterns
     /// </summary>
-    public class Fill : AbstractStyle
+    public class Fill : AbstractStyle, IFill
     {
         #region constants
         /// <summary>

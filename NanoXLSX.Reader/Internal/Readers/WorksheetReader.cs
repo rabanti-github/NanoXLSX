@@ -24,7 +24,7 @@ namespace NanoXLSX.Internal.Readers
         #region privateFields
 
         private SharedStringsReader sharedStrings;
-        private ReaderOptions importOptions;
+        private ReaderOptions readerOptions;
         private List<string> dateStyles;
         private List<string> timeStyles;
         private Dictionary<string, Style> resolvedStyles;
@@ -135,7 +135,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="options">Import options to override the automatic approach of the reader. <see cref="ReaderOptions"/> for information about import options.</param>
         public WorksheetReader(SharedStringsReader sharedStrings, StyleReaderContainer styleReaderContainer, ReaderOptions options = null)
         {
-            importOptions = options;
+            readerOptions = options;
             Data = new Dictionary<string, Cell>();
             this.sharedStrings = sharedStrings;
             ProcessStyles(styleReaderContainer);
@@ -539,12 +539,9 @@ namespace NanoXLSX.Internal.Readers
                 }
                 attribute = ReaderUtils.GetAttribute(columnNode, "style");
                 Style defaultStyle = null;
-                if (attribute != null)
+                if (attribute != null && resolvedStyles.ContainsKey(attribute))
                 {
-                    if (resolvedStyles.ContainsKey(attribute))
-                    {
-                        defaultStyle = resolvedStyles[attribute];
-                    }
+                    defaultStyle = resolvedStyles[attribute];
                 }
                 foreach (int index in indices)
                 {
@@ -657,9 +654,9 @@ namespace NanoXLSX.Internal.Readers
                 rawValue = raw;
             }
             Address cellAddress = new Address(address);
-            if (importOptions != null)
+            if (readerOptions != null)
             {
-                if (importOptions.EnforcedColumnTypes.Count > 0)
+                if (readerOptions.EnforcedColumnTypes.Count > 0)
                 {
                     rawValue = GetEnforcedColumnValue(rawValue, importedType, cellAddress);
                 }
@@ -723,11 +720,11 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Modified value</returns>
         private object GetGloballyEnforcedFlagValues(object data, Address address)
         {
-            if (address.Row < importOptions.EnforcingStartRowNumber)
+            if (address.Row < readerOptions.EnforcingStartRowNumber)
             {
                 return data;
             }
-            if (importOptions.EnforceDateTimesAsNumbers)
+            if (readerOptions.EnforceDateTimesAsNumbers)
             {
                 if (data is DateTime)
                 {
@@ -738,7 +735,7 @@ namespace NanoXLSX.Internal.Readers
                     data = Utils.GetOATime((TimeSpan)data);
                 }
             }
-            if (importOptions.EnforceEmptyValuesAsString && data == null)
+            if (readerOptions.EnforceEmptyValuesAsString && data == null)
             {
                 return "";
             }
@@ -753,11 +750,11 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Converted value</returns>
         private object GetGloballyEnforcedValue(object data, Address address)
         {
-            if (address.Row < importOptions.EnforcingStartRowNumber)
+            if (address.Row < readerOptions.EnforcingStartRowNumber)
             {
                 return data;
             }
-            if (importOptions.GlobalEnforcingType == ReaderOptions.GlobalType.AllNumbersToDouble)
+            if (readerOptions.GlobalEnforcingType == ReaderOptions.GlobalType.AllNumbersToDouble)
             {
                 object tempDouble = ConvertToDouble(data);
                 if (tempDouble != null)
@@ -765,7 +762,7 @@ namespace NanoXLSX.Internal.Readers
                     return tempDouble;
                 }
             }
-            else if (importOptions.GlobalEnforcingType == ReaderOptions.GlobalType.AllNumbersToDecimal)
+            else if (readerOptions.GlobalEnforcingType == ReaderOptions.GlobalType.AllNumbersToDecimal)
             {
                 object tempDecimal = ConvertToDecimal(data);
                 if (tempDecimal != null)
@@ -773,7 +770,7 @@ namespace NanoXLSX.Internal.Readers
                     return tempDecimal;
                 }
             }
-            else if (importOptions.GlobalEnforcingType == ReaderOptions.GlobalType.AllNumbersToInt)
+            else if (readerOptions.GlobalEnforcingType == ReaderOptions.GlobalType.AllNumbersToInt)
             {
                 object tempInt = ConvertToInt(data);
                 if (tempInt != null)
@@ -781,7 +778,7 @@ namespace NanoXLSX.Internal.Readers
                     return tempInt;
                 }
             }
-            else if (importOptions.GlobalEnforcingType == ReaderOptions.GlobalType.EverythingToString)
+            else if (readerOptions.GlobalEnforcingType == ReaderOptions.GlobalType.EverythingToString)
             {
                 return ConvertToString(data);
             }
@@ -797,11 +794,11 @@ namespace NanoXLSX.Internal.Readers
         /// <returns></returns>
         private object GetEnforcedColumnValue(object data, Cell.CellType importedTyp, Address address)
         {
-            if (address.Row < importOptions.EnforcingStartRowNumber)
+            if (address.Row < readerOptions.EnforcingStartRowNumber)
             {
                 return data;
             }
-            if (!importOptions.EnforcedColumnTypes.ContainsKey(address.Column))
+            if (!readerOptions.EnforcedColumnTypes.ContainsKey(address.Column))
             {
                 return data;
             }
@@ -809,7 +806,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 return data;
             }
-            switch (importOptions.EnforcedColumnTypes[address.Column])
+            switch (readerOptions.EnforcedColumnTypes[address.Column])
             {
                 case ReaderOptions.ColumnType.Numeric:
                     return GetNumericValue(data, importedTyp);
@@ -996,7 +993,6 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Integer value or null if not possible to convert</returns>
         private object ConvertToInt(object data)
         {
-            object tempValue;
             double tempDouble;
             switch (data)
             {
@@ -1081,13 +1077,13 @@ namespace NanoXLSX.Internal.Readers
         {
             DateTime dateTime;
             bool isDateTime;
-            if (importOptions == null || string.IsNullOrEmpty(importOptions.DateTimeFormat) || importOptions.TemporalCultureInfo == null)
+            if (readerOptions == null || string.IsNullOrEmpty(readerOptions.DateTimeFormat) || readerOptions.TemporalCultureInfo == null)
             {
                 isDateTime = DateTime.TryParse(raw, ReaderOptions.DEFAULT_CULTURE_INFO, DateTimeStyles.None, out dateTime);
             }
             else
             {
-                isDateTime = DateTime.TryParseExact(raw, importOptions.DateTimeFormat, importOptions.TemporalCultureInfo, DateTimeStyles.None, out dateTime);
+                isDateTime = DateTime.TryParseExact(raw, readerOptions.DateTimeFormat, readerOptions.TemporalCultureInfo, DateTimeStyles.None, out dateTime);
             }
             if (isDateTime && dateTime >= Utils.FIRST_ALLOWED_EXCEL_DATE && dateTime <= Utils.LAST_ALLOWED_EXCEL_DATE)
             {
@@ -1140,13 +1136,13 @@ namespace NanoXLSX.Internal.Readers
         {
             TimeSpan timeSpan;
             bool isTimeSpan;
-            if (importOptions == null || string.IsNullOrEmpty(importOptions.TimeSpanFormat) || importOptions.TemporalCultureInfo == null)
+            if (readerOptions == null || string.IsNullOrEmpty(readerOptions.TimeSpanFormat) || readerOptions.TemporalCultureInfo == null)
             {
                 isTimeSpan = TimeSpan.TryParse(raw, ReaderOptions.DEFAULT_CULTURE_INFO, out timeSpan);
             }
             else
             {
-                isTimeSpan = TimeSpan.TryParseExact(raw, importOptions.TimeSpanFormat, importOptions.TemporalCultureInfo, out timeSpan);
+                isTimeSpan = TimeSpan.TryParseExact(raw, readerOptions.TimeSpanFormat, readerOptions.TemporalCultureInfo, out timeSpan);
             }
             if (isTimeSpan && timeSpan.Days >= 0 && timeSpan.Days < Utils.MAX_OADATE_VALUE)
             {
@@ -1284,9 +1280,9 @@ namespace NanoXLSX.Internal.Readers
                 case bool _:
                     return ((bool)data).ToString(ReaderOptions.DEFAULT_CULTURE_INFO);
                 case DateTime _:
-                    return ((DateTime)data).ToString(importOptions.DateTimeFormat);
+                    return ((DateTime)data).ToString(readerOptions.DateTimeFormat);
                 case TimeSpan _:
-                    return ((TimeSpan)data).ToString(importOptions.TimeSpanFormat);
+                    return ((TimeSpan)data).ToString(readerOptions.TimeSpanFormat);
                 default:
                     if (data == null)
                     {

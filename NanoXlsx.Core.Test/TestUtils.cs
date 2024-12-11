@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Xunit;
 using static NanoXLSX.Cell;
 
-namespace NanoXLSX_Test
+namespace NanoXLSX.Test
 {
     public class TestUtils
     {

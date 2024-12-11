@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NanoXLSX.Shared_Test.Utils
+namespace NanoXLSX.Shared.Test.Utils
 {
     public class ParserUtilsTest
     {

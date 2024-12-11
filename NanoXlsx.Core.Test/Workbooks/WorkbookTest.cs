@@ -1,6 +1,5 @@
 ﻿using NanoXLSX;
 using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 using Xunit;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 
-namespace NanoXLSX_Test.Workbooks
+namespace NanoXLSX.Test.Workbooks
 {
     public class WorkbookTest
     {
@@ -650,8 +649,6 @@ namespace NanoXLSX_Test.Workbooks
             }
             Assert.Equal(expectedSelectedWorksheetIndex, workbook.SelectedWorksheet);
         }
-
-
 
         public static void AssertExistingFile(string expectedPath, bool deleteAfterAssertion)
         {

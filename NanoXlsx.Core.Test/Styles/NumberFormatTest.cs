@@ -1,5 +1,4 @@
 ﻿using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
@@ -7,10 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 
-namespace NanoXLSX_Test.Styles
+namespace NanoXLSX.Test.Styles
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]

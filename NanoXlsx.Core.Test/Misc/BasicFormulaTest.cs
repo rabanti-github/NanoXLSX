@@ -8,7 +8,7 @@ using Xunit;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 using Range = NanoXLSX.Range;
 
-namespace NanoXLSX_Test.Misc
+namespace NanoXLSX.Test.Misc
 {
     public class BasicFormulaTest
     {

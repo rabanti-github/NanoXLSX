@@ -7,11 +7,10 @@
 
 using System.Collections.Generic;
 using System.Text;
-using NanoXLS.Shared.Enums.Schemes;
+using NanoXLS.Schemes;
 using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Interfaces;
+using NanoXLSX.Shared.Interfaces.Styles;
 using NanoXLSX.Shared.Utils;
-using static NanoXLSX.Shared.Enums.Styles.FontEnums;
 
 namespace NanoXLSX.Styles
 {
@@ -37,11 +36,11 @@ namespace NanoXLSX.Styles
         public static readonly float DEFAULT_FONT_SIZE = 11f;
 
         /// <summary>
-        /// The default font name that is declared as Major Font (See <see cref="Font.SchemeValue"/>)
+        /// The default font name that is declared as Major Font (See <see cref="SchemeValue"/>)
         /// </summary>
         public static readonly string DEFAULT_MAJOR_FONT = "Calibri Light";
         /// <summary>
-        /// The default font name that is declared as Minor Font (See <see cref="Font.SchemeValue"/>)
+        /// The default font name that is declared as Minor Font (See <see cref="SchemeValue"/>)
         /// </summary>
         public static readonly string DEFAULT_MINOR_FONT = "Calibri";
 
@@ -76,7 +75,7 @@ namespace NanoXLSX.Styles
         //TODO: V3> Refactor to enum according to specs
         //OOXML: Chp.20.1.6.2(p2839ff)
         private string colorValue = "";
-        private ThemeEnums.ColorSchemeElement colorTheme;
+        private ColorSchemeElement colorTheme;
         #endregion
 
         #region properties
@@ -116,9 +115,9 @@ namespace NanoXLSX.Styles
         /// Gets or sets the font color theme, represented by a color scheme
         /// </summary>
         [Append]
-        //TODO: v3> Reeference to Theming
+        //TODO: v3> Reference to Theming
         //OOXML: Chp.18.8.3 and 20.1.6.2
-        public ThemeEnums.ColorSchemeElement ColorTheme
+        public ColorSchemeElement ColorTheme
         {
             get => colorTheme;
             set
@@ -220,7 +219,7 @@ namespace NanoXLSX.Styles
             size = DEFAULT_FONT_SIZE;
             Name = DEFAULT_FONT_NAME;
             Family = DEFAULT_FONT_FAMILY;
-            ColorTheme = ThemeEnums.ColorSchemeElement.light1;
+            ColorTheme = ColorSchemeElement.light1;
             ColorValue = string.Empty;
             Scheme = DEFAULT_FONT_SCHEME;
             VerticalAlign = DEFAULT_VERTICAL_ALIGN;

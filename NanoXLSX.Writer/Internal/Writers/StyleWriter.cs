@@ -10,11 +10,6 @@ using System.Text;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
-using static NanoXLSX.Shared.Enums.Styles.BorderEnums;
-using static NanoXLSX.Shared.Enums.Styles.CellXfEnums;
-using static NanoXLSX.Shared.Enums.Styles.FillEnums;
-using static NanoXLSX.Shared.Enums.Styles.FontEnums;
-using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
 
 namespace NanoXLSX.Internal.Writers
 {

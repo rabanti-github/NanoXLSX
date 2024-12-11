@@ -7,15 +7,15 @@
 
 using System.Collections.Generic;
 using System.Text;
+using NanoXLSX.Shared.Interfaces.Styles;
 using NanoXLSX.Shared.Utils;
-using static NanoXLSX.Shared.Enums.Styles.BorderEnums;
 
 namespace NanoXLSX.Styles
 {
     /// <summary>
     /// Class representing a Border entry. The Border entry is used to define frames and cell borders
     /// </summary>
-    public class Border : AbstractStyle
+    public class Border : AbstractStyle, IBorder
     {
 
         #region constants
@@ -51,7 +51,8 @@ namespace NanoXLSX.Styles
         [Append]
         public string BottomColor
         {
-            get => bottomColor; set
+            get => bottomColor; 
+            set
             {
                 Validators.ValidateColor(value, true, true);
                 bottomColor = value;

@@ -5,11 +5,8 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Utils;
-using static NanoXLSX.Shared.Enums.Styles.BorderEnums;
-using static NanoXLSX.Shared.Enums.Styles.FillEnums;
-using static NanoXLSX.Shared.Enums.Styles.FontEnums;
-using static NanoXLSX.Shared.Enums.Styles.NumberFormatEnums;
 
 namespace NanoXLSX.Styles
 {

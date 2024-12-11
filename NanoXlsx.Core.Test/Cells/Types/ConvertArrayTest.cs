@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NanoXLSX_Test.Cells.Types
+namespace NanoXLSX.Test.Cells.Types
 {
     public class ConvertArrayTest
     {

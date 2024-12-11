@@ -5,17 +5,14 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-namespace NanoXLSX.Shared.Enums.Styles
+using NanoXLSX.Shared.Interfaces.Styles;
+
+namespace NanoXLSX.Styles
 {
     /// <summary>
-    /// Class providing shared enums used by implementations of the <see cref="ICellXf"/> interface // TODO: Define interface
+    /// Enum for the horizontal alignment of a cell, used by implementations of the <see cref="ICellXf"/>
     /// </summary>
-    public static class CellXfEnums
-    {
-        /// <summary>
-        /// Enum for the horizontal alignment of a cell 
-        /// </summary>
-        public enum HorizontalAlignValue
+    public enum HorizontalAlignValue
         {
             /// <summary>Content will be aligned left</summary>
             left,
@@ -37,10 +34,10 @@ namespace NanoXLSX.Shared.Enums.Styles
             none,
         }
 
-        /// <summary>
-        /// Enum for text break options
-        /// </summary>
-        public enum TextBreakValue
+    /// <summary>
+    /// Enum for text break options, used by implementations of the <see cref="ICellXf"/>
+    /// </summary>
+    public enum TextBreakValue
         {
             /// <summary>Word wrap is active</summary>
             wrapText,
@@ -50,10 +47,10 @@ namespace NanoXLSX.Shared.Enums.Styles
             none,
         }
 
-        /// <summary>
-        /// Enum for the general text alignment direction
-        /// </summary>
-        public enum TextDirectionValue
+    /// <summary>
+    /// Enum for the general text alignment direction, used by implementations of the <see cref="ICellXf"/>
+    /// </summary>
+    public enum TextDirectionValue
         {
             /// <summary>Text direction is horizontal (default)</summary>
             horizontal,
@@ -61,10 +58,10 @@ namespace NanoXLSX.Shared.Enums.Styles
             vertical,
         }
 
-        /// <summary>
-        /// Enum for the vertical alignment of a cell 
-        /// </summary>
-        public enum VerticalAlignValue
+    /// <summary>
+    /// Enum for the vertical alignment of a cell, used by implementations of the <see cref="ICellXf"/>
+    /// </summary>
+    public enum VerticalAlignValue
         {
             /// <summary>Content will be aligned on the bottom (default)</summary>
             bottom,
@@ -79,5 +76,4 @@ namespace NanoXLSX.Shared.Enums.Styles
             /// <summary>No alignment. The alignment will not be used in a style</summary>
             none,
         }
-    }
 }

@@ -73,7 +73,7 @@ namespace NanoXLSX.Themes
         }
 
         /// <summary>
-        /// Gets the default color scheme if no scheme was explicitly defined. This theme will be incorporated into the default theem of an XLSX file if not otherwise defined 
+        /// Gets the default color scheme if no scheme was explicitly defined. This theme will be incorporated into the default theme of an XLSX file if not otherwise defined 
         /// </summary>
         /// <returns>Color scheme with default values according to the default color scheme of Office 2019 (may be deviating)</returns>
         internal static ColorScheme GetDefaultColorScheme()

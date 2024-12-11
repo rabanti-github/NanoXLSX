@@ -13,7 +13,7 @@ namespace NanoXLSX.Themes
 {
 
     /// <summary>
-    /// Class representing a generic sRGB color without an apha value
+    /// Class representing a generic sRGB color without an alpha value
     /// </summary>
     public class SrgbColor : ITypedColor<string>
     {

@@ -88,4 +88,12 @@
 		<ProjectReference Include="..\NanoXLSX.Core\NanoXLSX.Core.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\purge-temp\NanoXlsxV3\NanoXLSX.Reader.Test\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="C:\purge-temp\NanoXlsxV3\NanoXLSX.Reader.Test\.editorconfig" />
+	</ItemGroup>
+
 </Project>
