@@ -1,7 +1,7 @@
-﻿using NanoXLSX.Internal.Readers;
-using NanoXLSX.Styles;
-using System.IO;
+﻿using System.IO;
 using System.Text;
+using NanoXLSX.Internal.Readers;
+using NanoXLSX.Styles;
 using Xunit;
 
 namespace NanoXLSX_Test.Reader

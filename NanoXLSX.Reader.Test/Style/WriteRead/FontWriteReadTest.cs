@@ -1,11 +1,7 @@
-﻿using NanoXLS.Schemes;
+﻿using System;
+using NanoXLS.Schemes;
 using NanoXLSX;
 using NanoXLSX.Styles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test.Styles.WriteRead
@@ -147,7 +143,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         public void FamilyFontTest(FontFamilyValue styleValue, object givenValue, object expectdValue)
         {
             Style style = new Style();
-            
+
             style.CurrentFont.Family = styleValue;
             Cell cell = TestUtils.SaveAndReadStyledCell(givenValue, expectdValue, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Family);

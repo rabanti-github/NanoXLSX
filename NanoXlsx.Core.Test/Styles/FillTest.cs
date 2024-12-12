@@ -1,11 +1,7 @@
-﻿using NanoXLSX.Shared.Exceptions;
+﻿using System;
+using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX.Test.Styles
@@ -236,7 +232,7 @@ namespace NanoXLSX.Test.Styles
             {
                 Assert.Throws<StyleException>(() => Validators.ValidateColor(color, useAlpha, allowEmpty));
             }
-            
+
         }
 
         [Fact(DisplayName = "Test of the CopyFill function")]

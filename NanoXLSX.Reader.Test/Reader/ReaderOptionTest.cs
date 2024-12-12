@@ -1,9 +1,9 @@
-﻿using NanoXLSX;
-using NanoXLSX.Styles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using NanoXLSX;
+using NanoXLSX.Styles;
 using Xunit;
 
 namespace NanoXLSX_Test.Reader

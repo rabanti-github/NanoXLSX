@@ -1,10 +1,4 @@
-﻿using NanoXLSX;
-using NanoXLSX.Shared.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NanoXLSX.Shared.Exceptions;
 using Xunit;
 
 namespace NanoXLSX.Test.Worksheets
@@ -242,7 +236,7 @@ namespace NanoXLSX.Test.Worksheets
             Assert.Equal(activePane, worksheet.ActivePane);
             Assert.Null(worksheet.FreezeSplitPanes);
             Assert.Null(worksheet.PaneSplitAddress);
-           
+
         }
 
         [Theory(DisplayName = "Test of the SetSplit function with column and definition")]
@@ -252,7 +246,7 @@ namespace NanoXLSX.Test.Worksheets
         [InlineData(10, 99, true, "L100", Worksheet.WorksheetPane.bottomRight)]
         [InlineData(3, null, false, "F3", Worksheet.WorksheetPane.topLeft)]
         [InlineData(null, 1, true, "M200", Worksheet.WorksheetPane.topLeft)]
-        [InlineData(3, null,  false, "F3", Worksheet.WorksheetPane.topRight)]
+        [InlineData(3, null, false, "F3", Worksheet.WorksheetPane.topRight)]
         [InlineData(null, 10, true, "M11", Worksheet.WorksheetPane.topRight)]
         public void SetSplitTest2(int? columnNumber, int? rowNumber, bool freeze, string topLeftCellAddress, Worksheet.WorksheetPane activePane)
         {

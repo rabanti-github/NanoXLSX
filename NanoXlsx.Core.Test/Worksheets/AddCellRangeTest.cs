@@ -1,11 +1,8 @@
-﻿using NanoXLSX;
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Styles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Styles;
 using Xunit;
 
 namespace NanoXLSX.Test.Worksheets
@@ -27,7 +24,7 @@ namespace NanoXLSX.Test.Worksheets
         }
 
         [Theory(DisplayName = "Test of the AddCellRange function for a random list or list of nested cells with start and end address")]
-        [InlineData(0,0, RangeType.OneColumn, TestType.RandomList)]
+        [InlineData(0, 0, RangeType.OneColumn, TestType.RandomList)]
         [InlineData(7, 27, RangeType.OneRow, TestType.RandomList)]
         [InlineData(5, 13, RangeType.FourColumnsThreeRows, TestType.RandomList)]
         [InlineData(22, 11, RangeType.ThreeColumnsFourRows, TestType.RandomList)]
@@ -174,8 +171,8 @@ namespace NanoXLSX.Test.Worksheets
 
         [Theory(DisplayName = "Test of the failing AddCellRange function with a deviating range definition (string)")]
         [InlineData("A1:A12", "A1:A13", RangeType.OneColumn)]
-        [InlineData("H28:S28","H28:S29", RangeType.OneRow)]
-        [InlineData("F14:I16","F14:J16", RangeType.FourColumnsThreeRows)]
+        [InlineData("H28:S28", "H28:S29", RangeType.OneRow)]
+        [InlineData("F14:I16", "F14:J16", RangeType.FourColumnsThreeRows)]
         [InlineData("T12:V15", "T12:W15", RangeType.ThreeColumnsFourRows)]
         public void AddCellRangeFailingTest2(string givenRange, string falseRange, RangeType type)
         {
@@ -351,7 +348,7 @@ namespace NanoXLSX.Test.Worksheets
             }
 
         }
-       
+
 
     }
 }

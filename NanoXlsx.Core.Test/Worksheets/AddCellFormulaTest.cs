@@ -1,12 +1,6 @@
-﻿using NanoXLSX;
+﻿using System;
 using NanoXLSX.Styles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
-using static NanoXLSX.Cell;
 
 namespace NanoXLSX.Test.Worksheets
 {
@@ -23,7 +17,7 @@ namespace NanoXLSX.Test.Worksheets
             worksheet = WorksheetTest.InitWorksheet(worksheet, "R3", Worksheet.CellDirection.ColumnToColumn);
             InvokeAddCellFormulaTest<string>("=B2", address.GetAddress(), worksheet.AddCellFormula, "D2", 4, 1);
         }
-        
+
         [Fact(DisplayName = "Test of the AddCellFormula function with value and Style (with address and column/row invocation)")]
         public void AddCellFormulaTest2()
         {
@@ -33,7 +27,7 @@ namespace NanoXLSX.Test.Worksheets
             worksheet = WorksheetTest.InitWorksheet(worksheet, "R3", Worksheet.CellDirection.ColumnToColumn);
             InvokeAddCellFormulaTest<string, Style>("=B2", address.GetAddress(), BasicStyles.Bold, worksheet.AddCellFormula, "D2", 4, 1, BasicStyles.Bold);
         }
-        
+
         [Fact(DisplayName = "Test of the AddCellFormula function with value and active worksheet style (with address and column/row invocation)")]
         public void AddCellFormulaTest3()
         {
@@ -57,7 +51,7 @@ namespace NanoXLSX.Test.Worksheets
             worksheet.AddCell(cell, address.GetAddress());
             WorksheetTest.AssertAddedCell(worksheet, 1, "D2", Cell.CellType.FORMULA, null, "=B2", 4, 1);
         }
-        
+
         [Fact(DisplayName = "Test of the AddCell function for a nested cell object with a formula and style (with address and column/row invocation)")]
         public void AddCellFormulaTest5()
         {
@@ -83,7 +77,7 @@ namespace NanoXLSX.Test.Worksheets
             worksheet.AddCell(cell, address.GetAddress(), BasicStyles.Bold);
             WorksheetTest.AssertAddedCell(worksheet, 1, "D2", Cell.CellType.FORMULA, mixedStyle, "=B2", 4, 1);
         }
-    
+
         [Fact(DisplayName = "Test of the AddCell function for a nested cell object with a formula and active worksheet style (with address and column/row invocation)")]
         public void AddCellFormulaTest6()
         {
@@ -107,7 +101,7 @@ namespace NanoXLSX.Test.Worksheets
             worksheet.AddCell(cell, address.GetAddress());
             WorksheetTest.AssertAddedCell(worksheet, 1, "D2", Cell.CellType.FORMULA, mixedStyle, "=B2", 4, 1);
         }
-    
+
         [Theory(DisplayName = "Test of the AddCellFormula function with when changing the current cell direction (with address and column/row invocation)")]
         [InlineData("D2", 3, 1, Worksheet.CellDirection.RowToRow, 3, 2)]
         [InlineData("E7", 7, 2, Worksheet.CellDirection.ColumnToColumn, 8, 2)]
@@ -120,12 +114,12 @@ namespace NanoXLSX.Test.Worksheets
             worksheet = WorksheetTest.InitWorksheet(worksheet, worksheetAddress, cellDirection);
             InvokeAddCellFormulaTest<string>("=B2", initialAddress.GetAddress(), worksheet.AddCellFormula, initialAddress.GetAddress(), expectedNextColumn, expectedNextRow);
         }
-        
+
         private void InvokeAddCellFormulaTest<T1>(string value, T1 parameter1, Action<string, T1> action, string expectedAddress, int expectedNextColumn, int expectedNextRow, Style expectedStyle = null)
         {
             Assert.Empty(worksheet.Cells);
             action.Invoke(value, parameter1);
-            AssertAddedFormulaCell(worksheet, 1, expectedAddress,  expectedStyle, value, expectedNextColumn, expectedNextRow);
+            AssertAddedFormulaCell(worksheet, 1, expectedAddress, expectedStyle, value, expectedNextColumn, expectedNextRow);
             worksheet = new Worksheet(); // Auto-reset
         }
 

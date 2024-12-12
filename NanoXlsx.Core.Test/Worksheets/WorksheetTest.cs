@@ -1,16 +1,11 @@
-using NanoXLSX;
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Styles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Styles;
 using Xunit;
 using static NanoXLSX.Worksheet;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
-using Range = NanoXLSX.Range;
 
 namespace NanoXLSX.Test.Worksheets
 {
@@ -134,7 +129,7 @@ namespace NanoXLSX.Test.Worksheets
         [InlineData(Worksheet.CellDirection.ColumnToColumn, 2, 7, 3, 7)]
         [InlineData(Worksheet.CellDirection.RowToRow, 2, 7, 2, 8)]
         [InlineData(Worksheet.CellDirection.Disabled, 2, 7, 2, 7)]
-        public void CurrentCellDirectionTest(Worksheet.CellDirection direction, int givenInitialColumn, int givenInitialRow, int expectedColumn, int expectedRow )
+        public void CurrentCellDirectionTest(Worksheet.CellDirection direction, int givenInitialColumn, int givenInitialRow, int expectedColumn, int expectedRow)
         {
             Worksheet worksheet = new Worksheet();
             worksheet.CurrentCellDirection = direction;
@@ -439,7 +434,7 @@ namespace NanoXLSX.Test.Worksheets
         {
             Worksheet worksheet = new Worksheet();
             Assert.Empty(worksheet.Cells);
-            bool result = worksheet.RemoveCell(2,5);
+            bool result = worksheet.RemoveCell(2, 5);
             Assert.False(result);
             result = worksheet.RemoveCell("A3");
             Assert.False(result);
@@ -499,7 +494,7 @@ namespace NanoXLSX.Test.Worksheets
         {
             List<string> addresses = TestUtils.SplitValuesAsList(definedCells);
             Worksheet worksheet = new Worksheet();
-            foreach(string address in addresses)
+            foreach (string address in addresses)
             {
                 worksheet.AddCell(definedSample, address);
             }
@@ -510,9 +505,9 @@ namespace NanoXLSX.Test.Worksheets
         }
 
         [Theory(DisplayName = "Test of the GetCell function with column and row")]
-        [InlineData("C2", "test", 2,1)]
-        [InlineData("C1,C2,C3", 22, 2,1)]
-        [InlineData("A1,B1,C1,D1", true, 2,0)]
+        [InlineData("C2", "test", 2, 1)]
+        [InlineData("C1,C2,C3", 22, 2, 1)]
+        [InlineData("A1,B1,C1,D1", true, 2, 0)]
         public void GetCellTest2(string definedCells, object definedSample, int expectedColumn, int expectedRow)
         {
             List<string> addresses = TestUtils.SplitValuesAsList(definedCells);
@@ -538,12 +533,12 @@ namespace NanoXLSX.Test.Worksheets
             {
                 worksheet.AddCell(definedSample, address);
             }
-           Assert.Throws<WorksheetException>(() => worksheet.GetCell(new Address(expectedAddress)));
+            Assert.Throws<WorksheetException>(() => worksheet.GetCell(new Address(expectedAddress)));
         }
 
         [Theory(DisplayName = "Test of the failing GetCell function with a column and row")]
         [InlineData("", null, 2, 1, typeof(WorksheetException))]
-        [InlineData("C1,C2,C3", 22,3,1, typeof(WorksheetException))]
+        [InlineData("C1,C2,C3", 22, 3, 1, typeof(WorksheetException))]
         [InlineData("C1,C2,C3", 22, -1, 2, typeof(RangeException))]
         [InlineData("C1,C2,C3", 22, 2, -1, typeof(RangeException))]
         [InlineData("C1,C2,C3", 22, 16384, 2, typeof(RangeException))]
@@ -578,11 +573,11 @@ namespace NanoXLSX.Test.Worksheets
         }
 
         [Theory(DisplayName = "Test of the HasCell function with a column and row")]
-        [InlineData("C2", 2,1, true)]
-        [InlineData("C2", 2,2, false)]
-        [InlineData("", 2,1, false)]
-        [InlineData("C2,C3,C4", 2,1, true)]
-        [InlineData("C2,C3,C4", 3,1, false)]
+        [InlineData("C2", 2, 1, true)]
+        [InlineData("C2", 2, 2, false)]
+        [InlineData("", 2, 1, false)]
+        [InlineData("C2,C3,C4", 2, 1, true)]
+        [InlineData("C2,C3,C4", 3, 1, false)]
         public void HasCellTest2(string definedCells, int givenColumn, int givenRow, bool expectedResult)
         {
             List<string> addresses = TestUtils.SplitValuesAsList(definedCells);
@@ -641,11 +636,11 @@ namespace NanoXLSX.Test.Worksheets
         public void GetLastCellAddressTest2()
         {
             Worksheet worksheet = new Worksheet();
-                worksheet.AddHiddenColumn(0);
-                worksheet.AddHiddenColumn(1);
-                worksheet.AddHiddenColumn(2);
-                worksheet.AddHiddenRow(0);
-                worksheet.AddHiddenRow(1);
+            worksheet.AddHiddenColumn(0);
+            worksheet.AddHiddenColumn(1);
+            worksheet.AddHiddenColumn(2);
+            worksheet.AddHiddenRow(0);
+            worksheet.AddHiddenRow(1);
             Address? address = worksheet.GetLastCellAddress();
             Assert.NotNull(address);
             Assert.Equal("C2", address.Value.GetAddress());
@@ -926,7 +921,7 @@ namespace NanoXLSX.Test.Worksheets
         }
 
         [Theory(DisplayName = "Test of the MergeCells function")]
-        [InlineData(RangeRepresentation.Addresses, 0,0,0,0, "A1:A1", 1)]
+        [InlineData(RangeRepresentation.Addresses, 0, 0, 0, 0, "A1:A1", 1)]
         [InlineData(RangeRepresentation.RangeObject, 1, 1, 1, 1, "B2:B2", 1)]
         [InlineData(RangeRepresentation.StringExpression, 2, 2, 2, 2, "C3:C3", 1)]
         [InlineData(RangeRepresentation.Addresses, 0, 0, 2, 2, "A1:C3", 9)]
@@ -944,7 +939,7 @@ namespace NanoXLSX.Test.Worksheets
             string returnedAddress;
             if (representation == RangeRepresentation.Addresses)
             {
-               returnedAddress = worksheet.MergeCells(startAddress, endAddress);
+                returnedAddress = worksheet.MergeCells(startAddress, endAddress);
             }
             else if (representation == RangeRepresentation.StringExpression)
             {
@@ -954,7 +949,7 @@ namespace NanoXLSX.Test.Worksheets
             {
                 returnedAddress = worksheet.MergeCells(range);
             }
-             
+
             Assert.Single(worksheet.MergedCells);
             Assert.Equal(expectedMergedCells, returnedAddress);
             Assert.Contains(worksheet.MergedCells, item => item.Key == expectedMergedCells);
@@ -999,7 +994,7 @@ namespace NanoXLSX.Test.Worksheets
             Assert.Equal(2, worksheet.MergedCells[returnedAddress2].ResolveEnclosedAddresses().Count);
         }
 
-        [Fact(DisplayName ="Test of the failing MergeCells function if cell addresses are colliding")]
+        [Fact(DisplayName = "Test of the failing MergeCells function if cell addresses are colliding")]
         public void MergeCellsFailTest()
         {
             Worksheet worksheet = new Worksheet();
@@ -1022,7 +1017,7 @@ namespace NanoXLSX.Test.Worksheets
             Assert.Throws<FormatException>(() => worksheet.MergeCells(""));
         }
 
-        [Fact(DisplayName ="Test of the internal RecalculateAutoFilter function")]
+        [Fact(DisplayName = "Test of the internal RecalculateAutoFilter function")]
         public void RecalculateAutoFilterTest()
         {
             Workbook workbook = new Workbook(true);
@@ -1419,7 +1414,7 @@ namespace NanoXLSX.Test.Worksheets
         [InlineData(false, "--------------------------------", false, null)]
         [InlineData(true, "test", true, "test")]
         [InlineData(true, "", true, "Sheet2")]
-        [InlineData(true, null, true, "Sheet2" )]
+        [InlineData(true, null, true, "Sheet2")]
         [InlineData(true, "a[b", true, "a_b")]
         [InlineData(true, "a]b", true, "a_b")]
         [InlineData(true, "a*b", true, "a_b")]

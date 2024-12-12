@@ -1,6 +1,6 @@
-﻿using NanoXLSX;
+﻿using System.IO;
+using NanoXLSX;
 using NanoXLSX.Styles;
-using System.IO;
 using Xunit;
 
 namespace NanoXLSX_Test.Reader

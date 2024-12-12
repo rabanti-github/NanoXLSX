@@ -1,8 +1,8 @@
-﻿using NanoXLSX;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using NanoXLSX;
 using Xunit;
 
 namespace NanoXLSX_Test.Reader

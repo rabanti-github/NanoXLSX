@@ -1,9 +1,4 @@
 ﻿using NanoXLSX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test.Misc
@@ -55,7 +50,7 @@ namespace NanoXLSX_Test.Misc
         }
 
         [Theory(DisplayName = "Test of the 'EscapeXmlChars' method on characters that has to be replaced, when writing a workbook")]
-        [InlineData("test", 0x41, "testAtest")  ] // Not printable
+        [InlineData("test", 0x41, "testAtest")] // Not printable
         [InlineData("test", 0x8, "test test")]    // "
         [InlineData("test", 0xC, "test test")]    // "
         [InlineData("test", 0x1F, "test test")]   // "

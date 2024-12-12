@@ -137,12 +137,12 @@ namespace NanoXLSX
         }
 
         // Operator overloads
-        public static bool operator == (Address address1, Address address2)
+        public static bool operator ==(Address address1, Address address2)
         {
             return address1.Equals(address2);
         }
 
-        public static bool operator != (Address address1, Address address2)
+        public static bool operator !=(Address address1, Address address2)
         {
             return !address1.Equals(address2);
         }

@@ -1,13 +1,9 @@
-﻿
-using NanoXLSX;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
 using NanoXLSX.Test.Cells.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using static NanoXLSX.Cell;
 
@@ -48,7 +44,7 @@ namespace NanoXLSX.Test.Cells
         [Theory(DisplayName = "Test of the constructor with value and type")]
         [InlineData("string", "string", CellType.STRING, CellType.STRING)]
         [InlineData(true, true, CellType.BOOL, CellType.BOOL)]
-        [InlineData(false, false, CellType .BOOL, CellType.BOOL)]
+        [InlineData(false, false, CellType.BOOL, CellType.BOOL)]
         [InlineData(22, 22, CellType.NUMBER, CellType.NUMBER)]
         [InlineData(22.1f, 22.1f, CellType.NUMBER, CellType.NUMBER)]
         [InlineData("=B1", "=B1", CellType.FORMULA, CellType.FORMULA)]
@@ -314,7 +310,7 @@ namespace NanoXLSX.Test.Cells
             Cell cell2 = utils.CreateVariantCell<string>("test", this.cellAddress, BasicStyles.Italic);
             Assert.False(cell1.Equals(cell2));
         }
-        
+
         [Fact(DisplayName = "Test of the Equals method, when two identical cells occur in different workbooks and worksheets (simplified use cases)")]
         public void EqualsFailTest4()
         {
@@ -513,7 +509,7 @@ namespace NanoXLSX.Test.Cells
         [InlineData("$a1:Z$10", "$A1", "Z$10")]
         [InlineData("$R$9:a2", "A2", "$R$9")]
         [InlineData("A1", "A1", "A1")]
-        public void ResolveCellRangeTest(string rangeString, string expectedStartAddress, string expectedEndAddress) 
+        public void ResolveCellRangeTest(string rangeString, string expectedStartAddress, string expectedEndAddress)
         {
             NanoXLSX.Range range = Cell.ResolveCellRange(rangeString);
             Address start = new Address(expectedStartAddress);

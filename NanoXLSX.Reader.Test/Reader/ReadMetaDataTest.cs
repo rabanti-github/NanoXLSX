@@ -1,5 +1,5 @@
-﻿using NanoXLSX;
-using System.IO;
+﻿using System.IO;
+using NanoXLSX;
 using Xunit;
 
 namespace NanoXLSX_Test.Reader

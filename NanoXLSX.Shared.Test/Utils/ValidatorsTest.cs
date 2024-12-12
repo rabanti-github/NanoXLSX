@@ -1,9 +1,4 @@
 ﻿using NanoXLSX.Shared.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX.Shared_Test.Utils
@@ -29,8 +24,8 @@ namespace NanoXLSX.Shared_Test.Utils
         [InlineData(null, false, true)]
         public void ValidateColorTest(string givenHexCode, bool givenUseAlpha, bool givenAllowEmpty)
         {
-                Validators.ValidateColor(givenHexCode, givenUseAlpha, givenAllowEmpty);
-                Assert.True(true);
+            Validators.ValidateColor(givenHexCode, givenUseAlpha, givenAllowEmpty);
+            Assert.True(true);
         }
 
         [Theory(DisplayName = "Test of the failing Validator function ValidateColor")]
@@ -56,7 +51,7 @@ namespace NanoXLSX.Shared_Test.Utils
 
         public void ValidateColorFailTest(string givenHexCode, bool givenUseAlpha, bool givenAllowEmpty)
         {
-                Assert.Throws<NanoXLSX.Shared.Exceptions.StyleException>(() => Validators.ValidateColor(givenHexCode, givenUseAlpha, givenAllowEmpty));
+            Assert.Throws<NanoXLSX.Shared.Exceptions.StyleException>(() => Validators.ValidateColor(givenHexCode, givenUseAlpha, givenAllowEmpty));
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using NanoXLSX;
-using NanoXLSX.Styles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using NanoXLSX;
+using NanoXLSX.Styles;
 using Xunit;
 using static NanoXLSX.Cell;
 

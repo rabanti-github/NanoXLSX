@@ -1,11 +1,6 @@
-﻿using NanoXLSX;
+﻿using System.Text;
+using NanoXLSX;
 using NanoXLSX.Internal.Structures;
-using NanoXLSX_Test;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test.Reader.Misc
@@ -50,7 +45,7 @@ namespace NanoXLSX_Test.Reader.Misc
         [InlineData(" ", false)]
         [InlineData("Test", false)]
         [InlineData(null, true)]
-        public void PlainTextHashCodeTest(string value,bool expectedZero)
+        public void PlainTextHashCodeTest(string value, bool expectedZero)
         {
             PlainText plainText1 = new PlainText(value);
             if (expectedZero)

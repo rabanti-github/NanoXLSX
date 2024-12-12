@@ -1,9 +1,5 @@
-﻿using NanoXLSX.Shared.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using NanoXLSX.Shared.Utils;
 using Xunit;
 
 namespace NanoXLSX.Shared.Test.Utils
@@ -260,12 +256,12 @@ namespace NanoXLSX.Shared.Test.Utils
         }
 
 
-        [Fact(DisplayName = "Test of several numerical Parse and TryParse functions for their minimum values" )]
+        [Fact(DisplayName = "Test of several numerical Parse and TryParse functions for their minimum values")]
         public void ParseMinTest()
         {
             bool match;
 
-            decimal dValue;         
+            decimal dValue;
             match = ParserUtils.TryParseDecimal("-79228162514264337593543950335", out dValue);
             Assert.Equal(decimal.MinValue, dValue);
             Assert.True(match);

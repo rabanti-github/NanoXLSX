@@ -1,11 +1,8 @@
-using NanoXLSX;
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Styles;
 using Xunit;
 
 namespace NanoXLSX.Test.Worksheets
@@ -112,7 +109,7 @@ namespace NanoXLSX.Test.Worksheets
             Assert.Equal(Worksheet.DEFAULT_COLUMN_WIDTH, worksheet.Columns[1].Width);
         }
 
-        [Fact(DisplayName ="Test of the GetCurrentColumnNumber function")]
+        [Fact(DisplayName = "Test of the GetCurrentColumnNumber function")]
         public void GetCurrentColumnNumberTest()
         {
             Worksheet worksheet = new Worksheet();
@@ -374,7 +371,7 @@ namespace NanoXLSX.Test.Worksheets
         private void AssertColumnValues(List<Cell> givenList, List<object> expectedValues)
         {
             Assert.Equal(expectedValues.Count, givenList.Count);
-            for(int i = 0; i < expectedValues.Count; i++)
+            for (int i = 0; i < expectedValues.Count; i++)
             {
                 Assert.Equal(expectedValues[i], givenList[i].Value);
             }

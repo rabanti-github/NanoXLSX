@@ -1,5 +1,4 @@
-﻿using NanoXLSX;
-using System;
+﻿using System;
 using System.Globalization;
 using Xunit;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
@@ -141,10 +140,10 @@ namespace NanoXLSX.Test.Misc
         }
 
         [Theory(DisplayName = "Test of the failing GetInternalColumnWidth function on invalid column widths")]
-        [InlineData(-0.1)] 
-        [InlineData(-10)] 
-        [InlineData(255.01)] 
-        [InlineData(10000)] 
+        [InlineData(-0.1)]
+        [InlineData(-10)]
+        [InlineData(255.01)]
+        [InlineData(10000)]
         public void GetInternalColumnWidthFailTest(float width)
         {
             Assert.Throws<FormatException>(() => Utils.GetInternalColumnWidth(width));

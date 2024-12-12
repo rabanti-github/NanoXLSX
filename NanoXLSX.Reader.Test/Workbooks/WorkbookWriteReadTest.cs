@@ -1,11 +1,6 @@
-﻿using NanoXLSX;
+﻿using System.Collections.Generic;
+using NanoXLSX;
 using NanoXLSX.Styles;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test.Workbooks
@@ -19,7 +14,7 @@ namespace NanoXLSX_Test.Workbooks
             workbook.CurrentWorksheet.AddCell("Text1", "A1");
             workbook.CurrentWorksheet.AddCell("Text2", "A2");
             workbook.CurrentWorksheet.AddCell("", "A3");
-            workbook.CurrentWorksheet.AddCell(null, "A4"); 
+            workbook.CurrentWorksheet.AddCell(null, "A4");
             workbook.CurrentWorksheet.AddCell("Text1", "A5");
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             Assert.Equal(Cell.CellType.STRING, givenWorkbook.CurrentWorksheet.Cells["A1"].DataType);

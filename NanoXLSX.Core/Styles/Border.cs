@@ -51,7 +51,7 @@ namespace NanoXLSX.Styles
         [Append]
         public string BottomColor
         {
-            get => bottomColor; 
+            get => bottomColor;
             set
             {
                 Validators.ValidateColor(value, true, true);

@@ -1,9 +1,4 @@
 ﻿using NanoXLSX.Styles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX.Test.Styles
@@ -37,7 +32,7 @@ namespace NanoXLSX.Test.Styles
             Assert.Empty(repository.Styles);
             Style result = repository.AddStyle(null);
             Assert.Empty(repository.Styles);
-            Assert.Null( result);
+            Assert.Null(result);
         }
 
         [Fact(DisplayName = "Test of the Flush method")]

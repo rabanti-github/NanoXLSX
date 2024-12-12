@@ -1,10 +1,5 @@
 ﻿using NanoXLSX.Themes;
 using NanoXLSX_Test;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX.Core_Test.Themes

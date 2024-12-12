@@ -1,10 +1,4 @@
-﻿using NanoXLSX;
-using NanoXLSX.Shared.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NanoXLSX.Shared.Exceptions;
 using Xunit;
 
 namespace NanoXLSX.Test.Workbooks

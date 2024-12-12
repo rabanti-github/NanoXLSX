@@ -1,10 +1,6 @@
-﻿using NanoXLSX.Shared.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
+using NanoXLSX.Shared.Exceptions;
 using Xunit;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 

@@ -1,10 +1,5 @@
-﻿using NanoXLSX.Styles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
+using NanoXLSX.Styles;
 using Xunit;
 
 namespace NanoXLSX.Test.Styles
@@ -24,13 +19,13 @@ namespace NanoXLSX.Test.Styles
 
             PropertyInfo[] propertiesInfo = typeof(DummyClass).GetProperties();
             bool propertyFound = false;
-            foreach(PropertyInfo info in propertiesInfo)
+            foreach (PropertyInfo info in propertiesInfo)
             {
                 if (info.Name == propertyName)
                 {
                     object[] attributes = info.GetCustomAttributes(true);
                     bool attributeFound = false;
-                    foreach(object attribute in attributes)
+                    foreach (object attribute in attributes)
                     {
                         AppendAttribute appendAttribute = attribute as AppendAttribute;
                         if (appendAttribute != null)
@@ -58,7 +53,7 @@ namespace NanoXLSX.Test.Styles
         {
             [Append]
             public int AppendProperty { get; set; }
-            [Append (Ignore = false)]
+            [Append(Ignore = false)]
             public int AppendPropertyNonIgnore { get; set; }
             [Append(Ignore = true)]
             public int IgnoreProperty { get; set; }

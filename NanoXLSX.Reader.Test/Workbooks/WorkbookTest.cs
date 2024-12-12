@@ -1,11 +1,8 @@
-﻿using NanoXLSX;
-using NanoXLSX.Shared.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NanoXLSX;
+using NanoXLSX.Shared.Exceptions;
 using Xunit;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 
@@ -213,7 +210,7 @@ namespace NanoXLSX_Test.Workbooks
         [InlineData("f1.xlsx", "Sheet1", "Sheet1")]
         [InlineData("", "?", "_")]
         [InlineData(null, "", "Sheet1")]
-        [InlineData("?", null, "Sheet1")] 
+        [InlineData("?", null, "Sheet1")]
         public void WorkbookConstructorTest4(string fileName, string givenSheetName, string expectedSheetName)
         {
             Workbook workbook = new Workbook(fileName, givenSheetName);
@@ -441,7 +438,7 @@ namespace NanoXLSX_Test.Workbooks
             string current = null;
             string toRemove = null;
             string expected = null;
-            for(int i = 0; i < worksheetCount; i++)
+            for (int i = 0; i < worksheetCount; i++)
             {
                 string name = "Sheet" + (i + 1).ToString();
                 workbook.AddWorksheet(name);
@@ -631,7 +628,7 @@ namespace NanoXLSX_Test.Workbooks
             Assert.ThrowsAny<RangeException>(() => workbook1.GetWorksheet(1));
         }
 
-        private void AssertWorksheetRemoval<T>(Workbook workbook, Action<T>removalFunction, int worksheetCount, string currentWorksheet, int selectedWorksheetIndex, T worksheetToRemove, string expectedCurrentWorksheet, int expectedSelectedWorksheetIndex)
+        private void AssertWorksheetRemoval<T>(Workbook workbook, Action<T> removalFunction, int worksheetCount, string currentWorksheet, int selectedWorksheetIndex, T worksheetToRemove, string expectedCurrentWorksheet, int expectedSelectedWorksheetIndex)
         {
             workbook.SetCurrentWorksheet(currentWorksheet);
             workbook.SetSelectedWorksheet(selectedWorksheetIndex);
@@ -662,7 +659,7 @@ namespace NanoXLSX_Test.Workbooks
                 {
                     fi.Delete();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine("Could not delete " + expectedPath + ": " + ex.Message);
                 }

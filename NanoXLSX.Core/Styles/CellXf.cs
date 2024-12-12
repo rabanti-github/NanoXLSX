@@ -6,8 +6,8 @@
  */
 
 using System.Text;
-using NanoXLSX.Shared.Interfaces.Styles;
 using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Shared.Interfaces.Styles;
 using NanoXLSX.Shared.Utils;
 
 namespace NanoXLSX.Styles

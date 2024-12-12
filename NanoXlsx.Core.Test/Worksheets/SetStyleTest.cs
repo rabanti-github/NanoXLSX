@@ -1,14 +1,9 @@
-﻿using NanoXLSX;
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Styles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NanoXLSX.Styles;
 using Xunit;
 using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
-using Range = NanoXLSX.Range;
 
 namespace NanoXLSX.Test.Worksheets
 {
@@ -130,7 +125,7 @@ namespace NanoXLSX.Test.Worksheets
             }
             else
             {
-                worksheet.SetStyle(rangeString,null);
+                worksheet.SetStyle(rangeString, null);
             }
             AssertRemovedStyles(worksheet, cellCount);
         }
@@ -176,7 +171,7 @@ namespace NanoXLSX.Test.Worksheets
         [InlineData("A1:C1", "B1", "test", RangeRepresentation.StringExpression)]
         [InlineData("A1:C3", "B2", -0.25f, RangeRepresentation.StringExpression)]
         [InlineData("R17:T21", "R18,R19,R20,S19", 99999L, RangeRepresentation.StringExpression)]
-        public void SetStyleTest3b(string rangeString, string definedCells, object cellValue,RangeRepresentation representation)
+        public void SetStyleTest3b(string rangeString, string definedCells, object cellValue, RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
             AddCells(worksheet, cellValue, definedCells, BasicStyles.Italic);
@@ -200,8 +195,8 @@ namespace NanoXLSX.Test.Worksheets
         public void SetStyleTest4(RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
-            AddCells(worksheet, new DateTime(2020,11,10,9,8,7), "B2");
-            AddCells(worksheet, new TimeSpan(10,11,12), "B3");
+            AddCells(worksheet, new DateTime(2020, 11, 10, 9, 8, 7), "B2");
+            AddCells(worksheet, new TimeSpan(10, 11, 12), "B3");
             int cellCount = worksheet.Cells.Count;
             Assert.NotEqual(0, cellCount);
             Range range = new Range("A1:C3");
@@ -565,7 +560,7 @@ namespace NanoXLSX.Test.Worksheets
         {
             Assert.Equal(expectedSize, worksheet.Cells.Count);
             Range setRange = new Range(range);
-            foreach(Address address in setRange.ResolveEnclosedAddresses())
+            foreach (Address address in setRange.ResolveEnclosedAddresses())
             {
                 Assert.Contains(worksheet.Cells, item => item.Key.Equals(address.GetAddress()));
                 if (expectedStyle == null)
@@ -586,7 +581,7 @@ namespace NanoXLSX.Test.Worksheets
         private void AssertRemovedStyles(Worksheet worksheet, int expectedSize)
         {
             Assert.Equal(expectedSize, worksheet.Cells.Count);
-            foreach(KeyValuePair<string,Cell> cell in worksheet.Cells)
+            foreach (KeyValuePair<string, Cell> cell in worksheet.Cells)
             {
                 Assert.Null(cell.Value.CellStyle);
             }
@@ -595,7 +590,7 @@ namespace NanoXLSX.Test.Worksheets
         private static void AddCells(Worksheet worksheet, object sample, string addressString, Style style = null)
         {
             List<string> addresses = TestUtils.SplitValuesAsList(addressString);
-            foreach(string address in addresses)
+            foreach (string address in addresses)
             {
                 Cell cell = new Cell(sample, Cell.CellType.DEFAULT);
                 worksheet.AddCell(cell, address, style);

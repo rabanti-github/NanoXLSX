@@ -1,10 +1,4 @@
-﻿using NanoXLSX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+﻿using Xunit;
 
 namespace NanoXLSX.Test.Worksheets
 {
@@ -20,7 +14,7 @@ namespace NanoXLSX.Test.Worksheets
         [InlineData("a*b", 0, null, "a_b")]
         [InlineData("a?b", 0, null, "a_b")]
         [InlineData("a/b", 0, null, "a_b")]
-        [InlineData("a\\b",0, null, "a_b")]
+        [InlineData("a\\b", 0, null, "a_b")]
         [InlineData("--------------------------------", 0, null, "-------------------------------")]
         [InlineData("Sheet10", 20, "Sheet", "Sheet21")]
         [InlineData("*1", 1, "_", "_2")]
@@ -29,9 +23,9 @@ namespace NanoXLSX.Test.Worksheets
         public void SanitizeWorksheetNameTest(string givenName, int numberOfExistingWorksheets, string existingWorksheetPrefix, string expectedName)
         {
             Workbook workbook = new Workbook(false);
-            for(int i = 0; i < numberOfExistingWorksheets; i++)
+            for (int i = 0; i < numberOfExistingWorksheets; i++)
             {
-                workbook.AddWorksheet(existingWorksheetPrefix+ (i + 1).ToString());
+                workbook.AddWorksheet(existingWorksheetPrefix + (i + 1).ToString());
             }
             string name = Worksheet.SanitizeWorksheetName(givenName, workbook);
             Assert.Equal(expectedName, name);

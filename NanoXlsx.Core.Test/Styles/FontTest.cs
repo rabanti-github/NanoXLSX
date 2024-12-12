@@ -1,11 +1,7 @@
-﻿using NanoXLS.Schemes;
+﻿using System;
+using NanoXLS.Schemes;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Styles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 
@@ -19,7 +15,7 @@ namespace NanoXLSX.Test.Styles
         private readonly Font exampleStyle;
 
         public FontTest()
-        {          
+        {
             exampleStyle = new Font();
             exampleStyle.Bold = true;
             exampleStyle.Italic = true;
@@ -286,7 +282,7 @@ namespace NanoXLSX.Test.Styles
         }
 
         [Theory(DisplayName = "Test of the automatic assignment of font schemes on font names")]
-        [InlineData("Calibri",  SchemeValue.minor)]
+        [InlineData("Calibri", SchemeValue.minor)]
         [InlineData("Calibri Light", SchemeValue.major)]
         [InlineData("Arial", SchemeValue.none)]
         [InlineData("---", SchemeValue.none)] // Not a font but a valid string
