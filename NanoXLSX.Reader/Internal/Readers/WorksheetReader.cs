@@ -19,7 +19,7 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for worksheets of XLSX files
     /// </summary>
-    public class WorksheetReader
+    public class WorksheetReader : IPluginReader
     {
         #region privateFields
 
@@ -144,41 +144,15 @@ namespace NanoXLSX.Internal.Readers
         #endregion
 
         #region functions
-
-        /// <summary>
-        /// Determine which of the resolved styles are either to define a time or a date. Stores also the styles into a dictionary 
-        /// </summary>
-        /// <param name="styleReaderContainer">Resolved styles from the style reader</param>
-        private void ProcessStyles(StyleReaderContainer styleReaderContainer)
-        {
-            dateStyles = new List<string>();
-            timeStyles = new List<string>();
-            resolvedStyles = new Dictionary<string, Style>();
-            for (int i = 0; i < styleReaderContainer.StyleCount; i++)
-            {
-                bool isDate;
-                bool isTime;
-                string index = ParserUtils.ToString(i);
-                Style style = styleReaderContainer.GetStyle(i, out isDate, out isTime);
-                if (isDate)
-                {
-                    dateStyles.Add(index);
-                }
-                if (isTime)
-                {
-                    timeStyles.Add(index);
-                }
-                resolvedStyles.Add(index, style);
-            }
-        }
-
         /// <summary>
         /// Reads the XML file form the passed stream and processes the worksheet data
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
+        /// <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
-        public void Read(MemoryStream stream)
+        public virtual void Read(MemoryStream stream)
         {
+            PreRead(stream);
             try
             {
                 using (stream) // Close after processing
@@ -216,6 +190,54 @@ namespace NanoXLSX.Internal.Readers
             catch (Exception ex)
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
+            }
+            PostRead(stream);
+        }
+
+        /// <summary>
+        /// Method that is called before the <see cref="Read(MemoryStream)"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="stream">Stream of the XML file. The stream must be reset in this method at the end, if any stream opeartion was performed</param>
+        public virtual void PreRead(MemoryStream stream)
+        {
+            // NoOp - replaced by plugin
+        }
+
+        /// <summary>
+        /// Method that is called after the <see cref="Read(MemoryStream)"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="stream">Stream of the XML file. The stream must be reset in this method before any stream operation is performed</param>
+        public virtual void PostRead(MemoryStream stream)
+        {
+            // NoOp - replaced by plugin
+        }
+
+        /// <summary>
+        /// Determine which of the resolved styles are either to define a time or a date. Stores also the styles into a dictionary 
+        /// </summary>
+        /// <param name="styleReaderContainer">Resolved styles from the style reader</param>
+        private void ProcessStyles(StyleReaderContainer styleReaderContainer)
+        {
+            dateStyles = new List<string>();
+            timeStyles = new List<string>();
+            resolvedStyles = new Dictionary<string, Style>();
+            for (int i = 0; i < styleReaderContainer.StyleCount; i++)
+            {
+                bool isDate;
+                bool isTime;
+                string index = ParserUtils.ToString(i);
+                Style style = styleReaderContainer.GetStyle(i, out isDate, out isTime);
+                if (isDate)
+                {
+                    dateStyles.Add(index);
+                }
+                if (isTime)
+                {
+                    timeStyles.Add(index);
+                }
+                resolvedStyles.Add(index, style);
             }
         }
 

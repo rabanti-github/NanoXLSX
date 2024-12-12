@@ -18,7 +18,7 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for style definitions of XLSX files.
     /// </summary>
-    public class StyleReader
+    public class StyleReader : IPluginReader
     {
         /// <summary>
         /// Gets the StyleReaderContainer
@@ -37,9 +37,11 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reads the XML file form the passed stream and processes the style information.
         /// </summary>
+        /// <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <param name="stream">Stream of the XML file.</param>
-        public void Read(MemoryStream stream)
+        public virtual void Read(MemoryStream stream)
         {
+            PreRead(stream);
             try
             {
                 using (stream) // Close after processing
@@ -84,6 +86,27 @@ namespace NanoXLSX.Internal.Readers
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
             }
+            PostRead(stream);
+        }
+
+        /// <summary>
+        /// Method that is called before the <see cref="Read(MemoryStream)"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="stream">Stream of the XML file. The stream must be reset in this method at the end, if any stream opeartion was performed</param>
+        public virtual void PreRead(MemoryStream stream)
+        {
+            // NoOp - replaced by plugin
+        }
+
+        /// <summary>
+        /// Method that is called after the <see cref="Read(MemoryStream)"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="stream">Stream of the XML file. The stream must be reset in this method before any stream operation is performed</param>
+        public virtual void PostRead(MemoryStream stream)
+        {
+            // NoOp - replaced by plugin
         }
 
         /// <summary>

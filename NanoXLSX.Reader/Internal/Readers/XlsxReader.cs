@@ -29,7 +29,8 @@ namespace NanoXLSX.Internal.Readers
         private Dictionary<int, WorksheetReader> worksheets;
         private MemoryStream memoryStream;
         private WorkbookReader workbook;
-        private MetadataReader metadataReader;
+        private MetadataCoreReader metadataCoreReader;
+        private MetadataAppReader metadataAppReader;
         private ThemeReader themeReader;
         private ReaderOptions readerOptions;
         private StyleReaderContainer styleReaderContainer;
@@ -260,18 +261,20 @@ namespace NanoXLSX.Internal.Readers
                 wb.SetWorkbookProtection(workbook.Protected, workbook.LockWindows, workbook.LockStructure, null);
                 wb.WorkbookProtectionPasswordHash = workbook.PasswordHash;
             }
-            wb.WorkbookMetadata.Application = metadataReader.Application;
-            wb.WorkbookMetadata.ApplicationVersion = metadataReader.ApplicationVersion;
-            wb.WorkbookMetadata.Creator = metadataReader.Creator;
-            wb.WorkbookMetadata.Category = metadataReader.Category;
-            wb.WorkbookMetadata.Company = metadataReader.Company;
-            wb.WorkbookMetadata.ContentStatus = metadataReader.ContentStatus;
-            wb.WorkbookMetadata.Description = metadataReader.Description;
-            wb.WorkbookMetadata.HyperlinkBase = metadataReader.HyperlinkBase;
-            wb.WorkbookMetadata.Keywords = metadataReader.Keywords;
-            wb.WorkbookMetadata.Manager = metadataReader.Manager;
-            wb.WorkbookMetadata.Subject = metadataReader.Subject;
-            wb.WorkbookMetadata.Title = metadataReader.Title;
+            wb.WorkbookMetadata.Application = metadataAppReader.Application;
+            wb.WorkbookMetadata.ApplicationVersion = metadataAppReader.ApplicationVersion;
+            wb.WorkbookMetadata.Company = metadataAppReader.Company;
+            wb.WorkbookMetadata.HyperlinkBase = metadataAppReader.HyperlinkBase;
+            wb.WorkbookMetadata.Manager = metadataAppReader.Manager;
+
+            wb.WorkbookMetadata.Keywords = metadataCoreReader.Keywords;
+            wb.WorkbookMetadata.Subject = metadataCoreReader.Subject;
+            wb.WorkbookMetadata.Title = metadataCoreReader.Title;
+            wb.WorkbookMetadata.Creator = metadataCoreReader.Creator;
+            wb.WorkbookMetadata.Category = metadataCoreReader.Category;
+            wb.WorkbookMetadata.ContentStatus = metadataCoreReader.ContentStatus;
+            wb.WorkbookMetadata.Description = metadataCoreReader.Description;
+
             if (themeReader != null)
             {
                 wb.WorkbookTheme = themeReader.CurrentTheme;
@@ -354,11 +357,12 @@ namespace NanoXLSX.Internal.Readers
             ms = GetEntryStream("xl/workbook.xml", zf);
             workbook.Read(ms);
 
-            metadataReader = new MetadataReader();
+            metadataAppReader = new MetadataAppReader();
             ms = GetEntryStream("docProps/app.xml", zf);
-            metadataReader.ReadAppData(ms);
+            metadataAppReader.Read(ms);
+            metadataCoreReader = new MetadataCoreReader();
             ms = GetEntryStream("docProps/core.xml", zf);
-            metadataReader.ReadCoreData(ms);
+            metadataCoreReader.Read(ms);
 
             RelationshipReader relationships = new RelationshipReader();
             relationships.Read(GetEntryStream("xl/_rels/workbook.xml.rels", zf));
