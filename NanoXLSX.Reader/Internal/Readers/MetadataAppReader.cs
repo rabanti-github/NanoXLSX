@@ -43,9 +43,10 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reads the XML file form the passed stream and processes the AppData section
         /// </summary>
+        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <param name="stream">Stream of the XML file</param>
         /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
-        public void Read(MemoryStream stream)
+        public virtual void Read(MemoryStream stream)
         {
             PreRead(stream);
             if (stream == null)

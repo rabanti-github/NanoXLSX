@@ -7,13 +7,15 @@
 
 using System.Collections.Generic;
 using System.Text;
+using NanoXLSX.Interfaces.Workbook;
+using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
 
 namespace NanoXLSX.Internal.Writers
 {
-    internal class StyleWriter
+    internal class StyleWriter : IPluginWriter
     {
 
         private readonly StyleManager styles;
@@ -28,11 +30,13 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Method to create a style sheet as raw XML string
         /// </summary>
+        /// \remark <remarks>This method is virtual. Plug-in packages may override it.
+        /// In contrast to a StyleException, a UndefinedStyleException should never happen in this state, if the internally managed style collection was not tampered. </remarks>
         /// <returns>Raw XML string</returns>
         /// <exception cref="StyleException">Throws a StyleException if one of the styles cannot be referenced or is null</exception>
-        /// <remarks>The UndefinedStyleException should never happen in this state if the internally managed style collection was not tampered. </remarks>
-        internal string CreateStyleSheetDocument()
+        public virtual string CreateDocument()
         {
+            PreWrite(workbook);
             string bordersString = CreateStyleBorderString();
             string fillsString = CreateStyleFillString();
             string fontsString = CreateStyleFontString();
@@ -69,8 +73,31 @@ namespace NanoXLSX.Internal.Writers
                 }
             }
             sb.Append("</styleSheet>");
+            PostWrite(workbook);
             return sb.ToString();
         }
+
+        /// <summary>
+        /// Method that is called before the <see cref="CreateDocument()"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="workbook">Workbook instance that is used in this writer</param>
+        public virtual void PreWrite(IWorkbook workbook)
+        {
+            // NoOp - replaced by plugin
+        }
+
+        /// <summary>
+        /// Method that is called after the <see cref="CreateDocument()"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="workbook">Workbook instance that is used in this writer</param>
+        public virtual void PostWrite(IWorkbook workbook)
+        {
+            // NoOp - replaced by plugin
+        }
+
+
 
         /// <summary>
         /// Method to create the XML string for the border part of the style sheet document

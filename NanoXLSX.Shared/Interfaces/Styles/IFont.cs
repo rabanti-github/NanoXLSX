@@ -5,7 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLS.Schemes;
+using NanoXLSX.Schemes;
 using NanoXLSX.Styles;
 
 namespace NanoXLSX.Shared.Interfaces.Styles

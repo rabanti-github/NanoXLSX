@@ -15,9 +15,9 @@ namespace NanoXLSX.Internal
     public interface IPluginReader
     {
         /// <summary>
-        /// Interface function to read an XML file within a XLSX file
+        /// Interface function to read an XML file within an XLSX file
         /// </summary>
-        /// <param name="stream">STream of the XML file</param>
+        /// <param name="stream">Stream of the XML file</param>
         void Read(MemoryStream stream);
         /// <summary>
         /// Method that is called before the <see cref="Read(MemoryStream)"/> method is executed

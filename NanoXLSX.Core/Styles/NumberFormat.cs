@@ -40,7 +40,7 @@ namespace NanoXLSX.Styles
         /// Gets or sets the raw custom format code in the notation of Excel. <b>The code is not escaped or unescaped (on workbook loading)</b>
         /// </summary>
         /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if passed value is null or empty</exception>
-        /// <remarks>Currently, there is no auto-escaping applied to custom format strings. For instance, to add a white space, internally it is escaped by a backspace (\ ).
+        /// \remark <remarks>Currently, there is no auto-escaping applied to custom format strings. For instance, to add a white space, internally it is escaped by a backspace (\ ).
         /// To get a valid custom format code, this escaping must be applied manually, according to OOXML specs: Part 1 - Fundamentals And Markup Language Reference, Chapter 18.8.31</remarks>
         [Append]
         public string CustomFormatCode
@@ -111,7 +111,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <param name="number">Format number to check</param>
         /// <returns>True if the format represents a date, otherwise false</returns>
-        /// <remarks>Custom number formats (higher than 164), as well as not officially defined numbers (below 164) are currently not considered during the check and will return false</remarks>
+        /// \remark <remarks>Custom number formats (higher than 164), as well as not officially defined numbers (below 164) are currently not considered during the check and will return false</remarks>
         public static bool IsDateFormat(FormatNumber number)
         {
             switch (number)
@@ -132,7 +132,7 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <param name="number">Format number to check</param>
         /// <returns>True if the format represents a time, otherwise false</returns>
-        /// <remarks>Custom number formats (higher than 164), as well as not officially defined numbers (below 164) are currently not considered during the check and will return false</remarks>
+        /// \remark <remarks>Custom number formats (higher than 164), as well as not officially defined numbers (below 164) are currently not considered during the check and will return false</remarks>
         public static bool IsTimeFormat(FormatNumber number)
         {
             switch (number)

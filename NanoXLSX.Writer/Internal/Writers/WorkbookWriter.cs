@@ -6,13 +6,15 @@
  */
 
 using System.Text;
+using NanoXLSX.Interfaces.Workbook;
+using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Themes;
 
 namespace NanoXLSX.Internal.Writers
 {
-    internal class WorkbookWriter
+    internal class WorkbookWriter : IPluginWriter
     {
         private readonly Workbook workbook;
 
@@ -24,10 +26,12 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Method to create a workbook as raw XML string
         /// </summary>
+        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <returns>Raw XML string</returns>
         /// <exception cref="RangeException">Throws a RangeException if an address was out of range</exception>
-        internal string CreateWorkbookDocument()
+        public virtual string CreateDocument()
         {
+            PreWrite(workbook);
             StringBuilder sb = new StringBuilder();
             sb.Append("<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">");
 
@@ -76,8 +80,30 @@ namespace NanoXLSX.Internal.Writers
             }
             sb.Append("</sheets>");
             sb.Append("</workbook>");
+            PostWrite(workbook);
             return sb.ToString();
         }
+
+        /// <summary>
+        /// Method that is called before the <see cref="CreateDocument()"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="workbook">Workbook instance that is used in this writer</param>
+        public virtual void PreWrite(IWorkbook workbook)
+        {
+            // NoOp - replaced by plugin
+        }
+
+        /// <summary>
+        /// Method that is called after the <see cref="CreateDocument()"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="workbook">Workbook instance that is used in this writer</param>
+        public virtual void PostWrite(IWorkbook workbook)
+        {
+            // NoOp - replaced by plugin
+        }
+
 
         /// <summary>
         /// Method to create the (sub) part of the workbook protection within the workbook XML document

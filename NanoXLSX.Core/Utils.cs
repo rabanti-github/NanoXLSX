@@ -35,7 +35,7 @@ namespace NanoXLSX
         public static readonly DateTime LAST_ALLOWED_EXCEL_DATE = new DateTime(9999, 12, 31, 23, 59, 59, DateTimeKind.Unspecified);
 
         /// <summary>
-        /// All dates before this date are shifted in Excel by -1.0, since Excel assumes wrongly that the year 1900 is a leap year.<br/>
+        /// All dates before this date are shifted in Excel by -1.0, since Excel assumes wrongly that the year 1900 is a leap year.<br />
         /// See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
         /// https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a>
         /// </summary>
@@ -68,11 +68,11 @@ namespace NanoXLSX
         /// <param name="date">Date to process</param>
         /// <returns>Date or date and time as number string</returns>
         /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
-        /// <remarks>Excel assumes wrongly that the year 1900 is a leap year. There is a gap of 1.0 between 1900-02-28 and 1900-03-01. This method corrects all dates
+        /// \remark <remarks>Excel assumes wrongly that the year 1900 is a leap year. There is a gap of 1.0 between 1900-02-28 and 1900-03-01. This method corrects all dates
         /// from the first valid date (1900-01-01) to 1900-03-01. However, Excel displays the minimum valid date as 1900-01-00, although 0 is not a valid description for a day of month.
-        /// In conformance to the OAdate specifications, the maximum valid date is 9999-12-31 23:59:59 (plus 999 milliseconds).<br/>
+        /// In conformance to the OAdate specifications, the maximum valid date is 9999-12-31 23:59:59 (plus 999 milliseconds).<br />
         ///See also: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1">
-        ///https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1</a><br/>
+        ///https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1</a><br />
         ///See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
         ///https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a>
         /// </remarks>
@@ -89,11 +89,11 @@ namespace NanoXLSX
         /// <param name="date">Date to process</param>
         /// <returns>Date or date and time as number</returns>
         /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the passed date cannot be translated to the OADate format</exception>
-        /// <remarks>Excel assumes wrongly that the year 1900 is a leap year. There is a gap of 1.0 between 1900-02-28 and 1900-03-01. This method corrects all dates
+        /// \remark <remarks>Excel assumes wrongly that the year 1900 is a leap year. There is a gap of 1.0 between 1900-02-28 and 1900-03-01. This method corrects all dates
         /// from the first valid date (1900-01-01) to 1900-03-01. However, Excel displays the minimum valid date as 1900-01-00, although 0 is not a valid description for a day of month.
-        /// In conformance to the OAdate specifications, the maximum valid date is 9999-12-31 23:59:59 (plus 999 milliseconds).<br/>
+        /// In conformance to the OAdate specifications, the maximum valid date is 9999-12-31 23:59:59 (plus 999 milliseconds).<br />
         ///See also: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1">
-        ///https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1</a><br/>
+        ///https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tooadate?view=netcore-3.1</a><br />
         ///See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
         ///https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a>
         /// </remarks>
@@ -117,7 +117,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="time">Time to process. The date component of the timespan is converted to the total numbers of days</param>
         /// <returns>Time as number string</returns>
-        /// <remarks>The time is represented by a OAdate without the date component but a possible number of total days</remarks>
+        /// \remark <remarks>The time is represented by a OAdate without the date component but a possible number of total days</remarks>
         public static string GetOATimeString(TimeSpan time)
         {
             double d = GetOATime(time);
@@ -129,7 +129,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="time">Time to process. The date component of the timespan is converted to the total numbers of days</param>
         /// <returns>Time as number</returns>
-        /// <remarks>The time is represented by a OAdate without the date component but a possible number of total days</remarks>
+        /// \remark <remarks>The time is represented by a OAdate without the date component but a possible number of total days</remarks>
         public static double GetOATime(TimeSpan time)
         {
             int seconds = time.Seconds + time.Minutes * 60 + time.Hours * 3600;
@@ -137,12 +137,12 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Method to calculate a common Date from the OA date (OLE automation) format<br/>
+        /// Method to calculate a common Date from the OA date (OLE automation) format<br />
         /// OA Date format starts at January 1st 1900 (actually 00.01.1900). Dates beyond this date cannot be handled by Excel under normal circumstances and will throw a FormatException
         /// </summary>
         /// <param name="oaDate">oaDate OA date number</param>
         /// <returns>Converted date</returns>
-        /// <remarks>Numbers that represents dates before 1900-03-01 (number of days since 1900-01-01 = 60) are automatically modified.
+        /// \remark <remarks>Numbers that represents dates before 1900-03-01 (number of days since 1900-01-01 = 60) are automatically modified.
         /// Until 1900-03-01 is 1.0 added to the number to get the same date, as displayed in Excel.The reason for this is a bug in Excel.
         /// See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
         /// https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a></remarks>
@@ -158,13 +158,13 @@ namespace NanoXLSX
         /// <summary>
         /// Calculates the internal width of a column in characters. This width is used only in the XML documents of worksheets and is usually not exposed to the (Excel) end user
         /// </summary>
-        /// <remarks>
+        /// \remark <remarks>
         /// The internal width deviates slightly from the column width, entered in Excel. Although internal, the default column width of 10 characters is visible in Excel as 10.71.
-        /// The deviation depends on the maximum digit width of the default font, as well as its text padding and various constants.<br/>
+        /// The deviation depends on the maximum digit width of the default font, as well as its text padding and various constants.<br />
         /// In case of the width 10.0 and the default digit width 7.0, as well as the padding 5.0 of the default font Calibri (size 11), 
-        /// the internal width is approximately 10.7142857 (rounded to 10.71).<br/> Note that the column height is not affected by this consideration. 
-        /// The entered height in Excel is the actual height in the worksheet XML documents.<br/> 
-        /// This method is derived from the Perl implementation by John McNamara (<a href="https://stackoverflow.com/a/5010899">https://stackoverflow.com/a/5010899</a>)<br/>
+        /// the internal width is approximately 10.7142857 (rounded to 10.71).<br /> Note that the column height is not affected by this consideration. 
+        /// The entered height in Excel is the actual height in the worksheet XML documents.<br /> 
+        /// This method is derived from the Perl implementation by John McNamara (<a href="https://stackoverflow.com/a/5010899">https://stackoverflow.com/a/5010899</a>)<br />
         /// See also: <a href="https://www.ecma-international.org/publications-and-standards/standards/ecma-376/">ECMA-376, Part 1, Chapter 18.3.1.13</a>
         /// </remarks>
         /// <param name="columnWidth">Target column width (displayed in Excel)</param>
@@ -195,8 +195,8 @@ namespace NanoXLSX
         /// <summary>
         /// Calculates the internal height of a row. This height is used only in the XML documents of worksheets and is usually not exposed to the (Excel) end user
         /// </summary>
-        /// <remarks>The height is based on the calculated amount of pixels. One point are ~1.333 (1+1/3) pixels. 
-        /// After the conversion, the number of pixels is rounded to the nearest integer and calculated back to points.<br/>
+        /// \remark <remarks>The height is based on the calculated amount of pixels. One point are ~1.333 (1+1/3) pixels. 
+        /// After the conversion, the number of pixels is rounded to the nearest integer and calculated back to points.<br />
         /// Therefore, the originally defined row height will slightly deviate, based on this pixel snap</remarks>
         /// <param name="rowHeight">Target row height (displayed in Excel)</param>
         /// <returns>The internal row height which snaps to the nearest pixel</returns>
@@ -218,12 +218,12 @@ namespace NanoXLSX
         /// <summary>
         /// Calculates the internal width of a split pane in a worksheet. This width is used only in the XML documents of worksheets and is not exposed to the (Excel) end user
         /// </summary>
-        /// <remarks>
+        /// \remark <remarks>
         /// The internal split width is based on the width of one or more columns. 
-        /// It also depends on the maximum digit width of the default font, as well as its text padding and various constants.<br/>
-        /// See also <see cref="GetInternalColumnWidth(float, float, float)"/> for additional details.<br/>
-        /// This method is derived from the Perl implementation by John McNamara (<a href="https://stackoverflow.com/a/5010899">https://stackoverflow.com/a/5010899</a>)<br/>
-        /// See also: <a href="https://www.ecma-international.org/publications-and-standards/standards/ecma-376/">ECMA-376, Part 1, Chapter 18.3.1.13</a><br/>
+        /// It also depends on the maximum digit width of the default font, as well as its text padding and various constants.<br />
+        /// See also <see cref="GetInternalColumnWidth(float, float, float)"/> for additional details.<br />
+        /// This method is derived from the Perl implementation by John McNamara (<a href="https://stackoverflow.com/a/5010899">https://stackoverflow.com/a/5010899</a>)<br />
+        /// See also: <a href="https://www.ecma-international.org/publications-and-standards/standards/ecma-376/">ECMA-376, Part 1, Chapter 18.3.1.13</a><br />
         /// The two optional parameters maxDigitWidth and textPadding probably don't have to be changed ever. Negative column widths are automatically transformed to 0.
         /// </remarks>
         /// <param name="width">Target column(s) width (one or more columns, displayed in Excel)</param>
@@ -250,9 +250,9 @@ namespace NanoXLSX
         /// <summary>
         /// Calculates the internal height of a split pane in a worksheet. This height is used only in the XML documents of worksheets and is not exposed to the (Excel) user
         /// </summary>
-        /// <remarks>
-        /// The internal split height is based on the height of one or more rows. It also depends on various constants.<br/>
-        /// This method is derived from the Perl implementation by John McNamara (<a href="https://stackoverflow.com/a/5010899">https://stackoverflow.com/a/5010899</a>).<br/>
+        /// \remark <remarks>
+        /// The internal split height is based on the height of one or more rows. It also depends on various constants.<br />
+        /// This method is derived from the Perl implementation by John McNamara (<a href="https://stackoverflow.com/a/5010899">https://stackoverflow.com/a/5010899</a>).<br />
         /// Negative row heights are automatically transformed to 0.
         /// </remarks>
         /// <param name="height">Target row(s) height (one or more rows, displayed in Excel)</param>
@@ -271,7 +271,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="internalHeight">Internal pane height stored in a worksheet. The minimal value is defined by <see cref="SPLIT_HEIGHT_POINT_OFFSET"/></param>
         /// <returns>Actual pane height</returns>
-        /// <remarks>Depending on the initial height, the result value of <see cref="GetInternalPaneSplitHeight(float)"/> may not lead back to the initial value, 
+        /// \remark <remarks>Depending on the initial height, the result value of <see cref="GetInternalPaneSplitHeight(float)"/> may not lead back to the initial value, 
         /// since rounding is applied when calculating the internal height</remarks>
         public static float GetPaneSplitHeight(float internalHeight)
         {
@@ -292,7 +292,7 @@ namespace NanoXLSX
         /// <param name="maxDigitWidth">Maximum digit with of the default font (default is 7.0 for Calibri, size 11)</param>
         /// <param name="textPadding">Text padding of the default font (default is 5.0 for Calibri, size 11)</param>
         /// <returns>Actual pane width</returns>
-        /// <remarks>Depending on the initial width, the result value of <see cref="GetInternalPaneSplitWidth(float,float,float)"/> may not lead back to the initial value, 
+        /// \remark <remarks>Depending on the initial width, the result value of <see cref="GetInternalPaneSplitWidth(float,float,float)"/> may not lead back to the initial value, 
         /// since rounding is applied when calculating the internal width</remarks>
         public static float GetPaneSplitWidth(float internalWidth, float maxDigitWidth = 7f, float textPadding = 5f)
         {
@@ -309,9 +309,9 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Method to generate an Excel internal password hash to protect workbooks or worksheets<br></br>This method is derived from the c++ implementation by Kohei Yoshida (<a href="http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/">http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/</a>)
+        /// Method to generate an Excel internal password hash to protect workbooks or worksheets<br />This method is derived from the c++ implementation by Kohei Yoshida (<a href="http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/">http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/</a>)
         /// </summary>
-        /// <remarks>WARNING! Do not use this method to encrypt 'real' passwords or data outside from NanoXLSX. This is only a minor security feature. Use a proper cryptography method instead.</remarks>
+        /// \remark <remarks>WARNING! Do not use this method to encrypt 'real' passwords or data outside from NanoXLSX. This is only a minor security feature. Use a proper cryptography method instead.</remarks>
         /// <param name="password">Password string in UTF-8 to encrypt</param>
         /// <returns>16 bit hash as hex string</returns>
         public static string GeneratePasswordHash(string password)

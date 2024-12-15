@@ -7,7 +7,7 @@
 
 using NanoXLSX.Shared.Interfaces;
 
-namespace NanoXLS.Schemes
+namespace NanoXLSX.Schemes
 {
     /// <summary>
     /// Enum to define the sequence index of color scheme element, used in the implementations of <see cref="IColorScheme"/>

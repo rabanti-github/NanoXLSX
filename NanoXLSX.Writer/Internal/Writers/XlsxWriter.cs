@@ -28,7 +28,7 @@ namespace NanoXLSX.Internal.Writers
     /// <summary>
     /// Class for internal handling (XML, formatting, packing)
     /// </summary>
-    /// <remarks>This class is only for internal use. Use the high level API (e.g. class Workbook) to manipulate data and create Excel files</remarks>
+    /// \remark <remarks>This class is only for internal use. Use the high level API (e.g. class Workbook) to manipulate data and create Excel files</remarks>
     internal class XlsxWriter
     {
 
@@ -45,8 +45,8 @@ namespace NanoXLSX.Internal.Writers
         private CultureInfo culture;
         private Workbook workbook;
         private StyleManager styles;
-        private SortedMap sharedStrings;
-        private int sharedStringsTotalCount;
+       // private SortedMap sharedStrings;
+      //  private int sharedStringsTotalCount;
         #endregion
 
 
@@ -56,6 +56,7 @@ namespace NanoXLSX.Internal.Writers
             get { return workbook; }
         }
 
+        /*
         public int SharedStringsTotalCount
         {
             get { return sharedStringsTotalCount; }
@@ -66,6 +67,7 @@ namespace NanoXLSX.Internal.Writers
         {
             get { return sharedStrings; }
         }
+        */
 
         public StyleManager Styles
         {
@@ -83,8 +85,6 @@ namespace NanoXLSX.Internal.Writers
         {
             culture = CultureInfo.InvariantCulture;
             this.workbook = workbook;
-            sharedStrings = new SortedMap();
-            sharedStringsTotalCount = 0;
         }
         #endregion
 
@@ -96,6 +96,7 @@ namespace NanoXLSX.Internal.Writers
         /// Method to create shared strings as raw XML string
         /// </summary>
         /// <returns>Raw XML string</returns>
+        /*
         private string CreateSharedStringsDocument()
         {
             StringBuilder sb = new StringBuilder();
@@ -113,6 +114,7 @@ namespace NanoXLSX.Internal.Writers
             sb.Append("</sst>");
             return sb.ToString();
         }
+        */
 
         /// <summary>
         /// Method to normalize all newlines to CR+LF
@@ -136,7 +138,7 @@ namespace NanoXLSX.Internal.Writers
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
         /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
-        /// <remarks>The StyleException should never happen in this state if the internally managed style collection was not tampered. </remarks>
+        /// \remark <remarks>The StyleException should never happen in this state if the internally managed style collection was not tampered. </remarks>
         public void Save()
         {
             try
@@ -154,7 +156,7 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Method to save the workbook asynchronous.
         /// </summary>
-        /// <remarks>Possible Exceptions are <see cref="NanoXLSX.Shared.Exceptions.IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="NanoXLSX.Shared.Exceptions.FormatException"></see> and <see cref="StyleException">StyleException</see>. These exceptions may not emerge directly if using the async method since async/await adds further abstraction layers.</remarks>
+        /// \remark <remarks>Possible Exceptions are <see cref="NanoXLSX.Shared.Exceptions.IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="NanoXLSX.Shared.Exceptions.FormatException"></see> and <see cref="StyleException">StyleException</see>. These exceptions may not emerge directly if using the async method since async/await adds further abstraction layers.</remarks>
         /// <returns>Async Task</returns>
         public async Task SaveAsync()
         {
@@ -285,50 +287,56 @@ namespace NanoXLSX.Internal.Writers
                     // Workbook
                     WorkbookWriter workbookWriter = new WorkbookWriter(this);
                     part = packageParts[WORKBOOK.Path][WORKBOOK.Filename];
-                    AppendXmlToPackagePart(workbookWriter.CreateWorkbookDocument(), part);
+                    AppendXmlToPackagePart(workbookWriter.CreateDocument(), part);
 
                     // Style
                     StyleWriter styleWriter = new StyleWriter(this);
                     part = packageParts[STYLES.Path][STYLES.Filename];
-                    AppendXmlToPackagePart(styleWriter.CreateStyleSheetDocument(), part);
+                    AppendXmlToPackagePart(styleWriter.CreateDocument(), part);
 
+                    // Shared strings - preparation
+                    SharedStringWriter sharedStringWriter = new SharedStringWriter(this);
+                    
                     // Worksheets
-                    WorksheetWriter worksheetWriter = new WorksheetWriter(this);
+                    WorksheetWriter worksheetWriter = new WorksheetWriter(this, sharedStringWriter);
                     if (workbook.Worksheets.Count > 0)
                     {
                         for (int i = 0; i < workbook.Worksheets.Count; i++)
                         {
                             Worksheet item = workbook.Worksheets[i];
                             part = packageParts[worksheetPaths[i].Path][worksheetPaths[i].Filename];
-                            AppendXmlToPackagePart(worksheetWriter.CreateWorksheetPart(item), part);
+                            worksheetWriter.CurrentWorksheet = item;
+                            AppendXmlToPackagePart(worksheetWriter.CreateDocument(), part);
                         }
                     }
                     else
                     {
                         part = packageParts[worksheetPaths[0].Path][worksheetPaths[0].Filename];
-                        AppendXmlToPackagePart(worksheetWriter.CreateWorksheetPart(new Worksheet("sheet1")), part);
+                        worksheetWriter.CurrentWorksheet = new Worksheet("sheet1");
+                        AppendXmlToPackagePart(worksheetWriter.CreateDocument(), part);
                     }
 
-                    // Shared strings
+                    // Shared strings - write after collection of strings
                     part = packageParts[SHARED_STRINGS.Path][SHARED_STRINGS.Filename];
-                    AppendXmlToPackagePart(CreateSharedStringsDocument(), part);
+                    AppendXmlToPackagePart(sharedStringWriter.CreateDocument(), part);
 
                     // Metadata
                     if (this.workbook.WorkbookMetadata != null)
                     {
-                        MetadataWriter metadataWriter = new MetadataWriter(this);
+                        MetadataAppWriter metadataAppWriter = new MetadataAppWriter(this);
                         part = packageParts[APP_PROPERTIES.Path][APP_PROPERTIES.Filename];
-                        AppendXmlToPackagePart(metadataWriter.CreateAppPropertiesDocument(), part);
+                        AppendXmlToPackagePart(metadataAppWriter.CreateDocument(), part);
+                        MetadataCoreWriter metadataCoreWriter = new MetadataCoreWriter(this);
                         part = packageParts[CORE_PROPERTIES.Path][CORE_PROPERTIES.Filename];
-                        AppendXmlToPackagePart(metadataWriter.CreateCorePropertiesDocument(), part);
+                        AppendXmlToPackagePart(metadataCoreWriter.CreateDocument(), part);
                     }
 
                     // Theme
                     if (workbook.WorkbookTheme != null)
                     {
-                        ThemeWriter themeWriter = new ThemeWriter();
+                        ThemeWriter themeWriter = new ThemeWriter(this);
                         part = packageParts[THEME.Path][THEME.Filename];
-                        AppendXmlToPackagePart(themeWriter.CreateThemeDocument(workbook.WorkbookTheme), part);
+                        AppendXmlToPackagePart(themeWriter.CreateDocument(), part);
                     }
                     package.Flush();
                     package.Close();
@@ -350,7 +358,7 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="stream">Writable stream as target</param>
         /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
-        /// <remarks>Possible Exceptions are <see cref="IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="FormatException"></see> and <see cref="StyleException">StyleException</see>. These exceptions may not emerge directly if using the async method since async/await adds further abstraction layers.</remarks>
+        /// \remark <remarks>Possible Exceptions are <see cref="IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="FormatException"></see> and <see cref="StyleException">StyleException</see>. These exceptions may not emerge directly if using the async method since async/await adds further abstraction layers.</remarks>
         /// <returns>Async Task</returns>
         public async Task SaveAsStreamAsync(Stream stream, bool leaveOpen = false)
         {

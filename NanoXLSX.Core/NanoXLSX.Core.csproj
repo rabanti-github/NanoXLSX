@@ -67,4 +67,7 @@
 	<ItemGroup>
 	  <EditorConfigFiles Remove="C:\purge-temp\NanoXlsxV3\NanoXLSX.Core\.editorconfig" />
 	</ItemGroup>
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="@echo off&#xD;&#xA;echo PROJECT_NUMBER = $(Version) &gt; &quot;$(ProjectDir)Documentation\projectNumber.doxygen&quot;&#xD;&#xA;echo PROJECT_NAME = $(ProjectName) &gt; &quot;$(ProjectDir)Documentation\projectName.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = $(SolutionDir)docs\$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\outputDirectory.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = $(SolutionDir)docs\$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\htmlOutput.doxygen&quot;&#xD;&#xA;" />
+	</Target>
 </Project>

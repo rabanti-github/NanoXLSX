@@ -12,7 +12,7 @@ namespace NanoXLSX.Styles
     /// <summary>
     /// Enum for predefined number formats, used by implementations of the <see cref="INumberFormat"/> interface
     /// </summary>
-    /// <remarks>There are other predefined formats (e.g. 43 and 44) that are not listed. The declaration of such formats is done in the number formats section of the style document, 
+    /// \remark <remarks>There are other predefined formats (e.g. 43 and 44) that are not listed. The declaration of such formats is done in the number formats section of the style document, 
     /// whereas the officially listed ones are implicitly used and not declared in the style document</remarks>
     public enum FormatNumber
     {

@@ -19,7 +19,7 @@ namespace NanoXLSX.Shared.Interfaces
         /// Method to add the formatted text value, from the object of the class that has implemented the interface, to the passed string builder
         /// </summary>
         /// <param name="sb">String builder instance</param>
-        /// <remarks>The formatted value must be XLM-attribute-ready, means already escaped and containing the right 
+        /// \remark <remarks>The formatted value must be XLM-attribute-ready, means already escaped and containing the right 
         /// XML tags to be enclosed by &lt;si&gt;&lt;/si&gt;...&lt;/si&gt; within the shared stings document</remarks>
         void AddFormattedValue(StringBuilder sb);
 

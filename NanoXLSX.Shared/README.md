@@ -1,6 +1,6 @@
 ![NanoXLSX](https://raw.githubusercontent.com/rabanti-github/NanoXLSX/refs/heads/master/Documentation/icons/NanoXLSX.png)
 
-# NanoXLSX.Core 
+# NanoXLSX.Shared 
 
 ![nuget](https://img.shields.io/nuget/v/NanoXLSX.Core.svg?maxAge=86400)
 ![license](https://img.shields.io/github/license/rabanti-github/NanoXlsx.svg)
@@ -10,6 +10,5 @@ NanoXLSX is a small .NET library written in C#, to create and read Microsoft Exc
 
 ## Package content
 
-NanoXLSX.Core contains the core components to manipulates cess, worksheets or workbooks. This package does not handle reading or writing files.
-
+NanoXLSX.Shared contains the common data objets, like interfaces or enums, that can be used by all NanoXLSX packages
 **TBD**

@@ -155,7 +155,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets or sets the optional address type that can be part of the cell address. 
         /// </summary>
-        /// <remarks>The type has no influence on the behavior of the cell, though. It is preserved to avoid losing information on the address object of the cell</remarks>
+        /// \remark <remarks>The type has no influence on the behavior of the cell, though. It is preserved to avoid losing information on the address object of the cell</remarks>
         public AddressType CellAddressType { get; set; }
 
         /// <summary>Gets or sets the value of the cell (generic object type). When setting a value, the <see cref="DataType"/> is automatically resolved</summary>
@@ -184,7 +184,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
-        /// <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
+        /// \remark <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
         public Cell(object value, CellType type)
         {
             if (type == CellType.EMPTY)
@@ -208,7 +208,7 @@ namespace NanoXLSX
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address of the cell</param>
-        /// <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
+        /// \remark <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
         public Cell(Object value, CellType type, string address)
         {
             if (type == CellType.EMPTY)
@@ -233,7 +233,7 @@ namespace NanoXLSX
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address struct of the cell</param>
-        /// <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
+        /// \remark <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
         public Cell(Object value, CellType type, Address address)
         {
             if (type == CellType.EMPTY)
@@ -279,8 +279,8 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="other">Object to compare</param>
         /// <returns>0 if values are the same, -1 if this object is smaller, 1 if it is bigger</returns>
-        /// <remarks>Note that this method only compares the row and column numbers, 
-        /// since the values or styles may completely different types, and therefore hard to compare at all.<br/>
+        /// \remark <remarks>Note that this method only compares the row and column numbers, 
+        /// since the values or styles may be completely different types, and therefore hard to compare at all.<br />
         /// The <see cref="Equals(object)"/> method considers values and style, though.</remarks>
         public int CompareTo(Cell other)
         {
@@ -381,7 +381,7 @@ namespace NanoXLSX
         /// <param name="isLocked">If true, the cell will be locked if the worksheet is protected</param>
         /// <param name="isHidden">If true, the value of the cell will be invisible if the worksheet is protected</param>
         /// <exception cref="StyleException">Throws a StyleException if the style used to lock cells cannot be referenced</exception>
-        /// <remarks>The listed exception should never happen because the mentioned style is internally generated</remarks>
+        /// \remark <remarks>The listed exception should never happen because the mentioned style is internally generated</remarks>
         public void SetCellLockedState(bool isLocked, bool isHidden)
         {
             Style lockStyle;

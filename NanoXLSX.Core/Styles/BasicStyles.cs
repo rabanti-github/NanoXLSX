@@ -272,7 +272,7 @@ namespace NanoXLSX.Styles
         /// <param name="isBold">If true, the font will be bold (optional; default false)</param>
         /// <param name="isItalic">If true, the font will be italic (optional; default false)</param>
         /// <returns>Style with font definition</returns>
-        /// <remarks>The font name as well as the availability of bold and italic on the font cannot be validated by NanoXLSX. 
+        /// \remark <remarks>The font name as well as the availability of bold and italic on the font cannot be validated by NanoXLSX. 
         /// The generated file may be corrupt or rendered with a fall-back font in case of an error</remarks>
         public static Style Font(string fontName, float fontSize = 11f, bool isBold = false, bool isItalic = false)
         {

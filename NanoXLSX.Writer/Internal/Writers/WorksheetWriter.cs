@@ -10,31 +10,71 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using NanoXLSX.Interfaces.Workbook;
+using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
 using NanoXLSX.Shared.Interfaces;
 using NanoXLSX.Shared.Utils;
 
 namespace NanoXLSX.Internal.Writers
 {
-    internal class WorksheetWriter
+    internal class WorksheetWriter : IPluginWriter
     {
-        private static CultureInfo CULTURE = CultureInfo.InvariantCulture;
+        private static readonly CultureInfo CULTURE = CultureInfo.InvariantCulture;
 
         private readonly Workbook workbook;
         private readonly SortedMap sharedStrings;
-        private readonly XlsxWriter writer;
+        private readonly SharedStringWriter sharedStringWriter;
 
-        internal WorksheetWriter(XlsxWriter writer)
+        public Worksheet CurrentWorksheet { get; set; }
+
+        internal WorksheetWriter(XlsxWriter writer, SharedStringWriter sharedStringWriter)
         {
             this.workbook = writer.Workbook;
-            this.sharedStrings = writer.SharedStrings;
-            this.writer = writer;
+            this.sharedStringWriter = sharedStringWriter;
+            this.sharedStrings = sharedStringWriter.SharedStrings;
+
+        }
+
+        /// <summary>
+        /// Method to create a worksheet part as a raw XML string
+        /// </summary>
+        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
+        /// <returns>Raw XML string</returns>
+        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        public virtual string CreateDocument()
+        {
+            PreWrite(workbook);
+            String document = CreateWorksheetPart(CurrentWorksheet);
+            PostWrite(workbook);
+            return document;
+        }
+
+        /// <summary>
+        /// Method that is called before the <see cref="CreateDocument()"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="workbook">Workbook instance that is used in this writer</param>
+        public virtual void PreWrite(IWorkbook workbook)
+        {
+            // NoOp - replaced by plugin
+        }
+
+        /// <summary>
+        /// Method that is called after the <see cref="CreateDocument()"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="workbook">Workbook instance that is used in this writer</param>
+        public virtual void PostWrite(IWorkbook workbook)
+        {
+            // NoOp - replaced by plugin
         }
 
 
         /// <summary>
         /// Method to create a worksheet part as a raw XML string
         /// </summary>
+        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <param name="worksheet">worksheet object to process</param>
         /// <returns>Raw XML string</returns>
         /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
@@ -193,15 +233,15 @@ namespace NanoXLSX.Internal.Writers
                         else
                         {
                             typeAttribute = "s";
-                            if (item.Value is IFormattableText)
+                            if (item.Value is IFormattableText text)
                             {
-                                valueDef = sharedStrings.Add((IFormattableText)item.Value, ParserUtils.ToString(sharedStrings.Count));
+                                valueDef = sharedStrings.Add(text, ParserUtils.ToString(sharedStrings.Count));
                             }
                             else
                             {
                                 valueDef = sharedStrings.Add(new PlainText(item.Value.ToString()), ParserUtils.ToString(sharedStrings.Count));
                             }
-                            this.writer.SharedStringsTotalCount++;
+                            this.sharedStringWriter.SharedStringsTotalCount++;
                         }
                     }
                     typeDef = " t=\"" + typeAttribute + "\" ";

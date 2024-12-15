@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using NanoXLSX.Interfaces.Workbook;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
@@ -20,7 +21,7 @@ namespace NanoXLSX
     /// Class representing a workbook
     /// </summary>
     /// 
-    public class Workbook
+    public class Workbook : IWorkbook
     {
         #region privateFields
         private string filename;
@@ -58,7 +59,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets or sets the filename of the workbook.
         /// </summary>
-        /// <remarks>
+        /// \remark <remarks>
         /// Note that the file name is not sanitized. If a filename is set that is not compliant to the file system, saving of the workbook may fail
         /// </remarks>
         public string Filename
@@ -108,7 +109,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the password used for workbook protection. See also <see cref="SetWorkbookProtection"/>
         /// </summary>
-        /// <remarks>The password of this property is stored in plan text at runtime but not stored to a workbook. See also <see cref="WorkbookProtectionPasswordHash"/> for the generated hash</remarks>
+        /// \remark <remarks>The password of this property is stored in plan text at runtime but not stored to a workbook. See also <see cref="WorkbookProtectionPasswordHash"/> for the generated hash</remarks>
         public string WorkbookProtectionPassword
         {
             get { return workbookProtectionPassword; }
@@ -117,7 +118,7 @@ namespace NanoXLSX
         /// <summary>
         /// Hash of the protected workbook, originated from <see cref="WorkbookProtectionPassword"/>
         /// </summary>
-        /// <remarks>The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused, 
+        /// \remark <remarks>The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused, 
         /// if no changes are made in the area of workbook protection (<see cref="SetWorkbookProtection(bool, bool, bool, string)"/>)</remarks>
         public string WorkbookProtectionPasswordHash { get; internal set; }
 
@@ -133,7 +134,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets or sets whether the whole workbook is hidden
         /// </summary>
-        /// <remarks>A hidden workbook can only be made visible, using another, already visible Excel window</remarks>
+        /// \remark <remarks>A hidden workbook can only be made visible, using another, already visible Excel window</remarks>
         public bool Hidden { get; set; }
 
         /// <summary>
@@ -379,7 +380,7 @@ namespace NanoXLSX
         /// Removes the passed style from the style sheet. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="style">Style to remove</param>
-        /// <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
+        /// \remark <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
         [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(Style style)
         {
@@ -390,7 +391,7 @@ namespace NanoXLSX
         /// Removes the defined style from the style sheet of the workbook. This method is deprecated since it has no direct impact on the generated file.
         /// </summary>
         /// <param name="styleName">Name of the style to be removed</param>
-        /// <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
+        /// \remark <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
         [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(string styleName)
         {
@@ -402,7 +403,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="style">Style to remove</param>
         /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>
-        /// <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
+        /// \remark <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
         [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(Style style, bool onlyIfUnused)
         {
@@ -418,7 +419,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="styleName">Name of the style to be removed</param>
         /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>
-        /// <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
+        /// \remark <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
         [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
         public void RemoveStyle(string styleName, bool onlyIfUnused)
         {
@@ -465,7 +466,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Method to resolve all merged cells in all worksheets. Only the value of the very first cell of the locked cells range will be visible. The other values are still present (set to EMPTY) but will not be stored in the worksheet.<br/>
+        /// Method to resolve all merged cells in all worksheets. Only the value of the very first cell of the locked cells range will be visible. The other values are still present (set to EMPTY) but will not be stored in the worksheet.<br />
         /// This is an internal method. There is no need to use it
         /// </summary>
         /// <exception cref="StyleException">Throws a StyleException if one of the styles of the merged cells cannot be referenced or is null</exception>
@@ -537,7 +538,7 @@ namespace NanoXLSX
         /// <summary>
         /// Sets the selected worksheet in the output workbook
         /// </summary>
-        /// <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>
+        /// \remark <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>
         /// <param name="worksheetIndex">Zero-based worksheet index</param>
         /// <exception cref="RangeException">Throws a RangeException if the index of the worksheet is out of range</exception>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the worksheet to be set selected is hidden</exception>
@@ -554,7 +555,7 @@ namespace NanoXLSX
         /// <summary>
         /// Sets the selected worksheet in the output workbook
         /// </summary>
-        /// <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>
+        /// \remark <remarks>This method does not set the current worksheet while design time. Use SetCurrentWorksheet instead for this</remarks>
         /// <param name="worksheet">Worksheet object (must be in the collection of worksheets)</param>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the worksheet was not found in the worksheet collection or if it is hidden</exception>
         public void SetSelectedWorksheet(Worksheet worksheet)
@@ -627,7 +628,7 @@ namespace NanoXLSX
         /// <param name="sourceWorksheetName">Name of the worksheet to copy, originated in this workbook</param>
         /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
-        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// \remark <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
         /// <returns>Copied worksheet</returns>
         public Worksheet CopyWorksheetIntoThis(string sourceWorksheetName, string newWorksheetName, bool sanitizeSheetName = true)
         {
@@ -641,7 +642,7 @@ namespace NanoXLSX
         /// <param name="sourceWorksheetIndex">Index of the worksheet to copy, originated in this workbook</param>
         /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
-        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// \remark <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
         /// <returns>Copied worksheet</returns>
         public Worksheet CopyWorksheetIntoThis(int sourceWorksheetIndex, string newWorksheetName, bool sanitizeSheetName = true)
         {
@@ -655,7 +656,7 @@ namespace NanoXLSX
         /// <param name="sourceWorksheet">Worksheet to copy</param>
         /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
-        /// <remarks>The copy is not set as current worksheet. The existing one is kept. The source worksheet can originate from any workbook</remarks>
+        /// \remark <remarks>The copy is not set as current worksheet. The existing one is kept. The source worksheet can originate from any workbook</remarks>
         /// <returns>Copied worksheet</returns>
         public Worksheet CopyWorksheetIntoThis(Worksheet sourceWorksheet, string newWorksheetName, bool sanitizeSheetName = true)
         {
@@ -669,7 +670,7 @@ namespace NanoXLSX
         /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
         /// <param name="targetWorkbook">Workbook to copy the worksheet into</param>
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
-        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// \remark <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
         /// <returns>Copied worksheet</returns>
         public Worksheet CopyWorksheetTo(string sourceWorksheetName, string newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
         {
@@ -684,7 +685,7 @@ namespace NanoXLSX
         /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
         /// <param name="targetWorkbook">Workbook to copy the worksheet into</param>
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
-        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// \remark <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
         /// <returns>Copied worksheet</returns>
         public Worksheet CopyWorksheetTo(int sourceWorksheetIndex, string newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
         {
@@ -700,7 +701,7 @@ namespace NanoXLSX
         /// <param name="newWorksheetName">Name of the new worksheet (copy)</param>
         /// <param name="targetWorkbook">Workbook to copy the worksheet into</param>
         /// <param name="sanitizeSheetName">If true, the new name will be automatically sanitized if a name collision occurs</param>
-        /// <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
+        /// \remark <remarks>The copy is not set as current worksheet. The existing one is kept</remarks>
         /// <returns>Copied worksheet</returns>
         public static Worksheet CopyWorksheetTo(Worksheet sourceWorksheet, string newWorksheetName, Workbook targetWorkbook, bool sanitizeSheetName = true)
         {
@@ -722,13 +723,13 @@ namespace NanoXLSX
 
 
         /// <summary>
-        /// Validates the worksheets regarding several conditions that must be met:<br/>
-        /// - At least one worksheet must be defined<br/>
-        /// - A hidden worksheet cannot be the selected one<br/>
-        /// - At least one worksheet must be visible<br/>
+        /// Validates the worksheets regarding several conditions that must be met:<br />
+        /// - At least one worksheet must be defined<br />
+        /// - A hidden worksheet cannot be the selected one<br />
+        /// - At least one worksheet must be visible<br />
         /// If one of the conditions is not met, an exception is thrown
         /// </summary>
-        /// <remarks>If an import is in progress, these rules are disabled to avoid conflicts by the order of loaded worksheets</remarks>
+        /// \remark <remarks>If an import is in progress, these rules are disabled to avoid conflicts by the order of loaded worksheets</remarks>
         internal void ValidateWorksheets()
         {
             if (importInProgress)

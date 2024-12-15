@@ -6,29 +6,56 @@
  */
 
 using System.Text;
+using NanoXLSX.Interfaces.Workbook;
+using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Shared.Interfaces;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Themes;
 
 namespace NanoXLSX.Internal.Writers
 {
-    internal class ThemeWriter
+    internal class ThemeWriter : IPluginWriter
     {
 
-        internal ThemeWriter()
-        {
+        private readonly Workbook workbook;
 
+        internal ThemeWriter(XlsxWriter writer)
+        {
+            this.workbook = writer.Workbook;
         }
 
-        internal string CreateThemeDocument(Theme theme)
+        public virtual string CreateDocument()
         {
+            PreWrite(workbook);
+            Theme theme = workbook.WorkbookTheme;
             StringBuilder sb = new StringBuilder();
             sb.Append("<theme xmlns=\"http://schemas.openxmlformats.org/drawingml/2006/main\" name=\"").Append(XmlUtils.EscapeXmlAttributeChars(theme.Name)).Append("\">");
             sb.Append("<themeElements>");
             CreateColorSchemeString(sb, theme.Colors);
             sb.Append("</themeElements>");
             sb.Append("</theme>");
+            PostWrite(workbook);
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Method that is called before the <see cref="CreateDocument()"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="workbook">Workbook instance that is used in this writer</param>
+        public virtual void PreWrite(IWorkbook workbook)
+        {
+            // NoOp - replaced by plugin
+        }
+
+        /// <summary>
+        /// Method that is called after the <see cref="CreateDocument()"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="workbook">Workbook instance that is used in this writer</param>
+        public virtual void PostWrite(IWorkbook workbook)
+        {
+            // NoOp - replaced by plugin
         }
 
         private void CreateColorSchemeString(StringBuilder sb, ColorScheme scheme)

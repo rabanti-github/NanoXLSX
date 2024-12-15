@@ -15,7 +15,7 @@ namespace NanoXLSX.Shared.Utils
     /// <summary>
     /// Class providing static methods to manipulate XML during packing or unpacking
     /// </summary>
-    /// <remarks>Methods in this class should only be used by the library components and not called by user code</remarks>
+    /// \remark <remarks>Methods in this class should only be used by the library components and not called by user code</remarks>
     public static class XmlUtils
     {
 
@@ -24,7 +24,7 @@ namespace NanoXLSX.Shared.Utils
         /// </summary>
         /// <param name="input">Input string to process</param>
         /// <returns>Escaped string</returns>
-        /// <remarks>Note: The XML specs allow characters up to the character value of 0x10FFFF. However, the C# char range is only up to 0xFFFF. NanoXLSX will neglect all values above this level in the sanitizing check. Illegal characters like 0x1 will be replaced with a white space (0x20)</remarks>
+        /// \remark <remarks>Note: The XML specs allow characters up to the character value of 0x10FFFF. However, the C# char range is only up to 0xFFFF. NanoXLSX will neglect all values above this level in the sanitizing check. Illegal characters like 0x1 will be replaced with a white space (0x20)</remarks>
         public static string EscapeXmlChars(string input)
         {
             if (input == null) { return ""; }

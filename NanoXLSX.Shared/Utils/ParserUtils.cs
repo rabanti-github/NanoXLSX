@@ -13,7 +13,7 @@ namespace NanoXLSX.Shared.Utils
     /// <summary>
     /// Class providing static methods to parse string values to specific types or to print object as language neutral string
     /// </summary>
-    /// <remarks>Methods in this class should only be used by the library components and not called by user code</remarks>
+    /// \remark <remarks>Methods in this class should only be used by the library components and not called by user code</remarks>
     public static class ParserUtils
     {
         #region constants

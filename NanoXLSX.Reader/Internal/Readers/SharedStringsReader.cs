@@ -90,7 +90,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reads the XML file form the passed stream and processes the shared strings table
         /// </summary>
-        /// <remarks>This method is virtual. Plug-in packages may override it</remarks>
+        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <param name="stream">Stream of the XML file</param>
         /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
         public virtual void Read(MemoryStream stream)

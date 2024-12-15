@@ -30,7 +30,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets or sets the version of the creation application. Default is the library version of NanoXLSX. Use the format xxxxx.yyyyy (e.g. 1.0 or 55.9875) in case of a custom value.
         /// </summary>
-        /// <remarks>Allowed values are null, empty and fractions from 0.0  to 99999.99999 (max. number of digits before and after the period is 5)</remarks>
+        /// \remark <remarks>Allowed values are null, empty and fractions from 0.0  to 99999.99999 (max. number of digits before and after the period is 5)</remarks>
         public string ApplicationVersion
         {
             get { return applicationVersion; }
@@ -123,7 +123,7 @@ namespace NanoXLSX
 
         #region staticMethods
         /// <summary>
-        /// Method to parse a common version (major.minor.revision.build) into the compatible format (major.minor). The minimum value is 0.0 and the maximum value is 99999.99999<br></br>
+        /// Method to parse a common version (major.minor.revision.build) into the compatible format (major.minor). The minimum value is 0.0 and the maximum value is 99999.99999<br />
         /// The minor, revision and build number are joined if possible. If the number is too long, 
         /// the additional characters will be removed from the right side down to five characters (e.g. 785563 will be 78556)
         /// </summary>

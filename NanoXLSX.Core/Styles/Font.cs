@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using System.Text;
-using NanoXLS.Schemes;
+using NanoXLSX.Schemes;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Interfaces.Styles;
 using NanoXLSX.Shared.Utils;
@@ -98,7 +98,7 @@ namespace NanoXLSX.Styles
         [Append]
         public bool Strike { get; set; }
         /// <summary>
-        /// Gets or sets the underline style of the font. If set to <a cref="UnderlineValue.none">none</a> no underline will be applied (default)
+        /// Gets or sets the underline style of the font. If set to <see cref="UnderlineValue.none">none</a> no underline will be applied (default)
         /// </summary>
         [Append]
         public UnderlineValue Underline { get; set; } = UnderlineValue.none;
@@ -169,7 +169,7 @@ namespace NanoXLSX.Styles
         /// Gets or sets the font name (Default is Calibri)
         /// </summary>
         /// <exception cref="StyleException">A StyleException is thrown if the name is null or empty</exception>
-        /// <remarks>Note that the font name is not validated whether it is a valid or existing font. The font name may not exceed more than 31 characters</remarks>
+        /// \remark <remarks>Note that the font name is not validated whether it is a valid or existing font. The font name may not exceed more than 31 characters</remarks>
         [Append]
         public string Name //OOXML: Chp.18.8.29
         {

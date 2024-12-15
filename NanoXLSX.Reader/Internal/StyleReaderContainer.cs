@@ -201,7 +201,7 @@ namespace NanoXLSX.Internal
         /// <summary>
         /// Internal method to retrieve style components
         /// </summary>
-        /// <remarks>CellXF is not handled, since retrieved in the style reader in a different way</remarks>
+        /// \remark <remarks>CellXF is not handled, since retrieved in the style reader in a different way</remarks>
         /// <param name="type">Type of the style components</param>
         /// <param name="index">Internal index of the style components</param>
         /// <returns>Style component or null if the component could not be retrieved</returns>

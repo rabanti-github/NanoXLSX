@@ -27,7 +27,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// No pattern (default)
         /// </summary>
-        /// <remarks>The value none will lead to a invalidation of the foreground or background color values</remarks>
+        /// \remark <remarks>The value none will lead to a invalidation of the foreground or background color values</remarks>
         none,
         /// <summary>Solid fill (for colors)</summary>
         solid,

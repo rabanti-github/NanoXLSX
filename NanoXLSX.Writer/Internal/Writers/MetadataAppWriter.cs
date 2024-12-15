@@ -8,16 +8,18 @@
 using System;
 using System.Globalization;
 using System.Text;
+using NanoXLSX.Interfaces.Workbook;
+using NanoXLSX.Interfaces.Writer;
 
 namespace NanoXLSX.Internal.Writers
 {
-    internal class MetadataWriter
+    internal class MetadataAppWriter : IPluginWriter
     {
-        private static CultureInfo CULTURE = CultureInfo.InvariantCulture;
+        private static readonly CultureInfo CULTURE = CultureInfo.InvariantCulture;
 
         private readonly Workbook workbook;
 
-        public MetadataWriter(XlsxWriter writer)
+        public MetadataAppWriter(XlsxWriter writer)
         {
             this.workbook = writer.Workbook;
         }
@@ -25,27 +27,37 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Method to create the app-properties (part of meta data) as raw XML string
         /// </summary>
+        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <returns>Raw XML string</returns>
-        internal string CreateAppPropertiesDocument()
+        public virtual string CreateDocument()
         {
+            PreWrite(workbook);
             StringBuilder sb = new StringBuilder();
             sb.Append("<Properties xmlns=\"http://schemas.openxmlformats.org/officeDocument/2006/extended-properties\" xmlns:vt=\"http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes\">");
             sb.Append(CreateAppString());
             sb.Append("</Properties>");
+            PostWrite(workbook);
             return sb.ToString();
         }
 
         /// <summary>
-        /// Method to create the core-properties (part of meta data) as raw XML string
+        /// Method that is called before the <see cref="CreateDocument()"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
         /// </summary>
-        /// <returns>Raw XML string</returns>
-        internal string CreateCorePropertiesDocument()
+        /// <param name="workbook">Workbook instance that is used in this writer</param>
+        public virtual void PreWrite(IWorkbook workbook)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<cp:coreProperties xmlns:cp=\"http://schemas.openxmlformats.org/package/2006/metadata/core-properties\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:dcmitype=\"http://purl.org/dc/dcmitype/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
-            sb.Append(CreateCorePropertiesString());
-            sb.Append("</cp:coreProperties>");
-            return sb.ToString();
+            // NoOp - replaced by plugin
+        }
+
+        /// <summary>
+        /// Method that is called after the <see cref="CreateDocument()"/> method is executed. 
+        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// </summary>
+        /// <param name="workbook">Workbook instance that is used in this writer</param>
+        public virtual void PostWrite(IWorkbook workbook)
+        {
+            // NoOp - replaced by plugin
         }
 
         /// <summary>

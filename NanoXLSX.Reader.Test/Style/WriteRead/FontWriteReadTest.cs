@@ -1,5 +1,5 @@
 ﻿using System;
-using NanoXLS.Schemes;
+using NanoXLSX.Schemes;
 using NanoXLSX;
 using NanoXLSX.Styles;
 using Xunit;

@@ -32,7 +32,7 @@ namespace NanoXLSX
         public static readonly CultureInfo DEFAULT_CULTURE_INFO = CultureInfo.InvariantCulture;
 
         /// <summary>
-        /// Global conversion types to enforce during the load process. All types other than <a cref="GlobalType.Default" /> will override defined <a cref="ColumnType">Column types</a>
+        /// Global conversion types to enforce during the load process. All types other than <see cref="GlobalType.Default" /> will override defined <see cref="ColumnType">Column types</a>
         /// </summary>
         public enum GlobalType
         {
@@ -102,7 +102,7 @@ namespace NanoXLSX
         /// <summary>
         /// If true, phonetic characters (like ruby characters / Furigana / Zhuyin fuhao) in strings are added in brackets after the transcribed symbols. By default, phonetic characters are removed from strings.
         /// </summary>
-        /// <remarks>This option is not applicable to specific rows or a start column (applied globally)</remarks>
+        /// \remark <remarks>This option is not applicable to specific rows or a start column (applied globally)</remarks>
         public bool EnforcePhoneticCharacterImport { get; set; }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace NanoXLSX
         public bool EnforceEmptyValuesAsString { get; set; }
 
         /// <summary>
-        /// Global strategy to handle cell values. The default will not enforce any general casting, beside defined values of <a cref="EnforceDateTimesAsNumbers" />, <a cref="EnforceEmptyValuesAsString" /> and <a cref="EnforcedColumnTypes" /> 
+        /// Global strategy to handle cell values. The default will not enforce any general casting, beside defined values of <see cref="EnforceDateTimesAsNumbers" />, <see cref="EnforceEmptyValuesAsString" /> and <see cref="EnforcedColumnTypes" /> 
         /// </summary>
         public GlobalType GlobalEnforcingType { get; set; } = GlobalType.Default;
 
@@ -127,7 +127,7 @@ namespace NanoXLSX
         public int EnforcingStartRowNumber { get; set; } = 0;
 
         /// <summary>
-        /// Format if DateTime values are cast to strings or DateTime objects are parsed from strings. If null or empty, parsing will be tried with 'best effort', according to <a cref="System.DateTime.Parse(string)" />. 
+        /// Format if DateTime values are cast to strings or DateTime objects are parsed from strings. If null or empty, parsing will be tried with 'best effort', according to <see cref="System.DateTime.Parse(string)">System.DateTime.Parse(string)</see>. 
         /// See also  <see cref="TemporalCultureInfo"/>
         /// </summary>
         public string DateTimeFormat { get; set; } = DEFAULT_DATE_TIME_FORMAT;
@@ -135,11 +135,11 @@ namespace NanoXLSX
         /// <summary>
         /// Format if TimeSpan values are cast to strings
         /// </summary>
-        /// <remarks>The separators like period or semicolon must be escaped by backslashes. See: <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-timespan-format-strings"/></remarks>
+        /// \remark <remarks>The separators like period or semicolon must be escaped by backslashes. See: <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-timespan-format-strings"/></remarks>
         public string TimeSpanFormat { get; set; } = DEFAULT_TIMESPAN_FORMAT;
 
         /// <summary>
-        /// Culture info instance, used to parse DateTime or TimeSpan objects from strings. If null, parsing will be tried with 'best effort', according to <a cref="System.DateTime.Parse(string)" />.
+        /// Culture info instance, used to parse DateTime or TimeSpan objects from strings. If null, parsing will be tried with 'best effort', according to <see cref="System.DateTime.Parse(string)">System.DateTime.Parse(string)</see> <see cref="System.DateTime.Parse(string)">System.DateTime.Parse(string)</see>.
         /// See also  <see cref="DateTimeFormat"/> and <see cref="TimeSpanFormat"/>
         /// </summary>
         public CultureInfo TemporalCultureInfo { get; set; } = DEFAULT_CULTURE_INFO;

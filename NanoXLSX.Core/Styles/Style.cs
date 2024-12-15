@@ -49,7 +49,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the name of the informal style. If not defined, the automatically calculated hash will be used as name
         /// </summary>
-        /// <remarks>The name is informal and not considered as an identifier, when collecting all styles for a workbook</remarks>
+        /// \remark <remarks>The name is informal and not considered as an identifier, when collecting all styles for a workbook</remarks>
         [Append(Ignore = true)]
         public string Name { get; set; }
 

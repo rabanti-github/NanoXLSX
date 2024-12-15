@@ -10,7 +10,7 @@ namespace NanoXLSX.Internal.Readers
     using System;
     using System.IO;
     using System.Xml;
-    using NanoXLS.Schemes;
+    using NanoXLSX.Schemes;
     using NanoXLSX.Shared.Utils;
     using NanoXLSX.Styles;
     using IOException = NanoXLSX.Shared.Exceptions.IOException;
@@ -37,7 +37,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reads the XML file form the passed stream and processes the style information.
         /// </summary>
-        /// <remarks>This method is virtual. Plug-in packages may override it</remarks>
+        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <param name="stream">Stream of the XML file.</param>
         public virtual void Read(MemoryStream stream)
         {

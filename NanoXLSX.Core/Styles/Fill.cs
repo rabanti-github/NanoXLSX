@@ -46,7 +46,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the background color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
-        /// <remarks>If a background color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.none">PatternValue.none</see>, 
+        /// \remark <remarks>If a background color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.none">PatternValue.none</see>, 
         /// the PatternFill property will be automatically set to <see cref="PatternValue.solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
         [Append]
         public string BackgroundColor
@@ -65,7 +65,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the foreground color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
         /// </summary>
-        /// <remarks>If a foreground color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.none">PatternValue.none</see>, 
+        /// \remark <remarks>If a foreground color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.none">PatternValue.none</see>, 
         /// the PatternFill property will be automatically set to <see cref="PatternValue.solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
         [Append]
         public string ForegroundColor

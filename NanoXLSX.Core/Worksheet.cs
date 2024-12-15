@@ -264,7 +264,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the hidden rows as dictionary with the zero-based row number as key and a boolean as value. True indicates hidden, false visible.
         /// </summary>
-        /// <remarks>Entries with the value false are not affecting the worksheet. These entries can be removed</remarks>
+        /// \remark <remarks>Entries with the value false are not affecting the worksheet. These entries can be removed</remarks>
         public Dictionary<int, bool> HiddenRows
         {
             get { return hiddenRows; }
@@ -322,7 +322,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the password used for sheet protection. See <see cref="SetSheetProtectionPassword"/> to set the password
         /// </summary>
-        /// <remarks>If a workbook with password protected worksheets is loaded, only the <see cref="SheetProtectionPasswordHash"/> is loaded. 
+        /// \remark <remarks>If a workbook with password protected worksheets is loaded, only the <see cref="SheetProtectionPasswordHash"/> is loaded. 
         /// The password itself cannot be recovered. Use the <see cref="SheetProtectionPasswordHash"/> property to check whether there is a password set</remarks>
         public string SheetProtectionPassword
         {
@@ -371,8 +371,8 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// gets or sets whether the worksheet is hidden. If true, the worksheet is not listed in the worksheet tabs of the workbook.<br/>
-        /// If the worksheet is not part of a workbook, or the only one in the workbook, an exception will be thrown.<br/>
+        /// gets or sets whether the worksheet is hidden. If true, the worksheet is not listed in the worksheet tabs of the workbook.<br />
+        /// If the worksheet is not part of a workbook, or the only one in the workbook, an exception will be thrown.<br />
         /// If the worksheet is the selected one, and attempted to set hidden, an exception will be thrown. Define another selected worksheet prior to this call, in this case.
         /// </summary>
         public bool Hidden
@@ -389,12 +389,12 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the height of the upper, horizontal split pane, measured from the top of the window.<br/>
-        /// The value is nullable. If null, no horizontal split of the worksheet is applied.<br/>
-        /// The value is only applicable to split the worksheet into panes, but not to freeze them.<br/>
+        /// Gets the height of the upper, horizontal split pane, measured from the top of the window.<br />
+        /// The value is nullable. If null, no horizontal split of the worksheet is applied.<br />
+        /// The value is only applicable to split the worksheet into panes, but not to freeze them.<br />
         /// See also: <see cref="PaneSplitAddress"/>
         /// </summary>
-        /// <remarks>Note: This value will be modified to the Excel-internal representation, 
+        /// \remark <remarks>Note: This value will be modified to the Excel-internal representation, 
         /// calculated by <see cref="Utils.GetInternalPaneSplitHeight(float)"/>.</remarks>
         public float? PaneSplitTopHeight
         {
@@ -402,12 +402,12 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the width of the left, vertical split pane, measured from the left of the window.<br/>
-        /// The value is nullable. If null, no vertical split of the worksheet is applied<br/>
-        /// The value is only applicable to split the worksheet into panes, but not to freeze them.<br/>
+        /// Gets the width of the left, vertical split pane, measured from the left of the window.<br />
+        /// The value is nullable. If null, no vertical split of the worksheet is applied<br />
+        /// The value is only applicable to split the worksheet into panes, but not to freeze them.<br />
         /// See also: <see cref="PaneSplitAddress"/>
         /// </summary>
-        /// <remarks>Note: This value will be modified to the Excel-internal representation, 
+        /// \remark <remarks>Note: This value will be modified to the Excel-internal representation, 
         /// calculated by <see cref="Utils.GetInternalColumnWidth(float, float, float)"/>.</remarks>
         public float? PaneSplitLeftWidth
         {
@@ -415,7 +415,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets whether split panes are frozen.<br/>
+        /// Gets whether split panes are frozen.<br />
         /// The value is nullable. If null, no freezing is applied. This property also does not apply if <see cref="PaneSplitAddress"/> is null
         /// </summary>
         public bool? FreezeSplitPanes
@@ -424,8 +424,8 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the Top Left cell address of the bottom right pane if applicable and splitting is applied.<br/>
-        /// The column is only relevant for vertical split, whereas the row component is only relevant for a horizontal split.<br/>
+        /// Gets the Top Left cell address of the bottom right pane if applicable and splitting is applied.<br />
+        /// The column is only relevant for vertical split, whereas the row component is only relevant for a horizontal split.<br />
         /// The value is nullable. If null, no splitting was defined.
         /// </summary>
         public Address? PaneSplitTopLeftCell
@@ -434,10 +434,10 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the split address for frozen panes or if pane split was defined in number of columns and / or rows.<br/> 
-        /// For vertical splits, only the column component is considered. For horizontal splits, only the row component is considered.<br/>
+        /// Gets the split address for frozen panes or if pane split was defined in number of columns and / or rows.<br /> 
+        /// For vertical splits, only the column component is considered. For horizontal splits, only the row component is considered.<br />
         /// The value is nullable. If null, no frozen panes or split by columns / rows are applied to the worksheet. 
-        /// However, splitting can still be applied, if the value is defined in characters.<br/>
+        /// However, splitting can still be applied, if the value is defined in characters.<br />
         /// See also: <see cref="PaneSplitLeftWidth"/> and <see cref="PaneSplitTopHeight"/> for splitting in characters (without freezing)
         /// </summary>
         public Address? PaneSplitAddress
@@ -447,7 +447,7 @@ namespace NanoXLSX
 
 
         /// <summary>
-        /// Gets the active Pane is splitting is applied.<br/>
+        /// Gets the active Pane is splitting is applied.<br />
         /// The value is nullable. If null, no splitting was defined
         /// </summary>
         public WorksheetPane? ActivePane
@@ -497,7 +497,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets or sets the zoom factor of the <see cref="ViewType"/> of the current worksheet. If <see cref="AUTO_ZOOM_FACTOR"/>, the zoom factor is set to automatic
         /// </summary>
-        /// <remarks>It is possible to add further zoom factors for inactive view types, using the function <see cref="SetZoomFactor(SheetViewType, int)"/> </remarks>
+        /// \remark <remarks>It is possible to add further zoom factors for inactive view types, using the function <see cref="SetZoomFactor(SheetViewType, int)"/> </remarks>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the zoom factor is not <see cref="AUTO_ZOOM_FACTOR"/> or below <see cref="MIN_ZOOM_FACTOR"/> or above <see cref="MAX_ZOOM_FACTOR"/></exception>
         public int ZoomFactor
         {
@@ -557,7 +557,7 @@ namespace NanoXLSX
         /// <summary>
         /// Constructor with worksheet name
         /// </summary>
-        /// <remarks>Note that the worksheet name is not checked and fully sanitized against other worksheets with this operation. This is later performed when the worksheet is added to the workbook</remarks>
+        /// \remark <remarks>Note that the worksheet name is not checked and fully sanitized against other worksheets with this operation. This is later performed when the worksheet is added to the workbook</remarks>
         public Worksheet(string name)
             : this()
         {
@@ -586,7 +586,7 @@ namespace NanoXLSX
         /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be cast to a String. 
         /// A prepared object of the type Cell will not be cast but adjusted
         /// </summary>
-        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <param name="value">Unspecified value to insert</param>
         /// <exception cref="RangeException">Throws a RangeException if the next cell is out of range (on row or column)</exception>
@@ -600,7 +600,7 @@ namespace NanoXLSX
         /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be cast to a String. 
         /// A prepared object of the type Cell will not be cast but adjusted
         /// </summary>
-        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="style">Style object to apply on this cell</param>
@@ -618,7 +618,7 @@ namespace NanoXLSX
         /// <param name="cell">Cell object to insert</param>
         /// <param name="incremental">If true, the address value (row or column) will be incremented, otherwise not</param>
         /// <param name="style">If not null, the defined style will be applied to the cell, otherwise no style or the default style will be applied</param>
-        /// <remarks>Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be cast into a string using the default ToString() method.<br/>
+        /// \remark <remarks>Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be cast into a string using the default ToString() method.<br />
         /// If the cell object already has a style definition, and a style or active style is defined, the cell style will be merged, otherwise just set</remarks>
         /// <exception cref="StyleException">Throws a StyleException if the default style was malformed</exception>
         private void AddNextCell(Cell cell, bool incremental, Style style)
@@ -724,7 +724,7 @@ namespace NanoXLSX
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="columnNumber">Column number (zero based)</param>
         /// <param name="rowNumber">Row number (zero based)</param>
-        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public void AddCell(object value, int columnNumber, int rowNumber)
@@ -740,7 +740,7 @@ namespace NanoXLSX
         /// <param name="columnNumber">Column number (zero based)</param>
         /// <param name="rowNumber">Row number (zero based)</param>
         /// <param name="style">Style to apply on the cell</param>
-        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
@@ -756,7 +756,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
-        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
@@ -775,7 +775,7 @@ namespace NanoXLSX
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <param name="style">Style to apply on the cell</param>
-        /// <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, 
+        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, 
         /// bool. All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
@@ -887,7 +887,7 @@ namespace NanoXLSX
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
-        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         public void AddCellRange(IReadOnlyList<object> values, Address startAddress, Address endAddress)
@@ -903,7 +903,7 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
-        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
@@ -918,7 +918,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="cellRange">Cell range as string in the format like A1:D1 or X10:X22</param>
-        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
@@ -935,7 +935,7 @@ namespace NanoXLSX
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="cellRange">Cell range as string in the format like A1:D1 or X10:X22</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
-        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
@@ -954,7 +954,7 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
-        /// <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells differs from the number of passed values</exception>
         private void AddCellRangeInternal<T>(IReadOnlyList<T> values, Address startAddress, Address endAddress, Style style)
@@ -1013,7 +1013,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="cellRange">Cell range to apply the style</param>
         /// <param name="style">Style to apply</param>
-        /// <remarks>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</remarks>
+        /// \remark <remarks>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</remarks>
         public void SetStyle(Range cellRange, Style style)
         {
             IReadOnlyList<Address> addresses = cellRange.ResolveEnclosedAddresses();
@@ -1048,7 +1048,7 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address of the cell range</param>
         /// <param name="endAddress">End address of the cell range</param>
         /// <param name="style">Style to apply or null to clear the range</param>
-        /// <remarks>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</remarks>
+        /// \remark <remarks>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</remarks>
         public void SetStyle(Address startAddress, Address endAddress, Style style)
         {
             SetStyle(new Range(startAddress, endAddress), style);
@@ -1060,7 +1060,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="address">Cell address to apply the style</param>
         /// <param name="style">Style to apply or null to clear the range</param>
-        /// <remarks>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</remarks>
+        /// \remark <remarks>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</remarks>
         public void SetStyle(Address address, Style style)
         {
             SetStyle(address, address, style);
@@ -1073,7 +1073,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="addressExpression">Expression of a cell address or range of addresses</param>
         /// <param name="style">Style to apply or null to clear the range</param>
-        /// <remarks>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</remarks>
+        /// \remark <remarks>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</remarks>
         public void SetStyle(string addressExpression, Style style)
         {
             Cell.AddressScope scope = Cell.GetAddressScope(addressExpression);
@@ -1100,7 +1100,7 @@ namespace NanoXLSX
         /// Gets the first existing column number in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based column number. In case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetFirstColumnNumber() will not return the first column with data in any case. If there is a formatted but empty cell (or many) before the first cell with data, 
+        /// \remark <remarks>GetFirstColumnNumber() will not return the first column with data in any case. If there is a formatted but empty cell (or many) before the first cell with data, 
         /// GetFirstColumnNumber() will return the column number of this empty cell. Use <see cref="GetFirstDataColumnNumber"/> in this case.</remarks>
         public int GetFirstColumnNumber()
         {
@@ -1111,7 +1111,7 @@ namespace NanoXLSX
         /// Gets the first existing column number with data in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based column number. In case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetFirstDataColumnNumber() will ignore formatted but empty cells before the first column with data. 
+        /// \remark <remarks>GetFirstDataColumnNumber() will ignore formatted but empty cells before the first column with data. 
         /// If you want the first defined column, use <see cref="GetFirstColumnNumber"/> instead.</remarks>
         public int GetFirstDataColumnNumber()
         {
@@ -1122,7 +1122,7 @@ namespace NanoXLSX
         /// Gets the first existing row number in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based row number. In case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetFirstRowNumber() will not return the first row with data in any case. If there is a formatted but empty cell (or many) before the first cell with data, 
+        /// \remark <remarks>GetFirstRowNumber() will not return the first row with data in any case. If there is a formatted but empty cell (or many) before the first cell with data, 
         /// GetFirstRowNumber() will return the row number of this empty cell. Use <see cref="GetFirstDataRowNumber"/> in this case.</remarks>
         public int GetFirstRowNumber()
         {
@@ -1133,7 +1133,7 @@ namespace NanoXLSX
         /// Gets the first existing row number with data in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based row number. In case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetFirstDataRowNumber() will ignore formatted but empty cells before the first row with data. 
+        /// \remark <remarks>GetFirstDataRowNumber() will ignore formatted but empty cells before the first row with data. 
         /// If you want the first defined row, use <see cref="GetFirstRowNumber"/> instead.</remarks>
         public int GetFirstDataRowNumber()
         {
@@ -1144,7 +1144,7 @@ namespace NanoXLSX
         /// Gets the last existing column number in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based column number. In case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formatted (or with the definition of AutoFilter, 
+        /// \remark <remarks>GetLastColumnNumber() will not return the last column with data in any case. If there is a formatted (or with the definition of AutoFilter, 
         /// column width or hidden state) but empty cell (or many) after the last cell with data, 
         /// GetLastColumnNumber() will return the column number of this empty cell. Use <see cref="GetLastDataColumnNumber"/> in this case.</remarks>
         public int GetLastColumnNumber()
@@ -1156,7 +1156,7 @@ namespace NanoXLSX
         /// Gets the last existing column number with data in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based column number. in case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastDataColumnNumber() will ignore formatted (or with the definition of AutoFilter, column width or hidden state) but empty cells after the last column with data. 
+        /// \remark <remarks>GetLastDataColumnNumber() will ignore formatted (or with the definition of AutoFilter, column width or hidden state) but empty cells after the last column with data. 
         /// If you want the last defined column, use <see cref="GetLastColumnNumber"/> instead.</remarks>
         public int GetLastDataColumnNumber()
         {
@@ -1167,7 +1167,7 @@ namespace NanoXLSX
         /// Gets the last existing row number in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based row number. In case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastRowNumber() will not return the last row with data in any case. If there is a formatted (or with the definition of row height or hidden state) 
+        /// \remark <remarks>GetLastRowNumber() will not return the last row with data in any case. If there is a formatted (or with the definition of row height or hidden state) 
         /// but empty cell (or many) after the last cell with data, 
         /// GetLastRowNumber() will return the row number of this empty cell. Use <see cref="GetLastDataRowNumber"/> in this case.</remarks>
         public int GetLastRowNumber()
@@ -1180,7 +1180,7 @@ namespace NanoXLSX
         /// Gets the last existing row number with data in the current worksheet (zero-based)
         /// </summary>
         /// <returns>Zero-based row number. in case of an empty worksheet, -1 will be returned</returns>
-        /// <remarks>GetLastDataColumnNumber() will ignore formatted (or with the definition of row height or hidden state) but empty cells after the last column with data. 
+        /// \remark <remarks>GetLastDataColumnNumber() will ignore formatted (or with the definition of row height or hidden state) but empty cells after the last column with data. 
         /// If you want the last defined column, use <see cref="GetLastRowNumber"/> instead.</remarks>
         public int GetLastDataRowNumber()
         {
@@ -1191,7 +1191,7 @@ namespace NanoXLSX
         ///  Gets the last existing cell in the current worksheet (bottom right)
         /// </summary>
         /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
-        /// <remarks>GetLastCellAddress() will not return the last cell with data in any case. If there is a formatted (or with definitions of hidden states, AutoFilters, heights or widths) 
+        /// \remark <remarks>GetLastCellAddress() will not return the last cell with data in any case. If there is a formatted (or with definitions of hidden states, AutoFilters, heights or widths) 
         /// but empty cell (or many) after the last cell with data, 
         /// GetLastCellAddress() will return the address of this empty cell. Use <see cref="GetLastDataCellAddress"/> in this case.</remarks>
 
@@ -1210,7 +1210,7 @@ namespace NanoXLSX
         ///  Gets the last existing cell with data in the current worksheet (bottom right)
         /// </summary>
         /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
-        /// <remarks>GetLastDataCellAddress() will ignore formatted (or with definitions of hidden states, AutoFilters, heights or widths) but empty cells after the last cell with data. 
+        /// \remark <remarks>GetLastDataCellAddress() will ignore formatted (or with definitions of hidden states, AutoFilters, heights or widths) but empty cells after the last cell with data. 
         /// If you want the last defined cell, use <see cref="GetLastCellAddress"/> instead.</remarks>
 
         public Address? GetLastDataCellAddress()
@@ -1228,7 +1228,7 @@ namespace NanoXLSX
         ///  Gets the first existing cell in the current worksheet (bottom right)
         /// </summary>
         /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
-        /// <remarks>GetFirstCellAddress() will not return the first cell with data in any case. If there is a formatted but empty cell (or many) before the first cell with data, 
+        /// \remark <remarks>GetFirstCellAddress() will not return the first cell with data in any case. If there is a formatted but empty cell (or many) before the first cell with data, 
         /// GetLastCellAddress() will return the address of this empty cell. Use <see cref="GetFirstDataCellAddress"/> in this case.</remarks>
         public Address? GetFirstCellAddress()
         {
@@ -1245,7 +1245,7 @@ namespace NanoXLSX
         ///  Gets the first existing cell with data in the current worksheet (bottom right)
         /// </summary>
         /// <returns>Nullable Cell Address. If no cell address could be determined, null will be returned</returns>
-        /// <remarks>GetFirstDataCellAddress() will ignore formatted but empty cells before the first cell with data. 
+        /// \remark <remarks>GetFirstDataCellAddress() will ignore formatted but empty cells before the first cell with data. 
         /// If you want the first defined cell, use <see cref="GetFirstCellAddress"/> instead.</remarks>
         public Address? GetFirstDataCellAddress()
         {
@@ -1411,7 +1411,7 @@ namespace NanoXLSX
         /// Method to add allowed actions if the worksheet is protected. If one or more values are added, UseSheetProtection will be set to true
         /// </summary>
         /// <param name="typeOfProtection">Allowed action on the worksheet or cells</param>
-        /// <remarks>If <see cref="SheetProtectionValue.selectLockedCells"/> is added, <see cref="SheetProtectionValue.selectUnlockedCells"/> is added automatically</remarks>
+        /// \remark <remarks>If <see cref="SheetProtectionValue.selectLockedCells"/> is added, <see cref="SheetProtectionValue.selectUnlockedCells"/> is added automatically</remarks>
         public void AddAllowedActionOnSheetProtection(SheetProtectionValue typeOfProtection)
         {
             if (!sheetProtectionValues.Contains(typeOfProtection))
@@ -1521,7 +1521,7 @@ namespace NanoXLSX
         /// <summary>
         /// Resets the defined column, if existing. The corresponding instance will be removed from <see cref="Columns"/>.
         /// </summary>
-        /// <remarks>If the column is inside an autoFilter-Range, the column cannot be entirely removed from <see cref="Columns"/>. The hidden state will be set to false and width to default, in this case.</remarks>
+        /// \remark <remarks>If the column is inside an autoFilter-Range, the column cannot be entirely removed from <see cref="Columns"/>. The hidden state will be set to false and width to default, in this case.</remarks>
         /// <param name="columnNumber">Column number to reset (zero-based)</param>
         public void ResetColumn(int columnNumber)
         {
@@ -1619,7 +1619,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="numberOfColumns">Number of columns to move</param>
         /// <param name="keepRowPosition">If true, the row position is preserved, otherwise set to 0</param>
-        /// <remarks>The value can also be negative. However, resulting column numbers below 0 or above 16383 will cause an exception</remarks>
+        /// \remark <remarks>The value can also be negative. However, resulting column numbers below 0 or above 16383 will cause an exception</remarks>
         public void GoToNextColumn(int numberOfColumns, bool keepRowPosition = false)
         {
             currentColumnNumber += numberOfColumns;
@@ -1645,7 +1645,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="numberOfRows">Number of rows to move</param>
         /// <param name="keepColumnPosition">If true, the column position is preserved, otherwise set to 0</param>
-        /// <remarks>The value can also be negative. However, resulting row numbers below 0 or above 1048575 will cause an exception</remarks>
+        /// \remark <remarks>The value can also be negative. However, resulting row numbers below 0 or above 1048575 will cause an exception</remarks>
         public void GoToNextRow(int numberOfRows, bool keepColumnPosition = false)
         {
             currentRowNumber += numberOfRows;
@@ -1764,7 +1764,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Method to resolve all merged cells of the worksheet. Only the value of the very first cell of the locked cells range will be visible. The other values are still present (set to EMPTY) but will not be stored in the worksheet.<br/>
+        /// Method to resolve all merged cells of the worksheet. Only the value of the very first cell of the locked cells range will be visible. The other values are still present (set to EMPTY) but will not be stored in the worksheet.<br />
         /// This is an internal method. There is no need to use it
         /// </summary>
         /// <exception cref="StyleException">Throws a StyleException if one of the styles of the merged cells cannot be referenced or is null</exception>
@@ -1982,7 +1982,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="columnAddress">Column address (A - XFD)</param>
         /// <param name="width">Width from 0 to 255.0</param>
-        /// <exception cref="RangeException">Throws a RangeException:<br></br>a) If the passed column address is out of range<br></br>b) if the column width is out of range (0 - 255.0)</exception>
+        /// <exception cref="RangeException">Throws a RangeException:<br />a) If the passed column address is out of range<br />b) if the column width is out of range (0 - 255.0)</exception>
         public void SetColumnWidth(string columnAddress, float width)
         {
             int columnNumber = Cell.ResolveColumn(columnAddress);
@@ -1994,7 +1994,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="columnNumber">Column number (zero-based, from 0 to 16383)</param>
         /// <param name="width">Width from 0 to 255.0</param>
-        /// <exception cref="RangeException">Throws a RangeException:<br></br>a) If the passed column number is out of range<br></br>b) if the column width is out of range (0 - 255.0)</exception>
+        /// <exception cref="RangeException">Throws a RangeException:<br />a) If the passed column number is out of range<br />b) if the column width is out of range (0 - 255.0)</exception>
         public void SetColumnWidth(int columnNumber, float width)
         {
             Cell.ValidateColumnNumber(columnNumber);
@@ -2020,7 +2020,7 @@ namespace NanoXLSX
         /// <param name="columnAddress">Column address (A - XFD)</param>
         /// <param name="style">Style to set as default. If null, the style is cleared</param>
         /// <returns>Assigned style or null if cleared</returns>
-        /// <exception cref="RangeException">Throws a RangeException:<br></br>a) If the passed column address is out of range<br></br>b) if the column width is out of range (0 - 255.0)</exception>
+        /// <exception cref="RangeException">Throws a RangeException:<br />a) If the passed column address is out of range<br />b) if the column width is out of range (0 - 255.0)</exception>
         public Style SetColumnDefaultStyle(string columnAddress, Style style)
         {
             int columnNumber = Cell.ResolveColumn(columnAddress);
@@ -2032,7 +2032,7 @@ namespace NanoXLSX
         /// <param name="columnNumber">Column number (zero-based, from 0 to 16383)</param>
         /// <param name="style">Style to set as default. If null, the style is cleared</param>
         /// <returns>Assigned style or null if cleared</returns>
-        /// <exception cref="RangeException">Throws a RangeException:<br></br>a) If the passed column number is out of range<br></br>b) if the column width is out of range (0 - 255.0)</exception>
+        /// <exception cref="RangeException">Throws a RangeException:<br />a) If the passed column number is out of range<br />b) if the column width is out of range (0 - 255.0)</exception>
         public Style SetColumnDefaultStyle(int columnNumber, Style style)
         {
             Cell.ValidateColumnNumber(columnNumber);
@@ -2222,7 +2222,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="rowNumber">Row number (zero-based, 0 to 1048575)</param>
         /// <param name="height">Height from 0 to 409.5</param>
-        /// <exception cref="RangeException">Throws a RangeException:<br></br>a) If the passed row number is out of range<br></br>b) if the row height is out of range (0 - 409.5)</exception>
+        /// <exception cref="RangeException">Throws a RangeException:<br />a) If the passed row number is out of range<br />b) if the row height is out of range (0 - 409.5)</exception>
         public void SetRowHeight(int rowNumber, float height)
         {
             Cell.ValidateRowNumber(rowNumber);
@@ -2314,7 +2314,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="topPaneHeight">Height (similar to row height) from top of the worksheet to the split line in characters</param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the row component is important in a horizontal split</param>
-        /// <param name="activePane">Active pane in the split window.<br/>The parameter is nullable</param>
+        /// <param name="activePane">Active pane in the split window.<br />The parameter is nullable</param>
         public void SetHorizontalSplit(float topPaneHeight, Address topLeftCell, WorksheetPane? activePane)
         {
             SetSplit(null, topPaneHeight, topLeftCell, activePane);
@@ -2326,7 +2326,7 @@ namespace NanoXLSX
         /// <param name="numberOfRowsFromTop">Number of rows from top of the worksheet to the split line. The particular row heights are considered</param>
         /// <param name="freeze">If true, all panes are frozen, otherwise remains movable</param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the row component is important in a horizontal split</param>
-        /// <param name="activePane">Active pane in the split window.<br/>The parameter is nullable</param>
+        /// <param name="activePane">Active pane in the split window.<br />The parameter is nullable</param>
         /// <exception cref="WorksheetException">WorksheetException Thrown if the row number of the top left cell is smaller the split panes number of rows from top, if freeze is applied</exception>
         public void SetHorizontalSplit(int numberOfRowsFromTop, bool freeze, Address topLeftCell, WorksheetPane? activePane)
         {
@@ -2338,7 +2338,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="leftPaneWidth">Width (similar to column width) from left of the worksheet to the split line in characters</param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the column component is important in a vertical split</param>
-        /// <param name="activePane">Active pane in the split window.<br/>The parameter is nullable</param>
+        /// <param name="activePane">Active pane in the split window.<br />The parameter is nullable</param>
         public void SetVerticalSplit(float leftPaneWidth, Address topLeftCell, WorksheetPane? activePane)
         {
             SetSplit(leftPaneWidth, null, topLeftCell, activePane);
@@ -2350,7 +2350,7 @@ namespace NanoXLSX
         /// <param name="numberOfColumnsFromLeft">Number of columns from left of the worksheet to the split line. The particular column widths are considered</param>
         /// <param name="freeze">If true, all panes are frozen, otherwise remains movable</param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable). Only the column component is important in a vertical split</param>
-        /// <param name="activePane">Active pane in the split window.<br/>The parameter is nullable</param>
+        /// <param name="activePane">Active pane in the split window.<br />The parameter is nullable</param>
         /// <exception cref="WorksheetException">WorksheetException Thrown if the column number of the top left cell is smaller the split panes number of columns from left, 
         /// if freeze is applied</exception>
         public void SetVerticalSplit(int numberOfColumnsFromLeft, bool freeze, Address topLeftCell, WorksheetPane? activePane)
@@ -2361,13 +2361,13 @@ namespace NanoXLSX
         /// <summary>
         /// Sets the horizontal and vertical split of the worksheet into four panes. The measurement in rows and columns can be used to split and freeze panes
         /// </summary>
-        /// <param name="numberOfColumnsFromLeft">Number of columns from left of the worksheet to the split line. The particular column widths are considered.<br/>
+        /// <param name="numberOfColumnsFromLeft">Number of columns from left of the worksheet to the split line. The particular column widths are considered.<br />
         /// The parameter is nullable. If left null, the method acts identical to <see cref="SetHorizontalSplit(int, bool, Address, WorksheetPane?)"/></param>
-        /// <param name="numberOfRowsFromTop">Number of rows from top of the worksheet to the split line. The particular row heights are considered.<br/>
+        /// <param name="numberOfRowsFromTop">Number of rows from top of the worksheet to the split line. The particular row heights are considered.<br />
         /// The parameter is nullable. If left null, the method acts identical to <see cref="SetVerticalSplit(int, bool, Address, WorksheetPane?)"/></param>
         /// <param name="freeze">If true, all panes are frozen, otherwise remains movable</param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable)</param>
-        /// <param name="activePane">Active pane in the split window.<br/>The parameter is nullable</param>
+        /// <param name="activePane">Active pane in the split window.<br />The parameter is nullable</param>
         /// <exception cref="WorksheetException">WorksheetException Thrown if the address of the top left cell is smaller the split panes address, if freeze is applied</exception>
         public void SetSplit(int? numberOfColumnsFromLeft, int? numberOfRowsFromTop, bool freeze, Address topLeftCell, WorksheetPane? activePane)
         {
@@ -2397,12 +2397,12 @@ namespace NanoXLSX
         /// <summary>
         /// Sets the horizontal and vertical split of the worksheet into four panes. The measurement in characters cannot be used to freeze panes
         /// </summary>
-        /// <param name="leftPaneWidth">Width (similar to column width) from left of the worksheet to the split line in characters.<br/>
+        /// <param name="leftPaneWidth">Width (similar to column width) from left of the worksheet to the split line in characters.<br />
         /// The parameter is nullable. If left null, the method acts identical to <see cref="SetHorizontalSplit(float, Address, WorksheetPane?)"/></param>
-        /// <param name="topPaneHeight">Height (similar to row height) from top of the worksheet to the split line in characters.<br/>
+        /// <param name="topPaneHeight">Height (similar to row height) from top of the worksheet to the split line in characters.<br />
         /// The parameter is nullable. If left null, the method acts identical to <see cref="SetVerticalSplit(float, Address, WorksheetPane?)"/></param>
         /// <param name="topLeftCell">Top Left cell address of the bottom right pane (if applicable)</param>
-        /// <param name="activePane">Active pane in the split window.<br/>The parameter is nullable</param>
+        /// <param name="activePane">Active pane in the split window.<br />The parameter is nullable</param>
         public void SetSplit(float? leftPaneWidth, float? topPaneHeight, Address topLeftCell, WorksheetPane? activePane)
         {
             this.paneSplitLeftWidth = leftPaneWidth;
@@ -2429,12 +2429,12 @@ namespace NanoXLSX
         /// <summary>
         /// Creates a (dereferenced) deep copy of this worksheet
         /// </summary>
-        /// <remarks>Not considered in the copy are the internal ID, the worksheet name and the workbook reference. 
+        /// \remark <remarks>Not considered in the copy are the internal ID, the worksheet name and the workbook reference. 
         /// Since styles are managed in a shared repository, no dereferencing is applied (Styles are not deep-copied). 
         /// Use <see cref="Workbook.CopyWorksheetTo(Worksheet, string, Workbook, bool)"/> or <see cref="Workbook.CopyWorksheetIntoThis(Worksheet, string, bool)"/> 
         /// to add a copy of worksheet to a workbook. These methods will set the internal ID, name and workbook reference.
         /// </remarks>
-        /// <return>Copy of this worksheet</return>
+        /// <returns>Copy of this worksheet</returns>
         public Worksheet Copy()
         {
             Worksheet copy = new Worksheet();
@@ -2510,7 +2510,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="sheetViewType">Sheet view type to apply the zoom factor on</param>
         /// <param name="zoomFactor">Zoom factor in percent</param>
-        /// <remarks>This factor is not the currently set factor. use the property <see cref="ZoomFactor"/> to set the factor for the current <see cref="ViewType"/></remarks>
+        /// \remark <remarks>This factor is not the currently set factor. use the property <see cref="ZoomFactor"/> to set the factor for the current <see cref="ViewType"/></remarks>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the zoom factor is not <see cref="AUTO_ZOOM_FACTOR"/> or below <see cref="MIN_ZOOM_FACTOR"/> or above <see cref="MAX_ZOOM_FACTOR"/></exception>
         public void SetZoomFactor(SheetViewType sheetViewType, int zoomFactor)
         {
@@ -2597,7 +2597,7 @@ namespace NanoXLSX
         /// <param name="workbook">Workbook to look for existing worksheets</param>
         /// <returns>Not yet used worksheet name</returns>
         /// <exception cref="WorksheetException">A WorksheetException is thrown if the workbook reference is null, since all worksheets have to be considered during sanitation</exception>
-        /// <remarks>The 'rare' case where 10^31 Worksheets exists (leads to a crash) is deliberately not handled, 
+        /// \remark <remarks>The 'rare' case where 10^31 Worksheets exists (leads to a crash) is deliberately not handled, 
         /// since such a number of sheets would consume at least one quintillion bytes of RAM... what is vastly out of the 64 bit range</remarks>
         private static string GetUnusedWorksheetName(string name, Workbook workbook)
         {
