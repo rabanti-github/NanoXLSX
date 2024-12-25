@@ -6,6 +6,7 @@
  */
 
 using System.Text;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Workbook;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Shared.Interfaces;
@@ -17,7 +18,7 @@ namespace NanoXLSX.Internal.Writers
     internal class ThemeWriter : IPluginWriter
     {
 
-        private readonly Workbook workbook;
+        private IWorkbook workbook;
 
         internal ThemeWriter(XlsxWriter writer)
         {
@@ -27,7 +28,7 @@ namespace NanoXLSX.Internal.Writers
         public virtual string CreateDocument()
         {
             PreWrite(workbook);
-            Theme theme = workbook.WorkbookTheme;
+            Theme theme = ((Workbook)workbook).WorkbookTheme;
             StringBuilder sb = new StringBuilder();
             sb.Append("<theme xmlns=\"http://schemas.openxmlformats.org/drawingml/2006/main\" name=\"").Append(XmlUtils.EscapeXmlAttributeChars(theme.Name)).Append("\">");
             sb.Append("<themeElements>");
@@ -56,6 +57,24 @@ namespace NanoXLSX.Internal.Writers
         public virtual void PostWrite(IWorkbook workbook)
         {
             // NoOp - replaced by plugin
+        }
+
+        /// <summary>
+        /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
+        /// </summary>
+        /// <returns>GUID of the class</returns>
+        public string GetClassID()
+        {
+            return "B7C097B8-4E94-49A0-9D6E-DE28755ACD5";
+        }
+
+        /// <summary>
+        /// Gets or replaces the workbook instance, defined by the constructor
+        /// </summary>
+        public IWorkbook Workbook
+        {
+            get { return workbook; }
+            set { workbook = value; }
         }
 
         private void CreateColorSchemeString(StringBuilder sb, ColorScheme scheme)

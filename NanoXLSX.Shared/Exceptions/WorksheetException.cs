@@ -6,7 +6,6 @@
  */
 
 using System;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 namespace NanoXLSX.Shared.Exceptions
@@ -40,14 +39,4 @@ namespace NanoXLSX.Shared.Exceptions
         {
         }
     }
-
-    #region doc
-    /// <summary>
-    /// Sub-namespace for exceptions
-    /// </summary>
-    [CompilerGenerated]
-    class NamespaceDoc // This class is only for documentation purpose (Sandcastle)
-    { }
-    #endregion
-
 }

@@ -255,18 +255,5 @@ namespace NanoXLSX.Test.Misc
             DateTime date = Utils.GetDateFromOA(givenValue);
             Assert.Equal(expectedDate, date);
         }
-
-        [Theory(DisplayName = "Test of the GeneratePasswordHash function (legacy)")]
-        [InlineData("x", "CEBA")]
-        [InlineData("Test@1-2,3!", "F767")]
-        [InlineData(" ", "CE0A")]
-        [InlineData("", "")]
-        [InlineData(null, "")]
-        public void GeneratePasswordHashTest(string givenVPassword, string expectedHash)
-        {
-            string hash = Utils.GeneratePasswordHash(givenVPassword);
-            Assert.Equal(expectedHash, hash);
-        }
-
     }
 }

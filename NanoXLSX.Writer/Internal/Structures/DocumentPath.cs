@@ -10,6 +10,7 @@ namespace NanoXLSX.Internal.Structures
     /// <summary>
     /// Class to manage XML document paths
     /// </summary>
+    /// \remark <remarks>This class is only for internal use. Use the high level API (e.g. class Workbook) to manipulate data and create Excel files</remarks>
     internal class DocumentPath
     {
         /// <summary>

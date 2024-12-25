@@ -11,6 +11,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
 using IOException = NanoXLSX.Shared.Exceptions.IOException;
@@ -169,10 +170,18 @@ namespace NanoXLSX.Internal.Readers
                 {
                     ws.UseSheetProtection = true;
                 }
-                if (!string.IsNullOrEmpty(reader.Value.WorksheetProtectionHash))
+                if (reader.Value.PasswordReader.PasswordIsSet())
                 {
-                    ws.SheetProtectionPasswordHash = reader.Value.WorksheetProtectionHash;
+                    if (ws.SheetProtectionPassword is LegacyPasswordReader && (ws.SheetProtectionPassword as LegacyPasswordReader).ContemporaryAlgorithmDetected && !readerOptions.IgnoreNotSupportedPasswordAlgorithms)
+                    {
+                        throw new NotSupportedContentException("A not supported, contemporary password algorithm for the worksheet protection was detected. Check possible packages to add support to NanoXLSX, or ignore this error by a reader option");
+                    }
+                    ws.SheetProtectionPassword.CopyFrom(reader.Value.PasswordReader);
                 }
+               // if (!string.IsNullOrEmpty(reader.Value.WorksheetProtectionHash))
+               // {
+              //      ws.SheetProtectionPasswordHash = reader.Value.WorksheetProtectionHash;
+              //  }
                 foreach (KeyValuePair<int, WorksheetReader.RowDefinition> row in reader.Value.Rows)
                 {
                     if (row.Value.Hidden)
@@ -259,7 +268,12 @@ namespace NanoXLSX.Internal.Readers
             if (workbook.Protected)
             {
                 wb.SetWorkbookProtection(workbook.Protected, workbook.LockWindows, workbook.LockStructure, null);
-                wb.WorkbookProtectionPasswordHash = workbook.PasswordHash;
+                if (wb.WorkbookProtectionPassword is LegacyPasswordReader && (wb.WorkbookProtectionPassword as LegacyPasswordReader).ContemporaryAlgorithmDetected && !readerOptions.IgnoreNotSupportedPasswordAlgorithms)
+                {
+                    throw new NotSupportedContentException("A not supported, contemporary password algorithm for the workbook protection was detected. Check possible packages to add support to NanoXLSX, or ignore this error by a reader option");
+                }
+                wb.WorkbookProtectionPassword.CopyFrom(workbook.PasswordReader);
+               // wb.WorkbookProtectionPasswordHash = workbook.PasswordHash;
             }
             wb.WorkbookMetadata.Application = metadataAppReader.Application;
             wb.WorkbookMetadata.ApplicationVersion = metadataAppReader.ApplicationVersion;

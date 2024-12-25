@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Text;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Workbook;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Shared.Exceptions;
@@ -19,7 +20,7 @@ namespace NanoXLSX.Internal.Writers
     {
 
         private readonly StyleManager styles;
-        private readonly Workbook workbook;
+        private IWorkbook workbook;
 
         internal StyleWriter(XlsxWriter writer)
         {
@@ -63,7 +64,7 @@ namespace NanoXLSX.Internal.Writers
             sb.Append(bordersString).Append("</borders>");
             sb.Append("<cellXfs count=\"").Append(ParserUtils.ToString(styleCount)).Append("\">");
             sb.Append(xfsStings).Append("</cellXfs>");
-            if (workbook.WorkbookMetadata != null)
+            if (((Workbook)workbook).WorkbookMetadata != null)
             {
                 if (!string.IsNullOrEmpty(mruColorString))
                 {
@@ -97,7 +98,23 @@ namespace NanoXLSX.Internal.Writers
             // NoOp - replaced by plugin
         }
 
+        /// <summary>
+        /// Gets or replaces the workbook instance, defined by the constructor
+        /// </summary>
+        public IWorkbook Workbook
+        {
+            get { return workbook; }
+            set { workbook = value; }
+        }
 
+        /// <summary>
+        /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
+        /// </summary>
+        /// <returns>GUID of the class</returns>
+        public string GetClassID()
+        {
+            return "9C3694B5-930A-4DA6-BD37-6013D15E9B91";
+        }
 
         /// <summary>
         /// Method to create the XML string for the border part of the style sheet document
@@ -435,7 +452,7 @@ namespace NanoXLSX.Internal.Writers
         {
             StringBuilder sb = new StringBuilder();
             List<string> tempColors = new List<string>();
-            foreach (string item in this.workbook.GetMruColors())
+            foreach (string item in ((Workbook)this.workbook).GetMruColors())
             {
                 if (item == Fill.DEFAULT_COLOR)
                 {

@@ -1,6 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+ * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
+ * Copyright Raphael Stoeckli © 2024
+ * This library is licensed under the MIT License.
+ * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
+ */
+
 using System.Text;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Workbook;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Shared.Interfaces;
@@ -8,9 +14,9 @@ using NanoXLSX.Shared.Utils;
 
 namespace NanoXLSX.Internal.Writers
 {
-    internal class SharedStringWriter : IPluginWriter
+    internal class SharedStringWriter : ISharedStringWriter
     {
-        private readonly Workbook workbook;
+        private IWorkbook workbook;
 
         private SortedMap sharedStrings;
         private int sharedStringsTotalCount;
@@ -21,12 +27,12 @@ namespace NanoXLSX.Internal.Writers
             set { sharedStringsTotalCount = value; }
         }
 
-        public SortedMap SharedStrings
+        public ISortedMap SharedStrings
         {
             get { return sharedStrings; }
         }
 
-        public SharedStringWriter (XlsxWriter writer)
+        public SharedStringWriter(XlsxWriter writer)
         {
             this.workbook = writer.Workbook;
             sharedStrings = new SortedMap();
@@ -76,5 +82,24 @@ namespace NanoXLSX.Internal.Writers
         {
             // NoOp - replaced by plugin
         }
+
+        /// <summary>
+        /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
+        /// </summary>
+        /// <returns>GUID of the class</returns>
+        public string GetClassID()
+        {
+            return "B65BDF84-90E8-4952-A2DF-E28C769E6062";
+        }
+
+        /// <summary>
+        /// Gets or replaces the workbook instance, defined by the constructor
+        /// </summary>
+        public IWorkbook Workbook
+        {
+            get { return workbook; }
+            set { workbook = value; }
+        }
+
     }
 }

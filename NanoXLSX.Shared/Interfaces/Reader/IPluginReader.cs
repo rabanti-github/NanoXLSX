@@ -22,7 +22,7 @@ namespace NanoXLSX.Internal
         /// <summary>
         /// Method that is called before the <see cref="Read(MemoryStream)"/> method is executed
         /// </summary>
-        /// <param name="stream">Stream of the XML file. The stream must be reset in this method at the end, if any stream opeartion was performed</param>
+        /// <param name="stream">Stream of the XML file. The stream must be reset in this method at the end, if any stream operation was performed</param>
         void PreRead(MemoryStream stream);
         /// <summary>
         /// Method that is called after the <see cref="Read(MemoryStream)"/> method is executed

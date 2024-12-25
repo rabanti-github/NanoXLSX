@@ -13,15 +13,17 @@ using NanoXLSX.Interfaces.Writer;
 
 namespace NanoXLSX.Internal.Writers
 {
+    /// <summary>
+    /// Class to generate metadata XML files for the app metadata part on an XLSX file.
+    /// </summary>
     internal class MetadataAppWriter : IPluginWriter
     {
-        private static readonly CultureInfo CULTURE = CultureInfo.InvariantCulture;
 
-        private readonly Workbook workbook;
+        private static readonly CultureInfo CULTURE = CultureInfo.InvariantCulture;
 
         public MetadataAppWriter(XlsxWriter writer)
         {
-            this.workbook = writer.Workbook;
+            this.Workbook = writer.Workbook;
         }
 
         /// <summary>
@@ -31,12 +33,18 @@ namespace NanoXLSX.Internal.Writers
         /// <returns>Raw XML string</returns>
         public virtual string CreateDocument()
         {
-            PreWrite(workbook);
+            PreWrite(Workbook);
             StringBuilder sb = new StringBuilder();
             sb.Append("<Properties xmlns=\"http://schemas.openxmlformats.org/officeDocument/2006/extended-properties\" xmlns:vt=\"http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes\">");
             sb.Append(CreateAppString());
             sb.Append("</Properties>");
-            PostWrite(workbook);
+            PostWrite(Workbook);
+            if (Next != null)
+            {
+                // TODO this does not work. The string builder is not considered
+                Next.Workbook = this.Workbook;
+                Next.CreateDocument();
+            }
             return sb.ToString();
         }
 
@@ -61,12 +69,31 @@ namespace NanoXLSX.Internal.Writers
         }
 
         /// <summary>
+        /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
+        /// </summary>
+        /// <returns>GUID of the class</returns>
+        public string GetClassID()
+        {
+            return "A73923A8-1E7E-4673-AD3F-B22DD3153D7B";
+        }
+
+        /// <summary>
+        /// Gets or replaces the workbook instance, defined by the constructor
+        /// </summary>
+        public IWorkbook Workbook { get; set; }
+
+        public IPluginWriter Next { get; set; }
+
+
+
+
+        /// <summary>
         /// Method to create the XML string for the app-properties document
         /// </summary>
         /// <returns>String with formatted XML data</returns>
         private string CreateAppString()
         {
-            Metadata md = workbook.WorkbookMetadata;
+            Metadata md = ((Workbook)Workbook).WorkbookMetadata;
             StringBuilder sb = new StringBuilder();
             XlsxWriter.AppendXmlTag(sb, "0", "TotalTime", null);
             XlsxWriter.AppendXmlTag(sb, md.Application, "Application", null);
@@ -79,32 +106,6 @@ namespace NanoXLSX.Internal.Writers
             XlsxWriter.AppendXmlTag(sb, md.HyperlinkBase, "HyperlinkBase", null);
             XlsxWriter.AppendXmlTag(sb, "false", "HyperlinksChanged", null);
             XlsxWriter.AppendXmlTag(sb, md.ApplicationVersion, "AppVersion", null);
-            return sb.ToString();
-        }
-
-
-
-        /// <summary>
-        /// Method to create the XML string for the core-properties document
-        /// </summary>
-        /// <returns>String with formatted XML data</returns>
-        private string CreateCorePropertiesString()
-        {
-            Metadata md = workbook.WorkbookMetadata;
-            StringBuilder sb = new StringBuilder();
-            XlsxWriter.AppendXmlTag(sb, md.Title, "title", "dc");
-            XlsxWriter.AppendXmlTag(sb, md.Subject, "subject", "dc");
-            XlsxWriter.AppendXmlTag(sb, md.Creator, "creator", "dc");
-            XlsxWriter.AppendXmlTag(sb, md.Creator, "lastModifiedBy", "cp");
-            XlsxWriter.AppendXmlTag(sb, md.Keywords, "keywords", "cp");
-            XlsxWriter.AppendXmlTag(sb, md.Description, "description", "dc");
-            string time = DateTime.Now.ToString("yyyy-MM-ddThh:mm:ssZ", CULTURE);
-            sb.Append("<dcterms:created xsi:type=\"dcterms:W3CDTF\">").Append(time).Append("</dcterms:created>");
-            sb.Append("<dcterms:modified xsi:type=\"dcterms:W3CDTF\">").Append(time).Append("</dcterms:modified>");
-
-            XlsxWriter.AppendXmlTag(sb, md.Category, "category", "cp");
-            XlsxWriter.AppendXmlTag(sb, md.ContentStatus, "contentStatus", "cp");
-
             return sb.ToString();
         }
     }

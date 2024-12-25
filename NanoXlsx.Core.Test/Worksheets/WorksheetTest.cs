@@ -299,7 +299,7 @@ namespace NanoXLSX.Test.Worksheets
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.SheetProtectionPassword);
             worksheet.SetSheetProtectionPassword(givenValue);
-            Assert.Equal(expectedValue, worksheet.SheetProtectionPassword);
+            Assert.Equal(expectedValue, worksheet.SheetProtectionPassword.GetPassword());
             worksheet.SetSheetProtectionPassword(null);
             Assert.Null(worksheet.SheetProtectionPassword);
         }
@@ -1366,7 +1366,7 @@ namespace NanoXLSX.Test.Worksheets
             Assert.Null(worksheet.SheetProtectionPassword);
             worksheet.SetSheetProtectionPassword(password);
             Assert.Equal(expectedUsage, worksheet.UseSheetProtection);
-            Assert.Equal(expectedPassword, worksheet.SheetProtectionPassword);
+            Assert.Equal(expectedPassword, worksheet.SheetProtectionPassword.GetPassword());
         }
 
         [Theory(DisplayName = "Test of the SetSheetname function")]

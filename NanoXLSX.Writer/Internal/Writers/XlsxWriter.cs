@@ -11,16 +11,15 @@ using System.Globalization;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
+using NanoXLSX.Registry;
 using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Interfaces;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
-using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
 using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Writers
@@ -42,11 +41,8 @@ namespace NanoXLSX.Internal.Writers
         #endregion
 
         #region privateFields
-        private CultureInfo culture;
         private Workbook workbook;
         private StyleManager styles;
-       // private SortedMap sharedStrings;
-      //  private int sharedStringsTotalCount;
         #endregion
 
 
@@ -55,19 +51,6 @@ namespace NanoXLSX.Internal.Writers
         {
             get { return workbook; }
         }
-
-        /*
-        public int SharedStringsTotalCount
-        {
-            get { return sharedStringsTotalCount; }
-            set { sharedStringsTotalCount = value; }
-        }
-
-        public SortedMap SharedStrings
-        {
-            get { return sharedStrings; }
-        }
-        */
 
         public StyleManager Styles
         {
@@ -83,38 +66,11 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="workbook">Workbook to process</param>
         public XlsxWriter(Workbook workbook)
         {
-            culture = CultureInfo.InvariantCulture;
             this.workbook = workbook;
         }
         #endregion
 
         #region documentCreation_methods
-
-
-
-        /// <summary>
-        /// Method to create shared strings as raw XML string
-        /// </summary>
-        /// <returns>Raw XML string</returns>
-        /*
-        private string CreateSharedStringsDocument()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"");
-            sb.Append(ParserUtils.ToString(sharedStringsTotalCount));
-            sb.Append("\" uniqueCount=\"");
-            sb.Append(ParserUtils.ToString(sharedStrings.Count));
-            sb.Append("\">");
-            foreach (IFormattableText text in sharedStrings.Keys)
-            {
-                sb.Append("<si>");
-                text.AddFormattedValue(sb);
-                sb.Append("</si>");
-            }
-            sb.Append("</sst>");
-            return sb.ToString();
-        }
-        */
 
         /// <summary>
         /// Method to normalize all newlines to CR+LF
@@ -273,7 +229,6 @@ namespace NanoXLSX.Internal.Writers
 
         public void SaveAsStream(Stream stream, bool leaveOpen = false)
         {
-
             workbook.ResolveMergedCells();
             this.styles = StyleManager.GetManagedStyles(workbook);
             try
@@ -285,20 +240,20 @@ namespace NanoXLSX.Internal.Writers
                     PackagePart part;
 
                     // Workbook
-                    WorkbookWriter workbookWriter = new WorkbookWriter(this);
+                    IPluginWriter workbookWriter = PackageRegistry.GetWriter(new WorkbookWriter(this));
                     part = packageParts[WORKBOOK.Path][WORKBOOK.Filename];
                     AppendXmlToPackagePart(workbookWriter.CreateDocument(), part);
 
                     // Style
-                    StyleWriter styleWriter = new StyleWriter(this);
+                    IPluginWriter styleWriter = PackageRegistry.GetWriter(new StyleWriter(this));
                     part = packageParts[STYLES.Path][STYLES.Filename];
                     AppendXmlToPackagePart(styleWriter.CreateDocument(), part);
 
                     // Shared strings - preparation
-                    SharedStringWriter sharedStringWriter = new SharedStringWriter(this);
-                    
+                    ISharedStringWriter sharedStringWriter = (ISharedStringWriter)PackageRegistry.GetWriter(new SharedStringWriter(this));
+
                     // Worksheets
-                    WorksheetWriter worksheetWriter = new WorksheetWriter(this, sharedStringWriter);
+                    IWorksheetWriter worksheetWriter = (IWorksheetWriter)PackageRegistry.GetWriter(new WorksheetWriter(this, (sharedStringWriter)));
                     if (workbook.Worksheets.Count > 0)
                     {
                         for (int i = 0; i < workbook.Worksheets.Count; i++)
@@ -323,10 +278,10 @@ namespace NanoXLSX.Internal.Writers
                     // Metadata
                     if (this.workbook.WorkbookMetadata != null)
                     {
-                        MetadataAppWriter metadataAppWriter = new MetadataAppWriter(this);
+                        IPluginWriter metadataAppWriter = PackageRegistry.GetWriter(new MetadataAppWriter(this));
                         part = packageParts[APP_PROPERTIES.Path][APP_PROPERTIES.Filename];
                         AppendXmlToPackagePart(metadataAppWriter.CreateDocument(), part);
-                        MetadataCoreWriter metadataCoreWriter = new MetadataCoreWriter(this);
+                        IPluginWriter metadataCoreWriter = PackageRegistry.GetWriter(new MetadataCoreWriter(this));
                         part = packageParts[CORE_PROPERTIES.Path][CORE_PROPERTIES.Filename];
                         AppendXmlToPackagePart(metadataCoreWriter.CreateDocument(), part);
                     }
@@ -334,7 +289,7 @@ namespace NanoXLSX.Internal.Writers
                     // Theme
                     if (workbook.WorkbookTheme != null)
                     {
-                        ThemeWriter themeWriter = new ThemeWriter(this);
+                        IPluginWriter themeWriter = PackageRegistry.GetWriter(new ThemeWriter(this));
                         part = packageParts[THEME.Path][THEME.Filename];
                         AppendXmlToPackagePart(themeWriter.CreateDocument(), part);
                     }
@@ -422,13 +377,4 @@ namespace NanoXLSX.Internal.Writers
         #endregion
 
     }
-    #region doc
-    /// <summary>
-    /// Sub-namespace with all low-level classes and functions. This namespace is necessary to read and generate files but should not be used as pat of the API. Use the classes and functions in the namespace NanoXLSX instead
-    /// </summary>
-    [CompilerGenerated]
-    class NamespaceDoc // This class is only for documentation purpose (Sandcastle)
-    { }
-    #endregion
-
 }

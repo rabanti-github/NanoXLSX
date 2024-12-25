@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml;
+using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
 using IOException = NanoXLSX.Shared.Exceptions.IOException;
@@ -87,7 +88,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Gets the (legacy) password hash of a worksheet if protection values are applied with a password
         /// </summary>
-        public string WorksheetProtectionHash { get; private set; }
+      //  public string WorksheetProtectionHash { get; private set; }
 
         /// <summary>
         /// Gets the definition of pane split-related information 
@@ -122,6 +123,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         public Dictionary<Worksheet.SheetViewType, int> ZoomFactors { get; private set; } = new Dictionary<Worksheet.SheetViewType, int>();
 
+        public IPasswordReader PasswordReader { get; internal set; }
 
         #endregion
 
@@ -138,6 +140,8 @@ namespace NanoXLSX.Internal.Readers
             readerOptions = options;
             Data = new Dictionary<string, Cell>();
             this.sharedStrings = sharedStrings;
+            // TODO add hook to replace instance
+            this.PasswordReader = new LegacyPasswordReader(LegacyPasswordReader.PasswordType.WORKSHEET_PROTECTION);
             ProcessStyles(styleReaderContainer);
         }
 
@@ -425,11 +429,12 @@ namespace NanoXLSX.Internal.Readers
                 ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectLockedCells);
                 ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectUnlockedCells);
                 ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.sort);
-                string legacyPasswordHash = ReaderUtils.GetAttribute(sheetProtectionNode, "password");
-                if (legacyPasswordHash != null)
-                {
-                    this.WorksheetProtectionHash = legacyPasswordHash;
-                }
+                this.PasswordReader.ReadXmlAttributes(sheetProtectionNode);
+              //  string legacyPasswordHash = ReaderUtils.GetAttribute(sheetProtectionNode, "password");
+               // if (legacyPasswordHash != null)
+               // {
+              //      this.WorksheetProtectionHash = legacyPasswordHash;
+               // }
             }
         }
 

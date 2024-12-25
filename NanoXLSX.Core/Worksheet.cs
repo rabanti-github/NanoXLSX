@@ -10,6 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using NanoXLSX.Interfaces;
+using NanoXLSX.Interfaces.Workbook;
+using NanoXLSX.Registry;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
@@ -20,8 +23,13 @@ namespace NanoXLSX
     /// <summary>
     /// Class representing a worksheet of a workbook
     /// </summary>
-    public class Worksheet
+    public class Worksheet : IWorksheet
     {
+        static Worksheet()
+        {
+            PackageRegistry.Initialize();
+        }
+
         #region constants
         /// <summary>
         /// Threshold, using when floats are compared
@@ -183,8 +191,7 @@ namespace NanoXLSX
         private bool useActiveStyle;
         private bool hidden;
         private Workbook workbookReference;
-        private string sheetProtectionPassword = null;
-        private string sheetProtectionPasswordHash = null;
+        private IPassword sheetProtectionPassword;
         private List<Range> selectedCells;
         private bool? freezeSplitPanes;
         private float? paneSplitLeftWidth;
@@ -320,25 +327,13 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the password used for sheet protection. See <see cref="SetSheetProtectionPassword"/> to set the password
+        /// Password instance of the worksheet protection. If a password was set, the pain text representation and the hash can be read from the instance
         /// </summary>
-        /// \remark <remarks>If a workbook with password protected worksheets is loaded, only the <see cref="SheetProtectionPasswordHash"/> is loaded. 
-        /// The password itself cannot be recovered. Use the <see cref="SheetProtectionPasswordHash"/> property to check whether there is a password set</remarks>
-        public string SheetProtectionPassword
+        /// \remark <remarks>The password of this property is stored in plan text at runtime but not stored to a worksheet. The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused</remarks>
+        public virtual IPassword SheetProtectionPassword
         {
             get { return sheetProtectionPassword; }
-        }
-
-        /// <summary>
-        /// gets the encryption hash of the password, defined with <see cref="SheetProtectionPassword"/>. The value will be null, if no password is defined
-        /// </summary>
-        public string SheetProtectionPasswordHash
-        {
-            get { return sheetProtectionPasswordHash; }
-            internal set
-            {
-                sheetProtectionPasswordHash = value;
-            }
+            internal set { sheetProtectionPassword = value; }
         }
 
         /// <summary>
@@ -552,6 +547,7 @@ namespace NanoXLSX
             ShowGridLines = true;
             ShowRowColumnHeaders = true;
             ShowRuler = true;
+            sheetProtectionPassword = new LegacyPassword(LegacyPassword.PasswordType.WORKSHEET_PROTECTION);
         }
 
         /// <summary>
@@ -2205,14 +2201,12 @@ namespace NanoXLSX
         {
             if (string.IsNullOrEmpty(password))
             {
-                sheetProtectionPassword = null;
-                sheetProtectionPasswordHash = null;
+                sheetProtectionPassword.UnsetPassword();
                 UseSheetProtection = false;
             }
             else
             {
-                sheetProtectionPassword = password;
-                sheetProtectionPasswordHash = Utils.GeneratePasswordHash(password);
+                sheetProtectionPassword.SetPassword(password);
                 UseSheetProtection = true;
             }
         }
@@ -2485,8 +2479,7 @@ namespace NanoXLSX
             {
                 copy.AddSelectedCells(range);
             }
-            copy.sheetProtectionPassword = this.sheetProtectionPassword;
-            copy.sheetProtectionPasswordHash = this.sheetProtectionPasswordHash;
+            copy.sheetProtectionPassword.CopyFrom(this.sheetProtectionPassword);
             foreach (SheetProtectionValue value in this.sheetProtectionValues)
             {
                 copy.sheetProtectionValues.Add(value);

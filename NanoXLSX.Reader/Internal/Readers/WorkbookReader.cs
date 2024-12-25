@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Shared.Utils;
 using IOException = NanoXLSX.Shared.Exceptions.IOException;
 
@@ -53,7 +54,9 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Password hash, if available
         /// </summary>
-        public string PasswordHash { get; private set; }
+       // public string PasswordHash { get; private set; }
+
+        public IPasswordReader PasswordReader { get; internal set; }
 
         #endregion
 
@@ -65,6 +68,8 @@ namespace NanoXLSX.Internal.Readers
         public WorkbookReader()
         {
             WorksheetDefinitions = new Dictionary<int, WorksheetDefinition>();
+            // TODO add hook to overwrite password reader
+            PasswordReader = new LegacyPasswordReader(LegacyPasswordReader.PasswordType.WORKBOOK_PROTECTION);
         }
 
         #endregion
@@ -150,11 +155,13 @@ namespace NanoXLSX.Internal.Readers
                 int value = ParserUtils.ParseBinaryBool(attribute);
                 this.LockStructure = value == 1;
             }
-            attribute = ReaderUtils.GetAttribute(node, "workbookPassword");
-            if (attribute != null)
-            {
-                this.PasswordHash = attribute;
-            }
+
+            PasswordReader.ReadXmlAttributes(node);
+            //attribute = ReaderUtils.GetAttribute(node, "workbookPassword");
+           // if (attribute != null)
+          //  {
+           //     this.PasswordHash = attribute;
+           // }
 
         }
 

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Workbook;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
@@ -18,22 +19,33 @@ using NanoXLSX.Shared.Utils;
 
 namespace NanoXLSX.Internal.Writers
 {
-    internal class WorksheetWriter : IPluginWriter
+    internal class WorksheetWriter : IWorksheetWriter
     {
         private static readonly CultureInfo CULTURE = CultureInfo.InvariantCulture;
 
-        private readonly Workbook workbook;
-        private readonly SortedMap sharedStrings;
-        private readonly SharedStringWriter sharedStringWriter;
+        private IWorkbook workbook;
+        private IWorksheet currentWorksheet;
+        private IPasswordWriter passwordWriter;
+        private readonly ISortedMap sharedStrings;
+        private readonly ISharedStringWriter sharedStringWriter;
 
-        public Worksheet CurrentWorksheet { get; set; }
+        public IWorksheet CurrentWorksheet 
+        { 
+            get => currentWorksheet;
+            set 
+            {
+                currentWorksheet = value;
+                IPassword passwordInstance = ((Worksheet)CurrentWorksheet).SheetProtectionPassword;
+                //TODO add plugin hook to overwrite password instance
+                this.passwordWriter = new LegacyPasswordWriter(LegacyPasswordWriter.PasswordType.WORKSHEET_PROTECTION, passwordInstance.PasswordHash);
+            }
+        }
 
-        internal WorksheetWriter(XlsxWriter writer, SharedStringWriter sharedStringWriter)
+        internal WorksheetWriter(XlsxWriter writer, ISharedStringWriter sharedStringWriter)
         {
             this.workbook = writer.Workbook;
             this.sharedStringWriter = sharedStringWriter;
             this.sharedStrings = sharedStringWriter.SharedStrings;
-
         }
 
         /// <summary>
@@ -45,7 +57,7 @@ namespace NanoXLSX.Internal.Writers
         public virtual string CreateDocument()
         {
             PreWrite(workbook);
-            String document = CreateWorksheetPart(CurrentWorksheet);
+            String document = CreateWorksheetPart((Worksheet)CurrentWorksheet);
             PostWrite(workbook);
             return document;
         }
@@ -70,6 +82,23 @@ namespace NanoXLSX.Internal.Writers
             // NoOp - replaced by plugin
         }
 
+        /// <summary>
+        /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
+        /// </summary>
+        /// <returns>GUID of the class</returns>
+        public string GetClassID()
+        {
+            return "1A02BA4C-38D3-4B0A-B7E7-0B485CA794BE";
+        }
+
+        /// <summary>
+        /// Gets or replaces the workbook instance, defined by the constructor
+        /// </summary>
+        public IWorkbook Workbook
+        {
+            get { return workbook; }
+            set { workbook = value; }
+        }
 
         /// <summary>
         /// Method to create a worksheet part as a raw XML string
@@ -298,7 +327,7 @@ namespace NanoXLSX.Internal.Writers
         private void CreateSheetViewString(Worksheet worksheet, StringBuilder sb)
         {
             sb.Append("<sheetViews><sheetView workbookViewId=\"0\"");
-            if (workbook.SelectedWorksheet == worksheet.SheetID - 1 && !worksheet.Hidden)
+            if (((Workbook)workbook).SelectedWorksheet == worksheet.SheetID - 1 && !worksheet.Hidden)
             {
                 sb.Append(" tabSelected=\"1\"");
             }
@@ -648,9 +677,9 @@ namespace NanoXLSX.Internal.Writers
                 temp = Enum.GetName(typeof(Worksheet.SheetProtectionValue), item.Key); // Note! If the enum names differs from the OOXML definitions, this method will cause invalid OOXML entries
                 sb.Append(" ").Append(temp).Append("=\"").Append(ParserUtils.ToString(item.Value)).Append("\"");
             }
-            if (!string.IsNullOrEmpty(sheet.SheetProtectionPasswordHash))
+            if (passwordWriter.PasswordIsSet())
             {
-                sb.Append(" password=\"").Append(sheet.SheetProtectionPasswordHash).Append("\"");
+                sb.Append(passwordWriter.GetXmlAttributes());
             }
             sb.Append(" sheet=\"1\"/>");
             return sb.ToString();

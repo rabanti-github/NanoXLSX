@@ -8,6 +8,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using NanoXLSX.Internal.Readers;
+using NanoXLSX.Registry;
 
 namespace NanoXLSX
 {
@@ -16,6 +17,11 @@ namespace NanoXLSX
     /// </summary>
     public static class WorkbookReader
     {
+        static WorkbookReader()
+        {
+            PackageRegistry.Initialize();
+        }
+
         /// <summary>
         /// Loads a workbook from a file
         /// </summary>

@@ -6,6 +6,7 @@
  */
 
 using System.Text;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Workbook;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Shared.Exceptions;
@@ -16,11 +17,15 @@ namespace NanoXLSX.Internal.Writers
 {
     internal class WorkbookWriter : IPluginWriter
     {
-        private readonly Workbook workbook;
+        private IWorkbook workbookInstance;
+        private readonly IPasswordWriter passwordWriter;
 
         public WorkbookWriter(XlsxWriter writer)
         {
-            this.workbook = writer.Workbook;
+            this.workbookInstance = writer.Workbook;
+            IPassword passwordInstance = ((Workbook)workbookInstance).WorkbookProtectionPassword;
+            //TODO add plugin hook to overwrite password instance
+            this.passwordWriter = new LegacyPasswordWriter(LegacyPasswordWriter.PasswordType.WORKBOOK_PROTECTION, passwordInstance.PasswordHash);
         }
 
         /// <summary>
@@ -31,6 +36,7 @@ namespace NanoXLSX.Internal.Writers
         /// <exception cref="RangeException">Throws a RangeException if an address was out of range</exception>
         public virtual string CreateDocument()
         {
+            Workbook workbook = (Workbook)workbookInstance;
             PreWrite(workbook);
             StringBuilder sb = new StringBuilder();
             sb.Append("<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">");
@@ -104,6 +110,23 @@ namespace NanoXLSX.Internal.Writers
             // NoOp - replaced by plugin
         }
 
+        /// <summary>
+        /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
+        /// </summary>
+        /// <returns>GUID of the class</returns>
+        public string GetClassID()
+        {
+            return "1F1A8E6D-F373-40DC-9959-46299DA8EAAD";
+        }
+
+        /// <summary>
+        /// Gets or replaces the workbook instance, defined by the constructor
+        /// </summary>
+        public IWorkbook Workbook
+        {
+            get { return workbookInstance; }
+            set { workbookInstance = value; }
+        }
 
         /// <summary>
         /// Method to create the (sub) part of the workbook protection within the workbook XML document
@@ -111,6 +134,7 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="sb">reference to the StringBuilder</param>
         private void CreateWorkbookProtectionString(StringBuilder sb)
         {
+            Workbook workbook = (Workbook)workbookInstance;
             if (workbook.UseWorkbookProtection)
             {
                 sb.Append("<workbookProtection");
@@ -122,11 +146,9 @@ namespace NanoXLSX.Internal.Writers
                 {
                     sb.Append(" lockStructure=\"1\"");
                 }
-                if (!string.IsNullOrEmpty(workbook.WorkbookProtectionPassword))
+                if (passwordWriter.PasswordIsSet())
                 {
-                    sb.Append(" workbookPassword=\"");
-                    sb.Append(workbook.WorkbookProtectionPasswordHash);
-                    sb.Append("\"");
+                    sb.Append(passwordWriter.GetXmlAttributes());
                 }
                 sb.Append("/>");
             }

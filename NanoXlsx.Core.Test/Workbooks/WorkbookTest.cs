@@ -123,9 +123,9 @@ namespace NanoXLSX.Test.Workbooks
             Workbook workbook = new Workbook(false);
             Assert.Null(workbook.WorkbookProtectionPassword);
             workbook.SetWorkbookProtection(false, true, true, "test");
-            Assert.Equal("test", workbook.WorkbookProtectionPassword);
+            Assert.Equal("test", workbook.WorkbookProtectionPassword.GetPassword());
             workbook.SetWorkbookProtection(false, false, false, "");
-            Assert.Equal("", workbook.WorkbookProtectionPassword);
+            Assert.Equal("", workbook.WorkbookProtectionPassword.GetPassword());
             workbook.SetWorkbookProtection(false, false, false, null);
             Assert.Null(workbook.WorkbookProtectionPassword);
         }
@@ -539,7 +539,7 @@ namespace NanoXLSX.Test.Workbooks
             Assert.Equal(expectedLockWindowsState, workbook.LockWindowsIfProtected);
             Assert.Equal(expectedLockStructureState, workbook.LockStructureIfProtected);
             Assert.Equal(expectedProtectionState, workbook.UseWorkbookProtection);
-            Assert.Equal(password, workbook.WorkbookProtectionPassword);
+            Assert.Equal(password, workbook.WorkbookProtectionPassword.GetPassword());
         }
 
         [Fact(DisplayName = "Test of the AddMruColor function")]

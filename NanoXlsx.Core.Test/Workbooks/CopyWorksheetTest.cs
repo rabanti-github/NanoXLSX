@@ -254,7 +254,7 @@ namespace NanoXLSX.Test.Workbooks
             }
             Assert.Equal(w2.SelectedCells, w1.SelectedCells);
             Assert.Equal(w2.SheetProtectionPassword, w1.SheetProtectionPassword);
-            Assert.Equal(w2.SheetProtectionPasswordHash, w1.SheetProtectionPasswordHash);
+            Assert.Equal(w2.SheetProtectionPassword.PasswordHash, w1.SheetProtectionPassword.PasswordHash);
             Assert.Equal(w2.SheetProtectionValues.Count, w1.SheetProtectionValues.Count);
             for (int i = 0; i < w1.SheetProtectionValues.Count; i++)
             {

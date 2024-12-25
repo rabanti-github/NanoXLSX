@@ -15,7 +15,7 @@ namespace NanoXLSX.Internal.Structures
     /// <summary>
     /// Class to wrap unformatted strings as formattable text for the stared string table 
     /// </summary>
-    /// \remark <remarks>This class is only used internally</remarks>
+    /// \remark <remarks>This class is only for internal use. Use the high level API (e.g. class Workbook) to manipulate data and create Excel files</remarks>
     public class PlainText : IFormattableText
     {
         private const string EMPTY_STRING = "<t></t>";

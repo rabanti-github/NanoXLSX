@@ -15,6 +15,7 @@
 		<RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.git</RepositoryUrl>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IncludeSymbols>true</IncludeSymbols>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -45,7 +46,10 @@
 		<Reference Include="WindowsBase" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="NanoXLSXlib.png" Pack="true" PackagePath="\" />
+	  <EmbeddedResource Include="Documentation\NanoXLSXlib.png">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </EmbeddedResource>
 	</ItemGroup>
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 	  <Exec Command="@echo off&#xD;&#xA;echo PROJECT_NUMBER = $(Version) &gt; &quot;$(ProjectDir)Documentation\projectNumber.doxygen&quot;&#xD;&#xA;echo PROJECT_NAME = $(ProjectName) &gt; &quot;$(ProjectDir)Documentation\projectName.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = $(SolutionDir)docs\$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\outputDirectory.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = $(SolutionDir)docs\$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\htmlOutput.doxygen&quot;" />

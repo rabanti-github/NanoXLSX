@@ -13,7 +13,8 @@ namespace NanoXLSX.Internal
     /// <summary>
     /// Class to manage key value pairs (string / string). The entries are in the order how they were added
     /// </summary>
-    public class SortedMap
+    /// \remark <remarks>This class is only for internal use. Use the high level API (e.g. class Workbook) to manipulate data and create Excel files</remarks>
+    public class SortedMap : ISortedMap
     {
         private int count;
         private readonly List<IFormattableText> valueEntries;

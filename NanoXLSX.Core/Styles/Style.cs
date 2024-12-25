@@ -5,7 +5,6 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System.Runtime.CompilerServices;
 using System.Text;
 using NanoXLSX.Shared.Exceptions;
 
@@ -226,13 +225,4 @@ namespace NanoXLSX.Styles
         #endregion
 
     }
-    #region doc
-    /// <summary>
-    /// Sub-namespace for style definitions, style handling and (static) basic styles
-    /// </summary>
-    [CompilerGenerated]
-    class NamespaceDoc // This class is only for documentation purpose (Sandcastle)
-    { }
-    #endregion
-
 }

@@ -108,7 +108,7 @@ namespace NanoXLSX_Test.Workbooks
             Assert.Equal(locked, givenWorkbook.LockStructureIfProtected);
         }
 
-        [Theory(DisplayName = "Test of the 'WorkbookProtectionPasswordHash' property when writing and reading a workbook")]
+        [Theory(DisplayName = "Test of the 'WorkbookProtectionPasswordHash' property when writing and reading a workbook, using legacy password")]
         [InlineData(null)]
         [InlineData("")]
         [InlineData("A")]
@@ -119,12 +119,12 @@ namespace NanoXLSX_Test.Workbooks
             Workbook workbook = new Workbook("sheet1");
             workbook.SetWorkbookProtection(true, false, true, plainText);
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
-            string hash = Utils.GeneratePasswordHash(plainText);
+            string hash = LegacyPassword.GenerateLegacyPasswordHash(plainText);
             if (hash == "")
             {
                 hash = null;
             }
-            Assert.Equal(hash, givenWorkbook.WorkbookProtectionPasswordHash);
+            Assert.Equal(hash, givenWorkbook.WorkbookProtectionPassword.PasswordHash);
         }
 
 

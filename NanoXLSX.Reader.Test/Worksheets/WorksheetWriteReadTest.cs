@@ -518,11 +518,11 @@ namespace NanoXLSX_Test.Worksheets
                     workbook.SetCurrentWorksheet(i);
                     workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.deleteRows);
                     workbook.CurrentWorksheet.SetSheetProtectionPassword(givenPassword);
-                    hash = workbook.CurrentWorksheet.SheetProtectionPasswordHash;
+                    hash = workbook.CurrentWorksheet.SheetProtectionPassword.PasswordHash;
                 }
             }
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
-            Assert.Equal(hash, givenWorksheet.SheetProtectionPasswordHash);
+            Assert.Equal(hash, givenWorksheet.SheetProtectionPassword.PasswordHash);
         }
 
         [Theory(DisplayName = "Test of the 'Hidden' property when writing and reading a worksheet")]

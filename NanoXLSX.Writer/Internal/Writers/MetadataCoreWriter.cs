@@ -8,6 +8,7 @@
 using System;
 using System.Globalization;
 using System.Text;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Workbook;
 using NanoXLSX.Interfaces.Writer;
 
@@ -17,7 +18,7 @@ namespace NanoXLSX.Internal.Writers
     {
         private static readonly CultureInfo CULTURE = CultureInfo.InvariantCulture;
 
-        private readonly Workbook workbook;
+        private IWorkbook workbook;
 
         public MetadataCoreWriter(XlsxWriter writer)
         {
@@ -61,12 +62,31 @@ namespace NanoXLSX.Internal.Writers
         }
 
         /// <summary>
+        /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
+        /// </summary>
+        /// <returns>GUID of the class</returns>
+        public string GetClassID()
+        {
+            return "F7494751-5029-4576-9632-FFC2BA1B3E65";
+        }
+
+        /// <summary>
+        /// Gets or replaces the workbook instance, defined by the constructor
+        /// </summary>
+        public IWorkbook Workbook
+        {
+            get { return workbook; }
+            set { workbook = value; }
+        }
+
+
+        /// <summary>
         /// Method to create the XML string for the core-properties document
         /// </summary>
         /// <returns>String with formatted XML data</returns>
         private string CreateCorePropertiesString()
         {
-            Metadata md = workbook.WorkbookMetadata;
+            Metadata md = ((Workbook)workbook).WorkbookMetadata;
             StringBuilder sb = new StringBuilder();
             XlsxWriter.AppendXmlTag(sb, md.Title, "title", "dc");
             XlsxWriter.AppendXmlTag(sb, md.Subject, "subject", "dc");

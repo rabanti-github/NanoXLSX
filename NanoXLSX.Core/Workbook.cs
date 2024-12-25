@@ -8,8 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Workbook;
+using NanoXLSX.Registry;
 using NanoXLSX.Shared.Exceptions;
 using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
@@ -23,12 +24,17 @@ namespace NanoXLSX
     /// 
     public class Workbook : IWorkbook
     {
+        static Workbook()
+        {
+            PackageRegistry.Initialize();
+        }
+
         #region privateFields
         private string filename;
         private List<Worksheet> worksheets;
         private Worksheet currentWorksheet;
         private Metadata workbookMetadata;
-        private string workbookProtectionPassword;
+        private IPassword workbookProtectionPassword;
         private bool lockWindowsIfProtected;
         private bool lockStructureIfProtected;
         private int selectedWorksheet;
@@ -107,20 +113,11 @@ namespace NanoXLSX
         public bool UseWorkbookProtection { get; set; }
 
         /// <summary>
-        /// Gets the password used for workbook protection. See also <see cref="SetWorkbookProtection"/>
+        /// Password instance of the protected workbook. If a password was set, the pain text representation and the hash can be read from the instance
         /// </summary>
-        /// \remark <remarks>The password of this property is stored in plan text at runtime but not stored to a workbook. See also <see cref="WorkbookProtectionPasswordHash"/> for the generated hash</remarks>
-        public string WorkbookProtectionPassword
-        {
-            get { return workbookProtectionPassword; }
-        }
-
-        /// <summary>
-        /// Hash of the protected workbook, originated from <see cref="WorkbookProtectionPassword"/>
-        /// </summary>
-        /// \remark <remarks>The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused, 
+        /// \remark <remarks>The password of this property is stored in plan text at runtime but not stored to a workbook. The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused, 
         /// if no changes are made in the area of workbook protection (<see cref="SetWorkbookProtection(bool, bool, bool, string)"/>)</remarks>
-        public string WorkbookProtectionPasswordHash { get; internal set; }
+        public virtual IPassword WorkbookProtectionPassword { get { return workbookProtectionPassword; } internal set => workbookProtectionPassword = value; }
 
         /// <summary>
         /// Gets the list of worksheets in the workbook
@@ -141,6 +138,7 @@ namespace NanoXLSX
         /// Gets or sets the theme of the workbook. The default is defined by <see cref="Theme.GetDefaultTheme"/>. However, the theme can be nullified
         /// </summary>
         public Theme WorkbookTheme { get; set; } = Theme.GetDefaultTheme();
+
 
         #endregion
 
@@ -610,8 +608,7 @@ namespace NanoXLSX
         {
             lockWindowsIfProtected = protectWindows;
             lockStructureIfProtected = protectStructure;
-            workbookProtectionPassword = password;
-            WorkbookProtectionPasswordHash = Utils.GeneratePasswordHash(password);
+            workbookProtectionPassword.SetPassword(password);
             if (!protectWindows && !protectStructure)
             {
                 UseWorkbookProtection = false;
@@ -806,17 +803,9 @@ namespace NanoXLSX
             worksheets = new List<Worksheet>();
             workbookMetadata = new Metadata();
             shortener = new Shortener(this);
+            workbookProtectionPassword = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);
         }
 
         #endregion
     }
-
-    #region doc
-    /// <summary>
-    /// Main namespace with all high-level classes and functions to create or read workbooks and worksheets
-    /// </summary>
-    [CompilerGenerated]
-    class NamespaceDoc // This class is only for documentation purpose (Sandcastle)
-    { }
-    #endregion
 }

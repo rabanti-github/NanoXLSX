@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Globalization;
+using NanoXLSX.Exceptions;
 
 namespace NanoXLSX
 {
@@ -127,7 +128,7 @@ namespace NanoXLSX
         public int EnforcingStartRowNumber { get; set; } = 0;
 
         /// <summary>
-        /// Format if DateTime values are cast to strings or DateTime objects are parsed from strings. If null or empty, parsing will be tried with 'best effort', according to <see cref="System.DateTime.Parse(string)">System.DateTime.Parse(string)</see>. 
+        /// Format if DateTime values are cast to strings or DateTime objects are parsed from strings. If null or empty, parsing will be tried with 'best effort', according to <see cref="System.DateTime.Parse(string)"> System.DateTime.Parse(string)</see>. 
         /// See also  <see cref="TemporalCultureInfo"/>
         /// </summary>
         public string DateTimeFormat { get; set; } = DEFAULT_DATE_TIME_FORMAT;
@@ -143,6 +144,12 @@ namespace NanoXLSX
         /// See also  <see cref="DateTimeFormat"/> and <see cref="TimeSpanFormat"/>
         /// </summary>
         public CultureInfo TemporalCultureInfo { get; set; } = DEFAULT_CULTURE_INFO;
+
+        /// <summary>
+        /// If set to true, worksheet or workbook protection passwords with unknown / not supported algorithms will be ignored (password hash may not be read). 
+        /// Otherwise, a <see cref="NotSupportedContentException"/> will be thrown. Default is false 
+        /// </summary>
+        public bool IgnoreNotSupportedPasswordAlgorithms { get; set; }
 
         /// <summary>
         /// Adds a type enforcing rule to the passed column address
