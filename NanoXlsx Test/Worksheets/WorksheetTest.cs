@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using static NanoXLSX.Cell;
 using static NanoXLSX.Worksheet;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 using Range = NanoXLSX.Range;
@@ -1618,5 +1619,111 @@ namespace NanoXLSX_Test.Worksheets
             }
         }
 
+        #region Tests für Insert-Search-Replace
+
+        [Fact(DisplayName ="ReplaceCellValue")]
+        public void ReplaceCellValue_ShouldReplaceAllOccurrences()
+        {
+            var worksheet = new Worksheet();
+            worksheet.AddCell("oldValue", 0, 0);
+            worksheet.AddCell("oldValue", 1, 0);
+            worksheet.AddCell("oldValue", 2, 0);
+            worksheet.AddCell("differentValue", 3, 0);
+
+            int replacedCount = worksheet.ReplaceCellValue("oldValue", "newValue");
+
+            Assert.Equal(3, replacedCount);
+            Assert.Equal("newValue", worksheet.Cells["A1"].Value);
+            Assert.Equal("newValue", worksheet.Cells["B1"].Value);
+            Assert.Equal("newValue", worksheet.Cells["C1"].Value);
+            Assert.Equal("differentValue", worksheet.Cells["D1"].Value);
+        }
+
+
+        [Fact (DisplayName="FirstOrDefaultCell")]
+        public void FirstOrDefaultCell_ShouldReturnCorrectCell()
+        {
+            var worksheet = new Worksheet();
+            worksheet.AddCell("value1", 0, 0);
+            worksheet.AddCell("value2", 1, 0);
+            worksheet.AddCell("value3", 2, 0);
+
+            var result = worksheet.FirstOrDefaultCell(cell => cell.Value.Equals("value2"));
+
+            Assert.NotNull(result);
+            Assert.Equal("value2", result.Value);
+        }
+
+        [Fact(DisplayName = "FirstOrDefaultCell_NotFound")]
+        public void FirstOrDefaultCell_ShouldReturnNullIfNoMatch()
+        {
+            var worksheet = new Worksheet();
+            worksheet.AddCell("value1", 0, 0);
+            worksheet.AddCell("value2", 1, 0);
+            worksheet.AddCell("value3", 2, 0);
+
+            var result = worksheet.FirstOrDefaultCell(cell => cell.Value.Equals("nonexistent"));
+
+            Assert.Null(result);
+        }
+
+
+        [Fact(DisplayName = "FirstCellByValue")]
+        public void FirstCellByValue_ShouldReturnCorrectCell()
+        {
+            var worksheet = new Worksheet();
+            var cell1 = new Cell("Test1", CellType.STRING, "A1");
+            var cell2 = new Cell("Test2", CellType.STRING, "B1");
+            worksheet.Cells.Add("A1", cell1);
+            worksheet.Cells.Add("B1", cell2);
+
+            var result = worksheet.FirstCellByValue("Test2");
+
+            Assert.NotNull(result);
+            Assert.Equal("B1", result.CellAddress);
+        }
+
+        [Fact (DisplayName ="FirstCellByCalue_NotFound")]
+        public void FirstCellByValue_ShouldReturnNull_WhenValueNotFound()
+        {
+            var worksheet = new Worksheet();
+            var cell1 = new Cell("Test1", CellType.STRING, "A1");
+            worksheet.Cells.Add("A1", cell1);
+
+            var result = worksheet.FirstCellByValue("NonExistentValue");
+
+            Assert.Null(result);
+        }
+
+        [Fact (DisplayName ="InsertRow")]
+        public void TestInsertRow()
+        {
+            Worksheet worksheet = new Worksheet();
+            Style style = new Style();
+            style.CurrentFont.Bold = true;
+
+            worksheet.AddCell("A1", 0, 0 );
+            worksheet.AddCell("A2", 0, 1, style);
+            worksheet.AddCell("A3", 0, 2);
+
+            worksheet.InsertRow(1, 2);
+
+            // Assert
+            Assert.Equal("A1", worksheet.Cells["A1"].Value);
+            Assert.Equal("A2", worksheet.Cells["A2"].Value);
+            Assert.Null(worksheet.Cells["A3"].Value);
+            Assert.Null(worksheet.Cells["A4"].Value);
+            Assert.Equal("A3", worksheet.Cells["A5"].Value);
+
+            Assert.Null(worksheet.Cells["A1"].CellStyle);
+            Assert.True(worksheet.Cells["A2"].CellStyle.CurrentFont.Bold,"A2 is not bold");
+            Assert.True(worksheet.Cells["A3"].CellStyle.CurrentFont.Bold,"A3 is not bold");
+            Assert.True(worksheet.Cells["A4"].CellStyle.CurrentFont.Bold,"A4 ist not bold");
+            Assert.Null(worksheet.Cells["A5"].CellStyle);
+        }
     }
+
+    #endregion
+
 }
+
