@@ -2671,7 +2671,7 @@ namespace NanoXLSX
             {
                 for (Int32 i = 0; i < numberOfNewRows; i++)
                 {
-                    Address newAddress = new Address(cell.CellAddress2.Column, cell.CellAddress2.Row + 1 + i); //cell.CellAddress2; //.Column, rowNumber + i);
+                    Address newAddress = new Address(cell.CellAddress2.Column, cell.CellAddress2.Row + 1 + i); 
                     Cell newCell = new Cell("", Cell.CellType.EMPTY, newAddress);
                     if (cell.CellStyle != null)
                         newCell.SetStyle(cell.CellStyle);
@@ -2679,11 +2679,10 @@ namespace NanoXLSX
                 }
             }
 
-
             // Re-add the previous cells from the copy back with a new key.
-            foreach (var cell in newCells)
+            foreach (KeyValuePair<string,Cell> cellKeyValue in newCells)
             {
-                this.Cells.Add(cell.Key, cell.Value);
+                this.Cells.Add(cellKeyValue.Key, cellKeyValue.Value);  //cell.Value is the cell incl. Style etc.
             }
         }
 
