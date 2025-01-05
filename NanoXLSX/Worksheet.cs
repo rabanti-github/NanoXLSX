@@ -2669,10 +2669,10 @@ namespace NanoXLSX
             // Fill the gap with new cells, using the same style as the first row.
             foreach (Cell cell in upperRow)
             {
-                for (Int32 i = 0; i < numberOfNewRows; i++)
+                for (int i = 0; i < numberOfNewRows; i++)
                 {
                     Address newAddress = new Address(cell.CellAddress2.Column, cell.CellAddress2.Row + 1 + i); 
-                    Cell newCell = new Cell("", Cell.CellType.EMPTY, newAddress);
+                    Cell newCell = new Cell(null, Cell.CellType.EMPTY, newAddress);
                     if (cell.CellStyle != null)
                         newCell.SetStyle(cell.CellStyle);
                     this.Cells.Add(newAddress.GetAddress(), newCell);
@@ -2694,7 +2694,6 @@ namespace NanoXLSX
         public Cell FirstCellByValue(object searchValue)
         {
             var cell = this.Cells.FirstOrDefault(c =>
-                c.Value?.Value != null &&
                 Equals(c.Value.Value, searchValue))
                 .Value;
             return cell;
@@ -2721,7 +2720,6 @@ namespace NanoXLSX
         public List<Cell> CellsByValue(object searchValue)
         {
             return this.Cells.Where(c =>
-                c.Value?.Value != null &&
                 Equals(c.Value.Value, searchValue))
                 .Select(c => c.Value)
                 .ToList();

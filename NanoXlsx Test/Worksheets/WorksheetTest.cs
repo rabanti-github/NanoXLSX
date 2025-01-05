@@ -1619,7 +1619,7 @@ namespace NanoXLSX_Test.Worksheets
             }
         }
 
-        #region Tests für Insert-Search-Replace
+        #region Tests for Insert-Search-Replace
 
         [Fact(DisplayName ="ReplaceCellValue")]
         public void ReplaceCellValue_ShouldReplaceAllOccurrences()
@@ -1629,6 +1629,7 @@ namespace NanoXLSX_Test.Worksheets
             worksheet.AddCell("oldValue", 1, 0);
             worksheet.AddCell("oldValue", 2, 0);
             worksheet.AddCell("differentValue", 3, 0);
+            worksheet.AddCell(null, 4, 0); //Null-Value-Cell
 
             int replacedCount = worksheet.ReplaceCellValue("oldValue", "newValue");
 
@@ -1637,6 +1638,10 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal("newValue", worksheet.Cells["B1"].Value);
             Assert.Equal("newValue", worksheet.Cells["C1"].Value);
             Assert.Equal("differentValue", worksheet.Cells["D1"].Value);
+
+            replacedCount = worksheet.ReplaceCellValue(null, 123);
+            Assert.Equal(1, replacedCount);
+            Assert.Equal(123, worksheet.Cells["E1"].Value);
         }
 
 
