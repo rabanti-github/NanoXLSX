@@ -2629,5 +2629,121 @@ namespace NanoXLSX
 
         #endregion
 
+#region Insert-Search-Replace
+
+        /// <summary>
+        /// Inserts 'count' rows below the specified 'rowNumber'.
+        /// The 'new' rows inherit the style of the row above.
+        /// Note: Formulas are not adjusted.
+        /// </summary>
+        /// <param name="rowNumber">Row number below which the new row(s) will be inserted.</param>
+        /// <param name="numberOfNewRows">Number of rows to insert.</param>
+        public void InsertRow(int rowNumber, int numberOfNewRows)
+        {
+            // All cells below the first row must receive a new address (row + count);
+            var upperRow = this.GetRow(rowNumber);
+
+            // Identify all cells below the insertion point to adjust their addresses
+            var cellsToChange = this.Cells.Where(c => c.Value.CellAddress2.Row > rowNumber).ToList();
+
+            // Make a copy of the cells to be moved and then delete the original cells;
+            Dictionary<string, Cell> newCells = new Dictionary<string, Cell>();
+            foreach (var cell in cellsToChange)
+            {
+                var row = cell.Value.CellAddress2.Row;
+                var col = cell.Value.CellAddress2.Column;
+                Address newAddress = new Address(col, row + numberOfNewRows);
+
+                Cell newCell = new Cell(cell.Value.Value, cell.Value.DataType, newAddress);
+                if (cell.Value.CellStyle != null)
+                {
+                    newCell.SetStyle(cell.Value.CellStyle); // Apply the style from the "old" cell.
+                } 
+                newCells.Add(newAddress.GetAddress(), newCell);
+
+                // Delete the original cells since the key cannot be changed.
+                this.Cells.Remove(cell.Key);
+            }
+
+
+            // Fill the gap with new cells, using the same style as the first row.
+            foreach (Cell cell in upperRow)
+            {
+                for (int i = 0; i < numberOfNewRows; i++)
+                {
+                    Address newAddress = new Address(cell.CellAddress2.Column, cell.CellAddress2.Row + 1 + i); 
+                    Cell newCell = new Cell(null, Cell.CellType.EMPTY, newAddress);
+                    if (cell.CellStyle != null)
+                        newCell.SetStyle(cell.CellStyle);
+                    this.Cells.Add(newAddress.GetAddress(), newCell);
+                }
+            }
+
+            // Re-add the previous cells from the copy back with a new key.
+            foreach (KeyValuePair<string,Cell> cellKeyValue in newCells)
+            {
+                this.Cells.Add(cellKeyValue.Key, cellKeyValue.Value);  //cell.Value is the cell incl. Style etc.
+            }
+        }
+
+        /// <summary>
+        /// Searches for the first occurrence of the value.
+        /// </summary>
+        /// <param name="searchValue">The value to search for.</param>
+        /// <returns>The first cell containing the searched value or Null</returns>
+        public Cell FirstCellByValue(object searchValue)
+        {
+            var cell = this.Cells.FirstOrDefault(c =>
+                Equals(c.Value.Value, searchValue))
+                .Value;
+            return cell;
+        }
+
+        /// <summary>
+        /// Searches for the first occurrence of the expression.
+        /// Example: var cell = worksheet.FindCell(c => c.Value?.ToString().Contains("searchValue"));
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns>The first cell containing the searched value or Null</returns>
+        public Cell FirstOrDefaultCell(Func<Cell, bool> predicate)
+        {
+            return this.Cells
+                .FirstOrDefault(c => predicate(c.Value))
+                .Value;
+        }
+
+        /// <summary>
+        /// Searches for cells that contain the specified value and returns a list of these cells.
+        /// </summary>
+        /// <param name="searchValue">The value to search for.</param>
+        /// <returns>A list of cells that contain the specified value.</returns>
+        public List<Cell> CellsByValue(object searchValue)
+        {
+            return this.Cells.Where(c =>
+                Equals(c.Value.Value, searchValue))
+                .Select(c => c.Value)
+                .ToList();
+        }
+
+        /// <summary>
+        /// Replaces all occurrences of 'oldValue' with 'newValue' and returns the number of replacements.
+        /// </summary>
+        /// <param name="oldValue"></param>
+        /// <param name="newValue"></param>
+        /// <returns>Count of replaced Cell-Values</returns>
+        public int ReplaceCellValue(object oldValue, object newValue)
+        {
+            int count = 0;
+            List<Cell> foundCells = this.CellsByValue(oldValue);
+            foreach (var cell in foundCells)
+            {
+                cell.Value = newValue;
+                count++;
+            }
+            return count;
+        }
     }
+    #endregion
+
+
 }
