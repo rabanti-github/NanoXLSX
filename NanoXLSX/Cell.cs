@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -206,7 +206,7 @@ namespace NanoXLSX
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address of the cell</param>
         /// <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
-        public Cell(Object value, CellType type, string address)
+        public Cell(object value, CellType type, string address)
         {
             if (type == CellType.EMPTY)
             {
@@ -231,7 +231,7 @@ namespace NanoXLSX
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address struct of the cell</param>
         /// <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
-        public Cell(Object value, CellType type, Address address)
+        public Cell(object value, CellType type, Address address)
         {
             if (type == CellType.EMPTY)
             {
