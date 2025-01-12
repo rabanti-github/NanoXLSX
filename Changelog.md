@@ -1,5 +1,15 @@
 # Change Log
 
+## v2.6.0 
+
+---
+Release Date: **12.01.2025**
+
+- Added InsertRow and InsertColumn functions. Functionality provided by Alexander Schlecht
+- Added FirstCewllByValue, FirstOrDefaultCell, CellsByValue functions. Functionality provided by Alexander Schlecht
+- Added ReplaceCellValue function. Functionality provided by Alexander Schlecht
+- Code maintenance
+
 ## v2.5.2 
 
 ---

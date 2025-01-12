@@ -6,7 +6,7 @@
     <Product>NanoXLSX</Product>
     <Company>Raphael Stoeckli</Company>
     <Authors>Raphael Stoeckli</Authors>
-    <Copyright>Copyright Raphael Stoeckli © 2024</Copyright>
+    <Copyright>Copyright Raphael Stoeckli © 2025</Copyright>
     <Description>Demo Library showing the use of NanoXLSX, a library to generate and read Microsoft Excel files (XLSX) in an easy and native way</Description>
     <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.git</RepositoryUrl>
@@ -15,9 +15,9 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TargetFrameworks>net45;net5.0</TargetFrameworks>
     <StartupObject>Demo.Program</StartupObject>
-    <Version>2.5.2</Version>
-    <AssemblyVersion>2.5.2.0</AssemblyVersion>
-    <FileVersion>2.5.1.0</FileVersion>
+    <Version>2.6.0</Version>
+    <AssemblyVersion>2.6.0.0</AssemblyVersion>
+    <FileVersion>2.6.0.0</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>XLSX Excel ExcelWriter ExcelReader Office</PackageTags>

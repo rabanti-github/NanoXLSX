@@ -9,7 +9,7 @@
     <Product>NanoXLSX</Product>
     <Description>Unit Tests for NanoXLSX</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright Raphael Stoeckli © 2024</Copyright>
+    <Copyright>Copyright Raphael Stoeckli © 2025</Copyright>
     <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
     <PackageIcon>NanoXLSX.png</PackageIcon>
     <PackageIconUrl />
@@ -17,9 +17,9 @@
     <PackageTags>Excel Office XLSX</PackageTags>
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
-    <Version>2.5.2</Version>
-    <AssemblyVersion>2.5.2.0</AssemblyVersion>
-    <FileVersion>2.5.2.0</FileVersion>
+    <Version>2.6.0</Version>
+    <AssemblyVersion>2.6.0.0</AssemblyVersion>
+    <FileVersion>2.6.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\autofilter.xlsx" />
