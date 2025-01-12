@@ -1,6 +1,7 @@
 ﻿using NanoXLSX;
 using NanoXLSX.Styles;
 using Xunit;
+using static NanoXLSX.Styles.Border;
 
 namespace NanoXLSX_Test.Styles.WriteRead
 {

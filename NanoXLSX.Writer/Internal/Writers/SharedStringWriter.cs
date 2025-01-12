@@ -1,24 +1,20 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
 using System.Text;
 using NanoXLSX.Interfaces;
-using NanoXLSX.Interfaces.Workbook;
 using NanoXLSX.Interfaces.Writer;
-using NanoXLSX.Shared.Interfaces;
-using NanoXLSX.Shared.Utils;
+using NanoXLSX.Utils;
 
 namespace NanoXLSX.Internal.Writers
 {
     internal class SharedStringWriter : ISharedStringWriter
     {
-        private IWorkbook workbook;
-
-        private SortedMap sharedStrings;
+        private ISortedMap sharedStrings;
         private int sharedStringsTotalCount;
 
         public int SharedStringsTotalCount
@@ -34,7 +30,7 @@ namespace NanoXLSX.Internal.Writers
 
         public SharedStringWriter(XlsxWriter writer)
         {
-            this.workbook = writer.Workbook;
+            this.Workbook = writer.Workbook;
             sharedStrings = new SortedMap();
             sharedStringsTotalCount = 0;
         }
@@ -43,9 +39,9 @@ namespace NanoXLSX.Internal.Writers
         /// Method to create shared strings as raw XML string
         /// </summary>
         /// <returns>Raw XML string</returns>
-        public string CreateDocument()
+        public string CreateDocument(string currentDocument = null)
         {
-            PreWrite(workbook);
+            PreWrite(Workbook);
             StringBuilder sb = new StringBuilder();
             sb.Append("<sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"");
             sb.Append(ParserUtils.ToString(sharedStringsTotalCount));
@@ -59,8 +55,16 @@ namespace NanoXLSX.Internal.Writers
                 sb.Append("</si>");
             }
             sb.Append("</sst>");
-            PostWrite(workbook);
-            return sb.ToString();
+            PostWrite(Workbook);
+            if (NextWriter != null)
+            {
+                NextWriter.Workbook = this.Workbook;
+                return NextWriter.CreateDocument(sb.ToString());
+            }
+            else
+            {
+                return sb.ToString();
+            }
         }
 
         /// <summary>
@@ -68,7 +72,7 @@ namespace NanoXLSX.Internal.Writers
         /// This virtual method is empty by default and can be overridden by a plug-in package
         /// </summary>
         /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PreWrite(IWorkbook workbook)
+        public virtual void PreWrite(Workbook workbook)
         {
             // NoOp - replaced by plugin
         }
@@ -78,7 +82,7 @@ namespace NanoXLSX.Internal.Writers
         /// This virtual method is empty by default and can be overridden by a plug-in package
         /// </summary>
         /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PostWrite(IWorkbook workbook)
+        public virtual void PostWrite(Workbook workbook)
         {
             // NoOp - replaced by plugin
         }
@@ -95,11 +99,12 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
-        public IWorkbook Workbook
-        {
-            get { return workbook; }
-            set { workbook = value; }
-        }
+        public Workbook Workbook { get; set; }
+
+        /// <summary>
+        /// Gets or sets the next plug-in writer. If not null, the next writer to be applied on the document can be called by this property
+        /// </summary>
+        public IPluginWriter NextWriter { get; set; } = null;
 
     }
 }

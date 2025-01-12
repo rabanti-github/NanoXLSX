@@ -1,8 +1,9 @@
 ﻿using System;
 using NanoXLSX;
-using NanoXLSX.Schemes;
 using NanoXLSX.Styles;
 using Xunit;
+using static NanoXLSX.Styles.Font;
+using static NanoXLSX.Themes.Theme;
 
 namespace NanoXLSX_Test.Styles.WriteRead
 {

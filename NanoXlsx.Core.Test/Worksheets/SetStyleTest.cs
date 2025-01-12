@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NanoXLSX.Styles;
 using Xunit;
-using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX.Test.Worksheets
 {

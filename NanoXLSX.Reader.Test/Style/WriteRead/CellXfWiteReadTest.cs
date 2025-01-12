@@ -1,6 +1,7 @@
 ﻿using NanoXLSX;
 using NanoXLSX.Styles;
 using Xunit;
+using static NanoXLSX.Styles.CellXf;
 
 namespace NanoXLSX_Test.Styles.WriteRead
 {

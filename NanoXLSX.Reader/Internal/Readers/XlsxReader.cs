@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -12,9 +12,9 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using NanoXLSX.Exceptions;
-using NanoXLSX.Shared.Utils;
 using NanoXLSX.Styles;
-using IOException = NanoXLSX.Shared.Exceptions.IOException;
+using NanoXLSX.Utils;
+using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
 {
@@ -68,7 +68,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reads the XLSX file from a file path or a file stream
         /// </summary>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">
+        /// <exception cref="NanoXLSX.Exceptions.IOException">
         /// Throws IOException in case of an error
         /// </exception>
         public void Read()
@@ -93,7 +93,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reads the XLSX file from a file path or a file stream asynchronously
         /// </summary>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">
+        /// <exception cref="NanoXLSX.Exceptions.IOException">
         /// May throw an IOException in case of an error. The asynchronous operation may hide the exception.
         /// </exception>
         /// <returns>Task object (void)</returns>

@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -11,9 +11,9 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using NanoXLSX.Interfaces.Reader;
-using NanoXLSX.Shared.Utils;
+using NanoXLSX.Utils;
 using NanoXLSX.Styles;
-using IOException = NanoXLSX.Shared.Exceptions.IOException;
+using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
 {
@@ -153,7 +153,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
         /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
         public virtual void Read(MemoryStream stream)
         {
             PreRead(stream);
@@ -354,7 +354,7 @@ namespace NanoXLSX.Internal.Readers
                                 }
                                 else
                                 {
-                                    this.PaneSplitValue.PaneSplitHeight = Utils.GetPaneSplitHeight(ParserUtils.ParseFloat(attribute));
+                                    this.PaneSplitValue.PaneSplitHeight = DataUtils.GetPaneSplitHeight(ParserUtils.ParseFloat(attribute));
                                 }
                             }
                             attribute = ReaderUtils.GetAttribute(paneNode, "xSplit");
@@ -367,7 +367,7 @@ namespace NanoXLSX.Internal.Readers
                                 }
                                 else
                                 {
-                                    this.PaneSplitValue.PaneSplitWidth = Utils.GetPaneSplitWidth(ParserUtils.ParseFloat(attribute));
+                                    this.PaneSplitValue.PaneSplitWidth = DataUtils.GetPaneSplitWidth(ParserUtils.ParseFloat(attribute));
                                 }
                             }
                             attribute = ReaderUtils.GetAttribute(paneNode, "topLeftCell");
@@ -690,7 +690,7 @@ namespace NanoXLSX.Internal.Readers
                 rawValue = GetGloballyEnforcedValue(rawValue, cellAddress);
                 rawValue = GetGloballyEnforcedFlagValues(rawValue, cellAddress);
                 importedType = ResolveType(rawValue, importedType);
-                if (importedType == Cell.CellType.DATE && rawValue is DateTime && (DateTime)rawValue < Utils.FIRST_ALLOWED_EXCEL_DATE)
+                if (importedType == Cell.CellType.DATE && rawValue is DateTime && (DateTime)rawValue < DataUtils.FIRST_ALLOWED_EXCEL_DATE)
                 {
                     // Fix conversion from time to date, where time has no days
                     rawValue = ((DateTime)rawValue).AddDays(1);
@@ -755,11 +755,11 @@ namespace NanoXLSX.Internal.Readers
             {
                 if (data is DateTime)
                 {
-                    data = Utils.GetOADateTime((DateTime)data, true);
+                    data = DataUtils.GetOADateTime((DateTime)data, true);
                 }
                 else if (data is TimeSpan)
                 {
-                    data = Utils.GetOATime((TimeSpan)data);
+                    data = DataUtils.GetOATime((TimeSpan)data);
                 }
             }
             if (readerOptions.EnforceEmptyValuesAsString && data == null)
@@ -969,14 +969,14 @@ namespace NanoXLSX.Internal.Readers
                 case sbyte _:
                 case int _:
                     converter = data as IConvertible;
-                    double tempDouble = converter.ToDouble(Utils.INVARIANT_CULTURE);
+                    double tempDouble = converter.ToDouble(DataUtils.INVARIANT_CULTURE);
                     if (tempDouble > (double)decimal.MaxValue || tempDouble < (double)decimal.MinValue)
                     {
                         return data;
                     }
                     else
                     {
-                        return converter.ToDecimal(Utils.INVARIANT_CULTURE);
+                        return converter.ToDecimal(DataUtils.INVARIANT_CULTURE);
                     }
                 case bool _:
                     if ((bool)data)
@@ -988,9 +988,9 @@ namespace NanoXLSX.Internal.Readers
                         return decimal.Zero;
                     }
                 case DateTime _:
-                    return new decimal(Utils.GetOADateTime((DateTime)data));
+                    return new decimal(DataUtils.GetOADateTime((DateTime)data));
                 case TimeSpan _:
-                    return new decimal(Utils.GetOATime((TimeSpan)data));
+                    return new decimal(DataUtils.GetOATime((TimeSpan)data));
                 case string _:
                     decimal dValue;
                     string tempString = (string)data;
@@ -1001,12 +1001,12 @@ namespace NanoXLSX.Internal.Readers
                     DateTime? tempDate = TryParseDate(tempString);
                     if (tempDate != null)
                     {
-                        return new decimal(Utils.GetOADateTime(tempDate.Value));
+                        return new decimal(DataUtils.GetOADateTime(tempDate.Value));
                     }
                     TimeSpan? tempTime = TryParseTime(tempString);
                     if (tempTime != null)
                     {
-                        return new decimal(Utils.GetOATime(tempTime.Value));
+                        return new decimal(DataUtils.GetOATime(tempTime.Value));
                     }
                     break;
             }
@@ -1028,10 +1028,10 @@ namespace NanoXLSX.Internal.Readers
                 case ulong _:
                     break;
                 case DateTime _:
-                    tempDouble = Utils.GetOADateTime((DateTime)data, true);
+                    tempDouble = DataUtils.GetOADateTime((DateTime)data, true);
                     return ConvertDoubleToInt(tempDouble);
                 case TimeSpan _:
-                    tempDouble = Utils.GetOATime((TimeSpan)data);
+                    tempDouble = DataUtils.GetOATime((TimeSpan)data);
                     return ConvertDoubleToInt(tempDouble);
                 case float _:
                 case double _:
@@ -1066,7 +1066,7 @@ namespace NanoXLSX.Internal.Readers
                 case DateTime _:
                     return data;
                 case TimeSpan _:
-                    DateTime root = Utils.FIRST_ALLOWED_EXCEL_DATE;
+                    DateTime root = DataUtils.FIRST_ALLOWED_EXCEL_DATE;
                     TimeSpan time = (TimeSpan)data;
                     root = root.AddDays(-1); // Fix offset of 1
                     root = root.AddHours(time.Hours);
@@ -1112,7 +1112,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 isDateTime = DateTime.TryParseExact(raw, readerOptions.DateTimeFormat, readerOptions.TemporalCultureInfo, DateTimeStyles.None, out dateTime);
             }
-            if (isDateTime && dateTime >= Utils.FIRST_ALLOWED_EXCEL_DATE && dateTime <= Utils.LAST_ALLOWED_EXCEL_DATE)
+            if (isDateTime && dateTime >= DataUtils.FIRST_ALLOWED_EXCEL_DATE && dateTime <= DataUtils.LAST_ALLOWED_EXCEL_DATE)
             {
                 return dateTime;
             }
@@ -1171,7 +1171,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 isTimeSpan = TimeSpan.TryParseExact(raw, readerOptions.TimeSpanFormat, readerOptions.TemporalCultureInfo, out timeSpan);
             }
-            if (isTimeSpan && timeSpan.Days >= 0 && timeSpan.Days < Utils.MAX_OADATE_VALUE)
+            if (isTimeSpan && timeSpan.Days >= 0 && timeSpan.Days < DataUtils.MAX_OADATE_VALUE)
             {
                 return timeSpan;
             }
@@ -1194,13 +1194,13 @@ namespace NanoXLSX.Internal.Readers
                 resolvedType = Cell.CellType.STRING;
                 return raw;
             }
-            if ((valueType == Cell.CellType.DATE && (dValue < Utils.MIN_OADATE_VALUE || dValue > Utils.MAX_OADATE_VALUE)) || (valueType == Cell.CellType.TIME && (dValue < 0.0 || dValue > Utils.MAX_OADATE_VALUE)))
+            if ((valueType == Cell.CellType.DATE && (dValue < DataUtils.MIN_OADATE_VALUE || dValue > DataUtils.MAX_OADATE_VALUE)) || (valueType == Cell.CellType.TIME && (dValue < 0.0 || dValue > DataUtils.MAX_OADATE_VALUE)))
             {
                 // fallback to number (cannot be anything else)
                 resolvedType = Cell.CellType.NUMBER;
                 return GetNumericValue(raw);
             }
-            DateTime tempDate = Utils.GetDateFromOA(dValue);
+            DateTime tempDate = DataUtils.GetDateFromOA(dValue);
             if (dValue < 1.0)
             {
                 tempDate = tempDate.AddDays(1); // Modify wrong 1st date when < 1
@@ -1225,10 +1225,10 @@ namespace NanoXLSX.Internal.Readers
         private object ConvertDateFromDouble(object data)
         {
             object oaDate = ConvertToDouble(data);
-            if (oaDate is double && (double)oaDate < Utils.MAX_OADATE_VALUE)
+            if (oaDate is double && (double)oaDate < DataUtils.MAX_OADATE_VALUE)
             {
-                DateTime date = Utils.GetDateFromOA((double)oaDate);
-                if (date >= Utils.FIRST_ALLOWED_EXCEL_DATE && date <= Utils.LAST_ALLOWED_EXCEL_DATE)
+                DateTime date = DataUtils.GetDateFromOA((double)oaDate);
+                if (date >= DataUtils.FIRST_ALLOWED_EXCEL_DATE && date <= DataUtils.LAST_ALLOWED_EXCEL_DATE)
                 {
                     return date;
                 }
@@ -1247,9 +1247,9 @@ namespace NanoXLSX.Internal.Readers
             if (oaDate is double)
             {
                 double d = (double)oaDate;
-                if (d >= Utils.MIN_OADATE_VALUE && d <= Utils.MAX_OADATE_VALUE)
+                if (d >= DataUtils.MIN_OADATE_VALUE && d <= DataUtils.MAX_OADATE_VALUE)
                 {
-                    DateTime date = Utils.GetDateFromOA(d);
+                    DateTime date = DataUtils.GetDateFromOA(d);
                     return new TimeSpan((int)d, date.Hour, date.Minute, date.Second);
                 }
             }
@@ -1344,12 +1344,12 @@ namespace NanoXLSX.Internal.Readers
                     DateTime? tempDate = TryParseDate(tempString);
                     if (tempDate != null)
                     {
-                        return Utils.GetOADateTime(tempDate.Value);
+                        return DataUtils.GetOADateTime(tempDate.Value);
                     }
                     TimeSpan? tempTime = TryParseTime(tempString);
                     if (tempTime != null)
                     {
-                        return Utils.GetOATime(tempTime.Value);
+                        return DataUtils.GetOATime(tempTime.Value);
                     }
                     tempObject = ConvertToBool(raw);
                     if (tempObject is bool)
@@ -1360,9 +1360,9 @@ namespace NanoXLSX.Internal.Readers
                 case Cell.CellType.NUMBER:
                     return raw;
                 case Cell.CellType.DATE:
-                    return Utils.GetOADateTime((DateTime)raw);
+                    return DataUtils.GetOADateTime((DateTime)raw);
                 case Cell.CellType.TIME:
-                    return Utils.GetOATime((TimeSpan)raw);
+                    return DataUtils.GetOATime((TimeSpan)raw);
                 case Cell.CellType.BOOL:
                     if ((bool)raw)
                     {

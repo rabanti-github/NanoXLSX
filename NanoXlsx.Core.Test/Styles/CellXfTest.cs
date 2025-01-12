@@ -1,7 +1,8 @@
 ﻿using System;
-using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using Xunit;
+using static NanoXLSX.Styles.CellXf;
 
 namespace NanoXLSX.Test.Styles
 {
@@ -130,7 +131,7 @@ namespace NanoXLSX.Test.Styles
         {
             CellXf cellXf = new CellXf();
             Assert.Equal(0, cellXf.TextRotation); // 0 is default
-            Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => cellXf.TextRotation = value);
+            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => cellXf.TextRotation = value);
         }
 
 

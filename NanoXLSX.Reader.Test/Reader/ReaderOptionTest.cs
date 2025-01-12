@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using NanoXLSX;
 using NanoXLSX.Styles;
+using NanoXLSX.Utils;
 using Xunit;
 
 namespace NanoXLSX_Test.Reader
@@ -66,8 +67,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A4", 42m);
             expectedCells.Add("A5", 0.55m);
             expectedCells.Add("A6", -0.111m);
-            expectedCells.Add("A7", (decimal)Utils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)));
-            expectedCells.Add("A8", (decimal)Utils.GetOATime(new TimeSpan(18, 15, 12)));
+            expectedCells.Add("A7", (decimal)DataUtils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)));
+            expectedCells.Add("A8", (decimal)DataUtils.GetOATime(new TimeSpan(18, 15, 12)));
             expectedCells.Add("A9", null);
             expectedCells.Add("A10", 27m);
             expectedCells.Add("A11", new Cell("=A1", Cell.CellType.FORMULA, "A11"));
@@ -99,8 +100,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A4", 42d);
             expectedCells.Add("A5", 0.55d);
             expectedCells.Add("A6", -0.111d);
-            expectedCells.Add("A7", Utils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)));
-            expectedCells.Add("A8", Utils.GetOATime(new TimeSpan(18, 15, 12)));
+            expectedCells.Add("A7", DataUtils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)));
+            expectedCells.Add("A8", DataUtils.GetOATime(new TimeSpan(18, 15, 12)));
             expectedCells.Add("A9", null);
             expectedCells.Add("A10", 27d);
             expectedCells.Add("A11", new Cell("=A1", Cell.CellType.FORMULA, "A11"));
@@ -137,8 +138,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A4", 42);
             expectedCells.Add("A5", 1);
             expectedCells.Add("A6", -3);
-            expectedCells.Add("A7", (int)Math.Round(Utils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)), 0));
-            expectedCells.Add("A8", (int)Math.Round(Utils.GetOATime(new TimeSpan(18, 15, 12)), 0));
+            expectedCells.Add("A7", (int)Math.Round(DataUtils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)), 0));
+            expectedCells.Add("A8", (int)Math.Round(DataUtils.GetOATime(new TimeSpan(18, 15, 12)), 0));
             expectedCells.Add("A9", -5);
             expectedCells.Add("A10", 0);
             expectedCells.Add("A11", null);
@@ -215,8 +216,8 @@ namespace NanoXLSX_Test.Reader
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", true);
-            expectedCells.Add("A3", Utils.GetOADateTime(date));
-            expectedCells.Add("A4", Utils.GetOATime(time));
+            expectedCells.Add("A3", DataUtils.GetOADateTime(date));
+            expectedCells.Add("A4", DataUtils.GetOATime(time));
             expectedCells.Add("A5", 22.5f);
             expectedCells.Add("A6", new Cell("=A1", Cell.CellType.FORMULA, "A6"));
             ReaderOptions options = new ReaderOptions();
@@ -243,10 +244,10 @@ namespace NanoXLSX_Test.Reader
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", true);
-            expectedCells.Add("A3", Utils.GetOADateTime(date));
-            expectedCells.Add("A4", Utils.GetOATime(time));
-            expectedCells.Add("B1", Utils.GetOADateTime(date));
-            expectedCells.Add("B2", Utils.GetOATime(time));
+            expectedCells.Add("A3", DataUtils.GetOADateTime(date));
+            expectedCells.Add("A4", DataUtils.GetOATime(time));
+            expectedCells.Add("B1", DataUtils.GetOADateTime(date));
+            expectedCells.Add("B2", DataUtils.GetOATime(time));
             expectedCells.Add("B3", expectedLowNumber);
             expectedCells.Add("B4", new Cell("=A1", Cell.CellType.FORMULA, "B4"));
             ReaderOptions options = new ReaderOptions();
@@ -283,8 +284,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("B1", 23d);
             expectedCells.Add("B2", 20d);
             expectedCells.Add("B3", 1d);
-            expectedCells.Add("B4", Utils.GetOATime(time));
-            expectedCells.Add("B5", Utils.GetOADateTime(date));
+            expectedCells.Add("B4", DataUtils.GetOATime(time));
+            expectedCells.Add("B5", DataUtils.GetOADateTime(date));
             expectedCells.Add("B6", null);
             expectedCells.Add("B7", new Cell("=A1", Cell.CellType.FORMULA, "B7"));
             expectedCells.Add("C1", "2");
@@ -333,8 +334,8 @@ namespace NanoXLSX_Test.Reader
             expectedCells.Add("A3", true);
             expectedCells.Add("B1", 23);
             expectedCells.Add("B2", 20.1f);
-            expectedCells.Add("B3", Utils.GetOATime(time));
-            expectedCells.Add("B4", Utils.GetOADateTime(date));
+            expectedCells.Add("B3", DataUtils.GetOATime(time));
+            expectedCells.Add("B4", DataUtils.GetOADateTime(date));
             expectedCells.Add("B5", null);
             expectedCells.Add("B6", new Cell("=A1", Cell.CellType.FORMULA, "B6"));
             expectedCells.Add("B7", 1);
@@ -1099,14 +1100,14 @@ namespace NanoXLSX_Test.Reader
             }
             else if (given is DateTime)
             {
-                double e = Utils.GetOADateTime((DateTime)expected);
-                double g = Utils.GetOADateTime((DateTime)given);
+                double e = DataUtils.GetOADateTime((DateTime)expected);
+                double g = DataUtils.GetOADateTime((DateTime)given);
                 AssertApproximate(e, g);
             }
             else if (given is TimeSpan)
             {
-                double g = Utils.GetOATime((TimeSpan)given);
-                double e = Utils.GetOATime((TimeSpan)expected);
+                double g = DataUtils.GetOATime((TimeSpan)given);
+                double e = DataUtils.GetOATime((TimeSpan)expected);
                 AssertApproximate(e, g);
             }
             else

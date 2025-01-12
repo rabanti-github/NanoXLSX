@@ -1,9 +1,9 @@
 ﻿using System;
-using NanoXLSX.Schemes;
-using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using Xunit;
-
+using static NanoXLSX.Styles.Font;
+using static NanoXLSX.Themes.Theme;
 
 namespace NanoXLSX.Test.Styles
 {

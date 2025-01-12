@@ -1,12 +1,16 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Utils;
+using NanoXLSX.Exceptions;
+using NanoXLSX.Utils;
+using static NanoXLSX.Styles.Border;
+using static NanoXLSX.Styles.Fill;
+using static NanoXLSX.Styles.Font;
+using static NanoXLSX.Styles.NumberFormat;
 
 namespace NanoXLSX.Styles
 {

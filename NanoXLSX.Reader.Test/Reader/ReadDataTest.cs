@@ -351,7 +351,7 @@ namespace NanoXLSX_Test.Reader
         {
             // Note: all referenced (embedded) files contains invalid XML documents (malformed, missing start or end tags, missing attributes)
             Stream stream = TestUtils.GetResource(invalidFile);
-            Assert.Throws<NanoXLSX.Shared.Exceptions.IOException>(() => WorkbookReader.Load(stream));
+            Assert.Throws<NanoXLSX.Exceptions.IOException>(() => WorkbookReader.Load(stream));
         }
 
         [Theory(DisplayName = "Test of the failing asynchronous reader functionality on invalid XML content")]
@@ -371,7 +371,7 @@ namespace NanoXLSX_Test.Reader
         {
             // Note: all referenced (embedded) files contains invalid XML documents (malformed, missing start or end tags, missing attributes)
             Stream stream = TestUtils.GetResource(invalidFile);
-            await Assert.ThrowsAsync<NanoXLSX.Shared.Exceptions.IOException>(() => WorkbookReader.LoadAsync(stream));
+            await Assert.ThrowsAsync<NanoXLSX.Exceptions.IOException>(() => WorkbookReader.LoadAsync(stream));
         }
 
         [Fact(DisplayName = "Test of the workbook reader if the only workbook entry is a chart")]
@@ -399,7 +399,7 @@ namespace NanoXLSX_Test.Reader
         public void ReadInvalidStreamTest()
         {
             Stream nullStream = null;
-            Assert.Throws<NanoXLSX.Shared.Exceptions.IOException>(() => WorkbookReader.Load(nullStream));
+            Assert.Throws<NanoXLSX.Exceptions.IOException>(() => WorkbookReader.Load(nullStream));
         }
 
         [Fact(DisplayName = "Test of the AutoFilter behavior when a worksheet is read on an address instead of a range")]

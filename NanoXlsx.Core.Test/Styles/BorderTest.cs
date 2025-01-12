@@ -1,7 +1,8 @@
 ﻿using System;
-using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using Xunit;
+using static NanoXLSX.Styles.Border;
 
 namespace NanoXLSX.Test.Styles
 {

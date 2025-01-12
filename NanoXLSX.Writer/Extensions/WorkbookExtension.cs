@@ -11,7 +11,7 @@ namespace NanoXLSX
         /// <summary>
         /// Saves the workbook
         /// </summary>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
         /** <example> 
          This is an extension method, applied to the <see cref="NanoXLSX.Workbook">Workbook</see> class. An example usage is:
         <code>
@@ -30,7 +30,7 @@ namespace NanoXLSX
         /// Saves the workbook asynchronous.
         /// </summary>
         /// <returns>Task object (void)</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /** <example> 
          This is an extension method, applied to the <see cref="NanoXLSX.Workbook">Workbook</see> class. An example usage is:
         <code>
@@ -53,7 +53,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="filename">filename of the saved workbook</param>
         /// <param name="workbook">Workbook reference</param>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
         /** <example> 
          This is an extension method, applied to the <see cref="NanoXLSX.Workbook">Workbook</see> class. An example usage is:
         <code>
@@ -77,7 +77,7 @@ namespace NanoXLSX
         /// <param name="fileName">filename of the saved workbook</param>
         /// <param name="workbook">Workbook reference</param>
         /// <returns>Task object (void)</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">May throw an IOException in case of an error. The asynchronous operation may hide the exception.</exception>
         /** <example> 
          This is an extension method, applied to the <see cref="NanoXLSX.Workbook">Workbook</see> class. An example usage is:
         <code>
@@ -104,7 +104,7 @@ namespace NanoXLSX
         /// <param name="stream">Writable stream</param>
         /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
         /// <param name="workbook">Workbook reference</param>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
                 /** <example> 
          This is an extension method, applied to the <see cref="NanoXLSX.Workbook">Workbook</see> class. An example usage is:
         <code>
@@ -144,7 +144,7 @@ namespace NanoXLSX
         /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
         /// <param name="workbook">Workbook reference</param>
         /// <returns>Task object (void)</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error. The asynchronous operation may hide the exception.</exception>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error. The asynchronous operation may hide the exception.</exception>
                 /** <example> 
          This is an extension method, applied to the <see cref="NanoXLSX.Workbook">Workbook</see> class. An example usage is:
         <code>

@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using NanoXLSX.Interfaces;
+using NanoXLSX.Utils;
 
 namespace NanoXLSX
 {
@@ -189,5 +190,23 @@ namespace NanoXLSX
             return null;
         }
 
+        public override bool Equals(object obj)
+        {
+            LegacyPassword pwd = (LegacyPassword)obj;
+
+            return obj is LegacyPassword password &&
+                   Validators.CompareSecureStrings(this.password, password.password) &&
+                   Type == password.Type &&
+                   PasswordHash == password.PasswordHash;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1034998357;
+            hashCode = hashCode * -1521134295 + EqualityComparer<SecureString>.Default.GetHashCode(password);
+            hashCode = hashCode * -1521134295 + Type.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(PasswordHash);
+            return hashCode;
+        }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using Xunit;
 
@@ -230,7 +230,7 @@ namespace NanoXLSX.Test.Worksheets
         public void SetAutoFilterFailingTest2(string range)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => worksheet.SetAutoFilter(range));
+            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => worksheet.SetAutoFilter(range));
         }
 
         [Theory(DisplayName = "Test of the SetColumnWidth function with column number and column address")]

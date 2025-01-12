@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using Xunit;
+using static NanoXLSX.Cell;
 using static NanoXLSX.Worksheet;
-using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX.Test.Worksheets
 {
@@ -64,7 +65,7 @@ namespace NanoXLSX.Test.Worksheets
         [InlineData("................................")]
         public void ConstructorFailingTest(string name)
         {
-            Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => new Worksheet(name));
+            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => new Worksheet(name));
         }
 
 
@@ -78,7 +79,7 @@ namespace NanoXLSX.Test.Worksheets
         public void ConstructorFailingTest2(string name, int id)
         {
             Workbook workbook = new Workbook("test.xlsx", "sheet2");
-            Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => new Worksheet(name, id, workbook));
+            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => new Worksheet(name, id, workbook));
         }
 
         [Fact(DisplayName = "Test of the get function of the AutoFilterRang property")]
@@ -160,7 +161,7 @@ namespace NanoXLSX.Test.Worksheets
         public void DefaultColumnWidthTest2(float value)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Throws<NanoXLSX.Shared.Exceptions.RangeException>(() => worksheet.DefaultColumnWidth = value);
+            Assert.Throws<NanoXLSX.Exceptions.RangeException>(() => worksheet.DefaultColumnWidth = value);
         }
 
         [Theory(DisplayName = "Test of the DefaultRowHeight property")]
@@ -182,7 +183,7 @@ namespace NanoXLSX.Test.Worksheets
         public void DefaultRowHeightTest2(float value)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Throws<NanoXLSX.Shared.Exceptions.RangeException>(() => worksheet.DefaultRowHeight = value);
+            Assert.Throws<NanoXLSX.Exceptions.RangeException>(() => worksheet.DefaultRowHeight = value);
         }
 
         [Fact(DisplayName = "Test of the get function of the HiddenRows property")]
@@ -255,8 +256,8 @@ namespace NanoXLSX.Test.Worksheets
             Assert.Equal(0, worksheet.SheetID);
             worksheet.SheetID = 12;
             Assert.Equal(12, worksheet.SheetID);
-            Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => worksheet.SheetID = 0);
-            Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => worksheet.SheetID = -1);
+            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => worksheet.SheetID = 0);
+            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => worksheet.SheetID = -1);
         }
 
         [Theory(DisplayName = "Test of the  SheetName property")]
@@ -285,8 +286,8 @@ namespace NanoXLSX.Test.Worksheets
         public void NameFailTest(string name)
         {
             Worksheet worksheet = new Worksheet();
-            Exception ex = Assert.Throws<NanoXLSX.Shared.Exceptions.FormatException>(() => worksheet.SheetName = name);
-            Assert.Equal(typeof(NanoXLSX.Shared.Exceptions.FormatException), ex.GetType());
+            Exception ex = Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => worksheet.SheetName = name);
+            Assert.Equal(typeof(NanoXLSX.Exceptions.FormatException), ex.GetType());
         }
 
         [Theory(DisplayName = "Test of the get function of the SheetProtectionPassword property")]
@@ -297,11 +298,12 @@ namespace NanoXLSX.Test.Worksheets
         public void SheetProtectionPasswordTest(string givenValue, string expectedValue)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Null(worksheet.SheetProtectionPassword);
+            Assert.False(worksheet.SheetProtectionPassword.PasswordIsSet());
             worksheet.SetSheetProtectionPassword(givenValue);
             Assert.Equal(expectedValue, worksheet.SheetProtectionPassword.GetPassword());
+            Assert.True(worksheet.SheetProtectionPassword.PasswordIsSet());
             worksheet.SetSheetProtectionPassword(null);
-            Assert.Null(worksheet.SheetProtectionPassword);
+            Assert.False(worksheet.SheetProtectionPassword.PasswordIsSet());
         }
 
         [Fact(DisplayName = "Test of the SheetProtectionValues property")]
@@ -1363,7 +1365,7 @@ namespace NanoXLSX.Test.Worksheets
         {
             Worksheet worksheet = new Worksheet();
             Assert.False(worksheet.UseSheetProtection);
-            Assert.Null(worksheet.SheetProtectionPassword);
+            Assert.False(worksheet.SheetProtectionPassword.PasswordIsSet());
             worksheet.SetSheetProtectionPassword(password);
             Assert.Equal(expectedUsage, worksheet.UseSheetProtection);
             Assert.Equal(expectedPassword, worksheet.SheetProtectionPassword.GetPassword());
@@ -1445,6 +1447,245 @@ namespace NanoXLSX.Test.Worksheets
             Worksheet worksheet = new Worksheet(); // Worksheet was not created over a workbook
             Assert.Throws<WorksheetException>(() => worksheet.SetSheetName("test", true));
         }
+
+        #region Tests for Insert-Search-Replace
+#nullable enable
+        [Theory(DisplayName = "Test of the ReplaceCellValue on an existing occurrence")]
+        [InlineData("oldValue", "newValue", "differentValue")]
+        [InlineData("oldValue", 23, true)]
+        [InlineData(25, 23, false)]
+        [InlineData(23.7, "string", "otherString")]
+        [InlineData(-0.01, 15, null)]
+        [InlineData(true, null, false)]
+        [InlineData(null, null, false)]
+        [InlineData(0, null, null)]
+        [InlineData(null, "", 0)]
+        [InlineData(null, true, -1)]
+        [InlineData(null, 22, false)]
+        [InlineData(null, 0.01, 0.001)]
+        [InlineData(null, 127ul, 0)]
+        [InlineData(127ul, null, 128L)]
+        [InlineData(128, "128", -128)]
+        public void ReplaceCellValue_ShouldReplaceAllOccurrences(object? oldValue, object? newValue, object? differentValue)
+        {
+            var worksheet = new Worksheet();
+            worksheet.AddCell(oldValue, 0, 0);
+            worksheet.AddCell(oldValue, 1, 0);
+            worksheet.AddCell(oldValue, 2, 0);
+            worksheet.AddCell(differentValue, 3, 0);
+
+            int replacedCount = worksheet.ReplaceCellValue(oldValue, newValue);
+
+            Assert.Equal(3, replacedCount);
+            Assert.Equal(newValue, worksheet.Cells["A1"].Value);
+            Assert.Equal(newValue, worksheet.Cells["B1"].Value);
+            Assert.Equal(newValue, worksheet.Cells["C1"].Value);
+            Assert.Equal(differentValue, worksheet.Cells["D1"].Value);
+        }
+
+        [Theory(DisplayName = "Test of the ReplaceCellValue when one existing values is to replace")]
+        [InlineData("oldValue", "newValue", "differentValue")]
+        [InlineData("oldValue", 23, true)]
+        [InlineData(25, 23, false)]
+        [InlineData(23.7, "string", "otherString")]
+        [InlineData(-0.01, 15, null)]
+        [InlineData(true, null, false)]
+        [InlineData(null, null, false)]
+        [InlineData(0, null, null)]
+        [InlineData(null, "", 0)]
+        [InlineData(null, true, -1)]
+        [InlineData(null, 22, false)]
+        [InlineData(null, 0.01, 0.001)]
+        [InlineData(null, 127ul, 0)]
+        [InlineData(127ul, null, 128L)]
+        [InlineData(128, "128", -128)]
+        public void ReplaceCellValue_ShouldNotReplaceAnyOccurrences(object? oldValue, object? newValue, object? differentValue)
+        {
+            var worksheet = new Worksheet();
+            string unrelatedValue = "UnrelatedValue";
+            worksheet.AddCell(unrelatedValue, 0, 0);
+            worksheet.AddCell(unrelatedValue, 1, 0);
+            worksheet.AddCell(unrelatedValue, 2, 0);
+            worksheet.AddCell(differentValue, 3, 0);
+
+            int replacedCount = worksheet.ReplaceCellValue(oldValue, newValue);
+
+            Assert.Equal(0, replacedCount);
+            Assert.Equal(unrelatedValue, worksheet.Cells["A1"].Value);
+            Assert.Equal(unrelatedValue, worksheet.Cells["B1"].Value);
+            Assert.Equal(unrelatedValue, worksheet.Cells["C1"].Value);
+            Assert.Equal(differentValue, worksheet.Cells["D1"].Value);
+        }
+
+
+        [Theory(DisplayName = "Test of the FirstOrDefaultCell when one existing values exists")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(0)]
+        [InlineData("null")]
+        [InlineData(-1)]
+        [InlineData(0.05f)]
+        [InlineData(true)]
+        [InlineData(false)]
+        [InlineData(-22.357d)]
+        public void FirstOrDefaultCell_ShouldReturnCorrectCell(object? matchingValue)
+        {
+            var worksheet = new Worksheet();
+            worksheet.AddCell("value1", 0, 0);
+            worksheet.AddCell(matchingValue, 1, 0);
+            worksheet.AddCell("value3", 2, 0);
+
+            var result = worksheet.FirstOrDefaultCell(cell => cell.Value.Equals(matchingValue));
+
+            Assert.NotNull(result);
+            Assert.Equal(matchingValue, result.Value);
+        }
+
+        [Theory(DisplayName = "Test of the FirstOrDefaultCell when no existing values exists")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(0)]
+        [InlineData("null")]
+        [InlineData(-1)]
+        [InlineData(0.05f)]
+        [InlineData(true)]
+        [InlineData(false)]
+        [InlineData(-22.357d)]
+        public void FirstOrDefaultCell_NotFound(object? notMatchingValue)
+        {
+            var worksheet = new Worksheet();
+            worksheet.AddCell("value1", 0, 0);
+            worksheet.AddCell("value2", 1, 0);
+            worksheet.AddCell("value3", 2, 0);
+
+            var result = worksheet.FirstOrDefaultCell(cell => cell.Value.Equals(notMatchingValue));
+
+            Assert.Null(result);
+        }
+
+        [Theory(DisplayName = "Test of the FirstCellByValue when one existing values exists")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(0)]
+        [InlineData("null")]
+        [InlineData(-1)]
+        [InlineData(0.05f)]
+        [InlineData(true)]
+        [InlineData(false)]
+        [InlineData(-22.357d)]
+        public void FirstCellByValue_ShouldReturnCorrectCell(object? matchingValue)
+        {
+            var worksheet = new Worksheet();
+            var cell1 = new Cell("Test1", CellType.STRING, "A1");
+            var cell2 = new Cell(matchingValue, CellType.STRING, "B1");
+            worksheet.Cells.Add("A1", cell1);
+            worksheet.Cells.Add("B1", cell2);
+
+            var result = worksheet.FirstCellByValue(matchingValue);
+
+            Assert.NotNull(result);
+            Assert.Equal("B1", result.CellAddress);
+        }
+
+        [Theory(DisplayName = "Test of the FirstCellByValue when no existing values exists")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(0)]
+        [InlineData("null")]
+        [InlineData(-1)]
+        [InlineData(0.05f)]
+        [InlineData(true)]
+        [InlineData(false)]
+        [InlineData(-22.357d)]
+        public void FirstCellByValue_ShouldReturnNull_WhenValueNotFound(object? notMatchingValue)
+        {
+            var worksheet = new Worksheet();
+            var cell1 = new Cell("Test1", CellType.STRING, "A1");
+            worksheet.Cells.Add("A1", cell1);
+
+            var result = worksheet.FirstCellByValue(notMatchingValue);
+
+            Assert.Null(result);
+        }
+
+
+#nullable disable
+
+
+        [Fact(DisplayName = "Test of the InsertRow function")]
+        public void TestInsertRow()
+        {
+            Worksheet worksheet = new Worksheet();
+            Style style1 = new Style();
+            style1.CurrentFont.Bold = true;
+            Style style2 = new Style();
+            style2.CurrentFont.Italic = true;
+
+            worksheet.AddCell("A1", 0, 0);
+            worksheet.AddCell("A2", 0, 1, style1);
+            worksheet.AddCell("A3", 0, 2, style2);
+            worksheet.AddCell("A4", 0, 3);
+            worksheet.AddCell("B6", 1, 5); // Gap
+
+            worksheet.InsertRow(1, 2);
+
+            // Assert
+            Assert.Equal("A1", worksheet.Cells["A1"].Value);
+            Assert.Equal("A2", worksheet.Cells["A2"].Value);
+            Assert.Null(worksheet.Cells["A3"].Value);
+            Assert.Null(worksheet.Cells["A4"].Value);
+            Assert.Equal("A3", worksheet.Cells["A5"].Value);
+            Assert.Equal("A4", worksheet.Cells["A6"].Value);
+            Assert.DoesNotContain(worksheet.Cells.Keys, c => c == "B7"); // Should have the gap
+            Assert.Equal("B6", worksheet.Cells["B8"].Value);
+
+            Assert.Null(worksheet.Cells["A1"].CellStyle);
+            Assert.True(worksheet.Cells["A2"].CellStyle.CurrentFont.Bold, "A2 is not bold");
+            Assert.True(worksheet.Cells["A3"].CellStyle.CurrentFont.Bold, "A3 is not bold");
+            Assert.True(worksheet.Cells["A4"].CellStyle.CurrentFont.Bold, "A4 is not bold");
+            Assert.True(worksheet.Cells["A5"].CellStyle.CurrentFont.Italic, "A5 is not italic");
+            Assert.Null(worksheet.Cells["A6"].CellStyle);
+            Assert.Null(worksheet.Cells["B8"].CellStyle);
+        }
+
+        [Fact(DisplayName = "Test of the InsertColumn function")]
+        public void TestInsertColumn()
+        {
+            Worksheet worksheet = new Worksheet();
+            Style style1 = new Style();
+            style1.CurrentFont.Bold = true;
+            Style style2 = new Style();
+            style2.CurrentFont.Italic = true;
+
+            worksheet.AddCell("A2", 0, 1);
+            worksheet.AddCell("B2", 1, 1, style1);
+            worksheet.AddCell("C2", 2, 1, style2);
+            worksheet.AddCell("D2", 3, 1);
+            worksheet.AddCell("F3", 5, 2); // Gap
+
+            worksheet.InsertColumn(1, 2);
+
+            // Assert
+            Assert.Equal("A2", worksheet.Cells["A2"].Value);
+            Assert.Equal("B2", worksheet.Cells["B2"].Value);
+            Assert.Null(worksheet.Cells["C2"].Value);
+            Assert.Null(worksheet.Cells["D2"].Value);
+            Assert.Equal("C2", worksheet.Cells["E2"].Value);
+            Assert.Equal("D2", worksheet.Cells["F2"].Value);
+            Assert.DoesNotContain(worksheet.Cells.Keys, c => c == "G3"); // Should have the gap
+            Assert.Equal("F3", worksheet.Cells["H3"].Value);
+
+            Assert.Null(worksheet.Cells["A2"].CellStyle);
+            Assert.True(worksheet.Cells["B2"].CellStyle.CurrentFont.Bold, "B2 is not bold");
+            Assert.True(worksheet.Cells["C2"].CellStyle.CurrentFont.Bold, "C2 is not bold");
+            Assert.True(worksheet.Cells["D2"].CellStyle.CurrentFont.Bold, "D2 is not bold");
+            Assert.True(worksheet.Cells["E2"].CellStyle.CurrentFont.Italic, "A5 is not italic");
+            Assert.Null(worksheet.Cells["F2"].CellStyle);
+            Assert.Null(worksheet.Cells["H3"].CellStyle);
+        }
+
+
+        #endregion
 
 
         public static Worksheet InitWorksheet(Worksheet worksheet, string address, Worksheet.CellDirection direction, Style style = null)

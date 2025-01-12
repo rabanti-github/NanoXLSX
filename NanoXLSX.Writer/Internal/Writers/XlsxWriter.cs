@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -17,10 +17,10 @@ using System.Xml;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
 using NanoXLSX.Registry;
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Utils;
+using NanoXLSX.Exceptions;
+using NanoXLSX.Utils;
 using NanoXLSX.Styles;
-using IOException = NanoXLSX.Shared.Exceptions.IOException;
+using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Writers
 {
@@ -90,9 +90,9 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Method to save the workbook
         /// </summary>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         /// \remark <remarks>The StyleException should never happen in this state if the internally managed style collection was not tampered. </remarks>
         public void Save()
@@ -112,7 +112,7 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Method to save the workbook asynchronous.
         /// </summary>
-        /// \remark <remarks>Possible Exceptions are <see cref="NanoXLSX.Shared.Exceptions.IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="NanoXLSX.Shared.Exceptions.FormatException"></see> and <see cref="StyleException">StyleException</see>. These exceptions may not emerge directly if using the async method since async/await adds further abstraction layers.</remarks>
+        /// \remark <remarks>Possible Exceptions are <see cref="NanoXLSX.Exceptions.IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="NanoXLSX.Exceptions.FormatException"></see> and <see cref="StyleException">StyleException</see>. These exceptions may not emerge directly if using the async method since async/await adds further abstraction layers.</remarks>
         /// <returns>Async Task</returns>
         public async Task SaveAsync()
         {
@@ -162,7 +162,7 @@ namespace NanoXLSX.Internal.Writers
             {
                 for (int i = 0; i < this.Workbook.Worksheets.Count; i++)
                 {
-                    String fileName = "sheet" + ParserUtils.ToString(i + 1) + ".xml";
+                    string fileName = "sheet" + ParserUtils.ToString(i + 1) + ".xml";
                     DocumentPath path = new DocumentPath(fileName, "xl/worksheets");
                     CreatePackagePart(workbookPart,
                         path,

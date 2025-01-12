@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using Xunit;
 
@@ -237,8 +237,8 @@ namespace NanoXLSX.Test.Workbooks
             Assert.Equal(w2.MergedCells.Count, keys.Count());
             foreach (string address in keys)
             {
-                NanoXLSX.Range r1 = w1.MergedCells[address];
-                NanoXLSX.Range r2 = w2.MergedCells[address];
+                Range r1 = w1.MergedCells[address];
+                Range r2 = w2.MergedCells[address];
                 Assert.Equal(r2.StartAddress, r1.StartAddress);
                 Assert.Equal(r2.EndAddress, r1.EndAddress);
             }

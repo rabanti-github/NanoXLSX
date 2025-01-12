@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using NanoXLSX;
+using NanoXLSX.Utils;
 using Xunit;
 
 namespace NanoXLSX_Test.Worksheets
@@ -72,11 +73,11 @@ namespace NanoXLSX_Test.Worksheets
             {
                 if (workbook.CurrentWorksheet.RowHeights.ContainsKey(i))
                 {
-                    expectedHeight += Utils.GetInternalRowHeight(workbook.CurrentWorksheet.RowHeights[i]);
+                    expectedHeight += DataUtils.GetInternalRowHeight(workbook.CurrentWorksheet.RowHeights[i]);
                 }
                 else
                 {
-                    expectedHeight += Utils.GetInternalRowHeight(Worksheet.DEFAULT_ROW_HEIGHT);
+                    expectedHeight += DataUtils.GetInternalRowHeight(Worksheet.DEFAULT_ROW_HEIGHT);
                 }
 
             }
@@ -153,11 +154,11 @@ namespace NanoXLSX_Test.Worksheets
             {
                 if (workbook.CurrentWorksheet.Columns.ContainsKey(i))
                 {
-                    expectedWidth += Utils.GetInternalColumnWidth(workbook.CurrentWorksheet.Columns[i].Width);
+                    expectedWidth += DataUtils.GetInternalColumnWidth(workbook.CurrentWorksheet.Columns[i].Width);
                 }
                 else
                 {
-                    expectedWidth += Utils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
+                    expectedWidth += DataUtils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
                 }
 
             }
@@ -434,7 +435,7 @@ namespace NanoXLSX_Test.Worksheets
                 }
                 else
                 {
-                    float width = Utils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH) * columnNumber;
+                    float width = DataUtils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH) * columnNumber;
                     if (width == 0)
                     {
                         // Not applied as x split

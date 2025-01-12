@@ -1,7 +1,11 @@
 ﻿using System;
-using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using Xunit;
+using static NanoXLSX.Styles.Border;
+using static NanoXLSX.Styles.Fill;
+using static NanoXLSX.Styles.Font;
+using static NanoXLSX.Styles.NumberFormat;
 
 namespace NanoXLSX.Test.Styles
 {

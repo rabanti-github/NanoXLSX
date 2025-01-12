@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using NanoXLSX;
 using NanoXLSX.Styles;
+using NanoXLSX.Utils;
 using Xunit;
+using static NanoXLSX.Styles.CellXf;
 using Range = NanoXLSX.Range;
 
 namespace NanoXLSX_Test.Worksheets
@@ -110,7 +112,7 @@ namespace NanoXLSX_Test.Worksheets
                 if (setWidth)
                 {
 
-                    Assert.True(Math.Abs(column.Value.Width - Utils.GetInternalColumnWidth(99)) < 0.001);
+                    Assert.True(Math.Abs(column.Value.Width - DataUtils.GetInternalColumnWidth(99)) < 0.001);
                 }
                 if (setHidden)
                 {
@@ -252,7 +254,7 @@ namespace NanoXLSX_Test.Worksheets
             foreach (KeyValuePair<int, float> rowHeight in givenWorksheet.RowHeights)
             {
                 Assert.Contains(rows.Keys, x => x == rowHeight.Key);
-                float expectedHeight = Utils.GetInternalRowHeight(rows[rowHeight.Key]);
+                float expectedHeight = DataUtils.GetInternalRowHeight(rows[rowHeight.Key]);
                 Assert.Equal(expectedHeight, rowHeight.Value);
             }
         }
@@ -265,7 +267,7 @@ namespace NanoXLSX_Test.Worksheets
             workbook.CurrentWorksheet.SetRowHeight(2, 22.55f);
             workbook.CurrentWorksheet.AddHiddenRow(2);
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, 0);
-            Assert.Equal(Utils.GetInternalRowHeight(22.55f), givenWorksheet.RowHeights[2]);
+            Assert.Equal(DataUtils.GetInternalRowHeight(22.55f), givenWorksheet.RowHeights[2]);
             Assert.True(givenWorksheet.HiddenRows[2]);
         }
 

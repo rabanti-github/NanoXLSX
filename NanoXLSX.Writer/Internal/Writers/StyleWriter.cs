@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -8,11 +8,15 @@
 using System.Collections.Generic;
 using System.Text;
 using NanoXLSX.Interfaces;
-using NanoXLSX.Interfaces.Workbook;
 using NanoXLSX.Interfaces.Writer;
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Utils;
+using NanoXLSX.Exceptions;
+using NanoXLSX.Utils;
 using NanoXLSX.Styles;
+using static NanoXLSX.Styles.Border;
+using static NanoXLSX.Styles.Font;
+using static NanoXLSX.Styles.Fill;
+using static NanoXLSX.Styles.CellXf;
+using static NanoXLSX.Styles.NumberFormat;
 
 namespace NanoXLSX.Internal.Writers
 {
@@ -20,7 +24,7 @@ namespace NanoXLSX.Internal.Writers
     {
 
         private readonly StyleManager styles;
-        private IWorkbook workbook;
+        private Workbook workbook;
 
         internal StyleWriter(XlsxWriter writer)
         {
@@ -35,7 +39,7 @@ namespace NanoXLSX.Internal.Writers
         /// In contrast to a StyleException, a UndefinedStyleException should never happen in this state, if the internally managed style collection was not tampered. </remarks>
         /// <returns>Raw XML string</returns>
         /// <exception cref="StyleException">Throws a StyleException if one of the styles cannot be referenced or is null</exception>
-        public virtual string CreateDocument()
+        public virtual string CreateDocument(string currentDocument)
         {
             PreWrite(workbook);
             string bordersString = CreateStyleBorderString();
@@ -75,7 +79,15 @@ namespace NanoXLSX.Internal.Writers
             }
             sb.Append("</styleSheet>");
             PostWrite(workbook);
-            return sb.ToString();
+            if (NextWriter != null)
+            {
+                NextWriter.Workbook = this.Workbook;
+                return NextWriter.CreateDocument(sb.ToString());
+            }
+            else
+            {
+                return sb.ToString();
+            }
         }
 
         /// <summary>
@@ -83,7 +95,7 @@ namespace NanoXLSX.Internal.Writers
         /// This virtual method is empty by default and can be overridden by a plug-in package
         /// </summary>
         /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PreWrite(IWorkbook workbook)
+        public virtual void PreWrite(Workbook workbook)
         {
             // NoOp - replaced by plugin
         }
@@ -93,7 +105,7 @@ namespace NanoXLSX.Internal.Writers
         /// This virtual method is empty by default and can be overridden by a plug-in package
         /// </summary>
         /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PostWrite(IWorkbook workbook)
+        public virtual void PostWrite(Workbook workbook)
         {
             // NoOp - replaced by plugin
         }
@@ -101,11 +113,16 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
-        public IWorkbook Workbook
+        public Workbook Workbook
         {
             get { return workbook; }
             set { workbook = value; }
         }
+
+        /// <summary>
+        /// Gets or sets the next plug-in writer. If not null, the next writer to be applied on the document can be called by this property
+        /// </summary>
+        public IPluginWriter NextWriter { get; set; } = null;
 
         /// <summary>
         /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
@@ -293,7 +310,7 @@ namespace NanoXLSX.Internal.Writers
                 {
                     if (string.IsNullOrEmpty(item.CustomFormatCode))
                     {
-                        throw new Shared.Exceptions.FormatException("The number format style component with the ID " + ParserUtils.ToString(item.CustomFormatID) + " cannot be null or empty");
+                        throw new FormatException("The number format style component with the ID " + ParserUtils.ToString(item.CustomFormatID) + " cannot be null or empty");
                     }
                     // OOXML: Escaping according to Chp.18.8.31
                     // TODO: v3> Add a custom format builder

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Xml;
-using NanoXLSX.Shared.Interfaces;
+using NanoXLSX.Interfaces;
+using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Themes;
-using IOException = NanoXLSX.Shared.Exceptions.IOException;
+using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
 {
@@ -28,7 +29,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="stream">Stream of the XML file</param>
         /// <param name="number">Number of the theme. Default is 1</param>
         /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
         public virtual void Read(MemoryStream stream, int number)
         {
             currentTheme = number;
@@ -42,7 +43,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
         /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
         public virtual void Read(MemoryStream stream)
         {
             try
@@ -161,7 +162,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="innerNode">Color scheme sub-node</param>
         /// <returns>System color</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.StyleException">Throws IOException in case of an invalid value</exception>
+        /// <exception cref="NanoXLSX.Exceptions.StyleException">Throws IOException in case of an invalid value</exception>
         private static SystemColor.Value ParseSystemColor(XmlNode innerNode)
         {
             string value = ReaderUtils.GetAttribute(innerNode, "val");

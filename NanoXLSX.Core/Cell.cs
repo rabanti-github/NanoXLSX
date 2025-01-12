@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -10,10 +10,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Utils;
+using NanoXLSX.Exceptions;
+using NanoXLSX.Utils;
 using NanoXLSX.Styles;
-using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX
 {
@@ -209,7 +209,7 @@ namespace NanoXLSX
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address of the cell</param>
         /// \remark <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
-        public Cell(Object value, CellType type, string address)
+        public Cell(object value, CellType type, string address)
         {
             if (type == CellType.EMPTY)
             {
@@ -234,7 +234,7 @@ namespace NanoXLSX
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address struct of the cell</param>
         /// \remark <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
-        public Cell(Object value, CellType type, Address address)
+        public Cell(object value, CellType type, Address address)
         {
             if (type == CellType.EMPTY)
             {
@@ -513,7 +513,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="range">Range to process</param>
         /// <returns>List of cell addresses</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception>
         public static IEnumerable<Address> GetCellRange(string range)
         {
@@ -527,7 +527,7 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address as string in the format A1 - XFD1048576</param>
         /// <param name="endAddress">End address as string in the format A1 - XFD1048576</param>
         /// <returns>List of cell addresses</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception> 
         public static IEnumerable<Address> GetCellRange(string startAddress, string endAddress)
         {
@@ -558,7 +558,7 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
         /// <returns>List of cell addresses</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a part of the passed addresses is malformed</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a part of the passed addresses is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the value of one passed address is out of range (A-XFD and 1 to 1048576) </exception>
         public static IEnumerable<Address> GetCellRange(Address startAddress, Address endAddress)
         {
@@ -627,7 +627,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="address">Address as string in the format A1 - XFD1048576</param>
         /// <returns>Struct with row and column</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the passed address is malformed</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed address is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the value of the passed address is out of range (A-XFD and 1 to 1048576) </exception>
         public static Address ResolveCellCoordinate(string address)
         {
@@ -644,7 +644,7 @@ namespace NanoXLSX
         /// <param name="address">Address as string in the format A1 - XFD1048576</param>
         /// <param name="column">Column number of the cell (zero-based) as out parameter</param>
         /// <param name="row">Row number of the cell (zero-based) as out parameter</param>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the range address was malformed</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the range address was malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the row or column number was out of range</exception>
         public static void ResolveCellCoordinate(string address, out int column, out int row)
         {
@@ -660,7 +660,7 @@ namespace NanoXLSX
         /// <param name="column">Column number of the cell (zero-based) as out parameter</param>
         /// <param name="row">Row number of the cell (zero-based) as out parameter</param>
         /// <param name="addressType">Address type of the cell (if defined as modifiers in the address string)</param>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the range address was malformed</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the range address was malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the row or column number was out of range</exception>
         public static void ResolveCellCoordinate(string address, out int column, out int row, out AddressType addressType)
         {
@@ -702,7 +702,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="range">Range to process</param>
         /// <returns>Range object</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the start or end address was malformed</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the start or end address was malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception>
         public static Range ResolveCellRange(string range)
         {

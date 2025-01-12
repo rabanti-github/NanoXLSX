@@ -3,6 +3,7 @@ using System.Text;
 using NanoXLSX.Internal.Readers;
 using NanoXLSX.Styles;
 using Xunit;
+using static NanoXLSX.Styles.NumberFormat;
 
 namespace NanoXLSX_Test.Reader
 {

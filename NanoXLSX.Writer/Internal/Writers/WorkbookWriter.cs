@@ -1,23 +1,22 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
 using System.Text;
 using NanoXLSX.Interfaces;
-using NanoXLSX.Interfaces.Workbook;
 using NanoXLSX.Interfaces.Writer;
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Utils;
+using NanoXLSX.Exceptions;
+using NanoXLSX.Utils;
 using NanoXLSX.Themes;
 
 namespace NanoXLSX.Internal.Writers
 {
     internal class WorkbookWriter : IPluginWriter
     {
-        private IWorkbook workbookInstance;
+        private Workbook workbookInstance;
         private readonly IPasswordWriter passwordWriter;
 
         public WorkbookWriter(XlsxWriter writer)
@@ -34,7 +33,7 @@ namespace NanoXLSX.Internal.Writers
         /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <returns>Raw XML string</returns>
         /// <exception cref="RangeException">Throws a RangeException if an address was out of range</exception>
-        public virtual string CreateDocument()
+        public virtual string CreateDocument(string currentDocument = null)
         {
             Workbook workbook = (Workbook)workbookInstance;
             PreWrite(workbook);
@@ -87,7 +86,15 @@ namespace NanoXLSX.Internal.Writers
             sb.Append("</sheets>");
             sb.Append("</workbook>");
             PostWrite(workbook);
-            return sb.ToString();
+            if (NextWriter != null)
+            {
+                NextWriter.Workbook = this.Workbook;
+                return NextWriter.CreateDocument(sb.ToString());
+            }
+            else
+            {
+                return sb.ToString();
+            }
         }
 
         /// <summary>
@@ -95,7 +102,7 @@ namespace NanoXLSX.Internal.Writers
         /// This virtual method is empty by default and can be overridden by a plug-in package
         /// </summary>
         /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PreWrite(IWorkbook workbook)
+        public virtual void PreWrite(Workbook workbook)
         {
             // NoOp - replaced by plugin
         }
@@ -105,7 +112,7 @@ namespace NanoXLSX.Internal.Writers
         /// This virtual method is empty by default and can be overridden by a plug-in package
         /// </summary>
         /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PostWrite(IWorkbook workbook)
+        public virtual void PostWrite(Workbook workbook)
         {
             // NoOp - replaced by plugin
         }
@@ -122,11 +129,16 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
-        public IWorkbook Workbook
+        public Workbook Workbook
         {
             get { return workbookInstance; }
             set { workbookInstance = value; }
         }
+
+        /// <summary>
+        /// Gets or sets the next plug-in writer. If not null, the next writer to be applied on the document can be called by this property
+        /// </summary>
+        public IPluginWriter NextWriter { get; set; } = null;
 
         /// <summary>
         /// Method to create the (sub) part of the workbook protection within the workbook XML document

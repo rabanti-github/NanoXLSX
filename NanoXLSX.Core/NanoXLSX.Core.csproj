@@ -9,12 +9,13 @@
 		<Product>NanoXLSX</Product>
 		<Company>Raphael Stoeckli</Company>
 		<Authors>Raphael Stoeckli</Authors>
-		<Copyright>Copyright Raphael Stoeckli © 2024</Copyright>
+		<Copyright>Copyright Raphael Stoeckli © 2025</Copyright>
 		<Description>NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way</Description>
 		<PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.git</RepositoryUrl>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IncludeSymbols>true</IncludeSymbols>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -26,7 +27,7 @@
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
 	<PropertyGroup>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
 		<PackageIcon>NanoXLSX.png</PackageIcon>
 		<PackageIconUrl />
@@ -54,24 +55,11 @@
 		<Reference Include="WindowsBase" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="C:\purge-temp\NanoXlsxV3\NanoXLSX.Core\.editorconfig" />
-		<None Include="Documentation\NanoXLSX.png">
-		  <Pack>True</Pack>
-		  <PackagePath></PackagePath>
-		</None>
+		<None Include="Documentation\NanoXLSX.png" Pack="true" PackagePath="\" />
 		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
-	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
-		<ProjectReference Include="..\NanoXLSX.Shared\NanoXLSX.Shared.csproj" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<PackageReference Include="NanoXLSX.Shared" Version="3.0.*" />
-	</ItemGroup>
 	<ItemGroup>
-	  <EditorConfigFiles Remove="C:\purge-temp\NanoXlsxV3\NanoXLSX.Core\.editorconfig" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Update="Documentation\NanoXLSX.png" Pack="true" PackagePath="\" />
+	  <EditorConfigFiles Remove=".\.editorconfig" />
 	</ItemGroup>
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 	  <Exec Command="@echo off&#xD;&#xA;echo PROJECT_NUMBER = $(Version) &gt; &quot;$(ProjectDir)Documentation\projectNumber.doxygen&quot;&#xD;&#xA;echo PROJECT_NAME = $(ProjectName) &gt; &quot;$(ProjectDir)Documentation\projectName.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = $(SolutionDir)docs\$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\outputDirectory.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = $(SolutionDir)docs\$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\htmlOutput.doxygen&quot;&#xD;&#xA;" />

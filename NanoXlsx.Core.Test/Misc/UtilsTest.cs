@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Globalization;
+using NanoXLSX.Utils;
 using Xunit;
-using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX.Test.Misc
 {
@@ -23,7 +24,7 @@ namespace NanoXLSX.Test.Misc
             CultureInfo provider = CultureInfo.InvariantCulture;
             string format = "dd.MM.yyyy HH:mm:ss";
             DateTime date = DateTime.ParseExact(dateString, format, provider);
-            string oaDate = Utils.GetOADateTimeString(date);
+            string oaDate = DataUtils.GetOADateTimeString(date);
             float expected = float.Parse(expectedOaDate);
             float given = float.Parse(oaDate);
             float threshold = 0.000000001f; // Ignore everything below a millisecond
@@ -46,7 +47,7 @@ namespace NanoXLSX.Test.Misc
             CultureInfo provider = CultureInfo.InvariantCulture;
             string format = "dd.MM.yyyy HH:mm:ss";
             DateTime date = DateTime.ParseExact(dateString, format, provider);
-            double oaDate = Utils.GetOADateTime(date);
+            double oaDate = DataUtils.GetOADateTime(date);
             float threshold = 0.00000001f; // Ignore everything below a millisecond (double precision may vary)
             Assert.True(Math.Abs(expectedOaDate - oaDate) < threshold);
         }
@@ -60,7 +61,7 @@ namespace NanoXLSX.Test.Misc
             CultureInfo provider = CultureInfo.InvariantCulture;
             string format = "dd.MM.yyyy HH:mm:ss";
             DateTime date = DateTime.ParseExact(dateString, format, provider);
-            double given = Utils.GetOADateTime(date, true);
+            double given = DataUtils.GetOADateTime(date, true);
             Assert.NotEqual(0d, given);
         }
 
@@ -74,7 +75,7 @@ namespace NanoXLSX.Test.Misc
             CultureInfo provider = CultureInfo.InvariantCulture;
             string format = "dd.MM.yyyy HH:mm:ss";
             DateTime date = DateTime.ParseExact(dateString, format, provider);
-            Assert.Throws<FormatException>(() => Utils.GetOADateTimeString(date));
+            Assert.Throws<FormatException>(() => DataUtils.GetOADateTimeString(date));
         }
 
         [Theory(DisplayName = "Test of the failing GetOADateTime function on invalid dates")]
@@ -87,7 +88,7 @@ namespace NanoXLSX.Test.Misc
             CultureInfo provider = CultureInfo.InvariantCulture;
             string format = "dd.MM.yyyy HH:mm:ss";
             DateTime date = DateTime.ParseExact(dateString, format, provider);
-            Assert.Throws<FormatException>(() => Utils.GetOADateTime(date));
+            Assert.Throws<FormatException>(() => DataUtils.GetOADateTime(date));
         }
 
         [Theory(DisplayName = "Test of the GetOATimeString function")]
@@ -101,7 +102,7 @@ namespace NanoXLSX.Test.Misc
             CultureInfo provider = CultureInfo.InvariantCulture;
             string format = "hh\\:mm\\:ss";
             TimeSpan time = TimeSpan.ParseExact(timeString, format, provider);
-            string oaDate = Utils.GetOATimeString(time);
+            string oaDate = DataUtils.GetOATimeString(time);
             float expected = float.Parse(expectedOaTime);
             float given = float.Parse(oaDate);
             float threshold = 0.000000001f; // Ignore everything below a millisecond
@@ -119,7 +120,7 @@ namespace NanoXLSX.Test.Misc
             CultureInfo provider = CultureInfo.InvariantCulture;
             string format = "hh\\:mm\\:ss";
             TimeSpan time = TimeSpan.ParseExact(timeString, format, provider);
-            double oaTime = Utils.GetOATime(time);
+            double oaTime = DataUtils.GetOATime(time);
             float threshold = 0.000000001f; // Ignore everything below a millisecond
             Assert.True(Math.Abs(expectedOaTime - oaTime) < threshold);
         }
@@ -135,7 +136,7 @@ namespace NanoXLSX.Test.Misc
         [InlineData(0, 0f)]
         public void GetInternalColumnWidthTest(float width, float expectedInternalWidth)
         {
-            float internalWidth = Utils.GetInternalColumnWidth(width);
+            float internalWidth = DataUtils.GetInternalColumnWidth(width);
             Assert.Equal(expectedInternalWidth, internalWidth);
         }
 
@@ -146,7 +147,7 @@ namespace NanoXLSX.Test.Misc
         [InlineData(10000)]
         public void GetInternalColumnWidthFailTest(float width)
         {
-            Assert.Throws<FormatException>(() => Utils.GetInternalColumnWidth(width));
+            Assert.Throws<FormatException>(() => DataUtils.GetInternalColumnWidth(width));
         }
 
         [Theory(DisplayName = "Test of the GetInternalRowHeight function")]
@@ -160,7 +161,7 @@ namespace NanoXLSX.Test.Misc
         [InlineData(0, 0f)]
         public void GetInternalRowHeightTest(float height, float expectedInternalHeight)
         {
-            float internalHeight = Utils.GetInternalRowHeight(height);
+            float internalHeight = DataUtils.GetInternalRowHeight(height);
             Assert.Equal(expectedInternalHeight, internalHeight);
         }
 
@@ -171,7 +172,7 @@ namespace NanoXLSX.Test.Misc
         [InlineData(10000)]
         public void GetInternalRowHeightFailTest(float height)
         {
-            Assert.Throws<FormatException>(() => Utils.GetInternalRowHeight(height));
+            Assert.Throws<FormatException>(() => DataUtils.GetInternalRowHeight(height));
         }
 
         [Theory(DisplayName = "Test of the GetInternalPaneSplitWidth function")]
@@ -187,7 +188,7 @@ namespace NanoXLSX.Test.Misc
         [InlineData(-10, 390f)]
         public void GetInternalPaneSplitWidthTest(float width, float expectedSplitWidth)
         {
-            float splitWidth = Utils.GetInternalPaneSplitWidth(width);
+            float splitWidth = DataUtils.GetInternalPaneSplitWidth(width);
             Assert.Equal(expectedSplitWidth, splitWidth);
         }
 
@@ -203,7 +204,7 @@ namespace NanoXLSX.Test.Misc
         [InlineData(-10, 300f)]
         public void GetInternalPaneSplitHeightTest(float height, float expectedSplitHeight)
         {
-            float splitHeight = Utils.GetInternalPaneSplitHeight(height);
+            float splitHeight = DataUtils.GetInternalPaneSplitHeight(height);
             Assert.Equal(expectedSplitHeight, splitHeight);
         }
 
@@ -219,7 +220,7 @@ namespace NanoXLSX.Test.Misc
         [InlineData(-10, 0)]
         public void GetPaneSplitHeightTest(float height, float expectedSplitHeight)
         {
-            float splitHeight = Utils.GetPaneSplitHeight(height);
+            float splitHeight = DataUtils.GetPaneSplitHeight(height);
             Assert.Equal(expectedSplitHeight, splitHeight);
         }
 
@@ -233,7 +234,7 @@ namespace NanoXLSX.Test.Misc
         [InlineData(105465f, 999.9286f)]
         public void GetPaneSplitWidthTest(float width, float expectedSplitWidth)
         {
-            float splitWidth = Utils.GetPaneSplitWidth(width);
+            float splitWidth = DataUtils.GetPaneSplitWidth(width);
             float delta = Math.Abs(splitWidth - expectedSplitWidth);
             Assert.True(delta < 0.001);
         }
@@ -252,7 +253,7 @@ namespace NanoXLSX.Test.Misc
         public void GetDateFromOATest(double givenValue, string expectedDateString)
         {
             DateTime expectedDate = DateTime.ParseExact(expectedDateString, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-            DateTime date = Utils.GetDateFromOA(givenValue);
+            DateTime date = DataUtils.GetDateFromOA(givenValue);
             Assert.Equal(expectedDate, date);
         }
     }

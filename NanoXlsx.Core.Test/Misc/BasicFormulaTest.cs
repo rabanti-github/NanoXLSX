@@ -1,6 +1,6 @@
 ﻿using System;
 using Xunit;
-using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX.Test.Misc
 {

@@ -1,8 +1,9 @@
 ﻿using System;
-using NanoXLSX.Shared.Exceptions;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using Xunit;
-using FormatException = NanoXLSX.Shared.Exceptions.FormatException;
+using static NanoXLSX.Styles.NumberFormat;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX.Test.Styles
 {

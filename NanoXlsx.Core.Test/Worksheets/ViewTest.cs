@@ -1,4 +1,4 @@
-﻿using NanoXLSX.Shared.Exceptions;
+﻿using NanoXLSX.Exceptions;
 using Xunit;
 
 namespace NanoXLSX.Test.Worksheets

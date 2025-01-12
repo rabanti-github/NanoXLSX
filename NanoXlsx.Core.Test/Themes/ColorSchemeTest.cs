@@ -1,4 +1,4 @@
-﻿using NanoXLSX.Shared.Interfaces;
+﻿using NanoXLSX.Interfaces;
 using NanoXLSX.Themes;
 using Xunit;
 

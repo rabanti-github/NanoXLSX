@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -11,11 +11,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using NanoXLSX.Interfaces;
-using NanoXLSX.Interfaces.Workbook;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
-using NanoXLSX.Shared.Interfaces;
-using NanoXLSX.Shared.Utils;
+using NanoXLSX.Utils;
 
 namespace NanoXLSX.Internal.Writers
 {
@@ -23,13 +21,13 @@ namespace NanoXLSX.Internal.Writers
     {
         private static readonly CultureInfo CULTURE = CultureInfo.InvariantCulture;
 
-        private IWorkbook workbook;
-        private IWorksheet currentWorksheet;
+        private Workbook workbook;
+        private Worksheet currentWorksheet;
         private IPasswordWriter passwordWriter;
         private readonly ISortedMap sharedStrings;
         private readonly ISharedStringWriter sharedStringWriter;
 
-        public IWorksheet CurrentWorksheet 
+        public Worksheet CurrentWorksheet 
         { 
             get => currentWorksheet;
             set 
@@ -53,13 +51,22 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <returns>Raw XML string</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        public virtual string CreateDocument()
+        /// <exception cref="FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        public virtual string CreateDocument(string curentDocument)
         {
             PreWrite(workbook);
-            String document = CreateWorksheetPart((Worksheet)CurrentWorksheet);
+            string document = CreateWorksheetPart((Worksheet)CurrentWorksheet);
             PostWrite(workbook);
-            return document;
+            if (NextWriter != null)
+            {
+                // TODO set current worksheet
+                NextWriter.Workbook = this.Workbook;
+                return NextWriter.CreateDocument(document);
+            }
+            else
+            {
+                return document;
+            }
         }
 
         /// <summary>
@@ -67,7 +74,7 @@ namespace NanoXLSX.Internal.Writers
         /// This virtual method is empty by default and can be overridden by a plug-in package
         /// </summary>
         /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PreWrite(IWorkbook workbook)
+        public virtual void PreWrite(Workbook workbook)
         {
             // NoOp - replaced by plugin
         }
@@ -77,7 +84,7 @@ namespace NanoXLSX.Internal.Writers
         /// This virtual method is empty by default and can be overridden by a plug-in package
         /// </summary>
         /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PostWrite(IWorkbook workbook)
+        public virtual void PostWrite(Workbook workbook)
         {
             // NoOp - replaced by plugin
         }
@@ -94,11 +101,16 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
-        public IWorkbook Workbook
+        public Workbook Workbook
         {
             get { return workbook; }
             set { workbook = value; }
         }
+
+        /// <summary>
+        /// Gets or sets the next plug-in writer. If not null, the next writer to be applied on the document can be called by this property
+        /// </summary>
+        public IPluginWriter NextWriter { get; set; } = null;
 
         /// <summary>
         /// Method to create a worksheet part as a raw XML string
@@ -106,7 +118,7 @@ namespace NanoXLSX.Internal.Writers
         /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <param name="worksheet">worksheet object to process</param>
         /// <returns>Raw XML string</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         internal string CreateWorksheetPart(Worksheet worksheet)
         {
             worksheet.RecalculateAutoFilter();
@@ -164,7 +176,7 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="dynamicRow">Dynamic row with List of cells, heights and hidden states</param>
         /// <param name="worksheet">Worksheet to process</param>
         /// <returns>Formatted row string</returns>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         private string CreateRowString(DynamicRow dynamicRow, Worksheet worksheet)
         {
             int rowNumber = dynamicRow.RowNumber;
@@ -174,7 +186,7 @@ namespace NanoXLSX.Internal.Writers
             {
                 if (worksheet.RowHeights[rowNumber] != worksheet.DefaultRowHeight)
                 {
-                    height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + ParserUtils.ToString(Utils.GetInternalRowHeight(worksheet.RowHeights[rowNumber])) + "\"";
+                    height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + ParserUtils.ToString(DataUtils.GetInternalRowHeight(worksheet.RowHeights[rowNumber])) + "\"";
                 }
             }
             if (worksheet.HiddenRows.ContainsKey(rowNumber))
@@ -237,13 +249,13 @@ namespace NanoXLSX.Internal.Writers
                 else if (item.DataType == Cell.CellType.DATE)
                 {
                     DateTime date = (DateTime)item.Value;
-                    valueDef = Utils.GetOADateTimeString(date);
+                    valueDef = DataUtils.GetOADateTimeString(date);
                 }
                 // Time parsing
                 else if (item.DataType == Cell.CellType.TIME)
                 {
                     TimeSpan time = (TimeSpan)item.Value;
-                    valueDef = Utils.GetOATimeString(time);
+                    valueDef = DataUtils.GetOATimeString(time);
                 }
                 else
                 {
@@ -452,7 +464,7 @@ namespace NanoXLSX.Internal.Writers
                         }
                     }
                     col = ParserUtils.ToString(column.Key + 1); // Add 1 for Address
-                    float width = Utils.GetInternalColumnWidth(column.Value.Width);
+                    float width = DataUtils.GetInternalColumnWidth(column.Value.Width);
                     sb.Append("<col customWidth=\"1\" width=\"").Append(ParserUtils.ToString(width)).Append("\" max=\"").Append(col).Append("\" min=\"").Append(col).Append("\"");
                     if (column.Value.DefaultColumnStyle != null)
                     {
@@ -526,12 +538,12 @@ namespace NanoXLSX.Internal.Writers
             {
                 if (worksheet.PaneSplitLeftWidth != null)
                 {
-                    sb.Append(" xSplit=\"").Append(ParserUtils.ToString(Utils.GetInternalPaneSplitWidth(worksheet.PaneSplitLeftWidth.Value))).Append("\"");
+                    sb.Append(" xSplit=\"").Append(ParserUtils.ToString(DataUtils.GetInternalPaneSplitWidth(worksheet.PaneSplitLeftWidth.Value))).Append("\"");
                     applyXSplit = true;
                 }
                 if (worksheet.PaneSplitTopHeight != null)
                 {
-                    sb.Append(" ySplit=\"").Append(ParserUtils.ToString(Utils.GetInternalPaneSplitHeight(worksheet.PaneSplitTopHeight.Value))).Append("\"");
+                    sb.Append(" ySplit=\"").Append(ParserUtils.ToString(DataUtils.GetInternalPaneSplitHeight(worksheet.PaneSplitTopHeight.Value))).Append("\"");
                     applyYSplit = true;
                 }
             }
@@ -583,14 +595,14 @@ namespace NanoXLSX.Internal.Writers
             {
                 if (worksheet.RowHeights.ContainsKey(i))
                 {
-                    height += Utils.GetInternalRowHeight(worksheet.RowHeights[i]);
+                    height += DataUtils.GetInternalRowHeight(worksheet.RowHeights[i]);
                 }
                 else
                 {
-                    height += Utils.GetInternalRowHeight(Worksheet.DEFAULT_ROW_HEIGHT);
+                    height += DataUtils.GetInternalRowHeight(Worksheet.DEFAULT_ROW_HEIGHT);
                 }
             }
-            return Utils.GetInternalPaneSplitHeight(height);
+            return DataUtils.GetInternalPaneSplitHeight(height);
         }
 
 
@@ -608,15 +620,15 @@ namespace NanoXLSX.Internal.Writers
             {
                 if (worksheet.Columns.ContainsKey(i))
                 {
-                    width += Utils.GetInternalColumnWidth(worksheet.Columns[i].Width);
+                    width += DataUtils.GetInternalColumnWidth(worksheet.Columns[i].Width);
                 }
                 else
                 {
-                    width += Utils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
+                    width += DataUtils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
                 }
             }
             // Add padding of 75 per column
-            return Utils.GetInternalPaneSplitWidth(width) + ((numberOfColumns - 1) * 0f);
+            return DataUtils.GetInternalPaneSplitWidth(width) + ((numberOfColumns - 1) * 0f);
         }
 
         /// <summary>

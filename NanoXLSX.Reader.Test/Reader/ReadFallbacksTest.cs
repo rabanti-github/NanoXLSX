@@ -2,6 +2,10 @@
 using NanoXLSX;
 using NanoXLSX.Styles;
 using Xunit;
+using static NanoXLSX.Styles.Border;
+using static NanoXLSX.Styles.CellXf;
+using static NanoXLSX.Styles.Fill;
+using static NanoXLSX.Styles.Font;
 
 namespace NanoXLSX_Test.Reader
 {

@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -9,10 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NanoXLSX.Interfaces;
-using NanoXLSX.Interfaces.Workbook;
 using NanoXLSX.Registry;
-using NanoXLSX.Shared.Exceptions;
-using NanoXLSX.Shared.Utils;
+using NanoXLSX.Exceptions;
+using NanoXLSX.Utils;
 using NanoXLSX.Styles;
 using NanoXLSX.Themes;
 
@@ -22,7 +21,7 @@ namespace NanoXLSX
     /// Class representing a workbook
     /// </summary>
     /// 
-    public class Workbook : IWorkbook
+    public class Workbook
     {
         static Workbook()
         {
@@ -292,7 +291,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="name">Name of the new worksheet</param>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the name of the worksheet already exists</exception>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">Throws a FormatException if the name contains illegal characters or is out of range (length between 1 an 31 characters)</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the name contains illegal characters or is out of range (length between 1 an 31 characters)</exception>
         public void AddWorksheet(string name)
         {
             foreach (Worksheet item in worksheets)
@@ -315,7 +314,7 @@ namespace NanoXLSX
         /// <param name="name">Name of the new worksheet</param>
         /// <param name="sanitizeSheetName">If true, the name of the worksheet will be sanitized automatically according to the specifications of Excel</param>
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists and sanitizeSheetName is false</exception>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitizeSheetName is false</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitizeSheetName is false</exception>
         public void AddWorksheet(string name, bool sanitizeSheetName)
         {
             if (sanitizeSheetName)
@@ -334,7 +333,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="worksheet">Prepared worksheet object</param>
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists</exception>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31)</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31)</exception>
         public void AddWorksheet(Worksheet worksheet)
         {
             AddWorksheet(worksheet, false);
@@ -346,7 +345,7 @@ namespace NanoXLSX
         /// <param name="worksheet">Prepared worksheet object</param>
         /// <param name="sanitizeSheetName">If true, the name of the worksheet will be sanitized automatically according to the specifications of Excel</param>    
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists, when sanitation is false</exception>
-        /// <exception cref="NanoXLSX.Shared.Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitation is false</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitation is false</exception>
         public void AddWorksheet(Worksheet worksheet, bool sanitizeSheetName)
         {
             if (sanitizeSheetName)

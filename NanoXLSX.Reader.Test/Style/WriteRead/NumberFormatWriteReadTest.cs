@@ -2,6 +2,7 @@
 using NanoXLSX;
 using NanoXLSX.Styles;
 using Xunit;
+using static NanoXLSX.Styles.NumberFormat;
 
 namespace NanoXLSX_Test.Styles.WriteRead
 {
