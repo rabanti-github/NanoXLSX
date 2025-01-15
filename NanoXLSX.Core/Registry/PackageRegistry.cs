@@ -97,7 +97,7 @@ namespace NanoXLSX.Registry
         /// <exception cref="PackageException">Throws a PackageException if the default instance is null</exception>
         public static IPluginWriter GetWriter(IPluginWriter defaultInstance)
         {
-            //if (defaultInstance == null)
+            if (defaultInstance == null)
             {
                 throw new PackageException("The default instance of the class was null");
             }

@@ -59,7 +59,7 @@ namespace NanoXLSX.Internal.Readers
 
         public string GetPassword()
         {
-            throw new NotImplementedException();
+            return null; // The reader cannot recover the plain text password
         }
 
         public bool PasswordIsSet()

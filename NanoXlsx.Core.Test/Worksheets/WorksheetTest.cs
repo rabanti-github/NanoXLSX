@@ -291,17 +291,19 @@ namespace NanoXLSX.Test.Worksheets
         }
 
         [Theory(DisplayName = "Test of the get function of the SheetProtectionPassword property")]
-        [InlineData(null, null)]
-        [InlineData("", null)]
-        [InlineData(" ", " ")]
-        [InlineData("test", "test")]
-        public void SheetProtectionPasswordTest(string givenValue, string expectedValue)
+        [InlineData(null, null, false)]
+        [InlineData("", null, false)]
+        [InlineData(" ", " ", true)]
+        [InlineData("test", "test", true)]
+        [InlineData("123", "123", true)]
+        [InlineData("@é#", "@é#", true)]
+        public void SheetProtectionPasswordTest(string givenValue, string expectedValue, bool expectedPasswordIsSet)
         {
             Worksheet worksheet = new Worksheet();
             Assert.False(worksheet.SheetProtectionPassword.PasswordIsSet());
             worksheet.SetSheetProtectionPassword(givenValue);
             Assert.Equal(expectedValue, worksheet.SheetProtectionPassword.GetPassword());
-            Assert.True(worksheet.SheetProtectionPassword.PasswordIsSet());
+            Assert.Equal(expectedPasswordIsSet, worksheet.SheetProtectionPassword.PasswordIsSet());
             worksheet.SetSheetProtectionPassword(null);
             Assert.False(worksheet.SheetProtectionPassword.PasswordIsSet());
         }

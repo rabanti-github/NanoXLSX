@@ -15,6 +15,7 @@ namespace NanoXLSX.Exceptions
     /// <summary>
     /// Class for exceptions regarding not supported / unknown content of loaded workbooks
     /// </summary>
+    [Serializable]
     public class NotSupportedContentException : Exception
     {
         /// <summary>

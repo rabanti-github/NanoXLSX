@@ -100,6 +100,48 @@ namespace NanoXLSX.Test.Misc
             AssertExceptionSerialization<WorksheetException>(exception);
         }
 
+        [Fact(DisplayName = "Test of the NotSupportedContentException (summary)")]
+        public void NotSupportedContentExceptionTest()
+        {
+            NotSupportedContentException exception = new NotSupportedContentException();
+            Assert.NotEmpty(exception.Message); // Gets a generated message my the base class
+            Assert.Null(exception.InnerException);
+
+            exception = new NotSupportedContentException("test");
+            Assert.Equal("test", exception.Message);
+            Assert.Null(exception.InnerException);
+
+            AssertExceptionSerialization<NotSupportedContentException>(exception);
+
+            ArgumentException inner = new ArgumentException("inner message");
+            exception = new NotSupportedContentException("test", inner);
+            Assert.Equal("test", exception.Message);
+            Assert.NotNull(exception.InnerException);
+            Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
+            Assert.Equal("inner message", exception.InnerException.Message);
+        }
+
+        [Fact(DisplayName = "Test of the PackageException (summary)")]
+        public void PackageExceptionTest()
+        {
+            PackageException exception = new PackageException();
+            Assert.NotEmpty(exception.Message); // Gets a generated message my the base class
+            Assert.Null(exception.InnerException);
+
+            exception = new PackageException("test");
+            Assert.Equal("test", exception.Message);
+            Assert.Null(exception.InnerException);
+
+            AssertExceptionSerialization<PackageException>(exception);
+
+            ArgumentException inner = new ArgumentException("inner message");
+            exception = new PackageException("test", inner);
+            Assert.Equal("test", exception.Message);
+            Assert.NotNull(exception.InnerException);
+            Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
+            Assert.Equal("inner message", exception.InnerException.Message);
+        }
+
         public static void AssertExceptionSerialization<TException>(TException originalException) where TException : Exception
         {
             BinaryFormatter formatter = new BinaryFormatter();

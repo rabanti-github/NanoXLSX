@@ -121,13 +121,20 @@ namespace NanoXLSX.Test.Workbooks
         public void WorkbookProtectionPasswordTest()
         {
             Workbook workbook = new Workbook(false);
-            Assert.Null(workbook.WorkbookProtectionPassword);
+            Assert.NotNull(workbook.WorkbookProtectionPassword);
+            Assert.Null(workbook.WorkbookProtectionPassword.PasswordHash);
+            Assert.False(workbook.WorkbookProtectionPassword.PasswordIsSet());
             workbook.SetWorkbookProtection(false, true, true, "test");
             Assert.Equal("test", workbook.WorkbookProtectionPassword.GetPassword());
+            Assert.True(workbook.WorkbookProtectionPassword.PasswordIsSet());
             workbook.SetWorkbookProtection(false, false, false, "");
-            Assert.Equal("", workbook.WorkbookProtectionPassword.GetPassword());
+            Assert.Null(workbook.WorkbookProtectionPassword.GetPassword());
+            Assert.Null(workbook.WorkbookProtectionPassword.PasswordHash);
+            Assert.False(workbook.WorkbookProtectionPassword.PasswordIsSet());
             workbook.SetWorkbookProtection(false, false, false, null);
-            Assert.Null(workbook.WorkbookProtectionPassword);
+            Assert.Null(workbook.WorkbookProtectionPassword.GetPassword());
+            Assert.Null(workbook.WorkbookProtectionPassword.PasswordHash);
+            Assert.False(workbook.WorkbookProtectionPassword.PasswordIsSet());
         }
 
         [Fact(DisplayName = "Test of the get function of the Worksheets property")]
@@ -539,7 +546,14 @@ namespace NanoXLSX.Test.Workbooks
             Assert.Equal(expectedLockWindowsState, workbook.LockWindowsIfProtected);
             Assert.Equal(expectedLockStructureState, workbook.LockStructureIfProtected);
             Assert.Equal(expectedProtectionState, workbook.UseWorkbookProtection);
-            Assert.Equal(password, workbook.WorkbookProtectionPassword.GetPassword());
+            if (string.IsNullOrEmpty(password))
+            {
+                Assert.Null(workbook.WorkbookProtectionPassword.GetPassword());
+            }
+            else
+            {
+                Assert.Equal(password, workbook.WorkbookProtectionPassword.GetPassword());
+            }
         }
 
         [Fact(DisplayName = "Test of the AddMruColor function")]

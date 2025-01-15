@@ -49,9 +49,23 @@ namespace NanoXLSX.Utils
         /// <returns>True, if the content of the two instance is equal, otherwise false</returns>
         public static bool CompareSecureStrings(SecureString value1, SecureString value2)
         {
-            if ((value1 == null && value2 != null)||(value1 != null && value2 == null))
+            bool v1Empty = false;
+            bool v2Empty = false;
+            if (value1 ==  null || value1.Length == 0)
+            {
+                v1Empty = true;
+            }
+            if (value2 == null || value2.Length == 0)
+            {
+                v2Empty = true;
+            }
+            if (v1Empty && !v2Empty || !v1Empty && v2Empty)
             {
                 return false;
+            }
+            if (v1Empty && v2Empty)
+            {
+                return true;
             }
             IntPtr unmanagedString1 = IntPtr.Zero;
             IntPtr unmanagedString2 = IntPtr.Zero;
