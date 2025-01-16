@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using NanoXLSX.Styles;
+using NanoXLSX.Test.Core.Utils;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
-namespace NanoXLSX.Test.Worksheets
+namespace NanoXLSX.Test.Core.WorksheetTest
 {
     public class SetStyleTest
     {

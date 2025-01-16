@@ -1,9 +1,10 @@
 ﻿using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
+using NanoXLSX.Test.Core.Utils;
 using Xunit;
 using static NanoXLSX.Styles.Fill;
 
-namespace NanoXLSX.Test.Workbooks
+namespace NanoXLSX.Test.Core.WorkbookTest
 {
     /// <summary>
     /// Note: All tests of this class are just for code coverage. The tested functions will be removed in the future

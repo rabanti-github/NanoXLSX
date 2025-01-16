@@ -1,7 +1,7 @@
 ﻿using NanoXLSX.Exceptions;
 using Xunit;
 
-namespace NanoXLSX.Test.Workbooks
+namespace NanoXLSX.Test.Core.WorkbookTest
 {
     public class SetWorksheetTest
     {

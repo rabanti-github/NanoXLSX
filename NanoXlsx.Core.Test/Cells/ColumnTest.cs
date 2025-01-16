@@ -1,7 +1,7 @@
 ﻿using NanoXLSX.Exceptions;
 using Xunit;
 
-namespace NanoXLSX.Test.Cells
+namespace NanoXLSX.Test.Core.ColumnTest
 {
     public class ColumnTest
     {

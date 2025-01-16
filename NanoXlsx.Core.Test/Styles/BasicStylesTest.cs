@@ -7,7 +7,7 @@ using static NanoXLSX.Styles.Fill;
 using static NanoXLSX.Styles.Font;
 using static NanoXLSX.Styles.NumberFormat;
 
-namespace NanoXLSX.Test.Styles
+namespace NanoXLSX.Test.Core.StyleTest
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]

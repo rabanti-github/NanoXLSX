@@ -1,7 +1,7 @@
 ﻿using Xunit;
-using static NanoXLSX.Test.Worksheets.RowTest;
+using static NanoXLSX.Test.Core.WorksheetTest.RowTest;
 
-namespace NanoXLSX.Test.Worksheets
+namespace NanoXLSX.Test.Core.WorksheetTest
 {
     public class GetRowBoundariesTest
     {

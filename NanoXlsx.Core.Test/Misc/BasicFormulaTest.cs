@@ -2,7 +2,7 @@
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
-namespace NanoXLSX.Test.Misc
+namespace NanoXLSX.Test.Core.MiscTest
 {
     public class BasicFormulaTest
     {

@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Writer", "NanoXLSX
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Reader", "NanoXLSX.Reader\NanoXLSX.Reader.csproj", "{0B68C119-7C4E-47CE-AE74-212A97AA9B43}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Reader.Test", "NanoXLSX.Reader.Test\NanoXLSX.Reader.Test.csproj", "{D146F1DC-1F3A-484E-8DB3-9892EE102A51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Writer-Reader.Test", "NanoXLSX.Writer-Reader.Test\NanoXLSX.Writer-Reader.Test.csproj", "{D146F1DC-1F3A-484E-8DB3-9892EE102A51}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Formula", "NanoXLSX.Formula\NanoXLSX.Formula.csproj", "{7055E7CA-AA59-44F4-AE15-B3F2AC658337}"
 EndProject

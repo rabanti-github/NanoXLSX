@@ -1,7 +1,8 @@
-﻿using Xunit;
+﻿using NanoXLSX.Test.Core.Utils;
+using Xunit;
 using static NanoXLSX.Cell;
 
-namespace NanoXLSX.Test.Cells.Types
+namespace NanoXLSX.Test.Core.Cells.Types
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]

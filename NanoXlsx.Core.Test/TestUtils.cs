@@ -7,7 +7,7 @@ using System.Text;
 using Xunit;
 using static NanoXLSX.Cell;
 
-namespace NanoXLSX.Test
+namespace NanoXLSX.Test.Core.Utils
 {
     public class TestUtils
     {

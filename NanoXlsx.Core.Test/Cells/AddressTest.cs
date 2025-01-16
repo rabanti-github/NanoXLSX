@@ -3,7 +3,7 @@ using NanoXLSX.Exceptions;
 using Xunit;
 using static NanoXLSX.Cell;
 
-namespace NanoXLSX.Test.Cells
+namespace NanoXLSX.Test.Core.CellTest
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]

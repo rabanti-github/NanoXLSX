@@ -2,7 +2,7 @@
 using NanoXLSX.Themes;
 using Xunit;
 
-namespace NanoXLSX.Core.Test.Themes
+namespace NanoXLSX.Test.Core.ThemeTest
 {
     public class ColorSchemeTest
     {

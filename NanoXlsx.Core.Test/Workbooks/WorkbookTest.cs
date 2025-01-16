@@ -5,7 +5,7 @@ using NanoXLSX.Exceptions;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
-namespace NanoXLSX.Test.Workbooks
+namespace NanoXLSX.Test.Core.WorkbookTest
 {
     public class WorkbookTest
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NanoXLSX.Interfaces;
 using Xunit;
 
-namespace NanoXLSX.Core.Test.Misc
+namespace NanoXLSX.Test.Core.MiscTest
 {
     public class LegacyPasswordTest
     {
@@ -55,7 +55,6 @@ namespace NanoXLSX.Core.Test.Misc
             password.PasswordHash = passwordHash;
             Assert.Equal(passwordHash, password.PasswordHash);
         }
-
 
         [Theory(DisplayName = "Test of the GetPassword and SetPassword functions (legacy)")]
         [InlineData("test", "test")]

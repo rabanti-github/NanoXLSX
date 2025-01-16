@@ -1,7 +1,8 @@
 ﻿using NanoXLSX.Styles;
+using NanoXLSX.Test.Core.Utils;
 using Xunit;
 
-namespace NanoXLSX.Test.Styles
+namespace NanoXLSX.Test.Core.StyleTest
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]

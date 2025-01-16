@@ -2,7 +2,7 @@
 using NanoXLSX.Styles;
 using Xunit;
 
-namespace NanoXLSX.Test.Styles
+namespace NanoXLSX.Test.Core.StyleTest
 {
     public class AppendAttributeTest
     {

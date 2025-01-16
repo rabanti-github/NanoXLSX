@@ -5,7 +5,7 @@ using Xunit;
 using static NanoXLSX.Styles.NumberFormat;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
-namespace NanoXLSX.Test.Styles
+namespace NanoXLSX.Test.Core.StyleTest
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]

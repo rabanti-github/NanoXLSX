@@ -6,7 +6,7 @@ using static NanoXLSX.Styles.CellXf;
 using static NanoXLSX.Styles.Font;
 using static NanoXLSX.Styles.NumberFormat;
 
-namespace NanoXLSX.Test.Styles
+namespace NanoXLSX.Test.Core.StyleTest
 {
     public class StyleTest
     {

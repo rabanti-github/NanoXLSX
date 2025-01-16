@@ -4,7 +4,7 @@ using NanoXLSX.Styles;
 using Xunit;
 using static NanoXLSX.Styles.CellXf;
 
-namespace NanoXLSX.Test.Styles
+namespace NanoXLSX.Test.Core.StyleTest
 {
     public class CellXfTest
     {

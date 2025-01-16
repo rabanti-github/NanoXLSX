@@ -1,7 +1,7 @@
 ﻿using NanoXLSX.Utils;
 using Xunit;
 
-namespace NanoXLSX.Test.Utils
+namespace NanoXLSX.Test.Core.UtilsTest
 {
     public class XmlUtilsTest
     {

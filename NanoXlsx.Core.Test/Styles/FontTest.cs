@@ -5,7 +5,7 @@ using Xunit;
 using static NanoXLSX.Styles.Font;
 using static NanoXLSX.Themes.Theme;
 
-namespace NanoXLSX.Test.Styles
+namespace NanoXLSX.Test.Core.StyleTest
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]

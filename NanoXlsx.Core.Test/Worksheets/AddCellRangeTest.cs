@@ -5,7 +5,7 @@ using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using Xunit;
 
-namespace NanoXLSX.Test.Worksheets
+namespace NanoXLSX.Test.Core.WorksheetTest
 {
     public class AddCellRangeTest
     {

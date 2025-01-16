@@ -4,7 +4,7 @@ using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using Xunit;
 
-namespace NanoXLSX.Test
+namespace NanoXLSX.Test.Core.WorkbookTest
 {
     public class ShortenerTest
     {

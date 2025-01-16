@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace NanoXLSX.Test.Cells.Types
+namespace NanoXLSX.Test.Core.Cells.Types
 {
     public class ConvertArrayTest
     {
