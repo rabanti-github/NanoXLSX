@@ -28,6 +28,13 @@ namespace NanoXLSX.LowLevel
     /// <remarks>This class is only for internal use. Use the high level API (e.g. class Workbook) to manipulate data and create Excel files</remarks>
     class XlsxWriter
     {
+        #region constants
+        /// <summary>
+        /// Threshold, using when floats are compared
+        /// </summary>
+        private const float FLOAT_THRESHOLD = 0.0001f;
+        #endregion
+
 
         #region staticFields
         private static DocumentPath WORKBOOK = new DocumentPath("workbook.xml", "xl/");
@@ -823,7 +830,7 @@ namespace NanoXLSX.LowLevel
                 StringBuilder sb = new StringBuilder();
                 foreach (KeyValuePair<int, Column> column in worksheet.Columns)
                 {
-                    if (column.Value.Width == worksheet.DefaultColumnWidth && !column.Value.IsHidden) { continue; }
+                    if (Math.Abs(column.Value.Width - worksheet.DefaultColumnWidth) < FLOAT_THRESHOLD && !column.Value.IsHidden && column.Value.DefaultColumnStyle == null) { continue; }
                     if (worksheet.Columns.ContainsKey(column.Key))
                     {
                         if (worksheet.Columns[column.Key].IsHidden)
@@ -907,19 +914,13 @@ namespace NanoXLSX.LowLevel
             int rowNumber = dynamicRow.RowNumber;
             string height = "";
             string hidden = "";
-            if (worksheet.RowHeights.ContainsKey(rowNumber))
+            if (worksheet.RowHeights.ContainsKey(rowNumber) && Math.Abs(worksheet.RowHeights[rowNumber] - worksheet.DefaultRowHeight) > FLOAT_THRESHOLD)
             {
-                if (worksheet.RowHeights[rowNumber] != worksheet.DefaultRowHeight)
-                {
-                    height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + Utils.GetInternalRowHeight(worksheet.RowHeights[rowNumber]).ToString("G", culture) + "\"";
-                }
+               height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + Utils.GetInternalRowHeight(worksheet.RowHeights[rowNumber]).ToString("G", culture) + "\"";
             }
-            if (worksheet.HiddenRows.ContainsKey(rowNumber))
+            if (worksheet.HiddenRows.ContainsKey(rowNumber) && worksheet.HiddenRows[rowNumber])
             {
-                if (worksheet.HiddenRows[rowNumber])
-                {
-                    hidden = " hidden=\"1\"";
-                }
+               hidden = " hidden=\"1\"";
             }
             StringBuilder sb = new StringBuilder();
             sb.Append("<row r=\"").Append((rowNumber + 1).ToString()).Append("\"").Append(height).Append(hidden).Append(">");

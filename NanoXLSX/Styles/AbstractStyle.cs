@@ -128,7 +128,7 @@ namespace NanoXLSX.Styles
             sb.Append("\"").Append(name).Append("\": ");
             if (value == null)
             {
-                sb.Append("\"\"");
+                sb.Append("__null__");
             }
             else
             {

@@ -11,7 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NanoXLSX.Exceptions;
-using NanoXLSX.LowLevel;
 using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
@@ -1931,11 +1930,7 @@ namespace NanoXLSX
             List<int> columnsToDelete = new List<int>();
             foreach (KeyValuePair<int, Column> col in columns)
             {
-                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_THRESHOLD)
-                {
-                    columnsToDelete.Add(col.Key);
-                }
-                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_THRESHOLD)
+                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_THRESHOLD && col.Value.DefaultColumnStyle == null)
                 {
                     columnsToDelete.Add(col.Key);
                 }

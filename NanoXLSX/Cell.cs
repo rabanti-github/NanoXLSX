@@ -450,7 +450,7 @@ namespace NanoXLSX
             Type t;
             foreach (T item in list)
             {
-                if (item == null)
+                if (object.Equals(item, default(T)))
                 {
                     c = new Cell(null, CellType.EMPTY);
                     output.Add(c);
