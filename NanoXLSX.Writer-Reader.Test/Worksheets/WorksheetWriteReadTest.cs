@@ -151,6 +151,30 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
             Assert.True(Math.Abs(givenWorksheet.DefaultColumnWidth - width) < 0.001);
         }
 
+        [Theory(DisplayName = "Test of the 'DefaultColumnStyle' property when writing and reading a worksheet")]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        public void DefaultColumnStyleTest(int sheetIndex)
+        {
+            Workbook workbook = PrepareWorkbook(4, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (sheetIndex == i)
+                {
+                  
+                    workbook.SetCurrentWorksheet(i);
+                    workbook.CurrentWorksheet.SetColumnWidth(0, 22.5f); // to get column defined
+                    workbook.CurrentWorksheet.SetColumnDefaultStyle(1, BasicStyles.BoldItalic);
+                    workbook.CurrentWorksheet.SetColumnDefaultStyle("C", BasicStyles.BorderFrame);
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+          //  Assert.Null(givenWorksheet.Columns[0].DefaultColumnStyle);
+          // Assert.Equal(givenWorksheet.Columns[1].DefaultColumnStyle.GetHashCode(), BasicStyles.BoldItalic.GetHashCode());
+            Assert.True(BasicStyles.BorderFrame.Equals(givenWorksheet.Columns[2].DefaultColumnStyle));
+        }
+
         [Theory(DisplayName = "Test of the 'DefaultRowHeight' property when writing and reading a worksheet")]
         [InlineData(1f, 0)]
         [InlineData(11f, 0)]

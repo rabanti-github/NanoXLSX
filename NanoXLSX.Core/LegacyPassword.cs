@@ -195,7 +195,7 @@ namespace NanoXLSX
         {
             LegacyPassword pwd = (LegacyPassword)obj;
             return obj is LegacyPassword password &&
-                   Validators.CompareSecureStrings(this.password, password.password) &&
+                   Comparators.CompareSecureStrings(this.password, password.password) &&
                    Type == password.Type &&
                    PasswordHash == password.PasswordHash;
         }

@@ -27,7 +27,7 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <returns>Raw XML string</returns>
-        public virtual string CreateDocument(string currentDocumen = null)
+        public virtual string CreateDocument(string currentDocument = null)
         {
             PreWrite(Workbook);
             StringBuilder sb = new StringBuilder();
@@ -47,7 +47,7 @@ namespace NanoXLSX.Internal.Writers
         }
 
         /// <summary>
-        /// Method that is called before the <see cref="CreateDocument()"/> method is executed. 
+        /// Method that is called before the <see cref="CreateDocument(string)"/> method is executed. 
         /// This virtual method is empty by default and can be overridden by a plug-in package
         /// </summary>
         /// <param name="workbook">Workbook instance that is used in this writer</param>
@@ -57,7 +57,7 @@ namespace NanoXLSX.Internal.Writers
         }
 
         /// <summary>
-        /// Method that is called after the <see cref="CreateDocument()"/> method is executed. 
+        /// Method that is called after the <see cref="CreateDocument(string)"/> method is executed. 
         /// This virtual method is empty by default and can be overridden by a plug-in package
         /// </summary>
         /// <param name="workbook">Workbook instance that is used in this writer</param>

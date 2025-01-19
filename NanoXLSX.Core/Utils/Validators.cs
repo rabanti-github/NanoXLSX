@@ -12,6 +12,12 @@ namespace NanoXLSX.Utils
     /// </summary>
     public static class Validators
     {
+
+        /// <summary>
+        /// Threshold, using when floats are compared
+        /// </summary>
+        private const float FLOAT_THRESHOLD = 0.0001f;
+
         /// <summary>
         /// Validates the passed string, whether it is a valid RGB or ARGB value that can be used for Fills or Fonts
         /// </summary>
@@ -38,63 +44,6 @@ namespace NanoXLSX.Utils
             if (!Regex.IsMatch(hexCode, "[a-fA-F0-9]{6,8}"))
             {
                 throw new StyleException("The expression '" + hexCode + "' is not a valid hex value");
-            }
-        }
-
-        /// <summary>
-        /// Compares whether the content of two  <see cref="SecureString">SecureString</see> instances are equal. The comparison method tries to handle the operation as secure as possible
-        /// </summary>
-        /// <param name="value1">SecureString instance one</param>
-        /// <param name="value2">SecureString instance two</param>
-        /// <returns>True, if the content of the two instance is equal, otherwise false</returns>
-        public static bool CompareSecureStrings(SecureString value1, SecureString value2)
-        {
-            bool v1Empty = false;
-            bool v2Empty = false;
-            if (value1 ==  null || value1.Length == 0)
-            {
-                v1Empty = true;
-            }
-            if (value2 == null || value2.Length == 0)
-            {
-                v2Empty = true;
-            }
-            if (v1Empty && !v2Empty || !v1Empty && v2Empty)
-            {
-                return false;
-            }
-            if (v1Empty && v2Empty)
-            {
-                return true;
-            }
-            IntPtr unmanagedString1 = IntPtr.Zero;
-            IntPtr unmanagedString2 = IntPtr.Zero;
-            try
-            {
-                unmanagedString1 = Marshal.SecureStringToBSTR(value1);
-                unmanagedString2 = Marshal.SecureStringToBSTR(value2);
-                int length1 = Marshal.ReadInt32(unmanagedString1, -4);
-                int length2 = Marshal.ReadInt32(unmanagedString2, -4);
-                if (length1 == length2)
-                {
-                    for (int i = 0; i < length1; ++i)
-                    {
-                        byte byte1 = Marshal.ReadByte(unmanagedString1, i);
-                        byte byte2 = Marshal.ReadByte(unmanagedString2, i);
-                        if (byte1 != byte2) return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-                return true;
-            }
-            finally
-            {
-                // Cleanup
-                if (unmanagedString2 != IntPtr.Zero) Marshal.ZeroFreeBSTR(unmanagedString2);
-                if (unmanagedString1 != IntPtr.Zero) Marshal.ZeroFreeBSTR(unmanagedString1);
             }
         }
     }

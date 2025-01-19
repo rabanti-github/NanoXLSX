@@ -1,4 +1,5 @@
-﻿using NanoXLSX.Utils;
+﻿using System.Security;
+using NanoXLSX.Utils;
 using Xunit;
 
 namespace NanoXLSX.Test.Core.UtilsTest

@@ -31,10 +31,6 @@ namespace NanoXLSX
 
         #region constants
         /// <summary>
-        /// Threshold, using when floats are compared
-        /// </summary>
-        private const float FLOAT_THRESHOLD = 0.0001f;
-        /// <summary>
         /// Maximum number of characters a worksheet name can have
         /// </summary>
         public static readonly int MAX_WORKSHEET_NAME_LENGTH = 31;
@@ -1908,11 +1904,7 @@ namespace NanoXLSX
             List<int> columnsToDelete = new List<int>();
             foreach (KeyValuePair<int, Column> col in columns)
             {
-                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_THRESHOLD)
-                {
-                    columnsToDelete.Add(col.Key);
-                }
-                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Math.Abs(col.Value.Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_THRESHOLD)
+                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Comparators.CompareDimensions(col.Value.Width, DEFAULT_COLUMN_WIDTH) == 0 && col.Value.DefaultColumnStyle == null)
                 {
                     columnsToDelete.Add(col.Key);
                 }
@@ -2131,7 +2123,7 @@ namespace NanoXLSX
                 c.IsHidden = true;
                 columns.Add(columnNumber, c);
             }
-            if (!columns[columnNumber].IsHidden && Math.Abs(columns[columnNumber].Width - DEFAULT_COLUMN_WIDTH) <= FLOAT_THRESHOLD && !columns[columnNumber].HasAutoFilter)
+            if (!columns[columnNumber].IsHidden && Comparators.CompareDimensions(columns[columnNumber].Width, DEFAULT_COLUMN_WIDTH) == 0 && !columns[columnNumber].HasAutoFilter)
             {
                 columns.Remove(columnNumber);
             }
