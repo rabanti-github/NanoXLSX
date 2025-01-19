@@ -667,7 +667,7 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Resolves a color value from an XML node, when a rgb attribute exists.
+        /// Resolves a color value from an XML node, when a rgb attribute exists. If the value is null, the fallback will be returned
         /// </summary>
         /// <param name="node">Node to check.</param>
         /// <param name="fallback">Fallback value if the color could not be resolved.</param>
@@ -677,7 +677,11 @@ namespace NanoXLSX.Internal.Readers
             XmlNode childNode = ReaderUtils.GetChildNode(node, "color");
             if (childNode != null)
             {
-                return ReaderUtils.GetAttribute(childNode, "rgb");
+                string color = ReaderUtils.GetAttribute(childNode, "rgb");
+                if (color != null)
+                {
+                    return color;
+                }
             }
             return fallback;
         }

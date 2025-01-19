@@ -170,8 +170,8 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
                 }
             }
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
-          //  Assert.Null(givenWorksheet.Columns[0].DefaultColumnStyle);
-          // Assert.Equal(givenWorksheet.Columns[1].DefaultColumnStyle.GetHashCode(), BasicStyles.BoldItalic.GetHashCode());
+            Assert.Null(givenWorksheet.Columns[0].DefaultColumnStyle);
+            Assert.Equal(givenWorksheet.Columns[1].DefaultColumnStyle.GetHashCode(), BasicStyles.BoldItalic.GetHashCode());
             Assert.True(BasicStyles.BorderFrame.Equals(givenWorksheet.Columns[2].DefaultColumnStyle));
         }
 
