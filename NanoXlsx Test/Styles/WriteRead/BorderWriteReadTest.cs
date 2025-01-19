@@ -27,7 +27,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData("FFAADD00", 0.5f, true, false)]
         [InlineData("FFDDCC00", true, false, true)]
         [InlineData("FFAACCDD", null, false, false)]
-        [InlineData(null, 22, true, true)]
+        [InlineData("", 22, true, true)]
         public void DiagonalColorTest(string color, object value, bool diagonalUp, bool diagonalDown)
         {
             Style style = new Style();
@@ -49,7 +49,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData("FFAADD00", 0.5f)]
         [InlineData("FFDDCC00", true)]
         [InlineData("FFAACCDD", null)]
-        [InlineData(null, 22)]
+        [InlineData("", 22)]
         public void TopColorTest(string color, object value)
         {
             Style style = new Style();
@@ -68,7 +68,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData("FFAADD00", 0.5f)]
         [InlineData("FFDDCC00", true)]
         [InlineData("FFAACCDD", null)]
-        [InlineData(null, 22)]
+        [InlineData("", 22)]
         public void BottomColorTest(string color, object value)
         {
             Style style = new Style();
@@ -86,7 +86,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData("FFAADD00", 0.5f)]
         [InlineData("FFDDCC00", true)]
         [InlineData("FFAACCDD", null)]
-        [InlineData(null, 22)]
+        [InlineData("", 22)]
         public void LeftColorTest(string color, object value)
         {
             Style style = new Style();
@@ -104,7 +104,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData("FFAADD00", 0.5f)]
         [InlineData("FFDDCC00", true)]
         [InlineData("FFAACCDD", null)]
-        [InlineData(null, 22)]
+        [InlineData("", 22)]
         public void RightColorTest(string color, object value)
         {
             Style style = new Style();

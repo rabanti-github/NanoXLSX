@@ -823,7 +823,7 @@ namespace NanoXLSX.LowLevel
                 StringBuilder sb = new StringBuilder();
                 foreach (KeyValuePair<int, Column> column in worksheet.Columns)
                 {
-                    if (column.Value.Width == worksheet.DefaultColumnWidth && !column.Value.IsHidden) { continue; }
+                    if (column.Value.Width == worksheet.DefaultColumnWidth && !column.Value.IsHidden && column.Value.DefaultColumnStyle == null) { continue; }
                     if (worksheet.Columns.ContainsKey(column.Key))
                     {
                         if (worksheet.Columns[column.Key].IsHidden)
