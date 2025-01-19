@@ -5,7 +5,7 @@
 ---
 Release Date: **19.01.2025**
 
-- Fixed a bug on writing default column widths (not persisted in some cases)
+- Fixed a bug on writing default column styles (not persisted in some cases)
 - Adapted style reader: When a workbook is loaded, not defined color values of Border styles are now empty strings (were null), as if a new style is created 
 - Code maintenance
 
