@@ -1438,7 +1438,7 @@ namespace NanoXLSX
             var upperRow = this.GetRow(rowNumber);
 
             // Identify all cells below the insertion point to adjust their addresses
-            var cellsToChange = this.Cells.Where(c => c.Value.CellAddress2.Row > rowNumber).ToList();
+            List<KeyValuePair<string, Cell>> cellsToChange = this.Cells.Where(c => c.Value.CellAddress2.Row > rowNumber).ToList();
 
             // Make a copy of the cells to be moved and then delete the original cells;
             Dictionary<string, Cell> newCells = new Dictionary<string, Cell>();

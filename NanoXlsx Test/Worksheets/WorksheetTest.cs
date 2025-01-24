@@ -1569,6 +1569,26 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(differentValue, worksheet.Cells["D1"].Value);
         }
 
+        [Fact(DisplayName = "Test of the ReplaceCellValue on an existing occurrence of a DateTime value")]
+        public void ReplaceCellValue_ShouldReplaceAllOccurrences2()
+        {
+            var worksheet = new Worksheet();
+            string oldValue = "oldValue";
+            worksheet.AddCell(oldValue, 0, 0);
+            worksheet.AddCell(oldValue, 1, 0);
+            worksheet.AddCell(oldValue, 2, 0);
+            worksheet.AddCell("differentValue", 3, 0);
+
+            DateTime newValue = new DateTime(2025, 02, 10, 5, 6, 7, DateTimeKind.Utc);
+            int replacedCount = worksheet.ReplaceCellValue(oldValue, newValue);
+
+            Assert.Equal(3, replacedCount);
+            Assert.Equal(newValue, worksheet.Cells["A1"].Value);
+            Assert.Equal(newValue, worksheet.Cells["B1"].Value);
+            Assert.Equal(newValue, worksheet.Cells["C1"].Value);
+            Assert.Equal("differentValue", worksheet.Cells["D1"].Value);
+        }
+
         [Theory(DisplayName = "Test of the ReplaceCellValue when one existing values is to replace")]
         [InlineData("oldValue", "newValue", "differentValue")]
         [InlineData("oldValue", 23, true)]
@@ -1663,7 +1683,24 @@ namespace NanoXLSX_Test.Worksheets
         {
             var worksheet = new Worksheet();
             var cell1 = new Cell("Test1", CellType.STRING, "A1");
-            var cell2 = new Cell(matchingValue, CellType.STRING, "B1");
+            var cell2 = new Cell(matchingValue, CellType.DEFAULT, "B1");
+            worksheet.Cells.Add("A1", cell1);
+            worksheet.Cells.Add("B1", cell2);
+
+            Cell? result = worksheet.FirstCellByValue(matchingValue);
+
+            Assert.NotNull(result);
+            Assert.Equal(matchingValue, ((Cell)result).Value);
+            Assert.Equal("B1", result.CellAddress);
+        }
+
+        [Fact(DisplayName = "Test of the FirstCellByValue when one existing values exists, on a DateTime value")]
+        public void FirstCellByValue_ShouldReturnCorrectCell2()
+        {
+            var worksheet = new Worksheet();
+            var cell1 = new Cell("Test1", CellType.STRING, "A1");
+            DateTime matchingValue = new DateTime(2025, 02, 10, 5, 6, 7, DateTimeKind.Utc);
+            var cell2 = new Cell(matchingValue, CellType.DATE, "B1");
             worksheet.Cells.Add("A1", cell1);
             worksheet.Cells.Add("B1", cell2);
 
@@ -1693,10 +1730,7 @@ namespace NanoXLSX_Test.Worksheets
 
             Assert.Null(result);
         }
-
-
 #nullable disable
-
 
         [Fact(DisplayName = "Test of the InsertRow function")]
         public void TestInsertRow()
@@ -1769,11 +1803,7 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Null(worksheet.Cells["F2"].CellStyle);
             Assert.Null(worksheet.Cells["H3"].CellStyle);
         }
-
-
         #endregion
-
-
 
         public static Worksheet InitWorksheet(Worksheet worksheet, string address, Worksheet.CellDirection direction, Style style = null)
         {
