@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using NanoXLSX.Test.Core.Utils;
@@ -1391,24 +1392,183 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.Contains(range, worksheet.SelectedCells);
         }
 
-        [Theory(DisplayName = "Test of the RemoveSelectedCells function with a range object")]
-        [InlineData("A1:A1", "A1:A1", "")]
-        [InlineData("A1:A1", "B1:B1", "A1")]
-        [InlineData("A1:C3", "A1:C3", "")]
-        [InlineData("B2:C10", "B3:C9", "B2,C2,B10,C10")]
-        [InlineData("B2:C10", "C1:D8", "B2,B3,B4,B5,B6,B7,B8,B9,B10,C9,C10")]
-        [InlineData("A1:C3", "B2:B2", "A1,A2,A3,B1,B3,C1,C2,C3")]
-        public void RemoveSelectedCellsTest(string initialRange, string rangeToRemove, string remainingCells)
+        [Theory(DisplayName = "Test of the AddSelectedCells function with where an initial range already exists")]
+        [InlineData("A1:A1", "A1:A1", "A1:A1")]
+        [InlineData("B2:B2", "A2:A2", "A2:B2")]
+        [InlineData("A2:B2", "A2:A2", "A2:B2")] // merged
+        [InlineData("A2:C4", "F1:F2", "A2:C4,F1:F2")]
+        [InlineData("A2:C4", "B3:D3", "A2:C4,D3:D3")]
+        [InlineData("B2:C2", "A1:D4", "A1:D4")] // merged
+        [InlineData("A2:C4", "B3:D5", "A2:A4,B2:C5,D3:D5")] // merged by columns
+        public void AddSelectedCellsTest5(string initialRangeExpression, string rangeToAddExpression, string expectedRangesExpression)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Empty(worksheet.SelectedCells);
-            Range range = new Range(initialRange);
-            worksheet.AddSelectedCells(range);
-            Assert.NotEmpty(worksheet.SelectedCells);
+            Range initialRange = new Range(initialRangeExpression);
+            worksheet.AddSelectedCells(initialRange);
+            Assert.Contains(initialRange, worksheet.SelectedCells);
+            Range rangeToAdd = new Range(rangeToAddExpression);
+            worksheet.AddSelectedCells(rangeToAdd);
+            List<Range> expectedRanges = expectedRangesExpression
+        .Split(',', StringSplitOptions.RemoveEmptyEntries)
+        .Select(r => new Range(r))
+        .ToList();
+            Assert.Equal(worksheet.SelectedCells.Count, expectedRanges.Count);
+            foreach (Range range in expectedRanges)
+            {
+                Assert.Contains(worksheet.SelectedCells, r => r.ToString() == range.ToString());
+            }
+        }
+
+        [Theory(DisplayName = "Test of the RemoveSelectedCells function with a range object")]
+        [InlineData(null, "A1:A1", "")]
+        [InlineData("A1:A1", "A1:A1", "")]
+        [InlineData("A1:A1", "B1:B1", "A1:A1")]
+        [InlineData("A1:C3", "A1:C3", "")]
+        [InlineData("B2:C10", "B3:C9", "B2:C2,B10:C10")]
+        [InlineData("B2:C10", "C1:D8", "B2:B8,B9:C10")]
+        [InlineData("A1:C3", "B2:B2", "A1:C1,A2:A2,C2:C2,A3:C3")]
+        public void RemoveSelectedCellsTest(string initialRange, string rangeToRemove, string expectedRangesExpression)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Empty(worksheet.SelectedCells);
+            if (initialRange == null)
+            {
+                Assert.Empty(worksheet.SelectedCells);
+            }
+            else
+            {
+                Range range = new Range(initialRange);
+                worksheet.AddSelectedCells(range);
+                Assert.NotEmpty(worksheet.SelectedCells);
+            }
             Range range2 = new Range(rangeToRemove);
             worksheet.RemoveSelectedCells(range2);
-            AssertCellRangeEquality(worksheet.SelectedCells, remainingCells);
+            List<Range> expectedRanges = expectedRangesExpression
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(r => new Range(r))
+            .ToList();
+            Assert.Equal(worksheet.SelectedCells.Count, expectedRanges.Count);
+            foreach (Range expectedRange in expectedRanges)
+            {
+                Assert.Contains(worksheet.SelectedCells, r => r.ToString() == expectedRange.ToString());
+            }
         }
+
+        [Theory(DisplayName = "Test of the RemoveSelectedCells function with a string (address or range)")]
+        [InlineData(null, "A1:A1", "")]
+        [InlineData("A1:A1", "A1:A1", "")]
+        [InlineData("A1:A1", "A1", "")]
+        [InlineData("A1:A1", "B1:B1", "A1:A1")]
+        [InlineData("A1:A1", "B1", "A1:A1")]
+        [InlineData("A1:C3", "A1:C3", "")]
+        [InlineData("A1:C3", "C3", "A1:C2,A3:B3")]
+        [InlineData("A1:A2", "A1", "A2:A2")]
+        [InlineData("B2:C10", "B3:C9", "B2:C2,B10:C10")]
+        [InlineData("B2:C10", "C1:D8", "B2:B8,B9:C10")]
+        [InlineData("A1:C3", "B2:B2", "A1:C1,A2:A2,C2:C2,A3:C3")]
+        [InlineData("A1:C3", "B2", "A1:C1,A2:A2,C2:C2,A3:C3")]
+        public void RemoveSelectedCellsTest2(string initialRange, string rangeOrAddressToRemove, string expectedRangesExpression)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Empty(worksheet.SelectedCells);
+            if (initialRange == null)
+            {
+                Assert.Empty(worksheet.SelectedCells);
+            }
+            else
+            {
+                Range range = new Range(initialRange);
+                worksheet.AddSelectedCells(range);
+                Assert.NotEmpty(worksheet.SelectedCells);
+            }
+            worksheet.RemoveSelectedCells(rangeOrAddressToRemove);
+            List<Range> expectedRanges = expectedRangesExpression
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(r => new Range(r))
+            .ToList();
+            Assert.Equal(worksheet.SelectedCells.Count, expectedRanges.Count);
+            foreach (Range expectedRange in expectedRanges)
+            {
+                Assert.Contains(worksheet.SelectedCells, r => r.ToString() == expectedRange.ToString());
+            }
+        }
+
+        [Theory(DisplayName = "Test of the RemoveSelectedCells function with an address object")]
+        [InlineData(null, "A1", "")]
+        [InlineData("A1:A1", "A1", "")]
+        [InlineData("A1:A1", "B1", "A1:A1")]
+        [InlineData("A1:C3", "C3", "A1:C2,A3:B3")]
+        [InlineData("A1:A2", "A1", "A2:A2")]
+        [InlineData("A1:C3", "B2", "A1:C1,A2:A2,C2:C2,A3:C3")]
+        [InlineData(null, "$A1", "")]
+        [InlineData("A1:A1", "$A$1", "")]
+        [InlineData("A1:A1", "B$1", "A1:A1")]
+        [InlineData("A1:C3", "$B$2", "A1:C1,A2:A2,C2:C2,A3:C3")]
+        public void RemoveSelectedCellsTest3(string initialRange, string addressToRemove, string expectedRangesExpression)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Empty(worksheet.SelectedCells);
+            if (initialRange == null)
+            {
+                Assert.Empty(worksheet.SelectedCells);
+            }
+            else
+            {
+                Range range = new Range(initialRange);
+                worksheet.AddSelectedCells(range);
+                Assert.NotEmpty(worksheet.SelectedCells);
+            }
+            Address address = new Address(addressToRemove);
+            worksheet.RemoveSelectedCells(address);
+            List<Range> expectedRanges = expectedRangesExpression
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(r => new Range(r))
+            .ToList();
+            Assert.Equal(worksheet.SelectedCells.Count, expectedRanges.Count);
+            foreach (Range expectedRange in expectedRanges)
+            {
+                Assert.Contains(worksheet.SelectedCells, r => r.ToString() == expectedRange.ToString());
+            }
+        }
+
+        [Theory(DisplayName = "Test of the RemoveSelectedCells function with a start and end address objects")]
+        [InlineData(null, "A1","A1", "")]
+        [InlineData("A1:A1", "A1", "A1", "")]
+        [InlineData("A1:A1", "B1", "B1", "A1:A1")]
+        [InlineData("A1:C3", "A1", "C3", "")]
+        [InlineData("B2:C10", "B3", "C9", "B2:C2,B10:C10")]
+        [InlineData("B2:C10", "C1", "D8", "B2:B8,B9:C10")]
+        [InlineData("A1:C3", "B2", "B2", "A1:C1,A2:A2,C2:C2,A3:C3")]
+        public void RemoveSelectedCellsTest4(string initialRange, string startAddressExpression, string endAddressExpression, string expectedRangesExpression)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Empty(worksheet.SelectedCells);
+            if (initialRange == null)
+            {
+                Assert.Empty(worksheet.SelectedCells);
+            }
+            else
+            {
+                Range range = new Range(initialRange);
+                worksheet.AddSelectedCells(range);
+                Assert.NotEmpty(worksheet.SelectedCells);
+            }
+            Address startAddress = new Address(startAddressExpression);
+            Address endAddress = new Address(endAddressExpression);
+            worksheet.RemoveSelectedCells(startAddress, endAddress);
+            List<Range> expectedRanges = expectedRangesExpression
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(r => new Range(r))
+            .ToList();
+            Assert.Equal(worksheet.SelectedCells.Count, expectedRanges.Count);
+            foreach (Range expectedRange in expectedRanges)
+            {
+                Assert.Contains(worksheet.SelectedCells, r => r.ToString() == expectedRange.ToString());
+            }
+        }
+
+
 
 
         [Theory(DisplayName = "Test of the SetSheetProtectionPassword function")]
@@ -1835,28 +1995,5 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.Null(worksheet.ActiveStyle);
             Assert.Null(worksheet.ActivePane);
         }
-
-        private void AssertCellRangeEquality(List<Range>givenRages, string expectedCells)
-        {
-            List<string> cellAdddressStrings = TestUtils.SplitValuesAsList(expectedCells);
-            List<Address> expectedAddresses = new List<Address>();
-            foreach(string address in cellAdddressStrings)
-            {
-                expectedAddresses.Add(new Address(address));
-            }
-            List<Address> givenAdresses = new List<Address>();
-            
-            foreach(Range range in givenRages)
-            {
-                givenAdresses.AddRange(range.ResolveEnclosedAddresses());
-            }
-            Assert.Equal(givenAdresses.Count, expectedAddresses.Count);
-            foreach(Address address in givenAdresses)
-            {
-                Assert.Contains(address, expectedAddresses);
-            }
-
-        }
-
     }
 }
