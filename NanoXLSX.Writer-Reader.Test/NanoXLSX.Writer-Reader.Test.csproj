@@ -38,6 +38,7 @@
 	  <None Remove="Resources\invalid_workbook.xlsx" />
 	  <None Remove="Resources\invalid_workbook_sheet-definition.xlsx" />
 	  <None Remove="Resources\invalid_worksheet.xlsx" />
+	  <None Remove="Resources\missing_docProps.xlsx" />
 	  <None Remove="Resources\missing_worksheet.xlsx" />
 	  <None Remove="Resources\new_format.xlsx" />
 	  <None Remove="Resources\omitted_style_refs.xlsx" />
@@ -60,6 +61,7 @@
 	  <EmbeddedResource Include="Resources\invalid_workbook.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_workbook_sheet-definition.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_worksheet.xlsx" />
+	  <EmbeddedResource Include="Resources\missing_docProps.xlsx" />
 	  <EmbeddedResource Include="Resources\missing_worksheet.xlsx" />
 	  <EmbeddedResource Include="Resources\new_format.xlsx" />
 	  <EmbeddedResource Include="Resources\omitted_style_refs.xlsx" />

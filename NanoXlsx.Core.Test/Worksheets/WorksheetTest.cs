@@ -309,6 +309,19 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.False(worksheet.SheetProtectionPassword.PasswordIsSet());
         }
 
+        // Note this test is for coverage. Normally, such a replacement can only be performed by a compatible package internally
+        [Fact(DisplayName = "Internal test of the replacement of a password instance in the SheetProtectionPassword property")]
+        public void SheetProtectionReplacementTest()
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.NotNull(worksheet.SheetProtectionPassword);
+            worksheet.SheetProtectionPassword = null;
+            Assert.Null(worksheet.SheetProtectionPassword);
+            LegacyPassword newInstance = new LegacyPassword(LegacyPassword.PasswordType.WORKSHEET_PROTECTION);
+            worksheet.SheetProtectionPassword = newInstance;
+            Assert.NotNull(worksheet.SheetProtectionPassword);
+        }
+
         [Fact(DisplayName = "Test of the SheetProtectionValues property")]
         public void SheetProtectionValuesTest()
         {
@@ -1174,8 +1187,8 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.Throws<RangeException>(() => worksheet.RemoveMergedCells(range));
         }
 
-        [Fact(DisplayName = "Test of the RemoveSelectedCells function")]
-        public void RemoveSelectedCellsTest()
+        [Fact(DisplayName = "Test of the ClearSelectedCells function")]
+        public void ClearSelectedCellsTest()
         {
             Worksheet worksheet = new Worksheet();
             Assert.Empty(worksheet.SelectedCells);
@@ -1298,66 +1311,105 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         }
 
 
-        [Theory(DisplayName = "Test of the SetSelectedCells function with range objects")]
-        [InlineData("A1:A1")]
-        [InlineData("B2:C10")]
-        [InlineData("A1:A10")]
-        [InlineData("A1:R1")]
-        [InlineData("$A$1:$R$1")]
-        [InlineData("A1:XFD1048575")]
-        public void SetSelectedCellsTest(string addressExpression)
+        [Theory(DisplayName = "Test of the AddSelectedCells function with range objects")]
+        [InlineData("A1:A1", "A1:A1")]
+        [InlineData("B2:C10", "B2:C10")]
+        [InlineData("A1:A10", "A1:A10")]
+        [InlineData("A1:R1", "A1:R1")]
+        [InlineData("$A$1:$R$1", "A1:R1")]
+        [InlineData("A1:XFD1048575", "A1:XFD1048575")]
+        public void AddSelectedCellsTest(string addressExpression, string expectedRangeExpression)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Empty(worksheet.SelectedCells);
             Range range = new Range(addressExpression);
             worksheet.AddSelectedCells(range);
-            Assert.Contains(range, worksheet.SelectedCells);
+            Range expectedRange = new Range(expectedRangeExpression);
+            Assert.Contains(expectedRange, worksheet.SelectedCells);
         }
 
-        [Theory(DisplayName = "Test of the SetSelectedCells function with strings")]
-        [InlineData("A1:A1")]
-        [InlineData("B2:C10")]
-        [InlineData("C10:B5")]
-        [InlineData("A1:A10")]
-        [InlineData("A1:R1")]
-        [InlineData("$A$1:$R$1")]
-        [InlineData("A1:XFD1048575")]
-        [InlineData(null)]
-        public void SetSelectedCellsTest2(string addressExpression)
+        [Theory(DisplayName = "Test of the AddSelectedCells function with strings")]
+        [InlineData("A1:A1", "A1:A1")]
+        [InlineData("B2:C10", "B2:C10")]
+        [InlineData("C10:B5", "C10:B5")]
+        [InlineData("A1:A10", "A1:A10")]
+        [InlineData("A1:R1", "A1:R1")]
+        [InlineData("$A$1:$R$1", "A1:R1")]
+        [InlineData("A1:XFD1048575", "A1:XFD1048575")]
+        [InlineData(null, null)]
+        public void AddSelectedCellsTest2(string addressExpression, string expectedRange)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Empty(worksheet.SelectedCells);
             worksheet.AddSelectedCells(addressExpression);
-            if (addressExpression == null)
+            if (expectedRange == null)
             {
                 Assert.Empty(worksheet.SelectedCells);
             }
             else
             {
-                Range range = new Range(addressExpression);
+                Range range = new Range(expectedRange);
                 Assert.Contains(range, worksheet.SelectedCells);
             }
         }
 
 
-        [Theory(DisplayName = "Test of the SetSelectedCells function with address objects")]
-        [InlineData("A1", "A1")]
-        [InlineData("B2", "C10")]
-        [InlineData("C10", "B5")]
-        [InlineData("A1", "A10")]
-        [InlineData("A1", "R1")]
-        [InlineData("$A$1", "$R$1")]
-        [InlineData("A1", "XFD1048575")]
-        public void SetSelectedCellsTest3(string startAddress, string endAddress)
+        [Theory(DisplayName = "Test of the AddSelectedCells function with address objects")]
+        [InlineData("A1", "A1", "A1:A1")]
+        [InlineData("B2", "C10", "B2:C10")]
+        [InlineData("C10", "B5", "B5:C10")]
+        [InlineData("A1", "A10", "A1:A10")]
+        [InlineData("A1", "R1", "A1:R1")]
+        [InlineData("$A$1", "$R$1", "A1:R1")]
+        [InlineData("A1", "XFD1048575", "A1:XFD1048575")]
+        public void AddSelectedCellsTest3(string startAddress, string endAddress, string expectedRange)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Empty(worksheet.SelectedCells);
             Address start = new Address(startAddress);
             Address end = new Address(endAddress);
-            Range range = new Range(start, end);
+            Range range = new Range(expectedRange);
             worksheet.AddSelectedCells(start, end);
             Assert.Contains(range, worksheet.SelectedCells);
         }
+
+        [Theory(DisplayName = "Test of the AddSelectedCells function with a single address object")]
+        [InlineData("A1", "A1:A1")]
+        [InlineData("B2", "B2:B2")]
+        [InlineData("C10", "C10:C10")]
+        [InlineData("A10", "A10:A10")]
+        [InlineData("A$1", "A1:A1")]
+        [InlineData( "$R$1", "R1:R1")]
+        [InlineData("XFD1048575", "XFD1048575:XFD1048575")]
+        public void AddSelectedCellsTest4(string startAddress, string expectedRange)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Empty(worksheet.SelectedCells);
+            Address address = new Address(startAddress);
+            Range range = new Range(expectedRange);
+            worksheet.AddSelectedCells(address);
+            Assert.Contains(range, worksheet.SelectedCells);
+        }
+
+        [Theory(DisplayName = "Test of the RemoveSelectedCells function with a range object")]
+        [InlineData("A1:A1", "A1:A1", "")]
+        [InlineData("A1:A1", "B1:B1", "A1")]
+        [InlineData("A1:C3", "A1:C3", "")]
+        [InlineData("B2:C10", "B3:C9", "B2,C2,B10,C10")]
+        [InlineData("B2:C10", "C1:D8", "B2,B3,B4,B5,B6,B7,B8,B9,B10,C9,C10")]
+        [InlineData("A1:C3", "B2:B2", "A1,A2,A3,B1,B3,C1,C2,C3")]
+        public void RemoveSelectedCellsTest(string initialRange, string rangeToRemove, string remainingCells)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Empty(worksheet.SelectedCells);
+            Range range = new Range(initialRange);
+            worksheet.AddSelectedCells(range);
+            Assert.NotEmpty(worksheet.SelectedCells);
+            Range range2 = new Range(rangeToRemove);
+            worksheet.RemoveSelectedCells(range2);
+            AssertCellRangeEquality(worksheet.SelectedCells, remainingCells);
+        }
+
 
         [Theory(DisplayName = "Test of the SetSheetProtectionPassword function")]
         [InlineData(null, null, false)]
@@ -1486,6 +1538,26 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.Equal(differentValue, worksheet.Cells["D1"].Value);
         }
 
+        [Fact(DisplayName = "Test of the ReplaceCellValue on an existing occurrence of a DateTime value")]
+        public void ReplaceCellValue_ShouldReplaceAllOccurrences2()
+        {
+            var worksheet = new Worksheet();
+            string oldValue = "oldValue";
+            worksheet.AddCell(oldValue, 0, 0);
+            worksheet.AddCell(oldValue, 1, 0);
+            worksheet.AddCell(oldValue, 2, 0);
+            worksheet.AddCell("differentValue", 3, 0);
+
+            DateTime newValue = new DateTime(2025,2,10,5,6,7,DateTimeKind.Utc);
+            int replacedCount = worksheet.ReplaceCellValue(oldValue, newValue);
+
+            Assert.Equal(3, replacedCount);
+            Assert.Equal(newValue, worksheet.Cells["A1"].Value);
+            Assert.Equal(newValue, worksheet.Cells["B1"].Value);
+            Assert.Equal(newValue, worksheet.Cells["C1"].Value);
+            Assert.Equal("differentValue", worksheet.Cells["D1"].Value);
+        }
+
         [Theory(DisplayName = "Test of the ReplaceCellValue when one existing values is to replace")]
         [InlineData("oldValue", "newValue", "differentValue")]
         [InlineData("oldValue", 23, true)]
@@ -1580,7 +1652,24 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             var worksheet = new Worksheet();
             var cell1 = new Cell("Test1", CellType.STRING, "A1");
-            var cell2 = new Cell(matchingValue, CellType.STRING, "B1");
+            var cell2 = new Cell(matchingValue, CellType.DEFAULT, "B1");
+            worksheet.Cells.Add("A1", cell1);
+            worksheet.Cells.Add("B1", cell2);
+
+            Cell? result = worksheet.FirstCellByValue(matchingValue);
+
+            Assert.NotNull(result);
+            Assert.Equal(matchingValue, ((Cell)result).Value);
+            Assert.Equal("B1", result.CellAddress);
+        }
+
+        [Fact(DisplayName = "Test of the FirstCellByValue when one existing values exists, on a DateTime value")]
+        public void FirstCellByValue_ShouldReturnCorrectCell2()
+        {
+            var worksheet = new Worksheet();
+            var cell1 = new Cell("Test1", CellType.STRING, "A1");
+            DateTime matchingValue = new DateTime(2025, 02, 10, 5, 6, 7, DateTimeKind.Utc);
+            var cell2 = new Cell(matchingValue, CellType.DATE, "B1");
             worksheet.Cells.Add("A1", cell1);
             worksheet.Cells.Add("B1", cell2);
 
@@ -1745,6 +1834,28 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.Empty(worksheet.Columns);
             Assert.Null(worksheet.ActiveStyle);
             Assert.Null(worksheet.ActivePane);
+        }
+
+        private void AssertCellRangeEquality(List<Range>givenRages, string expectedCells)
+        {
+            List<string> cellAdddressStrings = TestUtils.SplitValuesAsList(expectedCells);
+            List<Address> expectedAddresses = new List<Address>();
+            foreach(string address in cellAdddressStrings)
+            {
+                expectedAddresses.Add(new Address(address));
+            }
+            List<Address> givenAdresses = new List<Address>();
+            
+            foreach(Range range in givenRages)
+            {
+                givenAdresses.AddRange(range.ResolveEnclosedAddresses());
+            }
+            Assert.Equal(givenAdresses.Count, expectedAddresses.Count);
+            foreach(Address address in givenAdresses)
+            {
+                Assert.Contains(address, expectedAddresses);
+            }
+
         }
 
     }

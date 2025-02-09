@@ -80,7 +80,7 @@ namespace NanoXLSX.Utils
         /// <param name="dimension1">Nullable dimension 1</param>
         /// <param name="dimension2">Nullable dimension 2</param>
         /// <returns>1, if dimension1 is greater than dimension2, -1 if dimension1 is smaller than dimension2, 0 if both values are equal</returns>
-        /// <remarks>If dimenasion1 is null, -1 will be returned, if dimension2 is null, 1 will be returned. For the equality, a threshold value will be used</remarks>
+        /// \remark <remarks>If dimension1 is null, -1 will be returned, if dimension2 is null, 1 will be returned. For the equality, a threshold value will be used</remarks>
         public static int CompareDimensions(float? dimension1, float? dimension2)
         {
             if (dimension1 == null)

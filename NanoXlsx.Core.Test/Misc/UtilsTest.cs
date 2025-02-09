@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using NanoXLSX.Utils;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
@@ -256,5 +258,71 @@ namespace NanoXLSX.Test.Core.MiscTest
             DateTime date = DataUtils.GetDateFromOA(givenValue);
             Assert.Equal(expectedDate, date);
         }
+
+        [Fact]
+        public void ClusterTestTemp()
+        {
+            List<Range> ranges = new List<Range>();
+            Range r1 = new Range("B4:C7");
+            Range r1b = new Range("E5:F10");
+            ranges.Add(r1);
+            ranges.Add(r1b);
+            Range r2 = new Range("C6:E8");
+            var result = DataUtils.SubtractRange(ranges, r2);
+            int i = 0;
+        }
+
+        [Theory(DisplayName = "Test of the MergeRange function")]
+        [InlineData("A2:A2", "A2:A2", DataUtils.RangeMergeStrategy.MergeColumns, "A2:A2")]
+        [InlineData("A2:A2", "A5:A6", DataUtils.RangeMergeStrategy.MergeColumns, "A2:A2,A5:A6")]
+        [InlineData("B2:B3", "B5:B6", DataUtils.RangeMergeStrategy.MergeColumns, "B2:B3,B5:B6")]
+        [InlineData("B2:B4", "B5:B6", DataUtils.RangeMergeStrategy.MergeColumns, "B2:B6")]
+        [InlineData("B2:C2", "D2:E2", DataUtils.RangeMergeStrategy.MergeColumns, "B2:E2")] //  Strategy leads to same result, since both ranges are contiguous and rectangular
+        [InlineData("B5:B6", "B2:B4", DataUtils.RangeMergeStrategy.MergeColumns, "B2:B6")]
+        [InlineData("D2:E2", "B2:C2", DataUtils.RangeMergeStrategy.MergeColumns, "B2:E2")] //  Strategy leads to same result, since both ranges are contiguous and rectangular
+        [InlineData("B2:C5", "C4:D6", DataUtils.RangeMergeStrategy.MergeColumns, "B2:B5,C2:C6,D4:D6")]
+        [InlineData("B2:C5,E2:F2", "C4:D6", DataUtils.RangeMergeStrategy.MergeColumns, "B2:B5,C2:C6,D4:D6,E2:F2")]
+        [InlineData("B2:C5,E3:F4", "C4:E6", DataUtils.RangeMergeStrategy.MergeColumns, "B2:B5,C2:C6,D4:D6,E3:E6,F3:F4")]
+        [InlineData("A2:A2", "A2:A2", DataUtils.RangeMergeStrategy.MergeRows, "A2:A2")]
+        [InlineData("A2:A2", "A5:A6", DataUtils.RangeMergeStrategy.MergeRows, "A2:A2,A5:A6")]
+        [InlineData("B2:B3", "B5:B6", DataUtils.RangeMergeStrategy.MergeRows, "B2:B3,B5:B6")]
+        [InlineData("B2:B4", "B5:B6", DataUtils.RangeMergeStrategy.MergeRows, "B2:B6")] //  Strategy leads to same result, since both ranges are contiguous and rectangular   
+        [InlineData("B2:C2", "D2:E2", DataUtils.RangeMergeStrategy.MergeRows, "B2:E2")]
+        [InlineData("B5:B6", "B2:B4", DataUtils.RangeMergeStrategy.MergeRows, "B2:B6")] //  Strategy leads to same result, since both ranges are contiguous and rectangular   
+        [InlineData("D2:E2", "B2:C2", DataUtils.RangeMergeStrategy.MergeRows, "B2:E2")]
+        [InlineData("B2:C5", "C4:D6", DataUtils.RangeMergeStrategy.MergeRows, "B2:C3,B4:D5,C6:D6")]
+        [InlineData("B2:C5,E2:F2", "C4:D6", DataUtils.RangeMergeStrategy.MergeRows, "B2:C3,B4:D5,C6:D6,E2:F2")]
+        [InlineData("B2:C5,E3:F4", "C4:E6", DataUtils.RangeMergeStrategy.MergeRows, "B2:C3,B4:F4,B5:E5,C6:E6,E3:F3")]
+        [InlineData("A2:A2", "A2:A2", DataUtils.RangeMergeStrategy.NoMerge, "A2:A2")]
+        [InlineData("A2:A2", "A5:A6", DataUtils.RangeMergeStrategy.NoMerge, "A2:A2,A5:A6")]
+        [InlineData("B2:B3", "B5:B6", DataUtils.RangeMergeStrategy.NoMerge, "B2:B3,B5:B6")]
+        [InlineData("B2:B4", "B5:B6", DataUtils.RangeMergeStrategy.NoMerge, "B2:B4,B5:B6")]
+        [InlineData("B2:C2", "D2:E2", DataUtils.RangeMergeStrategy.NoMerge, "B2:C2,D2:E2")]
+        [InlineData("B5:B6", "B2:B4", DataUtils.RangeMergeStrategy.NoMerge, "B2:B4,B5:B6")]
+        [InlineData("D2:E2", "B2:C2", DataUtils.RangeMergeStrategy.NoMerge, "B2:C2,D2:E2")]
+        [InlineData("B2:C5", "C4:D6", DataUtils.RangeMergeStrategy.NoMerge, "B2:B3,C2:C3,B4:B5,C4:C5,D4:D5,C6:C6,D6:D6")]
+        public void MergeRangeTest(string givenRangesString, string rangeToAddString, DataUtils.RangeMergeStrategy mergeStrategy, string expectedRangesString)
+        {
+            List<Range> givenRanges = givenRangesString
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(r => new Range(r))
+                    .ToList();
+
+            Range rangeToAdd = new Range(rangeToAddString);
+            
+            List<Range> expectedRanges = expectedRangesString
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(range => new Range(range))
+                .ToList();
+
+            IReadOnlyList<Range> resultRanges = DataUtils.MergeRange(givenRanges, rangeToAdd, mergeStrategy);
+
+            Assert.Equal(resultRanges.Count, expectedRanges.Count);
+            foreach (Range range in expectedRanges)
+            {
+                Assert.Contains(resultRanges, r => r.ToString() == range.ToString());
+            }
+        }
+
     }
 }

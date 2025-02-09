@@ -50,7 +50,7 @@ namespace NanoXLSX.Internal.Readers
 
         #region methods
         /// <summary>
-        /// Reads the XML file form the passed stream and processes the Core section
+        /// Reads the XML file form the passed stream and processes the Core section. The existence of the stream should be checked previously
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
         /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
@@ -58,11 +58,6 @@ namespace NanoXLSX.Internal.Readers
         public virtual void Read(MemoryStream stream)
         {
             PreRead(stream);
-            if (stream == null)
-            {
-                // No metadata available in xlsx file
-                return;
-            }
             try
             {
                 using (stream) // Close after processing

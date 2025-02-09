@@ -114,7 +114,7 @@ namespace NanoXLSX
         /// <summary>
         /// Password instance of the protected workbook. If a password was set, the pain text representation and the hash can be read from the instance
         /// </summary>
-        /// \remark <remarks>The password of this property is stored in plan text at runtime but not stored to a workbook. The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused, 
+        /// \remark <remarks>The password of this property is stored in plain text at runtime but not stored to a workbook. The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused, 
         /// if no changes are made in the area of workbook protection (<see cref="SetWorkbookProtection(bool, bool, bool, string)"/>)</remarks>
         public virtual IPassword WorkbookProtectionPassword { get { return workbookProtectionPassword; } internal set => workbookProtectionPassword = value; }
 

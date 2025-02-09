@@ -324,7 +324,7 @@ namespace NanoXLSX
         /// <summary>
         /// Password instance of the worksheet protection. If a password was set, the pain text representation and the hash can be read from the instance
         /// </summary>
-        /// \remark <remarks>The password of this property is stored in plan text at runtime but not stored to a worksheet. The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused</remarks>
+        /// \remark <remarks>The password of this property is stored in plain text at runtime but not stored to a worksheet. The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused</remarks>
         public virtual IPassword SheetProtectionPassword
         {
             get { return sheetProtectionPassword; }
@@ -1890,10 +1890,7 @@ namespace NanoXLSX
                     columns[i].HasAutoFilter = true;
                 }
             }
-            Range temp = new Range();
-            temp.StartAddress = new Address(start, 0);
-            temp.EndAddress = new Address(end, endRow);
-            autoFilterRange = temp;
+            autoFilterRange = new Range(start, 0, end, endRow);
         }
 
         /// <summary>
@@ -2255,10 +2252,7 @@ namespace NanoXLSX
         /// <param name="range">Cell range to add</param>
         public void AddSelectedCells(Range range)
         {
-            if (!selectedCells.Contains(range))
-            {
-                selectedCells.Add(range);
-            }
+            selectedCells = DataUtils.MergeRange(selectedCells, range).ToList();
         }
 
         /// <summary>
@@ -2302,19 +2296,13 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Removes the given range from the selected cell ranges of this worksheet, if existing
+        /// Removes the given range from the selected cell ranges of this worksheet, if existing.
+        /// If the passed range is overlapping the ranges of the selected cells, only the intersecting addresses will be removed
         /// </summary>
         /// <param name="range">Range to remove</param>
         public void RemoveSelectedCells(Range range)
         {
-            for (int i = selectedCells.Count - 1; i > 0; i--)
-            {
-                if (selectedCells[i] == range)
-                {
-                    SelectedCells.RemoveAt(i);
-                    break;
-                }
-            }
+            selectedCells = DataUtils.SubtractRange(selectedCells, range).ToList();
         }
 
         /// <summary>

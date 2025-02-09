@@ -6,6 +6,8 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NanoXLSX
 {
@@ -14,19 +16,23 @@ namespace NanoXLSX
     /// </summary>
     public struct Address : IEquatable<Address>, IComparable<Address>
     {
+        private readonly int column;
+        private readonly int row;
+        private readonly Cell.AddressType type;
+
         /// <summary>
         /// Column number (zero based)
         /// </summary>
-        public int Column;
+        public int Column { get => column; }
         /// <summary>
         /// Row number (zero based)
         /// </summary>
-        public int Row;
+        public int Row { get => row; }
 
         /// <summary>
         /// Referencing type of the address
         /// </summary>
-        public Cell.AddressType Type;
+        public Cell.AddressType Type { get => type; }
 
         /// <summary>
         /// Constructor with row and column as arguments.  The referencing type of the address is default (e.g. 'C20')
@@ -48,9 +54,9 @@ namespace NanoXLSX
         {
             Cell.ValidateColumnNumber(column);
             Cell.ValidateRowNumber(row);
-            Column = column;
-            Row = row;
-            Type = type;
+            this.column = column;
+            this.row = row;
+            this.type = type;
         }
 
         /// <summary>
@@ -59,7 +65,7 @@ namespace NanoXLSX
         /// <param name="address">Address string (e.g. '$B$12')</param>
         public Address(string address)
         {
-            Cell.ResolveCellCoordinate(address, out Column, out Row, out Type);
+            Cell.ResolveCellCoordinate(address, out this.column, out this.row, out this.type);
         }
 
         /// <summary>
@@ -69,8 +75,8 @@ namespace NanoXLSX
         /// <param name="type">Referencing type of the address</param>
         public Address(string address, Cell.AddressType type)
         {
-            Type = type;
-            Cell.ResolveCellCoordinate(address, out Column, out Row);
+            this.type = type;
+            Cell.ResolveCellCoordinate(address, out this.column, out this.row);
         }
 
         /// <summary>

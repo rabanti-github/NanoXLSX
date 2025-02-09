@@ -373,10 +373,16 @@ namespace NanoXLSX.Internal.Readers
 
             metadataAppReader = new MetadataAppReader();
             ms = GetEntryStream("docProps/app.xml", zf);
-            metadataAppReader.Read(ms);
+            if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/app.xml seems to be defined 
+            {
+                metadataAppReader.Read(ms);
+            }
             metadataCoreReader = new MetadataCoreReader();
             ms = GetEntryStream("docProps/core.xml", zf);
-            metadataCoreReader.Read(ms);
+            if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/core.xml seems to be defined 
+            {
+                metadataCoreReader.Read(ms);
+            }
 
             RelationshipReader relationships = new RelationshipReader();
             relationships.Read(GetEntryStream("xl/_rels/workbook.xml.rels", zf));

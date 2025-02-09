@@ -36,6 +36,16 @@ namespace NanoXLSX.Test.Core.CellTest
             Assert.Equal(expectedRange, range.ToString());
         }
 
+        [Theory(DisplayName = "Test of the Range constructor with column and row numbers")]
+        [InlineData(0,0,0,0, "A1:A1")]
+        [InlineData(0, 0, 1, 1, "A1:B2")]
+        [InlineData(1, 1, 0, 0, "A1:B2")]
+        public void ConstructorTest3(int startColumn, int startRow, int endColumn, int endRow, string expectedRange)
+        {
+            NanoXLSX.Range range = new NanoXLSX.Range(startColumn, startRow, endColumn, endRow);
+            Assert.Equal(expectedRange, range.ToString());
+        }
+
         [Theory(DisplayName = "Test of the ResolveEnclosedAddressesTest method")]
         [InlineData("A1:A1", "A1")]
         [InlineData("A1:A4", "A1,A2,A3,A4")]

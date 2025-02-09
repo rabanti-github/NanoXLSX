@@ -182,19 +182,13 @@ namespace NanoXLSX.Internal.Writers
             int rowNumber = dynamicRow.RowNumber;
             string height = "";
             string hidden = "";
-            if (worksheet.RowHeights.ContainsKey(rowNumber))
+            if (worksheet.RowHeights.ContainsKey(rowNumber) && Comparators.CompareDimensions(worksheet.RowHeights[rowNumber], worksheet.DefaultRowHeight) != 0)
             {
-                if (worksheet.RowHeights[rowNumber] != worksheet.DefaultRowHeight)
-                {
-                    height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + ParserUtils.ToString(DataUtils.GetInternalRowHeight(worksheet.RowHeights[rowNumber])) + "\"";
-                }
+                height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + ParserUtils.ToString(DataUtils.GetInternalRowHeight(worksheet.RowHeights[rowNumber])) + "\"";
             }
-            if (worksheet.HiddenRows.ContainsKey(rowNumber))
+            if (worksheet.HiddenRows.ContainsKey(rowNumber) && worksheet.HiddenRows[rowNumber])
             {
-                if (worksheet.HiddenRows[rowNumber])
-                {
-                    hidden = " hidden=\"1\"";
-                }
+                hidden = " hidden=\"1\"";
             }
             StringBuilder sb = new StringBuilder();
             sb.Append("<row r=\"").Append((rowNumber + 1).ToString()).Append("\"").Append(height).Append(hidden).Append(">");

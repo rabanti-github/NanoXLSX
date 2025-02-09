@@ -453,7 +453,7 @@ namespace NanoXLSX
             Type t;
             foreach (T item in list)
             {
-                if (item == null)
+                if (item == null) // DO NOT LISTEN to code suggestions! This is wrong for bool: if (object.Equals(item, default(T)))
                 {
                     c = new Cell(null, CellType.EMPTY);
                     output.Add(c);
