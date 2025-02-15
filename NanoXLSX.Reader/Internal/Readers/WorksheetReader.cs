@@ -430,11 +430,6 @@ namespace NanoXLSX.Internal.Readers
                 ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectUnlockedCells);
                 ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.sort);
                 this.PasswordReader.ReadXmlAttributes(sheetProtectionNode);
-              //  string legacyPasswordHash = ReaderUtils.GetAttribute(sheetProtectionNode, "password");
-               // if (legacyPasswordHash != null)
-               // {
-              //      this.WorksheetProtectionHash = legacyPasswordHash;
-               // }
             }
         }
 

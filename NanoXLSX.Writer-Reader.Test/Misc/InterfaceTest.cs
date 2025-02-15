@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using NanoXLSX;
+using NanoXLSX.Internal.Readers;
 using NanoXLSX.Internal.Structures;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
@@ -60,7 +62,7 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
         }
 
         [Fact(DisplayName = "Test of the accurate handling of strings if a PlainText was passed as cell value")]
-        public void InvokePlainTextValuetest()
+        public void InvokePlainTextValueTest()
         {
             Workbook workbook = new Workbook("worksheet");
             PlainText plainText = new PlainText("test1");
@@ -68,6 +70,34 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             Assert.Equal(Cell.CellType.STRING, givenWorkbook.CurrentWorksheet.Cells["A1"].DataType);
             Assert.Equal("test1", givenWorkbook.CurrentWorksheet.Cells["A1"].Value.ToString());
+        }
+
+        [Theory(DisplayName = "Test of the failing attempt of accessing CopyFrom of LegacyPasswordReader (for code coverage)")]
+        [InlineData(LegacyPasswordReader.PasswordType.WORKBOOK_PROTECTION)]
+        [InlineData(LegacyPasswordReader.PasswordType.WORKSHEET_PROTECTION)]
+        public void FailingLegacyPasswordReaderCopyFromTest(LegacyPasswordReader.PasswordType type)
+        {
+            LegacyPasswordReader reader = new LegacyPasswordReader(type);
+            LegacyPasswordReader reader2 = new LegacyPasswordReader(type);
+            Assert.Throws<NotImplementedException>(() => reader.CopyFrom(reader2));
+        }
+
+        [Theory(DisplayName = "Test of the failing attempt of accessing SetPassword of LegacyPasswordReader (for code coverage)")]
+        [InlineData(LegacyPasswordReader.PasswordType.WORKBOOK_PROTECTION)]
+        [InlineData(LegacyPasswordReader.PasswordType.WORKSHEET_PROTECTION)]
+        public void FailingLegacyPasswordReaderSetPasswordTest(LegacyPasswordReader.PasswordType type)
+        {
+            LegacyPasswordReader reader = new LegacyPasswordReader(type);
+            Assert.Throws<NotImplementedException>(() => reader.SetPassword("test"));
+        }
+
+        [Theory(DisplayName = "Test of the failing attempt of accessing UnsetPassword of LegacyPasswordReader (for code coverage)")]
+        [InlineData(LegacyPasswordReader.PasswordType.WORKBOOK_PROTECTION)]
+        [InlineData(LegacyPasswordReader.PasswordType.WORKSHEET_PROTECTION)]
+        public void FailingLegacyPasswordReaderUnsetPasswordTest(LegacyPasswordReader.PasswordType type)
+        {
+            LegacyPasswordReader reader = new LegacyPasswordReader(type);
+            Assert.Throws<NotImplementedException>(() => reader.UnsetPassword());
         }
 
 

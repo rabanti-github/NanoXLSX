@@ -1426,8 +1426,8 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("A1:A1", "B1:B1", "A1:A1")]
         [InlineData("A1:C3", "A1:C3", "")]
         [InlineData("B2:C10", "B3:C9", "B2:C2,B10:C10")]
-        [InlineData("B2:C10", "C1:D8", "B2:B8,B9:C10")]
-        [InlineData("A1:C3", "B2:B2", "A1:C1,A2:A2,C2:C2,A3:C3")]
+        [InlineData("B2:C10", "C1:D8", "B2:B10,C9:C10")]
+        [InlineData("A1:C3", "B2:B2", "A1:A3,B1:B1,B3:B3,C1:C3")]
         public void RemoveSelectedCellsTest(string initialRange, string rangeToRemove, string expectedRangesExpression)
         {
             Worksheet worksheet = new Worksheet();
@@ -1462,12 +1462,12 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("A1:A1", "B1:B1", "A1:A1")]
         [InlineData("A1:A1", "B1", "A1:A1")]
         [InlineData("A1:C3", "A1:C3", "")]
-        [InlineData("A1:C3", "C3", "A1:C2,A3:B3")]
+        [InlineData("A1:C3", "C3", "A1:B3,C1:C2")]
         [InlineData("A1:A2", "A1", "A2:A2")]
         [InlineData("B2:C10", "B3:C9", "B2:C2,B10:C10")]
-        [InlineData("B2:C10", "C1:D8", "B2:B8,B9:C10")]
-        [InlineData("A1:C3", "B2:B2", "A1:C1,A2:A2,C2:C2,A3:C3")]
-        [InlineData("A1:C3", "B2", "A1:C1,A2:A2,C2:C2,A3:C3")]
+        [InlineData("B2:C10", "C1:D8", "B2:B10,C9:C10")]
+        [InlineData("A1:C3", "B2:B2", "A1:A3,B1:B1,B3:B3,C1:C3")]
+        [InlineData("A1:C3", "B2", "A1:A3,B1:B1,B3:B3,C1:C3")]
         public void RemoveSelectedCellsTest2(string initialRange, string rangeOrAddressToRemove, string expectedRangesExpression)
         {
             Worksheet worksheet = new Worksheet();
@@ -1498,13 +1498,13 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData(null, "A1", "")]
         [InlineData("A1:A1", "A1", "")]
         [InlineData("A1:A1", "B1", "A1:A1")]
-        [InlineData("A1:C3", "C3", "A1:C2,A3:B3")]
+        [InlineData("A1:C3", "C3", "A1:B3,C1:C2")]
         [InlineData("A1:A2", "A1", "A2:A2")]
-        [InlineData("A1:C3", "B2", "A1:C1,A2:A2,C2:C2,A3:C3")]
+        [InlineData("A1:C3", "B2", "A1:A3,B1:B1,B3:B3,C1:C3")]
         [InlineData(null, "$A1", "")]
         [InlineData("A1:A1", "$A$1", "")]
         [InlineData("A1:A1", "B$1", "A1:A1")]
-        [InlineData("A1:C3", "$B$2", "A1:C1,A2:A2,C2:C2,A3:C3")]
+        [InlineData("A1:C3", "$B$2", "A1:A3,B1:B1,B3:B3,C1:C3")]
         public void RemoveSelectedCellsTest3(string initialRange, string addressToRemove, string expectedRangesExpression)
         {
             Worksheet worksheet = new Worksheet();
@@ -1538,8 +1538,8 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("A1:A1", "B1", "B1", "A1:A1")]
         [InlineData("A1:C3", "A1", "C3", "")]
         [InlineData("B2:C10", "B3", "C9", "B2:C2,B10:C10")]
-        [InlineData("B2:C10", "C1", "D8", "B2:B8,B9:C10")]
-        [InlineData("A1:C3", "B2", "B2", "A1:C1,A2:A2,C2:C2,A3:C3")]
+        [InlineData("B2:C10", "C1", "D8", "B2:B10,C9:C10")]
+        [InlineData("A1:C3", "B2", "B2", "A1:A3,B1:B1,B3:B3,C1:C3")]
         public void RemoveSelectedCellsTest4(string initialRange, string startAddressExpression, string endAddressExpression, string expectedRangesExpression)
         {
             Worksheet worksheet = new Worksheet();

@@ -13,7 +13,7 @@ using NanoXLSX.Utils;
 namespace NanoXLSX.Internal.Structures
 {
     /// <summary>
-    /// Class to wrap unformatted strings as formattable text for the stared string table 
+    /// Class to wrap unformatted strings as formattable text for the shared string table 
     /// </summary>
     /// \remark <remarks>This class is only for internal use. Use the high level API (e.g. class Workbook) to manipulate data and create Excel files</remarks>
     public class PlainText : IFormattableText

@@ -1,13 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿/*
+ * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
+ * Copyright Raphael Stoeckli © 2025
+ * This library is licensed under the MIT License.
+ * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
+ */
+
+using System;
 using System.Xml;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Reader;
 
 namespace NanoXLSX.Internal.Readers
 {
+     /// <summary>
+     /// Class representing a reader for legacy passwords
+     /// </summary>
     public class LegacyPasswordReader : IPasswordReader
     {
         /// <summary>
@@ -27,6 +34,9 @@ namespace NanoXLSX.Internal.Readers
 
         private string passwordHash = null;
 
+        /// <summary>
+        /// Gets whether a contemporary password algorithm was detected (not supported by core functionality)
+        /// </summary>
         public bool ContemporaryAlgorithmDetected { get; private set; }
 
         /// <summary>
@@ -52,6 +62,11 @@ namespace NanoXLSX.Internal.Readers
             this.Type = type;
         }
 
+        /// <summary>
+        /// Not relevant for the reader (inherited from <see cref="IPassword"/>)
+        /// </summary>
+        /// <param name="passwordInstance">Source instance</param>
+        /// <exception cref="NotImplementedException">Throws a NotImplementedException if called in any case</exception>
         public void CopyFrom(IPassword passwordInstance)
         {
             throw new NotImplementedException();
@@ -64,12 +79,20 @@ namespace NanoXLSX.Internal.Readers
 
         public bool PasswordIsSet()
         {
-            return passwordHash != null;
+            return passwordHash != null || ContemporaryAlgorithmDetected;
         }
 
         public void ReadXmlAttributes(XmlNode node)
         {
-            string attribute = ReaderUtils.GetAttribute(node, "algorithmName");
+            string attribute = null;
+            if (Type == PasswordType.WORKBOOK_PROTECTION)
+            {
+                attribute = ReaderUtils.GetAttribute(node, "workbookAlgorithmName");
+            }
+            else
+            {
+                attribute = ReaderUtils.GetAttribute(node, "algorithmName");
+            }
             if (attribute != null)
             {
                 this.ContemporaryAlgorithmDetected = true;
@@ -80,7 +103,7 @@ namespace NanoXLSX.Internal.Readers
                 attribute = ReaderUtils.GetAttribute(node, "workbookPassword");
                 if (attribute != null)
                 {
-                    this.passwordHash = attribute;
+                    this.PasswordHash = attribute;
                 }
             }
             else
@@ -88,16 +111,25 @@ namespace NanoXLSX.Internal.Readers
                 attribute = ReaderUtils.GetAttribute(node, "password");
                 if (attribute != null)
                 {
-                    this.passwordHash = attribute;
+                    this.PasswordHash = attribute;
                 }
             }
         }
 
+        /// <summary>
+        /// Not relevant for the reader (inherited from <see cref="IPassword"/>)
+        /// </summary>
+        /// <param name="plainText"></param>
+        /// <exception cref="NotImplementedException">Throws a NotImplementedException if called in any case</exception>
         public void SetPassword(string plainText)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Not relevant for the reader (inherited from <see cref="IPassword"/>)
+        /// </summary>
+        /// <exception cref="NotImplementedException">Throws a NotImplementedException if called in any case</exception>
         public void UnsetPassword()
         {
             throw new NotImplementedException();

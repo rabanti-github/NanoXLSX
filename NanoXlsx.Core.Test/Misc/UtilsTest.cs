@@ -324,5 +324,73 @@ namespace NanoXLSX.Test.Core.MiscTest
             }
         }
 
+
+        [Theory(DisplayName = "Test of the SubtractRange function")]
+        [InlineData("B5:C6", "A2:B3", DataUtils.RangeMergeStrategy.MergeColumns, "B5:C6")]
+        [InlineData("A2:A2", "A2:A2", DataUtils.RangeMergeStrategy.MergeColumns, "")]
+        [InlineData("B3:D5", "A2:E6", DataUtils.RangeMergeStrategy.MergeColumns, "")]
+        [InlineData("A2:A2", "A5:A6", DataUtils.RangeMergeStrategy.MergeColumns, "A2:A2")]
+        [InlineData("B2:B5", "B4:B6", DataUtils.RangeMergeStrategy.MergeColumns, "B2:B3")]
+        [InlineData("B4:B7", "B2:B5", DataUtils.RangeMergeStrategy.MergeColumns, "B6:B7")]
+        [InlineData("B2:B7", "A3:C4", DataUtils.RangeMergeStrategy.MergeColumns, "B2:B2,B5:B7")] 
+        [InlineData("B3:D5", "A4:E4", DataUtils.RangeMergeStrategy.MergeColumns, "B3:D3,B5:D5")]
+        [InlineData("B3:D5", "C2:C6", DataUtils.RangeMergeStrategy.MergeColumns, "B3:B5,D3:D5")]
+        [InlineData("B3:D5", "A1:B3", DataUtils.RangeMergeStrategy.MergeColumns, "B4:B5,C3:D5")]
+        [InlineData("B3:D5", "A5:B6", DataUtils.RangeMergeStrategy.MergeColumns, "B3:B4,C3:D5")]
+        [InlineData("B5:C6,E2:F4", "E4:F4", DataUtils.RangeMergeStrategy.MergeColumns, "B5:C6,E2:F3")]
+        [InlineData("B3:C8,D3:E5", "C5:D6", DataUtils.RangeMergeStrategy.MergeColumns, "B3:B8,C3:D4,E3:E5,C7:C8")]
+        [InlineData("B3:C8,D3:F5,E7:F7", "C5:E7", DataUtils.RangeMergeStrategy.MergeColumns, "B3:B8,C3:E4,C8:C8,F3:F5,F7:F7")]
+        [InlineData("B5:C6", "A2:B3", DataUtils.RangeMergeStrategy.MergeRows, "B5:C6")]
+        [InlineData("A2:A2", "A2:A2", DataUtils.RangeMergeStrategy.MergeRows, "")]
+        [InlineData("B3:D5", "A2:E6", DataUtils.RangeMergeStrategy.MergeRows, "")]
+        [InlineData("A2:A2", "A5:A6", DataUtils.RangeMergeStrategy.MergeRows, "A2:A2")]
+        [InlineData("B2:B5", "B4:B6", DataUtils.RangeMergeStrategy.MergeRows, "B2:B3")]
+        [InlineData("B4:B7", "B2:B5", DataUtils.RangeMergeStrategy.MergeRows, "B6:B7")]
+        [InlineData("B2:B7", "A3:C4", DataUtils.RangeMergeStrategy.MergeRows, "B2:B2,B5:B7")]
+        [InlineData("B3:D5", "A4:E4", DataUtils.RangeMergeStrategy.MergeRows, "B3:D3,B5:D5")]
+        [InlineData("B3:D5", "C2:C6", DataUtils.RangeMergeStrategy.MergeRows, "B3:B5,D3:D5")]
+        [InlineData("B3:D5", "A1:B3", DataUtils.RangeMergeStrategy.MergeRows, "C3:D3,B4:D5")]
+        [InlineData("B3:D5", "A5:B6", DataUtils.RangeMergeStrategy.MergeRows, "B3:D4,C5:D5")]
+        [InlineData("B5:C6,E2:F4", "E4:F4", DataUtils.RangeMergeStrategy.MergeRows, "B5:C6,E2:F3")]
+        [InlineData("B3:C8,D3:E5", "C5:D6", DataUtils.RangeMergeStrategy.MergeRows, "B3:E4,E5:E5,B5:B6,B7:C8")]
+        [InlineData("B3:C8,D3:F5,E7:F7", "C5:E7", DataUtils.RangeMergeStrategy.MergeRows, "B3:F4,F5:F5,B5:B7,B8:C8,F7:F7")]
+        [InlineData("B5:C6", "A2:B3", DataUtils.RangeMergeStrategy.NoMerge, "B5:C6")]
+        [InlineData("A2:A2", "A2:A2", DataUtils.RangeMergeStrategy.NoMerge, "")]
+        [InlineData("B3:D5", "A2:E6", DataUtils.RangeMergeStrategy.NoMerge, "")]
+        [InlineData("A2:A2", "A5:A6", DataUtils.RangeMergeStrategy.NoMerge, "A2:A2")]
+        [InlineData("B2:B5", "B4:B6", DataUtils.RangeMergeStrategy.NoMerge, "B2:B3")]
+        [InlineData("B4:B7", "B2:B5", DataUtils.RangeMergeStrategy.NoMerge, "B6:B7")]
+        [InlineData("B2:B7", "A3:C4", DataUtils.RangeMergeStrategy.NoMerge, "B2:B2,B5:B7")]
+        [InlineData("B3:D5", "A4:E4", DataUtils.RangeMergeStrategy.NoMerge, "B3:D3,B5:D5")]
+        [InlineData("B3:D5", "C2:C6", DataUtils.RangeMergeStrategy.NoMerge, "B3:B5,D3:D5")]
+        [InlineData("B3:D5", "A1:B3", DataUtils.RangeMergeStrategy.NoMerge, "C3:D3,B4:B5,C4:D5")]
+        [InlineData("B3:D5", "A5:B6", DataUtils.RangeMergeStrategy.NoMerge, "B3:B4,C3:D4,C5:D5")]
+        [InlineData("B5:C6,E2:F4", "E4:F4", DataUtils.RangeMergeStrategy.NoMerge, "B5:C6,E2:F3")]
+        [InlineData("B3:C8,D3:E5", "C5:D6", DataUtils.RangeMergeStrategy.NoMerge, "B3:B4,C3:C4,D3:D4,E3:E4,B5:B5,B6:B6,E5:E5,B7:B8,C7:C8")]
+        [InlineData("B3:C8,D3:F5,E7:F7", "C5:E7", DataUtils.RangeMergeStrategy.NoMerge, "B3:B4,C3:C4,D3:E4,F3:F4,B5:B5,F5:F5,B6:B6,B7:B7,F7:F7,B8:B8,C8:C8")]
+        public void SubtractRangeTest(string givenRangesString, string rangeToRemoveString, DataUtils.RangeMergeStrategy mergeStrategy, string expectedRangesString)
+        {
+            List<Range> givenRanges = givenRangesString
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(r => new Range(r))
+                    .ToList();
+
+            Range rangeToRemove = new Range(rangeToRemoveString);
+
+            List<Range> expectedRanges = expectedRangesString
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(range => new Range(range))
+                .ToList();
+
+            IReadOnlyList<Range> resultRanges = DataUtils.SubtractRange(givenRanges, rangeToRemove, mergeStrategy);
+
+            Assert.Equal(resultRanges.Count, expectedRanges.Count);
+            foreach (Range range in expectedRanges)
+            {
+                Assert.Contains(resultRanges, r => r.ToString() == range.ToString());
+            }
+        }
+
+
     }
 }

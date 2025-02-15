@@ -442,16 +442,22 @@ namespace NanoXLSX.Utils
                     result.AddRange(subtractedPieces);
                 }
             }
+            // Slice all ranges before merge
+            List<Range> slicedRanges = SliceRanges(result);
             // Merge adjacent pieces if requested.
             if (strategy == RangeMergeStrategy.MergeColumns)
             {
-                result = MergeAdjacentRanges(result, RangeMergeStrategy.MergeColumns);
+                result = MergeAdjacentRanges(slicedRanges, RangeMergeStrategy.MergeColumns);
                 result = MergeAdjacentRanges(result, RangeMergeStrategy.MergeRows);
             }
             else if (strategy == RangeMergeStrategy.MergeRows)
             {
-                result = MergeAdjacentRanges(result, RangeMergeStrategy.MergeRows);
+                result = MergeAdjacentRanges(slicedRanges, RangeMergeStrategy.MergeRows);
                 result = MergeAdjacentRanges(result, RangeMergeStrategy.MergeColumns);
+            }
+            else
+            {
+                result = slicedRanges;
             }
             return result;
         }
@@ -527,12 +533,6 @@ namespace NanoXLSX.Utils
             int isct_right = Math.Min(orig_right, rem_right);
             int isct_bottom = Math.Min(orig_bottom, rem_bottom);
 
-            // If there is no intersection, return the original range.
-            if (isct_left > isct_right || isct_top > isct_bottom)
-            {
-                pieces.Add(original);
-                return pieces;
-            }
             // Slice the original rectangle into up to four pieces.
             // Top piece: if any rows exist above the intersection.
             if (orig_top < isct_top)

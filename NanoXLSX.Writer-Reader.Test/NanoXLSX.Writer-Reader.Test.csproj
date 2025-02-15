@@ -28,6 +28,8 @@
 	  <None Remove="Resources\autofilter.xlsx" />
 	  <None Remove="Resources\chartsheet.xlsx" />
 	  <None Remove="Resources\chartsheet2.xlsx" />
+	  <None Remove="Resources\contemporary_password.xlsx" />
+	  <None Remove="Resources\contemporary_password2.xlsx" />
 	  <None Remove="Resources\empty_worksheet.xlsx" />
 	  <None Remove="Resources\invalid_metadata_app.xlsx" />
 	  <None Remove="Resources\invalid_metadata_core.xlsx" />
@@ -36,6 +38,7 @@
 	  <None Remove="Resources\invalid_sharedStrings2.xlsx" />
 	  <None Remove="Resources\invalid_style.xlsx" />
 	  <None Remove="Resources\invalid_workbook.xlsx" />
+	  <None Remove="Resources\invalid_workbook_rels.xlsx" />
 	  <None Remove="Resources\invalid_workbook_sheet-definition.xlsx" />
 	  <None Remove="Resources\invalid_worksheet.xlsx" />
 	  <None Remove="Resources\missing_docProps.xlsx" />
@@ -51,6 +54,8 @@
 	  <EmbeddedResource Include="Resources\autofilter.xlsx" />
 	  <EmbeddedResource Include="Resources\chartsheet.xlsx" />
 	  <EmbeddedResource Include="Resources\chartsheet2.xlsx" />
+	  <EmbeddedResource Include="Resources\contemporary_password.xlsx" />
+	  <EmbeddedResource Include="Resources\contemporary_password2.xlsx" />
 	  <EmbeddedResource Include="Resources\empty_worksheet.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_app.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_core.xlsx" />
@@ -59,6 +64,7 @@
 	  <EmbeddedResource Include="Resources\invalid_sharedStrings2.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_style.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_workbook.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_workbook_rels.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_workbook_sheet-definition.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_worksheet.xlsx" />
 	  <EmbeddedResource Include="Resources\missing_docProps.xlsx" />

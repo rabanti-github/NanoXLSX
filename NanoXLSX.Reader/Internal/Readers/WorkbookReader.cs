@@ -51,10 +51,6 @@ namespace NanoXLSX.Internal.Readers
         /// Lock state of the structural elements
         /// </summary>
         public bool LockStructure { get; private set; }
-        /// <summary>
-        /// Password hash, if available
-        /// </summary>
-       // public string PasswordHash { get; private set; }
 
         public IPasswordReader PasswordReader { get; internal set; }
 
@@ -155,14 +151,7 @@ namespace NanoXLSX.Internal.Readers
                 int value = ParserUtils.ParseBinaryBool(attribute);
                 this.LockStructure = value == 1;
             }
-
             PasswordReader.ReadXmlAttributes(node);
-            //attribute = ReaderUtils.GetAttribute(node, "workbookPassword");
-           // if (attribute != null)
-          //  {
-           //     this.PasswordHash = attribute;
-           // }
-
         }
 
         /// <summary>

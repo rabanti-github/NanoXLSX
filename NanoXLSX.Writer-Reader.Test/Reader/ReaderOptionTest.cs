@@ -1040,6 +1040,44 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             }
         }
 
+        [Theory(DisplayName = "Test of the import option to ignore not supported password algorithms for worksheet protection")]
+        [InlineData(false, true)]
+        [InlineData(true, false)]
+        void IgnoreNotSupportedPasswordAlgorithmsTest(bool importOptionValue, bool expectedError)
+        {
+            ReaderOptions options = new ReaderOptions();
+            options.IgnoreNotSupportedPasswordAlgorithms = importOptionValue;
+            Stream stream = TestUtils.GetResource("contemporary_password.xlsx");
+            if (expectedError)
+            {
+                Assert.Throws<Exceptions.NotSupportedContentException>(() => WorkbookReader.Load(stream, options));
+            }
+            else
+            {
+                Workbook workbook = WorkbookReader.Load(stream, options);
+                Assert.NotNull(workbook);
+            }
+        }
+
+        [Theory(DisplayName = "Test of the import option to ignore not supported password algorithms for workbook protection")]
+        [InlineData(false, true)]
+        [InlineData(true, false)]
+        void IgnoreNotSupportedPasswordAlgorithmsTest2(bool importOptionValue, bool expectedError)
+        {
+            ReaderOptions options = new ReaderOptions();
+            options.IgnoreNotSupportedPasswordAlgorithms = importOptionValue;
+            Stream stream = TestUtils.GetResource("contemporary_password2.xlsx");
+            if (expectedError)
+            {
+                Assert.Throws<Exceptions.NotSupportedContentException>(() => WorkbookReader.Load(stream, options));
+            }
+            else
+            {
+                Workbook workbook = WorkbookReader.Load(stream, options);
+                Assert.NotNull(workbook);
+            }
+        }
+
         private static void AssertValues<T, D>(Dictionary<string, T> givenCells, ReaderOptions ReaderOptions, Action<object, object> assertionAction, Dictionary<string, D> expectedCells = null)
         {
             Workbook workbook = new Workbook("worksheet1");
