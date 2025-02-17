@@ -101,9 +101,9 @@ namespace NanoXLSX
         /// <returns>True if the address is part of this range, otherwise false</returns>
         public bool Contains(Address address)
         {
-            return address.Column >= this.startAddress.Column ||
-                address.Column <= this.endAddress.Column ||
-                address.Row >= this.startAddress.Row ||
+            return address.Column >= this.startAddress.Column &&
+                address.Column <= this.endAddress.Column &&
+                address.Row >= this.startAddress.Row &&
                 address.Row <= this.endAddress.Row;
         }
 

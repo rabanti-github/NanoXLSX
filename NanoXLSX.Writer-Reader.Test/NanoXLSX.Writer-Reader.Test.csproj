@@ -37,10 +37,13 @@
 	  <None Remove="Resources\invalid_shardStrings.xlsx" />
 	  <None Remove="Resources\invalid_sharedStrings2.xlsx" />
 	  <None Remove="Resources\invalid_style.xlsx" />
+	  <None Remove="Resources\invalid_theme.xlsx" />
+	  <None Remove="Resources\invalid_theme_system_color.xlsx" />
 	  <None Remove="Resources\invalid_workbook.xlsx" />
 	  <None Remove="Resources\invalid_workbook_rels.xlsx" />
 	  <None Remove="Resources\invalid_workbook_sheet-definition.xlsx" />
 	  <None Remove="Resources\invalid_worksheet.xlsx" />
+	  <None Remove="Resources\malformed_theme_color.xlsx" />
 	  <None Remove="Resources\missing_docProps.xlsx" />
 	  <None Remove="Resources\missing_worksheet.xlsx" />
 	  <None Remove="Resources\new_format.xlsx" />
@@ -48,6 +51,7 @@
 	  <None Remove="Resources\phonetics.xlsx" />
 	  <None Remove="Resources\semi-large-amount.xlsx" />
 	  <None Remove="Resources\tampered.xlsx" />
+	  <None Remove="Resources\undefined_theme_system_color.xlsx" />
 	  <None Remove="Resources\unknown_style_enums.xlsx" />
 	</ItemGroup>
 	<ItemGroup>
@@ -63,6 +67,8 @@
 	  <EmbeddedResource Include="Resources\invalid_shardStrings.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_sharedStrings2.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_style.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_theme.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_theme_system_color.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_workbook.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_workbook_rels.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_workbook_sheet-definition.xlsx" />
@@ -74,7 +80,9 @@
 	  <EmbeddedResource Include="Resources\phonetics.xlsx" />
 	  <EmbeddedResource Include="Resources\semi-large-amount.xlsx" />
 	  <EmbeddedResource Include="Resources\tampered.xlsx" />
+	  <EmbeddedResource Include="Resources\undefined_theme_system_color.xlsx" />
 	  <EmbeddedResource Include="Resources\unknown_style_enums.xlsx" />
+	  <EmbeddedResource Include="Resources\malformed_theme_color.xlsx" />
 	</ItemGroup>
 
 	<ItemGroup>

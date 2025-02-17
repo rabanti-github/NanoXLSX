@@ -348,6 +348,9 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [InlineData("invalid_sharedStrings.xlsx")]
         [InlineData("invalid_sharedStrings2.xlsx")]
         [InlineData("invalid_relationship.xlsx")]
+        [InlineData("invalid_theme.xlsx")]
+        [InlineData("invalid_theme_system_color.xlsx")]
+        [InlineData("undefined_theme_system_color.xlsx")]
         [InlineData("missing_worksheet.xlsx")]
         public void FailingReadInvalidDataTest(string invalidFile)
         {
@@ -367,6 +370,9 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [InlineData("invalid_sharedStrings.xlsx")]
         [InlineData("invalid_sharedStrings2.xlsx")]
         [InlineData("invalid_relationship.xlsx")]
+        [InlineData("invalid_theme.xlsx")]
+        [InlineData("invalid_theme_system_color.xlsx")]
+        [InlineData("undefined_theme_system_color.xlsx")]
         [InlineData("empty_worksheet.xlsx")]
         [InlineData("missing_worksheet.xlsx")]
 
