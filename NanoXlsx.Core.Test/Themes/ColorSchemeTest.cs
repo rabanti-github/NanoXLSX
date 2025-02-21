@@ -111,6 +111,48 @@ namespace NanoXLSX.Test.Core.ThemeTest
             Assert.Equal(scheme1.GetHashCode(), scheme2.GetHashCode());
         }
 
+        [Fact(DisplayName = "Test Equals method for Theme")]
+        public void ThemeEqualsTest()
+        {
+            var theme1 = new Theme("TestTheme");
+            var theme2 = new Theme("TestTheme");
+
+            IColor newDark1 = new SrgbColor("123456");
+            IColor newAccent1 = new SrgbColor("654321");
+            IColor newHyperlink = new SrgbColor("ABC123");
+
+            theme1.Colors.Dark1 = newDark1;
+            theme1.Colors.Accent1 = newAccent1;
+            theme1.Colors.Hyperlink = newHyperlink;
+
+            theme2.Colors.Dark1 = newDark1;
+            theme2.Colors.Accent1 = newAccent1;
+            theme2.Colors.Hyperlink = newHyperlink;
+
+            Assert.True(theme1.Equals(theme2));
+        }
+
+        [Fact(DisplayName = "Test GetHashCode method for Theme")]
+        public void ThemeGetHashCodeTest()
+        {
+            var theme1 = new Theme("TestTheme");
+            var theme2 = new Theme("TestTheme");
+
+            IColor newDark1 = new SrgbColor("123456");
+            IColor newAccent1 = new SrgbColor("654321");
+            IColor newHyperlink = new SrgbColor("ABC123");
+
+            theme1.Colors.Dark1 = newDark1;
+            theme1.Colors.Accent1 = newAccent1;
+            theme1.Colors.Hyperlink = newHyperlink;
+
+            theme2.Colors.Dark1 = newDark1;
+            theme2.Colors.Accent1 = newAccent1;
+            theme2.Colors.Hyperlink = newHyperlink;
+
+            Assert.Equal(theme1.GetHashCode(), theme2.GetHashCode());
+        }
+
         private void AssertColorProperties(IColor color)
         {
             ColorScheme scheme = new ColorScheme();

@@ -356,7 +356,7 @@ namespace NanoXLSX.Internal.Readers
                 {
                     themeReader = new ThemeReader();
                     ms = GetEntryStream(streamName.Value, zf);
-                    themeReader.Read(ms, streamName.Key);
+                    themeReader.Read(ms);
                     break;
                 }
             }

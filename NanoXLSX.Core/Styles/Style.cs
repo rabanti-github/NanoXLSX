@@ -176,7 +176,7 @@ namespace NanoXLSX.Styles
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// A hash code for this instance, suitable to be used in hashing algorithms and data structures like a hash table. 
         /// </returns>
         /// <exception cref="StyleException">MissingReferenceException - The hash of the style could not be created because one or more components are missing as references</exception>
         public override int GetHashCode()

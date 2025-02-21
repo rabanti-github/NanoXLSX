@@ -68,25 +68,19 @@ namespace NanoXLSX.Themes
         /// Gets or sets the <see cref="ColorScheme"/> of the theme
         /// </summary>
         public ColorScheme Colors { get; set; }
-        /// <summary>
-        /// Gets or sets the internal ID of the theme
-        /// </summary>
-        public int ID { get; set; }
 
         /// <summary>
         /// Gets whether the theme is defined as copy or reference to the application default theme.
         /// </summary>
-        /// \remark <remarks>This indication and the default theme (<see cref="Theme.GetDefaultTheme"/>) may still deviate from the actual default theme defined by the handling application (e.g. Excel)</remarks>
+        /// \remark <remarks>This indication and the default theme (<see cref="Theme.GetDefaultTheme"/>) may still deviate from the actual default theme defined by the handling application (e.g. Excel)- The property is not written into Excel files</remarks>
         public bool DefaultTheme { get; private set; }
 
         /// <summary>
-        /// Constructor with parameters
+        /// Constructor with parameters. Using this constructor initialized the <see cref="Colors"/> property with valid default values
         /// </summary>
-        /// <param name="id">Internal ID of the theme</param>
         /// <param name="name">Name of the theme</param>
-        public Theme(int id, string name)
+        public Theme(string name)
         {
-            this.ID = id;
             this.Name = name;
             this.Colors = GetDefaultColorScheme();
         }
@@ -98,7 +92,7 @@ namespace NanoXLSX.Themes
         /// <returns>Theme with default values according to the default theme of Office 2019 (may be deviating)</returns>
         internal static Theme GetDefaultTheme()
         {
-            Theme theme = new Theme(1, "default");
+            Theme theme = new Theme("default");
             theme.DefaultTheme = true;
             ColorScheme colors = GetDefaultColorScheme();
             theme.Colors = colors;
@@ -128,6 +122,11 @@ namespace NanoXLSX.Themes
             return colors;
         }
 
+        /// <summary>
+        /// Returns whether two instances are the same
+        /// </summary>
+        /// <param name="obj">Object to compare</param>
+        /// <returns>True if this instance and the other are the same</returns>
         public override bool Equals(object obj)
         {
             return obj is Theme theme &&
@@ -135,6 +134,12 @@ namespace NanoXLSX.Themes
                    EqualityComparer<ColorScheme>.Default.Equals(Colors, theme.Colors);
         }
 
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable to be used in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         public override int GetHashCode()
         {
             int hashCode = 1172093127;

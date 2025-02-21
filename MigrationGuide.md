@@ -19,3 +19,6 @@
 
 ## Range
 - Range fields `StartAddress`, and `EndAddress` are now read-only (immutable) properties. To change one of the properties, a new Range object has to be created
+
+## Style (general)
+- All (s)RGB values are automatically validated and cast to upper case. If valid hex values are used, no actions are necessary

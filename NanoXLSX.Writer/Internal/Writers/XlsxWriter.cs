@@ -200,8 +200,6 @@ namespace NanoXLSX.Internal.Writers
         {
             try
             {
-
-
                 Uri uri = new Uri(documentPath.GetFullPath(), UriKind.Relative);
                 PackagePart part = this.package.CreatePart(uri, contentType, CompressionOption.Normal);
                 if (!packageParts.ContainsKey(documentPath.Path))

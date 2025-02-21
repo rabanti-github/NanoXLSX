@@ -325,7 +325,7 @@ namespace NanoXLSX.Styles
             }
         }
         /// <summary>
-        /// Gets or sets the color code of the font color. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF.
+        /// Gets or sets the color code of the font color. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF. If set, the value will be cast to upper case
         /// To omit the color, an empty string can be set. Empty is also default.
         /// </summary>
         /// <exception cref="StyleException">Throws a StyleException if the passed ARGB value is not valid</exception>
@@ -336,7 +336,14 @@ namespace NanoXLSX.Styles
             set
             {
                 Validators.ValidateColor(value, true, true);
-                colorValue = value;
+                if (value != null)
+                {
+                    colorValue = value.ToUpper();
+                }
+                else
+                {
+                    colorValue = value;
+                }
             }
         }
         /// <summary>
@@ -497,7 +504,7 @@ namespace NanoXLSX.Styles
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// A hash code for this instance, suitable to be used in hashing algorithms and data structures like a hash table. 
         /// </returns>
         public override int GetHashCode()
         {

@@ -20,7 +20,7 @@ namespace NanoXLSX.Themes
         private string colorValue;
 
         /// <summary>
-        /// Gets or sets the sRGB value (Hex code of RGB)
+        /// Gets or sets the sRGB value (Hex code of RGB). If set, the value will be cast to upper case
         /// </summary>
         public string ColorValue
         {
@@ -28,7 +28,7 @@ namespace NanoXLSX.Themes
             set
             {
                 Validators.ValidateColor(value, false);
-                colorValue = value;
+                colorValue = value.ToUpper();
             }
         }
 

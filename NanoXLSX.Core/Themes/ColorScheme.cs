@@ -15,26 +15,76 @@ namespace NanoXLSX.Themes
     /// </summary>
     public class ColorScheme
     {
+        /// <summary>
+        /// Name of the color scheme
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Theme color that defines the dark1 (t1) attribute of a theme 
+        /// </summary>
         public IColor Dark1 { get; set; }
+        /// <summary>
+        /// Theme color that defines the light1 (bg1) attribute of a theme 
+        /// </summary>
         public IColor Light1 { get; set; }
+        /// <summary>
+        /// Theme color that defines the dark2 (t2) attribute of a theme 
+        /// </summary>
         public IColor Dark2 { get; set; }
+        /// <summary>
+        /// Theme color that defines the light2 (bg2) attribute of a theme 
+        /// </summary>
         public IColor Light2 { get; set; }
+        /// <summary>
+        /// Theme color that defines the accent1 attribute of a theme 
+        /// </summary>
         public IColor Accent1 { get; set; }
+        /// <summary>
+        /// Theme color that defines the accent2 attribute of a theme 
+        /// </summary>
         public IColor Accent2 { get; set; }
+        /// <summary>
+        /// Theme color that defines the accent3 attribute of a theme 
+        /// </summary>
         public IColor Accent3 { get; set; }
+        /// <summary>
+        /// Theme color that defines the accent4 attribute of a theme 
+        /// </summary>
         public IColor Accent4 { get; set; }
+        /// <summary>
+        /// Theme color that defines the accent5 attribute of a theme 
+        /// </summary>
         public IColor Accent5 { get; set; }
+        /// <summary>
+        /// Theme color that defines the accent6 attribute of a theme 
+        /// </summary>
         public IColor Accent6 { get; set; }
+        /// <summary>
+        /// Theme color that defines the hyperlink attribute of a theme 
+        /// </summary>
         public IColor Hyperlink { get; set; }
+        /// <summary>
+        /// Theme color that defines the followedHyperlink attribute of a theme 
+        /// </summary>
         public IColor FollowedHyperlink { get; set; }
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// \remarks<remarks>The constructor does not initialize any of the color properties. 
+        /// A workbook may become invalid on saving, if any of the values are remaining null or undefined. 
+        /// This has to be maintained manually after initialization</remarks>
         public ColorScheme()
         {
+            // NoOp
         }
 
-
+        /// <summary>
+        /// Returns whether two instances are the same
+        /// </summary>
+        /// <param name="obj">Object to compare</param>
+        /// <returns>True if this instance and the other are the same</returns>
         public override bool Equals(object obj)
         {
             return obj is ColorScheme scheme &&
@@ -53,6 +103,12 @@ namespace NanoXLSX.Themes
                    EqualityComparer<IColor>.Default.Equals(FollowedHyperlink, scheme.FollowedHyperlink);
         }
 
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable to be used in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         public override int GetHashCode()
         {
             int hashCode = -1016302979;

@@ -75,7 +75,7 @@ namespace NanoXLSX.Styles
 
         #region properties
         /// <summary>
-        /// Gets or sets the background color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
+        /// Gets or sets the background color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF. If set, the value will be cast to upper case
         /// </summary>
         /// \remark <remarks>If a background color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.none">PatternValue.none</see>, 
         /// the PatternFill property will be automatically set to <see cref="PatternValue.solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
@@ -86,7 +86,7 @@ namespace NanoXLSX.Styles
             set
             {
                 Validators.ValidateColor(value, true);
-                backgroundColor = value;
+                backgroundColor = value.ToUpper();
                 if (PatternFill == PatternValue.none)
                 {
                     PatternFill = PatternValue.solid;
@@ -94,7 +94,7 @@ namespace NanoXLSX.Styles
             }
         }
         /// <summary>
-        /// Gets or sets the foreground color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF
+        /// Gets or sets the foreground color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF. If set, the value will be bast to upper case
         /// </summary>
         /// \remark <remarks>If a foreground color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.none">PatternValue.none</see>, 
         /// the PatternFill property will be automatically set to <see cref="PatternValue.solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
@@ -105,7 +105,7 @@ namespace NanoXLSX.Styles
             set
             {
                 Validators.ValidateColor(value, true);
-                foregroundColor = value;
+                foregroundColor = value.ToUpper();
                 if (PatternFill == PatternValue.none)
                 {
                     PatternFill = PatternValue.solid;
@@ -207,7 +207,7 @@ namespace NanoXLSX.Styles
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// A hash code for this instance, suitable to be used in hashing algorithms and data structures like a hash table. 
         /// </returns>
         public override int GetHashCode()
         {

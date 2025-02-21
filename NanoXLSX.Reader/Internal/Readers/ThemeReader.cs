@@ -13,7 +13,6 @@ namespace NanoXLSX.Internal.Readers
     /// </summary>
     public class ThemeReader : IPluginReader
     {
-        private int currentTheme;
 
         /// <summary>
         /// Currently active theme
@@ -27,25 +26,11 @@ namespace NanoXLSX.Internal.Readers
         /// Reads the XML file form the passed stream and processes the theme file (if available)
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
-        /// <param name="number">Number of the theme. Default is 1</param>
-        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
-        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
-        public virtual void Read(MemoryStream stream, int number)
-        {
-            currentTheme = number;
-            PreRead(stream);
-            Read(stream);
-            PostRead(stream);
-        }
-
-        /// <summary>
-        /// Reads the XML file form the passed stream and processes the theme file (if available)
-        /// </summary>
-        /// <param name="stream">Stream of the XML file</param>
         /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
         /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
         public virtual void Read(MemoryStream stream)
         {
+            PreRead(stream);
             try
             {
                 using (stream) // Close after processing
@@ -56,7 +41,7 @@ namespace NanoXLSX.Internal.Readers
                     string prefix = ReaderUtils.DiscoverPrefix(xr, "theme");
                     XmlNodeList themes = ReaderUtils.GetElementsByTagName(xr, "theme", prefix);
                     string themeName = ReaderUtils.GetAttribute(themes[0], "name"); // If this fails, something is completely wrong
-                    CurrentTheme = new Theme(this.currentTheme, themeName);
+                    CurrentTheme = new Theme(themeName);
                     ColorScheme colorScheme = new ColorScheme();
                     CurrentTheme.Colors = colorScheme;
                     XmlNodeList colors = ReaderUtils.GetElementsByTagName(xr, "clrScheme", prefix);
@@ -117,6 +102,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
             }
+            PostRead(stream);
         }
 
         /// <summary>
@@ -148,6 +134,11 @@ namespace NanoXLSX.Internal.Readers
                     SystemColor.Value value = ParseSystemColor(node);
                     SystemColor systemColor = new SystemColor();
                     systemColor.ColorValue = value;
+                    string lastColor = ReaderUtils.GetAttribute(node, "lastClr");
+                    if (lastColor != null)
+                    {
+                        systemColor.LastColor = lastColor;
+                    }
                     return systemColor;
                 }
                 else if (node.LocalName == "srgbClr")
