@@ -44,6 +44,26 @@ namespace NanoXLSX.Test.Core.UtilsTest
             Assert.Equal(expectedValue, value);
         }
 
+        [Theory(DisplayName = "Test of the ParserUtils NormalizeNewLines function")]
+        [InlineData(null,  null)]
+        [InlineData("", "")]
+        [InlineData("test", "test")]
+        [InlineData("test\r\ntest", "test\r\ntest")]
+        [InlineData("test\rtest", "test\r\ntest")]
+        [InlineData("test\ntest", "test\r\ntest")]
+        [InlineData("test\n\rtest", "test\r\ntest")]
+        [InlineData("test\r\ntest \r\ntest", "test\r\ntest \r\ntest")]
+        [InlineData("test\rtest \rtest", "test\r\ntest \r\ntest")]
+        [InlineData("test\ntest \ntest", "test\r\ntest \r\ntest")]
+        [InlineData("test\n\rtest \n\rtest", "test\r\ntest \r\ntest")]
+        [InlineData("\n\r\n\n", "\r\n\r\n\r\n")]
+        public void NormalizeNewLinesTest(string givenValue, string expectedValue)
+        {
+            string value = ParserUtils.NormalizeNewLines(givenValue);
+            Assert.Equal(expectedValue, value);
+        }
+
+
         [Theory(DisplayName = "Test of the ParserUtils ParseFloat function (no error handling)")]
         [InlineData("1", 1f)]
         [InlineData("0", 0f)]

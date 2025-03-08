@@ -42,7 +42,7 @@ namespace NanoXLSX.Internal.Structures
                 {
                     sb.Append(START_TAG);
                 }
-                sb.Append(XlsxWriter.NormalizeNewLines(value)).Append(END_TAG);
+                sb.Append(ParserUtils.NormalizeNewLines(value)).Append(END_TAG);
             }
         }
 

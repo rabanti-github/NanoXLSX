@@ -7,6 +7,7 @@
 
 using System;
 using System.Globalization;
+using System.Linq;
 
 namespace NanoXLSX.Utils
 {
@@ -56,6 +57,20 @@ namespace NanoXLSX.Utils
         public static string ToString(float input)
         {
             return input.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Normalizes all newlines of a string to CR+LF
+        /// </summary>
+        /// <param name="value">Input value</param>
+        /// <returns>Normalized value</returns>
+        public static string NormalizeNewLines(string value)
+        {
+            if (value == null || (!value.Contains('\n') && !value.Contains('\r')))
+            {
+                return value;
+            }
+            return value.Replace("\n\r", "\n").Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", "\r\n");
         }
 
         /// <summary>

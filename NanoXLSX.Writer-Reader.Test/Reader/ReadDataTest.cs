@@ -65,7 +65,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expected.Add("A9", "\r\nx");
             expected.Add("A10", "\r\n\r\n\r\n");
             expected.Add("A11", "\r\n\r\n\r\n");
-            expected.Add("A12", "\r\n\r\n");
+            expected.Add("A12", "\r\n");
             AssertValues<string>(given, AssertEquals, expected);
         }
 

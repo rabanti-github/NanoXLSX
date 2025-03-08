@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
@@ -21,6 +20,7 @@ using NanoXLSX.Exceptions;
 using NanoXLSX.Utils;
 using NanoXLSX.Styles;
 using IOException = NanoXLSX.Exceptions.IOException;
+using PackagePartType = NanoXLSX.Internal.Structures.PackagePartDefinition.PackagePartType;
 
 namespace NanoXLSX.Internal.Writers
 {
@@ -43,8 +43,16 @@ namespace NanoXLSX.Internal.Writers
         #region privateFields
         private Workbook workbook;
         private StyleManager styles;
-        #endregion
+        private int rootPackageIndex = 1;
+        private int xlPackageIndex = 1;
 
+        private readonly List<PackagePartDefinition> packagePartDefinitions = new List<PackagePartDefinition>();
+
+        private readonly Dictionary<string, Dictionary<string, PackagePart>> packageParts = new Dictionary<string, Dictionary<string, PackagePart>>();
+        private readonly Dictionary<int, DocumentPath> worksheetPaths = new Dictionary<int, DocumentPath>();
+        private Package package = null;
+
+        #endregion
 
         #region properties
         public Workbook Workbook
@@ -73,26 +81,11 @@ namespace NanoXLSX.Internal.Writers
         #region documentCreation_methods
 
         /// <summary>
-        /// Method to normalize all newlines to CR+LF
-        /// </summary>
-        /// <param name="value">Input value</param>
-        /// <returns>Normalized value</returns>
-        internal static string NormalizeNewLines(string value)
-        {
-            if (value == null || (!value.Contains('\n') && !value.Contains('\r')))
-            {
-                return value;
-            }
-            string normalized = value.Replace("\r\n", "\n").Replace("\r", "\n");
-            return normalized.Replace("\n", "\r\n");
-        }
-
-        /// <summary>
         /// Method to save the workbook
         /// </summary>
-        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         /// \remark <remarks>The StyleException should never happen in this state if the internally managed style collection was not tampered. </remarks>
         public void Save()
@@ -119,122 +112,160 @@ namespace NanoXLSX.Internal.Writers
             await Task.Run(() => { Save(); });
         }
 
-        private Dictionary<string, Dictionary<string, PackagePart>> packageParts = new Dictionary<string, Dictionary<string, PackagePart>>();
-        private Dictionary<int, DocumentPath> worksheetPaths = new Dictionary<int, DocumentPath>();
-        private Package package = null;
-
-        private void PreparePackage()
+        /// <summary>
+        /// Method to register the common / mandatory package parts of a XLSX file to be written
+        /// </summary>
+        private void RegisterCommonPackageParts()
         {
-            int rootIndex = 1;
-            int xlIndex = 1;
-            // TODO: add themeIndex if once media is embedded
-            PackagePart workbookPart = CreatePackagePart(package,
-                WORKBOOK,
-                @"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml",
-                @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
-                ref rootIndex);
+            // Workbook should always be the lowest index
+            RegisterPackagePart(PackagePartType.Root, PackagePartDefinition.WORKBOOK_PACKAGE_PART_INDEX, WORKBOOK, @"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument");
             if (this.workbook.WorkbookMetadata != null)
             {
-                CreatePackagePart(package,
-                    CORE_PROPERTIES,
-                    @"application/vnd.openxmlformats-package.core-properties+xml",
-                    @"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties",
-                    ref rootIndex);
-                CreatePackagePart(package,
-                    APP_PROPERTIES,
-                    @"application/vnd.openxmlformats-officedocument.extended-properties+xml",
-                    @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties",
-                    ref rootIndex);
+                int index = PackagePartDefinition.METADATA_PACKAGE_PART_START_INDEX;
+                RegisterPackagePart(PackagePartType.Root, index, CORE_PROPERTIES, @"application/vnd.openxmlformats-package.core-properties+xml" , @"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties");
+                RegisterPackagePart(PackagePartType.Root, index + 1000, APP_PROPERTIES, @"application/vnd.openxmlformats-officedocument.extended-properties+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties");
             }
-
+            int worksheetOrderNumber = PackagePartDefinition.WORKSHEET_PACKAGE_PART_START_INDEX;
             if (this.workbook.Worksheets.Count == 0)
             {
-                // Fallback to default worksheet (seeht1.xml)
-                DocumentPath path = new DocumentPath("sheet1.xml", "xl/worksheets");
-                CreatePackagePart(workbookPart,
-                    path,
-                    @"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml",
-                    @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet",
-                    ref xlIndex);
-                worksheetPaths.Add(0, path);
+                RegisterPackagePart(PackagePartType.Worksheet, worksheetOrderNumber, "sheet1.xml", "xl/worksheets", @"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet");
             }
             else
             {
-                for (int i = 0; i < this.Workbook.Worksheets.Count; i++)
+                for (int i = 0; i < this.workbook.Worksheets.Count; i++)
                 {
                     string fileName = "sheet" + ParserUtils.ToString(i + 1) + ".xml";
-                    DocumentPath path = new DocumentPath(fileName, "xl/worksheets");
-                    CreatePackagePart(workbookPart,
-                        path,
-                        @"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml",
-                        @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet",
-                        ref xlIndex);
-                    worksheetPaths.Add(i, path);
+                    RegisterPackagePart(PackagePartType.Worksheet, worksheetOrderNumber, fileName, "xl/worksheets", @"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet");
+                    worksheetOrderNumber++;
                 }
             }
-
+            int postWorksheetOrderNumber = PackagePartDefinition.POST_WORSHEET_PACKAGE_PART_START_INDEX;
             if (workbook.WorkbookTheme != null)
             {
-                CreatePackagePart(workbookPart,
-                    THEME,
-                    @"application/vnd.openxmlformats-officedocument.theme+xml",
-                    @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme",
-                    ref xlIndex);
+                RegisterPackagePart(PackagePartType.Other, postWorksheetOrderNumber, THEME, @"application/vnd.openxmlformats-officedocument.theme+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme");
+                postWorksheetOrderNumber += 1000;
             }
-
-            CreatePackagePart(workbookPart,
-                STYLES,
-                @"application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml",
-                @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles",
-                ref xlIndex);
-
-            CreatePackagePart(workbookPart,
-                SHARED_STRINGS,
-                @"application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml",
-                @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings",
-                ref xlIndex);
+            RegisterPackagePart(PackagePartType.Other, postWorksheetOrderNumber, STYLES, @"application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles");
+            postWorksheetOrderNumber += 1000;
+            RegisterPackagePart(PackagePartType.Other, postWorksheetOrderNumber, SHARED_STRINGS, @"application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings");
+            // TODO: add themeIndex once if media is embedded
         }
 
-
-        private PackagePart CreatePackagePart(object relationshipParent, DocumentPath documentPath, string contentType, string relationshipType, ref int index)
+        /// <summary>
+        /// Method to prepare the package as source of the XLSX file to be written. Package parts are to be registered before calling this method
+        /// </summary>
+        /// <param name="package">Root package</param>
+        private void PreparePackage(Package package)
         {
-            try
+            List<PackagePartDefinition> definitions = PackagePartDefinition.Sort(this.packagePartDefinitions);
+            PackagePartDefinition workbookDefinition = definitions.First(p => p.OrderNumber == PackagePartDefinition.WORKBOOK_PACKAGE_PART_INDEX);
+            PackagePart workbookPart = CreateRootPackagePart(workbookDefinition.Path, workbookDefinition.ContentType, workbookDefinition.RelationshipType);
+            foreach(PackagePartDefinition definition in definitions)
             {
-                Uri uri = new Uri(documentPath.GetFullPath(), UriKind.Relative);
-                PackagePart part = this.package.CreatePart(uri, contentType, CompressionOption.Normal);
-                if (!packageParts.ContainsKey(documentPath.Path))
+                if (definition.OrderNumber == PackagePartDefinition.WORKBOOK_PACKAGE_PART_INDEX)
                 {
-                    packageParts.Add(documentPath.Path, new Dictionary<string, PackagePart>());
+                    continue;
                 }
-                packageParts[documentPath.Path].Add(documentPath.Filename, part);
-                if (relationshipParent == null || relationshipParent is Package)
+                if (definition.PartType == PackagePartType.Root)
                 {
-                    this.package.CreateRelationship(uri, TargetMode.Internal, relationshipType, "rId" + ParserUtils.ToString(index));
+                    CreateRootPackagePart(definition.Path, definition.ContentType, definition.RelationshipType);
                 }
-                else if (relationshipParent is PackagePart)
+                else
                 {
-                    ((PackagePart)relationshipParent).CreateRelationship(uri, TargetMode.Internal, relationshipType, "rId" + ParserUtils.ToString(index));
+                    CreateXlPackagePart(workbookPart, definition.Path, definition.ContentType, definition.RelationshipType);
+                    if (definition.PartType == PackagePartType.Worksheet)
+                    {
+                        worksheetPaths.Add(definition.GetWorksheetIndex(), definition.Path);
+                    }
                 }
-                index++;
-
-                return part;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
         }
 
+        /// <summary>
+        /// Method to create root package parts, like workbook or the metadata parts
+        /// </summary>
+        /// <param name="documentPath">Document path of the part</param>
+        /// <param name="contentType">Content type of the part</param>
+        /// <param name="relationshipType">Scheme URL of the part</param>
+        /// <returns>Created package part</returns>
+        internal PackagePart CreateRootPackagePart(DocumentPath documentPath, string contentType, string relationshipType)
+        {
+            Uri uri = new Uri(documentPath.GetFullPath(), UriKind.Relative);
+            PackagePart part = this.package.CreatePart(uri, contentType, CompressionOption.Normal);
+            if (!packageParts.ContainsKey(documentPath.Path))
+            {
+                packageParts.Add(documentPath.Path, new Dictionary<string, PackagePart>());
+            }
+            packageParts[documentPath.Path].Add(documentPath.Filename, part);
+            this.package.CreateRelationship(uri, TargetMode.Internal, relationshipType, "rId" + ParserUtils.ToString(rootPackageIndex));
+            rootPackageIndex++;
+            return part;
+        }
+
+        /// <summary>
+        /// Method to create non-root package part, like worksheet or sharedStrings
+        /// </summary>
+        /// <param name="parentPart">Package part that is the parent of this part</param>
+        /// <param name="documentPath">Document path of the part</param>
+        /// <param name="contentType">Content type of the part</param>
+        /// <param name="relationshipType">Scheme URL of the part</param>
+        internal void CreateXlPackagePart(PackagePart parentPart, DocumentPath documentPath, string contentType, string relationshipType)
+        {
+            Uri uri = new Uri(documentPath.GetFullPath(), UriKind.Relative);
+            PackagePart part = this.package.CreatePart(uri, contentType, CompressionOption.Normal);
+            if (!packageParts.ContainsKey(documentPath.Path))
+            {
+                packageParts.Add(documentPath.Path, new Dictionary<string, PackagePart>());
+            }
+            packageParts[documentPath.Path].Add(documentPath.Filename, part);
+            parentPart.CreateRelationship(uri, TargetMode.Internal, relationshipType, "rId" + ParserUtils.ToString(xlPackageIndex));
+            xlPackageIndex++;
+         }
+
+        /// <summary>
+        /// Method to register a package part with path and file name
+        /// </summary>
+        /// <param name="type">Type of the package part, used for handling differentiation</param>
+        /// <param name="orderNumber">Order number during registration</param>
+        /// <param name="fileNameInPackage">Relative file name of the target file of the package part, without path</param>
+        /// <param name="pathInPackage">Relative path to the file of the package part</param>
+        /// <param name="contentType">Content type of the target file of the part (usually kind of XML)</param>
+        /// <param name="relationshipType">Schema URL of the target file of the part (usually kind of XML schema)</param>
+        internal void RegisterPackagePart(PackagePartDefinition.PackagePartType type, int orderNumber, string fileNameInPackage, string pathInPackage, string contentType, string relationshipType)
+        {
+            this.packagePartDefinitions.Add(new PackagePartDefinition(type, orderNumber, fileNameInPackage, pathInPackage, contentType, relationshipType));
+        }
+
+        /// <summary>
+        /// Method to register a package part with a document path
+        /// </summary>
+        /// <param name="type">Type of the package part, used for handling differentiation</param>
+        /// <param name="orderNumber">Order number during registration</param>
+        /// <param name="documentPath">Document path with all relevant file and path information</param>
+        /// <param name="contentType">Content type of the target file of the part (usually kind of XML)</param>
+        /// <param name="relationshipType">Schema URL of the target file of the part (usually kind of XML schema)</param>
+        internal void RegisterPackagePart(PackagePartDefinition.PackagePartType type, int orderNumber, DocumentPath documentPath, string contentType, string relationshipType)
+        {
+            this.packagePartDefinitions.Add(new PackagePartDefinition(type, orderNumber, documentPath, contentType, relationshipType));
+        }
+
+        /// <summary>
+        /// Method to save the workbook as stream.
+        /// </summary>
+        /// <param name="stream">Writable stream as target</param>
+        /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
+        /// \remark <remarks>Possible Exceptions are <see cref="IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="Exceptions.FormatException">FormatException</see> and <see cref="StyleException">StyleException</see>.</remarks>
         public void SaveAsStream(Stream stream, bool leaveOpen = false)
         {
             workbook.ResolveMergedCells();
             this.styles = StyleManager.GetManagedStyles(workbook);
             try
             {
-                using (Package package = Package.Open(stream, FileMode.Create))
+                RegisterCommonPackageParts();
+                using (Package xlsxPackage = Package.Open(stream, FileMode.Create))
                 {
-                    this.package = package;
-                    PreparePackage();
+                    this.package = xlsxPackage;
+                    PreparePackage(this.package);
                     PackagePart part;
 
                     // Workbook
@@ -291,8 +322,8 @@ namespace NanoXLSX.Internal.Writers
                         part = packageParts[THEME.Path][THEME.Filename];
                         AppendXmlToPackagePart(themeWriter.CreateDocument(), part);
                     }
-                    package.Flush();
-                    package.Close();
+                    this.package.Flush();
+                    this.package.Close();
                     if (!leaveOpen)
                     {
                         stream.Close();
@@ -311,7 +342,7 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="stream">Writable stream as target</param>
         /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
-        /// \remark <remarks>Possible Exceptions are <see cref="IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="FormatException"></see> and <see cref="StyleException">StyleException</see>. These exceptions may not emerge directly if using the async method since async/await adds further abstraction layers.</remarks>
+        /// \remark <remarks>Possible Exceptions are <see cref="IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="Exceptions.FormatException">FormatException</see> and <see cref="StyleException">StyleException</see>. These exceptions may not emerge directly if using the async method since async/await adds further abstraction layers.</remarks>
         /// <returns>Async Task</returns>
         public async Task SaveAsStreamAsync(Stream stream, bool leaveOpen = false)
         {
