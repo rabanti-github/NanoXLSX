@@ -5,13 +5,17 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-namespace NanoXLSX.Interfaces
+
+namespace NanoXLSX.Interfaces.Writer
 {
     /// <summary>
-    /// Interface to represent complex text data that can be formatted somehow
+    /// Interface, used by worksheet writers
     /// </summary>
-    public interface IFormattableText : IXmlElement
+    internal interface IWorksheetWriter : IPluginWriter
     {
-
+        /// <summary>
+        /// Gets the currently active worksheet
+        /// </summary>
+        Worksheet CurrentWorksheet { get; set; }
     }
 }

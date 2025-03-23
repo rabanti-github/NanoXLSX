@@ -21,6 +21,7 @@ using NanoXLSX.Utils;
 using NanoXLSX.Styles;
 using IOException = NanoXLSX.Exceptions.IOException;
 using PackagePartType = NanoXLSX.Internal.Structures.PackagePartDefinition.PackagePartType;
+using XmlElement = NanoXLSX.Utils.Xml.XmlElement;
 
 namespace NanoXLSX.Internal.Writers
 {
@@ -28,7 +29,7 @@ namespace NanoXLSX.Internal.Writers
     /// Class for internal handling (XML, formatting, packing)
     /// </summary>
     /// \remark <remarks>This class is only for internal use. Use the high level API (e.g. class Workbook) to manipulate data and create Excel files</remarks>
-    internal class XlsxWriter
+    internal class XlsxWriter : IBaseWriter
     {
 
         #region staticFields
@@ -55,15 +56,26 @@ namespace NanoXLSX.Internal.Writers
         #endregion
 
         #region properties
+        /// <summary>
+        /// Workbook to be saved
+        /// </summary>
         public Workbook Workbook
         {
             get { return workbook; }
         }
 
+        /// <summary>
+        /// Style manager attached to the workbook to save
+        /// </summary>
         public StyleManager Styles
         {
             get { return styles; }
         }
+
+        /// <summary>
+        /// Shared string writer attached to the workbook to save
+        /// </summary>
+        public ISharedStringWriter SharedStringWriter { get; set; }
 
         #endregion
 
@@ -244,7 +256,7 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="documentPath">Document path with all relevant file and path information</param>
         /// <param name="contentType">Content type of the target file of the part (usually kind of XML)</param>
         /// <param name="relationshipType">Schema URL of the target file of the part (usually kind of XML schema)</param>
-        internal void RegisterPackagePart(PackagePartDefinition.PackagePartType type, int orderNumber, DocumentPath documentPath, string contentType, string relationshipType)
+        internal void RegisterPackagePart(PackagePartType type, int orderNumber, DocumentPath documentPath, string contentType, string relationshipType)
         {
             this.packagePartDefinitions.Add(new PackagePartDefinition(type, orderNumber, documentPath, contentType, relationshipType));
         }
@@ -261,6 +273,9 @@ namespace NanoXLSX.Internal.Writers
             this.styles = StyleManager.GetManagedStyles(workbook);
             try
             {
+                HandlePackageRegistryQueuePlugins();
+                HandleQueuePlugins(PluginUUID.WRITER_PREPENDING_QUEUE);
+
                 RegisterCommonPackageParts();
                 using (Package xlsxPackage = Package.Open(stream, FileMode.Create))
                 {
@@ -269,20 +284,23 @@ namespace NanoXLSX.Internal.Writers
                     PackagePart part;
 
                     // Workbook
-                    IPluginWriter workbookWriter = PackageRegistry.GetWriter(new WorkbookWriter(this));
+                    IPluginWriter workbookWriter = PluginLoader.GetPlugin<IPluginWriter>(PluginUUID.WORKBOOK_WRITER, new WorkbookWriter());
+                    workbookWriter.Init(this);
                     part = packageParts[WORKBOOK.Path][WORKBOOK.Filename];
-                    AppendXmlToPackagePart(workbookWriter.CreateDocument(), part);
+                    AppendXmlToPackagePart(workbookWriter.GetElement(), part);
 
                     // Style
-                    IPluginWriter styleWriter = PackageRegistry.GetWriter(new StyleWriter(this));
+                    IPluginWriter styleWriter = PluginLoader.GetPlugin<IPluginWriter>(PluginUUID.STYLE_WRITER, new StyleWriter());
+                    styleWriter.Init(this);
                     part = packageParts[STYLES.Path][STYLES.Filename];
-                    AppendXmlToPackagePart(styleWriter.CreateDocument(), part);
+                    AppendXmlToPackagePart(styleWriter.GetElement(), part);
 
                     // Shared strings - preparation
-                    ISharedStringWriter sharedStringWriter = (ISharedStringWriter)PackageRegistry.GetWriter(new SharedStringWriter(this));
-
+                    SharedStringWriter = PluginLoader.GetPlugin<ISharedStringWriter>(PluginUUID.SHARED_STRING_WRITER, new SharedStringWriter());
+                    SharedStringWriter.Init(this);
                     // Worksheets
-                    IWorksheetWriter worksheetWriter = (IWorksheetWriter)PackageRegistry.GetWriter(new WorksheetWriter(this, (sharedStringWriter)));
+                    IWorksheetWriter worksheetWriter = PluginLoader.GetPlugin<IWorksheetWriter>(PluginUUID.WORKSHEET_WRITER, new WorksheetWriter());
+                    worksheetWriter.Init(this);
                     if (workbook.Worksheets.Count > 0)
                     {
                         for (int i = 0; i < workbook.Worksheets.Count; i++)
@@ -290,38 +308,44 @@ namespace NanoXLSX.Internal.Writers
                             Worksheet item = workbook.Worksheets[i];
                             part = packageParts[worksheetPaths[i].Path][worksheetPaths[i].Filename];
                             worksheetWriter.CurrentWorksheet = item;
-                            AppendXmlToPackagePart(worksheetWriter.CreateDocument(), part);
+                            AppendXmlToPackagePart(worksheetWriter.GetElement(), part);
                         }
                     }
                     else
                     {
                         part = packageParts[worksheetPaths[0].Path][worksheetPaths[0].Filename];
                         worksheetWriter.CurrentWorksheet = new Worksheet("sheet1");
-                        AppendXmlToPackagePart(worksheetWriter.CreateDocument(), part);
+                        AppendXmlToPackagePart(worksheetWriter.GetElement(), part);
                     }
 
                     // Shared strings - write after collection of strings
                     part = packageParts[SHARED_STRINGS.Path][SHARED_STRINGS.Filename];
-                    AppendXmlToPackagePart(sharedStringWriter.CreateDocument(), part);
+                    AppendXmlToPackagePart(SharedStringWriter.GetElement(), part);
 
                     // Metadata
                     if (this.workbook.WorkbookMetadata != null)
                     {
-                        IPluginWriter metadataAppWriter = PackageRegistry.GetWriter(new MetadataAppWriter(this));
+                        IPluginWriter metadataAppWriter = PluginLoader.GetPlugin<IPluginWriter>(PluginUUID.METADATA_APP_WRITER, new MetadataAppWriter());
+                        metadataAppWriter.Init(this);
                         part = packageParts[APP_PROPERTIES.Path][APP_PROPERTIES.Filename];
-                        AppendXmlToPackagePart(metadataAppWriter.CreateDocument(), part);
-                        IPluginWriter metadataCoreWriter = PackageRegistry.GetWriter(new MetadataCoreWriter(this));
+                        AppendXmlToPackagePart(metadataAppWriter.GetElement(), part);
+                        IPluginWriter metadataCoreWriter = PluginLoader.GetPlugin<IPluginWriter>(PluginUUID.METADATA_CORE_WRITER, new MetadataCoreWriter());
+                        metadataCoreWriter.Init(this);
                         part = packageParts[CORE_PROPERTIES.Path][CORE_PROPERTIES.Filename];
-                        AppendXmlToPackagePart(metadataCoreWriter.CreateDocument(), part);
+                        AppendXmlToPackagePart(metadataCoreWriter.GetElement(), part);
                     }
 
                     // Theme
                     if (workbook.WorkbookTheme != null)
                     {
-                        IPluginWriter themeWriter = PackageRegistry.GetWriter(new ThemeWriter(this));
+                        IPluginWriter themeWriter = PluginLoader.GetPlugin<IPluginWriter>(PluginUUID.THEME_WRITER, new ThemeWriter());
+                        themeWriter.Init(this);
                         part = packageParts[THEME.Path][THEME.Filename];
-                        AppendXmlToPackagePart(themeWriter.CreateDocument(), part);
+                        AppendXmlToPackagePart(themeWriter.GetElement(), part);
                     }
+
+                    HandleQueuePlugins(PluginUUID.WRITER_APPENDING_QUEUE);
+
                     this.package.Flush();
                     this.package.Close();
                     if (!leaveOpen)
@@ -348,62 +372,114 @@ namespace NanoXLSX.Internal.Writers
         {
             await Task.Run(() => { SaveAsStream(stream, leaveOpen); });
         }
-
         #endregion
 
-        #region documentUtil_methods
-
         /// <summary>
-        /// Method to append a simple XML tag with an enclosed value to the passed StringBuilder
+        /// Method to handle queue plug-ins
         /// </summary>
-        /// <param name="sb">StringBuilder to append</param>
-        /// <param name="value">Value of the XML element</param>
-        /// <param name="tagName">Tag name of the XML element</param>
-        /// <param name="nameSpace">Optional XML name space. Can be empty or null</param>
-        internal static void AppendXmlTag(StringBuilder sb, string value, string tagName, string nameSpace)
+        /// <param name="queueUuid">Queue UUID</param>
+        private void HandleQueuePlugins(string queueUuid)
         {
-            if (string.IsNullOrEmpty(value)) { return; }
-            bool hasNoNs = string.IsNullOrEmpty(nameSpace);
-            sb.Append('<');
-            if (!hasNoNs)
+            IPluginWriter queueWriter = null;
+            string lastUuid = null;
+            do
             {
-                sb.Append(nameSpace);
-                sb.Append(':');
-            }
-            sb.Append(tagName).Append(">");
-            sb.Append(XmlUtils.EscapeXmlChars(value));
-            sb.Append("</");
-            if (!hasNoNs)
-            {
-                sb.Append(nameSpace);
-                sb.Append(':');
-            }
-            sb.Append(tagName);
-            sb.Append('>');
+                string currentUuid;
+                queueWriter = PluginLoader.GetNextQueuePlugin<IPluginWriter>(queueUuid, lastUuid, out currentUuid);
+                if (queueWriter != null)
+                {
+                    queueWriter.Init(this);
+                    queueWriter.Execute();
+                    if (!string.IsNullOrEmpty(queueWriter.PackagePath) && !string.IsNullOrEmpty(queueWriter.PackageFileName))
+                    {
+                        if (packageParts.ContainsKey(queueWriter.PackagePath) && packageParts[queueWriter.PackagePath].ContainsKey(queueWriter.PackageFileName)){
+                            PackagePart pp = packageParts[queueWriter.PackagePath][queueWriter.PackagePath];
+                            AppendXmlToPackagePart(queueWriter.GetElement(), pp);
+                        }
+                    }
+                    lastUuid = currentUuid;
+                }
+                else
+                {
+                    lastUuid = null;
+                }
+
+            } while (queueWriter != null);
         }
 
         /// <summary>
-        /// Writes raw XML strings into the passed Package Part
+        /// Method to handle queue plug-ins that are registering package parts
         /// </summary>
-        /// <param name="doc">document as raw XML string</param>
-        /// <param name="pp">Package part to append the XML data</param>
-        private void AppendXmlToPackagePart(string doc, PackagePart pp)
+        private void HandlePackageRegistryQueuePlugins()
         {
+            IPluginWriterRegistration queueWriter = null;
+            string lastUuid = null;
+            do
+            {
+                string currentUuid;
+                queueWriter = PluginLoader.GetNextQueuePlugin<IPluginWriterRegistration>(PluginUUID.WRITER_PACKAGE_REGISTRY_QUEUE, lastUuid, out currentUuid);
+                if (queueWriter != null)
+                {
+                    queueWriter.Execute(); // Execute anything that could be defined
+                    PackagePartType packagePartType;
+                    if (queueWriter.IsRootPackagaePart)
+                    {
+                        packagePartType = PackagePartType.Root;
+                    }
+                    else
+                    {
+                        packagePartType = PackagePartType.Other;
+                    }
+                    RegisterPackagePart(packagePartType, queueWriter.OrderNumber, new DocumentPath(queueWriter.PackagePartFileName, queueWriter.PackagePartPath), queueWriter.ContentType, queueWriter.RelationshipType);
+                    lastUuid = currentUuid;
+                }
+                else
+                {
+                    lastUuid = null;
+                }
+
+            } while (queueWriter != null);
+        }
+
+        /// <summary>
+        /// Method to append XML files to a root package part in the right hierarchy
+        /// </summary>
+        /// <param name="rootElement">Root element</param>
+        /// <param name="pp">Package part</param>
+        private void AppendXmlToPackagePart(XmlElement rootElement, PackagePart pp)
+        {
+            XmlDocument doc = rootElement.TransformToDocument(); // This creates a System.Xml.XmlDocument from a custom XmlElement instance
             using (MemoryStream ms = new MemoryStream())
             {
-                using (XmlWriter writer = XmlWriter.Create(ms))
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Encoding = new UTF8Encoding(false), // No BOM
+                    Indent = true,
+                    OmitXmlDeclaration = false // Include <?xml version="1.0" encoding="utf-8"?>
+                };
+
+                using (XmlWriter writer = XmlWriter.Create(ms, settings))
                 {
                     writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"");
-                    writer.WriteRaw(doc);
+                    doc. WriteTo(writer);
                     writer.Flush();
-                    ms.Position = 0;
-                    ms.CopyTo(pp.GetStream());
-                    ms.Flush();
                 }
+
+                AddStreamToPackagePart(ms, pp);
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Method to add a stream to a package part
+        /// </summary>
+        /// <param name="stream">Stream to add</param>
+        /// <param name="pp">Package part</param>
+        internal void AddStreamToPackagePart(MemoryStream stream, PackagePart pp)
+        {
+            stream.Position = 0;
+            stream.CopyTo(pp.GetStream());
+            stream.Flush();
+        }
 
     }
 }

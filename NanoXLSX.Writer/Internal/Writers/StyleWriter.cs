@@ -6,8 +6,6 @@
  */
 
 using System.Collections.Generic;
-using System.Text;
-using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Utils;
@@ -17,293 +15,269 @@ using static NanoXLSX.Styles.Font;
 using static NanoXLSX.Styles.Fill;
 using static NanoXLSX.Styles.CellXf;
 using static NanoXLSX.Styles.NumberFormat;
+using NanoXLSX.Utils.Xml;
+using NanoXLSX.Registry;
 
 namespace NanoXLSX.Internal.Writers
 {
+    /// <summary>
+    /// Class to generate the style XML file in a XLSX file.
+    /// </summary>
+    [NanoXlsxPlugin(PluginUUID = PluginUUID.STYLE_WRITER)]
     internal class StyleWriter : IPluginWriter
     {
 
-        private readonly StyleManager styles;
-        private Workbook workbook;
-
-        internal StyleWriter(XlsxWriter writer)
-        {
-            this.styles = writer.Styles;
-            this.workbook = writer.Workbook;
-        }
-
-        /// <summary>
-        /// Method to create a style sheet as raw XML string
-        /// </summary>
-        /// \remark <remarks>This method is virtual. Plug-in packages may override it.
-        /// In contrast to a StyleException, a UndefinedStyleException should never happen in this state, if the internally managed style collection was not tampered. </remarks>
-        /// <returns>Raw XML string</returns>
-        /// <exception cref="StyleException">Throws a StyleException if one of the styles cannot be referenced or is null</exception>
-        public virtual string CreateDocument(string currentDocument)
-        {
-            PreWrite(workbook);
-            string bordersString = CreateStyleBorderString();
-            string fillsString = CreateStyleFillString();
-            string fontsString = CreateStyleFontString();
-            string numberFormatsString = CreateStyleNumberFormatString();
-            string xfsStings = CreateStyleXfsString();
-            string mruColorString = CreateMruColorsString();
-            int fontCount = styles.GetFontStyleNumber();
-            int fillCount = styles.GetFillStyleNumber();
-            int styleCount = styles.GetStyleNumber();
-            int borderCount = styles.GetBorderStyleNumber();
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">");
-            int numFormatCount = styles.GetNumberFormatStyleNumber();
-            if (numFormatCount > 0)
-            {
-                sb.Append("<numFmts count=\"").Append(ParserUtils.ToString(numFormatCount)).Append("\">");
-                sb.Append(numberFormatsString + "</numFmts>");
-            }
-            sb.Append("<fonts x14ac:knownFonts=\"1\" count=\"").Append(ParserUtils.ToString(fontCount)).Append("\">");
-            sb.Append(fontsString).Append("</fonts>");
-            sb.Append("<fills count=\"").Append(ParserUtils.ToString(fillCount)).Append("\">");
-            sb.Append(fillsString).Append("</fills>");
-            sb.Append("<borders count=\"").Append(ParserUtils.ToString(borderCount)).Append("\">");
-            sb.Append(bordersString).Append("</borders>");
-            sb.Append("<cellXfs count=\"").Append(ParserUtils.ToString(styleCount)).Append("\">");
-            sb.Append(xfsStings).Append("</cellXfs>");
-            if (((Workbook)workbook).WorkbookMetadata != null)
-            {
-                if (!string.IsNullOrEmpty(mruColorString))
-                {
-                    sb.Append("<colors>");
-                    sb.Append(mruColorString);
-                    sb.Append("</colors>");
-                }
-            }
-            sb.Append("</styleSheet>");
-            PostWrite(workbook);
-            if (NextWriter != null)
-            {
-                NextWriter.Workbook = this.Workbook;
-                return NextWriter.CreateDocument(sb.ToString());
-            }
-            else
-            {
-                return sb.ToString();
-            }
-        }
-
-        /// <summary>
-        /// Method that is called before the <see cref="CreateDocument()"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PreWrite(Workbook workbook)
-        {
-            // NoOp - replaced by plugin
-        }
-
-        /// <summary>
-        /// Method that is called after the <see cref="CreateDocument()"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PostWrite(Workbook workbook)
-        {
-            // NoOp - replaced by plugin
-        }
+        private StyleManager styles;
+        private XmlElement styleSheet;
 
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
-        public Workbook Workbook
+        public Workbook Workbook { get; set; }
+
+        /// <summary>
+        /// relative Package path of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
+        /// </summary>
+        public string PackagePath { get; set; }
+        /// <summary>
+        /// File name of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
+        /// </summary>
+        public string PackageFileName { get; set; }
+
+        /// <summary>
+        /// Default constructor - Must be defined for instantiation of the plug-ins
+        /// </summary>
+        internal StyleWriter()
         {
-            get { return workbook; }
-            set { workbook = value; }
         }
 
         /// <summary>
-        /// Gets or sets the next plug-in writer. If not null, the next writer to be applied on the document can be called by this property
+        /// Initialization method (interface implementation)
         /// </summary>
-        public IPluginWriter NextWriter { get; set; } = null;
-
-        /// <summary>
-        /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
-        /// </summary>
-        /// <returns>GUID of the class</returns>
-        public string GetClassID()
+        /// <param name="baseWriter">Base writer instance that holds any information for this writer</param>
+        public void Init(IBaseWriter baseWriter)
         {
-            return "9C3694B5-930A-4DA6-BD37-6013D15E9B91";
+            this.styles = baseWriter.Styles;
+            this.Workbook = baseWriter.Workbook;
         }
 
         /// <summary>
-        /// Method to create the XML string for the border part of the style sheet document
+        /// Get the XmlElement after <see cref="Execute"/> (interface implementation)
         /// </summary>
-        /// <returns>String with formatted XML data</returns>
-        private string CreateStyleBorderString()
+        /// <returns>XmlElement instance that was created after the plug-in execution</returns>
+        public XmlElement GetElement()
+        {
+            Execute(); 
+            return styleSheet;
+        }
+
+        /// <summary>
+        /// Method to execute the main logic of the plug-in (interface implementation)
+        /// </summary>
+        public void Execute()
+        {
+            styleSheet = XmlElement.CreateElement("styleSheet");
+            styleSheet.AddDefaultXmlNameSpace("http://schemas.openxmlformats.org/spreadsheetml/2006/main");
+            styleSheet.AddNameSpaceAttribute("mc", "xmlns", "http://schemas.openxmlformats.org/markup-compatibility/2006");
+            styleSheet.AddNameSpaceAttribute("x14ac", "xmlns", "http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac");
+            styleSheet.AddAttribute("mc:Ignorable", "x14ac");
+            int numFormatCount = styles.GetNumberFormatStyleNumber();
+            int fontCount = styles.GetFontStyleNumber();
+            int fillCount = styles.GetFillStyleNumber();
+            int borderCount = styles.GetBorderStyleNumber();
+            int styleCount = styles.GetStyleNumber();
+            if (numFormatCount > 0)
+            {
+                XmlElement numFmts = XmlElement.CreateElementWithAttribute("numFmts", "count", ParserUtils.ToString(numFormatCount));
+                numFmts.AddChildElements(getNumberFormatElements());
+                styleSheet.AddChildElement(numFmts);
+            }
+            XmlElement fonts = XmlElement.CreateElementWithAttribute("fonts", "count", ParserUtils.ToString(fontCount));
+            fonts.AddAttribute("knownFonts", "1", "x14ac");
+            fonts.AddChildElements(getFontElements());
+            styleSheet.AddChildElement(fonts);
+            XmlElement fills = XmlElement.CreateElementWithAttribute("fills", "count", ParserUtils.ToString(fillCount));
+            fills.AddChildElements(getFillElements());
+            styleSheet.AddChildElement(fills);
+            XmlElement borders = XmlElement.CreateElementWithAttribute("borders", "count", ParserUtils.ToString(borderCount));
+            borders.AddChildElements(getBorderElements());
+            styleSheet.AddChildElement(borders);
+            XmlElement cellXfs = XmlElement.CreateElementWithAttribute("cellXfs", "count", ParserUtils.ToString(styleCount));
+            cellXfs.AddChildElements(getCellXfElements());
+            styleSheet.AddChildElement(cellXfs);
+            if (Workbook.WorkbookMetadata != null)
+            {
+                XmlElement mruElement = getMruElement();
+                if (mruElement != null)
+                {
+                    XmlElement colors = styleSheet.AddChildElement("colors");
+                    colors.AddChildElement(mruElement);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Method to get all border elements of the style
+        /// </summary>
+        /// <returns>IEnumerable of border elements</returns>
+        private IEnumerable<XmlElement> getBorderElements()
         {
             Border[] borderStyles = styles.GetBorders();
-            StringBuilder sb = new StringBuilder();
+            List<XmlElement> borders = new List<XmlElement>(borderStyles.Length);
             foreach (Border item in borderStyles)
             {
-                if (item.DiagonalDown && !item.DiagonalUp) { sb.Append("<border diagonalDown=\"1\">"); }
-                else if (!item.DiagonalDown && item.DiagonalUp) { sb.Append("<border diagonalUp=\"1\">"); }
-                else if (item.DiagonalDown && item.DiagonalUp) { sb.Append("<border diagonalDown=\"1\" diagonalUp=\"1\">"); }
-                else { sb.Append("<border>"); }
-
+                XmlElement border = XmlElement.CreateElement("border");
+                if (item.DiagonalDown && !item.DiagonalUp) { border.AddAttribute("diagonalDown", "1"); }
+                else if (!item.DiagonalDown && item.DiagonalUp) { border.AddAttribute("diagonalUp", "1"); }
+                else if (item.DiagonalDown && item.DiagonalUp)
+                {
+                    border.AddAttribute("diagonalDown", "1");
+                    border.AddAttribute("diagonalUp", "1");
+                }
                 if (item.LeftStyle != StyleValue.none)
                 {
-                    sb.Append("<left style=\"" + Border.GetStyleName(item.LeftStyle) + "\">");
-                    if (!string.IsNullOrEmpty(item.LeftColor)) { sb.Append("<color rgb=\"").Append(item.LeftColor).Append("\"/>"); }
-                    else { sb.Append("<color auto=\"1\"/>"); }
-                    sb.Append("</left>");
+                    XmlElement left = border.AddChildElementWithAttribute("left", "style", Border.GetStyleName(item.LeftStyle));
+                    if (!string.IsNullOrEmpty(item.LeftColor)) { left.AddChildElementWithAttribute("color", "rgb", item.LeftColor); }
+                    else { left.AddChildElementWithAttribute("color", "auto", "1"); }
                 }
                 else
                 {
-                    sb.Append("<left/>");
+                    border.AddChildElement("left");
                 }
                 if (item.RightStyle != StyleValue.none)
                 {
-                    sb.Append("<right style=\"").Append(Border.GetStyleName(item.RightStyle)).Append("\">");
-                    if (!string.IsNullOrEmpty(item.RightColor)) { sb.Append("<color rgb=\"").Append(item.RightColor).Append("\"/>"); }
-                    else { sb.Append("<color auto=\"1\"/>"); }
-                    sb.Append("</right>");
+                    XmlElement right = border.AddChildElementWithAttribute("right", "style", Border.GetStyleName(item.RightStyle));
+                    if (!string.IsNullOrEmpty(item.RightColor)) { right.AddChildElementWithAttribute("color", "rgb", item.RightColor); }
+                    else { right.AddChildElementWithAttribute("color", "auto", "1"); }
                 }
                 else
                 {
-                    sb.Append("<right/>");
+                    border.AddChildElement("right");
                 }
                 if (item.TopStyle != StyleValue.none)
                 {
-                    sb.Append("<top style=\"").Append(Border.GetStyleName(item.TopStyle)).Append("\">");
-                    if (!string.IsNullOrEmpty(item.TopColor)) { sb.Append("<color rgb=\"").Append(item.TopColor).Append("\"/>"); }
-                    else { sb.Append("<color auto=\"1\"/>"); }
-                    sb.Append("</top>");
+                    XmlElement top = border.AddChildElementWithAttribute("top", "style", Border.GetStyleName(item.TopStyle));
+                    if (!string.IsNullOrEmpty(item.TopColor)) { top.AddChildElementWithAttribute("color", "rgb", item.TopColor); }
+                    else { top.AddChildElementWithAttribute("color", "auto", "1"); }
                 }
                 else
                 {
-                    sb.Append("<top/>");
+                    border.AddChildElement("top");
                 }
                 if (item.BottomStyle != StyleValue.none)
                 {
-                    sb.Append("<bottom style=\"").Append(Border.GetStyleName(item.BottomStyle)).Append("\">");
-                    if (!string.IsNullOrEmpty(item.BottomColor)) { sb.Append("<color rgb=\"").Append(item.BottomColor).Append("\"/>"); }
-                    else { sb.Append("<color auto=\"1\"/>"); }
-                    sb.Append("</bottom>");
+                    XmlElement bottom = border.AddChildElementWithAttribute("bottom", "style", Border.GetStyleName(item.BottomStyle));
+                    if (!string.IsNullOrEmpty(item.BottomColor)) { bottom.AddChildElementWithAttribute("color", "rgb", item.BottomColor); }
+                    else { bottom.AddChildElementWithAttribute("color", "auto", "1"); }
                 }
                 else
                 {
-                    sb.Append("<bottom/>");
+                    border.AddChildElement("bottom");
                 }
                 if (item.DiagonalStyle != StyleValue.none)
                 {
-                    sb.Append("<diagonal style=\"").Append(Border.GetStyleName(item.DiagonalStyle)).Append("\">");
-                    if (!string.IsNullOrEmpty(item.DiagonalColor)) { sb.Append("<color rgb=\"").Append(item.DiagonalColor).Append("\"/>"); }
-                    else { sb.Append("<color auto=\"1\"/>"); }
-                    sb.Append("</diagonal>");
+                    XmlElement diagonal = border.AddChildElementWithAttribute("diagonal", "style", Border.GetStyleName(item.DiagonalStyle));
+                    if (!string.IsNullOrEmpty(item.DiagonalColor)) { diagonal.AddChildElementWithAttribute("color", "rgb", item.DiagonalColor); }
+                    else { diagonal.AddChildElementWithAttribute("color", "auto", "1"); }
                 }
                 else
                 {
-                    sb.Append("<diagonal/>");
+                    border.AddChildElement("diagonal");
                 }
-                sb.Append("</border>");
+                borders.Add(border);
             }
-            return sb.ToString();
+            return borders;
         }
 
         /// <summary>
-        /// Method to create the XML string for the font part of the style sheet document
+        /// Method to get all font elements of the style
         /// </summary>
-        /// <returns>String with formatted XML data</returns>
-        private string CreateStyleFontString()
+        /// <returns>IEnumerable of font elements</returns>
+        private IEnumerable<XmlElement> getFontElements()
         {
             Font[] fontStyles = styles.GetFonts();
-            StringBuilder sb = new StringBuilder();
+            List<XmlElement> fonts = new List<XmlElement>(fontStyles.Length);
             foreach (Font item in fontStyles)
             {
-                sb.Append("<font>");
-                if (item.Bold) { sb.Append("<b/>"); }
-                if (item.Italic) { sb.Append("<i/>"); }
-                if (item.Strike) { sb.Append("<strike/>"); }
+                XmlElement font = XmlElement.CreateElement("font");
+                if (item.Bold) { font.AddChildElement("b"); }
+                if (item.Italic) { font.AddChildElement("i"); }
+                if (item.Strike) { font.AddChildElement("strike"); }
                 if (item.Underline != UnderlineValue.none)
                 {
-                    if (item.Underline == UnderlineValue.u_double) { sb.Append("<u val=\"double\"/>"); }
-                    else if (item.Underline == UnderlineValue.singleAccounting) { sb.Append("<u val=\"singleAccounting\"/>"); }
-                    else if (item.Underline == UnderlineValue.doubleAccounting) { sb.Append("<u val=\"doubleAccounting\"/>"); }
-                    else { sb.Append("<u/>"); }
+                    if (item.Underline == UnderlineValue.u_double) { font.AddChildElementWithAttribute("u", "val", "double"); }
+                    else if (item.Underline == UnderlineValue.singleAccounting) { font.AddChildElementWithAttribute("u", "val", "singleAccounting"); }
+                    else if (item.Underline == UnderlineValue.doubleAccounting) { font.AddChildElementWithAttribute("u", "val", "doubleAccounting"); }
+                    else { font.AddChildElement("u"); }
                 }
-                if (item.VerticalAlign == VerticalTextAlignValue.subscript) { sb.Append("<vertAlign val=\"subscript\"/>"); }
-                else if (item.VerticalAlign == VerticalTextAlignValue.superscript) { sb.Append("<vertAlign val=\"superscript\"/>"); }
-                sb.Append("<sz val=\"").Append(ParserUtils.ToString(item.Size)).Append("\"/>");
+                if (item.VerticalAlign == VerticalTextAlignValue.subscript) { font.AddChildElementWithAttribute("vertAlign", "val", "subscript"); }
+                else if (item.VerticalAlign == VerticalTextAlignValue.superscript) { font.AddChildElementWithAttribute("vertAlign", "val", "superscript"); }
+                font.AddChildElementWithAttribute("sz", "val", ParserUtils.ToString(item.Size));
                 if (string.IsNullOrEmpty(item.ColorValue))
                 {
-                    sb.Append("<color theme=\"").Append(ParserUtils.ToString((int)item.ColorTheme)).Append("\"/>");
+                    font.AddChildElementWithAttribute("color", "theme", ParserUtils.ToString((int)item.ColorTheme));
                 }
                 else
                 {
-                    sb.Append("<color rgb=\"").Append(item.ColorValue).Append("\"/>");
+                    font.AddChildElementWithAttribute("color", "rgb", item.ColorValue);
                 }
-                sb.Append("<name val=\"").Append(item.Name).Append("\"/>");
-                sb.Append("<family val=\"").Append(ParserUtils.ToString((int)item.Family)).Append("\"/>");
+                font.AddChildElementWithAttribute("name", "val",  item.Name);
+                font.AddChildElementWithAttribute("family", "val", ParserUtils.ToString((int)item.Family));
                 if (item.Scheme != SchemeValue.none)
                 {
                     if (item.Scheme == SchemeValue.major)
-                    { sb.Append("<scheme val=\"major\"/>"); }
+                    { font.AddChildElementWithAttribute("scheme", "val", "major"); }
                     else if (item.Scheme == SchemeValue.minor)
-                    { sb.Append("<scheme val=\"minor\"/>"); }
+                    { font.AddChildElementWithAttribute("scheme", "val", "minor"); }
                 }
                 if (item.Charset != CharsetValue.Default)
                 {
-                    sb.Append("<charset val=\"").Append(ParserUtils.ToString((int)item.Charset)).Append("\"/>");
+                    font.AddChildElementWithAttribute("charset", "val", ParserUtils.ToString((int)item.Charset));
                 }
-                sb.Append("</font>");
+                fonts.Add(font);
             }
-            return sb.ToString();
+            return fonts;
         }
 
         /// <summary>
-        /// Method to create the XML string for the fill part of the style sheet document
+        /// Method to get all fill elements of the style
         /// </summary>
-        /// <returns>String with formatted XML data</returns>
-        private string CreateStyleFillString()
+        /// <returns>IEnumerable of fill elements</returns>
+        private IEnumerable<XmlElement> getFillElements()
         {
             Fill[] fillStyles = styles.GetFills();
-            StringBuilder sb = new StringBuilder();
+            List<XmlElement> fills = new List<XmlElement>(fillStyles.Length);
             foreach (Fill item in fillStyles)
             {
-                sb.Append("<fill>");
-                sb.Append("<patternFill patternType=\"").Append(Fill.GetPatternName(item.PatternFill)).Append("\"");
+                XmlElement fill = XmlElement.CreateElement("fill");
+                XmlElement patternFill = fill.AddChildElement("patternFill");
+                patternFill.AddAttribute("patternType", Fill.GetPatternName(item.PatternFill));
                 if (item.PatternFill == PatternValue.solid)
                 {
-                    sb.Append(">");
-                    sb.Append("<fgColor rgb=\"").Append(item.ForegroundColor).Append("\"/>");
-                    sb.Append("<bgColor indexed=\"").Append(ParserUtils.ToString(item.IndexedColor)).Append("\"/>");
-                    sb.Append("</patternFill>");
+                    patternFill.AddChildElementWithAttribute("fgColor", "rgb", item.ForegroundColor);
+                    patternFill.AddChildElementWithAttribute("bgColor", "indexed", ParserUtils.ToString(item.IndexedColor));
                 }
                 else if (item.PatternFill == PatternValue.mediumGray || item.PatternFill == PatternValue.lightGray || item.PatternFill == PatternValue.gray0625 || item.PatternFill == PatternValue.darkGray)
                 {
-                    sb.Append(">");
-                    sb.Append("<fgColor rgb=\"").Append(item.ForegroundColor).Append("\"/>");
+                    patternFill.AddChildElementWithAttribute("fgColor", "rgb", item.ForegroundColor);
                     if (!string.IsNullOrEmpty(item.BackgroundColor))
                     {
-                        sb.Append("<bgColor rgb=\"").Append(item.BackgroundColor).Append("\"/>");
+                        patternFill.AddChildElementWithAttribute("bgColor", "rgb", item.BackgroundColor);
                     }
-                    sb.Append("</patternFill>");
                 }
-                else
-                {
-                    sb.Append("/>");
-                }
-                sb.Append("</fill>");
+                fills.Add(fill);
             }
-            return sb.ToString();
+            return fills;
         }
 
         /// <summary>
-        /// Method to create the XML string for the number format part of the style sheet document 
+        /// Method to get all numberFormat elements of the style
         /// </summary>
-        /// <returns>String with formatted XML data</returns>
-        private string CreateStyleNumberFormatString()
+        /// <returns>IEnumerable of numberFormat elements</returns>
+        private IEnumerable<XmlElement> getNumberFormatElements()
         {
             NumberFormat[] numberFormatStyles = styles.GetNumberFormats();
-            StringBuilder sb = new StringBuilder();
+            List<XmlElement> elements = new List<XmlElement>(numberFormatStyles.Length);
             foreach (NumberFormat item in numberFormatStyles)
             {
                 if (item.IsCustomFormat)
@@ -314,162 +288,141 @@ namespace NanoXLSX.Internal.Writers
                     }
                     // OOXML: Escaping according to Chp.18.8.31
                     // TODO: v3> Add a custom format builder
-                    sb.Append("<numFmt formatCode=\"").Append(XmlUtils.EscapeXmlAttributeChars(item.CustomFormatCode)).Append("\" numFmtId=\"").Append(ParserUtils.ToString(item.CustomFormatID)).Append("\"/>");
+                    XmlElement element = XmlElement.CreateElementWithAttribute("numFmt", "formatCode", XmlUtils.SanitizeXmlValue(item.CustomFormatCode));
+                    element.AddAttribute("numFmtId", ParserUtils.ToString(item.CustomFormatID));
+                    elements.Add(element);
                 }
             }
-            return sb.ToString();
+            return elements;
         }
 
         /// <summary>
-        /// Method to create the XML string for the XF part of the style sheet document
+        /// Method to get all cellXf elements of the style
         /// </summary>
-        /// <returns>String with formatted XML data</returns>
-        private string CreateStyleXfsString()
+        /// <returns>IEnumerable of cellXf elements</returns>
+        private IEnumerable<XmlElement> getCellXfElements()
         {
             Style[] styleItems = this.styles.GetStyles();
-            StringBuilder sb = new StringBuilder();
-            StringBuilder sb2 = new StringBuilder();
-            string alignmentString, protectionString;
-            int formatNumber, textRotation;
+            List<XmlElement> xfs = new List<XmlElement>(styleItems.Length);
             foreach (Style style in styleItems)
             {
-                textRotation = style.CurrentCellXf.CalculateInternalRotation();
-                alignmentString = string.Empty;
-                protectionString = string.Empty;
+                int textRotation = style.CurrentCellXf.CalculateInternalRotation();
+                XmlElement alignment = null;
+                XmlElement protection = null;
                 if (style.CurrentCellXf.HorizontalAlign != HorizontalAlignValue.none || style.CurrentCellXf.VerticalAlign != VerticalAlignValue.none || style.CurrentCellXf.Alignment != TextBreakValue.none || textRotation != 0)
                 {
-                    sb2.Clear();
-                    sb2.Append("<alignment");
+                    alignment = XmlElement.CreateElement("alignment");
                     if (style.CurrentCellXf.HorizontalAlign != HorizontalAlignValue.none)
                     {
-                        sb2.Append(" horizontal=\"");
-                        if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.center) { sb2.Append("center"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.right) { sb2.Append("right"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.centerContinuous) { sb2.Append("centerContinuous"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.distributed) { sb2.Append("distributed"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.fill) { sb2.Append("fill"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.general) { sb2.Append("general"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.justify) { sb2.Append("justify"); }
-                        else { sb2.Append("left"); }
-                        sb2.Append("\"");
+                        if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.center) { alignment.AddAttribute("horizontal", "center"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.right) { alignment.AddAttribute("horizontal", "right"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.centerContinuous) { alignment.AddAttribute("horizontal", "centerContinuous"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.distributed) { alignment.AddAttribute("horizontal", "distributed"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.fill) { alignment.AddAttribute("horizontal", "fill"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.general) { alignment.AddAttribute("horizontal", "general"); }
+                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.justify) { alignment.AddAttribute("horizontal", "justify"); }
+                        else { alignment.AddAttribute("horizontal", "left"); }
                     }
                     if (style.CurrentCellXf.VerticalAlign != VerticalAlignValue.none)
                     {
-                        sb2.Append(" vertical=\"");
-                        if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.center) { sb2.Append("center"); }
-                        else if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.distributed) { sb2.Append("distributed"); }
-                        else if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.justify) { sb2.Append("justify"); }
-                        else if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.top) { sb2.Append("top"); }
-                        else { sb2.Append("bottom"); }
-                        sb2.Append("\"");
+                        if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.center) { alignment.AddAttribute("vertical", "center"); }
+                        else if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.distributed) { alignment.AddAttribute("vertical", "distributed"); }
+                        else if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.justify) { alignment.AddAttribute("vertical", "justify"); }
+                        else if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.top) { alignment.AddAttribute("vertical", "top"); }
+                        else { alignment.AddAttribute("vertical", "bottom"); }
                     }
                     if (style.CurrentCellXf.Indent > 0 &&
                         (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.left
                         || style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.right
                         || style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.distributed))
                     {
-                        sb2.Append(" indent=\"");
-                        sb2.Append(ParserUtils.ToString(style.CurrentCellXf.Indent));
-                        sb2.Append("\"");
+                        alignment.AddAttribute("indent", ParserUtils.ToString(style.CurrentCellXf.Indent));
                     }
                     if (style.CurrentCellXf.Alignment != TextBreakValue.none)
                     {
-                        if (style.CurrentCellXf.Alignment == TextBreakValue.shrinkToFit) { sb2.Append(" shrinkToFit=\"1"); }
-                        else { sb2.Append(" wrapText=\"1"); }
-                        sb2.Append("\"");
+                        if (style.CurrentCellXf.Alignment == TextBreakValue.shrinkToFit) { alignment.AddAttribute("shrinkToFit", "1"); }
+                        else { alignment.AddAttribute("wrapText", "1"); }
                     }
                     if (textRotation != 0)
                     {
-                        sb2.Append(" textRotation=\"");
-                        sb2.Append(ParserUtils.ToString(textRotation));
-                        sb2.Append("\"");
+                        alignment.AddAttribute("textRotation", ParserUtils.ToString(textRotation));
                     }
-                    sb2.Append("/>"); // </xf>
-                    alignmentString = sb2.ToString();
                 }
-
                 if (style.CurrentCellXf.Hidden || style.CurrentCellXf.Locked)
                 {
+                    protection = XmlElement.CreateElement("protection");
                     if (style.CurrentCellXf.Hidden && style.CurrentCellXf.Locked)
                     {
-                        protectionString = "<protection locked=\"1\" hidden=\"1\"/>";
+                        protection.AddAttribute("locked", "1");
+                        protection.AddAttribute("hidden", "1");
                     }
                     else if (style.CurrentCellXf.Hidden && !style.CurrentCellXf.Locked)
                     {
-                        protectionString = "<protection hidden=\"1\" locked=\"0\"/>";
+                        protection.AddAttribute("hidden", "1");
+                        protection.AddAttribute("locked", "0");
                     }
                     else
                     {
-                        protectionString = "<protection hidden=\"0\" locked=\"1\"/>";
+                        protection.AddAttribute("hidden", "0");
+                        protection.AddAttribute("locked", "1");
                     }
                 }
-
-                sb.Append("<xf numFmtId=\"");
+                XmlElement xf = XmlElement.CreateElement("xf");
                 if (style.CurrentNumberFormat.IsCustomFormat)
                 {
-                    sb.Append(ParserUtils.ToString(style.CurrentNumberFormat.CustomFormatID));
+                    xf.AddAttribute("numFmtId", ParserUtils.ToString(style.CurrentNumberFormat.CustomFormatID));
                 }
                 else
                 {
-                    formatNumber = (int)style.CurrentNumberFormat.Number;
-                    sb.Append(ParserUtils.ToString(formatNumber));
+                    int formatNumber = (int)style.CurrentNumberFormat.Number;
+                    xf.AddAttribute("numFmtId", ParserUtils.ToString(formatNumber));
                 }
-
-                sb.Append("\" borderId=\"").Append(ParserUtils.ToString(style.CurrentBorder.InternalID.Value));
-                sb.Append("\" fillId=\"").Append(ParserUtils.ToString(style.CurrentFill.InternalID.Value));
-                sb.Append("\" fontId=\"").Append(ParserUtils.ToString(style.CurrentFont.InternalID.Value));
+                xf.AddAttribute("borderId", ParserUtils.ToString(style.CurrentBorder.InternalID.Value));
+                xf.AddAttribute("fillId", ParserUtils.ToString(style.CurrentFill.InternalID.Value));
+                xf.AddAttribute("fontId", ParserUtils.ToString(style.CurrentFont.InternalID.Value));
                 if (!style.CurrentFont.IsDefaultFont)
                 {
-                    sb.Append("\" applyFont=\"1");
+                    xf.AddAttribute("applyFont", "1");
                 }
                 if (style.CurrentFill.PatternFill != PatternValue.none)
                 {
-                    sb.Append("\" applyFill=\"1");
+                    xf.AddAttribute("applyFill", "1");
                 }
                 if (!style.CurrentBorder.IsEmpty())
                 {
-                    sb.Append("\" applyBorder=\"1");
+                    xf.AddAttribute("applyBorder", "1");
                 }
-                if (alignmentString != string.Empty || style.CurrentCellXf.ForceApplyAlignment)
+                if (alignment != null || style.CurrentCellXf.ForceApplyAlignment)
                 {
-                    sb.Append("\" applyAlignment=\"1");
+                    xf.AddAttribute("applyAlignment", "1");
                 }
-                if (protectionString != string.Empty)
+                if (protection != null)
                 {
-                    sb.Append("\" applyProtection=\"1");
+                    xf.AddAttribute("applyProtection", "1");
                 }
                 if (style.CurrentNumberFormat.Number != FormatNumber.none)
                 {
-                    sb.Append("\" applyNumberFormat=\"1\"");
+                    xf.AddAttribute("applyNumberFormat", "1");
                 }
-                else
+                if (alignment != null || protection != null)
                 {
-                    sb.Append("\"");
+                    xf.AddChildElement(alignment);
+                    xf.AddChildElement(protection);
                 }
-                if (alignmentString != string.Empty || protectionString != string.Empty)
-                {
-                    sb.Append(">");
-                    sb.Append(alignmentString);
-                    sb.Append(protectionString);
-                    sb.Append("</xf>");
-                }
-                else
-                {
-                    sb.Append("/>");
-                }
+                xfs.Add(xf);
             }
-            return sb.ToString();
+            return xfs;
         }
 
         /// <summary>
-        /// Method to create the XML string for the color-MRU part of the style sheet document (recent colors)
+        /// Method to get the Color MRU element of the style
         /// </summary>
-        /// <returns>String with formatted XML data</returns>
-        private string CreateMruColorsString()
+        /// <returns>XmlElement, holding Color MRU information</returns>
+        private XmlElement getMruElement()
         {
-            StringBuilder sb = new StringBuilder();
+            XmlElement mruColors = null;
             List<string> tempColors = new List<string>();
-            foreach (string item in ((Workbook)this.workbook).GetMruColors())
+            foreach (string item in ((Workbook)this.Workbook).GetMruColors())
             {
                 if (item == Fill.DEFAULT_COLOR)
                 {
@@ -479,15 +432,13 @@ namespace NanoXLSX.Internal.Writers
             }
             if (tempColors.Count > 0)
             {
-                sb.Append("<mruColors>");
+                mruColors = XmlElement.CreateElement("mruColors");
                 foreach (string item in tempColors)
                 {
-                    sb.Append("<color rgb=\"").Append(item).Append("\"/>");
+                    mruColors.AddChildElementWithAttribute("color", "rgb", item);
                 }
-                sb.Append("</mruColors>");
-                return sb.ToString();
             }
-            return string.Empty;
+            return mruColors;
         }
     }
 }

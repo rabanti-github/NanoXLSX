@@ -7,26 +7,47 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
+using NanoXLSX.Registry;
 using NanoXLSX.Utils;
+using NanoXLSX.Utils.Xml;
+using static NanoXLSX.Internal.Enums.Password;
 
 namespace NanoXLSX.Internal.Writers
 {
+    /// <summary>
+    /// Class to generate the worksheet XML files in a XLSX file.
+    /// </summary>
+    [NanoXlsxPlugin(PluginUUID = PluginUUID.WORKSHEET_WRITER)]
     internal class WorksheetWriter : IWorksheetWriter
     {
-        private static readonly CultureInfo CULTURE = CultureInfo.InvariantCulture;
-
-        private Workbook workbook;
+        private XmlElement worksheet;
         private Worksheet currentWorksheet;
         private IPasswordWriter passwordWriter;
-        private readonly ISortedMap sharedStrings;
-        private readonly ISharedStringWriter sharedStringWriter;
+        private ISortedMap sharedStrings;
+        private ISharedStringWriter sharedStringWriter;
 
+        /// <summary>
+        /// Gets or replaces the workbook instance, defined by the constructor
+        /// </summary>
+        public Workbook Workbook { get; set; }
+
+        /// <summary>
+        /// relative Package path of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
+        /// </summary>
+        public string PackagePath { get; set; }
+        /// <summary>
+        /// File name of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
+        /// </summary>
+        public string PackageFileName { get; set; }
+
+        /// <summary>
+        ///Current worksheet
+        /// </summary>
         public Worksheet CurrentWorksheet 
         { 
             get => currentWorksheet;
@@ -34,308 +55,115 @@ namespace NanoXLSX.Internal.Writers
             {
                 currentWorksheet = value;
                 IPassword passwordInstance = ((Worksheet)CurrentWorksheet).SheetProtectionPassword;
-                //TODO add plugin hook to overwrite password instance
-                this.passwordWriter = new LegacyPasswordWriter(LegacyPasswordWriter.PasswordType.WORKSHEET_PROTECTION, passwordInstance.PasswordHash);
+                //TODO add plug-in hook to overwrite password instance
+                this.passwordWriter = new LegacyPasswordWriter(PasswordType.WORKSHEET_PROTECTION, passwordInstance.PasswordHash);
             }
         }
 
-        internal WorksheetWriter(XlsxWriter writer, ISharedStringWriter sharedStringWriter)
+        /// <summary>
+        /// Default constructor - Must be defined for instantiation of the plug-ins
+        /// </summary>
+        internal WorksheetWriter()
         {
-            this.workbook = writer.Workbook;
-            this.sharedStringWriter = sharedStringWriter;
-            this.sharedStrings = sharedStringWriter.SharedStrings;
         }
 
         /// <summary>
-        /// Method to create a worksheet part as a raw XML string
+        /// Initialization method (interface implementation)
         /// </summary>
-        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
-        /// <returns>Raw XML string</returns>
-        /// <exception cref="FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        public virtual string CreateDocument(string curentDocument)
+        /// <param name="baseWriter">Base writer instance that holds any information for this writer</param>
+        public void Init(IBaseWriter baseWriter)
         {
-            PreWrite(workbook);
-            string document = CreateWorksheetPart((Worksheet)CurrentWorksheet);
-            PostWrite(workbook);
-            if (NextWriter != null)
+            this.Workbook = baseWriter.Workbook;
+            this.sharedStringWriter = baseWriter.SharedStringWriter;
+            this.sharedStrings = this.sharedStringWriter.SharedStrings;
+        }
+
+        /// <summary>
+        /// Get the XmlElement after <see cref="Execute"/> (interface implementation)
+        /// </summary>
+        /// <returns>XmlElement instance that was created after the plug-in execution</returns>
+        public XmlElement GetElement()
+        {
+            Execute(); 
+            return worksheet;
+        }
+
+        /// <summary>
+        /// Method to execute the main logic of the plug-in (interface implementation)
+        /// </summary>
+        public void Execute()
+        {
+            Worksheet ws = currentWorksheet;
+            ws.RecalculateAutoFilter();
+            ws.RecalculateColumns();
+            worksheet = XmlElement.CreateElement("worksheet");
+            worksheet.AddDefaultXmlNameSpace("http://schemas.openxmlformats.org/spreadsheetml/2006/main");
+            worksheet.AddNameSpaceAttribute("mc", "xmlns", "http://schemas.openxmlformats.org/markup-compatibility/2006");
+            worksheet.AddNameSpaceAttribute("x14ac", "xmlns", "http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac");
+            worksheet.AddAttribute("mc:Ignorable", "x14ac");
+            if (ws.GetLastCellAddress().HasValue && ws.GetFirstCellAddress().HasValue)
             {
-                // TODO set current worksheet
-                NextWriter.Workbook = this.Workbook;
-                return NextWriter.CreateDocument(document);
+                worksheet.AddChildElementWithAttribute("dimension", "ref", new Range(ws.GetFirstCellAddress().Value, ws.GetLastCellAddress().Value).ToString());
             }
-            else
+            if (ws.SelectedCells.Count > 0 || ws.PaneSplitTopHeight != null || ws.PaneSplitLeftWidth != null || ws.PaneSplitAddress != null ||
+               ws.Hidden || ws.ZoomFactor != 100 || ws.ZoomFactors.Count > 1 || !ws.ShowGridLines || !ws.ShowRuler || !ws.ShowRowColumnHeaders || ws.ViewType != Worksheet.SheetViewType.normal)
             {
-                return document;
+                worksheet.AddChildElement(CreateSheetViewElement(ws));
             }
-        }
-
-        /// <summary>
-        /// Method that is called before the <see cref="CreateDocument()"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PreWrite(Workbook workbook)
-        {
-            // NoOp - replaced by plugin
-        }
-
-        /// <summary>
-        /// Method that is called after the <see cref="CreateDocument()"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PostWrite(Workbook workbook)
-        {
-            // NoOp - replaced by plugin
-        }
-
-        /// <summary>
-        /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
-        /// </summary>
-        /// <returns>GUID of the class</returns>
-        public string GetClassID()
-        {
-            return "1A02BA4C-38D3-4B0A-B7E7-0B485CA794BE";
-        }
-
-        /// <summary>
-        /// Gets or replaces the workbook instance, defined by the constructor
-        /// </summary>
-        public Workbook Workbook
-        {
-            get { return workbook; }
-            set { workbook = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the next plug-in writer. If not null, the next writer to be applied on the document can be called by this property
-        /// </summary>
-        public IPluginWriter NextWriter { get; set; } = null;
-
-        /// <summary>
-        /// Method to create a worksheet part as a raw XML string
-        /// </summary>
-        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
-        /// <param name="worksheet">worksheet object to process</param>
-        /// <returns>Raw XML string</returns>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        internal string CreateWorksheetPart(Worksheet worksheet)
-        {
-            worksheet.RecalculateAutoFilter();
-            worksheet.RecalculateColumns();
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">");
-            if (worksheet.GetLastCellAddress().HasValue && worksheet.GetFirstCellAddress().HasValue)
-            {
-                sb.Append("<dimension ref=\"").Append(new Range(worksheet.GetFirstCellAddress().Value, worksheet.GetLastCellAddress().Value)).Append("\"/>");
-            }
-            if (worksheet.SelectedCells.Count > 0 || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitAddress != null ||
-                worksheet.Hidden || worksheet.ZoomFactor != 100 || worksheet.ZoomFactors.Count > 1 || !worksheet.ShowGridLines || !worksheet.ShowRuler || !worksheet.ShowRowColumnHeaders || worksheet.ViewType != Worksheet.SheetViewType.normal)
-            {
-                CreateSheetViewString(worksheet, sb);
-            }
-            sb.Append("<sheetFormatPr");
-            if (!HasPaneSplitting(worksheet))
+            XmlElement sheetFormatPr = worksheet.AddChildElement("sheetFormatPr");
+            if (!HasPaneSplitting(ws))
             {
                 // TODO: Find the right calculation to compensate baseColWidth when using pane splitting
-                sb.Append(" defaultColWidth=\"")
-             .Append(ParserUtils.ToString(worksheet.DefaultColumnWidth))
-                .Append("\"");
+                sheetFormatPr.AddAttribute("defaultColWidth", ParserUtils.ToString(ws.DefaultColumnWidth));
             }
-            sb.Append(" defaultRowHeight=\"")
-             .Append(ParserUtils.ToString(worksheet.DefaultRowHeight))
-             .Append("\" baseColWidth=\"")
-             .Append(ParserUtils.ToString(worksheet.DefaultColumnWidth))
-             .Append("\" x14ac:dyDescent=\"0.25\"/>");
+            sheetFormatPr.AddAttribute("defaultRowHeight", ParserUtils.ToString(ws.DefaultRowHeight));
+            sheetFormatPr.AddAttribute("baseColWidth", ParserUtils.ToString(ws.DefaultColumnWidth));
+            sheetFormatPr.AddAttribute("dyDescent", "0.25", "x14ac");
 
-            string colDefinitions = CreateColsString(worksheet);
-            if (!string.IsNullOrEmpty(colDefinitions))
+            worksheet.AddChildElement(CreateColsElement(ws));
+
+            XmlElement sheetData = worksheet.AddChildElement("sheetData");
+            sheetData.AddChildElements(CreateRowElements(ws));
+
+            worksheet.AddChildElement(CreateMergedCellsElement(ws));
+            worksheet.AddChildElement(CreateSheetProtectionElement(ws));
+            if (ws.AutoFilterRange != null)
             {
-                sb.Append("<cols>");
-                sb.Append(colDefinitions);
-                sb.Append("</cols>");
+                worksheet.AddChildElementWithAttribute("autoFilter", "ref", ws.AutoFilterRange.Value.ToString());
             }
-            sb.Append("<sheetData>");
-            CreateRowsString(worksheet, sb);
-            sb.Append("</sheetData>");
-            sb.Append(CreateMergedCellsString(worksheet));
-            sb.Append(CreateSheetProtectionString(worksheet));
-
-            if (worksheet.AutoFilterRange != null)
-            {
-                sb.Append("<autoFilter ref=\"").Append(worksheet.AutoFilterRange.Value.ToString()).Append("\"/>");
-            }
-
-            sb.Append("</worksheet>");
-            return sb.ToString();
         }
 
         /// <summary>
-        /// Method to create a row string
+        /// Method to create merged cell information in one XmlElement
         /// </summary>
-        /// <param name="dynamicRow">Dynamic row with List of cells, heights and hidden states</param>
-        /// <param name="worksheet">Worksheet to process</param>
-        /// <returns>Formatted row string</returns>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
-        private string CreateRowString(DynamicRow dynamicRow, Worksheet worksheet)
+        /// <param name="worksheet">Corresponding worksheet</param>
+        /// <returns>XmlElement, holding information regarding merged cells</returns>
+        private XmlElement CreateMergedCellsElement(Worksheet worksheet)
         {
-            int rowNumber = dynamicRow.RowNumber;
-            string height = "";
-            string hidden = "";
-            if (worksheet.RowHeights.ContainsKey(rowNumber) && Comparators.CompareDimensions(worksheet.RowHeights[rowNumber], worksheet.DefaultRowHeight) != 0)
+            if (worksheet.MergedCells.Count < 1)
             {
-                height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + ParserUtils.ToString(DataUtils.GetInternalRowHeight(worksheet.RowHeights[rowNumber])) + "\"";
+                return null;
             }
-            if (worksheet.HiddenRows.ContainsKey(rowNumber) && worksheet.HiddenRows[rowNumber])
+            XmlElement mergeCells = XmlElement.CreateElementWithAttribute("mergeCells", "count", ParserUtils.ToString(worksheet.MergedCells.Count));
+            foreach (KeyValuePair<string, Range> item in worksheet.MergedCells)
             {
-                hidden = " hidden=\"1\"";
+                mergeCells.AddChildElementWithAttribute("mergeCell", "ref", item.Value.ToString());
             }
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<row r=\"").Append((rowNumber + 1).ToString()).Append("\"").Append(height).Append(hidden).Append(">");
-            string typeAttribute;
-            string styleDef;
-            string typeDef;
-            string valueDef = "";
-            bool boolValue;
-
-            int col = 0;
-            foreach (Cell item in dynamicRow.CellDefinitions)
-            {
-                // Data type must be resolved
-                typeDef = " ";
-                if (item.CellStyle != null)
-                {
-                    styleDef = " s=\"" + ParserUtils.ToString(item.CellStyle.InternalID.Value) + "\" ";
-                }
-                else
-                {
-                    styleDef = "";
-                }
-                if (item.DataType == Cell.CellType.BOOL)
-                {
-                    typeAttribute = "b";
-                    typeDef = " t=\"" + typeAttribute + "\" ";
-                    boolValue = (bool)item.Value;
-                    if (boolValue) { valueDef = "1"; }
-                    else { valueDef = "0"; }
-
-                }
-                // Number casting
-                else if (item.DataType == Cell.CellType.NUMBER)
-                {
-                    typeAttribute = "n";
-                    typeDef = " t=\"" + typeAttribute + "\" ";
-                    Type t = item.Value.GetType();
-
-                    if (t == typeof(byte)) { valueDef = ((byte)item.Value).ToString("G", CULTURE); }
-                    else if (t == typeof(sbyte)) { valueDef = ((sbyte)item.Value).ToString("G", CULTURE); }
-                    else if (t == typeof(decimal)) { valueDef = ((decimal)item.Value).ToString("G", CULTURE); }
-                    else if (t == typeof(double)) { valueDef = ((double)item.Value).ToString("G", CULTURE); }
-                    else if (t == typeof(float)) { valueDef = ((float)item.Value).ToString("G", CULTURE); }
-                    else if (t == typeof(int)) { valueDef = ((int)item.Value).ToString("G", CULTURE); }
-                    else if (t == typeof(uint)) { valueDef = ((uint)item.Value).ToString("G", CULTURE); }
-                    else if (t == typeof(long)) { valueDef = ((long)item.Value).ToString("G", CULTURE); }
-                    else if (t == typeof(ulong)) { valueDef = ((ulong)item.Value).ToString("G", CULTURE); }
-                    else if (t == typeof(short)) { valueDef = ((short)item.Value).ToString("G", CULTURE); }
-                    else if (t == typeof(ushort)) { valueDef = ((ushort)item.Value).ToString("G", CULTURE); }
-                }
-                // Date parsing
-                else if (item.DataType == Cell.CellType.DATE)
-                {
-                    DateTime date = (DateTime)item.Value;
-                    valueDef = DataUtils.GetOADateTimeString(date);
-                }
-                // Time parsing
-                else if (item.DataType == Cell.CellType.TIME)
-                {
-                    TimeSpan time = (TimeSpan)item.Value;
-                    valueDef = DataUtils.GetOATimeString(time);
-                }
-                else
-                {
-                    if (item.Value == null)
-                    {
-                        typeAttribute = null;
-                        valueDef = null;
-                    }
-                    else // Handle sharedStrings
-                    {
-                        if (item.DataType == Cell.CellType.FORMULA)
-                        {
-                            typeAttribute = "str";
-                            valueDef = item.Value.ToString();
-                        }
-                        else
-                        {
-                            typeAttribute = "s";
-                            if (item.Value is IFormattableText text)
-                            {
-                                valueDef = sharedStrings.Add(text, ParserUtils.ToString(sharedStrings.Count));
-                            }
-                            else
-                            {
-                                valueDef = sharedStrings.Add(new PlainText(item.Value.ToString()), ParserUtils.ToString(sharedStrings.Count));
-                            }
-                            this.sharedStringWriter.SharedStringsTotalCount++;
-                        }
-                    }
-                    typeDef = " t=\"" + typeAttribute + "\" ";
-                }
-                if (item.DataType != Cell.CellType.EMPTY)
-                {
-                    sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(typeDef).Append(styleDef).Append(">");
-                    if (item.DataType == Cell.CellType.FORMULA)
-                    {
-                        sb.Append("<f>").Append(XmlUtils.EscapeXmlChars(item.Value.ToString())).Append("</f>");
-                    }
-                    else
-                    {
-                        sb.Append("<v>").Append(XmlUtils.EscapeXmlChars(valueDef)).Append("</v>");
-                    }
-                    sb.Append("</c>");
-                }
-                else if (valueDef == null || item.DataType == Cell.CellType.EMPTY) // Empty cell
-                {
-                    sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(styleDef).Append("/>");
-                }
-                col++;
-            }
-            sb.Append("</row>");
-            return sb.ToString();
+            return mergeCells;
         }
 
         /// <summary>
-        /// Method to create the merged cells string of the passed worksheet
+        /// Method to create sheet view data in one XmlElement
         /// </summary>
-        /// <param name="sheet">Worksheet to process</param>
-        /// <returns>Formatted string with merged cell ranges</returns>
-        private string CreateMergedCellsString(Worksheet sheet)
+        /// <param name="worksheet">Corresponding worksheet</param>
+        /// <returns>XmlElement, holding sheet view information</returns>
+        private XmlElement CreateSheetViewElement(Worksheet worksheet)
         {
-            if (sheet.MergedCells.Count < 1)
+            XmlElement sheetViews = XmlElement.CreateElement("sheetViews");
+            XmlElement sheetView = sheetViews.AddChildElementWithAttribute("sheetView", "workbookViewId", "0");
+            if (Workbook.SelectedWorksheet == worksheet.SheetID - 1 && !worksheet.Hidden)
             {
-                return string.Empty;
-            }
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<mergeCells count=\"").Append(ParserUtils.ToString(sheet.MergedCells.Count)).Append("\">");
-            foreach (KeyValuePair<string, Range> item in sheet.MergedCells)
-            {
-                sb.Append("<mergeCell ref=\"").Append(item.Value.ToString()).Append("\"/>");
-            }
-            sb.Append("</mergeCells>");
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Method to create the (sub) part of the sheet view (selected cells and panes) within the worksheet XML document
-        /// </summary>
-        /// <param name="worksheet">worksheet object to process</param>
-        /// <param name="sb">reference to the StringBuilder</param>
-        private void CreateSheetViewString(Worksheet worksheet, StringBuilder sb)
-        {
-            sb.Append("<sheetViews><sheetView workbookViewId=\"0\"");
-            if (((Workbook)workbook).SelectedWorksheet == worksheet.SheetID - 1 && !worksheet.Hidden)
-            {
-                sb.Append(" tabSelected=\"1\"");
+                sheetView.AddAttribute("tabSelected", "1");
             }
             if (worksheet.ViewType != Worksheet.SheetViewType.normal)
             {
@@ -343,29 +171,28 @@ namespace NanoXLSX.Internal.Writers
                 {
                     if (worksheet.ShowRuler)
                     {
-                        sb.Append(" showRuler=\"1\"");
+                        sheetView.AddAttribute("showRuler", "1");
                     }
                     else
                     {
-                        sb.Append(" showRuler=\"0\"");
+                        sheetView.AddAttribute("showRuler", "0");
                     }
-                    sb.Append(" view=\"pageLayout\"");
-
+                    sheetView.AddAttribute("view", "pageLayout");
                 }
                 else if (worksheet.ViewType == Worksheet.SheetViewType.pageBreakPreview)
                 {
-                    sb.Append(" view=\"pageBreakPreview\"");
+                    sheetView.AddAttribute("view", "pageBreakPreview");
                 }
             }
             if (!worksheet.ShowGridLines)
             {
-                sb.Append(" showGridLines=\"0\"");
+                sheetView.AddAttribute("showGridLines", "0");
             }
             if (!worksheet.ShowRowColumnHeaders)
             {
-                sb.Append("  showRowColHeaders=\"0\"");
+                sheetView.AddAttribute("showRowColHeaders", "0");
             }
-            sb.Append(" zoomScale=\"").Append(ParserUtils.ToString(worksheet.ZoomFactor)).Append("\"");
+            sheetView.AddAttribute("zoomScale", ParserUtils.ToString(worksheet.ZoomFactor));
             foreach (KeyValuePair<Worksheet.SheetViewType, int> scaleFactor in worksheet.ZoomFactors)
             {
                 if (scaleFactor.Key == worksheet.ViewType)
@@ -374,22 +201,23 @@ namespace NanoXLSX.Internal.Writers
                 }
                 if (scaleFactor.Key == Worksheet.SheetViewType.normal)
                 {
-                    sb.Append(" zoomScaleNormal=\"").Append(ParserUtils.ToString(scaleFactor.Value)).Append("\"");
+                    sheetView.AddAttribute("zoomScaleNormal", ParserUtils.ToString(scaleFactor.Value));
                 }
                 else if (scaleFactor.Key == Worksheet.SheetViewType.pageBreakPreview)
                 {
-                    sb.Append(" zoomScaleSheetLayoutView=\"").Append(ParserUtils.ToString(scaleFactor.Value)).Append("\"");
+                    sheetView.AddAttribute("zoomScaleSheetLayoutView", ParserUtils.ToString(scaleFactor.Value));
                 }
                 else if (scaleFactor.Key == Worksheet.SheetViewType.pageLayout)
                 {
-                    sb.Append(" zoomScalePageLayoutView=\"").Append(ParserUtils.ToString(scaleFactor.Value)).Append("\"");
+                    sheetView.AddAttribute("zoomScalePageLayoutView", ParserUtils.ToString(scaleFactor.Value));
                 }
             }
-            sb.Append(">");
-            CreatePaneString(worksheet, sb);
+            sheetView.AddChildElements(CreatePaneElements(worksheet));
             if (worksheet.SelectedCells.Count > 0)
             {
-                sb.Append("<selection sqref=\"");
+                XmlElement selection = sheetView.AddChildElement("selection");
+                selection.AddAttribute("activeCell", worksheet.SelectedCells[0].StartAddress.ToString());
+                StringBuilder sb = new StringBuilder(worksheet.SelectedCells.Count * 4);
                 for (int i = 0; i < worksheet.SelectedCells.Count; i++)
                 {
                     sb.Append(worksheet.SelectedCells[i].ToString());
@@ -398,17 +226,15 @@ namespace NanoXLSX.Internal.Writers
                         sb.Append(" ");
                     }
                 }
-                sb.Append("\" activeCell=\"");
-                sb.Append(worksheet.SelectedCells[0].StartAddress.ToString());
-                sb.Append("\"/>");
+                selection.AddAttribute("sqref", sb.ToString());
             }
-            sb.Append("</sheetView></sheetViews>");
+            return sheetViews;
         }
 
         /// <summary>
         /// Checks whether pane splitting is applied in the given worksheet
         /// </summary>
-        /// <param name="worksheet"></param>
+        /// <param name="worksheet">Corresponding worksheet</param>
         /// <returns>True if applied, otherwise false</returns>
         private bool HasPaneSplitting(Worksheet worksheet)
         {
@@ -420,286 +246,79 @@ namespace NanoXLSX.Internal.Writers
         }
 
         /// <summary>
-        /// Method to create the enclosing part of the rows
+        /// Method to create a sheet protection element as one XmlElement
         /// </summary>
-        /// <param name="worksheet">Worksheet to process</param>
-        /// <param name="sb">reference to the StringBuilder</param>
-        private void CreateRowsString(Worksheet worksheet, StringBuilder sb)
+        /// <param name="worksheet">Corresponding worksheet</param>
+        /// <returns>XmlElement, holding sheet protection information</returns>
+        private XmlElement CreateSheetProtectionElement(Worksheet worksheet)
         {
-            List<DynamicRow> cellData = GetSortedSheetData(worksheet);
-            string line;
-            foreach (DynamicRow row in cellData)
+            if (!worksheet.UseSheetProtection)
             {
-                line = CreateRowString(row, worksheet);
-                sb.Append(line);
-            }
-        }
-
-        /// <summary>
-        /// Method to create the columns as XML string. This is used to define the width of columns
-        /// </summary>
-        /// <param name="worksheet">Worksheet to process</param>
-        /// <returns>String with formatted XML data</returns>
-        private string CreateColsString(Worksheet worksheet)
-        {
-            if (worksheet.Columns.Count > 0)
-            {
-                string col;
-                string hidden = "";
-                StringBuilder sb = new StringBuilder();
-                foreach (KeyValuePair<int, Column> column in worksheet.Columns)
-                {
-                    if (Comparators.CompareDimensions(column.Value.Width, worksheet.DefaultColumnWidth) == 0  && !column.Value.IsHidden && column.Value.DefaultColumnStyle == null) { continue; }
-                    if (worksheet.Columns.ContainsKey(column.Key))
-                    {
-                        if (worksheet.Columns[column.Key].IsHidden)
-                        {
-                            hidden = " hidden=\"1\"";
-                        }
-                    }
-                    col = ParserUtils.ToString(column.Key + 1); // Add 1 for Address
-                    float width = DataUtils.GetInternalColumnWidth(column.Value.Width);
-                    sb.Append("<col customWidth=\"1\" width=\"").Append(ParserUtils.ToString(width)).Append("\" max=\"").Append(col).Append("\" min=\"").Append(col).Append("\"");
-                    if (column.Value.DefaultColumnStyle != null)
-                    {
-                        sb.Append(" style=\"").Append(column.Value.DefaultColumnStyle.InternalID.Value.ToString("G", CULTURE)).Append("\"");
-                    }
-                    sb.Append(hidden).Append("/>");
-                }
-                string value = sb.ToString();
-                if (value.Length > 0)
-                {
-                    return value;
-                }
-                return string.Empty;
-            }
-            return string.Empty;
-        }
-
-        /// <summary>
-        /// Method to create the (sub) part of the pane (splitting and freezing) within the worksheet XML document
-        /// </summary>
-        /// <param name="worksheet">worksheet object to process</param>
-        /// <param name="sb">reference to the StringBuilder</param>
-        private void CreatePaneString(Worksheet worksheet, StringBuilder sb)
-        {
-            if (!HasPaneSplitting(worksheet))
-            {
-                return;
-            }
-            sb.Append("<pane");
-            bool applyXSplit = false;
-            bool applyYSplit = false;
-            if (worksheet.PaneSplitAddress != null)
-            {
-                bool freeze = worksheet.FreezeSplitPanes != null && worksheet.FreezeSplitPanes.Value;
-                int xSplit = worksheet.PaneSplitAddress.Value.Column;
-                int ySplit = worksheet.PaneSplitAddress.Value.Row;
-                if (xSplit > 0)
-                {
-                    if (freeze)
-                    {
-                        sb.Append(" xSplit=\"").Append(ParserUtils.ToString(xSplit)).Append("\"");
-                    }
-                    else
-                    {
-                        sb.Append(" xSplit=\"").Append(ParserUtils.ToString(CalculatePaneWidth(worksheet, xSplit))).Append("\"");
-                    }
-                    applyXSplit = true;
-                }
-                if (ySplit > 0)
-                {
-                    if (freeze)
-                    {
-                        sb.Append(" ySplit=\"").Append(ParserUtils.ToString(ySplit)).Append("\"");
-                    }
-                    else
-                    {
-                        sb.Append(" ySplit=\"").Append(ParserUtils.ToString(CalculatePaneHeight(worksheet, ySplit))).Append("\"");
-                    }
-                    applyYSplit = true;
-                }
-                if (freeze && applyXSplit && applyYSplit)
-                {
-                    sb.Append(" state=\"frozenSplit\"");
-                }
-                else if (freeze)
-                {
-                    sb.Append(" state=\"frozen\"");
-                }
-            }
-            else
-            {
-                if (worksheet.PaneSplitLeftWidth != null)
-                {
-                    sb.Append(" xSplit=\"").Append(ParserUtils.ToString(DataUtils.GetInternalPaneSplitWidth(worksheet.PaneSplitLeftWidth.Value))).Append("\"");
-                    applyXSplit = true;
-                }
-                if (worksheet.PaneSplitTopHeight != null)
-                {
-                    sb.Append(" ySplit=\"").Append(ParserUtils.ToString(DataUtils.GetInternalPaneSplitHeight(worksheet.PaneSplitTopHeight.Value))).Append("\"");
-                    applyYSplit = true;
-                }
-            }
-            if ((applyXSplit || applyYSplit) && worksheet.ActivePane != null)
-            {
-                switch (worksheet.ActivePane.Value)
-                {
-                    case Worksheet.WorksheetPane.bottomLeft:
-                        sb.Append(" activePane=\"bottomLeft\"");
-                        break;
-                    case Worksheet.WorksheetPane.bottomRight:
-                        sb.Append(" activePane=\"bottomRight\"");
-                        break;
-                    case Worksheet.WorksheetPane.topLeft:
-                        sb.Append(" activePane=\"topLeft\"");
-                        break;
-                    case Worksheet.WorksheetPane.topRight:
-                        sb.Append(" activePane=\"topRight\"");
-                        break;
-                }
-            }
-            string topLeftCell = worksheet.PaneSplitTopLeftCell.Value.GetAddress();
-            sb.Append(" topLeftCell=\"").Append(topLeftCell).Append("\" ");
-            sb.Append("/>");
-            if (applyXSplit && !applyYSplit)
-            {
-                sb.Append("<selection pane=\"topRight\" activeCell=\"" + topLeftCell + "\"  sqref=\"" + topLeftCell + "\" />");
-            }
-            else if (applyYSplit && !applyXSplit)
-            {
-                sb.Append("<selection pane=\"bottomLeft\" activeCell=\"" + topLeftCell + "\"  sqref=\"" + topLeftCell + "\" />");
-            }
-            else if (applyYSplit && applyXSplit)
-            {
-                sb.Append("<selection activeCell=\"" + topLeftCell + "\"  sqref=\"" + topLeftCell + "\" />");
-            }
-        }
-
-        /// <summary>
-        /// Method to calculate the pane height, based on the number of rows
-        /// </summary>
-        /// <param name="worksheet">worksheet object to get the row definitions from</param>
-        /// <param name="numberOfRows">Number of rows from the top to the split position</param>
-        /// <returns>Internal height from the top of the worksheet to the pane split position</returns>
-        private float CalculatePaneHeight(Worksheet worksheet, int numberOfRows)
-        {
-            float height = 0;
-            for (int i = 0; i < numberOfRows; i++)
-            {
-                if (worksheet.RowHeights.ContainsKey(i))
-                {
-                    height += DataUtils.GetInternalRowHeight(worksheet.RowHeights[i]);
-                }
-                else
-                {
-                    height += DataUtils.GetInternalRowHeight(Worksheet.DEFAULT_ROW_HEIGHT);
-                }
-            }
-            return DataUtils.GetInternalPaneSplitHeight(height);
-        }
-
-
-
-        /// <summary>
-        /// Method to calculate the pane width, based on the number of columns
-        /// </summary>
-        /// <param name="worksheet">worksheet object to get the column definitions from</param>
-        /// <param name="numberOfColumns">Number of columns from the left to the split position</param>
-        /// <returns>Internal width from the left of the worksheet to the pane split position</returns>
-        private float CalculatePaneWidth(Worksheet worksheet, int numberOfColumns)
-        {
-            float width = 0;
-            for (int i = 0; i < numberOfColumns; i++)
-            {
-                if (worksheet.Columns.ContainsKey(i))
-                {
-                    width += DataUtils.GetInternalColumnWidth(worksheet.Columns[i].Width);
-                }
-                else
-                {
-                    width += DataUtils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
-                }
-            }
-            // Add padding of 75 per column
-            return DataUtils.GetInternalPaneSplitWidth(width) + ((numberOfColumns - 1) * 0f);
-        }
-
-        /// <summary>
-        /// Method to create the protection string of the passed worksheet
-        /// </summary>
-        /// <param name="sheet">Worksheet to process</param>
-        /// <returns>Formatted string with protection statement of the worksheet</returns>
-        private string CreateSheetProtectionString(Worksheet sheet)
-        {
-            if (!sheet.UseSheetProtection)
-            {
-                return string.Empty;
+                return null;
             }
             Dictionary<Worksheet.SheetProtectionValue, int> actualLockingValues = new Dictionary<Worksheet.SheetProtectionValue, int>();
-            if (sheet.SheetProtectionValues.Count == 0)
+            if (worksheet.SheetProtectionValues.Count == 0)
             {
                 actualLockingValues.Add(Worksheet.SheetProtectionValue.selectLockedCells, 1);
                 actualLockingValues.Add(Worksheet.SheetProtectionValue.selectUnlockedCells, 1);
             }
-            if (!sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.objects))
+            if (!worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.objects))
             {
                 actualLockingValues.Add(Worksheet.SheetProtectionValue.objects, 1);
             }
-            if (!sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.scenarios))
+            if (!worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.scenarios))
             {
                 actualLockingValues.Add(Worksheet.SheetProtectionValue.scenarios, 1);
             }
-            if (!sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectLockedCells))
+            if (!worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectLockedCells))
             {
                 if (!actualLockingValues.ContainsKey(Worksheet.SheetProtectionValue.selectLockedCells))
                 {
                     actualLockingValues.Add(Worksheet.SheetProtectionValue.selectLockedCells, 1);
                 }
             }
-            if (!sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectUnlockedCells) || !sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectLockedCells))
+            if (!worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectUnlockedCells) || !worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectLockedCells))
             {
                 if (!actualLockingValues.ContainsKey(Worksheet.SheetProtectionValue.selectUnlockedCells))
                 {
                     actualLockingValues.Add(Worksheet.SheetProtectionValue.selectUnlockedCells, 1);
                 }
             }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.formatCells)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.formatCells, 0); }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.formatColumns)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.formatColumns, 0); }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.formatRows)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.formatRows, 0); }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.insertColumns)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.insertColumns, 0); }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.insertRows)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.insertRows, 0); }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.insertHyperlinks)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.insertHyperlinks, 0); }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.deleteColumns)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.deleteColumns, 0); }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.deleteRows)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.deleteRows, 0); }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.sort)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.sort, 0); }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.autoFilter)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.autoFilter, 0); }
-            if (sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.pivotTables)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.pivotTables, 0); }
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<sheetProtection");
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.formatCells)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.formatCells, 0); }
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.formatColumns)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.formatColumns, 0); }
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.formatRows)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.formatRows, 0); }
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.insertColumns)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.insertColumns, 0); }
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.insertRows)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.insertRows, 0); }
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.insertHyperlinks)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.insertHyperlinks, 0); }
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.deleteColumns)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.deleteColumns, 0); }
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.deleteRows)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.deleteRows, 0); }
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.sort)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.sort, 0); }
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.autoFilter)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.autoFilter, 0); }
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.pivotTables)) { actualLockingValues.Add(Worksheet.SheetProtectionValue.pivotTables, 0); }
+            XmlElement sheetProtection = XmlElement.CreateElement("sheetProtection");
             string temp;
             foreach (KeyValuePair<Worksheet.SheetProtectionValue, int> item in actualLockingValues)
             {
                 temp = Enum.GetName(typeof(Worksheet.SheetProtectionValue), item.Key); // Note! If the enum names differs from the OOXML definitions, this method will cause invalid OOXML entries
-                sb.Append(" ").Append(temp).Append("=\"").Append(ParserUtils.ToString(item.Value)).Append("\"");
+                sheetProtection.AddAttribute(temp, ParserUtils.ToString(item.Value));
             }
             if (passwordWriter.PasswordIsSet())
             {
-                sb.Append(passwordWriter.GetXmlAttributes());
+                sheetProtection.AddAttributes(passwordWriter.GetAttributes());
             }
-            sb.Append(" sheet=\"1\"/>");
-            return sb.ToString();
+            sheetProtection.AddAttribute("sheet", "1");
+            return sheetProtection;
         }
 
         /// <summary>
         /// Method to sort the cells of a worksheet as preparation for the XML document
         /// </summary>
-        /// <param name="sheet">Worksheet to process</param>
+        /// <param name="worksheet">Corresponding worksheet</param>
         /// <returns>Sorted list of dynamic rows that are either defined by cells or row widths / hidden states. The list is sorted by row numbers (zero-based)</returns>
-        private List<DynamicRow> GetSortedSheetData(Worksheet sheet)
+        private List<DynamicRow> GetSortedSheetData(Worksheet worksheet)
         {
             List<Cell> temp = new List<Cell>();
-            foreach (KeyValuePair<string, Cell> item in sheet.Cells)
+            foreach (KeyValuePair<string, Cell> item in worksheet.Cells)
             {
                 temp.Add(item.Value);
             }
@@ -727,7 +346,7 @@ namespace NanoXLSX.Internal.Writers
                     rows.Add(rowNumber, row);
                 }
             }
-            foreach (KeyValuePair<int, float> rowHeight in sheet.RowHeights)
+            foreach (KeyValuePair<int, float> rowHeight in worksheet.RowHeights)
             {
                 if (!rows.ContainsKey(rowHeight.Key))
                 {
@@ -736,7 +355,7 @@ namespace NanoXLSX.Internal.Writers
                     rows.Add(rowHeight.Key, row);
                 }
             }
-            foreach (KeyValuePair<int, bool> hiddenRow in sheet.HiddenRows)
+            foreach (KeyValuePair<int, bool> hiddenRow in worksheet.HiddenRows)
             {
                 if (!rows.ContainsKey(hiddenRow.Key))
                 {
@@ -750,6 +369,345 @@ namespace NanoXLSX.Internal.Writers
             return output;
         }
 
+        /// <summary>
+        /// Method  to create a IEnumerable of pane elements as XmlElements
+        /// </summary>
+        /// <param name="worksheet">Corresponding worksheet</param>
+        /// <returns>IEnumerable of Pane Element entries</returns>
+        private IEnumerable<XmlElement> CreatePaneElements(Worksheet worksheet)
+        {
+            if (!HasPaneSplitting(worksheet))
+            {
+                return null;
+            }
+            List<XmlElement> elements = new List<XmlElement>(2);
+            XmlElement pane = XmlElement.CreateElement("pane");
+            bool applyXSplit = false;
+            bool applyYSplit = false;
+            if (worksheet.PaneSplitAddress != null)
+            {
+                bool freeze = worksheet.FreezeSplitPanes != null && worksheet.FreezeSplitPanes.Value;
+                int xSplit = worksheet.PaneSplitAddress.Value.Column;
+                int ySplit = worksheet.PaneSplitAddress.Value.Row;
+                if (xSplit > 0)
+                {
+                    if (freeze)
+                    {
+                        pane.AddAttribute("xSplit", ParserUtils.ToString(xSplit));
+                    }
+                    else
+                    {
+                        pane.AddAttribute("xSplit", ParserUtils.ToString(CalculatePaneWidth(worksheet, xSplit)));
+                    }
+                    applyXSplit = true;
+                }
+                if (ySplit > 0)
+                {
+                    if (freeze)
+                    {
+                        pane.AddAttribute("ySplit", ParserUtils.ToString(ySplit));
+                    }
+                    else
+                    {
+                        pane.AddAttribute("ySplit", ParserUtils.ToString(CalculatePaneHeight(worksheet, ySplit)));
+                    }
+                    applyYSplit = true;
+                }
+                if (freeze && applyXSplit && applyYSplit)
+                {
+                    pane.AddAttribute("state", "frozenSplit");
+                }
+                else if (freeze)
+                {
+                    pane.AddAttribute("state", "frozen");
+                }
+            }
+            else
+            {
+                if (worksheet.PaneSplitLeftWidth != null)
+                {
+                    pane.AddAttribute("xSplit", ParserUtils.ToString(DataUtils.GetInternalPaneSplitWidth(worksheet.PaneSplitLeftWidth.Value)));
+                    applyXSplit = true;
+                }
+                if (worksheet.PaneSplitTopHeight != null)
+                {
+                    pane.AddAttribute("ySplit", ParserUtils.ToString(DataUtils.GetInternalPaneSplitHeight(worksheet.PaneSplitTopHeight.Value)));
+                    applyYSplit = true;
+                }
+            }
+            if ((applyXSplit || applyYSplit) && worksheet.ActivePane != null)
+            {
+                switch (worksheet.ActivePane.Value)
+                {
+                    case Worksheet.WorksheetPane.bottomLeft:
+                        pane.AddAttribute("activePane", "bottomLeft");
+                        break;
+                    case Worksheet.WorksheetPane.bottomRight:
+                        pane.AddAttribute("activePane", "bottomRight");
+                        break;
+                    case Worksheet.WorksheetPane.topLeft:
+                        pane.AddAttribute("activePane", "topLeft");
+                        break;
+                    case Worksheet.WorksheetPane.topRight:
+                        pane.AddAttribute("activePane", "topRight");
+                        break;
+                }
+            }
+            string topLeftCell = worksheet.PaneSplitTopLeftCell.Value.GetAddress();
+            pane.AddAttribute("topLeftCell", topLeftCell);
+            elements.Add(pane);
+            if (applyXSplit && !applyYSplit)
+            {
+                XmlElement selection = XmlElement.CreateElement("selection");
+                selection.AddAttribute("pane", "topRight");
+                selection.AddAttribute("activeCell", topLeftCell);
+                selection.AddAttribute("sqref", topLeftCell);
+                elements.Add(selection);
+            }
+            else if (applyYSplit && !applyXSplit)
+            {
+                XmlElement selection = XmlElement.CreateElement("selection");
+                selection.AddAttribute("pane", "bottomLeft");
+                selection.AddAttribute("activeCell", topLeftCell);
+                selection.AddAttribute("sqref", topLeftCell);
+                elements.Add(selection);
+            }
+            else if (applyYSplit && applyXSplit)
+            {
+                XmlElement selection = XmlElement.CreateElement("selection");
+                selection.AddAttribute("activeCell", topLeftCell);
+                selection.AddAttribute("sqref", topLeftCell);
+                elements.Add(selection);
+            }
+            return elements;
+        }
+
+        /// <summary>
+        /// Method to calculate the pane height, based on the number of rows
+        /// </summary>
+        /// <param name="worksheet">worksheet object to get the row definitions from</param>
+        /// <param name="numberOfRows">Number of rows from the top to the split position</param>
+        /// <returns>Internal height from the top of the worksheet to the pane split position</returns>
+        private float CalculatePaneHeight(Worksheet worksheet, int numberOfRows)
+        {
+            float height = 0;
+            for (int i = 0; i < numberOfRows; i++)
+            {
+                if (worksheet.RowHeights.ContainsKey(i))
+                {
+                    height += DataUtils.GetInternalRowHeight(worksheet.RowHeights[i]);
+                }
+                else
+                {
+                    height += DataUtils.GetInternalRowHeight(Worksheet.DEFAULT_ROW_HEIGHT);
+                }
+            }
+            return DataUtils.GetInternalPaneSplitHeight(height);
+        }
+
+        /// <summary>
+        /// Method to calculate the pane width, based on the number of columns
+        /// </summary>
+        /// <param name="worksheet">worksheet object to get the column definitions from</param>
+        /// <param name="numberOfColumns">Number of columns from the left to the split position</param>
+        /// <returns>Internal width from the left of the worksheet to the pane split position</returns>
+        private float CalculatePaneWidth(Worksheet worksheet, int numberOfColumns)
+        {
+            float width = 0;
+            for (int i = 0; i < numberOfColumns; i++)
+            {
+                if (worksheet.Columns.ContainsKey(i))
+                {
+                    width += DataUtils.GetInternalColumnWidth(worksheet.Columns[i].Width);
+                }
+                else
+                {
+                    width += DataUtils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
+                }
+            }
+            // Add padding of 75 per column
+            return DataUtils.GetInternalPaneSplitWidth(width) + ((numberOfColumns - 1) * 0f);
+        }
+
+        /// <summary>
+        /// Method to create cols information as one XmlElement
+        /// </summary>
+        /// <param name="worksheet">Corresponding worksheet</param>
+        /// <returns>XmlElement, holding cols information</returns>
+        private XmlElement CreateColsElement(Worksheet worksheet)
+        {
+            XmlElement cols = null;
+            if (worksheet.Columns.Count == 0)
+            {
+                return cols;
+            }
+            foreach (KeyValuePair<int, Column> column in worksheet.Columns)
+            {
+                if (Comparators.CompareDimensions(column.Value.Width, worksheet.DefaultColumnWidth) == 0 && !column.Value.IsHidden && column.Value.DefaultColumnStyle == null)
+                {
+                    continue;
+                }
+                if (cols == null)
+                {
+                    cols = XmlElement.CreateElement("cols");
+                }
+                XmlElement col = cols.AddChildElement("col");
+                col.AddAttribute("width", ParserUtils.ToString(DataUtils.GetInternalColumnWidth(column.Value.Width)));
+                string minMax = ParserUtils.ToString(column.Key + 1); // Add 1 for Address
+                col.AddAttribute("max", minMax);
+                col.AddAttribute("min", minMax);
+                col.AddAttribute("customWidth", "1");
+                if (worksheet.Columns.ContainsKey(column.Key) && worksheet.Columns[column.Key].IsHidden)
+                {
+                    col.AddAttribute("hidden", "1");
+                }
+                if (column.Value.DefaultColumnStyle != null)
+                {
+                    col.AddAttribute("style", ParserUtils.ToString(column.Value.DefaultColumnStyle.InternalID.Value));
+                }
+            }
+            return cols;
+        }
+
+        /// <summary>
+        /// Method to create a row string as one XmlElement
+        /// </summary>
+        /// <param name="dynamicRow">Dynamic row with List of cells, heights and hidden states</param>
+        /// <param name="worksheet">Worksheet to process</param>
+        /// <returns>XmlElement, holding one row element</returns>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        private XmlElement CreateRowElement(DynamicRow dynamicRow, Worksheet worksheet)
+        {
+            int rowNumber = dynamicRow.RowNumber;
+            XmlElement row = XmlElement.CreateElementWithAttribute("row", "r", ParserUtils.ToString(rowNumber + 1));
+            if (worksheet.RowHeights.ContainsKey(rowNumber) && Comparators.CompareDimensions(worksheet.RowHeights[rowNumber], worksheet.DefaultRowHeight) != 0)
+            {
+                row.AddAttribute("dyDescent", "0.25", "x14ac");
+                row.AddAttribute("customHeight", "1");
+                row.AddAttribute("ht", ParserUtils.ToString(DataUtils.GetInternalRowHeight(worksheet.RowHeights[rowNumber])));
+            }
+            if (worksheet.HiddenRows.ContainsKey(rowNumber) && worksheet.HiddenRows[rowNumber])
+            {
+                row.AddAttribute("hidden", "1");
+            }
+
+            string valueDef = "";
+            foreach (Cell item in dynamicRow.CellDefinitions)
+            {
+                XmlAttribute? styleDef = null;
+                XmlAttribute? typeDef = null;
+
+                if (item.CellStyle != null)
+                {
+                    styleDef = XmlAttribute.CreateAttribute("s", ParserUtils.ToString(item.CellStyle.InternalID.Value));
+                }
+                if (item.DataType == Cell.CellType.BOOL)
+                {
+                    typeDef = XmlAttribute.CreateAttribute("t", "b");
+                    if ((bool)item.Value) { valueDef = "1"; }
+                    else { valueDef = "0"; }
+
+                }
+                // Number casting
+                else if (item.DataType == Cell.CellType.NUMBER)
+                {
+                    typeDef = XmlAttribute.CreateAttribute("t", "n");
+                    Type t = item.Value.GetType();
+
+                    if (t == typeof(byte)) { valueDef = ParserUtils.ToString((byte)item.Value); }
+                    else if (t == typeof(sbyte)) { valueDef = ParserUtils.ToString((sbyte)item.Value); }
+                    else if (t == typeof(decimal)) { valueDef = ParserUtils.ToString((decimal)item.Value); }
+                    else if (t == typeof(double)) { valueDef = ParserUtils.ToString((double)item.Value); }
+                    else if (t == typeof(float)) { valueDef = ParserUtils.ToString((float)item.Value); }
+                    else if (t == typeof(int)) { valueDef = ParserUtils.ToString((int)item.Value); }
+                    else if (t == typeof(uint)) { valueDef = ParserUtils.ToString((uint)item.Value); }
+                    else if (t == typeof(long)) { valueDef = ParserUtils.ToString((long)item.Value); }
+                    else if (t == typeof(ulong)) { valueDef = ParserUtils.ToString((ulong)item.Value); }
+                    else if (t == typeof(short)) { valueDef = ParserUtils.ToString((short)item.Value); }
+                    else if (t == typeof(ushort)) { valueDef = ParserUtils.ToString((ushort)item.Value); }
+                }
+                // Date parsing
+                else if (item.DataType == Cell.CellType.DATE)
+                {
+                    DateTime date = (DateTime)item.Value;
+                    valueDef = DataUtils.GetOADateTimeString(date);
+                }
+                // Time parsing
+                else if (item.DataType == Cell.CellType.TIME)
+                {
+                    TimeSpan time = (TimeSpan)item.Value;
+                    valueDef = DataUtils.GetOATimeString(time);
+                }
+                else
+                {
+                    string typeAttribute = null;
+                    if (item.Value == null)
+                    {
+                        typeAttribute = null;
+                        valueDef = null;
+                        // No typeDef
+                    }
+                    else // Handle sharedStrings
+                    {
+                        if (item.DataType == Cell.CellType.FORMULA)
+                        {
+                            typeAttribute = "str";
+                            valueDef = item.Value.ToString();
+                        }
+                        else
+                        {
+                            typeAttribute = "s";
+                            if (item.Value is IFormattableText text)
+                            {
+                                valueDef = sharedStrings.Add(text, ParserUtils.ToString(sharedStrings.Count));
+                            }
+                            else
+                            {
+                                valueDef = sharedStrings.Add(new PlainText(item.Value.ToString()), ParserUtils.ToString(sharedStrings.Count));
+                            }
+                            this.sharedStringWriter.SharedStringsTotalCount++;
+                        }
+                    }
+                    typeDef = XmlAttribute.CreateAttribute("t", typeAttribute);
+                }
+                if (item.DataType != Cell.CellType.EMPTY)
+                {
+                    XmlElement c = row.AddChildElementWithAttribute("c", "r", item.CellAddress);
+                    c.AddAttribute(typeDef);
+                    c.AddAttribute(styleDef);
+                    if (item.DataType == Cell.CellType.FORMULA)
+                    {
+                        c.AddChildElementWithValue("f", XmlUtils.SanitizeXmlValue(item.Value.ToString()));
+                    }
+                    else
+                    {
+                        c.AddChildElementWithValue("v", XmlUtils.SanitizeXmlValue(valueDef));
+                    }
+                }
+                else if (valueDef == null || item.DataType == Cell.CellType.EMPTY) // Empty cell
+                {
+                    XmlElement c = row.AddChildElementWithAttribute("c", "r", item.CellAddress);
+                    c.AddAttribute(styleDef);
+                }
+            }
+            return row;
+        }
+
+        /// <summary>
+        /// Method to create an IEnumerable of row elements (XmlElement)
+        /// </summary>
+        /// <param name="worksheet">Corresponding worksheet</param>
+        /// <returns>IEnumerable, holding row elements as XmlElement entries</returns>
+        private IEnumerable<XmlElement> CreateRowElements(Worksheet worksheet)
+        {
+            List<DynamicRow> cellData = GetSortedSheetData(worksheet);
+            List<XmlElement> rows = new List<XmlElement>(cellData.Count);
+            foreach (DynamicRow row in cellData)
+            {
+                rows.Add(CreateRowElement(row, worksheet));
+            }
+            return rows;
+        }
 
         #region helperClasses
         /// <summary>

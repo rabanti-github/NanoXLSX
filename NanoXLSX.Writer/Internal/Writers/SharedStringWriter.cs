@@ -5,106 +5,92 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System.Text;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
+using NanoXLSX.Registry;
 using NanoXLSX.Utils;
+using NanoXLSX.Utils.Xml;
 
 namespace NanoXLSX.Internal.Writers
 {
+    /// <summary>
+    /// Class to generate the shared strings XML file in a XLSX file.
+    /// </summary>
+    [NanoXlsxPlugin(PluginUUID = PluginUUID.SHARED_STRING_WRITER)]
     internal class SharedStringWriter : ISharedStringWriter
     {
+        private XmlElement sst;
         private ISortedMap sharedStrings;
-        private int sharedStringsTotalCount;
-
-        public int SharedStringsTotalCount
-        {
-            get { return sharedStringsTotalCount; }
-            set { sharedStringsTotalCount = value; }
-        }
-
-        public ISortedMap SharedStrings
-        {
-            get { return sharedStrings; }
-        }
-
-        public SharedStringWriter(XlsxWriter writer)
-        {
-            this.Workbook = writer.Workbook;
-            sharedStrings = new SortedMap();
-            sharedStringsTotalCount = 0;
-        }
-
-        /// <summary>
-        /// Method to create shared strings as raw XML string
-        /// </summary>
-        /// <returns>Raw XML string</returns>
-        public string CreateDocument(string currentDocument = null)
-        {
-            PreWrite(Workbook);
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"");
-            sb.Append(ParserUtils.ToString(sharedStringsTotalCount));
-            sb.Append("\" uniqueCount=\"");
-            sb.Append(ParserUtils.ToString(sharedStrings.Count));
-            sb.Append("\">");
-            foreach (IFormattableText text in sharedStrings.Keys)
-            {
-                sb.Append("<si>");
-                text.AddFormattedValue(sb);
-                sb.Append("</si>");
-            }
-            sb.Append("</sst>");
-            PostWrite(Workbook);
-            if (NextWriter != null)
-            {
-                NextWriter.Workbook = this.Workbook;
-                return NextWriter.CreateDocument(sb.ToString());
-            }
-            else
-            {
-                return sb.ToString();
-            }
-        }
-
-        /// <summary>
-        /// Method that is called before the <see cref="CreateDocument()"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PreWrite(Workbook workbook)
-        {
-            // NoOp - replaced by plugin
-        }
-
-        /// <summary>
-        /// Method that is called after the <see cref="CreateDocument()"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PostWrite(Workbook workbook)
-        {
-            // NoOp - replaced by plugin
-        }
-
-        /// <summary>
-        /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
-        /// </summary>
-        /// <returns>GUID of the class</returns>
-        public string GetClassID()
-        {
-            return "B65BDF84-90E8-4952-A2DF-E28C769E6062";
-        }
 
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
         public Workbook Workbook { get; set; }
+        /// <summary>
+        /// relative Package path of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
+        /// </summary>
+        public string PackagePath { get; set; } = null;
+        /// <summary>
+        /// File name of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
+        /// </summary>
+        public string PackageFileName { get; set; } = null;
 
         /// <summary>
-        /// Gets or sets the next plug-in writer. If not null, the next writer to be applied on the document can be called by this property
+        /// Total count of shared string entries
         /// </summary>
-        public IPluginWriter NextWriter { get; set; } = null;
+        public int SharedStringsTotalCount { get; set; }
 
+        /// <summary>
+        /// Sorted map of shared strings
+        /// </summary>
+        public ISortedMap SharedStrings
+        {
+            get { return sharedStrings; }
+        }
+
+        /// <summary>
+        /// Default constructor - Must be defined for instantiation of the plug-ins
+        /// </summary>
+        public SharedStringWriter()
+        {
+        }
+
+        /// <summary>
+        /// Initialization method (interface implementation)
+        /// </summary>
+        /// <param name="baseWriter">Base writer instance that holds any information for this writer</param>
+        public void Init(IBaseWriter baseWriter)
+        {
+            this.Workbook = baseWriter.Workbook;
+            sharedStrings = new SortedMap();
+            SharedStringsTotalCount = 0;
+        }
+
+        /// <summary>
+        /// Get the XmlElement after <see cref="Execute"/> (interface implementation)
+        /// </summary>
+        /// <returns>XmlElement instance that was created after the plug-in execution</returns>
+        public XmlElement GetElement()
+        {
+            Execute();
+            return this.sst;
+        }
+
+        /// <summary>
+        /// Method to execute the main logic of the plug-in (interface implementation)
+        /// </summary>
+        public void Execute()
+        {
+            sst = XmlElement.CreateElement("sst");
+            sst.AddDefaultXmlNameSpace("http://schemas.openxmlformats.org/spreadsheetml/2006/main");
+            sst.AddAttribute("count", ParserUtils.ToString(SharedStringsTotalCount));
+            sst.AddAttribute("uniqueCount", ParserUtils.ToString(sharedStrings.Count));
+            foreach (IFormattableText text in sharedStrings.Keys)
+            {
+                XmlElement child = XmlElement.CreateElement("si");
+                child.AddChildElement(text.GetElement());
+                sst.AddChildElement(child);
+            }
+        }
     }
 }

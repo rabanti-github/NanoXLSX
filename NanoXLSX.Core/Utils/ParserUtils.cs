@@ -60,6 +60,96 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
+        /// Transforms a byte to an invariant sting
+        /// </summary>
+        /// <param name="input">Byte to transform</param>
+        /// <returns>Byte as string</returns>
+        public static string ToString(byte input)
+        {
+            return input.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Transforms a sbyte to an invariant sting
+        /// </summary>
+        /// <param name="input">Sbyte to transform</param>
+        /// <returns>Byte as string</returns>
+        public static string ToString(sbyte input)
+        {
+            return input.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Transforms a double to an invariant sting
+        /// </summary>
+        /// <param name="input">Double to transform</param>
+        /// <returns>Double as string</returns>
+        public static string ToString(double input)
+        {
+            return input.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Transforms a decimal to an invariant sting
+        /// </summary>
+        /// <param name="input">Decimal to transform</param>
+        /// <returns>Decimal as string</returns>
+        public static string ToString(decimal input)
+        {
+            return input.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Transforms a uint to an invariant sting
+        /// </summary>
+        /// <param name="input">Uint to transform</param>
+        /// <returns>Uint as string</returns>
+        public static string ToString(uint input)
+        {
+            return input.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Transforms a long to an invariant sting
+        /// </summary>
+        /// <param name="input">Long to transform</param>
+        /// <returns>Long as string</returns>
+        public static string ToString(long input)
+        {
+            return input.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Transforms a ulong to an invariant sting
+        /// </summary>
+        /// <param name="input">Ulong to transform</param>
+        /// <returns>Ulong as string</returns>
+        public static string ToString(ulong input)
+        {
+            return input.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Transforms a short to an invariant sting
+        /// </summary>
+        /// <param name="input">Short to transform</param>
+        /// <returns>Short as string</returns>
+        public static string ToString(short input)
+        {
+            return input.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
+        /// Transforms a ushort to an invariant sting
+        /// </summary>
+        /// <param name="input">Ushort to transform</param>
+        /// <returns>Ushort as string</returns>
+        public static string ToString(ushort input)
+        {
+            return input.ToString("G", INVARIANT_CULTURE);
+        }
+
+        /// <summary>
         /// Normalizes all newlines of a string to CR+LF
         /// </summary>
         /// <param name="value">Input value</param>

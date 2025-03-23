@@ -1,21 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿/*
+ * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
+ * Copyright Raphael Stoeckli © 2025
+ * This library is licensed under the MIT License.
+ * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
+ */
+
+using System;
+
 
 namespace NanoXLSX.Registry
 {
+    /// <summary>
+    /// Attribute to declare a class as general NanoXLSX plug-in
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class NanoXlsxPluginAttribute : Attribute
     {
         /// <summary>
         /// Unique ID if the plug-in
         /// </summary>
-        public string PluginUID { get; set; }
+        public string PluginUUID { get; set; }
 
         /// <summary>
-        /// Order how the annotated plug-in is loaded. Default is zero (order may be vary).
+        /// Order how the annotated plug-ins are registered in case of duplicate UIDs. The higher number will override any lower. 
+        /// Default is zero (order may be vary).
         /// </summary>
         public int PluginOrder { get; set; } = 0;
-
     }
 }

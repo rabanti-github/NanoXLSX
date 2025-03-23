@@ -4,14 +4,17 @@
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace NanoXLSX.Interfaces
 {
     /// <summary>
-    /// Interface to represent complex text data that can be formatted somehow
+    /// Interface to define classes that can be handles by extension packages (plug-ins)
     /// </summary>
-    public interface IFormattableText : IXmlElement
+    internal interface IPlugin
     {
-
+        void Execute();
     }
 }

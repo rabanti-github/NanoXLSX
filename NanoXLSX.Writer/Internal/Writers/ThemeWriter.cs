@@ -5,71 +5,21 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System.Text;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
-using NanoXLSX.Utils;
+using NanoXLSX.Registry;
 using NanoXLSX.Themes;
+using NanoXLSX.Utils.Xml;
 
 namespace NanoXLSX.Internal.Writers
 {
+    /// <summary>
+    /// Class to generate the theme XML file in a XLSX file.
+    /// </summary>
+    [NanoXlsxPlugin(PluginUUID = PluginUUID.THEME_WRITER)]
     internal class ThemeWriter : IPluginWriter
     {
-        internal ThemeWriter(XlsxWriter writer)
-        {
-            this.Workbook = writer.Workbook;
-        }
-
-        public virtual string CreateDocument(string currentDocument = null)
-        {
-            PreWrite(Workbook);
-            Theme theme = ((Workbook)Workbook).WorkbookTheme;
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<theme xmlns=\"http://schemas.openxmlformats.org/drawingml/2006/main\" name=\"").Append(XmlUtils.EscapeXmlAttributeChars(theme.Name)).Append("\">");
-            sb.Append("<themeElements>");
-            CreateColorSchemeString(sb, theme.Colors);
-            sb.Append("</themeElements>");
-            sb.Append("</theme>");
-            PostWrite(Workbook);
-            if (NextWriter != null)
-            {
-                NextWriter.Workbook = this.Workbook;
-                return NextWriter.CreateDocument(sb.ToString());
-            }
-            else
-            {
-                return sb.ToString();
-            }
-        }
-
-        /// <summary>
-        /// Method that is called before the <see cref="CreateDocument()"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PreWrite(Workbook workbook)
-        {
-            // NoOp - replaced by plugin
-        }
-
-        /// <summary>
-        /// Method that is called after the <see cref="CreateDocument()"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PostWrite(Workbook workbook)
-        {
-            // NoOp - replaced by plugin
-        }
-
-        /// <summary>
-        /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
-        /// </summary>
-        /// <returns>GUID of the class</returns>
-        public string GetClassID()
-        {
-            return "B7C097B8-4E94-49A0-9D6E-DE28755ACD5";
-        }
+        private XmlElement theme;
 
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
@@ -77,47 +27,103 @@ namespace NanoXLSX.Internal.Writers
         public Workbook Workbook { get; set; }
 
         /// <summary>
-        /// Gets or sets the next plug-in writer. If not null, the next writer to be applied on the document can be called by this property
+        /// relative Package path of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
         /// </summary>
-        public IPluginWriter NextWriter { get; set; } = null;
+        public string PackagePath { get; set; }
+        /// <summary>
+        /// File name of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
+        /// </summary>
+        public string PackageFileName { get; set; }
 
-        private void CreateColorSchemeString(StringBuilder sb, ColorScheme scheme)
+        /// <summary>
+        /// Default constructor - Must be defined for instantiation of the plug-ins
+        /// </summary>
+        internal ThemeWriter()
         {
-            sb.Append("<clrScheme name=\"").Append(XmlUtils.EscapeXmlAttributeChars(scheme.Name)).Append("\">");
-            ParseColor(sb, "dk1", scheme.Dark1);
-            ParseColor(sb, "lt1", scheme.Light1);
-            ParseColor(sb, "dk2", scheme.Dark2);
-            ParseColor(sb, "lt2", scheme.Light2);
-            ParseColor(sb, "accent1", scheme.Accent1);
-            ParseColor(sb, "accent2", scheme.Accent2);
-            ParseColor(sb, "accent3", scheme.Accent3);
-            ParseColor(sb, "accent4", scheme.Accent4);
-            ParseColor(sb, "accent5", scheme.Accent5);
-            ParseColor(sb, "accent6", scheme.Accent6);
-            ParseColor(sb, "hlink", scheme.Hyperlink);
-            ParseColor(sb, "folHlink", scheme.FollowedHyperlink);
-            sb.Append("</clrScheme>");
         }
 
-        private void ParseColor(StringBuilder sb, string name, IColor color)
+        /// <summary>
+        /// Initialization method (interface implementation)
+        /// </summary>
+        /// <param name="baseWriter">Base writer instance that holds any information for this writer</param>
+        public void Init(IBaseWriter baseWriter)
         {
-            sb.Append("<").Append(name).Append(">");
+            this.Workbook = baseWriter.Workbook;
+        }
+
+        /// <summary>
+        /// Get the XmlElement after <see cref="Execute"/> (interface implementation)
+        /// </summary>
+        /// <returns>XmlElement instance that was created after the plug-in execution</returns>
+        public XmlElement GetElement()
+        {
+
+            Execute(); 
+            return theme;
+        }
+
+        /// <summary>
+        /// Method to execute the main logic of the plug-in (interface implementation)
+        /// </summary>
+        public void Execute()
+        {
+            Theme workbookTheme = Workbook.WorkbookTheme;
+            theme = XmlElement.CreateElement("theme", "a");
+            theme.AddNameSpaceAttribute("a", "xmlns", "http://schemas.openxmlformats.org/drawingml/2006/main");
+            theme.AddAttribute("name", XmlUtils.SanitizeXmlValue(workbookTheme.Name));
+            XmlElement themeElements = theme.AddChildElement("themeElements", "a");
+            themeElements.AddChildElement(GetColorSchemeElement(workbookTheme.Colors));
+        }
+
+        /// <summary>
+        /// Method to get all XML elements of a color scheme in one top element
+        /// </summary>
+        /// <param name="scheme">Color scheme instance</param>
+        /// <returns>XmlElement, holding color scheme information (XML)</returns>
+        private XmlElement GetColorSchemeElement(ColorScheme scheme)
+        {
+            XmlElement colorScheme = XmlElement.CreateElementWithAttribute("clrScheme", "name", XmlUtils.SanitizeXmlValue(scheme.Name), "a");
+            colorScheme.AddChildElement(GetColor("dk1", scheme.Dark1, "a"));
+            colorScheme.AddChildElement(GetColor("lt1", scheme.Light1, "a"));
+            colorScheme.AddChildElement(GetColor("dk2", scheme.Dark2, "a"));
+            colorScheme.AddChildElement(GetColor("lt2", scheme.Light2, "a"));
+            colorScheme.AddChildElement(GetColor("accent1", scheme.Accent1, "a"));
+            colorScheme.AddChildElement(GetColor("accent2", scheme.Accent2, "a"));
+            colorScheme.AddChildElement(GetColor("accent3", scheme.Accent3, "a"));
+            colorScheme.AddChildElement(GetColor("accent4", scheme.Accent4, "a"));
+            colorScheme.AddChildElement(GetColor("accent5", scheme.Accent5, "a"));
+            colorScheme.AddChildElement(GetColor("accent6", scheme.Accent6, "a"));
+            colorScheme.AddChildElement(GetColor("hlink", scheme.Hyperlink, "a"));
+            colorScheme.AddChildElement(GetColor("folHlink", scheme.FollowedHyperlink, "a"));
+            return colorScheme;
+        }
+
+        /// <summary>
+        /// Method to determine a single color XML element
+        /// </summary>
+        /// <param name="name">Name of the element</param>
+        /// <param name="color">Color instance</param>
+        /// <param name="prefix">Element name prefix</param>
+        /// <returns>XmlElement, holding color information</returns>
+        private XmlElement GetColor(string name, IColor color, string prefix)
+        {
+            XmlElement colorElement = XmlElement.CreateElement(name, prefix);
             if (color is SystemColor)
             {
                 SystemColor sysColor = color as SystemColor;
-                sb.Append("<sysClr val=\"").Append(sysColor.StringValue).Append("\" ");
+                XmlElement sysColorElement = colorElement.AddChildElementWithAttribute("sysClr", "val", sysColor.StringValue, "a");
                 if (!string.IsNullOrEmpty(sysColor.LastColor))
                 {
-                    sb.Append("lastClr=\"").Append(sysColor.LastColor).Append("\" ");
+                    sysColorElement.AddAttribute("lastClr", sysColor.LastColor);
                 }
-                sb.Append("/>");
             }
             else if (color is SrgbColor)
             {
-                sb.Append("<srgbClr val=\"").Append(color.StringValue).Append("\" />");
+                colorElement.AddChildElementWithAttribute("srgbClr", "val", color.StringValue, "a");
             }
-            sb.Append("</").Append(name).Append(">");
+            return colorElement;
         }
+
 
     }
 }

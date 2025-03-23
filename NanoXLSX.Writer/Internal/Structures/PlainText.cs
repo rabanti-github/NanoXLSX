@@ -6,9 +6,9 @@
  */
 using System;
 using System.Text;
-using NanoXLSX.Internal.Writers;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Utils;
+using NanoXLSX.Utils.Xml;
 
 namespace NanoXLSX.Internal.Structures
 {
@@ -18,33 +18,40 @@ namespace NanoXLSX.Internal.Structures
     /// \remark <remarks>This class is only for internal use. Use the high level API (e.g. class Workbook) to manipulate data and create Excel files</remarks>
     public class PlainText : IFormattableText
     {
-        private const string EMPTY_STRING = "<t></t>";
-        private const string START_TAG = "<t>";
-        private const string END_TAG = "</t>";
-        private const string PRESERVE_START_TAG = "<t xml:space=\"preserve\">";
+        private const string TAG_NAME = "t";
+        private const string PRESERVE_ATTRIBUTE_NAME = "space";
+        private const string PRESERVE_ATTRIBUTE_PREFIX_NAME = "xml";
+        private const string PRESERVE_ATTRIBUTE_VALUE = "preserve";
 
+        /// <summary>
+        /// Unformatted Value (plain text)
+        /// </summary>
         public string Value { private get; set; }
 
-        public void AddFormattedValue(StringBuilder sb)
+        /// <summary>
+        /// Get the XmlElement (interface implementation)
+        /// </summary>
+        /// <returns>XmlElement instance</returns>
+        public XmlElement GetElement()
         {
             if (string.IsNullOrEmpty(Value))
             {
-                sb.Append(EMPTY_STRING);
+                return XmlElement.CreateElement(TAG_NAME);
+            }
+            string value = XmlUtils.SanitizeXmlValue(Value);
+            value = ParserUtils.NormalizeNewLines(value);
+            XmlElement element = null;
+            if (Char.IsWhiteSpace(value, 0) || Char.IsWhiteSpace(value, value.Length - 1))
+            {
+                element = XmlElement.CreateElementWithAttribute(TAG_NAME, PRESERVE_ATTRIBUTE_NAME, PRESERVE_ATTRIBUTE_VALUE, "", PRESERVE_ATTRIBUTE_PREFIX_NAME);
             }
             else
             {
-                string value = XmlUtils.EscapeXmlChars(Value);
-                if (Char.IsWhiteSpace(value, 0) || Char.IsWhiteSpace(value, value.Length - 1))
-                {
-                    sb.Append(PRESERVE_START_TAG);
-                }
-                else
-                {
-                    sb.Append(START_TAG);
-                }
-                sb.Append(ParserUtils.NormalizeNewLines(value)).Append(END_TAG);
+                element = XmlElement.CreateElement(TAG_NAME);
             }
-        }
+            element.InnerValue = value;
+            return element;
+        }  
 
         /// <summary>
         /// Constructor with value assignment

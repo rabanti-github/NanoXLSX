@@ -6,32 +6,21 @@
  */
 
 using System;
+using System.Collections.Generic;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
+using NanoXLSX.Registry;
+using NanoXLSX.Utils.Xml;
+using static NanoXLSX.Internal.Enums.Password;
 
 namespace NanoXLSX.Internal.Writers
 {
     /// <summary>
-    /// Class representing a writer for legacy passwords
+    /// Class to write a legacy password
     /// </summary>
+    [NanoXlsxPlugin(PluginUUID = PluginUUID.PASSWORD_WRITER)]
     public class LegacyPasswordWriter : IPasswordWriter
     {
-        /// <summary>
-        /// Target type of the password
-        /// </summary>
-        public enum PasswordType
-        {
-            /// <summary>
-            /// Password is used to protect a workbook
-            /// </summary>
-            WORKBOOK_PROTECTION,
-            /// <summary>
-            /// Password is used to protect a worksheet
-            /// </summary>
-            WORKSHEET_PROTECTION
-        }
-
-        private string passwordHash;
 
         /// <summary>
         /// Current target type of the password instance
@@ -41,21 +30,35 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Gets or sets the password hash
         /// </summary>
-        public string PasswordHash
-        {
-            get { return passwordHash; }
-            set { passwordHash = value; }
-        }
+        public string PasswordHash { get; set; }
 
         /// <summary>
         /// Default constructor with parameter
         /// </summary>
-        /// <param name="type">Current target type of the password instance</param>
+        /// <param name="type">Target type of the password instance</param>
         /// <param name="hash">Hash representation of the password (do not use null)</param>
         public LegacyPasswordWriter(PasswordType type, string hash)
         {
             this.Type = type;
             this.PasswordHash = hash;
+        }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public LegacyPasswordWriter()
+        {
+        }
+
+        /// <summary>
+        /// Initializer method with all mandatory parameters
+        /// </summary>
+        /// <param name="type">Target type of the password instance</param>
+        /// <param name="passwordHash">Hash representation of the password (do not use null)</param>
+        public void Init(PasswordType type, string passwordHash)
+        {
+            this.Type = type;
+            this.PasswordHash = passwordHash;
         }
 
         /// <summary>
@@ -66,23 +69,6 @@ namespace NanoXLSX.Internal.Writers
         public void CopyFrom(IPassword passwordInstance)
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Gets the internally used XML attributes that are set when a workbook is saved
-        /// </summary>
-        /// <returns>XML attributes with a leading space, or an empty string, if no password was set</returns>
-        /// \remark <remarks>This method is only internally used on writing workbooks</remarks>
-        public new string GetXmlAttributes()
-        {
-            if (Type == PasswordType.WORKSHEET_PROTECTION)
-            {
-                return " password =\"" + passwordHash + "\"";
-            }
-            else
-            {
-                return " workbookPassword=\"" + passwordHash + "\"";
-            }
         }
 
         /// <summary>
@@ -120,6 +106,24 @@ namespace NanoXLSX.Internal.Writers
         public void UnsetPassword()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets the XML attributes of the current password instance, that are used when writing XLSX files
+        /// </summary>
+        /// <returns>IENumerable of attributes</returns>
+        public IEnumerable<XmlAttribute> GetAttributes()
+        {
+            List<XmlAttribute> attributes = new List<XmlAttribute>();
+            if (Type == PasswordType.WORKSHEET_PROTECTION)
+            {
+                attributes.Add(XmlAttribute.CreateAttribute("password", PasswordHash));
+            }
+            else
+            {
+                attributes.Add(XmlAttribute.CreateAttribute("workbookPassword", PasswordHash));
+            }
+            return attributes;
         }
     }
 }

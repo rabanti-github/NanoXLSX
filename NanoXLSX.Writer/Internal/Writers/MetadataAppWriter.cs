@@ -5,110 +5,80 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
-using System.Globalization;
-using System.Text;
-using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
+using NanoXLSX.Registry;
+using NanoXLSX.Utils.Xml;
 
 namespace NanoXLSX.Internal.Writers
 {
     /// <summary>
-    /// Class to generate metadata XML files for the app metadata part on an XLSX file.
+    /// Class to generate the metadata XML file for the app metadata part on an XLSX file.
     /// </summary>
+    [NanoXlsxPlugin(PluginUUID = PluginUUID.METADATA_APP_WRITER)]
     internal class MetadataAppWriter : IPluginWriter
     {
-        public MetadataAppWriter(XlsxWriter writer)
-        {
-            this.Workbook = writer.Workbook;
-        }
-
-        /// <summary>
-        /// Method to create the app-properties (part of meta data) as raw XML string
-        /// </summary>
-        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
-        /// <returns>Raw XML string</returns>
-        public virtual string CreateDocument(string currentDocument = null)
-        {
-            PreWrite(Workbook);
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<Properties xmlns=\"http://schemas.openxmlformats.org/officeDocument/2006/extended-properties\" xmlns:vt=\"http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes\">");
-            sb.Append(CreateAppString());
-            sb.Append("</Properties>");
-            PostWrite(Workbook);
-            if (NextWriter != null)
-            {
-                NextWriter.Workbook = this.Workbook;
-                return NextWriter.CreateDocument(sb.ToString());
-            }
-            else
-            {
-                return sb.ToString();
-            }
-        }
-
-        /// <summary>
-        /// Method that is called before the <see cref="CreateDocument()"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PreWrite(Workbook workbook)
-        {
-            // NoOp - replaced by plugin
-        }
-
-        /// <summary>
-        /// Method that is called after the <see cref="CreateDocument()"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="workbook">Workbook instance that is used in this writer</param>
-        public virtual void PostWrite(Workbook workbook)
-        {
-            // NoOp - replaced by plugin
-        }
-
-        /// <summary>
-        /// Gets the unique class ID. This ID is used to identify the class when replacing functionality by extension packages
-        /// </summary>
-        /// <returns>GUID of the class</returns>
-        public string GetClassID()
-        {
-            return "A73923A8-1E7E-4673-AD3F-B22DD3153D7B";
-        }
+        private XmlElement properties;
 
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
         public Workbook Workbook { get; set; }
+        /// <summary>
+        /// relative Package path of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
+        /// </summary>
+        public string PackagePath { get; set; }
+        /// <summary>
+        /// File name of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
+        /// </summary>
+        public string PackageFileName { get; set; }
 
         /// <summary>
-        /// Gets or sets the next plug-in writer. If not null, the next writer to be applied on the document can be called by this property
+        /// Default constructor - Must be defined for instantiation of the plug-ins
         /// </summary>
-        public IPluginWriter NextWriter { get; set; } = null;
-
-
-
-
-        /// <summary>
-        /// Method to create the XML string for the app-properties document
-        /// </summary>
-        /// <returns>String with formatted XML data</returns>
-        private string CreateAppString()
+        internal MetadataAppWriter()
         {
-            Metadata md = ((Workbook)Workbook).WorkbookMetadata;
-            StringBuilder sb = new StringBuilder();
-            XlsxWriter.AppendXmlTag(sb, "0", "TotalTime", null);
-            XlsxWriter.AppendXmlTag(sb, md.Application, "Application", null);
-            XlsxWriter.AppendXmlTag(sb, "0", "DocSecurity", null);
-            XlsxWriter.AppendXmlTag(sb, "false", "ScaleCrop", null);
-            XlsxWriter.AppendXmlTag(sb, md.Manager, "Manager", null);
-            XlsxWriter.AppendXmlTag(sb, md.Company, "Company", null);
-            XlsxWriter.AppendXmlTag(sb, "false", "LinksUpToDate", null);
-            XlsxWriter.AppendXmlTag(sb, "false", "SharedDoc", null);
-            XlsxWriter.AppendXmlTag(sb, md.HyperlinkBase, "HyperlinkBase", null);
-            XlsxWriter.AppendXmlTag(sb, "false", "HyperlinksChanged", null);
-            XlsxWriter.AppendXmlTag(sb, md.ApplicationVersion, "AppVersion", null);
-            return sb.ToString();
         }
+
+        /// <summary>
+        /// Initialization method (interface implementation)
+        /// </summary>
+        /// <param name="baseWriter">Base writer instance that holds any information for this writer</param>
+        public void Init(IBaseWriter baseWriter)
+        {
+            this.Workbook = baseWriter.Workbook;
+        }
+
+        /// <summary>
+        /// Get the XmlElement after <see cref="Execute"/> (interface implementation)
+        /// </summary>
+        /// <returns>XmlElement instance that was created after the plug-in execution</returns>
+        public XmlElement GetElement()
+        {
+            Execute();
+            return properties;
+        }
+
+        /// <summary>
+        /// Method to execute the main logic of the plug-in (interface implementation)
+        /// </summary>
+        public void Execute()
+        {
+            properties = XmlElement.CreateElement("Properties");
+            properties.AddDefaultXmlNameSpace("http://schemas.openxmlformats.org/officeDocument/2006/extended-properties");
+            properties.AddNameSpaceAttribute("vt", "xmlns", "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes");
+            Metadata md = Workbook.WorkbookMetadata;
+            properties.AddChildElementWithValue("TotalTime", "0");
+            properties.AddChildElementWithValue("Application", md.Application);
+            properties.AddChildElementWithValue("DocSecurity", "0");
+            properties.AddChildElementWithValue("ScaleCrop", "false");
+            properties.AddChildElementWithValue("Manager", md.Manager);
+            properties.AddChildElementWithValue("Company", md.Company);
+            properties.AddChildElementWithValue("LinksUpToDate", "false");
+            properties.AddChildElementWithValue("SharedDoc", "false");
+            properties.AddChildElementWithValue("HyperlinkBase", md.HyperlinkBase);
+            properties.AddChildElementWithValue("HyperlinksChanged", "false");
+            properties.AddChildElementWithValue("AppVersion", md.ApplicationVersion);
+        }
+
     }
 }

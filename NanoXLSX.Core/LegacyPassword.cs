@@ -191,6 +191,11 @@ namespace NanoXLSX
             }
         }
 
+        /// <summary>
+        /// Returns whether two instances are the same
+        /// </summary>
+        /// <param name="obj">Object to compare</param>
+        /// <returns>True if this instance and the other are the same</returns>
         public override bool Equals(object obj)
         {
             LegacyPassword pwd = (LegacyPassword)obj;
@@ -200,6 +205,10 @@ namespace NanoXLSX
                    PasswordHash == password.PasswordHash;
         }
 
+        /// <summary>
+        /// Gets the hash code of the password instance. Note that this is not the actual password hash
+        /// </summary>
+        /// <returns>Hash code of the password instance</returns>
         public override int GetHashCode()
         {
             // The actual password is not considered since its hash is sufficient
