@@ -14,8 +14,8 @@ namespace NanoXLSX.Internal.Writers
     /// <summary>
     /// Class to generate the metadata XML file for the app metadata part on an XLSX file.
     /// </summary>
-    [NanoXlsxPlugin(PluginUUID = PluginUUID.METADATA_APP_WRITER)]
-    internal class MetadataAppWriter : IPluginWriter
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.METADATA_APP_WRITER)]
+    internal class MetadataAppWriter : IPlugInWriter
     {
         private XmlElement properties;
 
@@ -23,14 +23,6 @@ namespace NanoXLSX.Internal.Writers
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
         public Workbook Workbook { get; set; }
-        /// <summary>
-        /// relative Package path of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
-        /// </summary>
-        public string PackagePath { get; set; }
-        /// <summary>
-        /// File name of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
-        /// </summary>
-        public string PackageFileName { get; set; }
 
         /// <summary>
         /// Default constructor - Must be defined for instantiation of the plug-ins

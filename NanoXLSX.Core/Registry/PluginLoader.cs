@@ -17,12 +17,12 @@ namespace NanoXLSX.Registry
     /// <summary>
     /// Class to register plug-in classes that extends the functionality of NanoXLSX (Core or any other package) without being defined as fixed dependencies
     /// </summary>
-    public static class PluginLoader
+    public static class PlugInLoader
     {
         private static bool initialized = false;
 
-        private static Dictionary<string, PluginInstance> pluginClasses = new Dictionary<string, PluginInstance>();
-        private static Dictionary<string, List<PluginInstance>> queuePluginClasses = new Dictionary<string, List<PluginInstance>>();
+        private static Dictionary<string, PlugInInstance> plugInClasses = new Dictionary<string, PlugInInstance>();
+        private static Dictionary<string, List<PlugInInstance>> queuePlugInClasses = new Dictionary<string, List<PlugInInstance>>();
 
         /// <summary>
         /// Initializes the plug-in loader process. If already initialized, the method returns without action
@@ -56,8 +56,8 @@ namespace NanoXLSX.Registry
             {
                 try
                 {
-                    Assembly assembly = Assembly.LoadFrom(path);
-                    RegisterPlugins(assembly);
+                    Assembly assembly = Assembly.Load(path);
+                    RegisterPlugIns(assembly);
                 }
                 catch
                 {
@@ -70,12 +70,12 @@ namespace NanoXLSX.Registry
         /// Method to analyze and register plug-ins from a referenced assembly
         /// </summary>
         /// <param name="assembly">Assembly to analyze</param>
-        private static void RegisterPlugins(Assembly assembly)
+        private static void RegisterPlugIns(Assembly assembly)
         {
-            IEnumerable<Type> replacingPluginTypes = GetAssemblyPluginsByType(assembly, typeof(NanoXlsxPluginAttribute));
-            IEnumerable<Type> queuePluginTypes = GetAssemblyPluginsByType(assembly, typeof(NanoXlsxQueuePluginAttribute));
-            HandleReplacingPlugins(replacingPluginTypes);
-            HandleQueuePlugins(queuePluginTypes);
+            IEnumerable<Type> replacingPlugInTypes = GetAssemblyPlugInsByType(assembly, typeof(NanoXlsxPlugInAttribute));
+            IEnumerable<Type> queuePlugInTypes = GetAssemblyPlugInsByType(assembly, typeof(NanoXlsxQueuePlugInAttribute));
+            HandleReplacingPlugIns(replacingPlugInTypes);
+            HandleQueuePlugIns(queuePlugInTypes);
         }
 
         /// <summary>
@@ -84,38 +84,38 @@ namespace NanoXLSX.Registry
         /// <param name="assembly">Assembly to analyze</param>
         /// <param name="attributeType">Plug-in attribute type, declared on classes of the assembly</param>
         /// <returns>IEnumerable of class types, matching the criteria</returns>
-        private static IEnumerable<Type> GetAssemblyPluginsByType(Assembly assembly, Type attributeType)
+        private static IEnumerable<Type> GetAssemblyPlugInsByType(Assembly assembly, Type attributeType)
         {
-            IEnumerable<Type> pluginTypes = assembly.GetTypes()
+            IEnumerable<Type> plugInTypes = assembly.GetTypes()
                 .Where(type => type.IsClass &&
                                !type.IsAbstract &&
-                               typeof(IPlugin).IsAssignableFrom(type) && // Ensure the type implements IPlugin
+                               typeof(IPlugIn).IsAssignableFrom(type) && // Ensure the type implements IPlugIn
                                type.GetCustomAttribute(attributeType) != null);
-            return pluginTypes;
+            return plugInTypes;
         }
 
         /// <summary>
         /// Method to handle (register) an enumeration of plug-in class types as replacing plug-ins
         /// </summary>
-        /// <param name="pluginTypes">IEnumerable of plug-in class types to handle</param>
-        private static void HandleReplacingPlugins(IEnumerable<Type> pluginTypes)
+        /// <param name="plugInTypes">IEnumerable of plug-in class types to handle</param>
+        private static void HandleReplacingPlugIns(IEnumerable<Type> plugInTypes)
         {
-            foreach (Type pluginType in pluginTypes)
+            foreach (Type plugInType in plugInTypes)
             {
-                NanoXlsxPluginAttribute attribute = pluginType.GetCustomAttribute<NanoXlsxPluginAttribute>();
+                NanoXlsxPlugInAttribute attribute = plugInType.GetCustomAttribute<NanoXlsxPlugInAttribute>();
                 if (attribute != null)
                 {
-                    if (pluginClasses.ContainsKey(attribute.PluginUUID))
+                    if (plugInClasses.ContainsKey(attribute.PlugInUUID))
                     {
-                        if (attribute.PluginOrder <= pluginClasses[attribute.PluginUUID].Order)
+                        if (attribute.PlugInOrder <= plugInClasses[attribute.PlugInUUID].Order)
                         {
                             // Skip duplicates with lower order numbers
-                            pluginClasses[attribute.PluginUUID] = new PluginInstance(attribute.PluginUUID, attribute.PluginOrder, pluginType);
+                            plugInClasses[attribute.PlugInUUID] = new PlugInInstance(attribute.PlugInUUID, attribute.PlugInOrder, plugInType);
                         }
                     }
-                    else if (!pluginClasses.ContainsKey(attribute.PluginUUID))
+                    else if (!plugInClasses.ContainsKey(attribute.PlugInUUID))
                     {
-                        pluginClasses.Add(attribute.PluginUUID, new PluginInstance(attribute.PluginUUID, attribute.PluginOrder, pluginType));
+                        plugInClasses.Add(attribute.PlugInUUID, new PlugInInstance(attribute.PlugInUUID, attribute.PlugInOrder, plugInType));
                     }
                 }
             }
@@ -124,23 +124,23 @@ namespace NanoXLSX.Registry
         /// <summary>
         /// Method to handle (register) an enumeration of plug-in class types as queuing plug-ins
         /// </summary>
-        /// <param name="queuePluginTypes">IEnumerable of plug-in class types to handle</param>
-        private static void HandleQueuePlugins(IEnumerable<Type> queuePluginTypes)
+        /// <param name="queuePlugInTypes">IEnumerable of plug-in class types to handle</param>
+        private static void HandleQueuePlugIns(IEnumerable<Type> queuePlugInTypes)
         {
-            foreach (Type pluginType in queuePluginTypes)
+            foreach (Type plugInType in queuePlugInTypes)
             {
-                NanoXlsxQueuePluginAttribute attribute = pluginType.GetCustomAttribute<NanoXlsxQueuePluginAttribute>();
+                NanoXlsxQueuePlugInAttribute attribute = plugInType.GetCustomAttribute<NanoXlsxQueuePlugInAttribute>();
                 if (attribute != null)
                 {
-                    if (!queuePluginClasses.ContainsKey(attribute.QueueUUID))
+                    if (!queuePlugInClasses.ContainsKey(attribute.QueueUUID))
                     {
-                        queuePluginClasses.Add(attribute.QueueUUID, new List<PluginInstance>());
+                        queuePlugInClasses.Add(attribute.QueueUUID, new List<PlugInInstance>());
                     }
-                    queuePluginClasses[attribute.QueueUUID].Add(new PluginInstance(attribute.PluginUUID, attribute.PluginOrder, pluginType));
+                    queuePlugInClasses[attribute.QueueUUID].Add(new PlugInInstance(attribute.PlugInUUID, attribute.PlugInOrder, plugInType));
                 }
             }
-            // Sort each list based on PluginOrder (ascending)
-            foreach (KeyValuePair<string, List<PluginInstance>> entry in queuePluginClasses)
+            // Sort each list based on PlugInOrder (ascending)
+            foreach (KeyValuePair<string, List<PlugInInstance>> entry in queuePlugInClasses)
             {
                 entry.Value.Sort((a, b) => a.Order.CompareTo(b.Order));
             }
@@ -151,15 +151,15 @@ namespace NanoXLSX.Registry
         /// If the fall back is returned, this means normally that no plug-in was loaded to replace the requested instance.
         /// </summary>
         /// <typeparam name="T">Plug-in type</typeparam>
-        /// <param name="pluginUUID">Plug-in type</param>
+        /// <param name="plugInUUID">Plug-in type</param>
         /// <param name="fallBackInstance">Fall back instance if no plug-in with the defined UUID was registered</param>
         /// <returns>Found instance or fall back</returns>
-        internal static T GetPlugin<T>(string pluginUUID, T fallBackInstance)
+        internal static T GetPlugIn<T>(string plugInUUID, T fallBackInstance)
         {
-            if (pluginClasses.ContainsKey(pluginUUID))
+            if (plugInClasses.ContainsKey(plugInUUID))
             {
-                PluginInstance plugin = pluginClasses[pluginUUID];
-                return (T)Activator.CreateInstance(plugin.Type);
+                PlugInInstance plugIn = plugInClasses[plugInUUID];
+                return (T)Activator.CreateInstance(plugIn.Type);
             }
             else
             {
@@ -168,44 +168,44 @@ namespace NanoXLSX.Registry
         }
 
         /// <summary>
-        /// Method to get the next instance of a queue plug-in. To get the first one of a queue, the parameter 'lastPluginUUID' is set as null.
+        /// Method to get the next instance of a queue plug-in. To get the first one of a queue, the parameter 'lastPlugInUUID' is set as null.
         /// If no further plug-in can be found in the queue, null will be returned as instance
         /// </summary>
         /// <typeparam name="T">Plug-in type</typeparam>
         /// <param name="queueUUID">UUID of the queue</param>
-        /// <param name="lastPluginUUID">UUID of the last plug-in instance, to determine the next one</param>
-        /// <param name="currentPluginUUID">Out parameter that return the UUID of the determined, next plug-in instance</param>
+        /// <param name="lastPlugInUUID">UUID of the last plug-in instance, to determine the next one</param>
+        /// <param name="currentPlugInUUID">Out parameter that return the UUID of the determined, next plug-in instance</param>
         /// <returns>Plug-in instance or null, if the end of the queue was reached</returns>
-        internal static T GetNextQueuePlugin<T>(string queueUUID, string lastPluginUUID, out string currentPluginUUID)
+        internal static T GetNextQueuePlugIn<T>(string queueUUID, string lastPlugInUUID, out string currentPlugInUUID)
         {
-            if (queuePluginClasses.ContainsKey(queueUUID) && queuePluginClasses[queueUUID].Count > 0)
+            if (queuePlugInClasses.ContainsKey(queueUUID) && queuePlugInClasses[queueUUID].Count > 0)
             {
-                PluginInstance plugin = null;
-                List<PluginInstance> pluginList = queuePluginClasses[queueUUID];
-                if (lastPluginUUID == null)
+                PlugInInstance plugIn = null;
+                List<PlugInInstance> plugInList = queuePlugInClasses[queueUUID];
+                if (lastPlugInUUID == null)
                 {
-                    plugin = pluginList[0];
+                    plugIn = plugInList[0];
                 }
                 else
                 {
-                    // Find the next plug-in after the currentPluginUUID
-                    int index = pluginList.FindIndex(p => p.UUID == lastPluginUUID);
-                    if (index >= 0 && index + 1 < pluginList.Count)
+                    // Find the next plug-in after the currentPlugInUUID
+                    int index = plugInList.FindIndex(p => p.UUID == lastPlugInUUID);
+                    if (index >= 0 && index + 1 < plugInList.Count)
                     {
-                        plugin = pluginList[index + 1]; // Get the next plug-in in the list
+                        plugIn = plugInList[index + 1]; // Get the next plug-in in the list
                     }
                 }
-                if (plugin == null)
+                if (plugIn == null)
                 {
-                    currentPluginUUID = null;
+                    currentPlugInUUID = null;
                     return default(T);
                 }
-                currentPluginUUID = plugin.UUID;
-                return (T)Activator.CreateInstance(plugin.Type);
+                currentPlugInUUID = plugIn.UUID;
+                return (T)Activator.CreateInstance(plugIn.Type);
             }
             else
             {
-                currentPluginUUID = null;
+                currentPlugInUUID = null;
                 return default(T);
             }
         }
@@ -213,7 +213,7 @@ namespace NanoXLSX.Registry
         /// <summary>
         /// Helper class to hold plug-in information
         /// </summary>
-        private sealed class PluginInstance
+        private sealed class PlugInInstance
         {
             /// <summary>
             /// UUID of the plug-in
@@ -235,7 +235,7 @@ namespace NanoXLSX.Registry
             /// <param name="uuid">UUID of the plug-in</param>
             /// <param name="order">Order number</param>
             /// <param name="type">Class type</param>
-            internal PluginInstance(string uuid, int order, Type type)
+            internal PlugInInstance(string uuid, int order, Type type)
             {
                 this.UUID = uuid;
                 this.Order = order;

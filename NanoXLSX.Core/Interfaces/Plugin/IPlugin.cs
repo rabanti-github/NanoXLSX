@@ -13,7 +13,7 @@ namespace NanoXLSX.Interfaces
     /// <summary>
     /// Interface to define classes that can be handles by extension packages (plug-ins)
     /// </summary>
-    internal interface IPlugin
+    internal interface IPlugIn
     {
         void Execute();
     }

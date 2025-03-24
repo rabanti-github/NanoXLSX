@@ -10,16 +10,17 @@ namespace NanoXLSX.Interfaces.Writer
     /// <summary>
     /// Interface, used by XML writer classes 
     /// </summary>
-    internal interface IPluginWriter : IPlugin, IXmlElement
+    internal interface IPlugInWriter : IPlugIn, IXmlElement
     {
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
         Workbook Workbook { get; set; }
 
-        string PackagePath { get; set; }
-        string PackageFileName { get; set; }
-
+        /// <summary>
+        /// Initialization method
+        /// </summary>
+        /// <param name="baseWriter">Base writer instance that holds any information for this writer</param>
         void Init(IBaseWriter baseWriter);
 
     }

@@ -14,17 +14,18 @@ namespace NanoXLSX.Registry
     /// Attribute to declare a class as general NanoXLSX plug-in
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class NanoXlsxPluginAttribute : Attribute
+    public class NanoXlsxPlugInAttribute
+        : Attribute
     {
         /// <summary>
         /// Unique ID if the plug-in
         /// </summary>
-        public string PluginUUID { get; set; }
+        public string PlugInUUID { get; set; }
 
         /// <summary>
         /// Order how the annotated plug-ins are registered in case of duplicate UIDs. The higher number will override any lower. 
         /// Default is zero (order may be vary).
         /// </summary>
-        public int PluginOrder { get; set; } = 0;
+        public int PlugInOrder { get; set; } = 0;
     }
 }

@@ -19,7 +19,7 @@ namespace NanoXLSX
     {
         static WorkbookReader()
         {
-            PluginLoader.Initialize();
+            PlugInLoader.Initialize();
         }
 
         /// <summary>

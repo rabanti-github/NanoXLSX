@@ -18,8 +18,8 @@ namespace NanoXLSX.Internal.Writers
     /// <summary>
     /// Class to generate the workbook XML file in a XLSX file.
     /// </summary>
-    [NanoXlsxPlugin(PluginUUID = PluginUUID.WORKBOOK_WRITER)]
-    internal class WorkbookWriter : IPluginWriter
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WORKBOOK_WRITER)]
+    internal class WorkbookWriter : IPlugInWriter
     {
         private XmlElement workbook;
         private IPasswordWriter passwordWriter;
@@ -28,15 +28,6 @@ namespace NanoXLSX.Internal.Writers
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
         public Workbook Workbook { get; set; }
-
-        /// <summary>
-        /// relative Package path of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
-        /// </summary>
-        public string PackagePath { get; set; }
-        /// <summary>
-        /// File name of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
-        /// </summary>
-        public string PackageFileName { get; set; }
 
         /// <summary>
         /// Default constructor - Must be defined for instantiation of the plug-ins
@@ -53,7 +44,7 @@ namespace NanoXLSX.Internal.Writers
         {
             this.Workbook = baseWriter.Workbook;
             IPassword passwordInstance = Workbook.WorkbookProtectionPassword;
-            this.passwordWriter = PluginLoader.GetPlugin<IPasswordWriter>(PluginUUID.PASSWORD_WRITER, new LegacyPasswordWriter());
+            this.passwordWriter = PlugInLoader.GetPlugIn<IPasswordWriter>(PlugInUUID.PASSWORD_WRITER, new LegacyPasswordWriter());
             this.passwordWriter.Init(PasswordType.WORKBOOK_PROTECTION, passwordInstance.PasswordHash);
         }
 

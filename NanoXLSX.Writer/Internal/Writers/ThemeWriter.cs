@@ -16,8 +16,8 @@ namespace NanoXLSX.Internal.Writers
     /// <summary>
     /// Class to generate the theme XML file in a XLSX file.
     /// </summary>
-    [NanoXlsxPlugin(PluginUUID = PluginUUID.THEME_WRITER)]
-    internal class ThemeWriter : IPluginWriter
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.THEME_WRITER)]
+    internal class ThemeWriter : IPlugInWriter
     {
         private XmlElement theme;
 
@@ -25,15 +25,6 @@ namespace NanoXLSX.Internal.Writers
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
         public Workbook Workbook { get; set; }
-
-        /// <summary>
-        /// relative Package path of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
-        /// </summary>
-        public string PackagePath { get; set; }
-        /// <summary>
-        /// File name of the content. This value is not maintained in base plug-ins, but only in appending queue plug-ins
-        /// </summary>
-        public string PackageFileName { get; set; }
 
         /// <summary>
         /// Default constructor - Must be defined for instantiation of the plug-ins

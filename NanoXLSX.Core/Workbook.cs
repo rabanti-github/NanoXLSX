@@ -25,7 +25,7 @@ namespace NanoXLSX
     {
         static Workbook()
         {
-            PluginLoader.Initialize();
+            PlugInLoader.Initialize();
         }
 
         #region privateFields

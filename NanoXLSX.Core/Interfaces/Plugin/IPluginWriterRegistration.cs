@@ -9,7 +9,7 @@ namespace NanoXLSX.Interfaces.Writer
     /// <summary>
     /// Interface, used by classes to register package parts prior to the XLSX creation process
     /// </summary>
-    internal interface IPluginWriterRegistration : IPlugin
+    internal interface IPlugInWriterRegistration : IPlugIn
     {
         /// <summary>
         /// Order number of the package part (for sorting purpose during registration)

@@ -12,7 +12,7 @@ namespace NanoXLSX.Interfaces.Reader
     /// <summary>
     /// Interface, used by XML reader classes 
     /// </summary>
-    public interface IPluginReader
+    public interface IPlugInReader
     {
         /// <summary>
         /// Interface function to read an XML file within an XLSX file

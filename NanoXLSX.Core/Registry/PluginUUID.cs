@@ -11,7 +11,7 @@ namespace NanoXLSX.Registry
     /// Static class, holding UUIDs to be used for registering packages and containing plug-ins
     /// </summary>
     /// \remark <remarks>The UUID strings shall never be altered. New UUIDs may be added. Obsolete may be completely removed.</remarks>
-    public static class PluginUUID
+    public static class PlugInUUID
     {
         
         #region writerUUIDs
@@ -51,7 +51,7 @@ namespace NanoXLSX.Registry
 
         #region writerQueueUUIDs
         /// <summary>
-        /// UUID for the prepending queue. Plugins can register to this queue to be executed before the regular XLSX writers
+        /// UUID for the prepending queue. Plug-ins can register to this queue to be executed before the regular XLSX writers
         /// </summary>
         public const string WRITER_PREPENDING_QUEUE = "772C4BF6-ED81-4127-80C7-C99D2B5C5EEC";
 
@@ -61,7 +61,7 @@ namespace NanoXLSX.Registry
         public const string WRITER_PACKAGE_REGISTRY_QUEUE = "C0CE40AC-14D5-4403-A5A3-018C6057A80E";
 
         /// <summary>
-        /// UUID for the appending queue. Plugins can register to this queue to be executed after the regular XLSX writers
+        /// UUID for the appending queue. Plug-ins can register to this queue to be executed after the regular XLSX writers
         /// </summary>
         public const string WRITER_APPENDING_QUEUE = "04F73656-C355-40A9-9E68-CB21329F3E53";
         #endregion

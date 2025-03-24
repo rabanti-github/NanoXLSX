@@ -26,7 +26,7 @@ namespace NanoXLSX
     {
         static Worksheet()
         {
-            PluginLoader.Initialize();
+            PlugInLoader.Initialize();
         }
 
         #region constants

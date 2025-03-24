@@ -15,7 +15,7 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for the Core metadata file (docProps) embedded in XLSX files
     /// </summary>
-    public class MetadataCoreReader : IPluginReader
+    public class MetadataCoreReader : IPlugInReader
     {
         #region properties
         /// <summary>
@@ -112,7 +112,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="stream">Stream of the XML file. The stream must be reset in this method at the end, if any stream opeartion was performed</param>
         public virtual void PreRead(MemoryStream stream)
         {
-            // NoOp - replaced by plugin
+            // NoOp - replaced by plugIn
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="stream">Stream of the XML file. The stream must be reset in this method before any stream operation is performed</param>
         public virtual void PostRead(MemoryStream stream)
         {
-            // NoOp - replaced by plugin
+            // NoOp - replaced by plugIn
         }
 
         #endregion

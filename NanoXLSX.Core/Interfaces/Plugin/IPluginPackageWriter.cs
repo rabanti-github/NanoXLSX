@@ -5,17 +5,17 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-
 namespace NanoXLSX.Interfaces.Writer
 {
-    /// <summary>
-    /// Interface, used by worksheet writers
-    /// </summary>
-    internal interface IWorksheetWriter : IPlugInWriter
+    internal interface IPlugInPackageWriter : IPlugInWriter
     {
         /// <summary>
-        /// Gets the currently active worksheet
+        /// Relative package path
         /// </summary>
-        Worksheet CurrentWorksheet { get; set; }
+        string PackagePath { get; set; }
+        /// <summary>
+        /// File name of the package part
+        /// </summary>
+        string PackageFileName { get; set; }
     }
 }
