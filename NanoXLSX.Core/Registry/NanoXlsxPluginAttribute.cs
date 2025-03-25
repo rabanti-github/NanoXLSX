@@ -7,7 +7,6 @@
 
 using System;
 
-
 namespace NanoXLSX.Registry
 {
     /// <summary>

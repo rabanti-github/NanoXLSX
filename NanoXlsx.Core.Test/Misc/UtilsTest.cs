@@ -259,19 +259,6 @@ namespace NanoXLSX.Test.Core.MiscTest
             Assert.Equal(expectedDate, date);
         }
 
-        [Fact]
-        public void ClusterTestTemp()
-        {
-            List<Range> ranges = new List<Range>();
-            Range r1 = new Range("B4:C7");
-            Range r1b = new Range("E5:F10");
-            ranges.Add(r1);
-            ranges.Add(r1b);
-            Range r2 = new Range("C6:E8");
-            var result = DataUtils.SubtractRange(ranges, r2);
-            int i = 0;
-        }
-
         [Theory(DisplayName = "Test of the MergeRange function")]
         [InlineData("A2:A2", "A2:A2", DataUtils.RangeMergeStrategy.MergeColumns, "A2:A2")]
         [InlineData("A2:A2", "A5:A6", DataUtils.RangeMergeStrategy.MergeColumns, "A2:A2,A5:A6")]

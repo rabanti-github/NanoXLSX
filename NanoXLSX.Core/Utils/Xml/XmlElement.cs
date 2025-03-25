@@ -154,7 +154,7 @@ namespace NanoXLSX.Utils.Xml
         /// <param name="attributes">IEnumerable of Attributes to add. If null or empty, nothing will be added</param>
         internal void AddAttributes(IEnumerable<XmlAttribute> attributes)
         {
-            if (attributes == null | !attributes.Any())
+            if (attributes == null || !attributes.Any())
             {
                 return;
             }
@@ -334,14 +334,7 @@ namespace NanoXLSX.Utils.Xml
             }
             else
             {
-                if (string.IsNullOrEmpty(defaultXmlNsUri))
-                {
-                    xmlElem = doc.CreateElement(customElement.Name);
-                }
-                else
-                {
-                    xmlElem = doc.CreateElement(customElement.Name, defaultXmlNsUri);
-                }
+                xmlElem = doc.CreateElement(customElement.Name, defaultXmlNsUri);
             }
 
             // Add attributes
