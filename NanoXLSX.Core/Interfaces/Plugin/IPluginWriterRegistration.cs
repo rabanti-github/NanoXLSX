@@ -14,26 +14,26 @@ namespace NanoXLSX.Interfaces.Writer
         /// <summary>
         /// Order number of the package part (for sorting purpose during registration)
         /// </summary>
-        int OrderNumber { get; set; }
+        int OrderNumber { get; }
         /// <summary>
         /// Relative path of the package part
         /// </summary>
-        string PackagePartPath { get; set; }
+        string PackagePartPath { get; }
         /// <summary>
         /// File name of the package part
         /// </summary>
-        string PackagePartFileName { get; set; }
+        string PackagePartFileName { get; }
         /// <summary>
         /// Content type of the target file of the part (usually kind of XML)
         /// </summary>
-        string ContentType { get; set; }
+        string ContentType { get; }
         /// <summary>
         /// Schema URL of the target file of the part (usually kind of XML schema)
         /// </summary>
-        string RelationshipType { get; set; }
+        string RelationshipType { get; }
         /// <summary>
         /// If true, the package part is in the root directory, otherwise in the 'xl' sub-directory (with various sub-sub-directories)
         /// </summary>
-        bool IsRootPackagaePart { get; set; }
+        bool IsRootPackagePart { get; }
     }
 }

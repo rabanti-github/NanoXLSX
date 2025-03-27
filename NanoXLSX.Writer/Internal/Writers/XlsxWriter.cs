@@ -396,7 +396,7 @@ namespace NanoXLSX.Internal.Writers
                         {
                             if (packageParts.ContainsKey(packageWriter.PackagePath) && packageParts[packageWriter.PackagePath].ContainsKey(packageWriter.PackageFileName))
                             {
-                                PackagePart pp = packageParts[packageWriter.PackagePath][packageWriter.PackagePath];
+                                PackagePart pp = packageParts[packageWriter.PackagePath][packageWriter.PackageFileName];
                                 AppendXmlToPackagePart(packageWriter.GetElement(), pp);
                             }
                         }
@@ -426,7 +426,7 @@ namespace NanoXLSX.Internal.Writers
                 {
                     queueWriter.Execute(); // Execute anything that could be defined
                     PackagePartType packagePartType;
-                    if (queueWriter.IsRootPackagaePart)
+                    if (queueWriter.IsRootPackagePart)
                     {
                         packagePartType = PackagePartType.Root;
                     }

@@ -57,13 +57,33 @@ namespace NanoXLSX.Registry
                 try
                 {
                     Assembly assembly = Assembly.Load(path);
-                    RegisterPlugIns(assembly);
+                    RegisterPlugIns(assembly); // Here are several classes determined that has Attributes, describing them as plug-ins
                 }
                 catch
                 {
                     // Log or handle exceptions if necessary
                 }
             }
+        }
+
+        /// <summary>
+        /// Method to manually inject plug-in classes.
+        /// This method is mainly used by unit test. However, it could also be used by Plug-ins to inject additional "virtual" plug-ins
+        /// </summary>
+        /// <param name="pluginTypes">List of classes that are annotated with the attributes <see cref="NanoXlsxPlugInAttribute"/> and <see cref="NanoXlsxQueuePlugInAttribute"/></param>
+        internal static void InjectPlugins(List<Type> pluginTypes)
+        {
+            // Collect all types decorated with the NanoXlsxPlugInAttribute.
+            IEnumerable<Type> replacingPluginTypes = pluginTypes
+                .Where(t => t.GetCustomAttribute<NanoXlsxPlugInAttribute>() != null);
+
+            // Collect all types decorated with the NanoXlsxQueuePlugInAttribute.
+            IEnumerable<Type> queuePluginTypes = pluginTypes
+                .Where(t => t.GetCustomAttribute<NanoXlsxQueuePlugInAttribute>() != null);
+
+            // Pass the collected types to the appropriate handlers.
+            HandleReplacingPlugIns(replacingPluginTypes);
+            HandleQueuePlugIns(queuePluginTypes);
         }
 
         /// <summary>

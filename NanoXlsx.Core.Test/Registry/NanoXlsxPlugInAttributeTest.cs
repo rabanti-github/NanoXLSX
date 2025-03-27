@@ -1,7 +1,7 @@
 ﻿using NanoXLSX.Registry;
 using Xunit;
 
-namespace NanoXLSX.Test.Core.MiscTest
+namespace NanoXLSX.Test.Core.RegistryTest
 {
     public class NanoXlsxPlugInAttributeTest
     {

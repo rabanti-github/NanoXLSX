@@ -12,10 +12,10 @@ namespace NanoXLSX.Interfaces.Writer
         /// <summary>
         /// Relative package path
         /// </summary>
-        string PackagePath { get; set; }
+        string PackagePath { get; }
         /// <summary>
         /// File name of the package part
         /// </summary>
-        string PackageFileName { get; set; }
+        string PackageFileName { get; }
     }
 }
