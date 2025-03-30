@@ -11,6 +11,7 @@ using System.IO;
 using System.Reflection;
 using System.Linq;
 using NanoXLSX.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NanoXLSX.Registry
 {
@@ -42,6 +43,7 @@ namespace NanoXLSX.Registry
         /// <summary>
         /// Method to load all currently referenced assemblies and its classes
         /// </summary>
+        [ExcludeFromCodeCoverage] // Indirectly tested by InjectPlugins
         private static void LoadReferencedAssemblies()
         {
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -79,17 +81,30 @@ namespace NanoXLSX.Registry
 
             // Collect all types decorated with the NanoXlsxQueuePlugInAttribute.
             IEnumerable<Type> queuePluginTypes = pluginTypes
-                .Where(t => t.GetCustomAttribute<NanoXlsxQueuePlugInAttribute>() != null);
+                .Where(t => t.GetCustomAttributes<NanoXlsxQueuePlugInAttribute>().Any());
 
             // Pass the collected types to the appropriate handlers.
             HandleReplacingPlugIns(replacingPluginTypes);
             HandleQueuePlugIns(queuePluginTypes);
+            initialized = true;
+        }
+
+        /// <summary>
+        /// Method to dispose all loaded plugins.
+        /// This method is mainly used by unit test. However, it could also be used by Plug-ins to unload "virtual" plug-ins
+        /// </summary>
+        internal static void DisposePlugins()
+        {
+            plugInClasses.Clear();
+            queuePlugInClasses.Clear();
+            initialized = false;
         }
 
         /// <summary>
         /// Method to analyze and register plug-ins from a referenced assembly
         /// </summary>
         /// <param name="assembly">Assembly to analyze</param>
+        [ExcludeFromCodeCoverage] // Indirectly tested by InjectPlugins
         private static void RegisterPlugIns(Assembly assembly)
         {
             IEnumerable<Type> replacingPlugInTypes = GetAssemblyPlugInsByType(assembly, typeof(NanoXlsxPlugInAttribute));
@@ -122,8 +137,8 @@ namespace NanoXLSX.Registry
         {
             foreach (Type plugInType in plugInTypes)
             {
-                NanoXlsxPlugInAttribute attribute = plugInType.GetCustomAttribute<NanoXlsxPlugInAttribute>();
-                if (attribute != null)
+                IEnumerable<NanoXlsxPlugInAttribute> attributes = plugInType.GetCustomAttributes<NanoXlsxPlugInAttribute>();
+                foreach (NanoXlsxPlugInAttribute attribute in attributes)
                 {
                     if (plugInClasses.ContainsKey(attribute.PlugInUUID))
                     {
@@ -149,8 +164,8 @@ namespace NanoXLSX.Registry
         {
             foreach (Type plugInType in queuePlugInTypes)
             {
-                NanoXlsxQueuePlugInAttribute attribute = plugInType.GetCustomAttribute<NanoXlsxQueuePlugInAttribute>();
-                if (attribute != null)
+                IEnumerable<NanoXlsxQueuePlugInAttribute> attributes = plugInType.GetCustomAttributes<NanoXlsxQueuePlugInAttribute>();
+                foreach(var attribute in attributes)
                 {
                     if (!queuePlugInClasses.ContainsKey(attribute.QueueUUID))
                     {

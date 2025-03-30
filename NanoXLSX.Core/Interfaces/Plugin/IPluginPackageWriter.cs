@@ -7,15 +7,34 @@
 
 namespace NanoXLSX.Interfaces.Writer
 {
+    /// <summary>
+    /// Interface, used by classes to register package parts prior, and to write package parts at the end of the XLSX creation process 
+    /// </summary>
     internal interface IPlugInPackageWriter : IPlugInWriter
     {
         /// <summary>
-        /// Relative package path
+        /// Order number of the package part (for sorting purpose during registration)
         /// </summary>
-        string PackagePath { get; }
+        int OrderNumber { get; }
+        /// <summary>
+        /// Relative path of the package part
+        /// </summary>
+        string PackagePartPath { get; }
         /// <summary>
         /// File name of the package part
         /// </summary>
-        string PackageFileName { get; }
+        string PackagePartFileName { get; }
+        /// <summary>
+        /// Content type of the target file of the part (usually kind of XML)
+        /// </summary>
+        string ContentType { get; }
+        /// <summary>
+        /// Schema URL of the target file of the part (usually kind of XML schema)
+        /// </summary>
+        string RelationshipType { get; }
+        /// <summary>
+        /// If true, the package part is in the root directory, otherwise in the 'xl' sub-directory (with various sub-sub-directories)
+        /// </summary>
+        bool IsRootPackagePart { get; }
     }
 }

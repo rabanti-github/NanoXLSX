@@ -392,11 +392,11 @@ namespace NanoXLSX.Internal.Writers
                     queueWriter.Execute();
                     if (queueWriter is IPlugInPackageWriter packageWriter)
                     {
-                        if (!string.IsNullOrEmpty(packageWriter.PackagePath) && !string.IsNullOrEmpty(packageWriter.PackageFileName))
+                        if (!string.IsNullOrEmpty(packageWriter.PackagePartPath) && !string.IsNullOrEmpty(packageWriter.PackagePartFileName))
                         {
-                            if (packageParts.ContainsKey(packageWriter.PackagePath) && packageParts[packageWriter.PackagePath].ContainsKey(packageWriter.PackageFileName))
+                            if (packageParts.ContainsKey(packageWriter.PackagePartPath) && packageParts[packageWriter.PackagePartPath].ContainsKey(packageWriter.PackagePartFileName))
                             {
-                                PackagePart pp = packageParts[packageWriter.PackagePath][packageWriter.PackageFileName];
+                                PackagePart pp = packageParts[packageWriter.PackagePartPath][packageWriter.PackagePartFileName];
                                 AppendXmlToPackagePart(packageWriter.GetElement(), pp);
                             }
                         }
@@ -416,12 +416,12 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         private void HandlePackageRegistryQueuePlugIns()
         {
-            IPlugInWriterRegistration queueWriter = null;
+            IPlugInPackageWriter queueWriter = null;
             string lastUuid = null;
             do
             {
                 string currentUuid;
-                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPlugInWriterRegistration>(PlugInUUID.WRITER_PACKAGE_REGISTRY_QUEUE, lastUuid, out currentUuid);
+                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPlugInPackageWriter>(PlugInUUID.WRITER_PACKAGE_REGISTRY_QUEUE, lastUuid, out currentUuid);
                 if (queueWriter != null)
                 {
                     queueWriter.Execute(); // Execute anything that could be defined

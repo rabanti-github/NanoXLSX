@@ -11,7 +11,7 @@ namespace NanoXLSX.Registry
     /// <summary>
     /// Attribute to declare a class a NanoXLSX plug-in that can be queued (not replacing existing instance with the same UUID)
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class NanoXlsxQueuePlugInAttribute : Attribute
     {
         /// <summary>
