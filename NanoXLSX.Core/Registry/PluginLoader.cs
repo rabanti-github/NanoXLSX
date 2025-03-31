@@ -28,16 +28,17 @@ namespace NanoXLSX.Registry
         /// <summary>
         /// Initializes the plug-in loader process. If already initialized, the method returns without action
         /// </summary>
-        public static void Initialize()
+        /// <returns>True if initialized in this call, otherwise false (if already initialized)</returns>
+        public static bool Initialize()
         {
 
             if (initialized)
             {
-                return;
+                return false;
             }
             LoadReferencedAssemblies();
             initialized = true;
-
+            return initialized;
         }
 
         /// <summary>
@@ -119,6 +120,7 @@ namespace NanoXLSX.Registry
         /// <param name="assembly">Assembly to analyze</param>
         /// <param name="attributeType">Plug-in attribute type, declared on classes of the assembly</param>
         /// <returns>IEnumerable of class types, matching the criteria</returns>
+        [ExcludeFromCodeCoverage] // Indirectly tested by InjectPlugins
         private static IEnumerable<Type> GetAssemblyPlugInsByType(Assembly assembly, Type attributeType)
         {
             IEnumerable<Type> plugInTypes = assembly.GetTypes()

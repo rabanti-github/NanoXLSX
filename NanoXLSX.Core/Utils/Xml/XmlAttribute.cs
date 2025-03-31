@@ -6,6 +6,7 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NanoXLSX.Utils.Xml
 {
@@ -67,6 +68,25 @@ namespace NanoXLSX.Utils.Xml
         public static XmlAttribute CreateEmptyAttribute(string name, string prefix = "")
         {
             return new XmlAttribute(name, "", prefix);
+        }
+
+        /// <summary>
+        /// Method to find an attribute in a given list by attribute name. It is assumed that there are no duplicates (attribute name)
+        /// </summary>
+        /// <param name="name">Attribute name</param>
+        /// <param name="attributes">List of attributes</param>
+        /// <returns>Attribute that matche sthe name, or null if no attribute was found</returns>
+        public static XmlAttribute? FindAttribute(string name, HashSet<XmlAttribute> attributes)
+        {
+            if (attributes == null || attributes.Count == 0)
+            {
+                return null;
+            }
+            if (!attributes.Any(a => a.Name == name))
+            {
+                return null;
+            }
+            return attributes.Where(a => a.Name == name).FirstOrDefault();
         }
 
         /// <summary>

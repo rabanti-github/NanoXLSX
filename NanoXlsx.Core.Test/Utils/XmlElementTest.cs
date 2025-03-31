@@ -350,6 +350,145 @@ namespace NanoXLSX.Core.Test.UtilsTest
             Assert.Equal("123", childId);
         }
 
+        [Fact (DisplayName = "FindElementByName should return an IEnumerable with one element, if there is only one matching child")]
+        public void FindElementByNameTest()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            root.AddChildElementWithValue("node", "test1");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByName("node");
+            Assert.Single(givenResult);
+            Assert.Equal("test1", givenResult.First().InnerValue);
+        }
+
+        [Fact(DisplayName = "FindElementByName should return an IEnumerable with multiple element, if there more than one matching child")]
+        public void FindElementByNameTest2()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            root.AddChildElementWithValue("node", "test1");
+            root.AddChildElementWithValue("node", "test2");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByName("node");
+            Assert.Equal(2, givenResult.Count());
+            Assert.Single(givenResult.Where(n => n.InnerValue == "test1"));
+            Assert.Single(givenResult.Where(n => n.InnerValue == "test2"));
+        }
+
+        [Fact(DisplayName = "FindElementByName should return an IEnumerable with multiple element, if there more than one matching child in a complex structure")]
+        public void FindElementByNameTest3()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            XmlElement child1 = root.AddChildElement("subnode");
+            child1.AddChildElementWithValue("node", "test1");
+            child1.AddChildElementWithValue("node", "test2");
+            XmlElement child2 = root.AddChildElement("subnode2");
+            XmlElement child3 = child2.AddChildElement("subnode3");
+            child3.AddChildElementWithValue("node", "test3", "pfx");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByName("node");
+            Assert.Equal(3, givenResult.Count());
+            Assert.Single(givenResult.Where(n => n.InnerValue == "test1"));
+            Assert.Single(givenResult.Where(n => n.InnerValue == "test2"));
+            Assert.Single(givenResult.Where(n => n.InnerValue == "test3"));
+        }
+
+        [Theory(DisplayName = "FindElementByName should return an empty IEnumerable, if there is no matching child")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("NODE")]
+        [InlineData("node1")]
+        [InlineData("test1")]
+        public void FindElementByNameEmptyTest(string givenName)
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            root.AddChildElementWithValue("node", "test1");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByName(givenName);
+            Assert.Empty(givenResult);
+        }
+
+        [Fact(DisplayName = "FindElementByName should return an empty IEnumerable, if there are no child elements at all")]
+        public void FindElementByNameEmptyTest2()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByName("node");
+            Assert.Empty(givenResult);
+        }
+
+        [Fact(DisplayName = "FindElementByNameAndAttribute should return an IEnumerable with one element, if there is one matching child")]
+        public void FindElementByNameAndAttributeTest()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            root.AddChildElementWithAttribute("node", "att1", "test1");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1", "test1");
+            Assert.Single(givenResult);
+            Assert.Equal("test1", givenResult.First().Attributes.First().Value);
+        }
+
+        [Fact(DisplayName = "FindElementByNameAndAttribute should return an IEnumerable with multiple elements, if there is more tahn one matching child")]
+        public void FindElementByNameAndAttributeTest2()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            XmlElement child1 = root.AddChildElementWithAttribute("node", "att1", "test1");
+            child1.InnerValue = "inner-value1";
+            XmlElement child2 = root.AddChildElementWithAttribute("node", "att1", "no-match");
+            child2.InnerValue = "inner-value2";
+            XmlElement child3 = root.AddChildElementWithAttribute("node", "att1", "test1");
+            child3.InnerValue = "inner-value3";
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1", "test1");
+            Assert.Equal(2, givenResult.Count());
+            Assert.Single(givenResult.Where(n => n.InnerValue == "inner-value1"));
+            Assert.Single(givenResult.Where(n => n.InnerValue == "inner-value3"));
+        }
+
+        [Fact(DisplayName = "FindElementByName should return an IEnumerable with multiple element, if there more than one matching child in a complex structure")]
+        public void FindElementByNameAndAttributeTest3()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            XmlElement child1 = root.AddChildElement("subnode");
+            XmlElement child1a = child1.AddChildElementWithValue("node", "test1");
+            child1a.AddAttribute("att1", "test1");
+            XmlElement child1b = child1.AddChildElementWithValue("node", "test2", "pfx");
+            child1b.AddAttribute("att1", "test1");
+            XmlElement child2 = root.AddChildElement("subnode2");
+            child2.AddAttribute("node", "test1"); // should not match
+            XmlElement child3 = child2.AddChildElement("subnode3");
+            XmlElement child3a = child3.AddChildElementWithValue("node", "test3", "pfx");
+            child3a.AddAttribute("att1", "test1");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1", "test1");
+            Assert.Equal(3, givenResult.Count());
+            Assert.Single(givenResult.Where(n => n.InnerValue == "test1"));
+            Assert.Single(givenResult.Where(n => n.InnerValue == "test2"));
+            Assert.Single(givenResult.Where(n => n.InnerValue == "test3"));
+        }
+
+        [Theory(DisplayName = "FindElementByNameAndAttribute should return an empty IEnumerable, if there is no matching child")]
+        [InlineData(null, "att1", "test1")]
+        [InlineData("", "att1", "test1")]
+        [InlineData(" ", "att1", "test1")]
+        [InlineData("NODE", "att1", "test1")]
+        [InlineData("node1", "att1", "test1")]
+        [InlineData("test1", "att1", "test1")]
+        [InlineData("node", "att2", "test1")]
+        [InlineData("node", "ATT1", "test1")]
+        [InlineData("node", "att1", null)]
+        [InlineData("node", "att1", "")]
+        [InlineData("node", "att1", " ")]
+        [InlineData("node", "att1", "TEST1")]
+        [InlineData("node", "att1", "test2")]
+        public void FindElementByNameAndAttributeEmptyTest(string givenTagName, string givenAttributeName, string givenAttributevalue)
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            XmlElement child1 = root.AddChildElementWithValue("node", "test1");
+            child1.AddAttribute("att", "test1");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute(givenTagName, givenAttributeName, givenAttributevalue);
+            Assert.Empty(givenResult);
+        }
+
+        [Fact(DisplayName = "FindElementByNameAndAttribute should return an empty IEnumerable, if there are no child elements at all")]
+        public void FindElementByNameAndAttributeEmptyTest2()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1", "test1");
+            Assert.Empty(givenResult);
+        }
 
     }
 }

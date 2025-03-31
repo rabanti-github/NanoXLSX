@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -254,35 +255,6 @@ namespace NanoXLSX.Utils.Xml
         }
 
         /// <summary>
-        /// Method to create an XML element
-        /// </summary>
-        /// <param name="name">Name of the element</param>
-        /// <param name="prefix">Optional prefix of the element</param>
-        /// <returns>Element instance</returns>
-        internal static XmlElement CreateElement(string name, string prefix = "")
-        {
-            return new XmlElement(name, prefix);
-        }
-
-        /// <summary>
-        /// Method to create an XML element with one attribute
-        /// </summary>
-        /// <param name="name">Name of the element</param>
-        /// <param name="attributeName">Attribute name</param>
-        /// <param name="attributeValue">Attribute value</param>
-        /// <param name="namePrefix">Optional prefix of the attribute</param>
-        /// <param name="attributePrefix"></param>
-        /// <returns>Element instance</returns>
-        internal static XmlElement CreateElementWithAttribute(string name, string attributeName, string attributeValue, string namePrefix = "", string attributePrefix = "")
-        {
-            XmlElement element = new XmlElement(name, namePrefix);
-            element.Attributes = new HashSet<XmlAttribute>();
-            element.Attributes.Add(XmlAttribute.CreateAttribute(attributeName, attributeValue, attributePrefix));
-            element.hasAttributes = true;
-            return element;
-        }
-
-        /// <summary>
         /// Transforms this custom XmlElement (and its children) into a standard XmlDocument.
         /// </summary>
         /// <returns>A new XmlDocument representing the hierarchical XML structure.</returns>
@@ -312,9 +284,88 @@ namespace NanoXLSX.Utils.Xml
                 rootElement = CreateXmlElement(doc, this, nsManager);
             }
             doc.AppendChild(rootElement);
-
-
             return doc;
+        }
+
+        /// <summary>
+        /// Method to find XML child elements, based of its name. Name space and hierarchy is not considered as exclusion parameters
+        /// </summary>
+        /// <param name="name">Name of the target elment or elements</param>
+        /// <returns>IEnumerable of XML element. Im no element was found, an empty IEnumerable will be returned</returns>
+        public IEnumerable<XmlElement> FindChildElementsByName(string name)
+        {
+            if (!hasChildren)
+            {
+                return Enumerable.Empty<XmlElement>();
+            }
+            List<XmlElement> result = new List<XmlElement>();
+            foreach(XmlElement child in Children)
+            {
+                if(child.Name == name)
+                {
+                    result.Add(child);
+                }
+                result.AddRange(child.FindChildElementsByName(name));
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Method to find XML child elements, based of its name, an attribute name and value. Name space and hierarchy is not considered as exclusion parameters
+        /// </summary>
+        /// <param name="elementName">Name of the target elment or elements</param>
+        /// <param name="attributeName">Name of the target attribute, present in the XML element</param>
+        /// <param name="attributeValue">Value of the XML attribute, present in the XML element</param>
+        /// <returns>IEnumerable of XML element. Im no element was found, an empty IEnumerable will be returned</returns>
+        public IEnumerable<XmlElement> FindChildElementsByNameAndAttribute(string elementName, string attributeName, string attributeValue)
+        {
+            if (!hasChildren)
+            {
+                return Enumerable.Empty<XmlElement>();
+            }
+            List<XmlElement> result = new List<XmlElement>();
+            foreach (XmlElement child in Children)
+            {
+                if (child.Name == elementName && child.hasAttributes)
+                {
+                    XmlAttribute? attribute = XmlAttribute.FindAttribute(attributeName, child.Attributes);
+                    if (attribute != null && attribute.Value.Value == attributeValue)
+                    {
+                        result.Add(child);
+                    }
+                }
+                result.AddRange(child.FindChildElementsByName(elementName));
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Method to create an XML element
+        /// </summary>
+        /// <param name="name">Name of the element</param>
+        /// <param name="prefix">Optional prefix of the element</param>
+        /// <returns>Element instance</returns>
+        internal static XmlElement CreateElement(string name, string prefix = "")
+        {
+            return new XmlElement(name, prefix);
+        }
+
+        /// <summary>
+        /// Method to create an XML element with one attribute
+        /// </summary>
+        /// <param name="name">Name of the element</param>
+        /// <param name="attributeName">Attribute name</param>
+        /// <param name="attributeValue">Attribute value</param>
+        /// <param name="namePrefix">Optional prefix of the attribute</param>
+        /// <param name="attributePrefix"></param>
+        /// <returns>Element instance</returns>
+        internal static XmlElement CreateElementWithAttribute(string name, string attributeName, string attributeValue, string namePrefix = "", string attributePrefix = "")
+        {
+            XmlElement element = new XmlElement(name, namePrefix);
+            element.Attributes = new HashSet<XmlAttribute>();
+            element.Attributes.Add(XmlAttribute.CreateAttribute(attributeName, attributeValue, attributePrefix));
+            element.hasAttributes = true;
+            return element;
         }
 
         /// <summary>

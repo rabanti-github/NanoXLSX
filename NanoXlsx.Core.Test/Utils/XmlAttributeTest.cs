@@ -63,11 +63,68 @@ namespace NanoXLSX.Core.Test.UtilsTest
         {
             XmlAttribute attribute1 = XmlAttribute.CreateAttribute(name, value, prefix);
             XmlAttribute attribute2 = XmlAttribute.CreateAttribute(name, value, prefix);
-
             int hash1 = attribute1.GetHashCode();
             int hash2 = attribute2.GetHashCode();
 
             Assert.Equal(hash1, hash2);
         }
+
+        [Fact(DisplayName = "FindAttribute - Matching when exactly one matching attribute is passed")]
+        public void FindAttributeTest_OneMatching()
+        {
+            XmlAttribute attribute = XmlAttribute.CreateAttribute("test", "value");
+            HashSet<XmlAttribute> attributes = new HashSet<XmlAttribute> { attribute };
+            XmlAttribute? result = XmlAttribute.FindAttribute("test", attributes);
+
+            Assert.NotNull(result);
+            Assert.Equal(attribute, result);
+        }
+
+        [Fact(DisplayName = "FindAttribute - Matching when a HashSet with multiple attributes contains a matching one")]
+        public void FindAttributeTest_MatchingInSet()
+        {
+            XmlAttribute matchingAttribute = XmlAttribute.CreateAttribute("match", "value");
+            HashSet<XmlAttribute> attributes = new HashSet<XmlAttribute>
+            {
+                XmlAttribute.CreateAttribute("other", "value"),
+                matchingAttribute,
+                XmlAttribute.CreateAttribute("another", "value")
+            };
+            XmlAttribute? result = XmlAttribute.FindAttribute("match", attributes);
+
+            Assert.NotNull(result);
+            Assert.Equal(matchingAttribute, result);
+        }
+
+        [Fact(DisplayName = "FindAttribute - Non-matching when null is passed as HashSet")]
+        public void FindAttributeTest_NullSet()
+        {
+            XmlAttribute? result = XmlAttribute.FindAttribute("test", null);
+
+            Assert.Null(result);
+        }
+
+        [Fact(DisplayName = "FindAttribute - Non-matching when an empty HashSet is passed")]
+        public void FindAttributeTest_EmptySet()
+        {
+            HashSet<XmlAttribute> attributes = new HashSet<XmlAttribute>();
+            XmlAttribute? result = XmlAttribute.FindAttribute("test", attributes);
+
+            Assert.Null(result);
+        }
+
+        [Fact(DisplayName = "FindAttribute - Non-matching when no attribute in the HashSet matches the name")]
+        public void FindAttributeTest_NoMatch()
+        {
+            HashSet<XmlAttribute> attributes = new HashSet<XmlAttribute>
+            {
+                XmlAttribute.CreateAttribute("other", "value"),
+                XmlAttribute.CreateAttribute("another", "value")
+            };
+            XmlAttribute? result = XmlAttribute.FindAttribute("test", attributes);
+
+            Assert.Null(result);
+        }
+
     }
 }

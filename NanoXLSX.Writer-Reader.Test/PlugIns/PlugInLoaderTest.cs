@@ -26,7 +26,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 
 
 
-        [Fact(DisplayName = "Test of the plug-in handling for the registration of package parts")]
+        [Fact(DisplayName = "Test of the plug-in handling initializer (dummy; should not crash)")]
         public void InitializeTest()
         {
             PlugInLoader.Initialize();
