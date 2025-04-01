@@ -311,6 +311,17 @@ namespace NanoXLSX.Utils.Xml
         }
 
         /// <summary>
+        /// Method to find XML child elements, based of its name, an attribute name. Name space and hierarchy is not considered as exclusion parameters
+        /// </summary>
+        /// <param name="elementName">Name of the target elment or elements</param>
+        /// <param name="attributeName">Name of the target attribute, present in the XML element</param>
+        /// <returns>IEnumerable of XML element. Im no element was found, an empty IEnumerable will be returned</returns>
+        public IEnumerable<XmlElement> FindChildElementsByNameAndAttribute(string elementName, string attributeName)
+        {
+            return FindChildElementsByNameAndAttribute(elementName, attributeName, null, false);
+        }
+
+        /// <summary>
         /// Method to find XML child elements, based of its name, an attribute name and value. Name space and hierarchy is not considered as exclusion parameters
         /// </summary>
         /// <param name="elementName">Name of the target elment or elements</param>
@@ -318,6 +329,19 @@ namespace NanoXLSX.Utils.Xml
         /// <param name="attributeValue">Value of the XML attribute, present in the XML element</param>
         /// <returns>IEnumerable of XML element. Im no element was found, an empty IEnumerable will be returned</returns>
         public IEnumerable<XmlElement> FindChildElementsByNameAndAttribute(string elementName, string attributeName, string attributeValue)
+        {
+            return FindChildElementsByNameAndAttribute(elementName, attributeName, attributeValue, true);
+        }
+
+        /// <summary>
+        /// Method to find XML child elements, based of its name, an attribute name and optional value. Name space and hierarchy is not considered as exclusion parameters
+        /// </summary>
+        /// <param name="elementName">Name of the target elment or elements</param>
+        /// <param name="attributeName">Name of the target attribute, present in the XML element</param>
+        /// <param name="attributeValue">Value of the XML attribute, present in the XML element</param>
+        /// <param name="useValue">If true, the attribute ame and value will be considered, otherwise only the attribute name</param>
+        /// <returns>IEnumerable of XML element. Im no element was found, an empty IEnumerable will be returned</returns>
+        private IEnumerable<XmlElement> FindChildElementsByNameAndAttribute(string elementName, string attributeName, string attributeValue, bool useValue)
         {
             if (!hasChildren)
             {
@@ -329,12 +353,15 @@ namespace NanoXLSX.Utils.Xml
                 if (child.Name == elementName && child.hasAttributes)
                 {
                     XmlAttribute? attribute = XmlAttribute.FindAttribute(attributeName, child.Attributes);
-                    if (attribute != null && attribute.Value.Value == attributeValue)
+                    if (attribute != null)
                     {
-                        result.Add(child);
+                        if (!useValue || (useValue && attribute.Value.Value == attributeValue))
+                        {
+                            result.Add(child);
+                        }
                     }
                 }
-                result.AddRange(child.FindChildElementsByName(elementName));
+                result.AddRange(child.FindChildElementsByNameAndAttribute(elementName, attributeName, attributeValue, useValue));
             }
             return result;
         }

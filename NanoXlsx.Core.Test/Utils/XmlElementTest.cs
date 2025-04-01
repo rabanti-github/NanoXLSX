@@ -417,13 +417,40 @@ namespace NanoXLSX.Core.Test.UtilsTest
         {
             XmlElement root = XmlElement.CreateElement("root");
             root.AddChildElementWithAttribute("node", "att1", "test1");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1");
+            Assert.Single(givenResult);
+            Assert.Equal("test1", givenResult.First().Attributes.First().Value);
+        }
+
+        [Fact(DisplayName = "FindElementByNameAndAttribute should return an IEnumerable with one element, if there is one matching child with attribute value")]
+        public void FindElementByNameAndAttributeValueTest()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            root.AddChildElementWithAttribute("node", "att1", "test1");
             IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1", "test1");
             Assert.Single(givenResult);
             Assert.Equal("test1", givenResult.First().Attributes.First().Value);
         }
 
-        [Fact(DisplayName = "FindElementByNameAndAttribute should return an IEnumerable with multiple elements, if there is more tahn one matching child")]
+        [Fact(DisplayName = "FindElementByNameAndAttribute should return an IEnumerable with multiple elements, if there is more than one matching child")]
         public void FindElementByNameAndAttributeTest2()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            XmlElement child1 = root.AddChildElementWithAttribute("node", "att1", "test1");
+            child1.InnerValue = "inner-value1";
+            XmlElement child2 = root.AddChildElementWithAttribute("node", "att1", "other-match");
+            child2.InnerValue = "inner-value2";
+            XmlElement child3 = root.AddChildElementWithAttribute("node", "att1", "test1");
+            child3.InnerValue = "inner-value3";
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1");
+            Assert.Equal(3, givenResult.Count());
+            Assert.Single(givenResult.Where(n => n.InnerValue == "inner-value1"));
+            Assert.Single(givenResult.Where(n => n.InnerValue == "inner-value2"));
+            Assert.Single(givenResult.Where(n => n.InnerValue == "inner-value3"));
+        }
+
+        [Fact(DisplayName = "FindElementByNameAndAttribute should return an IEnumerable with multiple elements, if there is more than one matching child with attribute vakue")]
+        public void FindElementByNameAndAttributeValueTest2()
         {
             XmlElement root = XmlElement.CreateElement("root");
             XmlElement child1 = root.AddChildElementWithAttribute("node", "att1", "test1");
@@ -437,6 +464,7 @@ namespace NanoXLSX.Core.Test.UtilsTest
             Assert.Single(givenResult.Where(n => n.InnerValue == "inner-value1"));
             Assert.Single(givenResult.Where(n => n.InnerValue == "inner-value3"));
         }
+
 
         [Fact(DisplayName = "FindElementByName should return an IEnumerable with multiple element, if there more than one matching child in a complex structure")]
         public void FindElementByNameAndAttributeTest3()
@@ -452,6 +480,34 @@ namespace NanoXLSX.Core.Test.UtilsTest
             XmlElement child3 = child2.AddChildElement("subnode3");
             XmlElement child3a = child3.AddChildElementWithValue("node", "test3", "pfx");
             child3a.AddAttribute("att1", "test1");
+            XmlElement child4 = child2.AddChildElement("subnode4");
+            XmlElement child4a = child3.AddChildElementWithValue("node", "test4", "pfx");
+            child4a.AddAttribute("att1", "other-match");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1");
+            Assert.Equal(4, givenResult.Count());
+            Assert.Single(givenResult.Where(n => n.InnerValue == "test1"));
+            Assert.Single(givenResult.Where(n => n.InnerValue == "test2"));
+            Assert.Single(givenResult.Where(n => n.InnerValue == "test3"));
+            Assert.Single(givenResult.Where(n => n.InnerValue == "test4"));
+        }
+
+        [Fact(DisplayName = "FindElementByName should return an IEnumerable with multiple element, if there more than one matching child in a complex structure, wuth attribute value")]
+        public void FindElementByNameAndAttributeValueTest3()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            XmlElement child1 = root.AddChildElement("subnode");
+            XmlElement child1a = child1.AddChildElementWithValue("node", "test1");
+            child1a.AddAttribute("att1", "test1");
+            XmlElement child1b = child1.AddChildElementWithValue("node", "test2", "pfx");
+            child1b.AddAttribute("att1", "test1");
+            XmlElement child2 = root.AddChildElement("subnode2");
+            child2.AddAttribute("node", "test1"); // should not match
+            XmlElement child3 = child2.AddChildElement("subnode3");
+            XmlElement child3a = child3.AddChildElementWithValue("node", "test3", "pfx");
+            child3a.AddAttribute("att1", "test1");
+            XmlElement child4 = child2.AddChildElement("subnode4");
+            XmlElement child4a = child3.AddChildElementWithValue("node", "test4", "pfx");
+            child4a.AddAttribute("att1", "no-match");
             IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1", "test1");
             Assert.Equal(3, givenResult.Count());
             Assert.Single(givenResult.Where(n => n.InnerValue == "test1"));
@@ -460,6 +516,32 @@ namespace NanoXLSX.Core.Test.UtilsTest
         }
 
         [Theory(DisplayName = "FindElementByNameAndAttribute should return an empty IEnumerable, if there is no matching child")]
+        [InlineData(null, "att1")]
+        [InlineData("", "att1")]
+        [InlineData(" ", "att1")]
+        [InlineData(null, "att")]
+        [InlineData("", "att")]
+        [InlineData(" ", "att")]
+        [InlineData("NODE", "att1")]
+        [InlineData("node1", "att1")]
+        [InlineData("test1", "att1")]
+        [InlineData("NODE", "att")]
+        [InlineData("node1", "att")]
+        [InlineData("test1", "att")]
+        [InlineData("node", "att2")]
+        [InlineData("node", "ATT1")]
+        [InlineData("node", "att1")]
+        [InlineData("node", "ATT")]
+        public void FindElementByNameAndAttributeEmptyTest(string givenTagName, string givenAttributeName)
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            XmlElement child1 = root.AddChildElementWithValue("node", "test1");
+            child1.AddAttribute("att", "test1");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute(givenTagName, givenAttributeName);
+            Assert.Empty(givenResult);
+        }
+
+        [Theory(DisplayName = "FindElementByNameAndAttribute should return an empty IEnumerable, if there is no matching child, with attribute value")]
         [InlineData(null, "att1", "test1")]
         [InlineData("", "att1", "test1")]
         [InlineData(" ", "att1", "test1")]
@@ -473,7 +555,7 @@ namespace NanoXLSX.Core.Test.UtilsTest
         [InlineData("node", "att1", " ")]
         [InlineData("node", "att1", "TEST1")]
         [InlineData("node", "att1", "test2")]
-        public void FindElementByNameAndAttributeEmptyTest(string givenTagName, string givenAttributeName, string givenAttributevalue)
+        public void FindElementByNameAndAttributeEmptyValueTest(string givenTagName, string givenAttributeName, string givenAttributevalue)
         {
             XmlElement root = XmlElement.CreateElement("root");
             XmlElement child1 = root.AddChildElementWithValue("node", "test1");
@@ -484,6 +566,14 @@ namespace NanoXLSX.Core.Test.UtilsTest
 
         [Fact(DisplayName = "FindElementByNameAndAttribute should return an empty IEnumerable, if there are no child elements at all")]
         public void FindElementByNameAndAttributeEmptyTest2()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1");
+            Assert.Empty(givenResult);
+        }
+
+        [Fact(DisplayName = "FindElementByNameAndAttribute should return an empty IEnumerable, if there are no child elements at all, with attribute value")]
+        public void FindElementByNameAndAttributeEmptyValueTest2()
         {
             XmlElement root = XmlElement.CreateElement("root");
             IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1", "test1");
