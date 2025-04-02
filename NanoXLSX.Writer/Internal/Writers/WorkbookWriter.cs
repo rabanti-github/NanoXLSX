@@ -108,6 +108,8 @@ namespace NanoXLSX.Internal.Writers
                 sheet.AddAttribute("sheetId", "1");
                 sheet.AddAttribute("name", "sheet1");
             }
+
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref workbook, Workbook, PlugInUUID.WORKBOOK_INLINE_WRITER);
         }
 
         /// <summary>

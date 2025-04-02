@@ -64,6 +64,8 @@ namespace NanoXLSX.Internal.Writers
             theme.AddAttribute("name", XmlUtils.SanitizeXmlValue(workbookTheme.Name));
             XmlElement themeElements = theme.AddChildElement("themeElements", "a");
             themeElements.AddChildElement(GetColorSchemeElement(workbookTheme.Colors));
+
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref themeElements, Workbook, PlugInUUID.THEME_INLINE_WRITER);
         }
 
         /// <summary>

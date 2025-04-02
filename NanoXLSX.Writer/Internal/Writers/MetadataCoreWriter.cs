@@ -76,6 +76,8 @@ namespace NanoXLSX.Internal.Writers
             child2.AddAttribute("type", "dcterms:W3CDTF", "xsi");
             properties.AddChildElementWithValue("category", md.Category, "cp");
             properties.AddChildElementWithValue("contentStatus", md.ContentStatus, "cp");
+
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref properties, Workbook, PlugInUUID.METADATA_CORE_INLINE_WRITER);
         }
 
 

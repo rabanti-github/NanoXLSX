@@ -5,14 +5,12 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using NanoXLSX.Utils.Xml;
-
 namespace NanoXLSX.Interfaces.Writer
 {
     /// <summary>
-    /// Interface, used by inline (queue) plugings in XML writer classes 
+    /// Interface, used by XML writer classes 
     /// </summary>
-    internal interface IInlinePlugInWriter : IPlugIn, IXmlElement
+    internal interface IPlugInWriter : IPlugIn, IXmlElement
     {
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
@@ -20,16 +18,10 @@ namespace NanoXLSX.Interfaces.Writer
         Workbook Workbook { get; set; }
 
         /// <summary>
-        /// Gets or replaces the root XML element, defined by the constructor
-        /// </summary>
-        IXmlElement RootElement { get; set; }
-
-        /// <summary>
         /// Initialization method
         /// </summary>
-        /// <param name="rootElement">Reference to the root element</param>
-        /// <param name="workbook">Workbook instance</param>
-        void Init(ref XmlElement rootElement, Workbook workbook);
+        /// <param name="baseWriter">Base writer instance that holds any information for this writer</param>
+        void Init(IBaseWriter baseWriter);
 
     }
 }

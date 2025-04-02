@@ -105,6 +105,8 @@ namespace NanoXLSX.Internal.Writers
                     colors.AddChildElement(mruElement);
                 }
             }
+
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref styleSheet, Workbook, PlugInUUID.STYLE_INLINE_WRITER);
         }
 
         /// <summary>

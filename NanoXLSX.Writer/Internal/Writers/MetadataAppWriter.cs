@@ -70,7 +70,11 @@ namespace NanoXLSX.Internal.Writers
             properties.AddChildElementWithValue("HyperlinkBase", md.HyperlinkBase);
             properties.AddChildElementWithValue("HyperlinksChanged", "false");
             properties.AddChildElementWithValue("AppVersion", md.ApplicationVersion);
+
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref properties, Workbook, PlugInUUID.METADATA_APP_INLINE_WRITER);
         }
+
+
 
     }
 }

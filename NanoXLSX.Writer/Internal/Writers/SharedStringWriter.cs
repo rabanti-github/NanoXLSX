@@ -83,6 +83,8 @@ namespace NanoXLSX.Internal.Writers
                 child.AddChildElement(text.GetElement());
                 sst.AddChildElement(child);
             }
+
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref sst, Workbook, PlugInUUID.SHARED_QUEUE_STRING_WRITER);
         }
     }
 }

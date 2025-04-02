@@ -49,7 +49,7 @@ namespace NanoXLSX.Registry
         public const string THEME_WRITER = "62E3A926-08F3-4343-ACCE-2A42096C3235";
         #endregion
 
-        #region writerQueueUUIDs
+        #region generalWriterQueueUUIDs
         /// <summary>
         /// UUID for the prepending queue. Plug-ins can register to this queue to be executed before the regular XLSX writers
         /// </summary>
@@ -65,5 +65,38 @@ namespace NanoXLSX.Registry
         /// </summary>
         public const string WRITER_APPENDING_QUEUE = "04F73656-C355-40A9-9E68-CB21329F3E53";
         #endregion
+
+
+         #region inlineQueueWriterUUIDs
+        /// <summary>
+        /// UUID for inline queued writers, appended right after the execution of the workbook writer, when a workbook is saved
+        /// </summary>
+        public const string WORKBOOK_INLINE_WRITER = "E69CEC04-A5CD-4DC2-9517-88F895C5CB1E";
+        /// <summary>
+        /// UUID for inline queued writers, appended right after the execution of the worksheet writer, when a workbook is saved
+        /// </summary>
+        public const string WORKSHEET_INLINE_WRITER = "E0F6C065-00F8-4A67-AFAF-F358342845BC";
+        /// <summary>
+        /// UUID for inline queued writers, appended right after the execution of the style writer, when a workbook is saved
+        /// </summary>
+        public const string STYLE_INLINE_WRITER = "E9358F10-DD9B-4C5B-9BBB-DC32D5EB0DBB";
+        /// <summary>
+        /// UUID for inline queued writers, appended right after the execution of the shared strings writer, when a workbook is saved
+        /// </summary>
+        public const string SHARED_QUEUE_STRING_WRITER = "1E87131E-E6BA-4292-B4E5-55B73233D3F5";
+        /// <summary>
+        /// UUID for inline queued writers, appended right after the execution of the matadata writer (app data), when a workbook is saved
+        /// </summary>
+        public const string METADATA_APP_INLINE_WRITER = "AB45D7E1-7FF9-43D9-B482-91D677A7D614";
+        /// <summary>
+        /// UUID for inline queued writers, appended right after the execution of the metadata writer (core data), when a workbook is saved
+        /// </summary>
+        public const string METADATA_CORE_INLINE_WRITER = "85AC02E3-1F92-4921-BC69-39B3F328ABCD";
+        /// <summary>
+        /// UUID for inline queued writers, appended right after the execution of the theme writer, when a workbook is saved
+        /// </summary>
+        public const string THEME_INLINE_WRITER = "4CB6FD0E-AB69-40E9-B048-06B0E00C892D";
+        #endregion
+
     }
 }
