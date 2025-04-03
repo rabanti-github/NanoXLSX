@@ -5,6 +5,8 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using System.Collections.Generic;
+using NanoXLSX.Utils.Xml;
 using static NanoXLSX.Internal.Enums.Password;
 
 namespace NanoXLSX.Interfaces.Writer
@@ -12,7 +14,7 @@ namespace NanoXLSX.Interfaces.Writer
     /// <summary>
     /// Interface, used by specific writers that provides password handling
     /// </summary>
-    public interface IPasswordWriter : IPassword, IXmlAttributes
+    public interface IPasswordWriter : IPassword
     {
 
         /// <summary>
@@ -26,5 +28,11 @@ namespace NanoXLSX.Interfaces.Writer
         /// <param name="type">Target type of the password writer</param>
         /// <param name="passwordHash">Hash that will be written</param>
         void Init(PasswordType type, string passwordHash);
+
+        /// <summary>
+        /// Gets an IEnumerable of XML attributes
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<XmlAttribute> GetAttributes();
     }
 }

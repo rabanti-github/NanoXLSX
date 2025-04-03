@@ -286,14 +286,16 @@ namespace NanoXLSX.Internal.Writers
                     // Workbook
                     IPlugInWriter workbookWriter = PlugInLoader.GetPlugIn<IPlugInWriter>(PlugInUUID.WORKBOOK_WRITER, new WorkbookWriter());
                     workbookWriter.Init(this);
+                    workbookWriter.Execute();
                     part = packageParts[WORKBOOK.Path][WORKBOOK.Filename];
-                    AppendXmlToPackagePart(workbookWriter.GetElement(), part);
+                    AppendXmlToPackagePart(workbookWriter.XmlElement, part);
 
                     // Style
                     IPlugInWriter styleWriter = PlugInLoader.GetPlugIn<IPlugInWriter>(PlugInUUID.STYLE_WRITER, new StyleWriter());
                     styleWriter.Init(this);
+                    styleWriter.Execute();
                     part = packageParts[STYLES.Path][STYLES.Filename];
-                    AppendXmlToPackagePart(styleWriter.GetElement(), part);
+                    AppendXmlToPackagePart(styleWriter.XmlElement, part);
 
                     // Shared strings - preparation
                     SharedStringWriter = PlugInLoader.GetPlugIn<ISharedStringWriter>(PlugInUUID.SHARED_STRING_WRITER, new SharedStringWriter());
@@ -308,31 +310,36 @@ namespace NanoXLSX.Internal.Writers
                             Worksheet item = workbook.Worksheets[i];
                             part = packageParts[worksheetPaths[i].Path][worksheetPaths[i].Filename];
                             worksheetWriter.CurrentWorksheet = item;
-                            AppendXmlToPackagePart(worksheetWriter.GetElement(), part);
+                            worksheetWriter.Execute();
+                            AppendXmlToPackagePart(worksheetWriter.XmlElement, part);
                         }
                     }
                     else
                     {
                         part = packageParts[worksheetPaths[0].Path][worksheetPaths[0].Filename];
                         worksheetWriter.CurrentWorksheet = new Worksheet("sheet1");
-                        AppendXmlToPackagePart(worksheetWriter.GetElement(), part);
+                        worksheetWriter.Execute();
+                        AppendXmlToPackagePart(worksheetWriter.XmlElement, part);
                     }
 
                     // Shared strings - write after collection of strings
                     part = packageParts[SHARED_STRINGS.Path][SHARED_STRINGS.Filename];
-                    AppendXmlToPackagePart(SharedStringWriter.GetElement(), part);
+                    SharedStringWriter.Execute();
+                    AppendXmlToPackagePart(SharedStringWriter.XmlElement, part);
 
                     // Metadata
                     if (this.workbook.WorkbookMetadata != null)
                     {
                         IPlugInWriter metadataAppWriter = PlugInLoader.GetPlugIn<IPlugInWriter>(PlugInUUID.METADATA_APP_WRITER, new MetadataAppWriter());
                         metadataAppWriter.Init(this);
+                        metadataAppWriter.Execute();
                         part = packageParts[APP_PROPERTIES.Path][APP_PROPERTIES.Filename];
-                        AppendXmlToPackagePart(metadataAppWriter.GetElement(), part);
+                        AppendXmlToPackagePart(metadataAppWriter.XmlElement, part);
                         IPlugInWriter metadataCoreWriter = PlugInLoader.GetPlugIn<IPlugInWriter>(PlugInUUID.METADATA_CORE_WRITER, new MetadataCoreWriter());
                         metadataCoreWriter.Init(this);
+                        metadataCoreWriter.Execute();
                         part = packageParts[CORE_PROPERTIES.Path][CORE_PROPERTIES.Filename];
-                        AppendXmlToPackagePart(metadataCoreWriter.GetElement(), part);
+                        AppendXmlToPackagePart(metadataCoreWriter.XmlElement, part);
                     }
 
                     // Theme
@@ -340,8 +347,9 @@ namespace NanoXLSX.Internal.Writers
                     {
                         IPlugInWriter themeWriter = PlugInLoader.GetPlugIn<IPlugInWriter>(PlugInUUID.THEME_WRITER, new ThemeWriter());
                         themeWriter.Init(this);
+                        themeWriter.Execute();
                         part = packageParts[THEME.Path][THEME.Filename];
-                        AppendXmlToPackagePart(themeWriter.GetElement(), part);
+                        AppendXmlToPackagePart(themeWriter.XmlElement, part);
                     }
 
                     HandleQueuePlugIns(PlugInUUID.WRITER_APPENDING_QUEUE);
@@ -397,7 +405,7 @@ namespace NanoXLSX.Internal.Writers
                             if (packageParts.ContainsKey(packageWriter.PackagePartPath) && packageParts[packageWriter.PackagePartPath].ContainsKey(packageWriter.PackagePartFileName))
                             {
                                 PackagePart pp = packageParts[packageWriter.PackagePartPath][packageWriter.PackagePartFileName];
-                                AppendXmlToPackagePart(packageWriter.GetElement(), pp);
+                                AppendXmlToPackagePart(packageWriter.XmlElement, pp);
                             }
                         }
                     }

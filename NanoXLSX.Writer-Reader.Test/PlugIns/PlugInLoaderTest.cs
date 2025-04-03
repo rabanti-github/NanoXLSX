@@ -110,16 +110,19 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 
             public Workbook Workbook { get => workbook; set => workbook = value; }
 
-            public void Execute()
+            public XmlElement XmlElement
             {
-                //NoOp
-            }
-
-            public XmlElement GetElement()
-            {
+                get
+                { 
                 XmlElement element = XmlElement.CreateElement("test");
                 element.InnerValue = "test";
                 return element;
+                }
+            }
+
+            public void Execute()
+            {
+                //NoOp
             }
 
             void IPlugInWriter.Init(IBaseWriter baseWriter)
@@ -148,16 +151,19 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 
             public Workbook Workbook { get => workbook; set => workbook = value; }
 
+            public XmlElement XmlElement
+            {
+                get
+                {
+                    XmlElement element = XmlElement.CreateElement("test");
+                    element.InnerValue = "test2";
+                    return element;
+                }
+            }
+
             public void Execute()
             {
                 //NoOp
-            }
-
-            public XmlElement GetElement()
-            {
-                XmlElement element = XmlElement.CreateElement("test");
-                element.InnerValue = "test2";
-                return element;
             }
 
             void IPlugInWriter.Init(IBaseWriter baseWriter)
@@ -185,17 +191,19 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             public bool IsRootPackagePart => true;
 
             public Workbook Workbook { get => workbook; set => workbook = value; }
+     
+            public XmlElement XmlElement { 
+                get
+                {
+                    XmlElement element = XmlElement.CreateElement("test");
+                    element.InnerValue = "test";
+                    return element;
+                }
+            }
 
             public void Execute()
             {
                 //NoOp
-            }
-
-            public XmlElement GetElement()
-            {
-                XmlElement element = XmlElement.CreateElement("test");
-                element.InnerValue = "test";
-                return element;
             }
 
             void IPlugInWriter.Init(IBaseWriter baseWriter)

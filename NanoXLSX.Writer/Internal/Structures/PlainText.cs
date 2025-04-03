@@ -32,7 +32,7 @@ namespace NanoXLSX.Internal.Structures
         /// Get the XmlElement (interface implementation)
         /// </summary>
         /// <returns>XmlElement instance</returns>
-        public XmlElement GetElement()
+        public XmlElement GetXmlElement()
         {
             if (string.IsNullOrEmpty(Value))
             {
