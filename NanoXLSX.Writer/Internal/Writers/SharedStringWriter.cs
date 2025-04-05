@@ -75,7 +75,7 @@ namespace NanoXLSX.Internal.Writers
             foreach (IFormattableText text in sharedStrings.Keys)
             {
                 XmlElement child = XmlElement.CreateElement("si");
-                
+
                 child.AddChildElement(text.GetXmlElement());
                 sst.AddChildElement(child);
             }

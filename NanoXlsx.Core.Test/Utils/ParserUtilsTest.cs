@@ -45,7 +45,7 @@ namespace NanoXLSX.Test.Core.UtilsTest
         }
 
         [Theory(DisplayName = "Test of the ParserUtils NormalizeNewLines function")]
-        [InlineData(null,  null)]
+        [InlineData(null, null)]
         [InlineData("", "")]
         [InlineData("test", "test")]
         [InlineData("test\r\ntest", "test\r\ntest")]

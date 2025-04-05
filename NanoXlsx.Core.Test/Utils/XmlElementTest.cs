@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NanoXLSX.Utils.Xml;
 using Xunit;
 
@@ -113,7 +110,7 @@ namespace NanoXLSX.Core.Test.UtilsTest
             element.AddAttributes(attributesList);
             Assert.NotNull(element.Attributes);
             Assert.Equal(attributesList.Count, element.Attributes.Count);
-            
+
             element.AddAttributes(new List<XmlAttribute>());
             Assert.Equal(attributesList.Count, element.Attributes.Count);
             element.AddAttributes(null);
@@ -350,7 +347,7 @@ namespace NanoXLSX.Core.Test.UtilsTest
             Assert.Equal("123", childId);
         }
 
-        [Fact (DisplayName = "FindElementByName should return an IEnumerable with one element, if there is only one matching child")]
+        [Fact(DisplayName = "FindElementByName should return an IEnumerable with one element, if there is only one matching child")]
         public void FindElementByNameTest()
         {
             XmlElement root = XmlElement.CreateElement("root");

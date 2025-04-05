@@ -13,12 +13,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
 using NanoXLSX.Registry;
-using NanoXLSX.Exceptions;
-using NanoXLSX.Utils;
 using NanoXLSX.Styles;
+using NanoXLSX.Utils;
 using IOException = NanoXLSX.Exceptions.IOException;
 using PackagePartType = NanoXLSX.Internal.Structures.PackagePartDefinition.PackagePartType;
 using XmlElement = NanoXLSX.Utils.Xml.XmlElement;
@@ -134,7 +134,7 @@ namespace NanoXLSX.Internal.Writers
             if (this.workbook.WorkbookMetadata != null)
             {
                 int index = PackagePartDefinition.METADATA_PACKAGE_PART_START_INDEX;
-                RegisterPackagePart(PackagePartType.Root, index, CORE_PROPERTIES, @"application/vnd.openxmlformats-package.core-properties+xml" , @"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties");
+                RegisterPackagePart(PackagePartType.Root, index, CORE_PROPERTIES, @"application/vnd.openxmlformats-package.core-properties+xml", @"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties");
                 RegisterPackagePart(PackagePartType.Root, index + 1000, APP_PROPERTIES, @"application/vnd.openxmlformats-officedocument.extended-properties+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties");
             }
             int worksheetOrderNumber = PackagePartDefinition.WORKSHEET_PACKAGE_PART_START_INDEX;
@@ -172,7 +172,7 @@ namespace NanoXLSX.Internal.Writers
             List<PackagePartDefinition> definitions = PackagePartDefinition.Sort(this.packagePartDefinitions);
             PackagePartDefinition workbookDefinition = definitions.First(p => p.OrderNumber == PackagePartDefinition.WORKBOOK_PACKAGE_PART_INDEX);
             PackagePart workbookPart = CreateRootPackagePart(workbookDefinition.Path, workbookDefinition.ContentType, workbookDefinition.RelationshipType);
-            foreach(PackagePartDefinition definition in definitions)
+            foreach (PackagePartDefinition definition in definitions)
             {
                 if (definition.OrderNumber == PackagePartDefinition.WORKBOOK_PACKAGE_PART_INDEX)
                 {
@@ -232,7 +232,7 @@ namespace NanoXLSX.Internal.Writers
             packageParts[documentPath.Path].Add(documentPath.Filename, part);
             parentPart.CreateRelationship(uri, TargetMode.Internal, relationshipType, "rId" + ParserUtils.ToString(xlPackageIndex));
             xlPackageIndex++;
-         }
+        }
 
         /// <summary>
         /// Method to register a package part with path and file name
@@ -473,7 +473,7 @@ namespace NanoXLSX.Internal.Writers
                 using (XmlWriter writer = XmlWriter.Create(ms, settings))
                 {
                     writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"");
-                    doc. WriteTo(writer);
+                    doc.WriteTo(writer);
                     writer.Flush();
                 }
 

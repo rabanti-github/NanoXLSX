@@ -1,5 +1,4 @@
-﻿using NanoXLSX;
-using NanoXLSX.Test.Writer_Reader.Utils;
+﻿using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
 
 namespace NanoXLSX.Test.Writer_Reader.MiscTest

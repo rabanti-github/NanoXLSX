@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using NanoXLSX;
 using NanoXLSX.Utils;
 using Xunit;
 

@@ -17,7 +17,7 @@ namespace NanoXLSX.Internal.Writers
     /// Class to generate the metadata XML file for the app metadata part on an XLSX file.
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.METADATA_CORE_WRITER)]
-    internal class MetadataCoreWriter : IPlugInWriter 
+    internal class MetadataCoreWriter : IPlugInWriter
     {
         private XmlElement properties;
 

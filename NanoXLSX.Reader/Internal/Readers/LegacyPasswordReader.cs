@@ -12,9 +12,9 @@ using NanoXLSX.Interfaces.Reader;
 
 namespace NanoXLSX.Internal.Readers
 {
-     /// <summary>
-     /// Class representing a reader for legacy passwords
-     /// </summary>
+    /// <summary>
+    /// Class representing a reader for legacy passwords
+    /// </summary>
     public class LegacyPasswordReader : IPasswordReader
     {
         /// <summary>
@@ -47,10 +47,10 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Gets or sets the password hash
         /// </summary>
-        public string PasswordHash 
-        { 
-            get { return passwordHash; } 
-            set { passwordHash = value; } 
+        public string PasswordHash
+        {
+            get { return passwordHash; }
+            set { passwordHash = value; }
         }
 
         /// <summary>

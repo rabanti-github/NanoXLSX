@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using NanoXLSX.Utils.Xml;
 using Xunit;
-using static NanoXLSX.Test.Writer_Reader.PlugInsTest.PluginLoaderTest;
 
 namespace NanoXLSX.Test.Writer_Reader.PlugIns
 {

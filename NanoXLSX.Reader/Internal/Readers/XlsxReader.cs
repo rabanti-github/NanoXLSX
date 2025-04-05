@@ -178,10 +178,6 @@ namespace NanoXLSX.Internal.Readers
                     }
                     ws.SheetProtectionPassword.CopyFrom(reader.Value.PasswordReader);
                 }
-               // if (!string.IsNullOrEmpty(reader.Value.WorksheetProtectionHash))
-               // {
-              //      ws.SheetProtectionPasswordHash = reader.Value.WorksheetProtectionHash;
-              //  }
                 foreach (KeyValuePair<int, WorksheetReader.RowDefinition> row in reader.Value.Rows)
                 {
                     if (row.Value.Hidden)
@@ -273,7 +269,6 @@ namespace NanoXLSX.Internal.Readers
                     throw new NotSupportedContentException("A not supported, contemporary password algorithm for the workbook protection was detected. Check possible packages to add support to NanoXLSX, or ignore this error by a reader option");
                 }
                 wb.WorkbookProtectionPassword.CopyFrom(workbook.PasswordReader);
-               // wb.WorkbookProtectionPasswordHash = workbook.PasswordHash;
             }
             wb.WorkbookMetadata.Application = metadataAppReader.Application;
             wb.WorkbookMetadata.ApplicationVersion = metadataAppReader.ApplicationVersion;

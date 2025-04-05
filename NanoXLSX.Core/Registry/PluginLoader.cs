@@ -7,11 +7,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Linq;
-using NanoXLSX.Interfaces;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using NanoXLSX.Interfaces;
 
 namespace NanoXLSX.Registry
 {
@@ -188,7 +188,7 @@ namespace NanoXLSX.Registry
             foreach (Type plugInType in queuePlugInTypes)
             {
                 IEnumerable<NanoXlsxQueuePlugInAttribute> attributes = plugInType.GetCustomAttributes<NanoXlsxQueuePlugInAttribute>();
-                foreach(var attribute in attributes)
+                foreach (var attribute in attributes)
                 {
                     if (!queuePlugInClasses.ContainsKey(attribute.QueueUUID))
                     {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NanoXLSX.Test.Writer_Reader.Utils;
+﻿using NanoXLSX.Test.Writer_Reader.Utils;
 using NanoXLSX.Themes;
 using Xunit;
 

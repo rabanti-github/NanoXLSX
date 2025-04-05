@@ -1,7 +1,7 @@
 ﻿using System;
 using NanoXLSX.Exceptions;
-using NanoXLSX.Utils;
 using NanoXLSX.Styles;
+using NanoXLSX.Utils;
 using Xunit;
 using static NanoXLSX.Styles.Fill;
 

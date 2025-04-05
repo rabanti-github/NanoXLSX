@@ -11,8 +11,8 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using NanoXLSX.Interfaces.Reader;
-using NanoXLSX.Utils;
 using NanoXLSX.Styles;
+using NanoXLSX.Utils;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers

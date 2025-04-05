@@ -296,7 +296,7 @@ namespace NanoXLSX.Test.Core.MiscTest
                     .ToList();
 
             Range rangeToAdd = new Range(rangeToAddString);
-            
+
             List<Range> expectedRanges = expectedRangesString
                 .Split(',', StringSplitOptions.RemoveEmptyEntries)
                 .Select(range => new Range(range))
@@ -319,7 +319,7 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("A2:A2", "A5:A6", DataUtils.RangeMergeStrategy.MergeColumns, "A2:A2")]
         [InlineData("B2:B5", "B4:B6", DataUtils.RangeMergeStrategy.MergeColumns, "B2:B3")]
         [InlineData("B4:B7", "B2:B5", DataUtils.RangeMergeStrategy.MergeColumns, "B6:B7")]
-        [InlineData("B2:B7", "A3:C4", DataUtils.RangeMergeStrategy.MergeColumns, "B2:B2,B5:B7")] 
+        [InlineData("B2:B7", "A3:C4", DataUtils.RangeMergeStrategy.MergeColumns, "B2:B2,B5:B7")]
         [InlineData("B3:D5", "A4:E4", DataUtils.RangeMergeStrategy.MergeColumns, "B3:D3,B5:D5")]
         [InlineData("B3:D5", "C2:C6", DataUtils.RangeMergeStrategy.MergeColumns, "B3:B5,D3:D5")]
         [InlineData("B3:D5", "A1:B3", DataUtils.RangeMergeStrategy.MergeColumns, "B4:B5,C3:D5")]

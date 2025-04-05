@@ -7,7 +7,6 @@
 
 using System;
 using System.Globalization;
-using NanoXLSX.Exceptions;
 using NanoXLSX.Utils;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 

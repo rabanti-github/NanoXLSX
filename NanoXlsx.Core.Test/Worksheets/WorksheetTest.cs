@@ -1380,7 +1380,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("C10", "C10:C10")]
         [InlineData("A10", "A10:A10")]
         [InlineData("A$1", "A1:A1")]
-        [InlineData( "$R$1", "R1:R1")]
+        [InlineData("$R$1", "R1:R1")]
         [InlineData("XFD1048575", "XFD1048575:XFD1048575")]
         public void AddSelectedCellsTest4(string startAddress, string expectedRange)
         {
@@ -1533,7 +1533,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the RemoveSelectedCells function with a start and end address objects")]
-        [InlineData(null, "A1","A1", "")]
+        [InlineData(null, "A1", "A1", "")]
         [InlineData("A1:A1", "A1", "A1", "")]
         [InlineData("A1:A1", "B1", "B1", "A1:A1")]
         [InlineData("A1:C3", "A1", "C3", "")]
@@ -1708,7 +1708,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             worksheet.AddCell(oldValue, 2, 0);
             worksheet.AddCell("differentValue", 3, 0);
 
-            DateTime newValue = new DateTime(2025,2,10,5,6,7,DateTimeKind.Utc);
+            DateTime newValue = new DateTime(2025, 2, 10, 5, 6, 7, DateTimeKind.Utc);
             int replacedCount = worksheet.ReplaceCellValue(oldValue, newValue);
 
             Assert.Equal(3, replacedCount);

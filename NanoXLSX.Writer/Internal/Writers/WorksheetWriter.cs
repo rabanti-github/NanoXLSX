@@ -39,10 +39,10 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         ///Current worksheet
         /// </summary>
-        public Worksheet CurrentWorksheet 
-        { 
+        public Worksheet CurrentWorksheet
+        {
             get => currentWorksheet;
-            set 
+            set
             {
                 currentWorksheet = value;
                 IPassword passwordInstance = ((Worksheet)CurrentWorksheet).SheetProtectionPassword;

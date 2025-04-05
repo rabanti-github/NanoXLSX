@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using NanoXLSX;
 using NanoXLSX.Styles;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using NanoXLSX.Utils;
@@ -1105,11 +1104,11 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 {
                     assertionAction.Invoke((expectedValue as Cell).Value, (givenCell).Value);
                 }
-              //  else if (expectedValue is Cell)
-              //  {
-              //      assertionAction.Invoke((D)(expectedValue as Cell).Value, (D)givenCell.Value);
-              //      Assert.Equal(Cell.CellType.FORMULA, givenCell.DataType);
-              //  }
+                //  else if (expectedValue is Cell)
+                //  {
+                //      assertionAction.Invoke((D)(expectedValue as Cell).Value, (D)givenCell.Value);
+                //      Assert.Equal(Cell.CellType.FORMULA, givenCell.DataType);
+                //  }
                 else
                 {
                     assertionAction.Invoke(expectedValue, (D)givenCell.Value);

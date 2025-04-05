@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NanoXLSX;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
 using Xunit;
 using static NanoXLSX.Styles.CellXf;
-using Range = NanoXLSX.Range;
 
 namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
 {
@@ -162,7 +160,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
             {
                 if (sheetIndex == i)
                 {
-                  
+
                     workbook.SetCurrentWorksheet(i);
                     workbook.CurrentWorksheet.SetColumnWidth(0, 22.5f); // to get column defined
                     workbook.CurrentWorksheet.SetColumnDefaultStyle(1, BasicStyles.BoldItalic);

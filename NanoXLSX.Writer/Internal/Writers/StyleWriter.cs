@@ -6,17 +6,17 @@
  */
 
 using System.Collections.Generic;
-using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Exceptions;
-using NanoXLSX.Utils;
-using NanoXLSX.Styles;
-using static NanoXLSX.Styles.Border;
-using static NanoXLSX.Styles.Font;
-using static NanoXLSX.Styles.Fill;
-using static NanoXLSX.Styles.CellXf;
-using static NanoXLSX.Styles.NumberFormat;
-using NanoXLSX.Utils.Xml;
+using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
+using NanoXLSX.Styles;
+using NanoXLSX.Utils;
+using NanoXLSX.Utils.Xml;
+using static NanoXLSX.Styles.Border;
+using static NanoXLSX.Styles.CellXf;
+using static NanoXLSX.Styles.Fill;
+using static NanoXLSX.Styles.Font;
+using static NanoXLSX.Styles.NumberFormat;
 
 namespace NanoXLSX.Internal.Writers
 {
@@ -209,7 +209,7 @@ namespace NanoXLSX.Internal.Writers
                 {
                     font.AddChildElementWithAttribute("color", "rgb", item.ColorValue);
                 }
-                font.AddChildElementWithAttribute("name", "val",  item.Name);
+                font.AddChildElementWithAttribute("name", "val", item.Name);
                 font.AddChildElementWithAttribute("family", "val", ParserUtils.ToString((int)item.Family));
                 if (item.Scheme != SchemeValue.none)
                 {

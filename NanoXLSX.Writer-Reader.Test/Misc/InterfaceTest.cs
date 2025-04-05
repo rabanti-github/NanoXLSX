@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Text;
-using NanoXLSX;
 using NanoXLSX.Internal.Readers;
 using NanoXLSX.Internal.Structures;
 using NanoXLSX.Internal.Writers;

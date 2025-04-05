@@ -45,7 +45,7 @@ namespace NanoXLSX.Internal.Readers
                     ColorScheme colorScheme = new ColorScheme();
                     CurrentTheme.Colors = colorScheme;
                     XmlNodeList colors = ReaderUtils.GetElementsByTagName(xr, "clrScheme", prefix);
-                    
+
                     foreach (XmlNode color in colors)
                     {
                         string colorSchemeName = ReaderUtils.GetAttribute(color, "name", "");

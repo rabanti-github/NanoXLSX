@@ -7,11 +7,11 @@
 
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
-using NanoXLSX.Utils;
-using NanoXLSX.Themes;
 using NanoXLSX.Registry;
-using static NanoXLSX.Internal.Enums.Password;
+using NanoXLSX.Themes;
+using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
+using static NanoXLSX.Internal.Enums.Password;
 
 namespace NanoXLSX.Internal.Writers
 {

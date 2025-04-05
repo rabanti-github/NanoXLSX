@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Themes;
@@ -13,7 +9,7 @@ namespace NanoXLSX.Core.Test.Themes
     public class SystemColorTest
     {
 
-        [Theory(DisplayName ="Test of the getter and setter of the ColorValue property")]
+        [Theory(DisplayName = "Test of the getter and setter of the ColorValue property")]
         [InlineData(SystemColor.Value.ActiveBorder)]
         [InlineData(SystemColor.Value.ActiveCaption)]
         [InlineData(SystemColor.Value.AppWorkspace)]
@@ -207,7 +203,7 @@ namespace NanoXLSX.Core.Test.Themes
         {
             SystemColor color1 = new SystemColor(SystemColor.Value.CaptionText);
             SystemColor color2 = new SystemColor();
-            color2.ColorValue =  SystemColor.Value.GradientActiveCaption;
+            color2.ColorValue = SystemColor.Value.GradientActiveCaption;
             Assert.False(color1.Equals(color2));
 
             SystemColor color3 = new SystemColor(SystemColor.Value.ActiveCaption);

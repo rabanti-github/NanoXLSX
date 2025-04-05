@@ -397,7 +397,7 @@ namespace NanoXLSX.Utils
             {
                 // Vertical merging: require same columns.
                 if (a.StartAddress.Column == b.StartAddress.Column &&
-                    a.EndAddress.Column == b.EndAddress.Column && 
+                    a.EndAddress.Column == b.EndAddress.Column &&
                     (a.EndAddress.Row + 1 == b.StartAddress.Row || b.EndAddress.Row + 1 == a.StartAddress.Row))
                 {
                     return true;
@@ -407,7 +407,7 @@ namespace NanoXLSX.Utils
             {
                 // Horizontal merging: require same rows.
                 if (a.StartAddress.Row == b.StartAddress.Row &&
-                    a.EndAddress.Row == b.EndAddress.Row && 
+                    a.EndAddress.Row == b.EndAddress.Row &&
                     (a.EndAddress.Column + 1 == b.StartAddress.Column || b.EndAddress.Column + 1 == a.StartAddress.Column))
                 {
                     return true;
@@ -576,7 +576,8 @@ namespace NanoXLSX.Utils
             {
                 // Vertical merging: Ranges must have identical column boundaries.
                 // Group by StartAddress.Column and EndAddress.Column.
-                var groups = ranges.GroupBy(r => new {
+                var groups = ranges.GroupBy(r => new
+                {
                     StartCol = r.StartAddress.Column,
                     EndCol = r.EndAddress.Column
                 });
@@ -645,6 +646,6 @@ namespace NanoXLSX.Utils
             }
             return mergedRanges;
         }
-  
+
     }
 }

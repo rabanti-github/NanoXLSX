@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NanoXLSX.Interfaces;
-using Xunit;
+﻿using Xunit;
 
 namespace NanoXLSX.Test.Core.MiscTest
 {
@@ -106,7 +100,7 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("", false)]
         [InlineData("#@éü", true)]
         [InlineData(null, false)]
-        [InlineData("0000", true )]
+        [InlineData("0000", true)]
         public void PasswordIsSetTest(string passwordHash, bool expectedPasswordSet)
         {
             LegacyPassword password = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);

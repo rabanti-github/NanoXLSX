@@ -10,16 +10,16 @@ namespace NanoXLSX.Internal.Readers
     using System;
     using System.IO;
     using System.Xml;
-    using NanoXLSX.Utils;
+    using NanoXLSX.Interfaces.Reader;
     using NanoXLSX.Styles;
-    using IOException = Exceptions.IOException;
-    using static NanoXLSX.Styles.NumberFormat;
+    using NanoXLSX.Utils;
     using static NanoXLSX.Styles.Border;
+    using static NanoXLSX.Styles.CellXf;
     using static NanoXLSX.Styles.Fill;
     using static NanoXLSX.Styles.Font;
+    using static NanoXLSX.Styles.NumberFormat;
     using static NanoXLSX.Themes.Theme;
-    using static NanoXLSX.Styles.CellXf;
-    using NanoXLSX.Interfaces.Reader;
+    using IOException = Exceptions.IOException;
 
     /// <summary>
     /// Class representing a reader for style definitions of XLSX files.

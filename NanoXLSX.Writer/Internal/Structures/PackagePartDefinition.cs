@@ -89,7 +89,7 @@ namespace NanoXLSX.Internal.Structures
         /// <param name="relationshipType">Schema URL of the target file of the part (usually kind of XML schema)</param>
         public PackagePartDefinition(PackagePartType type, int orderNumber, string fileNameInPackage, string pathInPackage, string contentType, string relationshipType)
             : this(type, orderNumber, new DocumentPath(fileNameInPackage, pathInPackage), contentType, relationshipType)
-        {  }
+        { }
 
         /// <summary>
         /// Constructor with definition of a document path
@@ -129,4 +129,4 @@ namespace NanoXLSX.Internal.Structures
         }
     }
 
- }
+}

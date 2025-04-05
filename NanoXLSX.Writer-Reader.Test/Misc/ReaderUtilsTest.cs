@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+﻿using System.Xml;
 using NanoXLSX.Internal;
 using Xunit;
 
@@ -81,7 +76,7 @@ namespace NanoXLSX.Test.Writer_Reader.Misc
             XmlNode root = doc.DocumentElement;
 
             // Act
-            XmlNode child = ReaderUtils.GetChildNode(root,  searchName);
+            XmlNode child = ReaderUtils.GetChildNode(root, searchName);
 
             // Assert
             Assert.NotNull(child);

@@ -11,8 +11,8 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using NanoXLSX.Exceptions;
-using NanoXLSX.Utils;
 using NanoXLSX.Styles;
+using NanoXLSX.Utils;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX

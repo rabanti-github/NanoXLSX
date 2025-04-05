@@ -5,7 +5,6 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 using System;
-using System.Text;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
@@ -51,7 +50,7 @@ namespace NanoXLSX.Internal.Structures
             }
             element.InnerValue = value;
             return element;
-        }  
+        }
 
         /// <summary>
         /// Constructor with value assignment

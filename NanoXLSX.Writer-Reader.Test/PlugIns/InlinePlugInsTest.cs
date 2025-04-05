@@ -7,7 +7,6 @@ using NanoXLSX.Registry;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using NanoXLSX.Utils.Xml;
 using Xunit;
-using static NanoXLSX.Test.Writer_Reader.PlugIns.ReplacingPlugInsTest;
 
 namespace NanoXLSX.Test.Writer_Reader.PlugIns
 {

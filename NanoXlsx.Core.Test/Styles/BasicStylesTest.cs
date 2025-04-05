@@ -1,5 +1,4 @@
-﻿using System;
-using NanoXLSX.Exceptions;
+﻿using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using NanoXLSX.Test.Core.Utils;
 using Xunit;

@@ -5,7 +5,6 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -299,9 +298,9 @@ namespace NanoXLSX.Utils.Xml
                 return Enumerable.Empty<XmlElement>();
             }
             List<XmlElement> result = new List<XmlElement>();
-            foreach(XmlElement child in Children)
+            foreach (XmlElement child in Children)
             {
-                if(child.Name == name)
+                if (child.Name == name)
                 {
                     result.Add(child);
                 }

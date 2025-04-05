@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NanoXLSX.Test.Core.Cells.Types;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
+using NanoXLSX.Test.Core.Cells.Types;
+using NanoXLSX.Test.Core.Utils;
 using Xunit;
 using static NanoXLSX.Cell;
 using static NanoXLSX.Styles.CellXf;
-using NanoXLSX.Test.Core.Utils;
 
 namespace NanoXLSX.Test.Core.CellTest
 {

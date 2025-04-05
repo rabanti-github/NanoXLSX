@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security;
 using NanoXLSX.Utils;
 using Xunit;
 
@@ -48,7 +43,7 @@ namespace NanoXLSX.Core.Test.Utils
         [InlineData(-1f, -2f, 1)]
         [InlineData(0f, 0f, 0)]
         [InlineData(null, 15.3f, -1)]
-        [InlineData(15.3f,null, 1)]
+        [InlineData(15.3f, null, 1)]
         [InlineData(null, null, 0)]
         public void CompareDimensionsTest(float? dimension1, float? dimension2, int expectedResult)
         {

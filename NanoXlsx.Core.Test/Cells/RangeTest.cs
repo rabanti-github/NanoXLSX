@@ -37,7 +37,7 @@ namespace NanoXLSX.Test.Core.CellTest
         }
 
         [Theory(DisplayName = "Test of the Range constructor with column and row numbers")]
-        [InlineData(0,0,0,0, "A1:A1")]
+        [InlineData(0, 0, 0, 0, "A1:A1")]
         [InlineData(0, 0, 1, 1, "A1:B2")]
         [InlineData(1, 1, 0, 0, "A1:B2")]
         public void ConstructorTest3(int startColumn, int startRow, int endColumn, int endRow, string expectedRange)

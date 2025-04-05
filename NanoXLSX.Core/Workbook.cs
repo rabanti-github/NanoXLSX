@@ -8,12 +8,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Registry;
-using NanoXLSX.Exceptions;
-using NanoXLSX.Utils;
 using NanoXLSX.Styles;
 using NanoXLSX.Themes;
+using NanoXLSX.Utils;
 
 namespace NanoXLSX
 {

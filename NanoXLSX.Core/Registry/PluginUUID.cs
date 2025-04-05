@@ -13,7 +13,7 @@ namespace NanoXLSX.Registry
     /// \remark <remarks>The UUID strings shall never be altered. New UUIDs may be added. Obsolete may be completely removed.</remarks>
     public static class PlugInUUID
     {
-        
+
         #region writerUUIDs
         /// <summary>
         /// UUID for the password writer, when a workbook is saved
@@ -67,7 +67,7 @@ namespace NanoXLSX.Registry
         #endregion
 
 
-         #region inlineQueueWriterUUIDs
+        #region inlineQueueWriterUUIDs
         /// <summary>
         /// UUID for inline queued writers, appended right after the execution of the workbook writer, when a workbook is saved
         /// </summary>

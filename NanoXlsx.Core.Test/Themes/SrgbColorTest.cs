@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Themes;
@@ -14,11 +10,11 @@ namespace NanoXLSX.Core.Test.Themes
     {
 
         [Theory(DisplayName = "Test of the getter and setter of the ColorValue property on valid values")]
-        [InlineData("FFFFFF","FFFFFF")]
-        [InlineData("000000","000000")]
-        [InlineData("ABCDEF","ABCDEF")]
-        [InlineData("123456","123456")]
-        [InlineData("abcdef","ABCDEF")]
+        [InlineData("FFFFFF", "FFFFFF")]
+        [InlineData("000000", "000000")]
+        [InlineData("ABCDEF", "ABCDEF")]
+        [InlineData("123456", "123456")]
+        [InlineData("abcdef", "ABCDEF")]
         [InlineData("ffaabb", "FFAABB")]
         public void ColorValueTest(string givenSrgbValue, string expectedSrgbValue)
         {
@@ -49,12 +45,12 @@ namespace NanoXLSX.Core.Test.Themes
 
 
         [Theory(DisplayName = "Test of the getter of the StringValue property on valid values")]
-        [InlineData("FFFFFF","FFFFFF")]
-        [InlineData("000000","000000")]
-        [InlineData("ABCDEF","ABCDEF")]
-        [InlineData("123456","123456")]
-        [InlineData("abcdef","ABCDEF")]
-        [InlineData("ffaabb","FFAABB")]
+        [InlineData("FFFFFF", "FFFFFF")]
+        [InlineData("000000", "000000")]
+        [InlineData("ABCDEF", "ABCDEF")]
+        [InlineData("123456", "123456")]
+        [InlineData("abcdef", "ABCDEF")]
+        [InlineData("ffaabb", "FFAABB")]
         public void StringValueTest(string givenSrgbValue, string expectedSrgbValue)
         {
             SrgbColor color = new SrgbColor();
@@ -107,7 +103,7 @@ namespace NanoXLSX.Core.Test.Themes
             Assert.Equal(expectedArgbColor, color.ToArgbColor());
         }
 
-        [Fact(DisplayName ="Test of the Equals method (multiple cases)")]
+        [Fact(DisplayName = "Test of the Equals method (multiple cases)")]
         public void EqualsTest()
         {
             SrgbColor color1 = new SrgbColor("ACADAF");

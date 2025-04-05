@@ -5,9 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace NanoXLSX
 {
@@ -173,7 +171,7 @@ namespace NanoXLSX
         /// <param name="range1">First range object</param>
         /// <param name="range2">Second range object</param>
         /// <returns>True, if both objects are equal, otherwise false</returns>
-        public static bool operator == (Range range1, Range range2)
+        public static bool operator ==(Range range1, Range range2)
         {
             return range1.Equals(range2);
         }
@@ -184,7 +182,7 @@ namespace NanoXLSX
         /// <param name="range1">First range object</param>
         /// <param name="range2">Second range object</param>
         /// <returns>False, if both objects are equal, otherwise true</returns>
-        public static bool operator != (Range range1, Range range2)
+        public static bool operator !=(Range range1, Range range2)
         {
             return !range1.Equals(range2);
         }

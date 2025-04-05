@@ -8,7 +8,6 @@
 using System.Collections.Generic;
 using System.Text;
 using NanoXLSX.Exceptions;
-using NanoXLSX.Styles;
 using NanoXLSX.Utils;
 using static NanoXLSX.Themes.Theme;
 

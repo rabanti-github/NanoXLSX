@@ -42,7 +42,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             {
                 IPlugInPackageWriter dummy = (IPlugInPackageWriter)Activator.CreateInstance(pluginType);
                 string expectedPath = dummy.PackagePartPath;
-                string expectedFileName = dummy.PackagePartFileName; 
+                string expectedFileName = dummy.PackagePartFileName;
                 wb.SaveAsStream(ms, true);
                 ms.Position = 0;
                 using (var zip = new ZipArchive(ms, ZipArchiveMode.Read))
@@ -85,7 +85,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             }
         }
 
-       
+
 
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_1", QueueUUID = PlugInUUID.WRITER_PACKAGE_REGISTRY_QUEUE)]
@@ -112,10 +112,10 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             public XmlElement XmlElement
             {
                 get
-                { 
-                XmlElement element = XmlElement.CreateElement("test");
-                element.InnerValue = "test";
-                return element;
+                {
+                    XmlElement element = XmlElement.CreateElement("test");
+                    element.InnerValue = "test";
+                    return element;
                 }
             }
 
@@ -192,8 +192,9 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 
             [ExcludeFromCodeCoverage]
             public Workbook Workbook { get => workbook; set => workbook = value; }
-     
-            public XmlElement XmlElement { 
+
+            public XmlElement XmlElement
+            {
                 get
                 {
                     XmlElement element = XmlElement.CreateElement("test");
