@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
 using NanoXLSX.Registry;
-using NanoXLSX.Test.Writer_Reader.Utils;
 using NanoXLSX.Utils.Xml;
 using Xunit;
-using Xunit.Sdk;
 
 namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
-    [Collection(nameof(SequentialCollection))]
+    [Collection(nameof(SequentialCollection2))]
     public class PluginLoaderTest : IDisposable
     {
         public void Dispose()
@@ -89,6 +85,8 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             }
         }
 
+       
+
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_1", QueueUUID = PlugInUUID.WRITER_PACKAGE_REGISTRY_QUEUE)]
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_2", QueueUUID = PlugInUUID.WRITER_APPENDING_QUEUE)]
@@ -108,6 +106,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 
             public bool IsRootPackagePart => false;
 
+            [ExcludeFromCodeCoverage]
             public Workbook Workbook { get => workbook; set => workbook = value; }
 
             public XmlElement XmlElement
@@ -149,6 +148,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 
             public bool IsRootPackagePart => false;
 
+            [ExcludeFromCodeCoverage]
             public Workbook Workbook { get => workbook; set => workbook = value; }
 
             public XmlElement XmlElement
@@ -190,6 +190,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 
             public bool IsRootPackagePart => true;
 
+            [ExcludeFromCodeCoverage]
             public Workbook Workbook { get => workbook; set => workbook = value; }
      
             public XmlElement XmlElement { 
@@ -211,6 +212,5 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 this.workbook = baseWriter.Workbook;
             }
         }
-
     }
 }

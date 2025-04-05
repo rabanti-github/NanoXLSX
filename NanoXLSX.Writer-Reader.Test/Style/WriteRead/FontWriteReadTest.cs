@@ -1,5 +1,4 @@
 ﻿using System;
-using NanoXLSX;
 using NanoXLSX.Styles;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
@@ -171,7 +170,7 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(CharsetValue.Big5, null, null)]
         [InlineData(CharsetValue.Default, "", "")]
         [InlineData(CharsetValue.EasternEuropean, -0.55d, -0.55f)]
-        [InlineData(CharsetValue.GKB, false, false)]
+        [InlineData(CharsetValue.GBK, false, false)]
         [InlineData(CharsetValue.Greek, int.MaxValue, int.MaxValue)]
         [InlineData(CharsetValue.Hangul, double.MaxValue, double.MaxValue)]
         [InlineData(CharsetValue.Hebrew, float.MinValue, float.MinValue)]

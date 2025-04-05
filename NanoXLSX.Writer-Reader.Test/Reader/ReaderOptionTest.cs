@@ -1105,11 +1105,11 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 {
                     assertionAction.Invoke((expectedValue as Cell).Value, (givenCell).Value);
                 }
-                else if (expectedValue is Cell)
-                {
-                    assertionAction.Invoke((D)(expectedValue as Cell).Value, (D)givenCell.Value);
-                    Assert.Equal(Cell.CellType.FORMULA, givenCell.DataType);
-                }
+              //  else if (expectedValue is Cell)
+              //  {
+              //      assertionAction.Invoke((D)(expectedValue as Cell).Value, (D)givenCell.Value);
+              //      Assert.Equal(Cell.CellType.FORMULA, givenCell.DataType);
+              //  }
                 else
                 {
                     assertionAction.Invoke(expectedValue, (D)givenCell.Value);

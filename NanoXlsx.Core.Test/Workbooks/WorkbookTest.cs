@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using NanoXLSX.Exceptions;
 using Xunit;
@@ -641,6 +642,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Assert.ThrowsAny<RangeException>(() => workbook1.GetWorksheet(1));
         }
 
+        [ExcludeFromCodeCoverage]
         private void AssertWorksheetRemoval<T>(Workbook workbook, Action<T> removalFunction, int worksheetCount, string currentWorksheet, int selectedWorksheetIndex, T worksheetToRemove, string expectedCurrentWorksheet, int expectedSelectedWorksheetIndex)
         {
             workbook.SetCurrentWorksheet(currentWorksheet);
@@ -660,6 +662,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Assert.Equal(expectedSelectedWorksheetIndex, workbook.SelectedWorksheet);
         }
 
+        [ExcludeFromCodeCoverage]
         public static void AssertExistingFile(string expectedPath, bool deleteAfterAssertion)
         {
             FileInfo fi = new FileInfo(expectedPath);

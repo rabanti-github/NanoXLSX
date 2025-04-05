@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Reflection;
-using System.Text;
-using NanoXLSX;
 using NanoXLSX.Styles;
 using Xunit;
 using static NanoXLSX.Cell;
 
 namespace NanoXLSX.Test.Writer_Reader.Utils
 {
+    [ExcludeFromCodeCoverage]
     public class TestUtils
     {
         private const string ASSEMBLY_RESOURCE_NAMESPACE = "NanoXLSX.Test.Writer_Reader"; // Change this on refactoring
@@ -35,6 +36,21 @@ namespace NanoXLSX.Test.Writer_Reader.Utils
             for (int i = 0; i < expected.Count; i++)
             {
                 Assert.Equal(expected[i], addresses[i]);
+            }
+        }
+
+        public static void AssertZipEntry(Stream zipStream, string pathInZip, string expectedContent)
+        {
+            using (var zip = new ZipArchive(zipStream, ZipArchiveMode.Read, leaveOpen: true))
+            {
+                var entry = zip.GetEntry(pathInZip);
+                Assert.NotNull(entry);
+
+                using (var reader = new StreamReader(entry.Open()))
+                {
+                    string content = reader.ReadToEnd();
+                    Assert.Contains(expectedContent, content);
+                }
             }
         }
 

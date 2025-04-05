@@ -1,6 +1,7 @@
 ﻿using System;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
+using NanoXLSX.Test.Core.Utils;
 using Xunit;
 using static NanoXLSX.Styles.Font;
 using static NanoXLSX.Themes.Theme;
@@ -113,7 +114,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         [InlineData(CharsetValue.Big5)]
         [InlineData(CharsetValue.Default)]
         [InlineData(CharsetValue.EasternEuropean)]
-        [InlineData(CharsetValue.GKB)]
+        [InlineData(CharsetValue.GBK)]
         [InlineData(CharsetValue.Greek)]
         [InlineData(CharsetValue.Hangul)]
         [InlineData(CharsetValue.Hebrew)]
@@ -465,11 +466,6 @@ namespace NanoXLSX.Test.Core.StyleTest
             string s1 = font.ToString();
             font.Name = "YXZ";
             Assert.NotEqual(s1, font.ToString()); // An explicit value comparison is probably not sensible
-        }
-
-        private static object SequentialCollection()
-        {
-            throw new NotImplementedException();
         }
 
     }

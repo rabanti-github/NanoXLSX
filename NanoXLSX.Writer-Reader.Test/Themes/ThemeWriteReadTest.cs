@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Test.Writer_Reader.Utils;
@@ -178,6 +179,7 @@ namespace NanoXLSX.Test.Writer_Reader.ThemesTest
 
 
         // Test data for IColor properties.
+        [ExcludeFromCodeCoverage]
         public static IEnumerable<object[]> ColorTestData =>
             new List<object[]>
             {

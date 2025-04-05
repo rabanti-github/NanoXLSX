@@ -1,5 +1,6 @@
 ﻿using System;
 using NanoXLSX.Exceptions;
+using NanoXLSX.Test.Core.Utils;
 using Xunit;
 using static NanoXLSX.Cell;
 
@@ -224,11 +225,6 @@ namespace NanoXLSX.Test.Core.CellTest
             Address otherAddress = new Address(address2);
             int result = address.CompareTo(otherAddress);
             Assert.Equal(expectedResult, result);
-        }
-
-        private static object SequentialCollection()
-        {
-            throw new NotImplementedException();
         }
         #endregion
 

@@ -469,14 +469,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 Cell givenCell = givenWorksheet.GetCell(new Address(address));
                 D givenValue = (D)givenCell.Value;
                 D expectedvalue = expectedCells[address];
-                if (givenValue == null)
-                {
-                    Assert.Equal(Cell.CellType.EMPTY, givenCell.DataType);
-                }
-                else
-                {
-                    assertionAction.Invoke(givenValue, expectedvalue);
-                }
+                assertionAction.Invoke(givenValue, expectedvalue);
             }
         }
 

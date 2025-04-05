@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using NanoXLSX.Styles;
 using NanoXLSX.Test.Core.Utils;
 using Xunit;
@@ -248,6 +249,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
 
         #region comparers
 
+        [ExcludeFromCodeCoverage]
         private static bool VariantCompareTo(int comparison, int expectedResult)
         {
             if (comparison == expectedResult)
@@ -265,6 +267,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
             return false;
         }
 
+        [ExcludeFromCodeCoverage]
         private static bool CompareDouble(double current, double other)
         {
             const double threshold = 0.0000001;
@@ -278,6 +281,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
             }
         }
 
+        [ExcludeFromCodeCoverage]
         private static bool CompareDecimal(decimal current, decimal other)
         {
             const decimal threshold = 0.0000001m;
@@ -291,6 +295,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
             }
         }
 
+        [ExcludeFromCodeCoverage]
         private static bool CompareFloat(float current, float other)
         {
             const float threshold = 0.0000001f;

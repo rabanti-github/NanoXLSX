@@ -147,9 +147,9 @@ namespace NanoXLSX.Styles
             /// </summary>
             Johab = 130,
             /// <summary>
-            /// KBB charset (GB-2312)
+            /// GBK charset (GB-2312)
             /// </summary>
-            GKB = 134,
+            GBK = 134,
             /// <summary>
             /// Chinese Big Five charset
             /// </summary>

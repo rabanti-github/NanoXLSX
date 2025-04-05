@@ -2,7 +2,7 @@
 
 namespace NanoXLSX.Test.Core.Utils
 {
-    [CollectionDefinition(nameof(SequentialCollection), DisableParallelization = true)]
+    [CollectionDefinition(nameof(SequentialPlugInCollection), DisableParallelization = true)]
     public class SequentialPlugInCollection
     {
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -9,6 +10,7 @@ using static NanoXLSX.Cell;
 
 namespace NanoXLSX.Test.Core.Utils
 {
+    [ExcludeFromCodeCoverage]
     public class TestUtils
     {
         public static void AssertEquals<T>(T value1, T value2, T inequalValue, Address cellAddress)

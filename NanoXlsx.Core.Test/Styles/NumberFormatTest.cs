@@ -1,6 +1,7 @@
 ﻿using System;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
+using NanoXLSX.Test.Core.Utils;
 using Xunit;
 using static NanoXLSX.Styles.NumberFormat;
 using FormatException = NanoXLSX.Exceptions.FormatException;
@@ -315,9 +316,5 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.NotEqual(s1, numberFormat.ToString()); // An explicit value comparison is probably not sensible
         }
 
-        private static object SequentialCollection()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

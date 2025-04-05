@@ -469,7 +469,7 @@ namespace NanoXLSX.Internal.Readers
                             fontStyle.Charset = CharsetValue.Johab;
                             break;
                         case "134":
-                            fontStyle.Charset = CharsetValue.GKB;
+                            fontStyle.Charset = CharsetValue.GBK;
                             break;
                         case "136":
                             fontStyle.Charset = CharsetValue.Big5;

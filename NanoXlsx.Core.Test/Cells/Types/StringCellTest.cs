@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using NanoXLSX.Test.Core.Utils;
 using Xunit;
 using static NanoXLSX.Cell;
@@ -44,6 +45,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
             Assert.Equal(comparison, expectedResult);
         }
 
+        [ExcludeFromCodeCoverage]
         private static bool CompareString(string current, string other)
         {
             if (current == null && other == null)

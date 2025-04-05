@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using NanoXLSX.Styles;
 using Xunit;
 
@@ -49,6 +50,7 @@ namespace NanoXLSX.Test.Core.StyleTest
             }
         }
 
+        [ExcludeFromCodeCoverage]
         private class DummyClass
         {
             [Append]

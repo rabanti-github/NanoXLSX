@@ -21,6 +21,7 @@ namespace NanoXLSX.Registry
     public static class PlugInLoader
     {
         private static bool initialized = false;
+        private static readonly object _lock = new object();
 
         private static Dictionary<string, PlugInInstance> plugInClasses = new Dictionary<string, PlugInInstance>();
         private static Dictionary<string, List<PlugInInstance>> queuePlugInClasses = new Dictionary<string, List<PlugInInstance>>();
@@ -36,9 +37,12 @@ namespace NanoXLSX.Registry
             {
                 return false;
             }
-            LoadReferencedAssemblies();
-            initialized = true;
-            return initialized;
+            lock (_lock)
+            {
+                LoadReferencedAssemblies();
+                initialized = true;
+                return initialized;
+            }
         }
 
         /// <summary>
@@ -60,7 +64,7 @@ namespace NanoXLSX.Registry
                 try
                 {
                     Assembly assembly = Assembly.Load(path);
-                    RegisterPlugIns(assembly); // Here are several classes determined that has Attributes, describing them as plug-ins
+                    RegisterPlugIns(assembly); // Here, several classes are determined that has Attributes, describing them as plug-ins
                 }
                 catch
                 {
@@ -76,18 +80,21 @@ namespace NanoXLSX.Registry
         /// <param name="pluginTypes">List of classes that are annotated with the attributes <see cref="NanoXlsxPlugInAttribute"/> and <see cref="NanoXlsxQueuePlugInAttribute"/></param>
         internal static void InjectPlugins(List<Type> pluginTypes)
         {
-            // Collect all types decorated with the NanoXlsxPlugInAttribute.
-            IEnumerable<Type> replacingPluginTypes = pluginTypes
+            lock (_lock)
+            {
+                // Collect all types decorated with the NanoXlsxPlugInAttribute.
+                IEnumerable<Type> replacingPluginTypes = pluginTypes
                 .Where(t => t.GetCustomAttribute<NanoXlsxPlugInAttribute>() != null);
 
-            // Collect all types decorated with the NanoXlsxQueuePlugInAttribute.
-            IEnumerable<Type> queuePluginTypes = pluginTypes
-                .Where(t => t.GetCustomAttributes<NanoXlsxQueuePlugInAttribute>().Any());
+                // Collect all types decorated with the NanoXlsxQueuePlugInAttribute.
+                IEnumerable<Type> queuePluginTypes = pluginTypes
+                    .Where(t => t.GetCustomAttributes<NanoXlsxQueuePlugInAttribute>().Any());
 
-            // Pass the collected types to the appropriate handlers.
-            HandleReplacingPlugIns(replacingPluginTypes);
-            HandleQueuePlugIns(queuePluginTypes);
-            initialized = true;
+                // Pass the collected types to the appropriate handlers.
+                HandleReplacingPlugIns(replacingPluginTypes);
+                HandleQueuePlugIns(queuePluginTypes);
+                initialized = true;
+            }
         }
 
         /// <summary>
@@ -96,9 +103,12 @@ namespace NanoXLSX.Registry
         /// </summary>
         internal static void DisposePlugins()
         {
-            plugInClasses.Clear();
-            queuePlugInClasses.Clear();
-            initialized = false;
+            lock (_lock)
+            {
+                plugInClasses.Clear();
+                queuePlugInClasses.Clear();
+                initialized = false;
+            }
         }
 
         /// <summary>
@@ -114,6 +124,7 @@ namespace NanoXLSX.Registry
             HandleQueuePlugIns(queuePlugInTypes);
         }
 
+
         /// <summary>
         /// Method to get an enumeration of all class types from an assembly, matching the specified plug-in attribute type
         /// </summary>
@@ -123,11 +134,20 @@ namespace NanoXLSX.Registry
         [ExcludeFromCodeCoverage] // Indirectly tested by InjectPlugins
         private static IEnumerable<Type> GetAssemblyPlugInsByType(Assembly assembly, Type attributeType)
         {
-            IEnumerable<Type> plugInTypes = assembly.GetTypes()
-                .Where(type => type.IsClass &&
-                               !type.IsAbstract &&
-                               typeof(IPlugIn).IsAssignableFrom(type) && // Ensure the type implements IPlugIn
-                               type.GetCustomAttribute(attributeType) != null);
+            List<Type> plugInTypes = new List<Type>();
+            Type plugInInterface = typeof(IPlugIn);
+            Type[] allTypes = assembly.GetTypes();
+
+            for (int i = 0; i < allTypes.Length; i++)
+            {
+                Type type = allTypes[i];
+                if (type.IsClass && !type.IsAbstract &&
+                    plugInInterface.IsAssignableFrom(type) &&
+                    type.GetCustomAttribute(attributeType) != null)
+                {
+                    plugInTypes.Add(type);
+                }
+            }
             return plugInTypes;
         }
 
@@ -135,6 +155,7 @@ namespace NanoXLSX.Registry
         /// Method to handle (register) an enumeration of plug-in class types as replacing plug-ins
         /// </summary>
         /// <param name="plugInTypes">IEnumerable of plug-in class types to handle</param>
+        [ExcludeFromCodeCoverage] // Indirectly tested by InjectPlugins
         private static void HandleReplacingPlugIns(IEnumerable<Type> plugInTypes)
         {
             foreach (Type plugInType in plugInTypes)

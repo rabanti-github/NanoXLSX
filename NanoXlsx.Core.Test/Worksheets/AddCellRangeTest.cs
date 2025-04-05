@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
@@ -229,6 +230,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             return data;
         }
 
+        [ExcludeFromCodeCoverage]
         private static ListTuple GetRandomList(int startColumn, int startRow, RangeType type, bool addNull = true)
         {
             ListTuple list = new ListTuple(startColumn, startRow, type);
@@ -255,6 +257,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             return list;
         }
 
+        [ExcludeFromCodeCoverage]
         private static ListTuple GetCellList(int startColumn, int startRow, RangeType type, bool addNull = true)
         {
             ListTuple list = new ListTuple(startColumn, startRow, type);

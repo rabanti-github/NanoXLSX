@@ -218,10 +218,7 @@ namespace NanoXLSX.Internal.Writers
                     else if (item.Scheme == SchemeValue.minor)
                     { font.AddChildElementWithAttribute("scheme", "val", "minor"); }
                 }
-                if (item.Charset != CharsetValue.Default)
-                {
-                    font.AddChildElementWithAttribute("charset", "val", ParserUtils.ToString((int)item.Charset));
-                }
+                font.AddChildElementWithAttribute("charset", "val", ParserUtils.ToString((int)item.Charset));
                 fonts.Add(font);
             }
             return fonts;

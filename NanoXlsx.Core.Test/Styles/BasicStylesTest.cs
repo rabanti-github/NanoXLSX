@@ -1,6 +1,7 @@
 ﻿using System;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
+using NanoXLSX.Test.Core.Utils;
 using Xunit;
 using static NanoXLSX.Styles.Border;
 using static NanoXLSX.Styles.Fill;
@@ -239,11 +240,6 @@ namespace NanoXLSX.Test.Core.StyleTest
         {
             Assert.Throws<StyleException>(() => BasicStyles.Font(null));
             Assert.Throws<StyleException>(() => BasicStyles.Font(""));
-        }
-
-        private static object SequentialCollection()
-        {
-            throw new NotImplementedException();
         }
 
     }
