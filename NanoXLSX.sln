@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Reader", "NanoXLSX
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Writer-Reader.Test", "NanoXLSX.Writer-Reader.Test\NanoXLSX.Writer-Reader.Test.csproj", "{D146F1DC-1F3A-484E-8DB3-9892EE102A51}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Formula", "NanoXLSX.Formula\NanoXLSX.Formula.csproj", "{7055E7CA-AA59-44F4-AE15-B3F2AC658337}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,10 +47,6 @@ Global
 		{D146F1DC-1F3A-484E-8DB3-9892EE102A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D146F1DC-1F3A-484E-8DB3-9892EE102A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D146F1DC-1F3A-484E-8DB3-9892EE102A51}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7055E7CA-AA59-44F4-AE15-B3F2AC658337}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7055E7CA-AA59-44F4-AE15-B3F2AC658337}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7055E7CA-AA59-44F4-AE15-B3F2AC658337}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7055E7CA-AA59-44F4-AE15-B3F2AC658337}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
