@@ -555,7 +555,7 @@ namespace NanoXLSX.LowLevel
                 foreach (int index in indices)
                 {
                     Column column = new Column(index - 1); // Transform to zero-based
-                    column.Width = width;
+                    column.Width = GetWidth(width);
                     column.IsHidden = hidden;
                     if (defaultStyle != null)
 					{
@@ -1352,6 +1352,31 @@ namespace NanoXLSX.LowLevel
                     return 0;
             }
             return raw;
+        }
+		
+        /// <summary>
+        /// Get width according to ImportOptions.EnforceAllowedColumnWidth
+        /// </summary>
+        /// <param name="originalWidth">Width that should be outside allowed Min Max range</param>
+        /// <returns>modified width length in case AllowedColumnWidth is not enforced otherwise originalWidth</returns>
+        private float GetWidth(float originalWidth)
+        {
+	        if (importOptions.EnforceAllowedColumnWidth)
+	        {
+		        return originalWidth;
+	        }
+
+	        if (originalWidth < Worksheet.MIN_COLUMN_WIDTH)
+	        {
+		        return Worksheet.MIN_COLUMN_WIDTH;
+	        }
+
+	        if (originalWidth > Worksheet.MAX_COLUMN_WIDTH)
+	        {
+		        return Worksheet.MAX_COLUMN_WIDTH;
+	        }
+
+            return originalWidth;
         }
 
 
