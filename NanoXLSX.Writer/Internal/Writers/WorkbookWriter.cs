@@ -8,10 +8,11 @@
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
+using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Themes;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
-using static NanoXLSX.Internal.Enums.Password;
+using static NanoXLSX.Internal.Enums.WriterPassword;
 
 namespace NanoXLSX.Internal.Writers
 {
@@ -24,6 +25,7 @@ namespace NanoXLSX.Internal.Writers
         private XmlElement workbook;
         private IPasswordWriter passwordWriter;
 
+        #region properties
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
@@ -34,6 +36,8 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         public XmlElement XmlElement { get => workbook; }
 
+        #endregion
+        #region constructors
         /// <summary>
         /// Default constructor - Must be defined for instantiation of the plug-ins
         /// </summary>
@@ -41,6 +45,8 @@ namespace NanoXLSX.Internal.Writers
         {
         }
 
+        #endregion
+        #region methods
         /// <summary>
         /// Initialization method (interface implementation)
         /// </summary>
@@ -133,6 +139,7 @@ namespace NanoXLSX.Internal.Writers
             }
             return workbookProtection;
         }
+        #endregion
 
     }
 }

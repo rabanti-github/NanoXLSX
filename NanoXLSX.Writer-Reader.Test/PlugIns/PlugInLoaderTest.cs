@@ -6,6 +6,7 @@ using System.IO.Compression;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
 using NanoXLSX.Registry;
+using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils.Xml;
 using Xunit;
 

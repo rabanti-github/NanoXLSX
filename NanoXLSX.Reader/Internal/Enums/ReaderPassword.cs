@@ -10,7 +10,7 @@ namespace NanoXLSX.Internal.Enums
     /// <summary>
     /// Static class that contains enums for password handling
     /// </summary>
-    public static class Password
+    public static class ReaderPassword
     {
         /// <summary>
         /// Target type of the password

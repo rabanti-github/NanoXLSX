@@ -8,13 +8,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using NanoXLSX.Exceptions;
+using NanoXLSX.Interfaces.Plugin;
 
 namespace NanoXLSX
 {
     /// <summary>
     /// The reader options define global rules, applied when loading a worksheet. The options are mainly to override particular cell types (e.g. interpretation of dates as numbers)
     /// </summary>
-    public class ReaderOptions
+    public class ReaderOptions : IOptions
     {
 
         /// <summary>

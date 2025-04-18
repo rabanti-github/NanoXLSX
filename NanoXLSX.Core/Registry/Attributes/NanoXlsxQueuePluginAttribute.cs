@@ -6,7 +6,7 @@
  */
 using System;
 
-namespace NanoXLSX.Registry
+namespace NanoXLSX.Registry.Attributes
 {
     /// <summary>
     /// Attribute to declare a class a NanoXLSX plug-in that can be queued (not replacing existing instance with the same UUID)

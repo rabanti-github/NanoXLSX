@@ -7,6 +7,7 @@
 
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
+using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils.Xml;
 
 namespace NanoXLSX.Internal.Writers
@@ -19,6 +20,7 @@ namespace NanoXLSX.Internal.Writers
     {
         private XmlElement properties;
 
+        #region properties
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
@@ -29,6 +31,8 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         public XmlElement XmlElement { get => properties; }
 
+        #endregion
+        #region constructors
         /// <summary>
         /// Default constructor - Must be defined for instantiation of the plug-ins
         /// </summary>
@@ -36,6 +40,8 @@ namespace NanoXLSX.Internal.Writers
         {
         }
 
+        #endregion
+        #region methods
         /// <summary>
         /// Initialization method (interface implementation)
         /// </summary>
@@ -69,7 +75,6 @@ namespace NanoXLSX.Internal.Writers
             WriterPlugInHandler.HandleInlineQueuePlugins(ref properties, Workbook, PlugInUUID.METADATA_APP_INLINE_WRITER);
         }
 
-
-
+        #endregion
     }
 }

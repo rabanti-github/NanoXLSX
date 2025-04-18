@@ -8,6 +8,7 @@
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
+using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
 
@@ -22,6 +23,7 @@ namespace NanoXLSX.Internal.Writers
         private XmlElement sst;
         private ISortedMap sharedStrings;
 
+        #region properties
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
@@ -45,6 +47,8 @@ namespace NanoXLSX.Internal.Writers
             get { return sharedStrings; }
         }
 
+        #endregion
+        #region constructors
         /// <summary>
         /// Default constructor - Must be defined for instantiation of the plug-ins
         /// </summary>
@@ -52,6 +56,8 @@ namespace NanoXLSX.Internal.Writers
         {
         }
 
+        #endregion
+        #region methods
         /// <summary>
         /// Initialization method (interface implementation)
         /// </summary>
@@ -82,5 +88,6 @@ namespace NanoXLSX.Internal.Writers
 
             WriterPlugInHandler.HandleInlineQueuePlugins(ref sst, Workbook, PlugInUUID.SHARED_QUEUE_STRING_WRITER);
         }
+        #endregion
     }
 }

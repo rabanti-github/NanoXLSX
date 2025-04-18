@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
+using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
@@ -30,6 +31,7 @@ namespace NanoXLSX.Internal.Writers
         private StyleManager styles;
         private XmlElement styleSheet;
 
+        #region properties
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
@@ -40,6 +42,8 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         public XmlElement XmlElement { get => styleSheet; }
 
+        #endregion
+        #region constructors
         /// <summary>
         /// Default constructor - Must be defined for instantiation of the plug-ins
         /// </summary>
@@ -47,6 +51,8 @@ namespace NanoXLSX.Internal.Writers
         {
         }
 
+        #endregion
+        #region methods
         /// <summary>
         /// Initialization method (interface implementation)
         /// </summary>
@@ -425,5 +431,6 @@ namespace NanoXLSX.Internal.Writers
             }
             return mruColors;
         }
+        #endregion
     }
 }

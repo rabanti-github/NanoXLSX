@@ -20,6 +20,11 @@ namespace NanoXLSX.Utils
         #region constants
 
         /// <summary>
+        /// Numeric format for ToString conversions. This format ensures that a numeric value is printed in a language neutral way.
+        /// </summary>
+        public const string NUMERIC_FORMAT = "G";
+
+        /// <summary>
         /// Constant for number conversion. The invariant culture (represents mostly the US numbering scheme) ensures that no culture-specific 
         /// punctuations are used when converting numbers to strings, This is especially important for OOXML number values.
         /// See also: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture?view=net-5.0">
@@ -46,7 +51,7 @@ namespace NanoXLSX.Utils
         /// <returns>Integer as string</returns>
         public static string ToString(int input)
         {
-            return input.ToString("G", INVARIANT_CULTURE);
+            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
         }
 
         /// <summary>
@@ -56,7 +61,7 @@ namespace NanoXLSX.Utils
         /// <returns>Float as string</returns>
         public static string ToString(float input)
         {
-            return input.ToString("G", INVARIANT_CULTURE);
+            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
         }
 
         /// <summary>
@@ -66,7 +71,7 @@ namespace NanoXLSX.Utils
         /// <returns>Byte as string</returns>
         public static string ToString(byte input)
         {
-            return input.ToString("G", INVARIANT_CULTURE);
+            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
         }
 
         /// <summary>
@@ -76,7 +81,7 @@ namespace NanoXLSX.Utils
         /// <returns>Byte as string</returns>
         public static string ToString(sbyte input)
         {
-            return input.ToString("G", INVARIANT_CULTURE);
+            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
         }
 
         /// <summary>
@@ -86,7 +91,7 @@ namespace NanoXLSX.Utils
         /// <returns>Double as string</returns>
         public static string ToString(double input)
         {
-            return input.ToString("G", INVARIANT_CULTURE);
+            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
         }
 
         /// <summary>
@@ -96,7 +101,7 @@ namespace NanoXLSX.Utils
         /// <returns>Decimal as string</returns>
         public static string ToString(decimal input)
         {
-            return input.ToString("G", INVARIANT_CULTURE);
+            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
         }
 
         /// <summary>
@@ -106,7 +111,7 @@ namespace NanoXLSX.Utils
         /// <returns>Uint as string</returns>
         public static string ToString(uint input)
         {
-            return input.ToString("G", INVARIANT_CULTURE);
+            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
         }
 
         /// <summary>
@@ -116,7 +121,7 @@ namespace NanoXLSX.Utils
         /// <returns>Long as string</returns>
         public static string ToString(long input)
         {
-            return input.ToString("G", INVARIANT_CULTURE);
+            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
         }
 
         /// <summary>
@@ -126,7 +131,7 @@ namespace NanoXLSX.Utils
         /// <returns>Ulong as string</returns>
         public static string ToString(ulong input)
         {
-            return input.ToString("G", INVARIANT_CULTURE);
+            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
         }
 
         /// <summary>
@@ -136,7 +141,7 @@ namespace NanoXLSX.Utils
         /// <returns>Short as string</returns>
         public static string ToString(short input)
         {
-            return input.ToString("G", INVARIANT_CULTURE);
+            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
         }
 
         /// <summary>
@@ -146,7 +151,7 @@ namespace NanoXLSX.Utils
         /// <returns>Ushort as string</returns>
         public static string ToString(ushort input)
         {
-            return input.ToString("G", INVARIANT_CULTURE);
+            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
         }
 
         /// <summary>

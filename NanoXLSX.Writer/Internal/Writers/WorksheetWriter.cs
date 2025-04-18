@@ -13,9 +13,10 @@ using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
 using NanoXLSX.Registry;
+using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
-using static NanoXLSX.Internal.Enums.Password;
+using static NanoXLSX.Internal.Enums.WriterPassword;
 
 namespace NanoXLSX.Internal.Writers
 {
@@ -31,6 +32,7 @@ namespace NanoXLSX.Internal.Writers
         private ISortedMap sharedStrings;
         private ISharedStringWriter sharedStringWriter;
 
+        #region properties
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
@@ -56,6 +58,9 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         public XmlElement XmlElement { get => worksheet; }
 
+        #endregion
+        #region constructors
+
         /// <summary>
         /// Default constructor - Must be defined for instantiation of the plug-ins
         /// </summary>
@@ -63,6 +68,8 @@ namespace NanoXLSX.Internal.Writers
         {
         }
 
+        #endregion
+        #region methods
         /// <summary>
         /// Initialization method (interface implementation)
         /// </summary>
@@ -697,6 +704,7 @@ namespace NanoXLSX.Internal.Writers
             return rows;
         }
 
+        #endregion
         #region helperClasses
         /// <summary>
         /// Class representing a row that is either empty or containing cells. Empty rows can also carry information about height or visibility

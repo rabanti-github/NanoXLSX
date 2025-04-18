@@ -45,6 +45,12 @@ namespace NanoXLSX
         #region properties
 
         /// <summary>
+        /// Optinal auxiliary data object. This object is used to store additional information about the workbook. 
+        /// The data is not stored in the file but can be used by plug-ins
+        /// </summary>
+        internal AuxiliaryData AuxiliaryData { get; internal set; }
+
+        /// <summary>
         /// Gets the shortener object for the current worksheet
         /// </summary>
         public Shortener WS
@@ -148,7 +154,6 @@ namespace NanoXLSX
         public Workbook()
         {
             Init();
-
         }
 
         /// <summary>
@@ -208,7 +213,7 @@ namespace NanoXLSX
 
         #endregion
 
-        #region methods_PICO
+        #region methods
 
         /// <summary>
         /// Adds a color value (HEX; 6-digit RGB or 8-digit ARGB) to the MRU list
@@ -803,7 +808,9 @@ namespace NanoXLSX
             workbookMetadata = new Metadata();
             shortener = new Shortener(this);
             workbookProtectionPassword = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);
+            AuxiliaryData = new AuxiliaryData();
         }
+
 
         #endregion
     }

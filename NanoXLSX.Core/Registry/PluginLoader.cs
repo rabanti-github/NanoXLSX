@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using NanoXLSX.Interfaces;
+using NanoXLSX.Registry.Attributes;
 
 namespace NanoXLSX.Registry
 {

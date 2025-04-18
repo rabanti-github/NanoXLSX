@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NanoXLSX.Registry
+namespace NanoXLSX.Registry.Attributes
 {
     /// <summary>
     /// Attribute to declare a class as general NanoXLSX plug-in

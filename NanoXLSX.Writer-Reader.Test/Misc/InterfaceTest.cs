@@ -4,7 +4,7 @@ using NanoXLSX.Internal.Structures;
 using NanoXLSX.Internal.Writers;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
-using static NanoXLSX.Internal.Enums.Password;
+using static NanoXLSX.Internal.Enums.ReaderPassword;
 
 namespace NanoXLSX.Test.Writer_Reader.MiscTest
 {

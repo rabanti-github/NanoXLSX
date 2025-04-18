@@ -98,5 +98,95 @@ namespace NanoXLSX.Registry
         public const string THEME_INLINE_WRITER = "4CB6FD0E-AB69-40E9-B048-06B0E00C892D";
         #endregion
 
+        #region readerUUIDs
+        /// <summary>
+        /// UUID for the password reader, when a workbook is loaded
+        /// </summary>
+        public const string PASSWORD_READER = "1090EEDC-27AB-4A90-AAAB-E9B02C086082";
+        /// <summary>
+        /// UUID for the workbook reader, when a workbook is loaded
+        /// </summary>
+        public const string WORKBOOK_READER = "B8C3405A-081C-453B-9C88-6A4BD7F5359B";
+        /// <summary>
+        /// UUID for the worksheet reader, when a workbook is loaded
+        /// </summary>
+        public const string WORKSHEET_READER = "1DE75D75-5BF9-48EA-9387-DCF5459EC401";
+        /// <summary>
+        /// UUID for the style reader, when a workbook is loaded
+        /// </summary>
+        public const string STYLE_READER = "67AAB19A-4BF1-41B4-BC86-8C5BB5BB91F6";
+        /// <summary>
+        /// UUID for the shared strings reader, when a workbook is loaded
+        /// </summary>
+        public const string SHARED_STRING_READER = "FF9BC0E6-59BF-4A16-B289-3F2AFD568438";
+        /// <summary>
+        /// UUID for the matadata reder (app data), when a workbook is loaded
+        /// </summary>
+        public const string METADATA_APP_READER = "28C59145-7BB8-416F-BAC9-0130DD8557F9";
+        /// <summary>
+        /// UUID for the metadata reader (core data), when a workbook is loaded
+        /// </summary>
+        public const string METADATA_CORE_READER = "28C59145-7BB8-416F-BAC9-0130DD8557F9";
+        /// <summary>
+        /// UUID for the theme reader, when a workbook is loaded
+        /// </summary>
+        public const string THEME_READER = "B4733D00-B596-4440-8E33-A803289848BC";
+        #endregion
+
+        #region generalReaderQueueUUIDs
+        /// <summary>
+        /// UUID for the prepending queue. Plug-ins can register to this queue to be executed before the regular XLSX readers
+        /// </summary>
+        public const string READER_PREPENDING_QUEUE = "658A903B-512D-490C-A99B-40C0B0947CBF";
+
+        /// <summary>
+        /// UUID for the prepending queue that holds plug-ins for registering additional package parts for the XLSX reading process (e.g. additional XML files to be parsed)
+        /// </summary>
+        public const string READER_PACKAGE_REGISTRY_QUEUE = "1DD50B15-6EB8-451B-A6A8-C9265A8EF55C";
+
+        /// <summary>
+        /// UUID for the appending queue. Plug-ins can register to this queue to be executed after the regular XLSX readers
+        /// </summary>
+        public const string READER_APPENDING_QUEUE = "69EE822E-910E-4E6B-BC5B-8F27629933AF";
+        #endregion
+
+        #region inlineQueueReaderUUIDs
+        /// <summary>
+        /// UUID for inline queued readers, appended right after the execution of the workbook reader, when a workbook is loaded
+        /// </summary>
+        public const string WORKBOOK_INLINE_READER = "33782BED-FCBA-4BE1-911A-5327C64B9580";
+        /// <summary>
+        /// UUID for inline queued reader, appended right after the execution of the worksheet reader, when a workbook is loaded
+        /// </summary>
+        public const string WORKSHEET_INLINE_READER = "20BE8320-9B90-41D2-8580-E1FE05DDC881";
+        /// <summary>
+        /// UUID for inline queued reader, appended right after the execution of the style reader, when a workbook is loaded
+        /// </summary>
+        public const string STYLE_INLINE_READER = "9AC00387-E677-4F1C-88D6-558DAE6FF764";
+        /// <summary>
+        /// UUID for inline queued reader, appended right after the execution of the shared strings reader, when a workbook is loaded
+        /// </summary>
+        public const string SHARED_QUEUE_STRING_READER = "3730F89E-CD7C-4BD8-B6AC-A18D803ADB2B";
+        /// <summary>
+        /// UUID for inline queued reader, appended right after the execution of the matadata reader (app data), when a workbook is loaded
+        /// </summary>
+        public const string METADATA_APP_INLINE_READER = "789AFD19-31C5-409A-86C6-7CF5CC49B9C1";
+        /// <summary>
+        /// UUID for inline queued reader, appended right after the execution of the metadata reader (core data), when a workbook is loaded
+        /// </summary>
+        public const string METADATA_CORE_INLINE_READER = "64A26388-EAD1-4435-AC07-A7FF18DCEEB7";
+        /// <summary>
+        /// UUID for inline queued reader, appended right after the execution of the theme reader, when a workbook is loaded
+        /// </summary>
+        public const string THEME_INLINE_READER = "4B44E8A8-4560-44EB-8B24-5E11FDC04971";
+        #endregion
+
+        #region entityUUIDs
+        /// <summary>
+        /// UUID for the worksheet definitions section, on reading a workbook
+        /// </summary>
+        public const string WORKSHEET_DEFINTION = "40CF0799-E4E7-4EA7-925F-BB6C9E8F588A";
+        #endregion
+
     }
 }

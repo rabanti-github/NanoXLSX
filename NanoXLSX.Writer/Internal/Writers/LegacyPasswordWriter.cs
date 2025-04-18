@@ -10,8 +10,9 @@ using System.Collections.Generic;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
+using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils.Xml;
-using static NanoXLSX.Internal.Enums.Password;
+using static NanoXLSX.Internal.Enums.WriterPassword;
 
 namespace NanoXLSX.Internal.Writers
 {
@@ -21,6 +22,7 @@ namespace NanoXLSX.Internal.Writers
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.PASSWORD_WRITER)]
     public class LegacyPasswordWriter : IPasswordWriter
     {
+        #region properties
 
         /// <summary>
         /// Current target type of the password instance
@@ -43,6 +45,8 @@ namespace NanoXLSX.Internal.Writers
             this.PasswordHash = hash;
         }
 
+        #endregion
+        #region constructors
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -50,6 +54,8 @@ namespace NanoXLSX.Internal.Writers
         {
         }
 
+        #endregion
+        #region methods
         /// <summary>
         /// Initializer method with all mandatory parameters
         /// </summary>
@@ -125,5 +131,6 @@ namespace NanoXLSX.Internal.Writers
             }
             return attributes;
         }
+        #endregion
     }
 }
