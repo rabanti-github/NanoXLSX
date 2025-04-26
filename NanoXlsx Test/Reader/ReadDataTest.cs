@@ -405,6 +405,15 @@ namespace NanoXLSX_Test.Reader
             await Assert.ThrowsAsync<NanoXLSX.Exceptions.IOException>(() => Workbook.LoadAsync(stream));
         }
 
+        [Fact(DisplayName = "Test of the reader functionality on missing docProps documents (should not crash)")]
+        public void ReadMissingDocPropsTest()
+        {
+            Stream stream = TestUtils.GetResource("missing_docProps.xlsx");
+            Workbook workbook = Workbook.Load(stream);
+            Assert.Single(workbook.Worksheets);
+            Assert.NotNull(workbook.WorkbookMetadata);
+        }
+
         [Fact(DisplayName = "Test of the workbook reader if the only workbook entry is a chart")]
         public void ReadChartsheetTest()
         {

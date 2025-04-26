@@ -69,17 +69,12 @@ namespace NanoXLSX.LowLevel
 
         #region methods
         /// <summary>
-        /// Reads the XML file form the passed stream and processes the AppData section
+        /// Reads the XML file form the passed stream and processes the AppData section. The existence of the stream should be checked previously
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public void ReadAppData(MemoryStream stream)
         {
-            if (stream == null)
-            {
-                // No metadata available in xlsx file
-                return;
-            }
             try
             {
                 using (stream) // Close after processing
@@ -119,17 +114,12 @@ namespace NanoXLSX.LowLevel
         }
 
         /// <summary>
-        /// Reads the XML file form the passed stream and processes the Core section
+        /// Reads the XML file form the passed stream and processes the Core section. The existence of the stream should be checked previously
         /// </summary>
         /// <param name="stream">Stream of the XML file</param>
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public void ReadCoreData(MemoryStream stream)
         {
-            if (stream == null)
-            {
-                // No metadata available in xlsx file
-                return;
-            }
             try
             {
                 using (stream) // Close after processing
