@@ -5,7 +5,7 @@
 ---
 Release Date: **26.04.2025**
 
-- Fixed a bug that preventend adding new worksheets when a pane split was defined
+- Fixed a bug that prevented adding new worksheets when a pane split was defined
 - Changed handling of reading workbooks, when docProps are missing (formal change)
 - Added test case
 
