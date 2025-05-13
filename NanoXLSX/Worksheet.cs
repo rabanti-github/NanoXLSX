@@ -2372,26 +2372,30 @@ namespace NanoXLSX
             }
         }
 
-        /// <summary>
-        /// Sets the height of the passed row number (zero-based)
-        /// </summary>
-        /// <param name="rowNumber">Row number (zero-based, 0 to 1048575)</param>
-        /// <param name="height">Height from 0 to 409.5</param>
-        /// <exception cref="RangeException">Throws a RangeException:<br></br>a) If the passed row number is out of range<br></br>b) if the row height is out of range (0 - 409.5)</exception>
-        public void SetRowHeight(int rowNumber, float height)
+		/// <summary>
+		/// Sets the height of the passed row number (zero-based)
+		/// </summary>
+		/// <param name="rowNumber">Row number (zero-based, 0 to 1048575)</param>
+		/// <param name="height">Height from 0 to 409.5</param>
+		/// <param name="enforceHeight"></param>
+		/// <exception cref="RangeException">Throws a RangeException:<br></br>a) If the passed row number is out of range<br></br>b) if the row height is out of range (0 - 409.5)</exception>
+		public void SetRowHeight(int rowNumber, float height, bool enforceHeight = true)
         {
             Cell.ValidateRowNumber(rowNumber);
-            if (height < MIN_ROW_HEIGHT || height > MAX_ROW_HEIGHT)
+            if ((height < MIN_ROW_HEIGHT || height > MAX_ROW_HEIGHT) && enforceHeight)
             {
                 throw new RangeException("The row height (" + height + ") is out of range. Range is from " + MIN_ROW_HEIGHT + " to " + MAX_ROW_HEIGHT + " (equals 546px).");
             }
+            
+            float trimmedHeight = height > MAX_ROW_HEIGHT ? MAX_ROW_HEIGHT : height < MIN_ROW_HEIGHT ? MIN_ROW_HEIGHT : height;
+
             if (rowHeights.ContainsKey(rowNumber))
             {
-                rowHeights[rowNumber] = height;
+                rowHeights[rowNumber] = trimmedHeight;
             }
             else
             {
-                rowHeights.Add(rowNumber, height);
+                rowHeights.Add(rowNumber, trimmedHeight);
             }
         }
 

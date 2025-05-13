@@ -179,7 +179,7 @@ namespace NanoXLSX.LowLevel
                     }
                     if (row.Value.Height.HasValue)
                     {
-                        ws.SetRowHeight(row.Key, row.Value.Height.Value);
+                        ws.SetRowHeight(row.Key, row.Value.Height.Value, importOptions.EnforceAllowedRowHeight);
                     }
                 }
                 foreach (Column column in reader.Value.Columns)

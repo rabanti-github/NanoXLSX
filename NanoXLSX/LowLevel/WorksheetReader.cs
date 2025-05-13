@@ -1355,7 +1355,7 @@ namespace NanoXLSX.LowLevel
         }
 		
         /// <summary>
-        /// Get width according to ImportOptions.EnforceAllowedColumnWidth
+        /// Get width according to ImportOptions.EnforceAllowedCellSizes
         /// </summary>
         /// <param name="originalWidth">Width that should be outside allowed Min Max range</param>
         /// <returns>modified width length in case AllowedColumnWidth is not enforced otherwise originalWidth</returns>
