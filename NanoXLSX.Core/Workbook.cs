@@ -48,7 +48,7 @@ namespace NanoXLSX
         /// Optinal auxiliary data object. This object is used to store additional information about the workbook. 
         /// The data is not stored in the file but can be used by plug-ins
         /// </summary>
-        internal AuxiliaryData AuxiliaryData { get; internal set; }
+        internal AuxiliaryData AuxiliaryData { get; private set; }
 
         /// <summary>
         /// Gets the shortener object for the current worksheet

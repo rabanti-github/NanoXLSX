@@ -6,10 +6,12 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Interfaces.Reader;
+using NanoXLSX.Registry;
+using NanoXLSX.Registry.Attributes;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
@@ -18,28 +20,49 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for relationship of XLSX files
     /// </summary>
-    public class RelationshipReader : IPlugInReader
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.RELATIONSHIP_READER)]
+    public partial class RelationshipReader : IPlugInReader
     {
+        private Workbook workbook;
+        private MemoryStream stream;
+
         #region properties
 
         /// <summary>
-        /// List of workbook relationship entries
+        /// Workbook reference where read data is stored (should not be null)
         /// </summary>
-        public List<Relationship> Relationships { get; set; } = new List<Relationship>();
+        public Workbook Workbook { get => workbook; set => workbook = value; }
 
         #endregion
 
+        #region constructor 
+        /// <summary>
+        /// Default constructor - Must be defined for instantiation of the plug-ins
+        /// </summary>
+        public RelationshipReader()
+        {
+        }
+        #endregion
 
         #region functions
         /// <summary>
-        /// Reads the XML file form the passed stream and processes the workbook relationship document
+        /// Initialization method (interface implementation)
         /// </summary>
-        /// <param name="stream">Stream of the XML file</param>
-        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
-        /// <exception cref="IOException">Throws IOException in case of an error</exception>
-        public virtual void Read(MemoryStream stream)
+        /// <param name="stream">MemoryStream to be read</param>
+        /// <param name="workbook">Workbook reference</param>
+        /// <param name="readerOptions">Reader options (NoOp)</param>
+        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
         {
-            PreRead(stream);
+            this.stream = stream;
+            this.workbook = workbook;
+        }
+
+        /// <summary>
+        /// Method to execute the main logic of the plug-in (interface implementation)
+        /// </summary>
+        /// <exception cref="Exceptions.IOException">Throws an IOException in case of a error during reading</exception>
+        public void Execute()
+        {
             if (stream == null) return;
             try
             {
@@ -53,7 +76,7 @@ namespace NanoXLSX.Internal.Readers
                     xr.Load(stream);
                 }
 
-                var relationships = xr.GetElementsByTagName("Relationship");
+                XmlNodeList relationships = xr.GetElementsByTagName("Relationship");
                 foreach (XmlNode relationship in relationships)
                 {
                     string id = ReaderUtils.GetAttribute(relationship, "Id");
@@ -67,62 +90,20 @@ namespace NanoXLSX.Internal.Readers
                     {
                         target = "xl/" + target;
                     }
-                    Relationships.Add(
-                        new Relationship
-                        {
-                            Id = id,
-                            Type = type,
-                            Target = target,
-                        });
+                    Relationship rel = new Relationship
+                    {
+                        RID = id,
+                        Type = type,
+                        Target = target,
+                    };
+                    Workbook.AuxiliaryData.SetData(PlugInUUID.RELATIONSHIP_READER, PlugInUUID.RELATIONSHIP_ENTITY, id, rel);
                 }
+                RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.RELATIONSHIP_INLINE_READER);
             }
             catch (Exception ex)
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
             }
-            PostRead(stream);
-        }
-
-        /// <summary>
-        /// Method that is called before the <see cref="Read(MemoryStream)"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="stream">Stream of the XML file. The stream must be reset in this method at the end, if any stream opeartion was performed</param>
-        public virtual void PreRead(MemoryStream stream)
-        {
-            // NoOp - replaced by plugIn
-        }
-
-        /// <summary>
-        /// Method that is called after the <see cref="Read(MemoryStream)"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="stream">Stream of the XML file. The stream must be reset in this method before any stream operation is performed</param>
-        public virtual void PostRead(MemoryStream stream)
-        {
-            // NoOp - replaced by plugIn
-        }
-
-        #endregion
-
-        #region sub-classes
-        /// <summary>
-        /// Class to represent a workbook relation
-        /// </summary>
-        public class Relationship
-        {
-            /// <summary>
-            /// UD of the relation
-            /// </summary>
-            public string Id { get; set; }
-            /// <summary>
-            /// Type of the relation
-            /// </summary>
-            public string Type { get; set; }
-            /// <summary>
-            /// Target of the relation
-            /// </summary>
-            public string Target { get; set; }
         }
         #endregion
     }

@@ -28,7 +28,7 @@ namespace NanoXLSX
         /// Registers or updates a value for a given plug-in, object.
         /// </summary>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
-        /// <param name="valueId">ID of the value, representad as number (e.g. index)</param>
+        /// <param name="valueId">ID of the value, represented as number (e.g. index)</param>
         /// <param name="value">Generic value</param>
         /// \remark <remarks>The entity ID - which is neglected in this method - is automatically set to the value <see cref="DEFAULT_ENTITY_ID"/> (empty)</remarks>
         public void SetData(string plugInId, int valueId, object value)
@@ -41,7 +41,7 @@ namespace NanoXLSX
         /// Registers or updates a value for a given plug-in, object.
         /// </summary>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
-        /// <param name="valueId">ID of the value (e.g. cell addressin a worksheet)</param>
+        /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
         /// <param name="value">Generic value</param>
         /// \remark <remarks>The entity ID - which is neglected in this method - is automatically set to the value <see cref="DEFAULT_ENTITY_ID"/> (empty)</remarks>
         public void SetData(string plugInId, string valueId, object value)
@@ -53,8 +53,8 @@ namespace NanoXLSX
         /// Registers or updates a value for a given plug-in, entity, and object.
         /// </summary>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
-        /// <param name="entityId">ID of the entiy (e.g. a worksheet ID)</param>
-        /// <param name="valueId">ID of the value, representad as number (e.g. index)</param>
+        /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
+        /// <param name="valueId">ID of the value, represented as number (e.g. index)</param>
         /// <param name="value">Generic value</param>
         public void SetData(string plugInId, string entityId, int valueId, object value)
         {
@@ -66,8 +66,8 @@ namespace NanoXLSX
         /// Registers or updates a value for a given plug-in, entity, and object.
         /// </summary>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
-        /// <param name="entityId">ID of the entiy (e.g. a worksheet ID)</param>
-        /// <param name="valueId">ID of the value (e.g. cell addressin a worksheet)</param>
+        /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
+        /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
         /// <param name="value">Generic value</param>
         public void SetData(string plugInId, string entityId, string valueId, object value)
         {
@@ -90,7 +90,7 @@ namespace NanoXLSX
         /// Retrieves the value if it exists, or returns null.
         /// </summary>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
-        /// <param name="valueId">ID of the value, representad as number (e.g. index)</param>
+        /// <param name="valueId">ID of the value, represented as number (e.g. index)</param>
         /// <returns>Generic value or null, if not found</returns>
         public object GetData(string plugInId, int valueId)
         {
@@ -102,7 +102,7 @@ namespace NanoXLSX
         /// Retrieves the value if it exists, or returns null.
         /// </summary>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
-        /// <param name="valueId">ID of the value (e.g. cell addressin a worksheet)</param>
+        /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
         /// <returns>Generic value or null, if not found</returns>
         public object GetData(string plugInId, string valueId)
         {
@@ -113,8 +113,8 @@ namespace NanoXLSX
         /// Retrieves the value if it exists, or returns null.
         /// </summary>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
-        /// <param name="entityId">ID of the entiy (e.g. a worksheet ID)</param>
-        /// <param name="valueId">ID of the value, representad as number (e.g. index)</param>
+        /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
+        /// <param name="valueId">ID of the value, represented as number (e.g. index)</param>
         /// <returns>Generic value or null, if not found</returns>
         public object GetData(string plugInId, int entityId, string valueId)
         {
@@ -126,8 +126,8 @@ namespace NanoXLSX
         /// Retrieves the value if it exists, or returns null.
         /// </summary>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
-        /// <param name="entityId">ID of the entiy (e.g. a worksheet ID)</param>
-        /// <param name="valueId">ID of the value (e.g. cell addressin a worksheet)</param>
+        /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
+        /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
         /// <returns>Generic value or null, if not found</returns>
         public object GetData(string plugInId, string entityId, string valueId)
         {
@@ -143,9 +143,9 @@ namespace NanoXLSX
         /// <summary>
         /// Retrieves the typed value if it exists, or returns default (possibly null).
         /// </summary>
-        /// <typeparam name="T">Target type of the valu</typeparam>
+        /// <typeparam name="T">Target type of the value</typeparam>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
-        /// <param name="valueId">ID of the value, representad as number (e.g. index)</param>
+        /// <param name="valueId">ID of the value, represented as number (e.g. index)</param>
         /// <returns>Typed value or default (possibly null), if not found</returns>
         public T GetData<T>(string plugInId, int valueId)
         {
@@ -156,9 +156,9 @@ namespace NanoXLSX
         /// <summary>
         /// Retrieves the typed value if it exists, or returns default (possibly null).
         /// </summary>
-        /// <typeparam name="T">Target type of the valu</typeparam>
+        /// <typeparam name="T">Target type of the value</typeparam>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
-        /// <param name="valueId">ID of the value (e.g. cell addressin a worksheet)</param>
+        /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
         /// <returns>Typed value or default (possibly null), if not found</returns>
         public T GetData<T>(string plugInId, string valueId)
         {
@@ -168,10 +168,10 @@ namespace NanoXLSX
         /// <summary>
         /// Retrieves the typed value if it exists, or returns default (possibly null).
         /// </summary>
-        /// <typeparam name="T">Target type of the valu</typeparam>
+        /// <typeparam name="T">Target type of the value</typeparam>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
-        /// <param name="entityId">ID of the entiy (e.g. a worksheet ID)</param>
-        /// <param name="valueId">ID of the value, representad as number (e.g. index)</param>
+        /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
+        /// <param name="valueId">ID of the value, represented as number (e.g. index)</param>
         /// <returns>Typed value or default (possibly null), if not found</returns>
         public T GetData<T>(string plugInId, string entityId, int valueId)
         {
@@ -182,15 +182,45 @@ namespace NanoXLSX
         /// <summary>
         /// Retrieves the typed value if it exists, or returns default (possibly null).
         /// </summary>
-        /// <typeparam name="T">Target type of the valu</typeparam>
+        /// <typeparam name="T">Target type of the value</typeparam>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
-        /// <param name="entityId">ID of the entiy (e.g. a worksheet ID)</param>
-        /// <param name="valueId">ID of the value (e.g. cell addressin a worksheet)</param>
+        /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
+        /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
         /// <returns>Typed value or default (possibly null), if not found</returns>
         public T GetData<T>(string plugInId, string entityId, string valueId)
         {
             object value = GetData(plugInId, entityId, valueId);
             return value is T ? (T)value : default;
+        }
+
+        public List<T> GetDataList<T>(string plugInId)
+        {
+            return GetDataList<T>(plugInId, DEFAULT_ENTITY_ID);
+        }
+
+        public List<T> GetDataList<T>(string plugInId, string entityId)
+        {
+            List<T> result = new List<T>();
+            if (data.TryGetValue(plugInId, out Dictionary<string, Dictionary<string, object>> pluginData) &&
+                pluginData.TryGetValue(entityId, out Dictionary<string, object> entityData))
+            {
+                foreach (KeyValuePair<string, object> kvp in entityData)
+                {
+                    if (kvp.Value is T value)
+                    {
+                        result.Add(value);
+                    }
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Clears all elements from the data collection, removing any stored items.
+        /// </summary>
+        public void Clear()
+        {
+            data.Clear();
         }
     }
 }

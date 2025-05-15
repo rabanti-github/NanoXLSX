@@ -9,9 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.IO.Packaging;
 using System.Linq;
 using System.Threading.Tasks;
 using NanoXLSX.Exceptions;
+using NanoXLSX.Interfaces.Plugin;
+using NanoXLSX.Interfaces.Reader;
+using NanoXLSX.Registry;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
 using IOException = NanoXLSX.Exceptions.IOException;
@@ -24,17 +28,27 @@ namespace NanoXLSX.Internal.Readers
     public class XlsxReader
     {
 
+        //private const string WORKSHEET_DEFINTION_ID = "WORKSHEET_DEFINTION";
+
         #region privateFields
         private string filePath;
         private Stream inputStream;
         private Dictionary<int, WorksheetReader> worksheets;
         private MemoryStream memoryStream;
-        private WorkbookReader workbook;
-        private MetadataCoreReader metadataCoreReader;
-        private MetadataAppReader metadataAppReader;
-        private ThemeReader themeReader;
+        //private WorkbookReader workbook;
+        //private MetadataCoreReader metadataCoreReader;
+        //private MetadataAppReader metadataAppReader;
+        //private ThemeReader themeReader;
         private ReaderOptions readerOptions;
-        private StyleReaderContainer styleReaderContainer;
+
+        // private StyleReaderContainer styleReaderContainer;
+        #endregion
+
+        #region properties
+        /// <summary>
+        /// Gets the read workbook
+        /// </summary>
+        public Workbook Workbook { get; internal set; } = null;
         #endregion
 
         #region constructors
@@ -115,7 +129,7 @@ namespace NanoXLSX.Internal.Readers
                 throw new IOException("There was an error while reading an XLSX file. Please see the inner exception:", ex);
             }
         }
-
+        /*
         /// <summary>
         /// Resolves the workbook with all worksheets from the loaded file
         /// </summary>
@@ -178,6 +192,7 @@ namespace NanoXLSX.Internal.Readers
                     }
                     ws.SheetProtectionPassword.CopyFrom(reader.Value.PasswordReader);
                 }
+                / *
                 foreach (KeyValuePair<int, WorksheetReader.RowDefinition> row in reader.Value.Rows)
                 {
                     if (row.Value.Hidden)
@@ -189,6 +204,7 @@ namespace NanoXLSX.Internal.Readers
                         ws.SetRowHeight(row.Key, row.Value.Height.Value);
                     }
                 }
+                * /
                 foreach (Column column in reader.Value.Columns)
                 {
                     if (column.Width != Worksheet.DEFAULT_COLUMN_WIDTH)
@@ -218,7 +234,7 @@ namespace NanoXLSX.Internal.Readers
                 }
                 if (reader.Value.PaneSplitValue != null)
                 {
-                    WorksheetReader.PaneDefinition pane = reader.Value.PaneSplitValue;
+                   // WorksheetReader.PaneDefinition pane = reader.Value.PaneSplitValue;
                     if (pane.FrozenState)
                     {
                         if (pane.YSplitDefined && !pane.XSplitDefined)
@@ -260,7 +276,7 @@ namespace NanoXLSX.Internal.Readers
                 }
             }
             wb.Hidden = workbook.Hidden;
-            wb.SetSelectedWorksheet(workbook.SelectedWorksheet);
+            wb.SetSelectedWorksheet(workbook.selectedWorksheet);
             if (workbook.Protected)
             {
                 wb.SetWorkbookProtection(workbook.Protected, workbook.LockWindows, workbook.LockStructure, null);
@@ -291,6 +307,7 @@ namespace NanoXLSX.Internal.Readers
             wb.importInProgress = false;
             return wb;
         }
+        */
 
         /// <summary>
         /// Reads a file or stream asynchronously
@@ -334,12 +351,16 @@ namespace NanoXLSX.Internal.Readers
         private void ReadZip(ZipArchive zf)
         {
             MemoryStream ms;
+            Workbook wb = new Workbook();
+            HandleQueuePlugIns(PlugInUUID.READER_APPENDING_QUEUE, zf, ref wb);
 
-            SharedStringsReader sharedStrings = new SharedStringsReader(readerOptions);
+            ISharedStringReader sharedStringsReader = PlugInLoader.GetPlugIn<ISharedStringReader>(PlugInUUID.SHARED_STRINGS_READER, new SharedStringsReader());
             ms = GetEntryStream("xl/sharedStrings.xml", zf);
             if (ms != null && ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
             {
-                sharedStrings.Read(ms);
+                sharedStringsReader.Init(ms, wb, readerOptions);
+                sharedStringsReader.Execute();
+                // sharedStrings.Read(ms);
             }
             Dictionary<int, string> themeStreamNames = GetSequentialStreamNames("xl/theme/theme", zf);
             if (themeStreamNames.Count > 0)
@@ -349,56 +370,84 @@ namespace NanoXLSX.Internal.Readers
                 // (currently) only the first occurring theme will be read  
                 foreach (KeyValuePair<int, string> streamName in themeStreamNames)
                 {
-                    themeReader = new ThemeReader();
+                    IPlugInReader themeReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.THEME_READER, new ThemeReader());
+                    //themeReader = new ThemeReader();
                     ms = GetEntryStream(streamName.Value, zf);
-                    themeReader.Read(ms);
+                    themeReader.Init(ms, wb, readerOptions);
+                    themeReader.Execute();
+                    //themeReader.Read(ms);
                     break;
                 }
             }
-            StyleRepository.Instance.ImportInProgress = true;
-            StyleReader styleReader = new StyleReader();
+            StyleRepository.Instance.ImportInProgress = true; // TODO: To be checked
+            //StyleReader styleReader = new StyleReader();
+            IPlugInReader styleReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.STYLE_READER, new StyleReader());
             ms = GetEntryStream("xl/styles.xml", zf);
-            styleReader.Read(ms);
-            styleReaderContainer = styleReader.StyleReaderContainer;
+            styleReader.Init(ms, wb, readerOptions);
+            styleReader.Execute();
+            //styleReader.Read(ms);
+            //styleReaderContainer = styleReader.StyleReaderContainer;
             StyleRepository.Instance.ImportInProgress = false;
 
-            workbook = new WorkbookReader();
+           // workbook = new WorkbookReader();
             ms = GetEntryStream("xl/workbook.xml", zf);
-            workbook.Read(ms);
+            IPlugInReader workbookReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.WORKBOOK_READER, new WorkbookReader());
+            workbookReader.Init(ms, wb, readerOptions);
+            workbookReader.Execute();
 
-            metadataAppReader = new MetadataAppReader();
+            //metadataAppReader = new MetadataAppReader();
+            
             ms = GetEntryStream("docProps/app.xml", zf);
             if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/app.xml seems to be defined 
             {
-                metadataAppReader.Read(ms);
+                IPlugInReader metadataAppReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.METADATA_APP_READER, new MetadataAppReader());
+                metadataAppReader.Init(ms, wb, readerOptions);
+                metadataAppReader.Execute();
+               // metadataAppReader.Read(ms);
             }
-            metadataCoreReader = new MetadataCoreReader();
+            //metadataCoreReader = new MetadataCoreReader();
             ms = GetEntryStream("docProps/core.xml", zf);
             if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/core.xml seems to be defined 
             {
-                metadataCoreReader.Read(ms);
+                IPlugInReader metadataCoreReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.METADATA_CORE_READER, new MetadataCoreReader());
+                metadataCoreReader.Init(ms, wb, readerOptions);
+                metadataCoreReader.Execute();
             }
 
-            RelationshipReader relationships = new RelationshipReader();
-            relationships.Read(GetEntryStream("xl/_rels/workbook.xml.rels", zf));
+            IPlugInReader relationships = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.RELATIONSHIP_READER, new RelationshipReader());
+            relationships.Init(ms, wb, readerOptions);
+            relationships.Execute();
+            //RelationshipReader relationships = new RelationshipReader();
+            //relationships.Read(GetEntryStream("xl/_rels/workbook.xml.rels", zf));
 
-            WorksheetReader wr;
-            foreach (KeyValuePair<int, WorkbookReader.WorksheetDefinition> definition in workbook.WorksheetDefinitions)
+            //WorksheetReader wr;
+            IWorksheetReader worksheetReader = PlugInLoader.GetPlugIn<IWorksheetReader>(PlugInUUID.WORKSHEET_READER, new WorksheetReader());
+            worksheetReader.SharedStrings = sharedStringsReader.SharedStrings;
+            List<WorksheetDefinition> workshetDefinitions = wb.AuxiliaryData.GetDataList<WorksheetDefinition>(PlugInUUID.WORKBOOK_READER, PlugInUUID.WORKSHEET_DEFINITION_ENTITY);
+            List<Relationship> relationshipDefinitions = wb.AuxiliaryData.GetDataList<Relationship>(PlugInUUID.RELATIONSHIP_READER, PlugInUUID.RELATIONSHIP_ENTITY);
+            //foreach (KeyValuePair<int, WorkbookReader.WorksheetDefinition> definition in workbook.WorksheetDefinitions)
+            foreach (WorksheetDefinition definition in workshetDefinitions)
             {
-                RelationshipReader.Relationship relationship = relationships.Relationships.SingleOrDefault(r => r.Id == definition.Value.RelId);
+                Relationship relationship = relationshipDefinitions.SingleOrDefault(r => r.RID == definition.RelId);
+                //Relationship relationship = relationships.Relationships.SingleOrDefault(r => r.Id == definition.Value.RelId);
                 if (relationship == null)
                 {
-                    throw new IOException("There was an error while reading an XLSX file. The relationship target of the worksheet with the RelID " + definition.Value.RelId + " was not found");
+                    throw new IOException("There was an error while reading an XLSX file. The relationship target of the worksheet with the RelID " + definition.RelId + " was not found");
                 }
                 ms = GetEntryStream(relationship.Target, zf);
-                wr = new WorksheetReader(sharedStrings, styleReaderContainer, readerOptions);
-                wr.Read(ms);
-                worksheets.Add(definition.Key, wr);
+                worksheetReader.Init(ms, wb, readerOptions);
+                worksheetReader.CurrentWorksheetID = relationship.GetID();
+                worksheetReader.Execute();
+                //wr = new WorksheetReader(sharedStrings, styleReaderContainer, readerOptions);
+                //wr.Read(ms);
+                //worksheets.Add(definition.Key, wr);
             }
             if (this.worksheets.Count == 0)
             {
                 throw new IOException("No worksheet was found in the workbook");
             }
+            HandleQueuePlugIns(PlugInUUID.READER_APPENDING_QUEUE, zf, ref wb);
+            this.Workbook = wb;
         }
 
         /// <summary>
@@ -424,6 +473,12 @@ namespace NanoXLSX.Internal.Readers
             return stream;
         }
 
+        /// <summary>
+        /// Gets a map of all packed filenames that are matching the given prefix
+        /// </summary>
+        /// <param name="namePrefix">filename prefix</param>
+        /// <param name="archive">Zip archive instance</param>
+        /// <returns>Dictionary of filename, where the key is the extracted index of the filename</returns>
         private Dictionary<int, string> GetSequentialStreamNames(string namePrefix, ZipArchive archive)
         {
             Dictionary<int, string> files = new Dictionary<int, string>();
@@ -444,6 +499,48 @@ namespace NanoXLSX.Internal.Readers
                 index++;
             }
             return files;
+        }
+
+        /// <summary>
+        /// Method to handle queue plug-ins
+        /// </summary>
+        /// <param name="queueUuid">Queue UUID</param>
+        /// <param name="zf">Zip archive</param>
+        /// <param name="workbook">Workbook reference</param>
+        private void HandleQueuePlugIns(string queueUuid, ZipArchive zf, ref Workbook workbook)
+        {
+            IPlugInReader queueReader = null;
+            string lastUuid = null;
+            do
+            {
+                string currentUuid;
+                queueReader = PlugInLoader.GetNextQueuePlugIn<IPlugInReader>(queueUuid, lastUuid, out currentUuid);
+                MemoryStream ms = null;
+                if (queueReader != null)
+                {
+                    if (queueReader is IPlugInPackageReader)
+                    {
+                       string streamPartName = (queueReader as IPlugInPackageReader).StreamEntryName;
+                        if (!string.IsNullOrEmpty(streamPartName))
+                        {
+                            ms = GetEntryStream(streamPartName, zf);
+                            if (ms == null)
+                            {
+                                lastUuid = currentUuid;
+                                continue; // Skip if the stream part name was defined but not found
+                            }
+                        }
+                    }
+                    queueReader.Init(ms, workbook, this.readerOptions); // stream may be null
+                    queueReader.Execute();
+                    lastUuid = currentUuid;
+                }
+                else
+                {
+                    lastUuid = null;
+                }
+
+            } while (queueReader != null);
         }
 
         #endregion

@@ -298,7 +298,7 @@ namespace NanoXLSX.Internal.Writers
                     AppendXmlToPackagePart(styleWriter.XmlElement, part);
 
                     // Shared strings - preparation
-                    SharedStringWriter = PlugInLoader.GetPlugIn<ISharedStringWriter>(PlugInUUID.SHARED_STRING_WRITER, new SharedStringWriter());
+                    SharedStringWriter = PlugInLoader.GetPlugIn<ISharedStringWriter>(PlugInUUID.SHARED_STRINGS_WRITER, new SharedStringWriter());
                     SharedStringWriter.Init(this);
                     // Worksheets
                     IWorksheetWriter worksheetWriter = PlugInLoader.GetPlugIn<IWorksheetWriter>(PlugInUUID.WORKSHEET_WRITER, new WorksheetWriter());

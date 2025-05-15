@@ -5,6 +5,7 @@ using System.IO;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
+using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using NanoXLSX.Utils.Xml;
 using Xunit;
@@ -173,7 +174,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.SHARED_STRING_WRITER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.SHARED_STRINGS_WRITER)]
         public class ReplaceSharedStringWriter : ISharedStringWriter
         {
             private string testValue = "test";

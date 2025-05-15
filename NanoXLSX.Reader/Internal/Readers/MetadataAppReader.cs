@@ -8,52 +8,67 @@
 using System;
 using System.IO;
 using System.Xml;
+using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Interfaces.Reader;
+using NanoXLSX.Registry;
+using NanoXLSX.Registry.Attributes;
 
 namespace NanoXLSX.Internal.Readers
 {
     /// <summary>
     /// Class representing a reader for the App metadata file (docProps) embedded in XLSX files
     /// </summary>
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.METADATA_APP_READER)]
     public class MetadataAppReader : IPlugInReader
     {
+        private MemoryStream stream;
+
         #region properties
         /// <summary>
-        /// Application that has created an XLSX file. This is an arbitrary text and the default of this library is "NanoXLSX"
+        /// Workbook reference where read data is stored (should not be null)
         /// </summary>
-        public string Application { get; private set; }
+        public Workbook Workbook { get; set; }
+        #endregion
+
+        #region constructors
         /// <summary>
-        /// Version of the application that has created an XLSX file
+        /// Default constructor - Must be defined for instantiation of the plug-ins
         /// </summary>
-        public string ApplicationVersion { get; private set; }
-        /// <summary>
-        /// Responsible company of an XLSX file
-        /// </summary>
-        public string Company { get; private set; }
-        /// <summary>
-        /// Manager (responsible) of the XLSX file
-        /// </summary>
-        public string Manager { get; private set; }
-        /// <summary>
-        /// Hyperlink base of the XLSX file
-        /// </summary>
-        public string HyperlinkBase { get; private set; }
+        internal MetadataAppReader()
+        {
+        }
+
         #endregion
 
         #region methods
         /// <summary>
-        /// Reads the XML file form the passed stream and processes the AppData section. The existence of the stream should be checked previously
+        /// Initialization method (interface implementation)
         /// </summary>
-        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
-        /// <param name="stream">Stream of the XML file</param>
-        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
-        public virtual void Read(MemoryStream stream)
+        /// <param name="stream">MemoryStream to be read</param>
+        /// <param name="workbook">Workbook reference</param>
+        /// <param name="readerOptions">Reader options (NoOp)</param>
+        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
         {
-            PreRead(stream);
+            this.stream = stream;
+            this.Workbook = workbook;
+        }
+
+        /// <summary>
+        /// Method to execute the main logic of the plug-in (interface implementation)
+        /// </summary>
+        /// <exception cref="Exceptions.IOException">Throws an IOException in case of a error during reading</exception>
+        public void Execute()
+        {
             try
             {
                 using (stream) // Close after processing
                 {
+                    if (Workbook.WorkbookMetadata == null)
+                    {
+                        Workbook.WorkbookMetadata = new Metadata();
+                    }
+                    Metadata metadata = Workbook.WorkbookMetadata;
+
                     XmlDocument xr = new XmlDocument();
                     xr.XmlResolver = null;
                     xr.Load(stream);
@@ -61,54 +76,33 @@ namespace NanoXLSX.Internal.Readers
                     {
                         if (node.LocalName.Equals("Application", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            this.Application = node.InnerText;
+                            metadata.Application = node.InnerText;
                         }
                         else if (node.LocalName.Equals("AppVersion", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            this.ApplicationVersion = node.InnerText;
+                            metadata.ApplicationVersion = node.InnerText;
                         }
                         else if (node.LocalName.Equals("Company", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            this.Company = node.InnerText;
+                            metadata.Company = node.InnerText;
                         }
                         else if (node.LocalName.Equals("Manager", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            this.Manager = node.InnerText;
+                            metadata.Manager = node.InnerText;
                         }
                         else if (node.LocalName.Equals("HyperlinkBase", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            this.HyperlinkBase = node.InnerText;
+                            metadata.HyperlinkBase = node.InnerText;
                         }
                     }
+                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.METADATA_APP_INLINE_READER);
                 }
             }
             catch (Exception ex)
             {
-                throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
+                throw new NanoXLSX.Exceptions.IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
             }
-            PostRead(stream);
         }
-
-        /// <summary>
-        /// Method that is called before the <see cref="Read(MemoryStream)"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="stream">Stream of the XML file. The stream must be reset in this method at the end, if any stream opeartion was performed</param>
-        public virtual void PreRead(MemoryStream stream)
-        {
-            // NoOp - replaced by plugIn
-        }
-
-        /// <summary>
-        /// Method that is called after the <see cref="Read(MemoryStream)"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="stream">Stream of the XML file. The stream must be reset in this method before any stream operation is performed</param>
-        public virtual void PostRead(MemoryStream stream)
-        {
-            // NoOp - replaced by plugIn
-        }
-
         #endregion
     }
 }

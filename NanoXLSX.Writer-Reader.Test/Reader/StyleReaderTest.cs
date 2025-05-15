@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using System.Text;
+using NanoXLSX.Internal;
 using NanoXLSX.Internal.Readers;
+using NanoXLSX.Registry;
 using NanoXLSX.Styles;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
@@ -70,10 +72,12 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             using (MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
             {
+                Workbook workbook = new Workbook("test");
                 StyleReader styleReader = new StyleReader();
-                styleReader.Read(memStream);
-
-                NumberFormat numberFormat = styleReader.StyleReaderContainer.GetNumberFormat(formatId);
+                styleReader.Init(memStream, workbook, new ReaderOptions());
+                styleReader.Execute();
+                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY);
+                NumberFormat numberFormat = styleReaderContainer.GetNumberFormat(formatId);
                 Assert.NotNull(numberFormat);
             }
         }
@@ -96,10 +100,12 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             using (MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
             {
+                Workbook workbook = new Workbook("test");
                 StyleReader styleReader = new StyleReader();
-                styleReader.Read(memStream);
-
-                NumberFormat numberFormat = styleReader.StyleReaderContainer.GetNumberFormat(formatId);
+                styleReader.Init(memStream, workbook, new ReaderOptions());
+                styleReader.Execute();
+                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY);
+                NumberFormat numberFormat = styleReaderContainer.GetNumberFormat(formatId);
                 Assert.Null(numberFormat);
             }
         }
@@ -109,11 +115,14 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             using (MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
             {
+                Workbook workbook = new Workbook("test");
                 StyleReader styleReader = new StyleReader();
-                styleReader.Read(memStream);
+                styleReader.Init(memStream, workbook, new ReaderOptions());
+                styleReader.Execute();
+                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY);
 
-                Style zeroStyle = styleReader.StyleReaderContainer.GetStyle(0, out _, out _);
-                Style firstStyle = styleReader.StyleReaderContainer.GetStyle(1, out _, out _);
+                Style zeroStyle = styleReaderContainer.GetStyle(0, out _, out _);
+                Style firstStyle = styleReaderContainer.GetStyle(1, out _, out _);
 
                 Assert.Same(zeroStyle.CurrentNumberFormat, firstStyle.CurrentNumberFormat);
             }
@@ -125,11 +134,15 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             using (MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
             {
+                Workbook workbook = new Workbook("test");
                 StyleReader styleReader = new StyleReader();
-                styleReader.Read(memStream);
-                Assert.Equal(15, styleReader.StyleReaderContainer.StyleCount);
+                styleReader.Init(memStream, workbook, new ReaderOptions());
+                styleReader.Execute();
+                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY);
 
-                FormatNumber formatNumber = styleReader.StyleReaderContainer.GetStyle(14, out var isDateStyle, out _).CurrentNumberFormat.Number;
+                Assert.Equal(15, styleReaderContainer.StyleCount);
+
+                FormatNumber formatNumber = styleReaderContainer.GetStyle(14, out var isDateStyle, out _).CurrentNumberFormat.Number;
 
                 Assert.True(isDateStyle);
                 Assert.Equal(FormatNumber.format_14, formatNumber);

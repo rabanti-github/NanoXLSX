@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
+using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using NanoXLSX.Utils.Xml;
 using Xunit;
@@ -66,7 +67,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 RootElement.AddChildElementWithValue("test", testValue);
             }
 
-            public void Init(ref XmlElement rootElement, Workbook workbook)
+            public void Init(ref XmlElement rootElement, Workbook workbook, int? index = null)
             {
                 this.Workbook = workbook;
                 this.RootElement = rootElement;
@@ -98,7 +99,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 RootElement.AddChildElementWithValue("test", testValue);
             }
 
-            public void Init(ref XmlElement rootElement, Workbook workbook)
+            public void Init(ref XmlElement rootElement, Workbook workbook, int? index = null)
             {
                 this.Workbook = workbook;
                 this.RootElement = rootElement;
@@ -130,7 +131,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 RootElement.AddChildElementWithValue("test", testValue);
             }
 
-            public void Init(ref XmlElement rootElement, Workbook workbook)
+            public void Init(ref XmlElement rootElement, Workbook workbook, int? index = null)
             {
                 this.Workbook = workbook;
                 this.RootElement = rootElement;
@@ -162,7 +163,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 RootElement.AddChildElementWithValue("test", testValue);
             }
 
-            public void Init(ref XmlElement rootElement, Workbook workbook)
+            public void Init(ref XmlElement rootElement, Workbook workbook, int? index = null)
             {
                 this.Workbook = workbook;
                 this.RootElement = rootElement;
@@ -194,7 +195,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 RootElement.AddChildElementWithValue("test", testValue);
             }
 
-            public void Init(ref XmlElement rootElement, Workbook workbook)
+            public void Init(ref XmlElement rootElement, Workbook workbook, int? index = null)
             {
                 this.Workbook = workbook;
                 this.RootElement = rootElement;
@@ -226,7 +227,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 RootElement.AddChildElementWithValue("test", testValue);
             }
 
-            public void Init(ref XmlElement rootElement, Workbook workbook)
+            public void Init(ref XmlElement rootElement, Workbook workbook, int? index = null)
             {
                 this.Workbook = workbook;
                 this.RootElement = rootElement;
@@ -258,7 +259,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 RootElement.AddChildElementWithValue("test", testValue);
             }
 
-            public void Init(ref XmlElement rootElement, Workbook workbook)
+            public void Init(ref XmlElement rootElement, Workbook workbook, int? index = null)
             {
                 this.Workbook = workbook;
                 this.RootElement = rootElement;

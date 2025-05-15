@@ -17,7 +17,7 @@ namespace NanoXLSX.Internal.Writers
     /// <summary>
     /// Class to generate the shared strings XML file in a XLSX file.
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.SHARED_STRING_WRITER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.SHARED_STRINGS_WRITER)]
     internal class SharedStringWriter : ISharedStringWriter
     {
         private XmlElement sst;
@@ -86,7 +86,7 @@ namespace NanoXLSX.Internal.Writers
                 sst.AddChildElement(child);
             }
 
-            WriterPlugInHandler.HandleInlineQueuePlugins(ref sst, Workbook, PlugInUUID.SHARED_QUEUE_STRING_WRITER);
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref sst, Workbook, PlugInUUID.SHARED_STRINGS_INLINE_WRITER);
         }
         #endregion
     }

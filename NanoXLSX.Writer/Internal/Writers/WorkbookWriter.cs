@@ -74,7 +74,7 @@ namespace NanoXLSX.Internal.Writers
                 workbookPr.AddAttribute("defaultThemeVersion", Theme.DEFAULT_THEME_VERSION);
                 // TODO: add further workbook properties here
             }
-            if (wb.SelectedWorksheet > 0 || wb.Hidden)
+            if (wb.SelectedWorksheet > 0 || wb.Hidden || HasPaneSplitting() )
             {
                 XmlElement bookViews = workbook.AddChildElement("bookViews");
                 XmlElement workbookView = bookViews.AddChildElement("workbookView");
@@ -139,6 +139,23 @@ namespace NanoXLSX.Internal.Writers
             }
             return workbookProtection;
         }
+
+        /// <summary>
+        /// Checks whether pane splitting is applied in any worksheet
+        /// </summary>
+        /// <returns>True if applied in any worksheet, otherwise false</returns>
+        private bool HasPaneSplitting()
+        {
+            foreach (Worksheet worksheet in Workbook.Worksheets)
+            {
+                if (worksheet.PaneSplitLeftWidth != null || worksheet.PaneSplitTopHeight != null || worksheet.PaneSplitAddress != null)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         #endregion
 
     }

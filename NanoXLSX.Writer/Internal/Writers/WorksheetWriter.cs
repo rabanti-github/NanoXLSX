@@ -125,7 +125,7 @@ namespace NanoXLSX.Internal.Writers
                 worksheet.AddChildElementWithAttribute("autoFilter", "ref", ws.AutoFilterRange.Value.ToString());
             }
 
-            WriterPlugInHandler.HandleInlineQueuePlugins(ref worksheet, Workbook, PlugInUUID.WORKSHEET_INLINE_WRITER);
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref worksheet, Workbook, PlugInUUID.WORKSHEET_INLINE_WRITER, currentWorksheet.SheetID);
         }
 
         /// <summary>

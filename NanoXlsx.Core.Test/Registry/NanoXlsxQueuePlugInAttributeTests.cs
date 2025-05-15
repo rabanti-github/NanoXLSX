@@ -1,4 +1,4 @@
-﻿using NanoXLSX.Registry;
+﻿using NanoXLSX.Registry.Attributes;
 using Xunit;
 
 namespace NanoXLSX.Test.Core.RegistryTest

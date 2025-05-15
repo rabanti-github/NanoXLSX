@@ -10,9 +10,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml;
+using NanoXLSX.Exceptions;
+using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Interfaces.Reader;
+using NanoXLSX.Registry;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
+using static NanoXLSX.Internal.Enums.ReaderPassword;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
@@ -20,202 +24,102 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for worksheets of XLSX files
     /// </summary>
-    public class WorksheetReader : IPlugInReader
+    public class WorksheetReader : IWorksheetReader
     {
         #region privateFields
-
-        private SharedStringsReader sharedStrings;
+        private MemoryStream stream;
         private ReaderOptions readerOptions;
-        private List<string> dateStyles;
-        private List<string> timeStyles;
-        private Dictionary<string, Style> resolvedStyles;
+        private List<string> dateStyles = null;
+        private List<string> timeStyles = null;
+        private Dictionary<string, Style> resolvedStyles = null;
+        private IPasswordReader passwordReader = null;
         #endregion
 
         #region properties
 
         /// <summary>
-        /// Gets the data of the worksheet as Dictionary of cell address-cell object tuples
+        /// Workbook reference where read data is stored (should not be null)
         /// </summary>
-        /// <value>
-        /// Dictionary of cell address-cell object tuples
-        /// </value>
-        public Dictionary<string, Cell> Data { get; private set; }
+        public Workbook Workbook { get; set; }
+        /// <summary>
+        /// Gets or sets the (r)ID of the current worksheet
+        /// </summary>
+        public int CurrentWorksheetID { get; set; }
 
         /// <summary>
-        /// Gets the assignment of resolved styles to cell addresses
+        /// Gets or Sets the list of the shared strings. The index of the list corresponds to the index, defined in cell values
         /// </summary>
-        /// <value>Dictionary of cell address-style number tuples</value>
-        public Dictionary<string, string> StyleAssignment { get; private set; } = new Dictionary<string, string>();
+        public List<String> SharedStrings { get; set; }
 
-        /// <summary>
-        /// Gets the auto filter range. If null, no auto filters were defined
-        /// </summary>
-        public Range? AutoFilterRange { get; private set; }
-        /// <summary>
-        /// Gets a list of defined Columns
-        /// </summary>
-        public List<Column> Columns { get; private set; } = new List<Column>();
-
-        /// <summary>
-        /// Gets the default column width if defined, otherwise null
-        /// </summary>
-        public float? DefaultColumnWidth { get; private set; } = null;
-
-        /// <summary>
-        /// Gets the default row height if defined, otherwise null
-        /// </summary>
-        public float? DefaultRowHeight { get; private set; } = null;
-
-        /// <summary>
-        /// Gets a dictionary of internal Row definitions
-        /// </summary>
-        public Dictionary<int, RowDefinition> Rows { get; private set; } = new Dictionary<int, RowDefinition>();
-        /// <summary>
-        /// Gets a list of merged cells
-        /// </summary>
-        public List<Range> MergedCells { get; private set; } = new List<Range>();
-
-        /// <summary>
-        /// Gets the selected cells (panes are currently not considered)
-        /// </summary>
-        public List<Range> SelectedCells { get; private set; } = new List<Range>();
-
-        /// <summary>
-        /// Gets the applicable worksheet protection values
-        /// </summary>
-        public Dictionary<Worksheet.SheetProtectionValue, int> WorksheetProtection { get; private set; } = new Dictionary<Worksheet.SheetProtectionValue, int>();
-
-        /// <summary>
-        /// Gets the (legacy) password hash of a worksheet if protection values are applied with a password
-        /// </summary>
-      //  public string WorksheetProtectionHash { get; private set; }
-
-        /// <summary>
-        /// Gets the definition of pane split-related information 
-        /// </summary>
-        public PaneDefinition PaneSplitValue { get; private set; }
-
-        /// <summary>
-        /// Gets whether grid lines are shown
-        /// </summary>
-        public bool ShowGridLines { get; private set; } = true; // default
-
-        /// <summary>
-        /// Gets whether column and row headers are shown
-        /// </summary>
-        public bool ShowRowColHeaders { get; private set; } = true; // default
-
-        /// <summary>
-        /// Gets whether rulers are shown in view type: pageLayout
-        /// </summary>
-        public bool ShowRuler { get; private set; } = true; // default
-
-        /// <summary>
-        /// Gets the sheet view type of the current worksheet
-        /// </summary>
-        public Worksheet.SheetViewType ViewType { get; private set; } = Worksheet.SheetViewType.normal; // default
-        /// <summary>
-        /// Gets the zoom factor of the current view type
-        /// </summary>
-        public int CurrentZoomScale { get; private set; } = 100; // default
-        /// <summary>
-        /// Gets all preserved zoom factors of the worksheet
-        /// </summary>
-        public Dictionary<Worksheet.SheetViewType, int> ZoomFactors { get; private set; } = new Dictionary<Worksheet.SheetViewType, int>();
-
-        public IPasswordReader PasswordReader { get; internal set; }
-
+       
         #endregion
 
         #region constructors
 
         /// <summary>
-        /// Constructor with parameters
+        /// Default constructor - Must be defined for instantiation of the plug-ins
         /// </summary>
-        /// <param name="sharedStrings">SharedStringsReader object</param>
-        /// <param name="styleReaderContainer">Resolved styles, used to determine dates or times</param>
-        /// <param name="options">Import options to override the automatic approach of the reader. <see cref="ReaderOptions"/> for information about import options.</param>
-        public WorksheetReader(SharedStringsReader sharedStrings, StyleReaderContainer styleReaderContainer, ReaderOptions options = null)
+        public WorksheetReader()
         {
-            readerOptions = options;
-            Data = new Dictionary<string, Cell>();
-            this.sharedStrings = sharedStrings;
-            // TODO add hook to replace instance
-            this.PasswordReader = new LegacyPasswordReader(LegacyPasswordReader.PasswordType.WORKSHEET_PROTECTION);
-            ProcessStyles(styleReaderContainer);
         }
 
         #endregion
 
         #region functions
+
         /// <summary>
-        /// Reads the XML file form the passed stream and processes the worksheet data
+        /// Initialization method (interface implementation)
         /// </summary>
-        /// <param name="stream">Stream of the XML file</param>
-        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
-        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
-        public virtual void Read(MemoryStream stream)
+        /// <param name="stream">MemoryStream to be read</param>
+        /// <param name="workbook">Workbook reference</param>
+        /// <param name="readerOptions">Reader options</param>
+        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
         {
-            PreRead(stream);
+            this.stream = stream;
+            this.Workbook = workbook;
+            this.readerOptions = readerOptions as ReaderOptions;
+            if (dateStyles == null || timeStyles == null || this.resolvedStyles == null)
+            {
+                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY);
+                ProcessStyles(styleReaderContainer);
+            }
+            if (this.passwordReader == null)
+            {
+                this.passwordReader = PlugInLoader.GetPlugIn<IPasswordReader>(PlugInUUID.PASSWORD_READER, new LegacyPasswordReader());
+                this.passwordReader.Init(PasswordType.WORKSHEET_PROTECTION, this.readerOptions);
+            }
+        }
+
+        /// <summary>
+        /// Method to execute the main logic of the plug-in (interface implementation)
+        /// </summary>
+        /// <exception cref="Exceptions.IOException">Throws an IOException in case of a error during reading</exception>
+        public void Execute()
+        {
             try
             {
+                WorksheetDefinition worksheetDefinition = Workbook.AuxiliaryData.GetData<WorksheetDefinition>(PlugInUUID.WORKBOOK_READER, PlugInUUID.WORKSHEET_DEFINITION_ENTITY, CurrentWorksheetID);
+                Worksheet worksheet = new Worksheet(worksheetDefinition.WorksheetName, CurrentWorksheetID, Workbook);
                 using (stream) // Close after processing
                 {
-                    XmlDocument xr = new XmlDocument();
-                    xr.XmlResolver = null;
-                    xr.Load(stream);
-                    XmlNodeList rows = xr.GetElementsByTagName("row");
-                    foreach (XmlNode row in rows)
-                    {
-                        string rowAttribute = ReaderUtils.GetAttribute(row, "r");
-                        if (rowAttribute != null)
-                        {
-                            string hiddenAttribute = ReaderUtils.GetAttribute(row, "hidden");
-                            RowDefinition.AddRowDefinition(Rows, rowAttribute, null, hiddenAttribute);
-                            string heightAttribute = ReaderUtils.GetAttribute(row, "ht");
-                            RowDefinition.AddRowDefinition(Rows, rowAttribute, heightAttribute, null);
-                        }
-                        if (row.HasChildNodes)
-                        {
-                            foreach (XmlNode rowChild in row.ChildNodes)
-                            {
-                                ReadCell(rowChild);
-                            }
-                        }
-                    }
-                    GetSheetView(xr);
-                    GetMergedCells(xr);
-                    GetSheetFormats(xr);
-                    GetAutoFilters(xr);
-                    GetColumns(xr);
-                    GetSheetProtection(xr);
+                    XmlDocument document = new XmlDocument();
+                    document.XmlResolver = null;
+                    document.Load(stream);
+                    GetRows(document, worksheet);
+                    GetSheetView(document, worksheet);
+                    GetMergedCells(document, worksheet);
+                    GetSheetFormats(document, worksheet);
+                    GetAutoFilters(document, worksheet);
+                    GetColumns(document, worksheet);
+                    GetSheetProtection(document, worksheet);
+                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WORKSHEET_INLINE_READER, CurrentWorksheetID);
                 }
+                Workbook.AddWorksheet(worksheet);
             }
             catch (Exception ex)
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
             }
-            PostRead(stream);
-        }
-
-        /// <summary>
-        /// Method that is called before the <see cref="Read(MemoryStream)"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="stream">Stream of the XML file. The stream must be reset in this method at the end, if any stream opeartion was performed</param>
-        public virtual void PreRead(MemoryStream stream)
-        {
-            // NoOp - replaced by plugIn
-        }
-
-        /// <summary>
-        /// Method that is called after the <see cref="Read(MemoryStream)"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="stream">Stream of the XML file. The stream must be reset in this method before any stream operation is performed</param>
-        public virtual void PostRead(MemoryStream stream)
-        {
-            // NoOp - replaced by plugIn
         }
 
         /// <summary>
@@ -224,9 +128,9 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="styleReaderContainer">Resolved styles from the style reader</param>
         private void ProcessStyles(StyleReaderContainer styleReaderContainer)
         {
-            dateStyles = new List<string>();
-            timeStyles = new List<string>();
-            resolvedStyles = new Dictionary<string, Style>();
+            this.dateStyles = new List<string>();
+            this.timeStyles = new List<string>();
+            this.resolvedStyles = new Dictionary<string, Style>();
             for (int i = 0; i < styleReaderContainer.StyleCount; i++)
             {
                 bool isDate;
@@ -235,13 +139,52 @@ namespace NanoXLSX.Internal.Readers
                 Style style = styleReaderContainer.GetStyle(i, out isDate, out isTime);
                 if (isDate)
                 {
-                    dateStyles.Add(index);
+                    this.dateStyles.Add(index);
                 }
                 if (isTime)
                 {
-                    timeStyles.Add(index);
+                    this.timeStyles.Add(index);
                 }
-                resolvedStyles.Add(index, style);
+                this.resolvedStyles.Add(index, style);
+            }
+        }
+
+        /// <summary>
+        /// Gets the row definitions of the current worksheet
+        /// </summary>
+        /// <param name="document">XML document of the current worksheet</param>
+        /// <param name="worksheet">Currently processed worksheet</param>
+        private void GetRows(XmlDocument document, Worksheet worksheet)
+        {
+            XmlNodeList rows = document.GetElementsByTagName("row");
+            foreach (XmlNode row in rows)
+            {
+                string rowAttribute = ReaderUtils.GetAttribute(row, "r");
+                if (rowAttribute != null)
+                {
+                    int rowNumber = ParserUtils.ParseInt(rowAttribute) - 1; // Transform to zero-based
+                    string hiddenAttribute = ReaderUtils.GetAttribute(row, "hidden");
+                    if (hiddenAttribute != null)
+                    {
+                        int value = ParserUtils.ParseBinaryBool(hiddenAttribute);
+                        if (value == 1)
+                        {
+                            worksheet.AddHiddenRow(rowNumber);
+                        }
+                    }
+                    string heightAttribute = ReaderUtils.GetAttribute(row, "ht");
+                    if (heightAttribute != null)
+                    {
+                        worksheet.RowHeights.Add(rowNumber, ParserUtils.ParseFloat(heightAttribute));
+                    }
+                }
+                if (row.HasChildNodes)
+                {
+                    foreach (XmlNode rowChild in row.ChildNodes)
+                    {
+                        ReadCell(rowChild, worksheet);
+                    }
+                }
             }
         }
 
@@ -249,7 +192,8 @@ namespace NanoXLSX.Internal.Readers
         /// Gets the selected cells of the current worksheet
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
-        private void GetSheetView(XmlDocument xmlDocument)
+        /// <param name="worksheet">Currently processed worksheet</param>
+        private void GetSheetView(XmlDocument xmlDocument, Worksheet worksheet)
         {
             XmlNodeList sheetViewsNodes = xmlDocument.GetElementsByTagName("sheetViews");
             if (sheetViewsNodes != null && sheetViewsNodes.Count > 0)
@@ -265,46 +209,46 @@ namespace NanoXLSX.Internal.Readers
                         Worksheet.SheetViewType viewType;
                         if (Enum.TryParse<Worksheet.SheetViewType>(attribute, out viewType))
                         {
-                            ViewType = viewType;
+                            worksheet.ViewType = viewType;
                         }
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "zoomScale");
                     if (attribute != null)
                     {
-                        CurrentZoomScale = ParserUtils.ParseInt(attribute);
+                        worksheet.ZoomFactor = ParserUtils.ParseInt(attribute);
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "zoomScaleNormal");
                     if (attribute != null)
                     {
                         int scale = ParserUtils.ParseInt(attribute);
-                        ZoomFactors.Add(Worksheet.SheetViewType.normal, scale);
+                        worksheet.ZoomFactors.Add(Worksheet.SheetViewType.normal, scale);
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "zoomScalePageLayoutView");
                     if (attribute != null)
                     {
                         int scale = ParserUtils.ParseInt(attribute);
-                        ZoomFactors.Add(Worksheet.SheetViewType.pageLayout, scale);
+                        worksheet.ZoomFactors.Add(Worksheet.SheetViewType.pageLayout, scale);
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "zoomScaleSheetLayoutView");
                     if (attribute != null)
                     {
                         int scale = ParserUtils.ParseInt(attribute);
-                        ZoomFactors.Add(Worksheet.SheetViewType.pageBreakPreview, scale);
+                        worksheet.ZoomFactors.Add(Worksheet.SheetViewType.pageBreakPreview, scale);
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "showGridLines");
                     if (attribute != null)
                     {
-                        ShowGridLines = ParserUtils.ParseBinaryBool(attribute) == 1;
+                        worksheet.ShowGridLines = ParserUtils.ParseBinaryBool(attribute) == 1;
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "showRowColHeaders");
                     if (attribute != null)
                     {
-                        ShowRowColHeaders = ParserUtils.ParseBinaryBool(attribute) == 1;
+                        worksheet.ShowRowColumnHeaders = ParserUtils.ParseBinaryBool(attribute) == 1;
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "showRuler");
                     if (attribute != null)
                     {
-                        ShowRuler = ParserUtils.ParseBinaryBool(attribute) == 1;
+                        worksheet.ShowRuler = ParserUtils.ParseBinaryBool(attribute) == 1;
                     }
                     if (sheetView.LocalName.Equals("sheetView", StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -322,12 +266,12 @@ namespace NanoXLSX.Internal.Readers
                                         string[] ranges = attribute.Split(' ');
                                         foreach (string range in ranges)
                                         {
-                                            CollectSelectedCells(range);
+                                            CollectSelectedCells(range, worksheet);
                                         }
                                     }
                                     else
                                     {
-                                        CollectSelectedCells(attribute);
+                                        CollectSelectedCells(attribute, worksheet);
                                     }
 
                                 }
@@ -336,50 +280,7 @@ namespace NanoXLSX.Internal.Readers
                         XmlNode paneNode = ReaderUtils.GetChildNode(sheetView, "pane");
                         if (paneNode != null)
                         {
-                            attribute = ReaderUtils.GetAttribute(paneNode, "state");
-                            bool useNumbers = false;
-                            this.PaneSplitValue = new PaneDefinition();
-                            if (attribute != null)
-                            {
-                                this.PaneSplitValue.SetFrozenState(attribute);
-                                useNumbers = this.PaneSplitValue.FrozenState;
-                            }
-                            attribute = ReaderUtils.GetAttribute(paneNode, "ySplit");
-                            if (attribute != null)
-                            {
-                                this.PaneSplitValue.YSplitDefined = true;
-                                if (useNumbers)
-                                {
-                                    this.PaneSplitValue.PaneSplitRowIndex = ParserUtils.ParseInt(attribute);
-                                }
-                                else
-                                {
-                                    this.PaneSplitValue.PaneSplitHeight = DataUtils.GetPaneSplitHeight(ParserUtils.ParseFloat(attribute));
-                                }
-                            }
-                            attribute = ReaderUtils.GetAttribute(paneNode, "xSplit");
-                            if (attribute != null)
-                            {
-                                this.PaneSplitValue.XSplitDefined = true;
-                                if (useNumbers)
-                                {
-                                    this.PaneSplitValue.PaneSplitColumnIndex = ParserUtils.ParseInt(attribute);
-                                }
-                                else
-                                {
-                                    this.PaneSplitValue.PaneSplitWidth = DataUtils.GetPaneSplitWidth(ParserUtils.ParseFloat(attribute));
-                                }
-                            }
-                            attribute = ReaderUtils.GetAttribute(paneNode, "topLeftCell");
-                            if (attribute != null)
-                            {
-                                this.PaneSplitValue.TopLeftCell = new Address(attribute);
-                            }
-                            attribute = ReaderUtils.GetAttribute(paneNode, "activePane");
-                            if (attribute != null)
-                            {
-                                this.PaneSplitValue.SetActivePane(attribute);
-                            }
+                            SetPaneSplit(paneNode, worksheet);
                         }
                     }
                 }
@@ -390,17 +291,113 @@ namespace NanoXLSX.Internal.Readers
         /// Resolves the selected cells of a range or a single cell
         /// </summary>
         /// <param name="attribute">Raw range/cell as string</param>
-        private void CollectSelectedCells(string attribute)
+        /// <param name="worksheet">Currently processed worksheet</param>
+        private void CollectSelectedCells(string attribute, Worksheet worksheet)
         {
             if (attribute.Contains(":"))
             {
                 // One range
-                this.SelectedCells.Add(new Range(attribute));
+                worksheet.AddSelectedCells(new Range(attribute));
             }
             else
             {
                 // One cell
-                this.SelectedCells.Add(new Range(attribute + ":" + attribute));
+                worksheet.AddSelectedCells(new Range(attribute + ":" + attribute));
+            }
+        }
+
+        /// <summary>
+        /// Sets the pane split values of the current worksheet
+        /// </summary>
+        /// <param name="paneNode">XML node</param>
+        /// <param name="worksheet">Currently processed worksheet</param>
+        private void SetPaneSplit(XmlNode paneNode, Worksheet worksheet)
+        {
+            string attribute = ReaderUtils.GetAttribute(paneNode, "state");
+            bool useNumbers = false;
+            bool frozenState = false;
+            bool ySplitDefined = false;
+            bool xSplitDefined = false;
+            int? paneSplitRowIndex = null;
+            int? paneSplitColumnIndex = null;
+            float? paneSplitHeight = null;
+            float? paneSplitWidth = null;
+            Address topLeftCell = new Address(0, 0); // default value
+            Worksheet.WorksheetPane? activePane = null;
+            if (attribute != null)
+            {
+                if (attribute.ToLower() == "frozen" || attribute.ToLower() == "frozensplit")
+                {
+                    frozenState = true;
+                }
+                useNumbers = frozenState;
+            }
+            attribute = ReaderUtils.GetAttribute(paneNode, "ySplit");
+            if (attribute != null)
+            {
+                ySplitDefined = true;
+                if (useNumbers)
+                {
+                    paneSplitRowIndex = ParserUtils.ParseInt(attribute);
+                }
+                else
+                {
+                    paneSplitHeight = DataUtils.GetPaneSplitHeight(ParserUtils.ParseFloat(attribute));
+                }
+            }
+            attribute = ReaderUtils.GetAttribute(paneNode, "xSplit");
+            if (attribute != null)
+            {
+                xSplitDefined = true;
+                if (useNumbers)
+                {
+                    paneSplitColumnIndex = ParserUtils.ParseInt(attribute);
+                }
+                else
+                {
+                    paneSplitWidth = DataUtils.GetPaneSplitWidth(ParserUtils.ParseFloat(attribute));
+                }
+            }
+            attribute = ReaderUtils.GetAttribute(paneNode, "topLeftCell");
+            if (attribute != null)
+            {
+                topLeftCell = new Address(attribute);
+            }
+            attribute = ReaderUtils.GetAttribute(paneNode, "activePane");
+            if (attribute != null)
+            {
+                activePane = (Worksheet.WorksheetPane)Enum.Parse(typeof(Worksheet.WorksheetPane), attribute);
+            }
+            // assign to worksheet
+            if (frozenState)
+            {
+                if (ySplitDefined && !xSplitDefined)
+                {
+                    worksheet.SetHorizontalSplit(paneSplitRowIndex.Value,frozenState, topLeftCell, activePane);
+                }
+                if (!ySplitDefined && xSplitDefined)
+                {
+                    worksheet.SetVerticalSplit(paneSplitColumnIndex.Value, frozenState, topLeftCell, activePane);
+                }
+                else if (ySplitDefined && xSplitDefined)
+                {
+                    worksheet.SetSplit(paneSplitColumnIndex.Value, paneSplitRowIndex.Value, frozenState, topLeftCell, activePane);
+                }
+            }
+            else
+            {
+                if (ySplitDefined && !xSplitDefined)
+                {
+                    worksheet.SetHorizontalSplit(paneSplitHeight.Value, topLeftCell, activePane);
+                }
+                if (!ySplitDefined && xSplitDefined)
+                {
+                    worksheet.SetVerticalSplit(paneSplitWidth.Value,topLeftCell, activePane);
+                }
+                else if (ySplitDefined && xSplitDefined)
+                {
+                    worksheet.SetSplit(paneSplitWidth, paneSplitHeight, topLeftCell, activePane);
+                }
             }
         }
 
@@ -408,28 +405,42 @@ namespace NanoXLSX.Internal.Readers
         /// Gets the sheet protection values of the current worksheets
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
-        private void GetSheetProtection(XmlDocument xmlDocument)
+        /// <param name="worksheet">Currently processed worksheet</param>
+        private void GetSheetProtection(XmlDocument xmlDocument, Worksheet worksheet)
         {
             XmlNodeList sheetProtectionNodes = xmlDocument.GetElementsByTagName("sheetProtection");
             if (sheetProtectionNodes != null && sheetProtectionNodes.Count > 0)
             {
+                int hasProtection = 0;
                 XmlNode sheetProtectionNode = sheetProtectionNodes[0];
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.autoFilter);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.deleteColumns);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.deleteRows);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.formatCells);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.formatColumns);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.formatRows);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.insertColumns);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.insertHyperlinks);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.insertRows);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.objects);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.pivotTables);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.scenarios);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectLockedCells);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectUnlockedCells);
-                ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.sort);
-                this.PasswordReader.ReadXmlAttributes(sheetProtectionNode);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.autoFilter, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.deleteColumns, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.deleteRows, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.formatCells, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.formatColumns, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.formatRows, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.insertColumns, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.insertHyperlinks, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.insertRows, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.objects, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.pivotTables, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.scenarios, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectLockedCells, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectUnlockedCells, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.sort, worksheet);
+               if (hasProtection > 0)
+                {
+                    worksheet.UseSheetProtection = true;
+                }
+                this.passwordReader.ReadXmlAttributes(sheetProtectionNode);
+                if (this.passwordReader.PasswordIsSet())
+                {
+                    if (this.passwordReader is LegacyPasswordReader && (this.passwordReader as LegacyPasswordReader).ContemporaryAlgorithmDetected && !readerOptions.IgnoreNotSupportedPasswordAlgorithms)
+                    {
+                        throw new NotSupportedContentException("A not supported, contemporary password algorithm for the worksheet protection was detected. Check possible packages to add support to NanoXLSX, or ignore this error by a reader option");
+                    }
+                    worksheet.SheetProtectionPassword.CopyFrom(this.passwordReader);
+                }
             }
         }
 
@@ -438,22 +449,28 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="node">Sheet protection node</param>
         /// <param name="sheetProtectionValue">Value to check and maintain (if defined)</param>
-        private void ManageSheetProtection(XmlNode node, Worksheet.SheetProtectionValue sheetProtectionValue)
+        /// <param name="worksheet">Currently processed worksheet</param>
+        private int ManageSheetProtection(XmlNode node, Worksheet.SheetProtectionValue sheetProtectionValue, Worksheet worksheet)
         {
+            int hasProtection = 0;
             string attributeName = Enum.GetName(typeof(Worksheet.SheetProtectionValue), sheetProtectionValue);
             string attribute = ReaderUtils.GetAttribute(node, attributeName);
             if (attribute != null)
             {
-                int value = ParserUtils.ParseBinaryBool(attribute);
-                WorksheetProtection.Add(sheetProtectionValue, value);
+                hasProtection = 1;
+               // hasProtection = ParserUtils.ParseBinaryBool(attribute) != 0;
+                worksheet.SheetProtectionValues.Add(sheetProtectionValue);
+                //WorksheetProtection.Add(sheetProtectionValue, value);
             }
+            return hasProtection;
         }
 
         /// <summary>
         /// Gets the merged cells of the current worksheet
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
-        private void GetMergedCells(XmlDocument xmlDocument)
+        /// <param name="worksheet">Currently processed worksheet</param>
+        private void GetMergedCells(XmlDocument xmlDocument, Worksheet worksheet)
         {
             XmlNodeList mergedCellsNodes = xmlDocument.GetElementsByTagName("mergeCells");
             if (mergedCellsNodes != null && mergedCellsNodes.Count > 0)
@@ -466,7 +483,7 @@ namespace NanoXLSX.Internal.Readers
                         string attribute = ReaderUtils.GetAttribute(mergedCells, "ref");
                         if (attribute != null)
                         {
-                            this.MergedCells.Add(new Range(attribute));
+                            worksheet.MergeCells(new Range(attribute));
                         }
                     }
                 }
@@ -477,7 +494,8 @@ namespace NanoXLSX.Internal.Readers
         /// Gets the sheet format information of the current worksheet
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
-        private void GetSheetFormats(XmlDocument xmlDocument)
+        /// <param name="worksheet">Currently processed worksheet</param></param>
+        private void GetSheetFormats(XmlDocument xmlDocument, Worksheet worksheet)
         {
             XmlNodeList formatNodes = xmlDocument.GetElementsByTagName("sheetFormatPr");
             if (formatNodes != null && formatNodes.Count > 0)
@@ -485,12 +503,12 @@ namespace NanoXLSX.Internal.Readers
                 string attribute = ReaderUtils.GetAttribute(formatNodes[0], "defaultColWidth");
                 if (attribute != null)
                 {
-                    this.DefaultColumnWidth = ParserUtils.ParseFloat(attribute);
+                    worksheet.DefaultColumnWidth = ParserUtils.ParseFloat(attribute);
                 }
                 attribute = ReaderUtils.GetAttribute(formatNodes[0], "defaultRowHeight");
                 if (attribute != null)
                 {
-                    this.DefaultRowHeight = ParserUtils.ParseFloat(attribute);
+                    worksheet.DefaultRowHeight = ParserUtils.ParseFloat(attribute);
                 }
             }
         }
@@ -499,7 +517,8 @@ namespace NanoXLSX.Internal.Readers
         /// Gets the auto filters of the current worksheet
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
-        private void GetAutoFilters(XmlDocument xmlDocument)
+        /// <param name="worksheet">Currently processed worksheet</param>
+        private void GetAutoFilters(XmlDocument xmlDocument, Worksheet worksheet)
         {
             XmlNodeList autoFilterNodes = xmlDocument.GetElementsByTagName("autoFilter");
             if (autoFilterNodes != null && autoFilterNodes.Count > 0)
@@ -507,7 +526,8 @@ namespace NanoXLSX.Internal.Readers
                 string autoFilterRef = ReaderUtils.GetAttribute(autoFilterNodes[0], "ref");
                 if (autoFilterRef != null)
                 {
-                    this.AutoFilterRange = new Range(autoFilterRef);
+                    Range range = new Range(autoFilterRef);
+                    worksheet.SetAutoFilter(range.StartAddress.Column, range.EndAddress.Column);
                 }
             }
         }
@@ -516,7 +536,8 @@ namespace NanoXLSX.Internal.Readers
         /// Gets the columns of the current worksheet
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
-        private void GetColumns(XmlDocument xmlDocument)
+        /// <param name="worksheet">Currently processed worksheet</param>
+        private void GetColumns(XmlDocument xmlDocument, Worksheet worksheet)
         {
             XmlNodeList columnNodes = xmlDocument.GetElementsByTagName("col");
             foreach (XmlNode columnNode in columnNodes)
@@ -567,14 +588,20 @@ namespace NanoXLSX.Internal.Readers
                 }
                 foreach (int index in indices)
                 {
-                    Column column = new Column(index - 1); // Transform to zero-based
-                    column.Width = width;
-                    column.IsHidden = hidden;
+                    string columnAddress = Cell.ResolveColumnAddress(index - 1); // Transform to zero-based     
                     if (defaultStyle != null)
                     {
-                        column.SetDefaultColumnStyle(defaultStyle);
+                        worksheet.SetColumnDefaultStyle(columnAddress, defaultStyle);
                     }
-                    this.Columns.Add(column);
+
+                    if (width != Worksheet.DEFAULT_COLUMN_WIDTH)
+                    {
+                        worksheet.SetColumnWidth(columnAddress, width);
+                    }
+                    if (hidden)
+                    {
+                        worksheet.AddHiddenColumn(columnAddress);
+                    }
                 }
             }
         }
@@ -583,7 +610,8 @@ namespace NanoXLSX.Internal.Readers
         /// Reads one cell in a worksheet
         /// </summary>
         /// <param name="rowChild">Current child row as XmlNode</param>
-        private void ReadCell(XmlNode rowChild)
+        /// <param name="worksheet">Currently processed worksheet</param>
+        private void ReadCell(XmlNode rowChild, Worksheet worksheet)
         {
             string type = "s";
             string styleNumber = "";
@@ -610,8 +638,17 @@ namespace NanoXLSX.Internal.Readers
                 }
             }
             string key = ParserUtils.ToUpper(address);
-            StyleAssignment[key] = styleNumber;
-            Data.Add(key, ResolveCellData(value, type, styleNumber, address));
+            Cell cell = ResolveCellData(value, type, styleNumber, address);
+            worksheet.AddCell(cell, address);
+            if (styleNumber != null)
+            {
+                Style style = null;
+                this.resolvedStyles.TryGetValue(styleNumber, out style);
+                if (style != null)
+                {
+                    worksheet.Cells[address].SetStyle(style);
+                }
+            }
         }
 
         /// <summary>
@@ -619,7 +656,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <param name="type">Expected data type</param>
-        /// <param name="styleNumber">>Style number as string (can be null)</param>
+        /// <param name="styleNumber">Style number as string (can be null)</param>
         /// <param name="address">Address of the cell</param>
         /// <returns>Cell object with either the originally loaded or modified (by import options) value</returns>
         private Cell ResolveCellData(string raw, string type, string styleNumber, string address)
@@ -1439,7 +1476,7 @@ namespace NanoXLSX.Internal.Readers
             int stringId;
             if (ParserUtils.TryParseInt(raw, out stringId))
             {
-                string resolvedString = sharedStrings.GetString(stringId);
+                string resolvedString = SharedStrings[stringId];
                 if (resolvedString == null)
                 {
                     return raw;
@@ -1470,125 +1507,6 @@ namespace NanoXLSX.Internal.Readers
             return cell;
         }
 
-        #endregion
-
-        #region subClasses
-
-        /// <summary>
-        /// Class representing a pane in the applications window
-        /// </summary>
-        public class PaneDefinition
-        {
-            /// <summary>
-            /// Gets or sets the pane split height of a worksheet split
-            /// </summary>
-            public float? PaneSplitHeight { get; set; }
-            /// <summary>
-            /// Gets or sets the pane split width of a worksheet split
-            /// </summary>
-            public float? PaneSplitWidth { get; set; }
-            /// <summary>
-            /// Gets or sets the pane split row index of a worksheet split
-            /// </summary>
-            public int? PaneSplitRowIndex { get; set; }
-            /// <summary>
-            /// Gets or sets the pane split column index of a worksheet split
-            /// </summary>
-            public int? PaneSplitColumnIndex { get; set; }
-            /// <summary>
-            /// Top Left cell address of the bottom right pane
-            /// </summary>
-            public Address TopLeftCell { get; set; }
-            /// <summary>
-            /// Active pane in the split window
-            /// </summary>
-            public Worksheet.WorksheetPane? ActivePane { get; private set; }
-            /// <summary>
-            /// Frozen state of the split window
-            /// </summary>
-            public bool FrozenState { get; private set; }
-
-            /// <summary>
-            /// Gets whether an Y split was defined
-            /// </summary>
-            public bool YSplitDefined { get; set; }
-
-            /// <summary>
-            /// Gets whether an X split was defined
-            /// </summary>
-            public bool XSplitDefined { get; set; }
-
-            /// <summary>
-            /// Default constructor, with no active pane and the top left cell at A1
-            /// </summary>
-            public PaneDefinition()
-            {
-                ActivePane = null;
-                TopLeftCell = new Address(0, 0);
-            }
-
-            /// <summary>
-            /// Parses and sets the active pane from a string value
-            /// </summary>
-            /// <param name="value">raw enum value as string</param>
-            public void SetActivePane(string value)
-            {
-                this.ActivePane = (Worksheet.WorksheetPane)Enum.Parse(typeof(Worksheet.WorksheetPane), value);
-            }
-
-            /// <summary>
-            /// Sets the frozen state of the split window if defined
-            /// </summary>
-            /// <param name="value">raw attribute value</param>
-            public void SetFrozenState(string value)
-            {
-                if (value.ToLower() == "frozen" || value.ToLower() == "frozensplit")
-                {
-                    this.FrozenState = true;
-                }
-            }
-
-        }
-
-        /// <summary>
-        /// Internal class to represent a row
-        /// </summary>
-        public class RowDefinition
-        {
-            /// <summary>
-            /// Indicates whether the row is hidden
-            /// </summary>
-            public bool Hidden { get; set; }
-            /// <summary>
-            /// Non-standard row height
-            /// </summary>
-            public float? Height { get; set; } = null;
-
-            /// <summary>
-            /// Adds a row definition or changes it, when a non-standard row height and/or hidden state is defined
-            /// </summary>
-            /// <param name="rows">Row dictionary</param>
-            /// <param name="rowNumber">Row number as string (directly resolved from the corresponding XML attribute)</param>
-            /// <param name="heightProperty">Row height as string (directly resolved from the corresponding XML attribute)</param>
-            /// <param name="hiddenProperty">Hidden definition as string (directly resolved from the corresponding XML attribute)</param>
-            public static void AddRowDefinition(Dictionary<int, RowDefinition> rows, string rowNumber, string heightProperty, string hiddenProperty)
-            {
-                int row = ParserUtils.ParseInt(rowNumber) - 1; // Transform to zero-based
-                if (!rows.ContainsKey(row))
-                {
-                    rows.Add(row, new RowDefinition());
-                }
-                if (heightProperty != null)
-                {
-                    rows[row].Height = ParserUtils.ParseFloat(heightProperty);
-                }
-                if (hiddenProperty != null)
-                {
-                    int value = ParserUtils.ParseBinaryBool(hiddenProperty);
-                    rows[row].Hidden = value == 1;
-                }
-            }
-        }
         #endregion
     }
 }

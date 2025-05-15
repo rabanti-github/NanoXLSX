@@ -10,7 +10,10 @@ namespace NanoXLSX.Internal.Readers
     using System;
     using System.IO;
     using System.Xml;
+    using NanoXLSX.Interfaces.Plugin;
     using NanoXLSX.Interfaces.Reader;
+    using NanoXLSX.Registry;
+    using NanoXLSX.Registry.Attributes;
     using NanoXLSX.Styles;
     using NanoXLSX.Utils;
     using static NanoXLSX.Styles.Border;
@@ -24,30 +27,46 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for style definitions of XLSX files.
     /// </summary>
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.STYLE_READER)]
     public class StyleReader : IPlugInReader
     {
-        /// <summary>
-        /// Gets the StyleReaderContainer
-        /// Container for raw style components of the reader..
-        /// </summary>
-        public StyleReaderContainer StyleReaderContainer { get; private set; }
 
+        private MemoryStream stream;
+        private StyleReaderContainer styleReaderContainer;
+
+        #region properties
+        /// <summary>
+        /// Workbook reference where read data is stored (should not be null)
+        /// </summary>
+        public Workbook Workbook { get; set; }
+        #endregion
+
+        #region constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="StyleReader"/> class.
         /// </summary>
         public StyleReader()
         {
-            StyleReaderContainer = new StyleReaderContainer();
+        }
+        #endregion
+
+        #region methods
+        /// <summary>
+        /// Default constructor - Must be defined for instantiation of the plug-ins
+        /// </summary>
+        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+        {
+            this.stream = stream;
+            this.Workbook = workbook;
         }
 
         /// <summary>
-        /// Reads the XML file form the passed stream and processes the style information.
+        /// Method to execute the main logic of the plug-in (interface implementation)
         /// </summary>
-        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
-        /// <param name="stream">Stream of the XML file.</param>
-        public virtual void Read(MemoryStream stream)
+        /// <exception cref="Exceptions.IOException">Throws an IOException in case of a error during reading</exception>
+        public void Execute()
         {
-            PreRead(stream);
+            this.styleReaderContainer = new StyleReaderContainer();
             try
             {
                 using (stream) // Close after processing
@@ -86,33 +105,14 @@ namespace NanoXLSX.Internal.Readers
                             GetCellXfs(node);
                         }
                     }
+                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.STYLE_INLINE_READER);
                 }
+                Workbook.AuxiliaryData.SetData(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY, styleReaderContainer);
             }
             catch (Exception ex)
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
             }
-            PostRead(stream);
-        }
-
-        /// <summary>
-        /// Method that is called before the <see cref="Read(MemoryStream)"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="stream">Stream of the XML file. The stream must be reset in this method at the end, if any stream opeartion was performed</param>
-        public virtual void PreRead(MemoryStream stream)
-        {
-            // NoOp - replaced by plugIn
-        }
-
-        /// <summary>
-        /// Method that is called after the <see cref="Read(MemoryStream)"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="stream">Stream of the XML file. The stream must be reset in this method before any stream operation is performed</param>
-        public virtual void PostRead(MemoryStream stream)
-        {
-            // NoOp - replaced by plugIn
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace NanoXLSX.Internal.Readers
                     numberFormat.Number = FormatNumber.custom;
                     numberFormat.InternalID = id;
                     numberFormat.CustomFormatCode = code;
-                    StyleReaderContainer.AddStyleComponent(numberFormat);
+                    this.styleReaderContainer.AddStyleComponent(numberFormat);
                 }
             }
         }
@@ -194,8 +194,8 @@ namespace NanoXLSX.Internal.Readers
                     borderStyle.RightStyle = ParseBorderStyle(innerNode);
                     borderStyle.RightColor = GetColor(innerNode, Border.DEFAULT_COLOR);
                 }
-                borderStyle.InternalID = StyleReaderContainer.GetNextBorderId();
-                StyleReaderContainer.AddStyleComponent(borderStyle);
+                borderStyle.InternalID = this.styleReaderContainer.GetNextBorderId();
+                this.styleReaderContainer.AddStyleComponent(borderStyle);
             }
         }
 
@@ -264,8 +264,8 @@ namespace NanoXLSX.Internal.Readers
                     }
                 }
 
-                fillStyle.InternalID = StyleReaderContainer.GetNextFillId();
-                StyleReaderContainer.AddStyleComponent(fillStyle);
+                fillStyle.InternalID = this.styleReaderContainer.GetNextFillId();
+                this.styleReaderContainer.AddStyleComponent(fillStyle);
             }
         }
 
@@ -510,8 +510,8 @@ namespace NanoXLSX.Internal.Readers
                     }
                 }
 
-                fontStyle.InternalID = StyleReaderContainer.GetNextFontId();
-                StyleReaderContainer.AddStyleComponent(fontStyle);
+                fontStyle.InternalID = this.styleReaderContainer.GetNextFontId();
+                this.styleReaderContainer.AddStyleComponent(fontStyle);
             }
         }
 
@@ -588,46 +588,46 @@ namespace NanoXLSX.Internal.Readers
                         }
                     }
 
-                    cellXfStyle.InternalID = StyleReaderContainer.GetNextCellXFId();
-                    StyleReaderContainer.AddStyleComponent(cellXfStyle);
+                    cellXfStyle.InternalID = this.styleReaderContainer.GetNextCellXFId();
+                    this.styleReaderContainer.AddStyleComponent(cellXfStyle);
 
                     Style style = new Style();
                     int id;
                     bool hasId;
 
                     hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId"), out id);
-                    NumberFormat format = StyleReaderContainer.GetNumberFormat(id);
+                    NumberFormat format = this.styleReaderContainer.GetNumberFormat(id);
                     if (!hasId || format == null)
                     {
                         FormatNumber formatNumber;
-                        NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'
+                        NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'.
                                                                                  // Invalid values should not occur at all (malformed Excel files). 
                                                                                  // Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 
                         format = new NumberFormat();
                         format.Number = formatNumber;
                         format.InternalID = id;
-                        StyleReaderContainer.AddStyleComponent(format);
+                        this.styleReaderContainer.AddStyleComponent(format);
                     }
                     hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "borderId"), out id);
-                    Border border = StyleReaderContainer.GetBorder(id);
+                    Border border = this.styleReaderContainer.GetBorder(id);
                     if (!hasId || border == null)
                     {
                         border = new Border();
-                        border.InternalID = StyleReaderContainer.GetNextBorderId();
+                        border.InternalID = this.styleReaderContainer.GetNextBorderId();
                     }
                     hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fillId"), out id);
-                    Fill fill = StyleReaderContainer.GetFill(id);
+                    Fill fill = this.styleReaderContainer.GetFill(id);
                     if (!hasId || fill == null)
                     {
                         fill = new Fill();
-                        fill.InternalID = StyleReaderContainer.GetNextFillId();
+                        fill.InternalID = this.styleReaderContainer.GetNextFillId();
                     }
                     hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fontId"), out id);
-                    Font font = StyleReaderContainer.GetFont(id);
+                    Font font = this.styleReaderContainer.GetFont(id);
                     if (!hasId || font == null)
                     {
                         font = new Font();
-                        font.InternalID = StyleReaderContainer.GetNextFontId();
+                        font.InternalID = this.styleReaderContainer.GetNextFontId();
                     }
 
                     // TODO: Implement other style information
@@ -636,9 +636,9 @@ namespace NanoXLSX.Internal.Readers
                     style.CurrentFill = fill;
                     style.CurrentFont = font;
                     style.CurrentCellXf = cellXfStyle;
-                    style.InternalID = StyleReaderContainer.GetNextStyleId();
+                    style.InternalID = this.styleReaderContainer.GetNextStyleId();
 
-                    StyleReaderContainer.AddStyleComponent(style);
+                    this.styleReaderContainer.AddStyleComponent(style);
                 }
             }
         }
@@ -659,7 +659,7 @@ namespace NanoXLSX.Internal.Readers
                         string attribute = ReaderUtils.GetAttribute(value, "rgb");
                         if (attribute != null)
                         {
-                            StyleReaderContainer.AddMruColor(attribute);
+                            this.styleReaderContainer.AddMruColor(attribute);
                         }
                     }
                 }
@@ -667,7 +667,7 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Resolves a color value from an XML node, when a rgb attribute exists. If the value is null, the fallback will be returned
+        /// Resolves a color value from an XML node, when a RGB attribute exists. If the value is null, the fallback will be returned
         /// </summary>
         /// <param name="node">Node to check.</param>
         /// <param name="fallback">Fallback value if the color could not be resolved.</param>
@@ -685,5 +685,6 @@ namespace NanoXLSX.Internal.Readers
             }
             return fallback;
         }
+        #endregion
     }
 }

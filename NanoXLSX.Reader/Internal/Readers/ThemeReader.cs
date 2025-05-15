@@ -1,8 +1,18 @@
-﻿using System;
+﻿/*
+ * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
+ * Copyright Raphael Stoeckli © 2025
+ * This library is licensed under the MIT License.
+ * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
+ */
+
+using System;
 using System.IO;
 using System.Xml;
 using NanoXLSX.Interfaces;
+using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Interfaces.Reader;
+using NanoXLSX.Registry;
+using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Themes;
 using IOException = NanoXLSX.Exceptions.IOException;
 
@@ -11,26 +21,47 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for theme definitions of XLSX files.
     /// </summary>
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.THEME_READER)]
     public class ThemeReader : IPlugInReader
     {
 
-        /// <summary>
-        /// Currently active theme
-        /// </summary>
-        public Theme CurrentTheme { get; set; }
+        private MemoryStream stream;
 
+        #region properties
+        /// <summary>
+        /// Workbook reference where read data is stored (should not be null)
+        /// </summary>
+        public Workbook Workbook { get; set; }
+        #endregion
+
+        #region constructors
+        /// <summary>
+        /// Default constructor - Must be defined for instantiation of the plug-ins
+        /// </summary>
+        internal ThemeReader()
+        {
+        }
+        #endregion
 
         #region methods
+        /// <summary>
+        /// Initialization method (interface implementation)
+        /// </summary>
+        /// <param name="stream">MemoryStream to be read</param>
+        /// <param name="workbook">Workbook reference</param>
+        /// <param name="readerOptions">Reader options</param>
+        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+        {
+            this.stream = stream;
+            this.Workbook = workbook;
+        }
 
         /// <summary>
-        /// Reads the XML file form the passed stream and processes the theme file (if available)
+        /// Method to execute the main logic of the plug-in (interface implementation)
         /// </summary>
-        /// <param name="stream">Stream of the XML file</param>
-        /// \remark <remarks>This method is virtual. Plug-in packages may override it</remarks>
-        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
-        public virtual void Read(MemoryStream stream)
+        /// <exception cref="Exceptions.IOException">Throws an IOException in case of a error during reading</exception>
+        public void Execute()
         {
-            PreRead(stream);
             try
             {
                 using (stream) // Close after processing
@@ -41,15 +72,15 @@ namespace NanoXLSX.Internal.Readers
                     string prefix = ReaderUtils.DiscoverPrefix(xr, "theme");
                     XmlNodeList themes = ReaderUtils.GetElementsByTagName(xr, "theme", prefix);
                     string themeName = ReaderUtils.GetAttribute(themes[0], "name"); // If this fails, something is completely wrong
-                    CurrentTheme = new Theme(themeName);
+                    Workbook.WorkbookTheme = new Theme(themeName);
                     ColorScheme colorScheme = new ColorScheme();
-                    CurrentTheme.Colors = colorScheme;
+                    Workbook.WorkbookTheme.Colors = colorScheme;
                     XmlNodeList colors = ReaderUtils.GetElementsByTagName(xr, "clrScheme", prefix);
 
                     foreach (XmlNode color in colors)
                     {
                         string colorSchemeName = ReaderUtils.GetAttribute(color, "name", "");
-                        CurrentTheme.Colors.Name = colorSchemeName;
+                        Workbook.WorkbookTheme.Colors.Name = colorSchemeName;
                         XmlNodeList colorNodes = color.ChildNodes;
                         foreach (XmlNode colorNode in colorNodes)
                         {
@@ -96,35 +127,20 @@ namespace NanoXLSX.Internal.Readers
 
                         }
                     }
+                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.THEME_INLINE_READER);
                 }
             }
             catch (Exception ex)
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
             }
-            PostRead(stream);
         }
 
         /// <summary>
-        /// Method that is called before the <see cref="Read(MemoryStream)"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
+        /// Parses a color value (either RGB-like or enumerated system color)
         /// </summary>
-        /// <param name="stream">Stream of the XML file. The stream must be reset in this method at the end, if any stream opeartion was performed</param>
-        public virtual void PreRead(MemoryStream stream)
-        {
-            // NoOp - replaced by plugIn
-        }
-
-        /// <summary>
-        /// Method that is called after the <see cref="Read(MemoryStream)"/> method is executed. 
-        /// This virtual method is empty by default and can be overridden by a plug-in package
-        /// </summary>
-        /// <param name="stream">Stream of the XML file. The stream must be reset in this method before any stream operation is performed</param>
-        public virtual void PostRead(MemoryStream stream)
-        {
-            // NoOp - replaced by plugIn
-        }
-
+        /// <param name="childNodes">List of XML nodes that can contain color values</param>
+        /// <returns><see cref="IColor"/> value or null, if no color could be determined</returns>
         private IColor ParseColor(XmlNodeList childNodes)
         {
             foreach (XmlNode node in childNodes)
@@ -173,7 +189,6 @@ namespace NanoXLSX.Internal.Readers
                 throw new IOException("The system color entry '" + value + "' could not be parsed", ex);
             }
         }
-
         #endregion
 
     }

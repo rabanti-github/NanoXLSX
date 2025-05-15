@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 
 namespace NanoXLSX.Interfaces.Reader
@@ -17,7 +18,8 @@ namespace NanoXLSX.Interfaces.Reader
         /// </summary>
         /// <param name="stream">Stream, containing the XML file to red</param>
         /// <param name="workbook">Workbook instance where read data is placed</param>
-        void Init(ref MemoryStream stream, Workbook workbook);
+        /// <param name="index">Optional index, e.g. for worksheet identification</param>
+        void Init(ref MemoryStream stream, Workbook workbook, int? index = null);
 
     }
 }

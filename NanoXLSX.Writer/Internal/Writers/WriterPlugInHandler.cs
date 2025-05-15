@@ -12,18 +12,19 @@ using NanoXLSX.Utils.Xml;
 namespace NanoXLSX.Internal.Writers
 {
     /// <summary>
-    /// Class for the handling of writer inline plug-ins
+    /// Class for the handling of writer in-line plug-ins
     /// </summary>
     internal static class WriterPlugInHandler
     {
         /// <summary>
-        /// Method to handle inline queue plug-ins of a specific writer plug-in
+        /// Method to handle in-line queue plug-ins of a specific writer plug-in
         /// </summary>
         /// <param name="workbook">Workbook reference</param>
-        /// <param name="rootElement">Reference to te root element of the base writer plug-in</param>
-        /// <param name="queueUuid">UUID of the inline plug-in</param>
+        /// <param name="rootElement">Reference to the root element of the base writer plug-in</param>
+        /// <param name="queueUuid">UUID of the in-line plug-in</param>
+        /// <param name="index">Optional index, e.g. for worksheet identification</param>
         /// <returns>XML element instance. If no plug-ins were processes, the root element is passed back unaltered</returns>
-        internal static void HandleInlineQueuePlugins(ref XmlElement rootElement, Workbook workbook, string queueUuid)
+        internal static void HandleInlineQueuePlugins(ref XmlElement rootElement, Workbook workbook, string queueUuid, int? index = null)
         {
             IInlinePlugInWriter queueWriter = null;
             string lastUuid = null;
@@ -33,7 +34,7 @@ namespace NanoXLSX.Internal.Writers
                 queueWriter = PlugInLoader.GetNextQueuePlugIn<IInlinePlugInWriter>(queueUuid, lastUuid, out currentUuid);
                 if (queueWriter != null)
                 {
-                    queueWriter.Init(ref rootElement, workbook);
+                    queueWriter.Init(ref rootElement, workbook, index);
                     queueWriter.Execute();
                     lastUuid = currentUuid;
                 }

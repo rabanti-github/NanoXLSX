@@ -6,6 +6,7 @@
  */
 
 using System.Xml;
+using static NanoXLSX.Internal.Enums.ReaderPassword;
 
 namespace NanoXLSX.Interfaces.Reader
 {
@@ -14,6 +15,14 @@ namespace NanoXLSX.Interfaces.Reader
     /// </summary>
     public interface IPasswordReader : IPassword
     {
+
+        /// <summary>
+        /// Method to initialize the password reader
+        /// </summary>
+        /// <param name="type">Target type of the password writer</param>
+        /// <param name="readerOptions">Reader options</param>
+        void Init(PasswordType type, ReaderOptions readerOptions);
+
         /// <summary>
         /// Reads the attributes of the passed XML node that contains password information
         /// </summary>

@@ -7,15 +7,11 @@
 
 namespace NanoXLSX.Internal.Readers
 {
-public partial class WorkbookReader
+    /// <summary>
+    /// Class for worksheet Mata-data on import
+    /// </summary>
+    internal class WorksheetDefinition
     {
-        #region subclasses
-
-        /// <summary>
-        /// Class for worksheet Mata-data on import
-        /// </summary>
-        public class WorksheetDefinition
-        {
             /// <summary>
             /// Worksheet name
             /// </summary>
@@ -46,7 +42,4 @@ public partial class WorkbookReader
             }
         }
 
-        #endregion
-
-    }
 }
