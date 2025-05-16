@@ -98,7 +98,8 @@ namespace NanoXLSX.Internal.Readers
                         Workbook.AuxiliaryData.SetData(PlugInUUID.RELATIONSHIP_READER, PlugInUUID.RELATIONSHIP_ENTITY, id, rel);
                     }
                     RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.RELATIONSHIP_INLINE_READER);
-                }            }
+                }
+            }
             catch (Exception ex)
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);

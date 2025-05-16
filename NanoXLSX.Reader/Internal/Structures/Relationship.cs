@@ -5,26 +5,24 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
-
 namespace NanoXLSX.Internal.Readers
 {
+    /// <summary>
+    /// Class to represent a workbook relation
+    /// </summary>
+    public class Relationship
+    {
         /// <summary>
-        /// Class to represent a workbook relation
+        /// ID of the relation
         /// </summary>
-        public class Relationship
-        {
-            /// <summary>
-            /// ID of the relation
-            /// </summary>
-            public string RID { get; set; }
-            /// <summary>
-            /// Type of the relation
-            /// </summary>
-            public string Type { get; set; }
-            /// <summary>
-            /// Target of the relation
-            /// </summary>
-            public string Target { get; set; }
+        public string RID { get; set; }
+        /// <summary>
+        /// Type of the relation
+        /// </summary>
+        public string Type { get; set; }
+        /// <summary>
+        /// Target of the relation
+        /// </summary>
+        public string Target { get; set; }
     }
 }

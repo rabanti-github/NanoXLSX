@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection.PortableExecutable;
 using NanoXLSX.Internal.Enums;
 using NanoXLSX.Internal.Readers;
 using NanoXLSX.Internal.Structures;

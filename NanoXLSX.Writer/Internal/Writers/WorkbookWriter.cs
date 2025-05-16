@@ -74,7 +74,7 @@ namespace NanoXLSX.Internal.Writers
                 workbookPr.AddAttribute("defaultThemeVersion", Theme.DEFAULT_THEME_VERSION);
                 // TODO: add further workbook properties here
             }
-            if (wb.SelectedWorksheet > 0 || wb.Hidden || HasPaneSplitting() )
+            if (wb.SelectedWorksheet > 0 || wb.Hidden || HasPaneSplitting())
             {
                 XmlElement bookViews = workbook.AddChildElement("bookViews");
                 XmlElement workbookView = bookViews.AddChildElement("workbookView");

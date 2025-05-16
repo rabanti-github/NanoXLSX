@@ -51,23 +51,18 @@ namespace NanoXLSX.Internal.Readers
         /// Gets or Sets the list of the shared strings. The index of the list corresponds to the index, defined in cell values
         /// </summary>
         public List<String> SharedStrings { get; set; }
-
-       
         #endregion
 
         #region constructors
-
         /// <summary>
         /// Default constructor - Must be defined for instantiation of the plug-ins
         /// </summary>
         public WorksheetReader()
         {
         }
-
         #endregion
 
         #region functions
-
         /// <summary>
         /// Initialization method (interface implementation)
         /// </summary>
@@ -395,7 +390,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 if (ySplitDefined && !xSplitDefined)
                 {
-                    worksheet.SetHorizontalSplit(paneSplitRowIndex.Value,frozenState, topLeftCell, activePane);
+                    worksheet.SetHorizontalSplit(paneSplitRowIndex.Value, frozenState, topLeftCell, activePane);
                 }
                 if (!ySplitDefined && xSplitDefined)
                 {
@@ -414,7 +409,7 @@ namespace NanoXLSX.Internal.Readers
                 }
                 if (!ySplitDefined && xSplitDefined)
                 {
-                    worksheet.SetVerticalSplit(paneSplitWidth.Value,topLeftCell, activePane);
+                    worksheet.SetVerticalSplit(paneSplitWidth.Value, topLeftCell, activePane);
                 }
                 else if (ySplitDefined && xSplitDefined)
                 {
@@ -450,7 +445,7 @@ namespace NanoXLSX.Internal.Readers
                 hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectLockedCells, worksheet);
                 hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectUnlockedCells, worksheet);
                 hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.sort, worksheet);
-               if (hasProtection > 0)
+                if (hasProtection > 0)
                 {
                     worksheet.UseSheetProtection = true;
                 }
@@ -480,7 +475,7 @@ namespace NanoXLSX.Internal.Readers
             if (attribute != null)
             {
                 hasProtection = 1;
-               // hasProtection = ParserUtils.ParseBinaryBool(attribute) != 0;
+                // hasProtection = ParserUtils.ParseBinaryBool(attribute) != 0;
                 worksheet.SheetProtectionValues.Add(sheetProtectionValue);
                 //WorksheetProtection.Add(sheetProtectionValue, value);
             }
@@ -1528,7 +1523,6 @@ namespace NanoXLSX.Internal.Readers
             }
             return cell;
         }
-
         #endregion
     }
 }

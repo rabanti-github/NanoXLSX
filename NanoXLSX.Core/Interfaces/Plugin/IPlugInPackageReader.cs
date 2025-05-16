@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NanoXLSX.Interfaces.Reader;
+﻿using NanoXLSX.Interfaces.Reader;
 
 namespace NanoXLSX.Interfaces.Plugin
 {

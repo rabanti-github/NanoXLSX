@@ -130,7 +130,6 @@ namespace NanoXLSX.Internal.Readers
             return passwordHash != null || ContemporaryAlgorithmDetected;
         }
 
-
         /// <summary>
         /// Not relevant for the reader (inherited from <see cref="IPassword"/>)
         /// </summary>
@@ -140,7 +139,6 @@ namespace NanoXLSX.Internal.Readers
         {
             throw new NotImplementedException();
         }
-
 
         /// <summary>
         /// Not relevant for the reader (inherited from <see cref="IPassword"/>)

@@ -190,6 +190,5 @@ namespace NanoXLSX.Internal.Readers
             }
         }
         #endregion
-
     }
 }
