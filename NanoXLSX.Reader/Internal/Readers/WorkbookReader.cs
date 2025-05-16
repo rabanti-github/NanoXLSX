@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
@@ -91,6 +92,10 @@ namespace NanoXLSX.Internal.Readers
                     }
                     RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WORKBOOK_INLINE_READER);
                 }
+            }
+            catch (NotSupportedContentException ex)
+            {
+                throw ex; // rethrow
             }
             catch (Exception ex)
             {

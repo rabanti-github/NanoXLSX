@@ -26,16 +26,5 @@ namespace NanoXLSX.Internal.Readers
             /// Target of the relation
             /// </summary>
             public string Target { get; set; }
-
-        /// <summary>
-        /// Gets the numeric (1-based) ID of the relationship 
-        /// </summary>
-        /// <returns>1-based ID</returns>
-        /// /remark <remarks>There is no exception handling. If this method fails, something bad happened anyway</remarks>
-        internal int GetID()
-        {
-            string idPart = RID.Substring(3);
-            return int.Parse(idPart);
-        }
     }
 }

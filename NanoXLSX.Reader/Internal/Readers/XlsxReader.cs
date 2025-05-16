@@ -33,7 +33,7 @@ namespace NanoXLSX.Internal.Readers
         #region privateFields
         private string filePath;
         private Stream inputStream;
-        private Dictionary<int, WorksheetReader> worksheets;
+        //private Dictionary<int, WorksheetReader> worksheets;
         private MemoryStream memoryStream;
         //private WorkbookReader workbook;
         //private MetadataCoreReader metadataCoreReader;
@@ -61,7 +61,7 @@ namespace NanoXLSX.Internal.Readers
         {
             filePath = path;
             readerOptions = options;
-            worksheets = new Dictionary<int, WorksheetReader>();
+          //  worksheets = new Dictionary<int, WorksheetReader>();
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace NanoXLSX.Internal.Readers
         public XlsxReader(Stream stream, ReaderOptions options = null)
         {
             readerOptions = options;
-            worksheets = new Dictionary<int, WorksheetReader>();
+          //  worksheets = new Dictionary<int, WorksheetReader>();
             inputStream = stream;
         }
         #endregion
@@ -94,9 +94,13 @@ namespace NanoXLSX.Internal.Readers
                     ReadInternal().GetAwaiter().GetResult();
                 }
             }
+            catch (NotSupportedContentException ex)
+            {
+                throw ex; // rethrow
+            }
             catch (IOException ex)
             {
-                throw; // rethrow
+                throw ex; // rethrow
             }
             catch (Exception ex)
             {
@@ -352,6 +356,7 @@ namespace NanoXLSX.Internal.Readers
         {
             MemoryStream ms;
             Workbook wb = new Workbook();
+            wb.importInProgress = true; // Disables checks
             HandleQueuePlugIns(PlugInUUID.READER_APPENDING_QUEUE, zf, ref wb);
 
             ISharedStringReader sharedStringsReader = PlugInLoader.GetPlugIn<ISharedStringReader>(PlugInUUID.SHARED_STRINGS_READER, new SharedStringsReader());
@@ -415,6 +420,7 @@ namespace NanoXLSX.Internal.Readers
             }
 
             IPlugInReader relationships = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.RELATIONSHIP_READER, new RelationshipReader());
+            ms = GetEntryStream("xl/_rels/workbook.xml.rels", zf);
             relationships.Init(ms, wb, readerOptions);
             relationships.Execute();
             //RelationshipReader relationships = new RelationshipReader();
@@ -436,17 +442,18 @@ namespace NanoXLSX.Internal.Readers
                 }
                 ms = GetEntryStream(relationship.Target, zf);
                 worksheetReader.Init(ms, wb, readerOptions);
-                worksheetReader.CurrentWorksheetID = relationship.GetID();
+                worksheetReader.CurrentWorksheetID = definition.SheetID;
                 worksheetReader.Execute();
                 //wr = new WorksheetReader(sharedStrings, styleReaderContainer, readerOptions);
                 //wr.Read(ms);
                 //worksheets.Add(definition.Key, wr);
             }
-            if (this.worksheets.Count == 0)
+            if (wb.Worksheets.Count == 0)
             {
                 throw new IOException("No worksheet was found in the workbook");
             }
             HandleQueuePlugIns(PlugInUUID.READER_APPENDING_QUEUE, zf, ref wb);
+            wb.importInProgress = false; // Enables checks for runtime
             this.Workbook = wb;
         }
 

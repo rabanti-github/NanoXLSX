@@ -105,6 +105,7 @@ namespace NanoXLSX.Internal.Readers
                             GetCellXfs(node);
                         }
                     }
+                    HandleMruColors();
                     RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.STYLE_INLINE_READER);
                 }
                 Workbook.AuxiliaryData.SetData(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY, styleReaderContainer);
@@ -112,6 +113,20 @@ namespace NanoXLSX.Internal.Readers
             catch (Exception ex)
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
+            }
+        }
+
+        /// <summary>
+        /// handles MRU colors, if defined
+        /// </summary>
+        private void HandleMruColors()
+        {
+            if (styleReaderContainer.GetMruColors().Count > 0)
+            {
+                foreach (string color in styleReaderContainer.GetMruColors())
+                {
+                    Workbook.AddMruColor(color);
+                }
             }
         }
 

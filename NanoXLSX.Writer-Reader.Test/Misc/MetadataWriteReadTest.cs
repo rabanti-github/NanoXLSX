@@ -122,7 +122,8 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
             workbook.WorkbookMetadata = null;
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             Assert.NotNull(givenWorkbook.WorkbookMetadata);
-            Assert.Null(givenWorkbook.WorkbookMetadata.Application);
+            Assert.Equal(Metadata.DEFAULT_APPLICATION_NAME, givenWorkbook.WorkbookMetadata.Application);
+            Assert.Equal(Metadata.DEFAULT_APPLICATION_VERSION, givenWorkbook.WorkbookMetadata.ApplicationVersion);
             Assert.Null(givenWorkbook.WorkbookMetadata.Creator);
             Assert.Null(givenWorkbook.WorkbookMetadata.Title);
         }

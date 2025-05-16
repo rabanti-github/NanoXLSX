@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces.Plugin;
@@ -100,6 +101,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 WorksheetDefinition worksheetDefinition = Workbook.AuxiliaryData.GetData<WorksheetDefinition>(PlugInUUID.WORKBOOK_READER, PlugInUUID.WORKSHEET_DEFINITION_ENTITY, CurrentWorksheetID);
                 Worksheet worksheet = new Worksheet(worksheetDefinition.WorksheetName, CurrentWorksheetID, Workbook);
+                worksheet.Hidden = worksheetDefinition.Hidden;
                 using (stream) // Close after processing
                 {
                     XmlDocument document = new XmlDocument();
@@ -112,13 +114,33 @@ namespace NanoXLSX.Internal.Readers
                     GetAutoFilters(document, worksheet);
                     GetColumns(document, worksheet);
                     GetSheetProtection(document, worksheet);
+                    SetWorkbookRelation(worksheet);
                     RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WORKSHEET_INLINE_READER, CurrentWorksheetID);
                 }
-                Workbook.AddWorksheet(worksheet);
+
+
+            }
+            catch (NotSupportedContentException ex)
+            {
+                throw ex; // rethrow
             }
             catch (Exception ex)
             {
                 throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
+            }
+        }
+
+        /// <summary>
+        /// Sets all relation details of the worksheet to its parent workbook
+        /// </summary>
+        /// <param name="worksheet">Worksheet to process</param>
+        private void SetWorkbookRelation(Worksheet worksheet)
+        {
+            Workbook.AddWorksheet(worksheet);
+            int selectedWorksheetId = Workbook.AuxiliaryData.GetData<int>(PlugInUUID.WORKBOOK_READER, PlugInUUID.SELECTED_WORKSHEET_ENTITY);
+            if (selectedWorksheetId + 1 == CurrentWorksheetID) // selectedWorksheetId is 0-based
+            {
+                Workbook.SetSelectedWorksheet(worksheet);
             }
         }
 
@@ -221,19 +243,19 @@ namespace NanoXLSX.Internal.Readers
                     if (attribute != null)
                     {
                         int scale = ParserUtils.ParseInt(attribute);
-                        worksheet.ZoomFactors.Add(Worksheet.SheetViewType.normal, scale);
+                        worksheet.ZoomFactors[Worksheet.SheetViewType.normal] = scale;
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "zoomScalePageLayoutView");
                     if (attribute != null)
                     {
                         int scale = ParserUtils.ParseInt(attribute);
-                        worksheet.ZoomFactors.Add(Worksheet.SheetViewType.pageLayout, scale);
+                        worksheet.ZoomFactors[Worksheet.SheetViewType.pageLayout] = scale;
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "zoomScaleSheetLayoutView");
                     if (attribute != null)
                     {
                         int scale = ParserUtils.ParseInt(attribute);
-                        worksheet.ZoomFactors.Add(Worksheet.SheetViewType.pageBreakPreview, scale);
+                        worksheet.ZoomFactors[Worksheet.SheetViewType.pageBreakPreview] = scale;
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "showGridLines");
                     if (attribute != null)
@@ -1476,7 +1498,7 @@ namespace NanoXLSX.Internal.Readers
             int stringId;
             if (ParserUtils.TryParseInt(raw, out stringId))
             {
-                string resolvedString = SharedStrings[stringId];
+                string resolvedString = SharedStrings.ElementAtOrDefault(stringId);
                 if (resolvedString == null)
                 {
                     return raw;

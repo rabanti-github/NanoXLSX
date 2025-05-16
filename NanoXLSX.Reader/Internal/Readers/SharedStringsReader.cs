@@ -83,6 +83,7 @@ namespace NanoXLSX.Internal.Readers
         public SharedStringsReader()
         {
             phoneticsInfo = new List<PhoneticInfo>();
+            SharedStrings = new List<string>();
         }
         #endregion
 
