@@ -60,6 +60,7 @@ namespace NanoXLSX.Internal.Readers
         public XlsxReader(Stream stream, ReaderOptions options = null)
         {
             inputStream = stream;
+            readerOptions = options;
         }
         #endregion
 
@@ -242,6 +243,7 @@ namespace NanoXLSX.Internal.Readers
             }
             HandleQueuePlugIns(PlugInUUID.READER_APPENDING_QUEUE, zf, ref wb);
             wb.importInProgress = false; // Enables checks for runtime
+            wb.AuxiliaryData.ClearTemporaryData(); // Remove temporary staging data
             this.Workbook = wb;
         }
 

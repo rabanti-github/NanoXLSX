@@ -6,6 +6,7 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 using NanoXLSX.Utils;
 
 namespace NanoXLSX
@@ -21,8 +22,8 @@ namespace NanoXLSX
         private const string DEFAULT_ENTITY_ID = "";
 
         // Structure: PlugInId => EntityId => SubEntityId => value
-        private readonly Dictionary<string, Dictionary<string, Dictionary<string, object>>> data
-            = new Dictionary<string, Dictionary<string, Dictionary<string, object>>>();
+        private readonly Dictionary<string, Dictionary<string, Dictionary<string, DataEntry>>> data
+            = new Dictionary<string, Dictionary<string, Dictionary<string, DataEntry>>>();
 
         /// <summary>
         /// Registers or updates a value for a given plug-in, object.
@@ -30,11 +31,12 @@ namespace NanoXLSX
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
         /// <param name="valueId">ID of the value, represented as number (e.g. index)</param>
         /// <param name="value">Generic value</param>
+        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary (false = default)</param>
         /// \remark <remarks>The entity ID - which is neglected in this method - is automatically set to the value <see cref="DEFAULT_ENTITY_ID"/> (empty)</remarks>
-        public void SetData(string plugInId, int valueId, object value)
+        public void SetData(string plugInId, int valueId, object value, bool persistent = false)
         {
             string id = ParserUtils.ToString(valueId);
-            SetData(plugInId, id, value);
+            SetData(plugInId, id, value, persistent);
         }
 
         /// <summary>
@@ -43,10 +45,11 @@ namespace NanoXLSX
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
         /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
         /// <param name="value">Generic value</param>
+        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary (false = default)</param>
         /// \remark <remarks>The entity ID - which is neglected in this method - is automatically set to the value <see cref="DEFAULT_ENTITY_ID"/> (empty)</remarks>
-        public void SetData(string plugInId, string valueId, object value)
+        public void SetData(string plugInId, string valueId, object value, bool persistent = false)
         {
-            SetData(plugInId, DEFAULT_ENTITY_ID, valueId, value);
+            SetData(plugInId, DEFAULT_ENTITY_ID, valueId, value, persistent);
         }
 
         /// <summary>
@@ -56,10 +59,11 @@ namespace NanoXLSX
         /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
         /// <param name="valueId">ID of the value, represented as number (e.g. index)</param>
         /// <param name="value">Generic value</param>
-        public void SetData(string plugInId, string entityId, int valueId, object value)
+        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary (false = default)</param>
+        public void SetData(string plugInId, string entityId, int valueId, object value, bool persistent = false)
         {
             string id = ParserUtils.ToString(valueId);
-            SetData(plugInId, entityId, id, value);
+            SetData(plugInId, entityId, id, value, persistent);
         }
 
         /// <summary>
@@ -69,21 +73,22 @@ namespace NanoXLSX
         /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
         /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
         /// <param name="value">Generic value</param>
-        public void SetData(string plugInId, string entityId, string valueId, object value)
+        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary (false = default)</param>
+        public void SetData(string plugInId, string entityId, string valueId, object value, bool persistent = false)
         {
-            if (!data.TryGetValue(plugInId, out var pluginData))
+            if (!data.TryGetValue(plugInId, out Dictionary<string, Dictionary<string, DataEntry>> pluginData))
             {
-                pluginData = new Dictionary<string, Dictionary<string, object>>();
+                pluginData = new Dictionary<string, Dictionary<string, DataEntry>>();
                 data[plugInId] = pluginData;
             }
 
-            if (!pluginData.TryGetValue(entityId, out var entityData))
+            if (!pluginData.TryGetValue(entityId, out Dictionary<string, DataEntry> entityData))
             {
-                entityData = new Dictionary<string, object>();
+                entityData = new Dictionary<string, DataEntry>();
                 pluginData[entityId] = entityData;
             }
 
-            entityData[valueId] = value;
+            entityData[valueId] = new DataEntry(value, persistent);
         }
 
         /// <summary>
@@ -131,11 +136,11 @@ namespace NanoXLSX
         /// <returns>Generic value or null, if not found</returns>
         public object GetData(string plugInId, string entityId, string valueId)
         {
-            if (data.TryGetValue(plugInId, out var pluginData) &&
-                pluginData.TryGetValue(entityId, out var entityData) &&
-                entityData.TryGetValue(valueId, out var value))
+            if (data.TryGetValue(plugInId, out Dictionary<string, Dictionary<string, DataEntry>> pluginData) &&
+                pluginData.TryGetValue(entityId, out Dictionary<string, DataEntry> entityData) &&
+                entityData.TryGetValue(valueId, out DataEntry entry))
             {
-                return value;
+                return entry.Value;
             }
             return null;
         }
@@ -201,12 +206,12 @@ namespace NanoXLSX
         public List<T> GetDataList<T>(string plugInId, string entityId)
         {
             List<T> result = new List<T>();
-            if (data.TryGetValue(plugInId, out Dictionary<string, Dictionary<string, object>> pluginData) &&
-                pluginData.TryGetValue(entityId, out Dictionary<string, object> entityData))
+            if (data.TryGetValue(plugInId, out Dictionary<string, Dictionary<string, DataEntry>> pluginData) &&
+                pluginData.TryGetValue(entityId, out Dictionary<string, DataEntry> entityData))
             {
-                foreach (KeyValuePair<string, object> kvp in entityData)
+                foreach (KeyValuePair<string, DataEntry> entry in entityData)
                 {
-                    if (kvp.Value is T value)
+                    if (entry.Value.Value is T value)
                     {
                         result.Add(value);
                     }
@@ -216,11 +221,73 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Clears only temporary (non-persistent) entries.
+        /// </summary>
+        public void ClearTemporaryData()
+        {
+            foreach (KeyValuePair<string, Dictionary<string, Dictionary<string, DataEntry>>> pluginPair in data.ToList())
+            {
+                Dictionary<string, Dictionary<string, DataEntry>> pluginData = pluginPair.Value;
+                foreach (KeyValuePair<string, Dictionary<string, DataEntry>> entityPair in pluginData.ToList())
+                {
+                    Dictionary<string, DataEntry> entityData = entityPair.Value;
+                    List<string> keysToRemove = new List<string>();
+                    foreach (KeyValuePair<string, DataEntry> kvp in entityData)
+                    {
+                        if (!kvp.Value.Persistent)
+                        {
+                            keysToRemove.Add(kvp.Key);
+                        }
+                    }
+                    foreach (string key in keysToRemove)
+                    {
+                        entityData.Remove(key);
+                    }
+                    if (entityData.Count == 0)
+                    {
+                        pluginData.Remove(entityPair.Key);
+                    }
+                }
+                if (pluginData.Count == 0)
+                {
+                    data.Remove(pluginPair.Key);
+                }
+            }
+        }
+
+        /// <summary>
         /// Clears all elements from the data collection, removing any stored items.
         /// </summary>
-        public void Clear()
+        public void ClearData()
         {
             data.Clear();
         }
+
+        /// <summary>
+        /// Sub class representing a data entry
+        /// </summary>
+        private class DataEntry
+        {
+            /// <summary>
+            /// Value object
+            /// </summary>
+            public object Value { get; }
+            /// <summary>
+            /// If true, the data is persistent (e.g. from an extended reader plug-ins), otherwise it is temporary
+            /// </summary>
+            public bool Persistent { get; }
+
+            /// <summary>
+            /// Default constructor
+            /// </summary>
+            /// <param name="value">Value object</param>
+            /// <param name="persistent">Persistent parameter</param>
+            public DataEntry(object value, bool persistent)
+            {
+                Value = value;
+                Persistent = persistent;
+            }
+        }
+
     }
 }
