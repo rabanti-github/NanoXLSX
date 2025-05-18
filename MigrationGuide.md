@@ -5,6 +5,9 @@
 - Workbook.Load() vs WorkbokReader.Load()
 - ImportOptions vs ReaderOptions
 
+## Workbook
+- Deprecated methods removed: AddStyle, AddStyleComponent, RemoveStyle (several overloads)
+
 ## Worksheet
 
 - Password handling

@@ -45,7 +45,7 @@ namespace NanoXLSX
         #region properties
 
         /// <summary>
-        /// Optinal auxiliary data object. This object is used to store additional information about the workbook. 
+        /// Optional auxiliary data object. This object is used to store additional information about the workbook. 
         /// The data is not stored in the file but can be used by plug-ins
         /// </summary>
         internal AuxiliaryData AuxiliaryData { get; private set; }
@@ -247,51 +247,6 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Adds a style to the style repository. This method is deprecated since it has no direct impact on the generated file.
-        /// </summary>
-        /// <param name="style">Style to add</param>
-        /// <returns>Returns the managed style of the style repository</returns>
-        /// 
-        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
-        public Style AddStyle(Style style)
-        {
-            return StyleRepository.Instance.AddStyle(style);
-        }
-
-        /// <summary>
-        /// Adds a style component to a style. This method is deprecated since it has no direct impact on the generated file.
-        /// </summary>
-        /// <param name="baseStyle">Style to append a component</param>
-        /// <param name="newComponent">Component to add to the baseStyle</param>
-        /// <returns>Returns the modified style of the style repository</returns>
-        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
-        public Style AddStyleComponent(Style baseStyle, AbstractStyle newComponent)
-        {
-
-            if (newComponent.GetType() == typeof(Border))
-            {
-                baseStyle.CurrentBorder = (Border)newComponent;
-            }
-            else if (newComponent.GetType() == typeof(CellXf))
-            {
-                baseStyle.CurrentCellXf = (CellXf)newComponent;
-            }
-            else if (newComponent.GetType() == typeof(Fill))
-            {
-                baseStyle.CurrentFill = (Fill)newComponent;
-            }
-            else if (newComponent.GetType() == typeof(Font))
-            {
-                baseStyle.CurrentFont = (Font)newComponent;
-            }
-            else if (newComponent.GetType() == typeof(NumberFormat))
-            {
-                baseStyle.CurrentNumberFormat = (NumberFormat)newComponent;
-            }
-            return StyleRepository.Instance.AddStyle(baseStyle);
-        }
-
-        /// <summary>
         /// Adding a new Worksheet. The new worksheet will be defined as current worksheet
         /// </summary>
         /// <param name="name">Name of the new worksheet</param>
@@ -376,60 +331,6 @@ namespace NanoXLSX
             currentWorksheet = worksheet;
             worksheets.Add(worksheet);
             worksheet.WorkbookReference = this;
-        }
-
-        /// <summary>
-        /// Removes the passed style from the style sheet. This method is deprecated since it has no direct impact on the generated file.
-        /// </summary>
-        /// <param name="style">Style to remove</param>
-        /// \remark <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
-        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
-        public void RemoveStyle(Style style)
-        {
-            RemoveStyle(style, false);
-        }
-
-        /// <summary>
-        /// Removes the defined style from the style sheet of the workbook. This method is deprecated since it has no direct impact on the generated file.
-        /// </summary>
-        /// <param name="styleName">Name of the style to be removed</param>
-        /// \remark <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
-        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
-        public void RemoveStyle(string styleName)
-        {
-            RemoveStyle(styleName, false);
-        }
-
-        /// <summary>
-        /// Removes the defined style from the style sheet of the workbook
-        /// </summary>
-        /// <param name="style">Style to remove</param>
-        /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>
-        /// \remark <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
-        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
-        public void RemoveStyle(Style style, bool onlyIfUnused)
-        {
-            if (style == null)
-            {
-                throw new StyleException("The style to remove is not defined");
-            }
-            RemoveStyle(style.Name, onlyIfUnused);
-        }
-
-        /// <summary>
-        /// Removes the defined style from the style sheet of the workbook. This method is deprecated since it has no direct impact on the generated file.
-        /// </summary>
-        /// <param name="styleName">Name of the style to be removed</param>
-        /// <param name="onlyIfUnused">If true, the style will only be removed if not used in any cell</param>
-        /// \remark <remarks>Note: This method is available due to compatibility reasons. Added styles are actually not removed by it since unused styles are disposed automatically</remarks>
-        [Obsolete("This method has no direct impact on the generated file and is deprecated.")]
-        public void RemoveStyle(string styleName, bool onlyIfUnused)
-        {
-            if (string.IsNullOrEmpty(styleName))
-            {
-                throw new StyleException("The style to remove is not defined (no name specified)");
-            }
-            // noOp / deprecated
         }
 
         /// <summary>
