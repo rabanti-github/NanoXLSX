@@ -338,9 +338,15 @@ namespace NanoXLSX.LowLevel
 
             metadataReader = new MetadataReader();
             ms = GetEntryStream("docProps/app.xml", zf);
-            metadataReader.ReadAppData(ms);
+            if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/app.xml seems to be defined 
+            {
+                metadataReader.ReadAppData(ms);
+            }
             ms = GetEntryStream("docProps/core.xml", zf);
-            metadataReader.ReadCoreData(ms);
+            if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/core.xml seems to be defined 
+            {
+                metadataReader.ReadCoreData(ms);
+            }
 
             int worksheetIndex = 1;
             string name;

@@ -213,7 +213,7 @@ namespace NanoXLSX.LowLevel
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">");
-            if (workbook.SelectedWorksheet > 0 || workbook.Hidden)
+            if (workbook.SelectedWorksheet > 0 || workbook.Hidden || workbook.Worksheets.Any(x => HasPaneSplitting(x)))
             {
                 sb.Append("<bookViews><workbookView ");
                 if (workbook.Hidden)

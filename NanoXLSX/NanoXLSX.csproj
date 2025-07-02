@@ -23,9 +23,9 @@
     <PackageLicenseFile></PackageLicenseFile>
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>2.6.2</Version>
-    <AssemblyVersion>2.6.2.0</AssemblyVersion>
-    <FileVersion>2.6.2.0</FileVersion>
+    <Version>2.6.3</Version>
+    <AssemblyVersion>2.6.3.0</AssemblyVersion>
+    <FileVersion>2.6.3.0</FileVersion>
     <RepositoryType>git</RepositoryType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>

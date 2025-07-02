@@ -17,9 +17,9 @@
     <PackageTags>Excel Office XLSX</PackageTags>
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
-    <Version>2.6.2</Version>
-    <AssemblyVersion>2.6.2.0</AssemblyVersion>
-    <FileVersion>2.6.2.0</FileVersion>
+    <Version>2.6.3</Version>
+    <AssemblyVersion>2.6.3.0</AssemblyVersion>
+    <FileVersion>2.6.3.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\autofilter.xlsx" />
@@ -35,6 +35,7 @@
     <None Remove="Resources\invalid_workbook.xlsx" />
 	<None Remove="Resources\invalid_workbook_sheet-definition.xlsx" />
     <None Remove="Resources\invalid_worksheet.xlsx" />
+    <None Remove="Resources\missing_DocProps.xlsx" />
     <None Remove="Resources\missing_worksheet.xlsx" />
     <None Remove="Resources\new_format.xlsx" />
     <None Remove="Resources\omitted_style_refs.xlsx" />
@@ -57,6 +58,7 @@
 	  <EmbeddedResource Include="Resources\invalid_workbook.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_workbook_sheet-definition.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_worksheet.xlsx" />
+	  <EmbeddedResource Include="Resources\missing_docProps.xlsx" />
 	  <EmbeddedResource Include="Resources\semi-large-amount.xlsx" />
 	  <EmbeddedResource Include="Resources\missing_worksheet.xlsx">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>

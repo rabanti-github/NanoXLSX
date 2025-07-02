@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shfbBuild product="Sandcastle Help File Builder and Tools" version="2023.3.4.0" projectFile="D:\a\NanoXLSX\NanoXLSX\Documentation\CodeDocumentation.shfbproj" started="1/24/2025 9:08:52 PM">
+<shfbBuild product="Sandcastle Help File Builder and Tools" version="2023.3.4.0" projectFile="D:\a\NanoXLSX\NanoXLSX\Documentation\CodeDocumentation.shfbproj" started="4/26/2025 9:03:01 PM">
 <buildStep step="Initializing">
 The Sandcastle tools are located in &#39;C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder&#39;
 Locating components in the following folder(s):
@@ -29,43 +29,43 @@ Copying XML comments files
 <buildStep step="GenerateSharedContent">
 Generating shared content files (en-US, English (United States))...
 <plugIn name="Lightweight Website Style" behavior="After" priority="1000">
-</plugIn>    Last step completed in 00:00:00.1563
+</plugIn>    Last step completed in 00:00:00.1440
 </buildStep>
 <buildStep step="GenerateApiFilter">
 Generating API filter for MRefBuilder...
-    Last step completed in 00:00:00.1406
+    Last step completed in 00:00:00.1250
 </buildStep>
 <buildStep step="GenerateReflectionInfo">
 Generating reflection information...
-[C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe - GenerateRefInfo-1efbdc81-b4fb-48c1-8492-35f89401a7c0.proj]
-Build started 1/24/2025 9:09:03 PM.
+[C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe - GenerateRefInfo-7311b875-173c-44c9-9afa-0b473b595788.proj]
+Build started 4/26/2025 9:03:11 PM.
 
-Project &quot;D:\a\NanoXLSX\NanoXLSX\docs\Working\GenerateRefInfo-1efbdc81-b4fb-48c1-8492-35f89401a7c0.proj&quot; on node 1 (default targets).
+Project &quot;D:\a\NanoXLSX\NanoXLSX\docs\Working\GenerateRefInfo-7311b875-173c-44c9-9afa-0b473b595788.proj&quot; on node 1 (default targets).
 PrepareForBuild:
   Creating directory &quot;obj\Debug\&quot;.
 GenerateRefInfo:
-  Microsoft.Build (v17.12.12+1cce77968bca1366760f361c837ffbc3a6af70f0)
+  Microsoft.Build (v17.13.15+18b3035f62325a6b61978a2776bac265955465c8)
   c Microsoft Corporation. All rights reserved.
   No source code context base path specified.  Source context information is unavailable.
   Loaded 1 assemblies for reflection and 1 dependency assemblies.
   Wrote information on 4 namespaces, 68 types, and 976 members
   Merging duplicate type and member information
   Merged 0 duplicate type(s) and 0 duplicate member(s)
-Done Building Project &quot;D:\a\NanoXLSX\NanoXLSX\docs\Working\GenerateRefInfo-1efbdc81-b4fb-48c1-8492-35f89401a7c0.proj&quot; (default targets).
-    Last step completed in 00:00:09.1968
+Done Building Project &quot;D:\a\NanoXLSX\NanoXLSX\docs\Working\GenerateRefInfo-7311b875-173c-44c9-9afa-0b473b595788.proj&quot; (default targets).
+    Last step completed in 00:00:06.4930
 </buildStep>
 <buildStep step="ApplyDocumentModel">
 Applying document model to reflection output...
-    Last step completed in 00:00:00.5314
+    Last step completed in 00:00:00.3451
 </buildStep>
 <buildStep step="AddNamespaceGroups">
 Adding namespace group entries...
 Added 0 namespace group entries
-    Last step completed in 00:00:00.0469
+    Last step completed in 00:00:00.0467
 </buildStep>
 <buildStep step="AddApiTopicFilenames">
 Adding topic filenames to API members...
-    Last step completed in 00:00:00.0625
+    Last step completed in 00:00:00.0469
 </buildStep>
 <buildStep step="GenerateApiTopicManifest">
 Generating API topic manifest...
@@ -73,7 +73,7 @@ Generating API topic manifest...
 </buildStep>
 <buildStep step="GenerateNamespaceSummaries">
 Generating namespace summary information...
-    Last step completed in 00:00:00.2033
+    Last step completed in 00:00:00.1725
 </buildStep>
 <buildStep step="CopyAdditionalContent">
 Copying additional content files...
@@ -90,22 +90,22 @@ Merging conceptual and additional tables of contents...
 <buildStep step="GenerateIntermediateTableOfContents">
 Generating intermediate table of contents file for API content...
 Generating conceptual content intermediate TOC file...
-    Last step completed in 00:00:00.2035
+    Last step completed in 00:00:00.1492
 </buildStep>
 <buildStep step="CreateBuildAssemblerConfigs">
 Creating Sandcastle configuration files...
-    Last step completed in 00:00:01.3596
+    Last step completed in 00:00:00.7501
 </buildStep>
 <buildStep step="CombiningIntermediateTocFiles">
 Combining conceptual and API intermediate TOC files...
-    Last step completed in 00:00:00.0156
+    Last step completed in 00:00:00.0312
 </buildStep>
 <buildStep step="MergeCustomConfigs">
 Merging custom build component configurations
 D:\a\NanoXLSX\NanoXLSX\docs\Working\BuildAssembler.config
   Updating reference topic configurations.
   No conceptual content.  Removing conceptual content components.
-    Last step completed in 00:00:00.0313
+    Last step completed in 00:00:00.0000
 </buildStep>
 <buildStep step="BuildTopics">
 Building help topics...
@@ -180,7 +180,7 @@ Processed 1271 topic(s)
 59 warning(s)
 CopyFromIndexComponent: &quot;reflection&quot; in-memory cache entries used: 10 of 15.
 CopyFromIndexComponent: &quot;comments&quot; in-memory cache entries used: 2 of 30.
-    Last step completed in 00:01:04.0046
+    Last step completed in 00:00:54.9858
 </buildStep>
 <buildStep step="ExtractingHtmlInfo">
 Extracting HTML info for HTML Help 1 and/or website...
@@ -192,7 +192,7 @@ Saving HTML Help 1 table of contents to D:\a\NanoXLSX\NanoXLSX\docs\Working\Outp
 Processing website files in D:\a\NanoXLSX\NanoXLSX\docs\Working\Output\Website
 Processed 1271 HTML files.  Sorting keywords and generating See Also indices.
 Saving website table of contents to D:\a\NanoXLSX\NanoXLSX\docs\Working\\WebTOC.xml
-    Last step completed in 00:00:00.3912
+    Last step completed in 00:00:00.3752
 </buildStep>
 <buildStep step="CopyStandardHelpContent">
 Copying standard help content...
@@ -362,18 +362,18 @@ Compiling HTML Help 1 file...
   
   
   
-  Created d:\a\NanoXLSX\NanoXLSX\docs\Working\Output\HtmlHelp1\Documentation.chm, 1,367,228 bytes
+  Created d:\a\NanoXLSX\NanoXLSX\docs\Working\Output\HtmlHelp1\Documentation.chm, 1,367,300 bytes
   
-  Compression decreased file by 6,962,115 bytes.
+  Compression decreased file by 6,962,393 bytes.
   
-    Last step completed in 00:00:05.0242
+    Last step completed in 00:00:04.9586
 </buildStep>
 <buildStep step="GenerateFullTextIndex">
 Generating full-text index for the website...
 
 <plugIn name="Lightweight Website Style" behavior="After" priority="1000">
 Adding lightweight search and TOC elements to each topic...
-</plugIn>    Last step completed in 00:00:01.7042
+</plugIn>    Last step completed in 00:00:01.5488
 </buildStep>
 <buildStep step="CopyingWebsiteFiles">
 Copying website files to output folder...
@@ -382,15 +382,15 @@ Copied 500 files
 Copied 1000 files
 Copied 1500 files
 Copied 1627 files for the website content
-    Last step completed in 00:00:00.3596
+    Last step completed in 00:00:00.3750
 </buildStep>
 <buildStep step="CleanIntermediates">
 Removing intermediate files...
-    Last step completed in 00:00:00.1719
+    Last step completed in 00:00:00.1564
 </buildStep>
 <buildStep step="Completed">
 
-Build completed successfully at 1/24/2025 9:10:26 PM.  Total time: 00:01:33.9996
+Build completed successfully at 4/26/2025 9:04:21 PM.  Total time: 00:01:20.1352
 
 </buildStep>
 </shfbBuild>
