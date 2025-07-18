@@ -17,9 +17,9 @@
     <PackageTags>Excel Office XLSX</PackageTags>
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
-    <Version>2.6.3</Version>
-    <AssemblyVersion>2.6.3.0</AssemblyVersion>
-    <FileVersion>2.6.3.0</FileVersion>
+    <Version>2.6.4</Version>
+    <AssemblyVersion>2.6.4.0</AssemblyVersion>
+    <FileVersion>2.6.4.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\autofilter.xlsx" />
@@ -48,6 +48,7 @@
   <ItemGroup>
 	  <EmbeddedResource Include="Resources\autofilter.xlsx" />
 	  <EmbeddedResource Include="Resources\chartsheet2.xlsx" />
+	  <EmbeddedResource Include="Resources\inline_shared_strings.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_app.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_core.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_relationship.xlsx" />

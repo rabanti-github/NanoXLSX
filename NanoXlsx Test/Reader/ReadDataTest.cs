@@ -465,6 +465,21 @@ namespace NanoXLSX_Test.Reader
             Assert.Equal(new NanoXLSX.Range("A1:A1").ToString(), workbook.Worksheets[0].AutoFilterRange.Value.ToString());
         }
 
+        [Fact(DisplayName = "Test of reading inline and shared strings from embedded resource")]
+        public void ReadInlineAndSharedStringsTest()
+        {
+            Stream stream = TestUtils.GetResource("inline_shared_strings.xlsx");
+            Workbook workbook = Workbook.Load(stream);
+            Worksheet worksheet = workbook.CurrentWorksheet;
+
+            Assert.Equal(Cell.CellType.STRING, worksheet.Cells["A1"].DataType);
+            Assert.Equal("InlineString", worksheet.Cells["A1"].Value);
+
+            Assert.Equal(Cell.CellType.STRING, worksheet.Cells["B1"].DataType);
+            Assert.Equal("SharedString", worksheet.Cells["B1"].Value);
+        }
+
+
         private static void AssertEquals<T>(T expected, T given)
         {
             Assert.Equal(expected, given);
@@ -547,7 +562,6 @@ namespace NanoXLSX_Test.Reader
             float threshold = 0.00000001f;
             Assert.True(Math.Abs(given - expected) < threshold);
         }
-
 
     }
 }
