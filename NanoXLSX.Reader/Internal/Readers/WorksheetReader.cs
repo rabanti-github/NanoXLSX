@@ -651,6 +651,10 @@ namespace NanoXLSX.Internal.Readers
                         {
                             value = valueNode.InnerText;
                         }
+                        if (valueNode.LocalName.Equals("is", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            value = valueNode.InnerText;
+                        }
                     }
                 }
             }
@@ -704,6 +708,11 @@ namespace NanoXLSX.Internal.Readers
             else if (type == "str")
             {
                 importedType = Cell.CellType.FORMULA;
+                rawValue = raw;
+            }
+            else if (type == "inlineStr")
+            {
+                importedType = Cell.CellType.STRING;
                 rawValue = raw;
             }
             else if (dateStyles.Contains(styleNumber) && (type == null || type == "" || type == "n"))
