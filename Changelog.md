@@ -1,5 +1,13 @@
 # Change Log
 
+## v2.6.5 
+
+---
+Release Date: **13.09.2025**
+
+- Added import option to ignore invalid column widths or row heights. Concept provided by pokorny
+- Added test case
+
 ## v2.6.4 
 
 ---
