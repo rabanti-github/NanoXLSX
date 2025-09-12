@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
@@ -555,7 +556,7 @@ namespace NanoXLSX.LowLevel
                 foreach (int index in indices)
                 {
                     Column column = new Column(index - 1); // Transform to zero-based
-                    column.Width = width;
+                    column.Width = GetValidatedWidth(width);
                     column.IsHidden = hidden;
                     if (defaultStyle != null)
 					{
@@ -1425,6 +1426,42 @@ namespace NanoXLSX.LowLevel
                     return dValue;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Gets the column width according to <see cref="ImportOptions.EnforceValidColumnDimensions"/>
+        /// </summary>
+        /// <param name="rawValue">Raw column width</param>
+        /// <returns>Modified column width in case <see cref="ImportOptions.EnforceValidColumnDimensions"/> is set to false, and the raw value was invalid</returns>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the raw value was invalid and <see cref="ImportOptions.EnforceValidColumnDimensions"/> is set to true</exception>
+        private float GetValidatedWidth(float rawValue)
+        {
+            if (rawValue < Worksheet.MIN_COLUMN_WIDTH)
+            {
+                if (importOptions.EnforceValidColumnDimensions)
+                {
+                    throw new WorksheetException($"The worksheet contains an invalid column width (too small: {rawValue}) value. Consider using the ImportOption 'EnforceValidColumnDimensions' to ignore this error.");
+                }
+                else
+                {
+                    return Worksheet.MIN_COLUMN_WIDTH;
+                }
+            }
+            else if (rawValue > Worksheet.MAX_COLUMN_WIDTH)
+            {
+                if (importOptions.EnforceValidColumnDimensions)
+                {
+                    throw new WorksheetException($"The worksheet contains an invalid column width (too large: {rawValue}) value. Consider using the ImportOption 'EnforceValidColumnDimensions' to ignore this error.");
+                }
+                else
+                {
+                    return Worksheet.MAX_COLUMN_WIDTH;
+                }
+            }
+            else
+            {
+                return rawValue;
+            }
         }
 
         /// <summary>

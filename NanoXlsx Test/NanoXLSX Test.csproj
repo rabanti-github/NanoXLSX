@@ -25,10 +25,14 @@
     <None Remove="Resources\autofilter.xlsx" />
     <None Remove="Resources\chartsheet2.xlsx" />
     <None Remove="Resources\empty_worksheet.xlsx" />
+    <None Remove="Resources\invalid_column_width_max.xlsx" />
+    <None Remove="Resources\invalid_column_width_min.xlsx" />
     <None Remove="Resources\invalid_metadata.xlsx" />
     <None Remove="Resources\invalid_metadata_app.xlsx" />
     <None Remove="Resources\invalid_metadata_core.xlsx" />
     <None Remove="Resources\invalid_relationship.xlsx" />
+    <None Remove="Resources\invalid_row_height_max.xlsx" />
+    <None Remove="Resources\invalid_row_height_min.xlsx" />
     <None Remove="Resources\invalid_shardStrings.xlsx" />
     <None Remove="Resources\invalid_sharedStrings2.xlsx" />
     <None Remove="Resources\invalid_style.xlsx" />
@@ -49,9 +53,13 @@
 	  <EmbeddedResource Include="Resources\autofilter.xlsx" />
 	  <EmbeddedResource Include="Resources\chartsheet2.xlsx" />
 	  <EmbeddedResource Include="Resources\inline_shared_strings.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_column_width_max.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_column_width_min.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_app.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_core.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_relationship.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_row_height_max.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_row_height_min.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_shardStrings.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_sharedStrings2.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_style.xlsx" />
@@ -69,6 +77,7 @@
 	  <EmbeddedResource Include="Resources\phonetics.xlsx" />
 	<EmbeddedResource Include="Resources\tampered.xlsx" />
 	<EmbeddedResource Include="Resources\unknown_style_enums.xlsx" />
+	<EmbeddedResource Include="Resources\valid_column_row_dimensions.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />

@@ -115,6 +115,18 @@ namespace NanoXLSX
         public bool EnforceEmptyValuesAsString { get; set; }
 
         /// <summary>
+        /// If true, invalid column dimensions (larger than <see cref="Worksheet.MAX_COLUMN_WIDTH"/> or smaller than <see cref="Worksheet.MIN_COLUMN_WIDTH"/>) will throw an exception on when reading a workbook. 
+        /// If false, such invalid values will be ignored and set to <see cref="Worksheet.MAX_COLUMN_WIDTH"/> or <see cref="Worksheet.MIN_COLUMN_WIDTH"/>. Default is true
+        /// </summary>
+        public bool EnforceValidColumnDimensions { get; set; } = true;
+
+        /// <summary>
+        /// If true, invalid row dimensions (larger than <see cref="Worksheet.MAX_ROW_HEIGHT"/> or smaller than <see cref="Worksheet.MIN_ROW_HEIGHT"/>) will throw an exception on when reading a workbook. 
+        /// If false, such invalid values will be ignored and set to <see cref="Worksheet.MAX_ROW_HEIGHT"/> or <see cref="Worksheet.MIN_ROW_HEIGHT"/>. Default is true
+        /// </summary>
+        public bool EnforceValidRowDimensions { get; set; } = true;
+
+        /// <summary>
         /// Global strategy to handle cell values. The default will not enforce any general casting, beside defined values of <a cref="EnforceDateTimesAsNumbers" />, <a cref="EnforceEmptyValuesAsString" /> and <a cref="EnforcedColumnTypes" /> 
         /// </summary>
         public GlobalType GlobalEnforcingType { get; set; } = GlobalType.Default;

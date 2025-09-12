@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
@@ -179,7 +180,7 @@ namespace NanoXLSX.LowLevel
                     }
                     if (row.Value.Height.HasValue)
                     {
-                        ws.SetRowHeight(row.Key, row.Value.Height.Value);
+                        ws.SetRowHeight(row.Key, GetValidatedHeight(row.Value.Height.Value));
                     }
                 }
                 foreach (Column column in reader.Value.Columns)
@@ -402,6 +403,42 @@ namespace NanoXLSX.LowLevel
                 }
             }
             return stream;
+        }
+
+        /// <summary>
+        /// Gets the row height according to <see cref="ImportOptions.EnforceValidRowDimensions"/>
+        /// </summary>
+        /// <param name="rawValue">Raw row height</param>
+        /// <returns>Modified row height in case <see cref="ImportOptions.EnforceValidRowDimensions"/> is set to false, and the raw value was invalid</returns>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the raw value was invalid and <see cref="ImportOptions.EnforceValidRowDimensions"/> is set to true</exception>
+        private float GetValidatedHeight(float rawValue)
+        {
+            if (rawValue < Worksheet.MIN_ROW_HEIGHT)
+            {
+                if (importOptions.EnforceValidRowDimensions)
+                {
+                    throw new WorksheetException($"The worksheet contains an invalid row height (too small: {rawValue}) value. Consider using the ImportOption 'EnforceValidRowDimensions' to ignore this error.");
+                }
+                else
+                {
+                    return Worksheet.MIN_ROW_HEIGHT;
+                }
+            }
+            else if (rawValue > Worksheet.MAX_ROW_HEIGHT)
+            {
+                if (importOptions.EnforceValidRowDimensions)
+                {
+                    throw new WorksheetException($"The worksheet contains an invalid row height (too large: {rawValue}) value. Consider using the ImportOption 'EnforceValidRowDimensions' to ignore this error.");
+                }
+                else
+                {
+                    return Worksheet.MAX_ROW_HEIGHT;
+                }
+            }
+            else
+            {
+                return rawValue;
+            }
         }
 
         #endregion

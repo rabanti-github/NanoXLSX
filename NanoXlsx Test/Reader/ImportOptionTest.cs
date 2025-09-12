@@ -1038,6 +1038,63 @@ namespace NanoXLSX_Test.Reader
             }
         }
 
+        [Theory(DisplayName = "Test of the ImportOption property EnforceValidColumnDimensions")]
+        [InlineData("valid_column_row_dimensions.xlsx", true, false)]
+        [InlineData("invalid_column_width_min.xlsx", true, true)]
+        [InlineData("invalid_column_width_max.xlsx", true, true)]
+        [InlineData("invalid_row_height_min.xlsx", true, false)]
+        [InlineData("invalid_row_height_max.xlsx", true, false)]
+        [InlineData("valid_column_row_dimensions.xlsx", false, false)]
+        [InlineData("invalid_column_width_min.xlsx", false, false)]
+        [InlineData("invalid_column_width_max.xlsx", false, false)]
+        [InlineData("invalid_row_height_min.xlsx", false, false)]
+        [InlineData("invalid_row_height_max.xlsx", false, false)]
+        public void EnforceValidColumnDimensionsTrueTest(string fileName, bool givenOptionValue, bool expectedThrow)
+        {
+            ImportOptions options = new ImportOptions();
+            options.EnforceValidColumnDimensions = givenOptionValue;
+            options.EnforceValidRowDimensions = false;
+            Stream stream = TestUtils.GetResource(fileName);
+            if (expectedThrow) 
+            {
+                Assert.ThrowsAny<Exception>(() => Workbook.Load(stream, options));
+            }
+            else
+            {
+                Workbook workbook = Workbook.Load(stream, options);
+                Assert.True(true);
+            }
+        }
+
+        [Theory(DisplayName = "Test of the ImportOption property EnforceValidRowDimensions")]
+        [InlineData("valid_column_row_dimensions.xlsx", true, false)]
+        [InlineData("invalid_row_height_min.xlsx", true, true)]
+        [InlineData("invalid_row_height_max.xlsx", true, true)]
+        [InlineData("invalid_column_width_min.xlsx", true, false)]
+        [InlineData("invalid_column_width_max.xlsx", true, false)]
+        [InlineData("valid_column_row_dimensions.xlsx", false, false)]
+        [InlineData("invalid_row_height_min.xlsx", false, false)]
+        [InlineData("invalid_row_height_max.xlsx", false, false)]
+        [InlineData("invalid_column_width_min.xlsx", false, false)]
+        [InlineData("invalid_column_width_max.xlsx", false, false)]
+        public void EnforceValidRowDimensionsTrueTest(string fileName, bool givenOptionValue, bool expectedThrow)
+        {
+            ImportOptions options = new ImportOptions();
+            options.EnforceValidRowDimensions = givenOptionValue;
+            options.EnforceValidColumnDimensions = false;
+            Stream stream = TestUtils.GetResource(fileName);
+            if (expectedThrow)
+            {
+                Assert.ThrowsAny<Exception>(() => Workbook.Load(stream, options));
+            }
+            else
+            {
+                Workbook workbook = Workbook.Load(stream, options);
+                Assert.True(true);
+            }
+        }
+
+
         private static void AssertValues<T, D>(Dictionary<string, T> givenCells, ImportOptions importOptions, Action<object, object> assertionAction, Dictionary<string, D> expectedCells = null)
         {
             Workbook workbook = new Workbook("worksheet1");
