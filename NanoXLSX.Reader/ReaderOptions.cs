@@ -113,6 +113,11 @@ namespace NanoXLSX
         public bool EnforceEmptyValuesAsString { get; set; }
 
         /// <summary>
+        /// If true, invalid data, like column widths or row height that are out of range, will cause an exception when such a workbook is loaded. Tho option is inactive by default (tolerant reader mode)
+        /// </summary>
+        public bool EnforceStrictValidation { get; set; }
+
+        /// <summary>
         /// Global strategy to handle cell values. The default will not enforce any general casting, beside defined values of <see cref="EnforceDateTimesAsNumbers" />, <see cref="EnforceEmptyValuesAsString" /> and <see cref="EnforcedColumnTypes" /> 
         /// </summary>
         public GlobalType GlobalEnforcingType { get; set; } = GlobalType.Default;

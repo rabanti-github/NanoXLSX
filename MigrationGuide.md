@@ -4,6 +4,7 @@
 
 - Workbook.Load() vs WorkbokReader.Load()
 - ImportOptions vs ReaderOptions
+  + EnforceValidRowDimensions and EnforceValidColumnDimensions are replaced by EnforceStrictValidation (default = false)
 
 ## Workbook
 - Deprecated methods removed: AddStyle, AddStyleComponent, RemoveStyle (several overloads)

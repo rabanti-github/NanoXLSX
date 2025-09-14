@@ -1077,6 +1077,45 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             }
         }
 
+        [Theory(DisplayName = "Test of the import option property EnforceStrictValidation")]
+        [InlineData("valid_column_row_dimensions.xlsx", true, false, 0)]
+        [InlineData("invalid_column_width_min.xlsx", true, true, -1)]
+        [InlineData("invalid_column_width_max.xlsx", true, true, 1)]
+        [InlineData("invalid_row_height_min.xlsx", true, true, 0)]
+        [InlineData("invalid_row_height_max.xlsx", true, true, 0)]
+        [InlineData("valid_column_row_dimensions.xlsx", false, false, 0)]
+        [InlineData("invalid_column_width_min.xlsx", false, false, 0)]
+        [InlineData("invalid_column_width_max.xlsx", false, false, 0)]
+        [InlineData("invalid_row_height_min.xlsx", false, false, 0)]
+        [InlineData("invalid_row_height_max.xlsx", false, false, 0)]
+        public void EnforceValidColumnDimensionsTest(string fileName, bool givenOptionValue, bool expectedThrow, int columnFlag)
+        {
+            ReaderOptions options = new ReaderOptions();
+            options.EnforceStrictValidation = givenOptionValue;
+            using Stream stream = TestUtils.GetResource(fileName);
+
+            if (expectedThrow)
+            {
+                Assert.ThrowsAny<Exception>(() => WorkbookReader.Load(stream, options));
+            }
+            else
+            {
+                Workbook workbook = WorkbookReader.Load(stream, options);
+                if (columnFlag == -1)
+                {
+                    Assert.Equal(Worksheet.MIN_COLUMN_WIDTH, workbook.GetWorksheet(0).Columns[0].Width);
+                }
+                else if (columnFlag == 1)
+                {
+                    Assert.Equal(Worksheet.MAX_COLUMN_WIDTH, workbook.GetWorksheet(0).Columns[0].Width);
+                }
+                else
+                {
+                    Assert.True(true);
+                }
+            }
+        }
+
         private static void AssertValues<T, D>(Dictionary<string, T> givenCells, ReaderOptions ReaderOptions, Action<object, object> assertionAction, Dictionary<string, D> expectedCells = null)
         {
             Workbook workbook = new Workbook("worksheet1");

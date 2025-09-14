@@ -192,7 +192,7 @@ namespace NanoXLSX.Internal.Readers
                     string heightAttribute = ReaderUtils.GetAttribute(row, "ht");
                     if (heightAttribute != null)
                     {
-                        worksheet.RowHeights.Add(rowNumber, ParserUtils.ParseFloat(heightAttribute));
+                        worksheet.RowHeights.Add(rowNumber, GetValidatedHeight(ParserUtils.ParseFloat(heightAttribute)));
                     }
                 }
                 if (row.HasChildNodes)
@@ -613,7 +613,7 @@ namespace NanoXLSX.Internal.Readers
 
                     if (width != Worksheet.DEFAULT_COLUMN_WIDTH)
                     {
-                        worksheet.SetColumnWidth(columnAddress, width);
+                        worksheet.SetColumnWidth(columnAddress, GetValidatedWidth(width));
                     }
                     if (hidden)
                     {
@@ -1490,6 +1490,78 @@ namespace NanoXLSX.Internal.Readers
                 return dValue;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Gets the column width according to <see cref="ReaderOptions.EnforceStrictValidation"/>
+        /// </summary>
+        /// <param name="rawValue">Raw column width</param>
+        /// <returns>Modified column width in case <see cref="ReaderOptions.EnforceStrictValidation"/> is set to false, and the raw value was invalid</returns>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the raw value was invalid and <see cref="ReaderOptions.EnforceStrictValidation"/> is set to true</exception>
+        private float GetValidatedWidth(float rawValue)
+        {
+            if (rawValue < Worksheet.MIN_COLUMN_WIDTH)
+            {
+                if (readerOptions.EnforceStrictValidation)
+                {
+                    throw new WorksheetException($"The worksheet contains an invalid column width (too small: {rawValue}) value. Consider using the ImportOption 'EnforceValidColumnDimensions' to ignore this error.");
+                }
+                else
+                {
+                    return Worksheet.MIN_COLUMN_WIDTH;
+                }
+            }
+            else if (rawValue > Worksheet.MAX_COLUMN_WIDTH)
+            {
+                if (readerOptions.EnforceStrictValidation)
+                {
+                    throw new WorksheetException($"The worksheet contains an invalid column width (too large: {rawValue}) value. Consider using the ImportOption 'EnforceValidColumnDimensions' to ignore this error.");
+                }
+                else
+                {
+                    return Worksheet.MAX_COLUMN_WIDTH;
+                }
+            }
+            else
+            {
+                return rawValue;
+            }
+        }
+
+        /// <summary>
+        /// Gets the row height according to <see cref="ReaderOptions.EnforceStrictValidation"/>
+        /// </summary>
+        /// <param name="rawValue">Raw row height</param>
+        /// <returns>Modified row height in case <see cref="ReaderOptions.EnforceStrictValidation"/> is set to false, and the raw value was invalid</returns>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the raw value was invalid and <see cref="ReaderOptions.EnforceStrictValidation"/> is set to true</exception>
+        private float GetValidatedHeight(float rawValue)
+        {
+            if (rawValue < Worksheet.MIN_ROW_HEIGHT)
+            {
+                if (readerOptions.EnforceStrictValidation)
+                {
+                    throw new WorksheetException($"The worksheet contains an invalid row height (too small: {rawValue}) value. Consider using the ImportOption 'EnforceValidRowDimensions' to ignore this error.");
+                }
+                else
+                {
+                    return Worksheet.MIN_ROW_HEIGHT;
+                }
+            }
+            else if (rawValue > Worksheet.MAX_ROW_HEIGHT)
+            {
+                if (readerOptions.EnforceStrictValidation)
+                {
+                    throw new WorksheetException($"The worksheet contains an invalid row height (too large: {rawValue}) value. Consider using the ImportOption 'EnforceValidRowDimensions' to ignore this error.");
+                }
+                else
+                {
+                    return Worksheet.MAX_ROW_HEIGHT;
+                }
+            }
+            else
+            {
+                return rawValue;
+            }
         }
 
         /// <summary>
