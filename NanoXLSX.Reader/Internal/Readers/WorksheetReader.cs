@@ -1504,7 +1504,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 if (readerOptions.EnforceStrictValidation)
                 {
-                    throw new WorksheetException($"The worksheet contains an invalid column width (too small: {rawValue}) value. Consider using the ImportOption 'EnforceValidColumnDimensions' to ignore this error.");
+                    throw new WorksheetException($"The worksheet contains an invalid column width (too small: {rawValue}) value. This error is ignored when disabling the reader option 'EnforceStrictValidation'");
                 }
                 else
                 {
@@ -1515,7 +1515,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 if (readerOptions.EnforceStrictValidation)
                 {
-                    throw new WorksheetException($"The worksheet contains an invalid column width (too large: {rawValue}) value. Consider using the ImportOption 'EnforceValidColumnDimensions' to ignore this error.");
+                    throw new WorksheetException($"The worksheet contains an invalid column width (too large: {rawValue}) value.  This error is ignored when disabling the reader option 'EnforceStrictValidation'");
                 }
                 else
                 {
