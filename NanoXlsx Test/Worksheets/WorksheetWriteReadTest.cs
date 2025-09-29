@@ -512,7 +512,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData(true, "objects:0", "scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)] 
         [InlineData(true, "scenarios:0", "objects:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
         [InlineData(true, "selectLockedCells:0", "objects:1,scenarios:1", 0)]
-        [InlineData(true, "selectUnlockedCells:0", "objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:0", 0)]
+        [InlineData(true, "selectUnlockedCells:0", "objects:1,scenarios:1,selectLockedCells:1", 0)]
         [InlineData(false, "", "", 1)]
         [InlineData(false, "autoFilter:0", "", 2)]
         [InlineData(true, "", "objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 3)]

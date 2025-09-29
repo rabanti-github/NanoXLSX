@@ -431,6 +431,10 @@ namespace NanoXLSX.LowLevel
                             {
                                 cellXfStyle.Locked = true;
                             }
+                            else
+                            {
+                                cellXfStyle.Locked = false; // Set explicitly to false, since true by default
+                            }
                         }
                     }
 
