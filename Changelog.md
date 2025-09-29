@@ -1,5 +1,16 @@
 # Change Log
 
+## v2.6.6 
+
+---
+Release Date: **20.09.2025**
+
+- Fixed handling of worksheet protection (selecting locked or unlocked cells)
+- Added test case
+
+Note: The default value of `Style.CurrentCellXf.Locked` is now true, to be consistent with Excel behavior. This change only affects worksheets with protection enabled and may require 
+  explicit unlocking of cells that should remain editable
+
 ## v2.6.5 
 
 ---
