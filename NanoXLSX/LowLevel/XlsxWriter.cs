@@ -1049,11 +1049,18 @@ namespace NanoXLSX.LowLevel
             {
                 actualLockingValues.Add(Worksheet.SheetProtectionValue.scenarios, 1);
             }
-            if (!sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectLockedCells))
+            bool allowSelectLocked = sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectLockedCells);
+            bool allowSelectUnlocked = sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectUnlockedCells);
+            if (allowSelectLocked && !allowSelectUnlocked)
+            {
+                // This shouldn't happen in Excel's UI, but handle it by allowing both
+                allowSelectUnlocked = true;
+            }
+            if (!allowSelectLocked)
             {
                 actualLockingValues.Add(Worksheet.SheetProtectionValue.selectLockedCells, 1);
             }
-            if (!sheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectUnlockedCells))
+            if (!allowSelectUnlocked)
             {
                 actualLockingValues.Add(Worksheet.SheetProtectionValue.selectUnlockedCells, 1);
             }
@@ -1375,24 +1382,17 @@ namespace NanoXLSX.LowLevel
                     alignmentString = sb2.ToString();
                 }
 
-                if (style.CurrentCellXf.Hidden || !style.CurrentCellXf.Locked)
+                if (style.CurrentCellXf.Hidden && style.CurrentCellXf.Locked)
                 {
-                    if (style.CurrentCellXf.Hidden && style.CurrentCellXf.Locked)
-                    {
-                        protectionString = "<protection locked=\"1\" hidden=\"1\"/>";
-                    }
-                    else if (style.CurrentCellXf.Hidden && !style.CurrentCellXf.Locked)
-                    {
-                        protectionString = "<protection hidden=\"1\" locked=\"0\"/>";
-                    }
-                    else if (!style.CurrentCellXf.Hidden && !style.CurrentCellXf.Locked)
-                    {
-                        protectionString = "<protection locked=\"0\"/>";
-                    }
-                    else
-                    {
-                        protectionString = "<protection locked=\"1\"/>";
-                    }
+                    protectionString = "<protection locked=\"1\" hidden=\"1\"/>";
+                }
+                else if (style.CurrentCellXf.Hidden && !style.CurrentCellXf.Locked)
+                {
+                    protectionString = "<protection hidden=\"1\" locked=\"0\"/>";
+                }
+                else if (!style.CurrentCellXf.Hidden && !style.CurrentCellXf.Locked)
+                {
+                    protectionString = "<protection locked=\"0\"/>";
                 }
 
                 sb.Append("<xf numFmtId=\"");
