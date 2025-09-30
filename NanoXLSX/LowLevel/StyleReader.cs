@@ -427,14 +427,11 @@ namespace NanoXLSX.LowLevel
                         if (attribute != null)
                         {
                             int value = ReaderUtils.ParseBinaryBool(attribute);
-                            if (value  == 1)
+                            if (value  == 0)
                             {
-                                cellXfStyle.Locked = true;
+                                cellXfStyle.Locked = false;
                             }
-                            else
-                            {
-                                cellXfStyle.Locked = false; // Set explicitly to false, since true by default
-                            }
+                            // else - NoOp - No need to set locked value, since true by default
                         }
                     }
 
