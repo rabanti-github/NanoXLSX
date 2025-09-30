@@ -146,7 +146,7 @@ namespace NanoXLSX.Styles
         [Append]
         //TODO: v3> Refactor to enum according to specs
         // OOXML: Chp.19.2.1.13
-        public string Charset { get; set; } 
+        public string Charset { get; set; }
 
         /// <summary>
         /// Gets or sets the font color theme (Default is 1 = Light 1)
@@ -173,13 +173,14 @@ namespace NanoXLSX.Styles
         /// </summary>
         /// <exception cref="StyleException">Throws a StyleException if the passed ARGB value is not valid</exception>
         [Append]
-        public string ColorValue { 
+        public string ColorValue
+        {
             get => colorValue;
-            set 
+            set
             {
                 Fill.ValidateColor(value, true, true);
                 colorValue = value;
-            } 
+            }
         }
         /// <summary>
         ///  Gets or sets the font family (Default is 2 = Swiss)

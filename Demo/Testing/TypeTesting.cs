@@ -5,8 +5,8 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
 using NanoXLSX;
+using System;
 
 namespace Demo.Testing
 {
@@ -36,9 +36,9 @@ namespace Demo.Testing
             short sVal = -33;
             ushort usVal = 127;
 
-            int i  = 0;
+            int i = 0;
             c = new Cell(bVal, Cell.CellType.NUMBER);
-            wb.CurrentWorksheet.AddCell(c, 0,i);
+            wb.CurrentWorksheet.AddCell(c, 0, i);
             i++;
             c = new Cell(sbVal, Cell.CellType.NUMBER);
             wb.CurrentWorksheet.AddCell(c, 0, i);
@@ -69,7 +69,7 @@ namespace Demo.Testing
             i++;
             c = new Cell(usVal, Cell.CellType.NUMBER);
             wb.CurrentWorksheet.AddCell(c, 0, i);
-           
+
             wb.Save();
         }
 

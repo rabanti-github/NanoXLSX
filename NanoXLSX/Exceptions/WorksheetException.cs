@@ -27,7 +27,7 @@ namespace NanoXLSX.Exceptions
         /// <param name="message">Message of the exception</param>
         public WorksheetException(string message)
             : base(message)
-        {  }
+        { }
     }
 
     #region doc

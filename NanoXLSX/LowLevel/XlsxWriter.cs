@@ -5,6 +5,8 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
+using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,8 +17,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using NanoXLSX.Exceptions;
-using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 using IOException = NanoXLSX.Exceptions.IOException;
 
@@ -129,7 +129,7 @@ namespace NanoXLSX.LowLevel
             }
             else
             {
-                if (Char.IsWhiteSpace(value,0) || Char.IsWhiteSpace(value, len-1))
+                if (Char.IsWhiteSpace(value, 0) || Char.IsWhiteSpace(value, len - 1))
                 {
                     sb.Append("<t xml:space=\"preserve\">");
                 }
@@ -149,7 +149,7 @@ namespace NanoXLSX.LowLevel
         /// <returns>Normalized value</returns>
         private string NormalizeNewLines(string value)
         {
-            if (value == null ||  (!value.Contains('\n') && !value.Contains('\r')))
+            if (value == null || (!value.Contains('\n') && !value.Contains('\r')))
             {
                 return value;
             }
@@ -357,7 +357,7 @@ namespace NanoXLSX.LowLevel
         {
             List<DynamicRow> cellData = GetSortedSheetData(worksheet);
             string line;
-            foreach(DynamicRow row in cellData)
+            foreach (DynamicRow row in cellData)
             {
                 line = CreateRowString(row, worksheet);
                 sb.Append(line);
@@ -842,9 +842,9 @@ namespace NanoXLSX.LowLevel
                     float width = Utils.GetInternalColumnWidth(column.Value.Width);
                     sb.Append("<col customWidth=\"1\" width=\"").Append(width.ToString("G", culture)).Append("\" max=\"").Append(col).Append("\" min=\"").Append(col).Append("\"");
                     if (column.Value.DefaultColumnStyle != null)
-					{
+                    {
                         sb.Append(" style=\"").Append(column.Value.DefaultColumnStyle.InternalID.Value.ToString("G", culture)).Append("\"");
-					}
+                    }
                     sb.Append(hidden).Append("/>");
                 }
                 string value = sb.ToString();
@@ -916,11 +916,11 @@ namespace NanoXLSX.LowLevel
             string hidden = "";
             if (worksheet.RowHeights.ContainsKey(rowNumber) && Math.Abs(worksheet.RowHeights[rowNumber] - worksheet.DefaultRowHeight) > FLOAT_THRESHOLD)
             {
-               height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + Utils.GetInternalRowHeight(worksheet.RowHeights[rowNumber]).ToString("G", culture) + "\"";
+                height = " x14ac:dyDescent=\"0.25\" customHeight=\"1\" ht=\"" + Utils.GetInternalRowHeight(worksheet.RowHeights[rowNumber]).ToString("G", culture) + "\"";
             }
             if (worksheet.HiddenRows.ContainsKey(rowNumber) && worksheet.HiddenRows[rowNumber])
             {
-               hidden = " hidden=\"1\"";
+                hidden = " hidden=\"1\"";
             }
             StringBuilder sb = new StringBuilder();
             sb.Append("<row r=\"").Append((rowNumber + 1).ToString()).Append("\"").Append(height).Append(hidden).Append(">");
@@ -987,8 +987,8 @@ namespace NanoXLSX.LowLevel
                 {
                     if (item.Value == null)
                     {
-                       typeAttribute = null;
-                       valueDef = null;
+                        typeAttribute = null;
+                        valueDef = null;
                     }
                     else // Handle sharedStrings
                     {
@@ -1463,8 +1463,8 @@ namespace NanoXLSX.LowLevel
             foreach (string item in this.workbook.GetMruColors())
             {
                 if (item == Fill.DEFAULT_COLOR)
-                { 
-                    continue; 
+                {
+                    continue;
                 }
                 if (!tempColors.Contains(item)) { tempColors.Add(item); }
             }
@@ -1526,10 +1526,10 @@ namespace NanoXLSX.LowLevel
                     rows.Add(rowHeight.Key, row);
                 }
             }
-            foreach(KeyValuePair<int, bool> hiddenRow in sheet.HiddenRows)
+            foreach (KeyValuePair<int, bool> hiddenRow in sheet.HiddenRows)
             {
-               if (!rows.ContainsKey(hiddenRow.Key))
-               {
+                if (!rows.ContainsKey(hiddenRow.Key))
+                {
                     row = new DynamicRow();
                     row.RowNumber = hiddenRow.Key;
                     rows.Add(hiddenRow.Key, row);

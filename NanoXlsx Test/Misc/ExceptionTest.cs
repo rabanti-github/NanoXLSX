@@ -1,9 +1,5 @@
-﻿using System;
-using NanoXLSX.Exceptions;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NanoXLSX.Exceptions;
+using System;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 

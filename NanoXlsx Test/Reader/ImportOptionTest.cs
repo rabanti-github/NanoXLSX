@@ -990,14 +990,14 @@ namespace NanoXLSX_Test.Reader
         [InlineData(ImportOptions.ColumnType.Time, "-10:00:00")]
         void InvalidDateCastingTest(ImportOptions.ColumnType columnType, string value)
         {
-                ImportOptions options = new ImportOptions();
+            ImportOptions options = new ImportOptions();
             options.EnforceDateTimesAsNumbers = true;
             options.AddEnforcedColumn("A", columnType);
             Dictionary<string, object> cells = new Dictionary<string, object>();
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             cells.Add("A1", value);
             expectedCells.Add("A1", value);
-            AssertValues<object,object>(cells, options, AssertApproximate, expectedCells);
+            AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
         [Fact(DisplayName = "Test of the failing casting on an TimeSpan with an invalid (too high) number of days")]
@@ -1030,7 +1030,7 @@ namespace NanoXLSX_Test.Reader
             Workbook workbook = Workbook.Load(stream, options);
 
             int lastRow = workbook.Worksheets[0].GetLastDataRowNumber();
-            for(int r = 1; r <= lastRow; r++)
+            for (int r = 1; r <= lastRow; r++)
             {
                 string given = workbook.Worksheets[0].GetCell(new Address(givenValuesColumn, r)).Value.ToString();
                 string expected = workbook.Worksheets[0].GetCell(new Address(expectedValuesColumn, r)).Value.ToString();

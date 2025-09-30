@@ -143,7 +143,7 @@ namespace NanoXLSX_Test.Reader
             expected.Add("A3", 255);
             expected.Add("A4", byte.MinValue);
             expected.Add("A5", byte.MaxValue);
-            AssertValues<byte,int>(cells, AssertEquals, expected);
+            AssertValues<byte, int>(cells, AssertEquals, expected);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for sbyte values (cast to int)")]
@@ -262,10 +262,10 @@ namespace NanoXLSX_Test.Reader
         public void ReadTimeSpanTest()
         {
             Dictionary<string, TimeSpan> cells = new Dictionary<string, TimeSpan>();
-            cells.Add("A1", new TimeSpan(0,0,0));
-            cells.Add("A2", new TimeSpan(13,18,22));
-            cells.Add("A3", new TimeSpan(12,0,0));
-            cells.Add("A4", new TimeSpan(23,59,59));
+            cells.Add("A1", new TimeSpan(0, 0, 0));
+            cells.Add("A2", new TimeSpan(13, 18, 22));
+            cells.Add("A3", new TimeSpan(12, 0, 0));
+            cells.Add("A4", new TimeSpan(23, 59, 59));
             AssertValues<TimeSpan>(cells, AssertEquals);
         }
 
@@ -319,7 +319,7 @@ namespace NanoXLSX_Test.Reader
         [InlineData("A1", Cell.CellType.STRING, "Test")]
         [InlineData("B1", Cell.CellType.STRING, "x")]
         [InlineData("C1", Cell.CellType.NUMBER, -1.8538541667)]
-        [InlineData("D1", Cell.CellType.NUMBER, 2)] 
+        [InlineData("D1", Cell.CellType.NUMBER, 2)]
         [InlineData("E1", Cell.CellType.STRING, "x")]
         [InlineData("F1", Cell.CellType.STRING, "1")] // Reference 1 is casted to string '1'
         [InlineData("G1", Cell.CellType.NUMBER, -1.5f)]
@@ -420,7 +420,7 @@ namespace NanoXLSX_Test.Reader
             Stream stream = TestUtils.GetResource("chartsheet.xlsx");
             Workbook workbook = Workbook.Load(stream);
             Assert.Single(workbook.Worksheets);
-            Assert.Empty(workbook.Worksheets[0].Cells); 
+            Assert.Empty(workbook.Worksheets[0].Cells);
         }
 
         [Fact(DisplayName = "Test of the workbook reader if the workbook contains worksheets chats and embedded charts")]
@@ -485,7 +485,7 @@ namespace NanoXLSX_Test.Reader
             Assert.Equal(expected, given);
         }
 
-        private static void AssertValues<T>(Dictionary<string, T> givenCells, Action<T,T> assertionAction, Dictionary<string, T> expectedCells = null)
+        private static void AssertValues<T>(Dictionary<string, T> givenCells, Action<T, T> assertionAction, Dictionary<string, T> expectedCells = null)
         {
             Worksheet givenWorksheet = GetWorksheet(givenCells);
             foreach (string address in givenCells.Keys)
@@ -512,7 +512,7 @@ namespace NanoXLSX_Test.Reader
             }
         }
 
-            private static void AssertValues<T,D>(Dictionary<string, T> givenCells, Action<D, D> assertionAction, Dictionary<string, D> expectedCells)
+        private static void AssertValues<T, D>(Dictionary<string, T> givenCells, Action<D, D> assertionAction, Dictionary<string, D> expectedCells)
         {
             Worksheet givenWorksheet = GetWorksheet(givenCells);
             foreach (string address in givenCells.Keys)
@@ -531,7 +531,7 @@ namespace NanoXLSX_Test.Reader
             }
         }
 
-            private static Worksheet GetWorksheet<T>(Dictionary<string, T> givenCells)
+        private static Worksheet GetWorksheet<T>(Dictionary<string, T> givenCells)
         {
             Workbook workbook = new Workbook("worksheet1");
             foreach (KeyValuePair<string, T> cell in givenCells)
@@ -549,7 +549,7 @@ namespace NanoXLSX_Test.Reader
             return givenWorksheet;
         }
 
-       
+
 
         private static void AssertApproximateDouble(double expected, double given)
         {
@@ -557,7 +557,7 @@ namespace NanoXLSX_Test.Reader
             Assert.True(Math.Abs(given - expected) < threshold);
         }
 
-        private static void AssertApproximateFloat (float expected, float given)
+        private static void AssertApproximateFloat(float expected, float given)
         {
             float threshold = 0.00000001f;
             Assert.True(Math.Abs(given - expected) < threshold);

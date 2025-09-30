@@ -1,10 +1,6 @@
 ﻿using NanoXLSX;
 using NanoXLSX.Styles;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using static NanoXLSX.Cell;
 
@@ -245,7 +241,7 @@ namespace NanoXLSX_Test.Cells.Types
         {
             Cell cell1 = utils.CreateVariantCell(value1, utils.CellAddress);
             Cell cell2 = utils.CreateVariantCell(value2, utils.CellAddress);
-            int comparison =  ((T)cell1.Value).CompareTo((T)cell2.Value);
+            int comparison = ((T)cell1.Value).CompareTo((T)cell2.Value);
             Assert.True(VariantCompareTo(comparison, expectedResult));
         }
 

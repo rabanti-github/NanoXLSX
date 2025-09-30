@@ -4,8 +4,6 @@ using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test.Worksheets
@@ -112,7 +110,7 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Equal(Worksheet.DEFAULT_COLUMN_WIDTH, worksheet.Columns[1].Width);
         }
 
-        [Fact(DisplayName ="Test of the GetCurrentColumnNumber function")]
+        [Fact(DisplayName = "Test of the GetCurrentColumnNumber function")]
         public void GetCurrentColumnNumberTest()
         {
             Worksheet worksheet = new Worksheet();
@@ -203,7 +201,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData("B1:F1", "B1:F1")]
         [InlineData("F1:B1", "B1:F1")]
         [InlineData("$B$1:$F$1", "B1:F1")]
-        [InlineData("A1","A1:A1")]
+        [InlineData("A1", "A1:A1")]
         public void SetAutoFilterTest2(string givenRange, string expectedRange)
         {
             Worksheet worksheet = new Worksheet();
@@ -376,7 +374,7 @@ namespace NanoXLSX_Test.Worksheets
         private void AssertColumnValues(List<Cell> givenList, List<object> expectedValues)
         {
             Assert.Equal(expectedValues.Count, givenList.Count);
-            for(int i = 0; i < expectedValues.Count; i++)
+            for (int i = 0; i < expectedValues.Count; i++)
             {
                 Assert.Equal(expectedValues[i], givenList[i].Value);
             }

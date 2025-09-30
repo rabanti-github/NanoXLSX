@@ -1,10 +1,5 @@
 ﻿using NanoXLSX;
 using NanoXLSX.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test.Cells
@@ -13,7 +8,7 @@ namespace NanoXLSX_Test.Cells
     {
 
         [Theory(DisplayName = "Test of the ColumnAddress property, as well as proper modification")]
-        [InlineData("A","A","B","B")]
+        [InlineData("A", "A", "B", "B")]
         [InlineData("a", "A", "b", "B")]
         [InlineData("AAB", "AAB", "A", "A")]
         [InlineData("a", "A", "XFD", "XFD")]

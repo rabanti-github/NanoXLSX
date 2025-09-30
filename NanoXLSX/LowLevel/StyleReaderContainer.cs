@@ -90,7 +90,7 @@ namespace NanoXLSX.LowLevel
             {
                 return GetComponent(typeof(Style), number) as Style;
             }
-                return null;
+            return null;
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace NanoXLSX.LowLevel
         {
             return cellXfs.Count;
         }
-    
+
         /// <summary>
         /// Gets the next internal id of a border component
         /// </summary>

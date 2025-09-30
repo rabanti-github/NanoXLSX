@@ -1,9 +1,4 @@
 ﻿using NanoXLSX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test.Worksheets
@@ -190,11 +185,11 @@ namespace NanoXLSX_Test.Worksheets
         [Fact(DisplayName = "Test of the GetLastDataColumnNumber function with two defined columns")]
         public void GetLastDataColumnNumberTest5()
         {
-	        Worksheet worksheet = new Worksheet();
-	        worksheet.AddCell("test", "A1");
-	        worksheet.AddCell("test", "B1");
-	        int column = worksheet.GetLastDataColumnNumber();
-	        Assert.Equal(1, column);
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddCell("test", "A1");
+            worksheet.AddCell("test", "B1");
+            int column = worksheet.GetLastDataColumnNumber();
+            Assert.Equal(1, column);
         }
 
         [Fact(DisplayName = "Test of the GetFirstDataColumnNumber function with an empty worksheet")]
@@ -243,11 +238,11 @@ namespace NanoXLSX_Test.Worksheets
         [Fact(DisplayName = "Test of the GetFirstDataColumnNumber function with two defined columns")]
         public void GetFirstDataColumnNumberTest5()
         {
-	        Worksheet worksheet = new Worksheet();
-	        worksheet.AddCell("test", "A1");
-	        worksheet.AddCell("test", "B1");
-	        int column = worksheet.GetFirstDataColumnNumber();
-	        Assert.Equal(0, column);
+            Worksheet worksheet = new Worksheet();
+            worksheet.AddCell("test", "A1");
+            worksheet.AddCell("test", "B1");
+            int column = worksheet.GetFirstDataColumnNumber();
+            Assert.Equal(0, column);
         }
 
         [Theory(DisplayName = "Test of the GetFirstDataColumnNumber and GetLastDataColumnNumber functions with an explicitly defined, empty cell besides other column definitions")]
@@ -277,14 +272,14 @@ namespace NanoXLSX_Test.Worksheets
             int maxColumn = worksheet.GetLastDataColumnNumber();
             Assert.Equal(5, minColumn);
             Assert.Equal(5, maxColumn);
-		}
+        }
 
         [Theory(DisplayName = "Test of the GetFirstDataColumnNumber and GetLastDataColumnNumber functions with an explicitly defined, empty cell with empty string besides other column definitions")]
-		[InlineData("F5")]
+        [InlineData("F5")]
         [InlineData("A1")]
         public void GetFirstOrLastDataColumnNumberTest3(string emptyCellAddress)
-		{
-			Worksheet worksheet = new Worksheet();
+        {
+            Worksheet worksheet = new Worksheet();
             worksheet.AddHiddenColumn(3);
             worksheet.AddHiddenColumn(4);
             worksheet.AddCell(string.Empty, emptyCellAddress);
@@ -292,6 +287,6 @@ namespace NanoXLSX_Test.Worksheets
             int maxColumn = worksheet.GetLastDataColumnNumber();
             Assert.Equal(-1, minColumn);
             Assert.Equal(-1, maxColumn);
-		}
-	}
+        }
+    }
 }

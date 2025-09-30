@@ -284,7 +284,7 @@ namespace NanoXLSX.LowLevel
                         XmlNodeList selectionNodes = sheetView.ChildNodes;
                         if (selectionNodes != null && selectionNodes.Count > 0)
                         {
-                            foreach(XmlNode selectionNode in selectionNodes)
+                            foreach (XmlNode selectionNode in selectionNodes)
                             {
                                 attribute = ReaderUtils.GetAttribute(selectionNode, "sqref");
                                 if (attribute != null)
@@ -302,7 +302,7 @@ namespace NanoXLSX.LowLevel
                                     {
                                         CollectSelectedCells(attribute);
                                     }
-                                    
+
                                 }
                             }
                         }
@@ -438,7 +438,7 @@ namespace NanoXLSX.LowLevel
                 XmlNodeList mergedCellNodes = mergedCellsNodes[0].ChildNodes;
                 if (mergedCellNodes != null && mergedCellNodes.Count > 0)
                 {
-                    foreach(XmlNode mergedCells in mergedCellNodes)
+                    foreach (XmlNode mergedCells in mergedCellNodes)
                     {
                         string attribute = ReaderUtils.GetAttribute(mergedCells, "ref");
                         if (attribute != null)
@@ -547,21 +547,21 @@ namespace NanoXLSX.LowLevel
                 attribute = ReaderUtils.GetAttribute(columnNode, "style");
                 Style defaultStyle = null;
                 if (attribute != null)
-				{
+                {
                     if (resolvedStyles.ContainsKey(attribute))
-					{
+                    {
                         defaultStyle = resolvedStyles[attribute];
-					}
-				}
+                    }
+                }
                 foreach (int index in indices)
                 {
                     Column column = new Column(index - 1); // Transform to zero-based
                     column.Width = GetValidatedWidth(width);
                     column.IsHidden = hidden;
                     if (defaultStyle != null)
-					{
+                    {
                         column.SetDefaultColumnStyle(defaultStyle);
-					}
+                    }
                     this.Columns.Add(column);
                 }
             }
@@ -879,7 +879,7 @@ namespace NanoXLSX.LowLevel
                     }
                     break;
                 case string _:
-                    
+
                     string tempString = (string)data;
                     bool? tempBool = TryParseBool(tempString);
                     if (tempBool != null)
@@ -982,7 +982,7 @@ namespace NanoXLSX.LowLevel
                 case DateTime _:
                     return new decimal(Utils.GetOADateTime((DateTime)data));
                 case TimeSpan _:
-                    return  new decimal(Utils.GetOATime((TimeSpan)data));
+                    return new decimal(Utils.GetOATime((TimeSpan)data));
                 case string _:
                     decimal dValue;
                     string tempString = (string)data;
@@ -1079,7 +1079,7 @@ namespace NanoXLSX.LowLevel
                     return ConvertDateFromDouble(data);
                 case string _:
                     DateTime? date2 = TryParseDate((string)data);
-                    if(date2 != null)
+                    if (date2 != null)
                     {
                         return date2.Value;
                     }
@@ -1138,7 +1138,7 @@ namespace NanoXLSX.LowLevel
                     return ConvertTimeFromDouble(data);
                 case string _:
                     TimeSpan? time = TryParseTime((string)data);
-                    if(time != null)
+                    if (time != null)
                     {
                         return time;
                     }
@@ -1158,7 +1158,7 @@ namespace NanoXLSX.LowLevel
             bool isTimeSpan;
             if (importOptions == null || string.IsNullOrEmpty(importOptions.TimeSpanFormat) || importOptions.TemporalCultureInfo == null)
             {
-                isTimeSpan = TimeSpan.TryParse(raw, ImportOptions.DEFAULT_CULTURE_INFO,  out timeSpan);
+                isTimeSpan = TimeSpan.TryParse(raw, ImportOptions.DEFAULT_CULTURE_INFO, out timeSpan);
             }
             else
             {
@@ -1238,7 +1238,8 @@ namespace NanoXLSX.LowLevel
         {
             object oaDate = ConvertToDouble(data);
             if (oaDate is double)
-            { double d = (double)oaDate;
+            {
+                double d = (double)oaDate;
                 if (d >= Utils.MIN_OADATE_VALUE && d <= Utils.MAX_OADATE_VALUE)
                 {
                     DateTime date = Utils.GetDateFromOA(d);
@@ -1356,7 +1357,8 @@ namespace NanoXLSX.LowLevel
                 case Cell.CellType.TIME:
                     return Utils.GetOATime((TimeSpan)raw);
                 case Cell.CellType.BOOL:
-                    if ((bool)raw){
+                    if ((bool)raw)
+                    {
                         return 1;
                     }
                     return 0;
@@ -1391,7 +1393,7 @@ namespace NanoXLSX.LowLevel
             bool canBeLong = long.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out lValue);
             if (canBeUlong && !canBeLong)
             {
-                return  ulValue;
+                return ulValue;
             }
             else if (canBeLong)
             {
@@ -1423,7 +1425,7 @@ namespace NanoXLSX.LowLevel
             }
             if (double.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
             {
-                    return dValue;
+                return dValue;
             }
             return null;
         }
@@ -1621,7 +1623,7 @@ namespace NanoXLSX.LowLevel
                 {
                     int value = ReaderUtils.ParseBinaryBool(hiddenProperty);
                     rows[row].Hidden = value == 1;
-                    
+
                 }
             }
         }

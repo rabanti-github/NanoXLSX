@@ -6,7 +6,6 @@
  */
 
 using NanoXLSX.Exceptions;
-using System.Text.RegularExpressions;
 
 namespace NanoXLSX.Styles
 {
