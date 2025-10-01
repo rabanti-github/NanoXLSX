@@ -1,9 +1,18 @@
 # Change Log
 
+## v2.6.7 
+
+---
+Release Date: **01.10.2025**
+
+- Fixed handling of worksheet protection (regression bug)
+- Code cleanup
+
+
 ## v2.6.6 
 
 ---
-Release Date: **20.09.2025**
+Release Date: **29.09.2025**
 
 - Fixed handling of worksheet protection (selecting locked or unlocked cells)
 - Added test case
