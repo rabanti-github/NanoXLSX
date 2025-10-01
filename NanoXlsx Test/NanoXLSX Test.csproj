@@ -17,9 +17,9 @@
     <PackageTags>Excel Office XLSX</PackageTags>
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
-    <Version>2.6.6</Version>
-    <AssemblyVersion>2.6.6.0</AssemblyVersion>
-    <FileVersion>2.6.6.0</FileVersion>
+    <Version>2.6.7</Version>
+    <AssemblyVersion>2.6.7.0</AssemblyVersion>
+    <FileVersion>2.6.7.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\autofilter.xlsx" />

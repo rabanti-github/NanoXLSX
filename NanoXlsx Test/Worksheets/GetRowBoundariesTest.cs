@@ -1,9 +1,4 @@
 ﻿using NanoXLSX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using static NanoXLSX_Test.Worksheets.RowTest;
 
@@ -11,7 +6,7 @@ namespace NanoXLSX_Test.Worksheets
 {
     public class GetRowBoundariesTest
     {
-     
+
         [Fact(DisplayName = "Test of the GetLastRowNumber function with an empty worksheet")]
         public void GetLastRowNumberTest()
         {
@@ -435,5 +430,5 @@ namespace NanoXLSX_Test.Worksheets
         }
 
 
-	}
+    }
 }

@@ -1,10 +1,5 @@
 ﻿using NanoXLSX;
 using NanoXLSX.Styles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test.Styles.WriteRead
@@ -113,7 +108,7 @@ namespace NanoXLSX_Test.Styles.WriteRead
         [InlineData(0, "test")]
         [InlineData(1, 0.5f)]
         [InlineData(-1, true)]
-        [InlineData(45,22)]
+        [InlineData(45, 22)]
         [InlineData(-45, -0.11f)]
         [InlineData(90, "")]
         [InlineData(-90, " ")]

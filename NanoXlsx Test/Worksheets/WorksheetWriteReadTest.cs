@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using Range = NanoXLSX.Range;
 
@@ -92,7 +90,7 @@ namespace NanoXLSX_Test.Worksheets
                 if (sheetIndex == i)
                 {
                     workbook.SetCurrentWorksheet(i);
-                    foreach(int index in columnIndices)
+                    foreach (int index in columnIndices)
                     {
                         if (setWidth)
                         {
@@ -108,12 +106,12 @@ namespace NanoXLSX_Test.Worksheets
             }
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
             Assert.Equal(columnIndices.Count, givenWorksheet.Columns.Count);
-            foreach(KeyValuePair<int,Column> column in givenWorksheet.Columns)
+            foreach (KeyValuePair<int, Column> column in givenWorksheet.Columns)
             {
                 Assert.Contains(columnIndices, x => x == column.Value.Number);
                 if (setWidth)
                 {
-                   
+
                     Assert.True(Math.Abs(column.Value.Width - Utils.GetInternalColumnWidth(99)) < 0.001);
                 }
                 if (setHidden)
@@ -256,7 +254,7 @@ namespace NanoXLSX_Test.Worksheets
         {
             string[] tokens = rowDefinitions.Split(',');
             string[] heightTokens = heightDefinitions.Split(',');
-            Dictionary<int, float> rows = new Dictionary<int,float>();
+            Dictionary<int, float> rows = new Dictionary<int, float>();
             for (int i = 0; i < tokens.Length; i++)
             {
                 if (tokens[i] != "")
@@ -296,7 +294,7 @@ namespace NanoXLSX_Test.Worksheets
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, 0);
             Assert.Equal(Utils.GetInternalRowHeight(22.55f), givenWorksheet.RowHeights[2]);
             Assert.True(givenWorksheet.HiddenRows[2]);
-    }
+        }
 
 
         [Theory(DisplayName = "Test of the 'MergedCells' property when writing and reading a worksheet")]
@@ -313,11 +311,11 @@ namespace NanoXLSX_Test.Worksheets
         public void MergedCellsWriteReadTest(string mergedCellsRanges, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
-            List<Range>ranges = new List<Range>();
+            List<Range> ranges = new List<Range>();
             if (mergedCellsRanges != null)
             {
                 string[] split = mergedCellsRanges.Split(",");
-                foreach(string range in split)
+                foreach (string range in split)
                 {
                     ranges.Add(new Range(range));
                 }
@@ -326,7 +324,7 @@ namespace NanoXLSX_Test.Worksheets
                     if (sheetIndex == i)
                     {
                         workbook.SetCurrentWorksheet(i);
-                        foreach(Range range in ranges)
+                        foreach (Range range in ranges)
                         {
                             workbook.CurrentWorksheet.MergeCells(range);
                         }
@@ -340,7 +338,7 @@ namespace NanoXLSX_Test.Worksheets
             }
             else
             {
-                foreach(Range range in ranges)
+                foreach (Range range in ranges)
                 {
                     Assert.Equal(range, givenWorksheet.MergedCells[range.ToString()]);
                 }
@@ -405,7 +403,7 @@ namespace NanoXLSX_Test.Worksheets
             if (selectedCellsRanges != null)
             {
                 ranges = selectedCellsRanges.Split(',');
-                foreach(string range in ranges)
+                foreach (string range in ranges)
                 {
                     Range range2 = new Range(range);
                     for (int i = 0; i <= sheetIndex; i++)
@@ -426,7 +424,7 @@ namespace NanoXLSX_Test.Worksheets
             else
             {
                 Assert.Equal(ranges.Length, givenWorksheet.SelectedCellRanges.Count);
-                foreach(string range in ranges)
+                foreach (string range in ranges)
                 {
                     Assert.Contains(new Range(range), givenWorksheet.SelectedCellRanges);
                 }
@@ -434,7 +432,7 @@ namespace NanoXLSX_Test.Worksheets
 
         }
 
-            [Fact(DisplayName = "Test of the 'SheetID'  property when writing and reading a worksheet")]
+        [Fact(DisplayName = "Test of the 'SheetID'  property when writing and reading a worksheet")]
         public void SheetIDWriteReadTest()
         {
             Workbook workbook = new Workbook();
@@ -510,7 +508,7 @@ namespace NanoXLSX_Test.Worksheets
         [InlineData(true, "formatRows:0", "formatRows:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
         [InlineData(true, "formatColumns:0", "formatColumns:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
         [InlineData(true, "formatCells:0", "formatCells:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "objects:0", "scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)] 
+        [InlineData(true, "objects:0", "scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
         [InlineData(true, "scenarios:0", "objects:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
         [InlineData(true, "selectLockedCells:0", "objects:1,scenarios:1", 0)]
         [InlineData(true, "selectUnlockedCells:0", "objects:1,scenarios:1,selectLockedCells:1", 0)]
@@ -539,7 +537,7 @@ namespace NanoXLSX_Test.Worksheets
                     workbook.SetCurrentWorksheet(i);
                     foreach (KeyValuePair<Worksheet.SheetProtectionValue, bool> item in givenProtection)
                     {
-                       workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(item.Key);
+                        workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(item.Key);
                     }
                     // adding values will enable sheet protection in any case, can be deactivated afterwards
                     workbook.CurrentWorksheet.UseSheetProtection = useSheetProtection;

@@ -1,10 +1,6 @@
 ﻿using NanoXLSX;
 using NanoXLSX.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using static NanoXLSX.Cell;
 
@@ -117,7 +113,7 @@ namespace NanoXLSX_Test.Cells
             Assert.False(currentAddress.Equals(other));
         }
 
-            [Theory(DisplayName = "Test of the GetAddress method (string output)")]
+        [Theory(DisplayName = "Test of the GetAddress method (string output)")]
         [InlineData(0, 0, AddressType.Default, "A1")]
         [InlineData(4, 9, AddressType.FixedColumn, "$E10")]
         [InlineData(16383, 1048575, AddressType.FixedRow, "XFD$1048576")]
@@ -129,7 +125,7 @@ namespace NanoXLSX_Test.Cells
         }
 
         [Theory(DisplayName = "Test of the GetColumn function")]
-        [InlineData(0,0, AddressType.Default, "A")]
+        [InlineData(0, 0, AddressType.Default, "A")]
         [InlineData(5, 100, AddressType.FixedColumn, "F")]
         [InlineData(26, 100, AddressType.FixedRow, "AA")]
         [InlineData(1, 5, AddressType.FixedRowAndColumn, "B")]

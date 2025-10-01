@@ -1,10 +1,5 @@
 ﻿using NanoXLSX;
-using NanoXLSX.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 using Range = NanoXLSX.Range;
@@ -297,11 +292,11 @@ namespace NanoXLSX_Test.Misc
         }
 
         [Theory(DisplayName = "Test of the VLookup function on a Range object with reference address, the column index, the option of an exact match and tow target worksheets")]
-        [InlineData("worksheet1","C5", "worksheet1", "A1:$A$1", 1, false, "VLOOKUP(worksheet1!C5,worksheet1!A1:$A$1,1,FALSE)")]
-        [InlineData("worksheet2","A1", "worksheet1", "A1:C$4", 3, false, "VLOOKUP(worksheet2!A1,worksheet1!A1:C$4,3,FALSE)")]
-        [InlineData("worksheet1","$F4", "worksheet2", "A10:XFD999999", 200, true, "VLOOKUP(worksheet1!$F4,worksheet2!A10:XFD999999,200,TRUE)")]
-        [InlineData("worksheet2","$XFD$99999", "worksheet2",  "X100:A1", 5, true, "VLOOKUP(worksheet2!$XFD$99999,worksheet2!A1:X100,5,TRUE)")]
-        public void VLookupTest4(string valueWorksheetName, string addressExpression, string rangesWorksheetName,  string rangeExpression, int columnIndex, bool exactMatch, string expectedFormula)
+        [InlineData("worksheet1", "C5", "worksheet1", "A1:$A$1", 1, false, "VLOOKUP(worksheet1!C5,worksheet1!A1:$A$1,1,FALSE)")]
+        [InlineData("worksheet2", "A1", "worksheet1", "A1:C$4", 3, false, "VLOOKUP(worksheet2!A1,worksheet1!A1:C$4,3,FALSE)")]
+        [InlineData("worksheet1", "$F4", "worksheet2", "A10:XFD999999", 200, true, "VLOOKUP(worksheet1!$F4,worksheet2!A10:XFD999999,200,TRUE)")]
+        [InlineData("worksheet2", "$XFD$99999", "worksheet2", "X100:A1", 5, true, "VLOOKUP(worksheet2!$XFD$99999,worksheet2!A1:X100,5,TRUE)")]
+        public void VLookupTest4(string valueWorksheetName, string addressExpression, string rangesWorksheetName, string rangeExpression, int columnIndex, bool exactMatch, string expectedFormula)
         {
             Worksheet valueWorksheet = new Worksheet(valueWorksheetName);
             Worksheet rangeWorksheet = new Worksheet(rangesWorksheetName);

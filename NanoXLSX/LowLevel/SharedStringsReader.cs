@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
-using NanoXLSX.Exceptions;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.LowLevel
@@ -122,7 +121,7 @@ namespace NanoXLSX.LowLevel
             }
             catch (Exception ex)
             {
-                throw new IOException("The XML entry could not be read from the " + nameof(stream) +  ". Please see the inner exception:", ex);
+                throw new IOException("The XML entry could not be read from the " + nameof(stream) + ". Please see the inner exception:", ex);
             }
         }
 
@@ -173,9 +172,9 @@ namespace NanoXLSX.LowLevel
             int currentTextIndex = 0;
             foreach (PhoneticInfo info in phoneticsInfo)
             {
-                    sb2.Append(text.Substring(currentTextIndex, info.StartIndex + info.Length - currentTextIndex));
-                    sb2.Append("(").Append(info.Value).Append(")");
-                    currentTextIndex = info.StartIndex + info.Length;
+                sb2.Append(text.Substring(currentTextIndex, info.StartIndex + info.Length - currentTextIndex));
+                sb2.Append("(").Append(info.Value).Append(")");
+                currentTextIndex = info.StartIndex + info.Length;
             }
             sb2.Append(text.Substring(currentTextIndex));
 
@@ -213,10 +212,10 @@ namespace NanoXLSX.LowLevel
             /// <param name="end">Absolute end index as string</param>
             public PhoneticInfo(string value, string start, string end)
             {
-                    Value = value;
-                    StartIndex = ReaderUtils.ParseInt(start);
-                    Length = ReaderUtils.ParseInt(end) - StartIndex;
-                
+                Value = value;
+                StartIndex = ReaderUtils.ParseInt(start);
+                Length = ReaderUtils.ParseInt(end) - StartIndex;
+
             }
         }
 

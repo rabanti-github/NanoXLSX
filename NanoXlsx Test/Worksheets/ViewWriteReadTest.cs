@@ -1,10 +1,6 @@
 ﻿using NanoXLSX;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test.Worksheets
@@ -153,7 +149,7 @@ namespace NanoXLSX_Test.Worksheets
             workbook.CurrentWorksheet.SetVerticalSplit(4, false, new Address("D1"), Worksheet.WorksheetPane.topLeft);
 
             float expectedWidth = 0f;
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 if (workbook.CurrentWorksheet.Columns.ContainsKey(i))
                 {
@@ -163,7 +159,7 @@ namespace NanoXLSX_Test.Worksheets
                 {
                     expectedWidth += Utils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
                 }
-                
+
             }
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, 0);
             // There may be a deviation by rounding
@@ -344,7 +340,7 @@ namespace NanoXLSX_Test.Worksheets
         [Theory(DisplayName = "Test of the 'ViewType' property, when writing and reading a worksheet")]
         [InlineData(Worksheet.SheetViewType.pageLayout, 0)]
         [InlineData(Worksheet.SheetViewType.pageBreakPreview, 0)]
-        [InlineData(Worksheet.SheetViewType.normal,0)]
+        [InlineData(Worksheet.SheetViewType.normal, 0)]
         [InlineData(Worksheet.SheetViewType.pageLayout, 2)]
         [InlineData(Worksheet.SheetViewType.pageBreakPreview, 2)]
         [InlineData(Worksheet.SheetViewType.normal, 2)]

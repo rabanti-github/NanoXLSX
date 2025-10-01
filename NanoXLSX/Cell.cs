@@ -5,13 +5,13 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
+using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using NanoXLSX.Exceptions;
-using NanoXLSX.Styles;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX
@@ -158,13 +158,15 @@ namespace NanoXLSX
         public AddressType CellAddressType { get; set; }
 
         /// <summary>Gets or sets the value of the cell (generic object type). When setting a value, the <see cref="DataType"/> is automatically resolved</summary>
-        public object Value { 
-            get => this.value; 
-            set {
+        public object Value
+        {
+            get => this.value;
+            set
+            {
                 this.value = value;
                 ResolveCellType();
-            } 
-            
+            }
+
         }
 
         #endregion
@@ -709,7 +711,7 @@ namespace NanoXLSX
             }
             if (!range.Contains(":"))
             {
-	            return new Range(ResolveCellCoordinate(range), ResolveCellCoordinate(range));
+                return new Range(ResolveCellCoordinate(range), ResolveCellCoordinate(range));
             }
             string[] split = range.Split(':');
             if (split.Length != 2)

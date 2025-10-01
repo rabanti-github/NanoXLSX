@@ -139,6 +139,15 @@ namespace NanoXLSX
 
 
         // Operator overloads
+        /// <summary>
+        /// Determines whether two <see cref="Address"/> instances are equal.
+        /// </summary>
+        /// <remarks>This operator uses the <see cref="Address.Equals(Address)"/> method to determine
+        /// equality.</remarks>
+        /// <param name="address1">The first <see cref="Address"/> instance to compare.</param>
+        /// <param name="address2">The second <see cref="Address"/> instance to compare.</param>
+        /// <returns><see langword="true"/> if the two <see cref="Address"/> instances are equal; otherwise, <see
+        /// langword="false"/>.</returns>
         public static bool operator ==(Address address1, Address address2)
         {
             return address1.Equals(address2);

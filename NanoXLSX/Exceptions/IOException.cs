@@ -18,7 +18,7 @@ namespace NanoXLSX.Exceptions
         /// <summary>
         /// Default constructor
         /// </summary>
-        public IOException() :base()
+        public IOException() : base()
         { }
         /// <summary>
         /// Constructor with passed message

@@ -105,9 +105,9 @@ namespace NanoXLSX.LowLevel
                 }
             }
             catch (IOException ex)
-			{
-				throw; // rethrow
-			}
+            {
+                throw; // rethrow
+            }
             catch (Exception ex)
             {
                 throw new IOException("There was an error while reading an XLSX file. Please see the inner exception:", ex);
@@ -133,7 +133,7 @@ namespace NanoXLSX.LowLevel
                 ws.ShowRowColumnHeaders = reader.Value.ShowRowColHeaders;
                 ws.ShowRuler = reader.Value.ShowRuler;
                 ws.ZoomFactor = reader.Value.CurrentZoomScale;
-                foreach(KeyValuePair<Worksheet.SheetViewType, int> zoomFactor in reader.Value.ZoomFactors)
+                foreach (KeyValuePair<Worksheet.SheetViewType, int> zoomFactor in reader.Value.ZoomFactors)
                 {
                     ws.SetZoomFactor(zoomFactor.Key, zoomFactor.Value);
                 }
@@ -151,16 +151,16 @@ namespace NanoXLSX.LowLevel
                 }
                 if (reader.Value.SelectedCells.Count > 0)
                 {
-                    foreach(Range range in reader.Value.SelectedCells)
+                    foreach (Range range in reader.Value.SelectedCells)
                     {
                         ws.AddSelectedCells(range);
                     }
                 }
-                foreach(Range range in reader.Value.MergedCells)
+                foreach (Range range in reader.Value.MergedCells)
                 {
                     ws.MergeCells(range);
                 }
-                foreach(KeyValuePair<Worksheet.SheetProtectionValue, int> sheetProtection in reader.Value.WorksheetProtection)
+                foreach (KeyValuePair<Worksheet.SheetProtectionValue, int> sheetProtection in reader.Value.WorksheetProtection)
                 {
                     ws.SheetProtectionValues.Add(sheetProtection.Key);
                 }
@@ -172,7 +172,7 @@ namespace NanoXLSX.LowLevel
                 {
                     ws.SheetProtectionPasswordHash = reader.Value.WorksheetProtectionHash;
                 }
-                foreach(KeyValuePair<int,WorksheetReader.RowDefinition> row in reader.Value.Rows)
+                foreach (KeyValuePair<int, WorksheetReader.RowDefinition> row in reader.Value.Rows)
                 {
                     if (row.Value.Hidden)
                     {
@@ -194,9 +194,9 @@ namespace NanoXLSX.LowLevel
                         ws.AddHiddenColumn(column.Number);
                     }
                     if (column.DefaultColumnStyle != null)
-					{
+                    {
                         ws.SetColumnDefaultStyle(column.ColumnAddress, column.DefaultColumnStyle);
-					}
+                    }
                 }
                 foreach (KeyValuePair<string, Cell> cell in reader.Value.Data)
                 {
@@ -244,12 +244,12 @@ namespace NanoXLSX.LowLevel
                         }
                     }
                 }
-                
+
                 wb.AddWorksheet(ws);
             }
             if (styleReaderContainer.GetMruColors().Count > 0)
             {
-                foreach(string color in styleReaderContainer.GetMruColors())
+                foreach (string color in styleReaderContainer.GetMruColors())
                 {
                     wb.AddMruColor(color);
                 }
@@ -298,7 +298,7 @@ namespace NanoXLSX.LowLevel
                 {
                     using (inputStream)
                     {
-                      inputStream.CopyTo(memoryStream);
+                        inputStream.CopyTo(memoryStream);
                     }
                 }
                 else

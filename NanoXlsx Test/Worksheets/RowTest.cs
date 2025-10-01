@@ -1,10 +1,7 @@
 using NanoXLSX;
 using NanoXLSX.Exceptions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test.Worksheets
@@ -178,7 +175,7 @@ namespace NanoXLSX_Test.Worksheets
             Assert.Throws<RangeException>(() => worksheet.SetRowHeight(rowNumber, height));
         }
 
-        [Fact(DisplayName ="Test of the GetRow function")]
+        [Fact(DisplayName = "Test of the GetRow function")]
         public void GetRowTest()
         {
             Worksheet worksheet = new Worksheet();

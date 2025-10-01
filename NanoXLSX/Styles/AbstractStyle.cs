@@ -5,12 +5,12 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using NanoXLSX.Exceptions;
 
 namespace NanoXLSX.Styles
 {
@@ -125,14 +125,14 @@ namespace NanoXLSX.Styles
         /// <param name="terminate">If true, no comma and newline will be appended</param>
         internal static void AddPropertyAsJson(StringBuilder sb, string name, object value, bool terminate = false)
         {
-            sb.Append("\"").Append(name).Append("\": ");
+            sb.Append('"').Append(name).Append("\": ");
             if (value == null)
             {
                 sb.Append("__null__");
             }
             else
             {
-                sb.Append("\"").Append(value.ToString().Replace("\"", "\\\"")).Append("\"");
+                sb.Append('"').Append(value.ToString().Replace("\"", "\\\"")).Append('"');
             }
             if (!terminate)
             {

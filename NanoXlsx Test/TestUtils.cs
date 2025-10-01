@@ -4,10 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using static NanoXLSX.Cell;
 
@@ -99,7 +97,7 @@ namespace NanoXLSX_Test
         {
             return SaveAndReadStyledCell(value, value, style, targetCellAddress);
         }
-            public static Cell SaveAndReadStyledCell(object givenValue, object expectedValue, Style style, string targetCellAddress)
+        public static Cell SaveAndReadStyledCell(object givenValue, object expectedValue, Style style, string targetCellAddress)
         {
             Workbook workbook = new Workbook(false);
             workbook.AddWorksheet("sheet1");

@@ -3,16 +3,13 @@ using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NanoXLSX_Test
 {
     public class ShortenerTest
     {
-        [Fact (DisplayName = "Test of the SetCurrentWorksheet function")]
+        [Fact(DisplayName = "Test of the SetCurrentWorksheet function")]
         public void SetCurrentWorksheetTest()
         {
             Workbook workbook = new Workbook("Sheet1");
@@ -116,7 +113,7 @@ namespace NanoXLSX_Test
         }
 
         [Theory(DisplayName = "Test of the Down function with a row number")]
-        [InlineData(0,0,0,0,0)]
+        [InlineData(0, 0, 0, 0, 0)]
         [InlineData(0, 0, 1, 0, 1)]
         [InlineData(5, 5, 5, 0, 10)]
         [InlineData(5, 5, -2, 0, 3)]
@@ -311,7 +308,7 @@ namespace NanoXLSX_Test
         }
 
         // For code coverage
-        [Fact (DisplayName = "Singular Test of the NullCheck method")]
+        [Fact(DisplayName = "Singular Test of the NullCheck method")]
         public void NullCheckTest()
         {
             Workbook workbook = new Workbook(); // No worksheet created
@@ -347,8 +344,8 @@ namespace NanoXLSX_Test
             workbook.CurrentWorksheet.SetCurrentColumnNumber(startColumn);
             workbook.CurrentWorksheet.SetCurrentRowNumber(startRow);
             workbook.CurrentWorksheet.CurrentCellDirection = direction;
-            
-            foreach(KeyValuePair<string, T>cell in values)
+
+            foreach (KeyValuePair<string, T> cell in values)
             {
                 if (style == null)
                 {
@@ -360,7 +357,7 @@ namespace NanoXLSX_Test
                 }
             }
 
-            foreach(KeyValuePair<string, T> cell in values)
+            foreach (KeyValuePair<string, T> cell in values)
             {
                 Address address = new Address(cell.Key);
                 T value = (T)workbook.CurrentWorksheet.GetCell(address).Value;
