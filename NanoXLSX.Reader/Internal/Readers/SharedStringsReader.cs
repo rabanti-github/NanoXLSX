@@ -120,7 +120,7 @@ namespace NanoXLSX.Internal.Readers
                     StringBuilder sb = new StringBuilder();
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                     {
-                        if (node.LocalName.Equals("si", StringComparison.InvariantCultureIgnoreCase))
+                        if (node.LocalName.Equals("si", StringComparison.OrdinalIgnoreCase))
                         {
                             sb.Clear();
                             GetTextToken(node, ref sb);
@@ -150,7 +150,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="sb">StringBuilder reference</param>
         private void GetTextToken(XmlNode node, ref StringBuilder sb)
         {
-            if (node.LocalName.Equals("rPh", StringComparison.InvariantCultureIgnoreCase))
+            if (node.LocalName.Equals("rPh", StringComparison.OrdinalIgnoreCase))
             {
                 if (capturePhoneticCharacters && !string.IsNullOrEmpty(node.InnerText))
                 {
@@ -161,7 +161,7 @@ namespace NanoXLSX.Internal.Readers
                 return;
             }
 
-            if (node.LocalName.Equals("t", StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(node.InnerText))
+            if (node.LocalName.Equals("t", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(node.InnerText))
             {
                 sb.Append(node.InnerText);
             }
@@ -191,7 +191,7 @@ namespace NanoXLSX.Internal.Readers
             foreach (PhoneticInfo info in phoneticsInfo)
             {
                 sb2.Append(text.Substring(currentTextIndex, info.StartIndex + info.Length - currentTextIndex));
-                sb2.Append("(").Append(info.Value).Append(")");
+                sb2.Append('(').Append(info.Value).Append(')');
                 currentTextIndex = info.StartIndex + info.Length;
             }
             sb2.Append(text.Substring(currentTextIndex));

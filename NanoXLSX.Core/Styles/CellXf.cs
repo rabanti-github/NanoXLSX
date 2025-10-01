@@ -43,7 +43,7 @@ namespace NanoXLSX.Styles
 
         #region enums
         /// <summary>
-        /// Enum for the horizontal alignment of a cell, used by implementations of the <see cref="ICellXf"/>
+        /// Enum for the horizontal alignment of a cell, used by the <see cref="CellXf"/> class
         /// </summary>
         public enum HorizontalAlignValue
         {
@@ -68,7 +68,7 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Enum for text break options, used by implementations of the <see cref="ICellXf"/>
+        /// Enum for text break options, used by the <see cref="CellXf"/> class
         /// </summary>
         public enum TextBreakValue
         {
@@ -81,7 +81,7 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Enum for the general text alignment direction, used by implementations of the <see cref="ICellXf"/>
+        /// Enum for the general text alignment direction, used by the <see cref="CellXf"/> class
         /// </summary>
         public enum TextDirectionValue
         {
@@ -92,7 +92,7 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Enum for the vertical alignment of a cell, used by implementations of the <see cref="ICellXf"/>
+        /// Enum for the vertical alignment of a cell, used by the <see cref="CellXf"/> class
         /// </summary>
         public enum VerticalAlignValue
         {

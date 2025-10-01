@@ -34,7 +34,7 @@ namespace NanoXLSX.Styles
 
         #region enums
         /// <summary>
-        /// Enum for the type of the color, used by implementations of the <see cref="IFill"/> interface
+        /// Enum for the type of the color, used by the <see cref="Fill"/> class
         /// </summary>
         public enum FillType
         {
@@ -44,7 +44,7 @@ namespace NanoXLSX.Styles
             fillColor,
         }
         /// <summary>
-        /// Enum for the pattern values, used by implementations of the <see cref="IFill"/> interface
+        /// Enum for the pattern values, used by the <see cref="Fill"/> class
         /// </summary>
         public enum PatternValue
         {

@@ -105,11 +105,11 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             worksheet.AddCell("test", "C3");
             worksheet.AddCell(22, "D4");
             Assert.Equal(2, worksheet.Cells.Count);
-            Assert.Contains(worksheet.Cells, item => (item.Key.Equals("C3") && item.Value.Value.Equals("test")));
-            Assert.Contains(worksheet.Cells, item => (item.Key.Equals("D4") && item.Value.Value.Equals(22)));
+            Assert.Contains(worksheet.Cells, item => (item.Key.Equals("C3", StringComparison.Ordinal) && item.Value.Value.Equals("test")));
+            Assert.Contains(worksheet.Cells, item => (item.Key.Equals("D4", StringComparison.Ordinal) && item.Value.Value.Equals(22)));
             worksheet.RemoveCell("C3");
             Assert.Single(worksheet.Cells);
-            Assert.Contains(worksheet.Cells, item => (item.Key.Equals("D4") && item.Value.Value.Equals(22)));
+            Assert.Contains(worksheet.Cells, item => (item.Key.Equals("D4", StringComparison.Ordinal) && item.Value.Value.Equals(22)));
         }
 
         [Fact(DisplayName = "Test of the get function of the Columns property")]
@@ -215,11 +215,11 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             worksheet.MergeCells(range1);
             worksheet.MergeCells(range2);
             Assert.Equal(2, worksheet.MergedCells.Count);
-            Assert.Contains(worksheet.MergedCells, item => (item.Key.Equals("A2:C3") && item.Value.Equals(range1)));
-            Assert.Contains(worksheet.MergedCells, item => (item.Key.Equals("R2:S3") && item.Value.Equals(range2)));
+            Assert.Contains(worksheet.MergedCells, item => (item.Key.Equals("A2:C3", StringComparison.Ordinal) && item.Value.Equals(range1)));
+            Assert.Contains(worksheet.MergedCells, item => (item.Key.Equals("R2:S3", StringComparison.Ordinal) && item.Value.Equals(range2)));
             worksheet.RemoveMergedCells(range1.ToString());
             Assert.Single(worksheet.MergedCells);
-            Assert.Contains(worksheet.MergedCells, item => (item.Key.Equals("R2:S3") && item.Value.ToString().Equals("R2:S3")));
+            Assert.Contains(worksheet.MergedCells, item => (item.Key.Equals("R2:S3", StringComparison.Ordinal) && item.Value.ToString().Equals("R2:S3", StringComparison.Ordinal)));
         }
 
 
@@ -426,7 +426,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             bool result = worksheet.RemoveCell(0, 1);
             Assert.True(result);
             Assert.Equal(2, worksheet.Cells.Count);
-            Assert.DoesNotContain(worksheet.Cells, cell => cell.Key.Equals("A2"));
+            Assert.DoesNotContain(worksheet.Cells, cell => cell.Key.Equals("A2", StringComparison.Ordinal));
             result = worksheet.RemoveCell(0, 1); // re-test
             Assert.False(result);
             Assert.Equal(2, worksheet.Cells.Count);
@@ -442,7 +442,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             bool result = worksheet.RemoveCell("A3");
             Assert.True(result);
             Assert.Equal(2, worksheet.Cells.Count);
-            Assert.DoesNotContain(worksheet.Cells, cell => cell.Key.Equals("A3"));
+            Assert.DoesNotContain(worksheet.Cells, cell => cell.Key.Equals("A3", StringComparison.Ordinal));
             result = worksheet.RemoveCell("A3"); // re-test
             Assert.False(result);
             Assert.Equal(2, worksheet.Cells.Count);
@@ -1958,7 +1958,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         public static void AssertAddedCell(Worksheet worksheet, int numberOfEntries, string expectedAddress, Cell.CellType expectedType, Style expectedStyle, object expectedValue, int nextColumn, int nextRow)
         {
             Assert.Equal(numberOfEntries, worksheet.Cells.Count);
-            Assert.Contains(worksheet.Cells, cell => cell.Key.Equals(expectedAddress));
+            Assert.Contains(worksheet.Cells, cell => cell.Key.Equals(expectedAddress, StringComparison.Ordinal));
             Assert.Equal(expectedType, worksheet.Cells[expectedAddress].DataType);
             Assert.Equal(expectedValue, worksheet.Cells[expectedAddress].Value);
             if (expectedStyle == null)

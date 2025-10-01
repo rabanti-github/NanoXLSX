@@ -31,7 +31,7 @@ namespace NanoXLSX.Styles
 
         #region enums
         /// <summary>
-        /// Enum for predefined number formats, used by implementations of the <see cref="INumberFormat"/> interface
+        /// Enum for predefined number formats, used by implementations of the <see cref="NumberFormat"/> class
         /// </summary>
         /// \remark <remarks>There are other predefined formats (e.g. 43 and 44) that are not listed. The declaration of such formats is done in the number formats section of the style document, 
         /// whereas the officially listed ones are implicitly used and not declared in the style document</remarks>
@@ -106,7 +106,7 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Range or validity of the format number, used by implementations of the <see cref="INumberFormat"/> interface
+        /// Range or validity of the format number, used by the <see cref="NumberFormat"/> class
         /// </summary>
         public enum FormatRange
         {

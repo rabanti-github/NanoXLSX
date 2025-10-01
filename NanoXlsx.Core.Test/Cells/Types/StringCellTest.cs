@@ -41,7 +41,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         {
             Cell cell1 = utils.CreateVariantCell<string>(value1, utils.CellAddress);
             Cell cell2 = utils.CreateVariantCell<string>(value2, utils.CellAddress);
-            int comparison = String.Compare(cell1.Value as string, cell2.Value as string);
+            int comparison = String.Compare(cell1.Value as string, cell2.Value as string, StringComparison.Ordinal);
             Assert.Equal(comparison, expectedResult);
         }
 
@@ -56,7 +56,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
             {
                 return false;
             }
-            return current.Equals(other);
+            return current.Equals(other, StringComparison.Ordinal);
         }
 
     }

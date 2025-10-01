@@ -385,7 +385,7 @@ namespace NanoXLSX
         /// See also: <see cref="PaneSplitAddress"/>
         /// </summary>
         /// \remark <remarks>Note: This value will be modified to the Excel-internal representation, 
-        /// calculated by <see cref="Utils.GetInternalPaneSplitHeight(float)"/>.</remarks>
+        /// calculated by <see cref="DataUtils.GetInternalPaneSplitHeight(float)"/>.</remarks>
         public float? PaneSplitTopHeight
         {
             get { return paneSplitTopHeight; }
@@ -398,7 +398,7 @@ namespace NanoXLSX
         /// See also: <see cref="PaneSplitAddress"/>
         /// </summary>
         /// \remark <remarks>Note: This value will be modified to the Excel-internal representation, 
-        /// calculated by <see cref="Utils.GetInternalColumnWidth(float, float, float)"/>.</remarks>
+        /// calculated by <see cref="DataUtils.GetInternalColumnWidth(float, float, float)"/>.</remarks>
         public float? PaneSplitLeftWidth
         {
             get { return paneSplitLeftWidth; }

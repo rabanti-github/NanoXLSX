@@ -70,23 +70,23 @@ namespace NanoXLSX.Internal.Readers
                     xr.Load(stream);
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                     {
-                        if (node.LocalName.Equals("Application", StringComparison.InvariantCultureIgnoreCase))
+                        if (node.LocalName.Equals("Application", StringComparison.OrdinalIgnoreCase))
                         {
                             metadata.Application = node.InnerText;
                         }
-                        else if (node.LocalName.Equals("AppVersion", StringComparison.InvariantCultureIgnoreCase))
+                        else if (node.LocalName.Equals("AppVersion", StringComparison.OrdinalIgnoreCase))
                         {
                             metadata.ApplicationVersion = node.InnerText;
                         }
-                        else if (node.LocalName.Equals("Company", StringComparison.InvariantCultureIgnoreCase))
+                        else if (node.LocalName.Equals("Company", StringComparison.OrdinalIgnoreCase))
                         {
                             metadata.Company = node.InnerText;
                         }
-                        else if (node.LocalName.Equals("Manager", StringComparison.InvariantCultureIgnoreCase))
+                        else if (node.LocalName.Equals("Manager", StringComparison.OrdinalIgnoreCase))
                         {
                             metadata.Manager = node.InnerText;
                         }
-                        else if (node.LocalName.Equals("HyperlinkBase", StringComparison.InvariantCultureIgnoreCase))
+                        else if (node.LocalName.Equals("HyperlinkBase", StringComparison.OrdinalIgnoreCase))
                         {
                             metadata.HyperlinkBase = node.InnerText;
                         }

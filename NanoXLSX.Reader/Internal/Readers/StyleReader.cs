@@ -76,23 +76,23 @@ namespace NanoXLSX.Internal.Readers
                     xr.Load(stream);
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                     {
-                        if (node.LocalName.Equals("numfmts", StringComparison.InvariantCultureIgnoreCase)) // Handles custom number formats
+                        if (node.LocalName.Equals("numfmts", StringComparison.OrdinalIgnoreCase)) // Handles custom number formats
                         {
                             GetNumberFormats(node);
                         }
-                        else if (node.LocalName.Equals("borders", StringComparison.InvariantCultureIgnoreCase)) // Handles borders
+                        else if (node.LocalName.Equals("borders", StringComparison.OrdinalIgnoreCase)) // Handles borders
                         {
                             GetBorders(node);
                         }
-                        else if (node.LocalName.Equals("fills", StringComparison.InvariantCultureIgnoreCase)) // Handles fills
+                        else if (node.LocalName.Equals("fills", StringComparison.OrdinalIgnoreCase)) // Handles fills
                         {
                             GetFills(node);
                         }
-                        else if (node.LocalName.Equals("fonts", StringComparison.InvariantCultureIgnoreCase)) // Handles fonts
+                        else if (node.LocalName.Equals("fonts", StringComparison.OrdinalIgnoreCase)) // Handles fonts
                         {
                             GetFonts(node);
                         }
-                        else if (node.LocalName.Equals("colors", StringComparison.InvariantCultureIgnoreCase)) // Handles MRU colors
+                        else if (node.LocalName.Equals("colors", StringComparison.OrdinalIgnoreCase)) // Handles MRU colors
                         {
                             GetColors(node);
                         }
@@ -100,7 +100,7 @@ namespace NanoXLSX.Internal.Readers
                     }
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes) // Redo for composition after all style parts are gathered; standard number formats
                     {
-                        if (node.LocalName.Equals("cellxfs", StringComparison.InvariantCultureIgnoreCase))
+                        if (node.LocalName.Equals("cellxfs", StringComparison.OrdinalIgnoreCase))
                         {
                             GetCellXfs(node);
                         }
@@ -138,7 +138,7 @@ namespace NanoXLSX.Internal.Readers
         {
             foreach (XmlNode childNode in node.ChildNodes)
             {
-                if (childNode.LocalName.Equals("numfmt", StringComparison.InvariantCultureIgnoreCase))
+                if (childNode.LocalName.Equals("numfmt", StringComparison.OrdinalIgnoreCase))
                 {
                     NumberFormat numberFormat = new NumberFormat();
                     int id = ParserUtils.ParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId")); // Default will (justified) throw an exception
@@ -224,7 +224,7 @@ namespace NanoXLSX.Internal.Readers
             string value = ReaderUtils.GetAttribute(innerNode, "style");
             if (value != null)
             {
-                if (value.Equals("double", StringComparison.InvariantCultureIgnoreCase))
+                if (value.Equals("double", StringComparison.OrdinalIgnoreCase))
                 {
                     return StyleValue.s_double; // special handling, since double is not a valid enum value
                 }
@@ -668,7 +668,7 @@ namespace NanoXLSX.Internal.Readers
             foreach (XmlNode color in node.ChildNodes)
             {
                 XmlNode mruColor = ReaderUtils.GetChildNode(color, "color");
-                if (color.Name.Equals("mruColors") && mruColor != null)
+                if (color.Name.Equals("mruColors", StringComparison.Ordinal) && mruColor != null)
                 {
                     foreach (XmlNode value in color.ChildNodes)
                     {

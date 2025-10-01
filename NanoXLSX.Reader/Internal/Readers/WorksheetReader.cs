@@ -267,7 +267,7 @@ namespace NanoXLSX.Internal.Readers
                     {
                         worksheet.ShowRuler = ParserUtils.ParseBinaryBool(attribute) == 1;
                     }
-                    if (sheetView.LocalName.Equals("sheetView", StringComparison.InvariantCultureIgnoreCase))
+                    if (sheetView.LocalName.Equals("sheetView", StringComparison.OrdinalIgnoreCase))
                     {
                         XmlNodeList selectionNodes = sheetView.ChildNodes;
                         if (selectionNodes != null && selectionNodes.Count > 0)
@@ -511,8 +511,8 @@ namespace NanoXLSX.Internal.Readers
         /// Gets the sheet format information of the current worksheet
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
-        /// <param name="worksheet">Currently processed worksheet</param></param>
-        private void GetSheetFormats(XmlDocument xmlDocument, Worksheet worksheet)
+        /// <param name="worksheet">Currently processed worksheet</param>
+        private static void GetSheetFormats(XmlDocument xmlDocument, Worksheet worksheet)
         {
             XmlNodeList formatNodes = xmlDocument.GetElementsByTagName("sheetFormatPr");
             if (formatNodes != null && formatNodes.Count > 0)
@@ -634,7 +634,7 @@ namespace NanoXLSX.Internal.Readers
             string styleNumber = "";
             string address = "A1";
             string value = "";
-            if (rowChild.LocalName.Equals("c", StringComparison.InvariantCultureIgnoreCase))
+            if (rowChild.LocalName.Equals("c", StringComparison.OrdinalIgnoreCase))
             {
                 address = ReaderUtils.GetAttribute(rowChild, "r"); // Mandatory
                 type = ReaderUtils.GetAttribute(rowChild, "t"); // can be null if not existing
@@ -643,15 +643,15 @@ namespace NanoXLSX.Internal.Readers
                 {
                     foreach (XmlNode valueNode in rowChild.ChildNodes)
                     {
-                        if (valueNode.LocalName.Equals("v", StringComparison.InvariantCultureIgnoreCase))
+                        if (valueNode.LocalName.Equals("v", StringComparison.OrdinalIgnoreCase))
                         {
                             value = valueNode.InnerText;
                         }
-                        if (valueNode.LocalName.Equals("f", StringComparison.InvariantCultureIgnoreCase))
+                        if (valueNode.LocalName.Equals("f", StringComparison.OrdinalIgnoreCase))
                         {
                             value = valueNode.InnerText;
                         }
-                        if (valueNode.LocalName.Equals("is", StringComparison.InvariantCultureIgnoreCase))
+                        if (valueNode.LocalName.Equals("is", StringComparison.OrdinalIgnoreCase))
                         {
                             value = valueNode.InnerText;
                         }

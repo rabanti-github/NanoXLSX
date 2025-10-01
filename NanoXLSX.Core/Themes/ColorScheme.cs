@@ -13,7 +13,7 @@ namespace NanoXLSX.Themes
     /// <summary>
     /// Class representing a color scheme, used in a theme
     /// </summary>
-    public class ColorScheme
+    public class ColorScheme : IColorScheme
     {
         /// <summary>
         /// Name of the color scheme

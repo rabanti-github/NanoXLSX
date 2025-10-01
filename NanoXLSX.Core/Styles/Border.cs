@@ -41,7 +41,7 @@ namespace NanoXLSX.Styles
 
         #region enums
         /// <summary>
-        /// Enum for the border style, used by implementations of the <see cref="IBorder"/> interface
+        /// Enum for the border style, used by the <see cref="Border"/> class
         /// </summary>
         public enum StyleValue
         {

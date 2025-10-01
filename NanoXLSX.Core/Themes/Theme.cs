@@ -29,7 +29,7 @@ namespace NanoXLSX.Themes
 
         #region enums
         /// <summary>
-        /// Enum to define the sequence index of color scheme element, used in the implementations of <see cref="IColorScheme"/>
+        /// Enum to define the sequence index of color scheme element, used in the implementations of <see cref="Interfaces.IColorScheme"/>
         /// </summary>
         public enum ColorSchemeElement
         {

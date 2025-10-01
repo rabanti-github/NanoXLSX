@@ -34,7 +34,7 @@ namespace NanoXLSX
         public static readonly CultureInfo DEFAULT_CULTURE_INFO = CultureInfo.InvariantCulture;
 
         /// <summary>
-        /// Global conversion types to enforce during the load process. All types other than <see cref="GlobalType.Default" /> will override defined <see cref="ColumnType">Column types</a>
+        /// Global conversion types to enforce during the load process. All types other than <see cref="GlobalType.Default" /> will override defined <see cref="ColumnType">Column types</see>
         /// </summary>
         public enum GlobalType
         {

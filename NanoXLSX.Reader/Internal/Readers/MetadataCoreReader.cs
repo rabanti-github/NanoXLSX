@@ -74,31 +74,31 @@ namespace NanoXLSX.Internal.Readers
                     xr.Load(stream);
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                     {
-                        if (node.LocalName.Equals("Category", StringComparison.InvariantCultureIgnoreCase))
+                        if (node.LocalName.Equals("Category", StringComparison.OrdinalIgnoreCase))
                         {
                             metadata.Category = node.InnerText;
                         }
-                        else if (node.LocalName.Equals("ContentStatus", StringComparison.InvariantCultureIgnoreCase))
+                        else if (node.LocalName.Equals("ContentStatus", StringComparison.OrdinalIgnoreCase))
                         {
                             metadata.ContentStatus = node.InnerText;
                         }
-                        else if (node.LocalName.Equals("Creator", StringComparison.InvariantCultureIgnoreCase))
+                        else if (node.LocalName.Equals("Creator", StringComparison.OrdinalIgnoreCase))
                         {
                             metadata.Creator = node.InnerText;
                         }
-                        else if (node.LocalName.Equals("Description", StringComparison.InvariantCultureIgnoreCase))
+                        else if (node.LocalName.Equals("Description", StringComparison.OrdinalIgnoreCase))
                         {
                             metadata.Description = node.InnerText;
                         }
-                        else if (node.LocalName.Equals("Keywords", StringComparison.InvariantCultureIgnoreCase))
+                        else if (node.LocalName.Equals("Keywords", StringComparison.OrdinalIgnoreCase))
                         {
                             metadata.Keywords = node.InnerText;
                         }
-                        else if (node.LocalName.Equals("Subject", StringComparison.InvariantCultureIgnoreCase))
+                        else if (node.LocalName.Equals("Subject", StringComparison.OrdinalIgnoreCase))
                         {
                             metadata.Subject = node.InnerText;
                         }
-                        else if (node.LocalName.Equals("Title", StringComparison.InvariantCultureIgnoreCase))
+                        else if (node.LocalName.Equals("Title", StringComparison.OrdinalIgnoreCase))
                         {
                             metadata.Title = node.InnerText;
                         }

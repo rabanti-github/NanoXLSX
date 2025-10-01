@@ -563,7 +563,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Range setRange = new Range(range);
             foreach (Address address in setRange.ResolveEnclosedAddresses())
             {
-                Assert.Contains(worksheet.Cells, item => item.Key.Equals(address.GetAddress()));
+                Assert.Contains(worksheet.Cells, item => item.Key.Equals(address.GetAddress(), StringComparison.Ordinal));
                 if (expectedStyle == null)
                 {
                     Assert.Null(worksheet.Cells[address.GetAddress()].CellStyle);

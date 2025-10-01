@@ -76,15 +76,15 @@ namespace NanoXLSX.Internal.Readers
                     xr.Load(stream);
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                     {
-                        if (node.LocalName.Equals("sheets", StringComparison.InvariantCultureIgnoreCase) && node.HasChildNodes)
+                        if (node.LocalName.Equals("sheets", StringComparison.OrdinalIgnoreCase) && node.HasChildNodes)
                         {
                             GetWorksheetInformation(node.ChildNodes);
                         }
-                        else if (node.LocalName.Equals("bookViews", StringComparison.InvariantCultureIgnoreCase) && node.HasChildNodes)
+                        else if (node.LocalName.Equals("bookViews", StringComparison.OrdinalIgnoreCase) && node.HasChildNodes)
                         {
                             GetViewInformation(node.ChildNodes);
                         }
-                        else if (node.LocalName.Equals("workbookProtection", StringComparison.InvariantCultureIgnoreCase))
+                        else if (node.LocalName.Equals("workbookProtection", StringComparison.OrdinalIgnoreCase))
                         {
                             GetProtectionInformation(node);
                         }
@@ -141,7 +141,7 @@ namespace NanoXLSX.Internal.Readers
         {
             foreach (XmlNode node in nodes)
             {
-                if (node.LocalName.Equals("workbookView", StringComparison.InvariantCultureIgnoreCase))
+                if (node.LocalName.Equals("workbookView", StringComparison.OrdinalIgnoreCase))
                 {
                     string attribute = ReaderUtils.GetAttribute(node, "visibility");
                     if (attribute != null && attribute.ToLower() == "hidden")
@@ -165,7 +165,7 @@ namespace NanoXLSX.Internal.Readers
         {
             foreach (XmlNode node in nodes)
             {
-                if (node.LocalName.Equals("sheet", StringComparison.InvariantCultureIgnoreCase))
+                if (node.LocalName.Equals("sheet", StringComparison.OrdinalIgnoreCase))
                 {
                     try
                     {

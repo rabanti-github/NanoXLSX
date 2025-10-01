@@ -72,7 +72,7 @@ namespace NanoXLSX.Internal.Structures
             {
                 return false;
             }
-            return this.Value.Equals(((PlainText)obj).Value);
+            return this.Value.Equals(((PlainText)obj).Value, StringComparison.Ordinal);
         }
 
         public override int GetHashCode()

@@ -72,7 +72,7 @@ namespace NanoXLSX.Internal
         {
             if (node != null && node.HasChildNodes)
             {
-                return node.ChildNodes.Cast<XmlNode>().FirstOrDefault(c => c.LocalName.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                return node.ChildNodes.Cast<XmlNode>().FirstOrDefault(c => c.LocalName.Equals(name, StringComparison.OrdinalIgnoreCase));
             }
             return null;
         }
@@ -85,7 +85,7 @@ namespace NanoXLSX.Internal
         /// <returns>True if applying</returns>
         internal static bool IsNode(XmlNode node, string name)
         {
-            return node.LocalName.Equals(name, StringComparison.InvariantCultureIgnoreCase);
+            return node.LocalName.Equals(name, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>

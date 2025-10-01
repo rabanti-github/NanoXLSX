@@ -66,7 +66,7 @@ namespace NanoXLSX.Styles
 
         #region enums
         /// <summary>
-        /// Enum for the font scheme, used by implementations of the <see cref="IFont"/>
+        /// Enum for the font scheme, used by the <see cref="Font"/> class
         /// </summary>
         public enum SchemeValue
         {
@@ -78,7 +78,7 @@ namespace NanoXLSX.Styles
             none,
         }
         /// <summary>
-        /// Enum for the vertical alignment of the text from baseline, used by implementations of the <see cref="IFont"/>
+        /// Enum for the vertical alignment of the text from baseline, used by the <see cref="Font"/> class
         /// </summary>
         public enum VerticalTextAlignValue
         {
@@ -92,7 +92,7 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Enum for the style of the underline property of a stylized text, used by implementations of the <see cref="IFont"/>
+        /// Enum for the style of the underline property of a stylized text, used by the <see cref="Font"/> class
         /// </summary>
         public enum UnderlineValue
         {
@@ -109,7 +109,7 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Enum for the charset definitions of a font, used by implementations of the <see cref="IFont"/>
+        /// Enum for the charset definitions of a font, used by the <see cref="Font"/> class
         /// </summary>
         public enum CharsetValue
         {
@@ -196,7 +196,7 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Enum for the font family, according to the simple type definition of W3C. Used by implementations of the <see cref="IFont"/>
+        /// Enum for the font family, according to the simple type definition of W3C. Used by the <see cref="Font"/> class
         /// </summary>
         public enum FontFamilyValue
         {
@@ -292,7 +292,7 @@ namespace NanoXLSX.Styles
         [Append]
         public bool Strike { get; set; }
         /// <summary>
-        /// Gets or sets the underline style of the font. If set to <see cref="UnderlineValue.none">none</a> no underline will be applied (default)
+        /// Gets or sets the underline style of the font. If set to <see cref="UnderlineValue.none">none</see> no underline will be applied (default)
         /// </summary>
         [Append]
         public UnderlineValue Underline { get; set; } = UnderlineValue.none;
@@ -438,11 +438,11 @@ namespace NanoXLSX.Styles
             {
                 throw new StyleException("The font name was null or empty");
             }
-            if (name.Equals(DEFAULT_MINOR_FONT))
+            if (name.Equals(DEFAULT_MINOR_FONT, System.StringComparison.Ordinal))
             {
                 Scheme = SchemeValue.minor;
             }
-            else if (name.Equals(DEFAULT_MAJOR_FONT))
+            else if (name.Equals(DEFAULT_MAJOR_FONT, System.StringComparison.Ordinal))
             {
                 Scheme = SchemeValue.major;
             }

@@ -142,7 +142,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         private void AssertAddedFormulaCell(Worksheet worksheet, int numberOfEntries, string expectedAddress, Style expectedStyle, string expectedValue, int nextColumn, int nextRow)
         {
             Assert.Equal(numberOfEntries, worksheet.Cells.Count);
-            Assert.Contains(worksheet.Cells, cell => cell.Key.Equals(expectedAddress));
+            Assert.Contains(worksheet.Cells, cell => cell.Key.Equals(expectedAddress, StringComparison.Ordinal));
             Assert.Equal(Cell.CellType.FORMULA, worksheet.Cells[expectedAddress].DataType);
             Assert.Equal(expectedValue, worksheet.Cells[expectedAddress].Value);
             if (expectedStyle == null)
