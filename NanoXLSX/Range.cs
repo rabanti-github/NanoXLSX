@@ -105,11 +105,25 @@ namespace NanoXLSX
         }
 
         // Operator overloads
+        /// <summary>
+        /// Determines whether two <see cref="Range"/> instances are equal.
+        /// </summary>
+        /// <param name="range1">The first <see cref="Range"/> to compare.</param>
+        /// <param name="range2">The second <see cref="Range"/> to compare.</param>
+        /// <returns><see langword="true"/> if the two <see cref="Range"/> instances are equal; otherwise, <see
+        /// langword="false"/>.</returns>
         public static bool operator ==(Range range1, Range range2)
         {
             return range1.Equals(range2);
         }
 
+        /// <summary>
+        /// Determines whether two <see cref="Range"/> instances are not equal.
+        /// </summary>
+        /// <param name="range1">The first <see cref="Range"/> to compare.</param>
+        /// <param name="range2">The second <see cref="Range"/> to compare.</param>
+        /// <returns><see langword="true"/> if the two <see cref="Range"/> instances are not equal;  otherwise, <see
+        /// langword="false"/>.</returns>
         public static bool operator !=(Range range1, Range range2)
         {
             return !range1.Equals(range2);

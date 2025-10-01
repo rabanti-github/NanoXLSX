@@ -28,6 +28,8 @@
     <FileVersion>2.6.6.0</FileVersion>
     <RepositoryType>git</RepositoryType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <!-- <DocumentationFile>bin\Debug\NanoXLSX.xml</DocumentationFile> -->

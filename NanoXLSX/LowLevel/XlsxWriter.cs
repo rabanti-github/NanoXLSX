@@ -147,7 +147,7 @@ namespace NanoXLSX.LowLevel
         /// </summary>
         /// <param name="value">Input value</param>
         /// <returns>Normalized value</returns>
-        private string NormalizeNewLines(string value)
+        private static string NormalizeNewLines(string value)
         {
             if (value == null || (!value.Contains('\n') && !value.Contains('\r')))
             {
@@ -222,7 +222,7 @@ namespace NanoXLSX.LowLevel
                 }
                 else
                 {
-                    sb.Append("activeTab=\"").Append(workbook.SelectedWorksheet.ToString("G", culture)).Append("\"");
+                    sb.Append("activeTab=\"").Append(workbook.SelectedWorksheet.ToString("G", culture)).Append('"');
                 }
                 sb.Append("/></bookViews>");
             }
@@ -232,7 +232,7 @@ namespace NanoXLSX.LowLevel
             {
                 foreach (Worksheet item in workbook.Worksheets)
                 {
-                    sb.Append("<sheet r:id=\"rId").Append(item.SheetID.ToString()).Append("\" sheetId=\"").Append(item.SheetID.ToString()).Append("\" name=\"").Append(EscapeXmlAttributeChars(item.SheetName)).Append("\"");
+                    sb.Append("<sheet r:id=\"rId").Append(item.SheetID.ToString()).Append("\" sheetId=\"").Append(item.SheetID.ToString()).Append("\" name=\"").Append(EscapeXmlAttributeChars(item.SheetName)).Append('"');
                     if (item.Hidden)
                     {
                         sb.Append(" state=\"hidden\"");
@@ -271,7 +271,7 @@ namespace NanoXLSX.LowLevel
                 {
                     sb.Append(" workbookPassword=\"");
                     sb.Append(workbook.WorkbookProtectionPasswordHash);
-                    sb.Append("\"");
+                    sb.Append('"');
                 }
                 sb.Append("/>");
             }
@@ -304,7 +304,7 @@ namespace NanoXLSX.LowLevel
                 // TODO: Find the right calculation to compensate baseColWidth when using pane splitting
                 sb.Append(" defaultColWidth=\"")
              .Append(worksheet.DefaultColumnWidth.ToString("G", culture))
-                .Append("\"");
+                .Append('"');
             }
             sb.Append(" defaultRowHeight=\"")
              .Append(worksheet.DefaultRowHeight.ToString("G", culture))
@@ -404,7 +404,7 @@ namespace NanoXLSX.LowLevel
             {
                 sb.Append("  showRowColHeaders=\"0\"");
             }
-            sb.Append(" zoomScale=\"").Append(worksheet.ZoomFactor.ToString("G", culture)).Append("\"");
+            sb.Append(" zoomScale=\"").Append(worksheet.ZoomFactor.ToString("G", culture)).Append('"');
             foreach (KeyValuePair<Worksheet.SheetViewType, int> scaleFactor in worksheet.ZoomFactors)
             {
                 if (scaleFactor.Key == worksheet.ViewType)
@@ -413,18 +413,18 @@ namespace NanoXLSX.LowLevel
                 }
                 if (scaleFactor.Key == Worksheet.SheetViewType.normal)
                 {
-                    sb.Append(" zoomScaleNormal=\"").Append(scaleFactor.Value.ToString("G", culture)).Append("\"");
+                    sb.Append(" zoomScaleNormal=\"").Append(scaleFactor.Value.ToString("G", culture)).Append('"');
                 }
                 else if (scaleFactor.Key == Worksheet.SheetViewType.pageBreakPreview)
                 {
-                    sb.Append(" zoomScaleSheetLayoutView=\"").Append(scaleFactor.Value.ToString("G", culture)).Append("\"");
+                    sb.Append(" zoomScaleSheetLayoutView=\"").Append(scaleFactor.Value.ToString("G", culture)).Append('"');
                 }
                 else if (scaleFactor.Key == Worksheet.SheetViewType.pageLayout)
                 {
-                    sb.Append(" zoomScalePageLayoutView=\"").Append(scaleFactor.Value.ToString("G", culture)).Append("\"");
+                    sb.Append(" zoomScalePageLayoutView=\"").Append(scaleFactor.Value.ToString("G", culture)).Append('"');
                 }
             }
-            sb.Append(">");
+            sb.Append('>');
             CreatePaneString(worksheet, sb);
             if (worksheet.SelectedCellRanges.Count > 0)
             {
@@ -467,11 +467,11 @@ namespace NanoXLSX.LowLevel
                 {
                     if (freeze)
                     {
-                        sb.Append(" xSplit=\"").Append(Utils.ToString(xSplit)).Append("\"");
+                        sb.Append(" xSplit=\"").Append(Utils.ToString(xSplit)).Append('"');
                     }
                     else
                     {
-                        sb.Append(" xSplit=\"").Append(CalculatePaneWidth(worksheet, xSplit).ToString("G", culture)).Append("\"");
+                        sb.Append(" xSplit=\"").Append(CalculatePaneWidth(worksheet, xSplit).ToString("G", culture)).Append('"');
                     }
                     applyXSplit = true;
                 }
@@ -479,11 +479,11 @@ namespace NanoXLSX.LowLevel
                 {
                     if (freeze)
                     {
-                        sb.Append(" ySplit=\"").Append(Utils.ToString(ySplit)).Append("\"");
+                        sb.Append(" ySplit=\"").Append(Utils.ToString(ySplit)).Append('"');
                     }
                     else
                     {
-                        sb.Append(" ySplit=\"").Append(CalculatePaneHeight(worksheet, ySplit).ToString("G", culture)).Append("\"");
+                        sb.Append(" ySplit=\"").Append(CalculatePaneHeight(worksheet, ySplit).ToString("G", culture)).Append('"');
                     }
                     applyYSplit = true;
                 }
@@ -500,12 +500,12 @@ namespace NanoXLSX.LowLevel
             {
                 if (worksheet.PaneSplitLeftWidth != null)
                 {
-                    sb.Append(" xSplit=\"").Append(Utils.GetInternalPaneSplitWidth(worksheet.PaneSplitLeftWidth.Value).ToString("G", culture)).Append("\"");
+                    sb.Append(" xSplit=\"").Append(Utils.GetInternalPaneSplitWidth(worksheet.PaneSplitLeftWidth.Value).ToString("G", culture)).Append('"');
                     applyXSplit = true;
                 }
                 if (worksheet.PaneSplitTopHeight != null)
                 {
-                    sb.Append(" ySplit=\"").Append(Utils.GetInternalPaneSplitHeight(worksheet.PaneSplitTopHeight.Value).ToString("G", culture)).Append("\"");
+                    sb.Append(" ySplit=\"").Append(Utils.GetInternalPaneSplitHeight(worksheet.PaneSplitTopHeight.Value).ToString("G", culture)).Append('"');
                     applyYSplit = true;
                 }
             }
@@ -761,7 +761,7 @@ namespace NanoXLSX.LowLevel
                 sb.Append(nameSpace);
                 sb.Append(':');
             }
-            sb.Append(tagName).Append(">");
+            sb.Append(tagName).Append('>');
             sb.Append(EscapeXmlChars(value));
             sb.Append("</");
             if (!hasNoNs)
@@ -840,10 +840,10 @@ namespace NanoXLSX.LowLevel
                     }
                     col = (column.Key + 1).ToString("G", culture); // Add 1 for Address
                     float width = Utils.GetInternalColumnWidth(column.Value.Width);
-                    sb.Append("<col customWidth=\"1\" width=\"").Append(width.ToString("G", culture)).Append("\" max=\"").Append(col).Append("\" min=\"").Append(col).Append("\"");
+                    sb.Append("<col customWidth=\"1\" width=\"").Append(width.ToString("G", culture)).Append("\" max=\"").Append(col).Append("\" min=\"").Append(col).Append('"');
                     if (column.Value.DefaultColumnStyle != null)
                     {
-                        sb.Append(" style=\"").Append(column.Value.DefaultColumnStyle.InternalID.Value.ToString("G", culture)).Append("\"");
+                        sb.Append(" style=\"").Append(column.Value.DefaultColumnStyle.InternalID.Value.ToString("G", culture)).Append('"');
                     }
                     sb.Append(hidden).Append("/>");
                 }
@@ -923,7 +923,7 @@ namespace NanoXLSX.LowLevel
                 hidden = " hidden=\"1\"";
             }
             StringBuilder sb = new StringBuilder();
-            sb.Append("<row r=\"").Append((rowNumber + 1).ToString()).Append("\"").Append(height).Append(hidden).Append(">");
+            sb.Append("<row r=\"").Append((rowNumber + 1).ToString()).Append('"').Append(height).Append(hidden).Append('>');
             string typeAttribute;
             string styleDef;
             string typeDef;
@@ -1008,7 +1008,7 @@ namespace NanoXLSX.LowLevel
                 }
                 if (item.DataType != Cell.CellType.EMPTY)
                 {
-                    sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(typeDef).Append(styleDef).Append(">");
+                    sb.Append("<c r=\"").Append(item.CellAddress).Append('"').Append(typeDef).Append(styleDef).Append('>');
                     if (item.DataType == Cell.CellType.FORMULA)
                     {
                         sb.Append("<f>").Append(EscapeXmlChars(item.Value.ToString())).Append("</f>");
@@ -1021,7 +1021,7 @@ namespace NanoXLSX.LowLevel
                 }
                 else if (valueDef == null || item.DataType == Cell.CellType.EMPTY) // Empty cell
                 {
-                    sb.Append("<c r=\"").Append(item.CellAddress).Append("\"").Append(styleDef).Append("/>");
+                    sb.Append("<c r=\"").Append(item.CellAddress).Append('"').Append(styleDef).Append("/>");
                 }
                 col++;
             }
@@ -1116,11 +1116,11 @@ namespace NanoXLSX.LowLevel
             foreach (KeyValuePair<Worksheet.SheetProtectionValue, int> item in actualLockingValues)
             {
                 temp = Enum.GetName(typeof(Worksheet.SheetProtectionValue), item.Key); // Note! If the enum names differs from the OOXML definitions, this method will cause invalid OOXML entries
-                sb.Append(" ").Append(temp).Append("=\"").Append(item.Value.ToString("G", culture)).Append("\"");
+                sb.Append(" ").Append(temp).Append("=\"").Append(item.Value.ToString("G", culture)).Append('"');
             }
             if (!string.IsNullOrEmpty(sheet.SheetProtectionPasswordHash))
             {
-                sb.Append(" password=\"").Append(sheet.SheetProtectionPasswordHash).Append("\"");
+                sb.Append(" password=\"").Append(sheet.SheetProtectionPasswordHash).Append('"');
             }
             sb.Append("/>");
             return sb.ToString();
@@ -1263,17 +1263,17 @@ namespace NanoXLSX.LowLevel
             foreach (Fill item in fillStyles)
             {
                 sb.Append("<fill>");
-                sb.Append("<patternFill patternType=\"").Append(Fill.GetPatternName(item.PatternFill)).Append("\"");
+                sb.Append("<patternFill patternType=\"").Append(Fill.GetPatternName(item.PatternFill)).Append('"');
                 if (item.PatternFill == Fill.PatternValue.solid)
                 {
-                    sb.Append(">");
+                    sb.Append('>');
                     sb.Append("<fgColor rgb=\"").Append(item.ForegroundColor).Append("\"/>");
                     sb.Append("<bgColor indexed=\"").Append(item.IndexedColor.ToString("G", culture)).Append("\"/>");
                     sb.Append("</patternFill>");
                 }
                 else if (item.PatternFill == Fill.PatternValue.mediumGray || item.PatternFill == Fill.PatternValue.lightGray || item.PatternFill == Fill.PatternValue.gray0625 || item.PatternFill == Fill.PatternValue.darkGray)
                 {
-                    sb.Append(">");
+                    sb.Append('>');
                     sb.Append("<fgColor rgb=\"").Append(item.ForegroundColor).Append("\"/>");
                     if (!string.IsNullOrEmpty(item.BackgroundColor))
                     {
@@ -1345,7 +1345,7 @@ namespace NanoXLSX.LowLevel
                         else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.general) { sb2.Append("general"); }
                         else if (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.justify) { sb2.Append("justify"); }
                         else { sb2.Append("left"); }
-                        sb2.Append("\"");
+                        sb2.Append('"');
                     }
                     if (style.CurrentCellXf.VerticalAlign != CellXf.VerticalAlignValue.none)
                     {
@@ -1355,7 +1355,7 @@ namespace NanoXLSX.LowLevel
                         else if (style.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.justify) { sb2.Append("justify"); }
                         else if (style.CurrentCellXf.VerticalAlign == CellXf.VerticalAlignValue.top) { sb2.Append("top"); }
                         else { sb2.Append("bottom"); }
-                        sb2.Append("\"");
+                        sb2.Append('"');
                     }
                     if (style.CurrentCellXf.Indent > 0 &&
                         (style.CurrentCellXf.HorizontalAlign == CellXf.HorizontalAlignValue.left
@@ -1364,19 +1364,19 @@ namespace NanoXLSX.LowLevel
                     {
                         sb2.Append(" indent=\"");
                         sb2.Append(style.CurrentCellXf.Indent.ToString("G", culture));
-                        sb2.Append("\"");
+                        sb2.Append('"');
                     }
                     if (style.CurrentCellXf.Alignment != CellXf.TextBreakValue.none)
                     {
                         if (style.CurrentCellXf.Alignment == CellXf.TextBreakValue.shrinkToFit) { sb2.Append(" shrinkToFit=\"1"); }
                         else { sb2.Append(" wrapText=\"1"); }
-                        sb2.Append("\"");
+                        sb2.Append('"');
                     }
                     if (textRotation != 0)
                     {
                         sb2.Append(" textRotation=\"");
                         sb2.Append(textRotation.ToString("G", culture));
-                        sb2.Append("\"");
+                        sb2.Append('"');
                     }
                     sb2.Append("/>"); // </xf>
                     alignmentString = sb2.ToString();
@@ -1435,11 +1435,11 @@ namespace NanoXLSX.LowLevel
                 }
                 else
                 {
-                    sb.Append("\"");
+                    sb.Append('"');
                 }
                 if (alignmentString != string.Empty || protectionString != string.Empty)
                 {
-                    sb.Append(">");
+                    sb.Append('>');
                     sb.Append(alignmentString);
                     sb.Append(protectionString);
                     sb.Append("</xf>");
