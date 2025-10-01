@@ -339,24 +339,27 @@ namespace NanoXLSX.Internal.Writers
                         alignment.AddAttribute("textRotation", ParserUtils.ToString(textRotation));
                     }
                 }
-                if (style.CurrentCellXf.Hidden || style.CurrentCellXf.Locked)
+                if (!style.CurrentCellXf.Locked || style.CurrentCellXf.Hidden)
                 {
                     protection = XmlElement.CreateElement("protection");
                     if (style.CurrentCellXf.Hidden && style.CurrentCellXf.Locked)
                     {
-                        protection.AddAttribute("locked", "1");
-                        protection.AddAttribute("hidden", "1");
+                        protection.AddAttribute("hidden", "1"); // Locked is true by default (no need to define)
                     }
                     else if (style.CurrentCellXf.Hidden && !style.CurrentCellXf.Locked)
                     {
                         protection.AddAttribute("hidden", "1");
                         protection.AddAttribute("locked", "0");
                     }
-                    else
+                    else if (!style.CurrentCellXf.Hidden && !style.CurrentCellXf.Locked)
                     {
-                        protection.AddAttribute("hidden", "0");
-                        protection.AddAttribute("locked", "1");
+                        protection.AddAttribute("locked", "0"); // To be defined, since locked is true by default (no need for hidden, since false by default)
+
                     }
+                }
+                else
+                {
+                    protection = null; // No definition if only locked == true
                 }
                 XmlElement xf = XmlElement.CreateElement("xf");
                 if (style.CurrentNumberFormat.IsCustomFormat)

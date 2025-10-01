@@ -41,7 +41,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void LockedTest(bool value)
         {
             CellXf cellXf = new CellXf();
-            Assert.False(cellXf.Locked);
+            Assert.True(cellXf.Locked); // Locked is set to true by default (has no effect until protection is enabled)
             cellXf.Locked = value;
             Assert.Equal(value, cellXf.Locked);
         }

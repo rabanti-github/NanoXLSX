@@ -464,6 +464,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         [InlineData(false, "", "", 0)]
         [InlineData(false, "autoFilter:0,sort:0", "", 0)]
         [InlineData(true, "", "objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
+        [InlineData(true, "selectLockedCells:1,selectUnlockedCells:0", "objects:1,scenarios:1", 0)] // Special case: only locked cells selectable is not possible, therefore none
         [InlineData(true, "autoFilter:0", "autoFilter:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
         [InlineData(true, "pivotTables:0", "pivotTables:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
         [InlineData(true, "sort:0", "sort:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
@@ -478,7 +479,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         [InlineData(true, "objects:0", "scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
         [InlineData(true, "scenarios:0", "objects:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
         [InlineData(true, "selectLockedCells:0", "objects:1,scenarios:1", 0)]
-        [InlineData(true, "selectUnlockedCells:0", "objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:0", 0)]
+        [InlineData(true, "selectUnlockedCells:0", "objects:1,scenarios:1,selectLockedCells:1", 0)]
         [InlineData(false, "", "", 1)]
         [InlineData(false, "autoFilter:0", "", 2)]
         [InlineData(true, "", "objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 3)]
@@ -520,6 +521,32 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
                     Assert.Contains(item.Key, givenWorksheet.SheetProtectionValues);
                 }
             }
+        }
+
+        [Fact(DisplayName = "Test of the 'SheetProtectionValues' when setting selectLockedCells alone (causes auto-fix)")]
+        public void SheetProtectionWriteReadTest2()
+        {
+            int sheetIndex = 0;
+            Workbook workbook = PrepareWorkbook(4, "test");
+            for (int i = 0; i <= sheetIndex; i++)
+            {
+                if (sheetIndex == i)
+                {
+                    workbook.SetCurrentWorksheet(i);
+                    workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.selectUnlockedCells);
+                    workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.selectLockedCells);
+                    // Override default (technically invalid)
+                    workbook.CurrentWorksheet.RemoveAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.selectUnlockedCells);
+                    workbook.CurrentWorksheet.UseSheetProtection = true;
+                }
+            }
+            Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
+            Assert.Equal(2, givenWorksheet.SheetProtectionValues.Count);
+            Assert.True(givenWorksheet.UseSheetProtection);
+            Assert.Contains(Worksheet.SheetProtectionValue.objects, givenWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.scenarios, givenWorksheet.SheetProtectionValues);
+            Assert.DoesNotContain(Worksheet.SheetProtectionValue.selectLockedCells, givenWorksheet.SheetProtectionValues);
+            Assert.DoesNotContain(Worksheet.SheetProtectionValue.selectUnlockedCells, givenWorksheet.SheetProtectionValues);
         }
 
         [Theory(DisplayName = "Test of the 'SheetProtectionPasswordHash' property when writing and reading a worksheet")]

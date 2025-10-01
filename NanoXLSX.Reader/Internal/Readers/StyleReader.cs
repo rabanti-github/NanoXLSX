@@ -597,10 +597,11 @@ namespace NanoXLSX.Internal.Readers
                             cellXfStyle.Hidden = true;
                         }
                         attribute = ReaderUtils.GetAttribute(protectionNode, "locked");
-                        if (attribute != null && attribute == "1")
+                        if (attribute != null && attribute == "0")
                         {
-                            cellXfStyle.Locked = true;
+                            cellXfStyle.Locked = false;
                         }
+                        // else - NoOp - No need to set locked value, since true by default
                     }
 
                     cellXfStyle.InternalID = this.styleReaderContainer.GetNextCellXFId();
