@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
+using System.Xml;
 using NanoXLSX.Styles;
 using Xunit;
 using static NanoXLSX.Cell;
@@ -165,5 +166,101 @@ namespace NanoXLSX.Test.Writer_Reader.Utils
             return path.Replace(".tmp", ".xlsx");
         }
 
+        /// <summary>
+        /// Reads the first inner text value of the given node name from an XML stream.
+        /// </summary>
+        /// <param name="stream">The XML content as a readable stream.</param>
+        /// <param name="nodeName">The name of the XML node to read.</param>
+        /// <returns>The first inner text value of the node, or null if not found.</returns>
+        public static string ReadFirstNodeValue(Stream stream, string nodeName)
+        {
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+            if (string.IsNullOrEmpty(nodeName))
+            {
+                throw new ArgumentException("Node name must be specified.", nameof(nodeName));
+            }
+            using (var reader = XmlReader.Create(stream, new XmlReaderSettings
+            {
+                IgnoreComments = true,
+                IgnoreWhitespace = true,
+                DtdProcessing = DtdProcessing.Ignore
+            }))
+            {
+                while (reader.Read())
+                {
+                    if (reader.NodeType == XmlNodeType.Element && reader.LocalName == nodeName)
+                    {
+                        // ReadElementContentAsString moves past the end element automatically
+                        return reader.ReadElementContentAsString();
+                    }
+                }
+            }
+
+            return null; // not found
+        }
+
+        /// <summary>
+        /// Reads the defined attribute of the first occurring node with the given name from an XML stream.
+        /// </summary>
+        /// <param name="stream">The XML content as a readable stream.</param>
+        /// <param name="nodeName">The name of the XML node to read.</param>
+        /// <param name="attributeName">The name of the attribute to read.</param>"
+        /// <returns>The value of the defined attribute from the first node occurrence, or null if not found.</returns>
+        public static string ReadFirstAttributeValue(Stream stream, string nodeName, string attributeName)
+        {
+            List<string> values = ReadAllAttributeValues((MemoryStream)stream, nodeName, attributeName);
+            if (values != null && values.Count > 0)
+            {
+                return values[0];
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Reads the defined attributes of the any occurring node with the given name from an XML stream.
+        /// </summary>
+        /// <param name="stream">The XML content as a readable stream.</param>
+        /// <param name="nodeName">The name of the XML node to read.</param>
+        /// <param name="attributeName">The name of the attribute to read.</param>"
+        /// <returns>A list of the values of the defined attribute from any node occurrence, or null if not found.</returns>
+        public static List<string> ReadAllAttributeValues(MemoryStream stream, string nodeName, string attributeName)
+        {
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+            if (string.IsNullOrEmpty(nodeName) || string.IsNullOrEmpty(attributeName))
+            {
+                throw new ArgumentException("Node and attribute name must be specified.", nameof(nodeName));
+            }
+            List<string> values = new List<string>();
+            stream.Position = 0;
+            using (var reader = XmlReader.Create(stream, new XmlReaderSettings
+            {
+                IgnoreComments = true,
+                IgnoreWhitespace = true,
+                DtdProcessing = DtdProcessing.Ignore
+            }))
+            {
+                while (reader.Read())
+                {
+                    if (reader.NodeType == XmlNodeType.Element && reader.LocalName == nodeName)
+                    {
+                        values.Add(reader.GetAttribute(attributeName));
+                    }
+                }
+            }
+            if (values.Count > 0)
+            {
+                return values;
+            }
+            else
+            {
+                return null; // not found
+            }
+        }
     }
 }

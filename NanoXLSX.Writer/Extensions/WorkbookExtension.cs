@@ -17,7 +17,7 @@ namespace NanoXLSX
         <code>
             Workbook wb = new Workbook("workboox.xlsx", "worksheet1");
             // do some operations with wb, like adding cells
-            wb.Save(); // Will save the workbok as 'workbook.xlsx' in the execution path
+            wb.Save(); // Will save the workbook as 'workbook.xlsx' in the execution path
          </code> 
          </example> **/
         public static void Save(this Workbook workbook)
@@ -38,7 +38,7 @@ namespace NanoXLSX
             {
                 Workbook wb = new Workbook("workboox.xlsx", "worksheet1");
                 // do some operations with wb, like adding cells
-                await wb.SaveAsync(); // Will save the workbok as 'workbook.xlsx' in the execution path
+                await wb.SaveAsync(); // Will save the workbook as 'workbook.xlsx' in the execution path
             }
          </code> 
          </example> **/
@@ -59,7 +59,7 @@ namespace NanoXLSX
         <code>
             Workbook wb = new Workbook("worksheet1");
             // do some operations with wb, like adding cells
-            wb.SaveAs("workboox.xlsx"); // Will save the workbok as 'workbook.xlsx' in the execution path
+            wb.SaveAs("workboox.xlsx"); // Will save the workbook as 'workbook.xlsx' in the execution path
          </code> 
          </example> **/
         public static void SaveAs(this Workbook workbook, string filename)
@@ -85,7 +85,7 @@ namespace NanoXLSX
             {
                 Workbook wb = new Workbook("worksheet1");
                 // do some operations with wb, like adding cells
-                await wb.SaveAsAsync("workboox.xlsx"); // Will save the workbok as 'workbook.xlsx' in the execution path
+                await wb.SaveAsAsync("workboox.xlsx"); // Will save the workbook as 'workbook.xlsx' in the execution path
             }
          </code> 
          </example> **/
@@ -112,7 +112,7 @@ namespace NanoXLSX
             // do some operations with wb, like adding cells
             using(FileStream fs = new FileStream("workbook.xslx", FileMode.Create))
             {
-                wb.SaveAsStream(fs); // Will save the workbok as 'workbook.xlsx' using a FileStream
+                wb.SaveAsStream(fs); // Will save the workbook as 'workbook.xlsx' using a FileStream
             }
          </code>
          The stream can also be kept open:
@@ -121,7 +121,7 @@ namespace NanoXLSX
             // do some operations with wb, like adding cells
             using(MemoryStream ms = new MemoryStream())
             {
-                wb.SaveAsStream(ms, true); // Will save the workbok into a MemoryStream
+                wb.SaveAsStream(ms, true); // Will save the workbook into a MemoryStream
                 ms.Position = 0; // Rewind the stream
                 // use ms to do copy or save actions
             }
@@ -154,7 +154,7 @@ namespace NanoXLSX
                 // do some operations with wb, like adding cells
                 using(FileStream fs = new FileStream("workbook.xslx", FileMode.Create))
                 {
-                    await wb.SaveAsStreamAsync(fs); // Will save the workbok as 'workbook.xlsx' using a FileStream
+                    await wb.SaveAsStreamAsync(fs); // Will save the workbook as 'workbook.xlsx' using a FileStream
                 }
             }
          </code> 
@@ -166,7 +166,7 @@ namespace NanoXLSX
                 // do some operations with wb, like adding cells
                 using(MemoryStream ms = new MemoryStream())
                 {
-                    await wb.SaveAsStreamAsync(ms, true); // Will save the workbok into a MemoryStream
+                    await wb.SaveAsStreamAsync(ms, true); // Will save the workbook into a MemoryStream
                     ms.Position = 0; // Rewind the stream
                     // use ms to do copy or save actions
                 }

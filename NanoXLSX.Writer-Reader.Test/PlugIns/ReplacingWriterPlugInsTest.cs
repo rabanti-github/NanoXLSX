@@ -15,14 +15,14 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection3))]
 
-    public class ReplacingPlugInsTest : IDisposable
+    public class ReplacingWriterPlugInsTest : IDisposable
     {
         public void Dispose()
         {
             PlugInLoader.DisposePlugins();
         }
 
-        [Theory(DisplayName = "Test of the plug-in handling for replacing plug-ins")]
+        [Theory(DisplayName = "Test of the plug-in handling for replacing writer plug-ins")]
         [InlineData(typeof(ReplaceAppMetadataWriter), "docProps/app.xml", "replacing_app_metadata")]
         [InlineData(typeof(ReplaceCoreMetadataWriter), "docProps/core.xml", "replacing_core_metadata")]
         [InlineData(typeof(ReplaceStyleWriter), "xl/styles.xml", "replacing_style")]

@@ -13,14 +13,14 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection3))]
-    public class InlinePlugInsTest : IDisposable
+    public class InlineWriterPlugInsTest : IDisposable
     {
         public void Dispose()
         {
             PlugInLoader.DisposePlugins();
         }
 
-        [Theory(DisplayName = "Test of the plug-in handling for inline plug-ins")]
+        [Theory(DisplayName = "Test of the plug-in handling for inline writer plug-ins")]
         [InlineData(typeof(InlineAppMetadataWriter), "docProps/app.xml", "inline_app_metadata")]
         [InlineData(typeof(InlineCoreMetadataWriter), "docProps/core.xml", "inline_core_metadata")]
         [InlineData(typeof(InlineStyleWriter), "xl/styles.xml", "replacing_style")]
@@ -28,7 +28,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         [InlineData(typeof(InlineSharedStringWriter), "xl/sharedStrings.xml", "replacing_shared_strings")]
         [InlineData(typeof(InlineWorksheetWriter), "xl/worksheets/sheet1.xml", "replacing_worksheet")]
         [InlineData(typeof(InlineWorkbookWriter), "xl/workbook.xml", "replacing_workbook")]
-        public void MetadataAppWriterTest(Type readerType, string expectedPath, string expectedReferenceValue)
+        public void InlineWriterPluginTest(Type readerType, string expectedPath, string expectedReferenceValue)
         {
             List<Type> plugins = new List<Type>();
             // Note: These plug-ins may lead to an invalid XLSX file, depending on the RId and metadata of the packed file. It is just to test the plug-in functionality

@@ -110,8 +110,26 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             }
         }
 
-        [Fact(DisplayName = "Test of reusing dynamically created number formats from styles containing numFmtId")]
+        [Fact(DisplayName = "Test of reusing dynamically created number formats from styles")]
         public void ImplicitNumberFormatBeingReUsed()
+        {
+            using (MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
+            {
+                Workbook workbook = new Workbook("test");
+                StyleReader styleReader = new StyleReader();
+                styleReader.Init(memStream, workbook, new ReaderOptions());
+                styleReader.Execute();
+                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY);
+
+                Style zeroStyle = styleReaderContainer.GetStyle(0);
+                Style firstStyle = styleReaderContainer.GetStyle(1);
+
+                Assert.Same(zeroStyle.CurrentNumberFormat, firstStyle.CurrentNumberFormat);
+            }
+        }
+
+        [Fact(DisplayName = "Test of reusing dynamically created number formats from styles containing numFmtId")]
+        public void ImplicitNumberFormatBeingReUsed2()
         {
             using (MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
             {

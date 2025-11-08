@@ -5,13 +5,11 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Registry;
-using NanoXLSX.Styles;
 using NanoXLSX.Themes;
 using NanoXLSX.Utils;
 

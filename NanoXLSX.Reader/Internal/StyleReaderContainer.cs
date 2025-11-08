@@ -83,14 +83,9 @@ namespace NanoXLSX.Internal
         /// </summary>
         /// <param name="index">Index of the style</param>
         /// <returns>Style object or null if the component could not be retrieved</returns>
-        public Style GetStyle(string index)
+        public Style GetStyle(int index)
         {
-            int number;
-            if (int.TryParse(index, out number))
-            {
-                return GetComponent(typeof(Style), number) as Style;
-            }
-            return null;
+            return GetComponent(typeof(Style), index) as Style;
         }
 
         /// <summary>

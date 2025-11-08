@@ -43,37 +43,9 @@ namespace NanoXLSX.Internal.Readers
         public List<string> SharedStrings { get; private set; }
 
         /// <summary>
-        /// Gets whether the workbook contains shared strings
-        /// </summary>
-        /// <value>
-        /// True if at least one shared string object exists in the workbook
-        /// </value>
-        public bool HasElements
-        {
-            get
-            {
-                return SharedStrings.Count > 0;
-            }
-        }
-
-        /// <summary>
         /// Workbook reference where read data is stored (should not be null)
         /// </summary>
         public Workbook Workbook { get => workbook; set => workbook = value; }
-
-        /// <summary>
-        /// Gets the value of the shared string table by its index
-        /// </summary>
-        /// <param name="index">Index of the stared string entry</param>
-        /// <returns>Determined shared string value. Returns null in case of a invalid index</returns>
-        public string GetString(int index)
-        {
-            if (!HasElements || index > SharedStrings.Count - 1 || index < 0)
-            {
-                return null;
-            }
-            return SharedStrings[index];
-        }
         #endregion
 
         #region constructors

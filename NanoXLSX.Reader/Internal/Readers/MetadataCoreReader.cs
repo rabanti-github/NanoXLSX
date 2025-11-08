@@ -63,10 +63,6 @@ namespace NanoXLSX.Internal.Readers
             {
                 using (stream) // Close after processing
                 {
-                    if (Workbook.WorkbookMetadata == null)
-                    {
-                        Workbook.WorkbookMetadata = new Metadata();
-                    }
                     Metadata metadata = Workbook.WorkbookMetadata;
 
                     XmlDocument xr = new XmlDocument();
