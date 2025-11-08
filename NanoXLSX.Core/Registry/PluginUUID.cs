@@ -126,7 +126,7 @@ namespace NanoXLSX.Registry
         /// <summary>
         /// UUID for the metadata reader (core data), when a workbook is loaded
         /// </summary>
-        public const string METADATA_CORE_READER = "28C59145-7BB8-416F-BAC9-0130DD8557F9";
+        public const string METADATA_CORE_READER = "B53F0F3E-71FF-43F0-B60C-C3478DE65788";
         /// <summary>
         /// UUID for the theme reader, when a workbook is loaded
         /// </summary>

@@ -30,11 +30,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         [InlineData(typeof(ReplaceSharedStringWriter), "xl/sharedStrings.xml", "replacing_shared_strings")]
         [InlineData(typeof(ReplaceWorksheetWriter), "xl/worksheets/sheet1.xml", "replacing_worksheet")]
         [InlineData(typeof(ReplaceWorkbookWriter), "xl/workbook.xml", "replacing_workbook")]
-        public void MetadataAppWriterTest(Type readerType, string expectedPath, string expectedReferenceValue)
+        public void ReplacingWriterPluginTest(Type writerType, string expectedPath, string expectedReferenceValue)
         {
             List<Type> plugins = new List<Type>();
             // Note: These plug-ins may lead to an invalid XLSX file, depending on the RId and metadata of the packed file. It is just to test the plug-in functionality
-            plugins.Add(readerType);
+            plugins.Add(writerType);
             PlugInLoader.InjectPlugins(plugins);
             Workbook wb = new Workbook("sheet1");
 
@@ -47,8 +47,6 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
 
         }
-
-
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.METADATA_APP_WRITER)]
         public class ReplaceAppMetadataWriter : IPlugInWriter

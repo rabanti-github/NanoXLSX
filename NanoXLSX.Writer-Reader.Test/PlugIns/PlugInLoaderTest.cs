@@ -21,8 +21,6 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             PlugInLoader.DisposePlugins();
         }
 
-
-
         [Fact(DisplayName = "Test of the plug-in handling initializer (dummy; should not crash)")]
         public void InitializeTest()
         {
@@ -85,9 +83,6 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 }
             }
         }
-
-
-
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_1", QueueUUID = PlugInUUID.WRITER_PACKAGE_REGISTRY_QUEUE)]
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_2", QueueUUID = PlugInUUID.WRITER_APPENDING_QUEUE)]
