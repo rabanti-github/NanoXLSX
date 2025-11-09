@@ -19,7 +19,7 @@ namespace NanoXLSX.Internal.Writers
     /// <summary>
     /// Class to write a legacy password
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.PASSWORD_WRITER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.PasswordWriter)]
     public class LegacyPasswordWriter : IPasswordWriter
     {
         #region properties

@@ -32,9 +32,9 @@ namespace NanoXLSX.Test.Core.StyleTest
         [Fact(DisplayName = "Test of the default values")]
         public void DefaultValuesTest()
         {
-            Assert.Equal("FF000000", Fill.DEFAULT_COLOR);
-            Assert.Equal(64, Fill.DEFAULT_INDEXED_COLOR);
-            Assert.Equal(PatternValue.none, Fill.DEFAULT_PATTERN_FILL);
+            Assert.Equal("FF000000", Fill.DefaultColor);
+            Assert.Equal(64, Fill.DefaultIndexedColor);
+            Assert.Equal(PatternValue.none, Fill.DefaultPatternFill);
         }
 
 
@@ -42,17 +42,17 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void ConstructorTest()
         {
             Fill fill = new Fill();
-            Assert.Equal(Fill.DEFAULT_INDEXED_COLOR, fill.IndexedColor);
-            Assert.Equal(Fill.DEFAULT_PATTERN_FILL, fill.PatternFill);
-            Assert.Equal(Fill.DEFAULT_COLOR, fill.ForegroundColor);
-            Assert.Equal(Fill.DEFAULT_COLOR, fill.BackgroundColor);
+            Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor);
+            Assert.Equal(Fill.DefaultPatternFill, fill.PatternFill);
+            Assert.Equal(Fill.DefaultColor, fill.ForegroundColor);
+            Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
         }
 
         [Fact(DisplayName = "Test of the constructor")]
         public void ConstructorTest2()
         {
             Fill fill = new Fill("FFAABBCC", "FF001122");
-            Assert.Equal(Fill.DEFAULT_INDEXED_COLOR, fill.IndexedColor);
+            Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor);
             Assert.Equal(PatternValue.solid, fill.PatternFill);
             Assert.Equal("FFAABBCC", fill.ForegroundColor);
             Assert.Equal("FF001122", fill.BackgroundColor);
@@ -65,7 +65,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void ConstructorTest3(string color, FillType fillType, string expectedForeground, string expectedBackground)
         {
             Fill fill = new Fill(color, fillType);
-            Assert.Equal(Fill.DEFAULT_INDEXED_COLOR, fill.IndexedColor);
+            Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor);
             Assert.Equal(PatternValue.solid, fill.PatternFill);
             Assert.Equal(expectedForeground, fill.ForegroundColor);
             Assert.Equal(expectedBackground, fill.BackgroundColor);
@@ -115,7 +115,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void BackgroundColorTest(string value)
         {
             Fill fill = new Fill();
-            Assert.Equal(Fill.DEFAULT_COLOR, fill.BackgroundColor);
+            Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
             fill.BackgroundColor = value;
             Assert.Equal(value, fill.BackgroundColor);
         }
@@ -139,7 +139,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void ForegroundColorTest(string value)
         {
             Fill fill = new Fill();
-            Assert.Equal(Fill.DEFAULT_COLOR, fill.ForegroundColor);
+            Assert.Equal(Fill.DefaultColor, fill.ForegroundColor);
             fill.ForegroundColor = value;
             Assert.Equal(value, fill.ForegroundColor);
         }
@@ -164,7 +164,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void IndexedColorTest(int value)
         {
             Fill fill = new Fill();
-            Assert.Equal(Fill.DEFAULT_INDEXED_COLOR, fill.IndexedColor); // 64 is default
+            Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor); // 64 is default
             fill.IndexedColor = value;
             Assert.Equal(value, fill.IndexedColor);
         }
@@ -180,7 +180,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void PatternFillTest(PatternValue value)
         {
             Fill fill = new Fill();
-            Assert.Equal(Fill.DEFAULT_PATTERN_FILL, fill.PatternFill); // default is none
+            Assert.Equal(Fill.DefaultPatternFill, fill.PatternFill); // default is none
             fill.PatternFill = value;
             Assert.Equal(value, fill.PatternFill);
         }
@@ -191,11 +191,11 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void SetColorTest(string color, FillType fillType, string expectedForeground, string expectedBackground)
         {
             Fill fill = new Fill();
-            Assert.Equal(Fill.DEFAULT_COLOR, fill.ForegroundColor);
-            Assert.Equal(Fill.DEFAULT_COLOR, fill.BackgroundColor);
+            Assert.Equal(Fill.DefaultColor, fill.ForegroundColor);
+            Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
             Assert.Equal(PatternValue.none, fill.PatternFill);
             fill.SetColor(color, fillType);
-            Assert.Equal(Fill.DEFAULT_INDEXED_COLOR, fill.IndexedColor);
+            Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor);
             Assert.Equal(PatternValue.solid, fill.PatternFill);
             Assert.Equal(expectedForeground, fill.ForegroundColor);
             Assert.Equal(expectedBackground, fill.BackgroundColor);

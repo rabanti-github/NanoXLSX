@@ -93,7 +93,9 @@ namespace NanoXLSX.Styles
         public static Style DoubleUnderline
         { get { return GetStyle(StyleEnum.doubleUnderline); } }
         /// <summary>Gets the special pattern fill style (for compatibility)</summary>
+#pragma warning disable CA1707 // Suppress: Identifiers should not contain underscores
         public static Style DottedFill_0_125
+#pragma warning restore CA1707 
         { get { return GetStyle(StyleEnum.dottedFill_0_125); } }
         /// <summary>Gets the italic style</summary>
         public static Style Italic

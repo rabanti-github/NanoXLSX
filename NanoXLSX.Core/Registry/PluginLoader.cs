@@ -21,7 +21,7 @@ namespace NanoXLSX.Registry
     /// </summary>
     public static class PlugInLoader
     {
-        private static bool initialized = false;
+        private static bool initialized;
         private static readonly object _lock = new object();
 
         private static Dictionary<string, PlugInInstance> plugInClasses = new Dictionary<string, PlugInInstance>();
@@ -191,11 +191,13 @@ namespace NanoXLSX.Registry
                 IEnumerable<NanoXlsxQueuePlugInAttribute> attributes = plugInType.GetCustomAttributes<NanoXlsxQueuePlugInAttribute>();
                 foreach (var attribute in attributes)
                 {
-                    if (!queuePlugInClasses.ContainsKey(attribute.QueueUUID))
+                    if (!queuePlugInClasses.TryGetValue(attribute.QueueUUID, out var value))
                     {
-                        queuePlugInClasses.Add(attribute.QueueUUID, new List<PlugInInstance>());
+                        value = new List<PlugInInstance>();
+                        queuePlugInClasses.Add(attribute.QueueUUID, value);
                     }
-                    queuePlugInClasses[attribute.QueueUUID].Add(new PlugInInstance(attribute.PlugInUUID, attribute.PlugInOrder, plugInType));
+
+                    value.Add(new PlugInInstance(attribute.PlugInUUID, attribute.PlugInOrder, plugInType));
                 }
             }
             // Sort each list based on PlugInOrder (ascending)
@@ -216,9 +218,8 @@ namespace NanoXLSX.Registry
         /// \remark <remarks>This method is not intended to manage preserved plugin instances. When called, always a new instance of the plugin will be created</remarks>
         internal static T GetPlugIn<T>(string plugInUUID, T fallBackInstance)
         {
-            if (plugInClasses.ContainsKey(plugInUUID))
+            if (plugInClasses.TryGetValue(plugInUUID, out var plugIn))
             {
-                PlugInInstance plugIn = plugInClasses[plugInUUID];
                 return (T)Activator.CreateInstance(plugIn.Type);
             }
             else
@@ -239,10 +240,9 @@ namespace NanoXLSX.Registry
         /// /// \remark <remarks>This method is not intended to manage preserved plugin instances. When called, always a new instance of the plugin will be created</remarks>
         internal static T GetNextQueuePlugIn<T>(string queueUUID, string lastPlugInUUID, out string currentPlugInUUID)
         {
-            if (queuePlugInClasses.ContainsKey(queueUUID) && queuePlugInClasses[queueUUID].Count > 0)
+            if (queuePlugInClasses.TryGetValue(queueUUID, out var plugInList) && plugInList.Count > 0)
             {
                 PlugInInstance plugIn = null;
-                List<PlugInInstance> plugInList = queuePlugInClasses[queueUUID];
                 if (lastPlugInUUID == null)
                 {
                     plugIn = plugInList[0];

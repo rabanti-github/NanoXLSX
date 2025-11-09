@@ -20,11 +20,11 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Start ID for custom number formats as constant (value 164)
         /// </summary>
-        public static readonly int CUSTOMFORMAT_START_NUMBER = 164;
+        public static readonly int CustomFormatStartNumber = 164;
         /// <summary>
         /// Default format number as constant
         /// </summary>
-        public static readonly FormatNumber DEFAULT_NUMBER = FormatNumber.none;
+        public static readonly FormatNumber DefaultNumber = FormatNumber.none;
 
         #endregion
         private int customFormatID;
@@ -37,6 +37,7 @@ namespace NanoXLSX.Styles
         /// whereas the officially listed ones are implicitly used and not declared in the style document</remarks>
         public enum FormatNumber
         {
+#pragma warning disable CA1707 // Supperss: Identifiers should not contain underscores
             /// <summary>No format / Default</summary>
             none = 0,
             /// <summary>Format: 0</summary>
@@ -103,6 +104,7 @@ namespace NanoXLSX.Styles
             format_49 = 49,
             /// <summary>Custom Format (ID 164 and higher)</summary>
             custom = 164,
+#pragma warning restore CA1707
         }
 
         /// <summary>
@@ -113,19 +115,19 @@ namespace NanoXLSX.Styles
             /// <summary>
             /// Format from 0 to 164 (with gaps)
             /// </summary>
-            defined_format,
+            DefinedFormat,
             /// <summary>
             /// Custom defined formats from 165 and higher. Although 164 is already custom, it is still defined as enum value
             /// </summary>
-            custom_format,
+            CustomFormat,
             /// <summary>
             /// Probably invalid format numbers (e.g. negative value)
             /// </summary>
-            invalid,
+            Invalid,
             /// <summary>
             /// Values between 0 and 164 that are not defined as enum value. This may be caused by changes of the OOXML specifications or Excel versions that have encoded loaded files
             /// </summary>
-            undefined,
+            Undefined,
         }
         #endregion
 
@@ -164,9 +166,9 @@ namespace NanoXLSX.Styles
             get { return customFormatID; }
             set
             {
-                if (value < CUSTOMFORMAT_START_NUMBER && !StyleRepository.Instance.ImportInProgress)
+                if (value < CustomFormatStartNumber && !StyleRepository.Instance.ImportInProgress)
                 {
-                    throw new StyleException("The number '" + value + "' is not a valid custom format ID. Must be at least " + CUSTOMFORMAT_START_NUMBER);
+                    throw new StyleException("The number '" + value + "' is not a valid custom format ID. Must be at least " + CustomFormatStartNumber);
                 }
                 customFormatID = value;
             }
@@ -197,9 +199,9 @@ namespace NanoXLSX.Styles
         /// </summary>
         public NumberFormat()
         {
-            Number = DEFAULT_NUMBER;
+            Number = DefaultNumber;
             customFormatCode = string.Empty;
-            CustomFormatID = CUSTOMFORMAT_START_NUMBER;
+            CustomFormatID = CustomFormatStartNumber;
         }
         #endregion
 
@@ -262,22 +264,22 @@ namespace NanoXLSX.Styles
             if (isDefined)
             {
                 formatNumber = (FormatNumber)number;
-                return FormatRange.defined_format;
+                return FormatRange.DefinedFormat;
             }
             if (number < 0)
             {
                 formatNumber = FormatNumber.none;
-                return FormatRange.invalid;
+                return FormatRange.Invalid;
             }
-            else if (number > 0 && number < CUSTOMFORMAT_START_NUMBER)
+            else if (number > 0 && number < CustomFormatStartNumber)
             {
                 formatNumber = FormatNumber.none;
-                return FormatRange.undefined;
+                return FormatRange.Undefined;
             }
             else
             {
                 formatNumber = FormatNumber.custom;
-                return FormatRange.custom_format;
+                return FormatRange.CustomFormat;
             }
         }
 

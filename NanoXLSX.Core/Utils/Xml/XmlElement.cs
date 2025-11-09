@@ -16,12 +16,12 @@ namespace NanoXLSX.Utils.Xml
     /// </summary>
     public class XmlElement
     {
-        private readonly bool hasPrefix = false;
-        private bool hasNameSpaces = false;
-        private bool hasDefaultNameSpace = false;
-        private bool hasAttributes = false;
-        private bool hasInnerValue = false;
-        private bool hasChildren = false;
+        private readonly bool hasPrefix;
+        private bool hasNameSpaces;
+        private bool hasDefaultNameSpace;
+        private bool hasAttributes;
+        private bool hasInnerValue;
+        private bool hasChildren;
         private string innerValue;
         private string defaultXmlNsUri;
 
@@ -260,6 +260,7 @@ namespace NanoXLSX.Utils.Xml
         public XmlDocument TransformToDocument()
         {
             XmlDocument doc = new XmlDocument();
+            doc.XmlResolver = null;
             XmlNamespaceManager nsManager = new XmlNamespaceManager(doc.NameTable);
             if (hasNameSpaces)
             {
@@ -276,11 +277,11 @@ namespace NanoXLSX.Utils.Xml
             System.Xml.XmlElement rootElement = null;
             if (hasDefaultNameSpace)
             {
-                rootElement = CreateXmlElement(doc, this, nsManager, defaultXmlNsUri);
+                rootElement = XmlElement.CreateXmlElement(doc, this, nsManager, defaultXmlNsUri);
             }
             else
             {
-                rootElement = CreateXmlElement(doc, this, nsManager);
+                rootElement = XmlElement.CreateXmlElement(doc, this, nsManager);
             }
             doc.AppendChild(rootElement);
             return doc;
@@ -402,7 +403,7 @@ namespace NanoXLSX.Utils.Xml
         /// <param name="nsManager">XML name space manager instance</param>
         /// <param name="defaultXmlNsUri">Optional URI of the default XML namespace URI</param>
         /// <returns>A System.Xml.XmlElement representing the custom element.</returns>
-        private System.Xml.XmlElement CreateXmlElement(XmlDocument doc, XmlElement customElement, XmlNamespaceManager nsManager, string defaultXmlNsUri = null)
+        private static System.Xml.XmlElement CreateXmlElement(XmlDocument doc, XmlElement customElement, XmlNamespaceManager nsManager, string defaultXmlNsUri = null)
         {
             System.Xml.XmlElement xmlElem;
             if (customElement.hasPrefix)
@@ -443,7 +444,7 @@ namespace NanoXLSX.Utils.Xml
             {
                 foreach (var child in customElement.Children)
                 {
-                    System.Xml.XmlElement childXmlElem = CreateXmlElement(doc, child, nsManager, defaultXmlNsUri);
+                    System.Xml.XmlElement childXmlElem = XmlElement.CreateXmlElement(doc, child, nsManager, defaultXmlNsUri);
                     xmlElem.AppendChild(childXmlElem);
                 }
             }

@@ -46,7 +46,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
 
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatAppWriterPlugIn1", QueueUUID = PlugInUUID.METADATA_APP_INLINE_WRITER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatAppWriterPlugIn1", QueueUUID = PlugInUUID.MetadataAppInlineWriter)]
         public class InlineAppMetadataWriter : IInlinePlugInWriter
         {
             private string testValue = "test";
@@ -78,7 +78,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatCoreWriterPlugIn1", QueueUUID = PlugInUUID.METADATA_CORE_INLINE_WRITER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatCoreWriterPlugIn1", QueueUUID = PlugInUUID.MetadataCoreInlineWriter)]
         public class InlineCoreMetadataWriter : IInlinePlugInWriter
         {
             private string testValue = "test";
@@ -110,7 +110,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "StyleWriterPlugIn1", QueueUUID = PlugInUUID.STYLE_INLINE_WRITER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "StyleWriterPlugIn1", QueueUUID = PlugInUUID.StyleInlineWriter)]
         public class InlineStyleWriter : IInlinePlugInWriter
         {
             private string testValue = "test";
@@ -142,7 +142,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "ThemeWriterPlugIn1", QueueUUID = PlugInUUID.THEME_INLINE_WRITER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "ThemeWriterPlugIn1", QueueUUID = PlugInUUID.ThemeInlineWriter)]
         public class InlineThemeWriter : IInlinePlugInWriter
         {
             private string testValue = "test";
@@ -174,7 +174,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "SharedStringeWriterPlugIn1", QueueUUID = PlugInUUID.WORKSHEET_INLINE_WRITER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "SharedStringeWriterPlugIn1", QueueUUID = PlugInUUID.WorksheetInlineWriter)]
         public class InlineSharedStringWriter : IInlinePlugInWriter
         {
             private string testValue = "test";
@@ -206,7 +206,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "WorksheetWriterPlugIn1", QueueUUID = PlugInUUID.WORKSHEET_INLINE_WRITER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "WorksheetWriterPlugIn1", QueueUUID = PlugInUUID.WorksheetInlineWriter)]
         public class InlineWorksheetWriter : IInlinePlugInWriter
         {
             private string testValue = "test";
@@ -238,7 +238,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "WorkbookWriterPlugIn1", QueueUUID = PlugInUUID.WORKBOOK_INLINE_WRITER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "WorkbookWriterPlugIn1", QueueUUID = PlugInUUID.WorkbookInlineWriter)]
         public class InlineWorkbookWriter : IInlinePlugInWriter
         {
             private string testValue = "test";

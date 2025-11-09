@@ -17,7 +17,7 @@ namespace NanoXLSX.Internal.Writers
     /// <summary>
     /// Class to generate the theme XML file in a XLSX file.
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.THEME_WRITER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.ThemeWriter)]
     internal class ThemeWriter : IPlugInWriter
     {
         private XmlElement theme;
@@ -65,7 +65,7 @@ namespace NanoXLSX.Internal.Writers
             XmlElement themeElements = theme.AddChildElement("themeElements", "a");
             themeElements.AddChildElement(GetColorSchemeElement(workbookTheme.Colors));
 
-            WriterPlugInHandler.HandleInlineQueuePlugins(ref themeElements, Workbook, PlugInUUID.THEME_INLINE_WRITER);
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref themeElements, Workbook, PlugInUUID.ThemeInlineWriter);
         }
 
         /// <summary>

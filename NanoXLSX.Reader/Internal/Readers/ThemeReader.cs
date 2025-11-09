@@ -21,7 +21,7 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for theme definitions of XLSX files.
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.THEME_READER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.ThemeReader)]
     public class ThemeReader : IPlugInReader
     {
 
@@ -127,7 +127,7 @@ namespace NanoXLSX.Internal.Readers
 
                         }
                     }
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.THEME_INLINE_READER);
+                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.ThemeInlineReader);
                 }
             }
             catch (Exception ex)

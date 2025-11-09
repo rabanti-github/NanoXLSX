@@ -23,26 +23,28 @@ namespace NanoXLSX.Utils
         /// <summary>
         /// Minimum valid OAdate value (1900-01-01). However, Excel displays this value as 1900-01-00 (day zero)
         /// </summary>
-        public static readonly double MIN_OADATE_VALUE = 0d;
+#pragma warning disable CA1805 // Suppress: Do not initialize unnecessarily (to make clear that this is the minimum value)
+        public static readonly double MinOADateValue = 0d;
+#pragma warning restore CA1805
         /// <summary>
         /// Maximum valid OAdate value (9999-12-31)
         /// </summary>
-        public static readonly double MAX_OADATE_VALUE = 2958465.999988426d;
+        public static readonly double MaxOADateValue = 2958465.999988426d;
         /// <summary>
         /// First date that can be displayed by Excel. Real values before this date cannot be processed.
         /// </summary>
-        public static readonly DateTime FIRST_ALLOWED_EXCEL_DATE = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
+        public static readonly DateTime FirstAllowedExcelDate = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
         /// <summary>
         /// Last date that can be displayed by Excel. Real values after this date cannot be processed.
         /// </summary>
-        public static readonly DateTime LAST_ALLOWED_EXCEL_DATE = new DateTime(9999, 12, 31, 23, 59, 59, DateTimeKind.Unspecified);
+        public static readonly DateTime LastAllowedExcelDate = new DateTime(9999, 12, 31, 23, 59, 59, DateTimeKind.Unspecified);
 
         /// <summary>
         /// All dates before this date are shifted in Excel by -1.0, since Excel assumes wrongly that the year 1900 is a leap year.<br />
         /// See also: <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year">
         /// https://docs.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year</a>
         /// </summary>
-        public static readonly DateTime FIRST_VALID_EXCEL_DATE = new DateTime(1900, 3, 1, 0, 0, 0, DateTimeKind.Unspecified);
+        public static readonly DateTime FirstValidExcelDate = new DateTime(1900, 3, 1, 0, 0, 0, DateTimeKind.Unspecified);
 
         /// <summary>
         /// Constant for number conversions. The invariant culture (represents mostly the US numbering scheme) ensures that no culture-specific 
@@ -50,7 +52,7 @@ namespace NanoXLSX.Utils
         /// See also: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture?view=net-5.0">
         /// https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture?view=net-5.0</a>
         /// </summary>
-        public static readonly CultureInfo INVARIANT_CULTURE = CultureInfo.InvariantCulture;
+        public static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
         private const float COLUMN_WIDTH_ROUNDING_MODIFIER = 256f;
         private const float SPLIT_WIDTH_MULTIPLIER = 12f;
@@ -103,7 +105,7 @@ namespace NanoXLSX.Utils
         public static string GetOADateTimeString(DateTime date)
         {
             double d = GetOADateTime(date);
-            return d.ToString("G", INVARIANT_CULTURE);
+            return d.ToString("G", InvariantCulture);
         }
 
         /// <summary>
@@ -123,12 +125,12 @@ namespace NanoXLSX.Utils
         /// </remarks>
         public static double GetOADateTime(DateTime date, bool skipCheck = false)
         {
-            if (!skipCheck && (date < FIRST_ALLOWED_EXCEL_DATE || date > LAST_ALLOWED_EXCEL_DATE))
+            if (!skipCheck && (date < FirstAllowedExcelDate || date > LastAllowedExcelDate))
             {
                 throw new FormatException("The date is not in a valid range for Excel. Dates before 1900-01-01 or after 9999-12-31 are not allowed.");
             }
             DateTime dateValue = date;
-            if (date < FIRST_VALID_EXCEL_DATE)
+            if (date < FirstValidExcelDate)
             {
                 dateValue = date.AddDays(-1); // Fix of the leap-year-1900-error
             }
@@ -145,7 +147,7 @@ namespace NanoXLSX.Utils
         public static string GetOATimeString(TimeSpan time)
         {
             double d = GetOATime(time);
-            return d.ToString("G", INVARIANT_CULTURE);
+            return d.ToString("G", InvariantCulture);
         }
 
         /// <summary>

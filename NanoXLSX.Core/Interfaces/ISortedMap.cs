@@ -9,6 +9,9 @@ using System.Collections.Generic;
 
 namespace NanoXLSX.Interfaces
 {
+    /// <summary>
+    /// Interface to represent a sorted map with IFormattableText as key and string as value
+    /// </summary>
     public interface ISortedMap
     {
         /// <summary>

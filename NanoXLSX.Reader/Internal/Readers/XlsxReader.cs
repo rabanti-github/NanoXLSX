@@ -37,7 +37,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Gets the read workbook
         /// </summary>
-        public Workbook Workbook { get; internal set; } = null;
+        public Workbook Workbook { get; internal set; }
         #endregion
 
         #region constructors
@@ -87,7 +87,7 @@ namespace NanoXLSX.Internal.Readers
             }
             catch (IOException ex)
             {
-                throw ex; // rethrow
+                throw; // rethrow
             }
             catch (Exception ex)
             {
@@ -165,9 +165,9 @@ namespace NanoXLSX.Internal.Readers
             MemoryStream ms;
             Workbook wb = new Workbook();
             wb.importInProgress = true; // Disables checks during load
-            HandleQueuePlugIns(PlugInUUID.READER_PREPENDING_QUEUE, zf, ref wb);
+            HandleQueuePlugIns(PlugInUUID.ReaderPrependingQueue, zf, ref wb);
 
-            ISharedStringReader sharedStringsReader = PlugInLoader.GetPlugIn<ISharedStringReader>(PlugInUUID.SHARED_STRINGS_READER, new SharedStringsReader());
+            ISharedStringReader sharedStringsReader = PlugInLoader.GetPlugIn<ISharedStringReader>(PlugInUUID.SharedStringsReader, new SharedStringsReader());
             ms = GetEntryStream("xl/sharedStrings.xml", zf);
             if (ms != null && ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
             {
@@ -182,7 +182,7 @@ namespace NanoXLSX.Internal.Readers
                 // (currently) only the first occurring theme will be read  
                 foreach (KeyValuePair<int, string> streamName in themeStreamNames)
                 {
-                    IPlugInReader themeReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.THEME_READER, new ThemeReader());
+                    IPlugInReader themeReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.ThemeReader, new ThemeReader());
                     ms = GetEntryStream(streamName.Value, zf);
                     themeReader.Init(ms, wb, readerOptions);
                     themeReader.Execute();
@@ -190,41 +190,41 @@ namespace NanoXLSX.Internal.Readers
                 }
             }
             StyleRepository.Instance.ImportInProgress = true; // TODO: To be checked
-            IPlugInReader styleReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.STYLE_READER, new StyleReader());
+            IPlugInReader styleReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.StyleReader, new StyleReader());
             ms = GetEntryStream("xl/styles.xml", zf);
             styleReader.Init(ms, wb, readerOptions);
             styleReader.Execute();
             StyleRepository.Instance.ImportInProgress = false;
 
             ms = GetEntryStream("xl/workbook.xml", zf);
-            IPlugInReader workbookReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.WORKBOOK_READER, new WorkbookReader());
+            IPlugInReader workbookReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.WorkbookReader, new WorkbookReader());
             workbookReader.Init(ms, wb, readerOptions);
             workbookReader.Execute();
 
             ms = GetEntryStream("docProps/app.xml", zf);
             if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/app.xml seems to be defined 
             {
-                IPlugInReader metadataAppReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.METADATA_APP_READER, new MetadataAppReader());
+                IPlugInReader metadataAppReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.MetadataAppReader, new MetadataAppReader());
                 metadataAppReader.Init(ms, wb, readerOptions);
                 metadataAppReader.Execute();
             }
             ms = GetEntryStream("docProps/core.xml", zf);
             if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/core.xml seems to be defined 
             {
-                IPlugInReader metadataCoreReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.METADATA_CORE_READER, new MetadataCoreReader());
+                IPlugInReader metadataCoreReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.MetadataCoreReader, new MetadataCoreReader());
                 metadataCoreReader.Init(ms, wb, readerOptions);
                 metadataCoreReader.Execute();
             }
 
-            IPlugInReader relationships = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.RELATIONSHIP_READER, new RelationshipReader());
+            IPlugInReader relationships = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.RelationshipReader, new RelationshipReader());
             ms = GetEntryStream("xl/_rels/workbook.xml.rels", zf);
             relationships.Init(ms, wb, readerOptions);
             relationships.Execute();
 
-            IWorksheetReader worksheetReader = PlugInLoader.GetPlugIn<IWorksheetReader>(PlugInUUID.WORKSHEET_READER, new WorksheetReader());
+            IWorksheetReader worksheetReader = PlugInLoader.GetPlugIn<IWorksheetReader>(PlugInUUID.WorksheetReader, new WorksheetReader());
             worksheetReader.SharedStrings = sharedStringsReader.SharedStrings;
-            List<WorksheetDefinition> workshetDefinitions = wb.AuxiliaryData.GetDataList<WorksheetDefinition>(PlugInUUID.WORKBOOK_READER, PlugInUUID.WORKSHEET_DEFINITION_ENTITY);
-            List<Relationship> relationshipDefinitions = wb.AuxiliaryData.GetDataList<Relationship>(PlugInUUID.RELATIONSHIP_READER, PlugInUUID.RELATIONSHIP_ENTITY);
+            List<WorksheetDefinition> workshetDefinitions = wb.AuxiliaryData.GetDataList<WorksheetDefinition>(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity);
+            List<Relationship> relationshipDefinitions = wb.AuxiliaryData.GetDataList<Relationship>(PlugInUUID.RelationshipReader, PlugInUUID.RelationshipEntity);
             foreach (WorksheetDefinition definition in workshetDefinitions)
             {
                 Relationship relationship = relationshipDefinitions.SingleOrDefault(r => r.RID == definition.RelId);
@@ -241,7 +241,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 throw new IOException("No worksheet was found in the workbook");
             }
-            HandleQueuePlugIns(PlugInUUID.READER_APPENDING_QUEUE, zf, ref wb);
+            HandleQueuePlugIns(PlugInUUID.ReaderAppendingQueue, zf, ref wb);
             wb.importInProgress = false; // Enables checks for runtime
             wb.AuxiliaryData.ClearTemporaryData(); // Remove temporary staging data
             this.Workbook = wb;

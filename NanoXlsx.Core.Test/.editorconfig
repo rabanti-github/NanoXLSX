@@ -6,6 +6,9 @@ root = true
 # All files
 [*]
 indent_style = space
+vsspell_section_id = 3f768223ca594475a0911f9554e09ba5
+vsspell_ignored_words_3f768223ca594475a0911f9554e09ba5 = Nano|NanoXLSX|Xlsx|Utils
+
 # Code files
 [*.{cs,csx,vb,vbx}]
 indent_size = 4

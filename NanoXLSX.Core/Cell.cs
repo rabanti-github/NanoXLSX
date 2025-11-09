@@ -34,7 +34,9 @@ namespace NanoXLSX
         public enum CellType
         {
             /// <summary>Type for single characters and strings</summary>
+#pragma warning disable CA1720 // Suppress warning: Identifier contains type name
             STRING,
+#pragma warning restore CA1720
             /// <summary>Type for all numeric types (long, integer, float, double, short, byte and decimal; signed and unsigned, if available)</summary>
             NUMBER,
             /// <summary>Type for dates (Note: Dates before 1900-01-01 and after 9999-12-31 are not allowed)</summary>
@@ -296,6 +298,11 @@ namespace NanoXLSX
             return RowNumber.CompareTo(other.RowNumber);
         }
 
+        /// <summary>
+        /// Compares two objects whether they are addresses and equal
+        /// </summary>
+        /// <param name="obj"> Other address</param>
+        /// <returns>True if not null, of the same type and equal</returns>
         public override bool Equals(object obj)
         {
             if (obj == null || obj.GetType() != typeof(Cell))
@@ -734,7 +741,7 @@ namespace NanoXLSX
             {
                 throw new RangeException("The passed address was null or empty");
             }
-            columnAddress = columnAddress.ToUpper();
+            columnAddress = ParserUtils.ToUpper(columnAddress);
             int chr;
             int result = 0;
             int multiplier = 1;

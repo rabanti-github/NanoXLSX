@@ -22,46 +22,46 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Maximum possible font size
         /// </summary>
-        public static readonly float MIN_FONT_SIZE = 1f;
+        public static readonly float MinFontSize = 1f;
 
         /// <summary>
         /// Minimum possible font size
         /// </summary>
-        public static readonly float MAX_FONT_SIZE = 409f;
+        public static readonly float MaxFontSize = 409f;
 
         /// <summary>
         /// Default font size
         /// </summary>
-        public static readonly float DEFAULT_FONT_SIZE = 11f;
+        public static readonly float DefaultFontSize = 11f;
 
         /// <summary>
         /// The default font name that is declared as Major Font (See <see cref="SchemeValue"/>)
         /// </summary>
-        public static readonly string DEFAULT_MAJOR_FONT = "Calibri Light";
+        public static readonly string DefaultMajorFont = "Calibri Light";
         /// <summary>
         /// The default font name that is declared as Minor Font (See <see cref="SchemeValue"/>)
         /// </summary>
-        public static readonly string DEFAULT_MINOR_FONT = "Calibri";
+        public static readonly string DefaultMinorFont = "Calibri";
 
         /// <summary>
         /// Default font family as constant
         /// </summary>
-        public static readonly string DEFAULT_FONT_NAME = DEFAULT_MINOR_FONT;
+        public static readonly string DefaultFontName = DefaultMinorFont;
 
         /// <summary>
         /// Default font family
         /// </summary>
-        public static readonly FontFamilyValue DEFAULT_FONT_FAMILY = FontFamilyValue.Swiss;
+        public static readonly FontFamilyValue DefaultFontFamily = FontFamilyValue.Swiss;
 
         /// <summary>
         /// Default font scheme
         /// </summary>
-        public static readonly SchemeValue DEFAULT_FONT_SCHEME = SchemeValue.minor;
+        public static readonly SchemeValue DefaultFontScheme = SchemeValue.minor;
 
         /// <summary>
         /// Default vertical alignment
         /// </summary>
-        public static readonly VerticalTextAlignValue DEFAULT_VERTICAL_ALIGN = VerticalTextAlignValue.none;
+        public static readonly VerticalTextAlignValue DefaultVerticalAlign = VerticalTextAlignValue.none;
         #endregion
 
         #region enums
@@ -97,9 +97,11 @@ namespace NanoXLSX.Styles
         public enum UnderlineValue
         {
             /// <summary>Text contains a single underline</summary>
+#pragma warning disable CA1707 // Suppress: Identifiers should not contain underscores
             u_single,
             /// <summary>Text contains a double underline</summary>
             u_double,
+#pragma warning restore CA1707
             /// <summary>Text contains a single, accounting underline</summary>
             singleAccounting,
             /// <summary>Text contains a double, accounting underline</summary>
@@ -265,7 +267,7 @@ namespace NanoXLSX.Styles
 
         #region privateFields
         private float size;
-        private string name = DEFAULT_FONT_NAME;
+        private string name = DefaultFontName;
         //TODO: V3> Refactor to enum according to specs
         //OOXML: Chp.20.1.6.2(p2839ff)
         private string colorValue = "";
@@ -337,7 +339,7 @@ namespace NanoXLSX.Styles
                 Validators.ValidateColor(value, true, true);
                 if (value != null)
                 {
-                    colorValue = value.ToUpper();
+                    colorValue = ParserUtils.ToUpper(value);
                 }
                 else
                 {
@@ -395,10 +397,10 @@ namespace NanoXLSX.Styles
             get { return size; }
             set
             {
-                if (value < MIN_FONT_SIZE)
-                { size = MIN_FONT_SIZE; }
-                else if (value > MAX_FONT_SIZE)
-                { size = MAX_FONT_SIZE; }
+                if (value < MinFontSize)
+                { size = MinFontSize; }
+                else if (value > MaxFontSize)
+                { size = MaxFontSize; }
                 else { size = value; }
             }
         }
@@ -417,13 +419,13 @@ namespace NanoXLSX.Styles
         /// </summary>
         public Font()
         {
-            size = DEFAULT_FONT_SIZE;
-            Name = DEFAULT_FONT_NAME;
-            Family = DEFAULT_FONT_FAMILY;
+            size = DefaultFontSize;
+            Name = DefaultFontName;
+            Family = DefaultFontFamily;
             ColorTheme = ColorSchemeElement.light1;
             ColorValue = string.Empty;
-            Scheme = DEFAULT_FONT_SCHEME;
-            VerticalAlign = DEFAULT_VERTICAL_ALIGN;
+            Scheme = DefaultFontScheme;
+            VerticalAlign = DefaultVerticalAlign;
         }
         #endregion
 
@@ -438,11 +440,11 @@ namespace NanoXLSX.Styles
             {
                 throw new StyleException("The font name was null or empty");
             }
-            if (name.Equals(DEFAULT_MINOR_FONT, System.StringComparison.Ordinal))
+            if (name.Equals(DefaultMinorFont, System.StringComparison.Ordinal))
             {
                 Scheme = SchemeValue.minor;
             }
-            else if (name.Equals(DEFAULT_MAJOR_FONT, System.StringComparison.Ordinal))
+            else if (name.Equals(DefaultMajorFont, System.StringComparison.Ordinal))
             {
                 Scheme = SchemeValue.major;
             }

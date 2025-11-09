@@ -22,15 +22,15 @@ namespace NanoXLSX
         /// <summary>
         /// Default application name, if not otherwise specified
         /// </summary>
-        public const string DEFAULT_APPLICATION_NAME = "NanoXLSX";
+        public const string DefaultApplicationName = "NanoXLSX";
         /// <summary>
         /// Default application version, if not otherwise specified
         /// </summary>
-        public static string DEFAULT_APPLICATION_VERSION { get; private set; }
+        public static string DefaultApplicationVersion { get; private set; }
         static Metadata()
         {
             Version vi = Assembly.GetExecutingAssembly().GetName().Version;
-            DEFAULT_APPLICATION_VERSION = ParseVersion(vi.Major, vi.Minor, vi.Revision, vi.Build);
+            DefaultApplicationVersion = ParseVersion(vi.Major, vi.Minor, vi.Revision, vi.Build);
         }
         #endregion
 
@@ -104,8 +104,8 @@ namespace NanoXLSX
         /// </summary>
         public Metadata()
         {
-            Application = DEFAULT_APPLICATION_NAME;
-            ApplicationVersion = DEFAULT_APPLICATION_VERSION;
+            Application = DefaultApplicationName;
+            ApplicationVersion = DefaultApplicationVersion;
         }
         #endregion
 

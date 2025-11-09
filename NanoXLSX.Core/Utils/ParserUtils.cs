@@ -22,7 +22,7 @@ namespace NanoXLSX.Utils
         /// <summary>
         /// Numeric format for ToString conversions. This format ensures that a numeric value is printed in a language neutral way.
         /// </summary>
-        public const string NUMERIC_FORMAT = "G";
+        public const string NumericFormat = "G";
 
         /// <summary>
         /// Constant for number conversion. The invariant culture (represents mostly the US numbering scheme) ensures that no culture-specific 
@@ -30,9 +30,43 @@ namespace NanoXLSX.Utils
         /// See also: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture?view=net-5.0">
         /// https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture?view=net-5.0</a>
         /// </summary>
-        public static readonly CultureInfo INVARIANT_CULTURE = CultureInfo.InvariantCulture;
+        public static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
         #endregion
+
+        /// <summary>
+        /// Determines whether a string starts with a specific value
+        /// </summary>
+        /// <param name="input">String to check</param>
+        /// <param name="value">Value to be checked, whether it occurs at the beginning of the input string</param>
+        /// <returns>True if the input string starts with the specified value</returns>
+        public static bool StartsWith(string input, string value)
+        {
+            if (input == null && value == null)
+            {
+                return true;
+            }
+            else if (input == null && value != null)
+            {
+                return false;
+            }
+            else if (value == null)
+            {
+                return false;
+            }
+            return input.StartsWith(value, StringComparison.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Determines whether a string does not start with a specific value
+        /// </summary>
+        /// <param name="input">String to check</param>
+        /// <param name="value">Value to be checked, whether it occurs not at the beginning of the input string</param>
+        /// <returns>True if the input string does not starts with the specified value</returns>
+        public static bool NotStartsWith(string input, string value)
+        {
+            return !StartsWith(input, value);
+        }
 
         /// <summary>
         /// Transforms a string to upper case with null check and invariant culture
@@ -41,7 +75,7 @@ namespace NanoXLSX.Utils
         /// <returns>Upper case string</returns>
         public static string ToUpper(string input)
         {
-            return !string.IsNullOrEmpty(input) ? input.ToUpper(INVARIANT_CULTURE) : input;
+            return !string.IsNullOrEmpty(input) ? input.ToUpper(InvariantCulture) : input;
         }
 
         /// <summary>
@@ -51,7 +85,7 @@ namespace NanoXLSX.Utils
         /// <returns>Integer as string</returns>
         public static string ToString(int input)
         {
-            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
+            return input.ToString(NumericFormat, InvariantCulture);
         }
 
         /// <summary>
@@ -61,7 +95,7 @@ namespace NanoXLSX.Utils
         /// <returns>Float as string</returns>
         public static string ToString(float input)
         {
-            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
+            return input.ToString(NumericFormat, InvariantCulture);
         }
 
         /// <summary>
@@ -71,7 +105,7 @@ namespace NanoXLSX.Utils
         /// <returns>Byte as string</returns>
         public static string ToString(byte input)
         {
-            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
+            return input.ToString(NumericFormat, InvariantCulture);
         }
 
         /// <summary>
@@ -81,7 +115,7 @@ namespace NanoXLSX.Utils
         /// <returns>Byte as string</returns>
         public static string ToString(sbyte input)
         {
-            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
+            return input.ToString(NumericFormat, InvariantCulture);
         }
 
         /// <summary>
@@ -91,7 +125,7 @@ namespace NanoXLSX.Utils
         /// <returns>Double as string</returns>
         public static string ToString(double input)
         {
-            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
+            return input.ToString(NumericFormat, InvariantCulture);
         }
 
         /// <summary>
@@ -101,7 +135,7 @@ namespace NanoXLSX.Utils
         /// <returns>Decimal as string</returns>
         public static string ToString(decimal input)
         {
-            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
+            return input.ToString(NumericFormat, InvariantCulture);
         }
 
         /// <summary>
@@ -111,7 +145,7 @@ namespace NanoXLSX.Utils
         /// <returns>Uint as string</returns>
         public static string ToString(uint input)
         {
-            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
+            return input.ToString(NumericFormat, InvariantCulture);
         }
 
         /// <summary>
@@ -121,7 +155,7 @@ namespace NanoXLSX.Utils
         /// <returns>Long as string</returns>
         public static string ToString(long input)
         {
-            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
+            return input.ToString(NumericFormat, InvariantCulture);
         }
 
         /// <summary>
@@ -131,7 +165,7 @@ namespace NanoXLSX.Utils
         /// <returns>Ulong as string</returns>
         public static string ToString(ulong input)
         {
-            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
+            return input.ToString(NumericFormat, InvariantCulture);
         }
 
         /// <summary>
@@ -141,7 +175,7 @@ namespace NanoXLSX.Utils
         /// <returns>Short as string</returns>
         public static string ToString(short input)
         {
-            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
+            return input.ToString(NumericFormat, InvariantCulture);
         }
 
         /// <summary>
@@ -151,7 +185,7 @@ namespace NanoXLSX.Utils
         /// <returns>Ushort as string</returns>
         public static string ToString(ushort input)
         {
-            return input.ToString(NUMERIC_FORMAT, INVARIANT_CULTURE);
+            return input.ToString(NumericFormat, InvariantCulture);
         }
 
         /// <summary>
@@ -175,7 +209,7 @@ namespace NanoXLSX.Utils
         /// <returns>Parsed float</returns>
         public static float ParseFloat(string rawValue)
         {
-            return float.Parse(rawValue, INVARIANT_CULTURE);
+            return float.Parse(rawValue, InvariantCulture);
         }
 
         /// <summary>
@@ -185,7 +219,7 @@ namespace NanoXLSX.Utils
         /// <returns>Parsed int</returns>
         public static int ParseInt(string rawValue)
         {
-            return int.Parse(rawValue, NumberStyles.Any, INVARIANT_CULTURE);
+            return int.Parse(rawValue, NumberStyles.Any, InvariantCulture);
         }
 
         /// <summary>
@@ -211,7 +245,7 @@ namespace NanoXLSX.Utils
                     return 0;
                 }
             }
-            rawValue = rawValue.ToLower();
+            rawValue = rawValue.ToLower(InvariantCulture);
             if (rawValue == "true")
             {
                 return 1;
@@ -230,7 +264,7 @@ namespace NanoXLSX.Utils
         /// <returns>True, if the parsing was successful</returns>
         public static bool TryParseInt(string rawValue, out int parsedValue)
         {
-            return int.TryParse(rawValue, NumberStyles.Integer, INVARIANT_CULTURE, out parsedValue);
+            return int.TryParse(rawValue, NumberStyles.Integer, InvariantCulture, out parsedValue);
         }
 
         /// <summary>
@@ -241,7 +275,7 @@ namespace NanoXLSX.Utils
         /// <returns>True, if the parsing was successful</returns>
         public static bool TryParseUint(string rawValue, out uint parsedValue)
         {
-            return uint.TryParse(rawValue, NumberStyles.Integer, INVARIANT_CULTURE, out parsedValue);
+            return uint.TryParse(rawValue, NumberStyles.Integer, InvariantCulture, out parsedValue);
         }
 
         /// <summary>
@@ -252,7 +286,7 @@ namespace NanoXLSX.Utils
         /// <returns>True, if the parsing was successful</returns>
         public static bool TryParseLong(string rawValue, out long parsedValue)
         {
-            return long.TryParse(rawValue, NumberStyles.Integer, INVARIANT_CULTURE, out parsedValue);
+            return long.TryParse(rawValue, NumberStyles.Integer, InvariantCulture, out parsedValue);
         }
 
         /// <summary>
@@ -263,7 +297,7 @@ namespace NanoXLSX.Utils
         /// <returns>True, if the parsing was successful</returns>
         public static bool TryParseUlong(string rawValue, out ulong parsedValue)
         {
-            return ulong.TryParse(rawValue, NumberStyles.Integer, INVARIANT_CULTURE, out parsedValue);
+            return ulong.TryParse(rawValue, NumberStyles.Integer, InvariantCulture, out parsedValue);
         }
 
         /// <summary>
@@ -280,12 +314,12 @@ namespace NanoXLSX.Utils
         /// <summary>
         /// Tries to parse a decimal (with float parsing style) independent from the culture info of the host
         /// </summary>
-        /// <param name="rawvalue">Raw number as string</param>
+        /// <param name="rawValue">Raw number as string</param>
         /// <param name="parsedValue">Parsed decimal</param>
         /// <returns>True, if the parsing was successful</returns>
-        public static bool TryParseDecimal(string rawvalue, out decimal parsedValue)
+        public static bool TryParseDecimal(string rawValue, out decimal parsedValue)
         {
-            return decimal.TryParse(rawvalue, NumberStyles.Float, INVARIANT_CULTURE, out parsedValue);
+            return decimal.TryParse(rawValue, NumberStyles.Float, InvariantCulture, out parsedValue);
         }
 
         /// <summary>
@@ -296,7 +330,7 @@ namespace NanoXLSX.Utils
         /// <returns>True, if the parsing was successful</returns>
         public static bool TryParseDouble(string rawValue, out double parsedValue)
         {
-            return double.TryParse(rawValue, NumberStyles.Any, INVARIANT_CULTURE, out parsedValue);
+            return double.TryParse(rawValue, NumberStyles.Any, InvariantCulture, out parsedValue);
         }
     }
 }

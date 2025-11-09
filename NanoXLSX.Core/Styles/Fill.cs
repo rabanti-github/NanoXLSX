@@ -20,15 +20,15 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default Color (foreground or background)
         /// </summary>
-        public static readonly string DEFAULT_COLOR = "FF000000";
+        public static readonly string DefaultColor = "FF000000";
         /// <summary>
         /// Default index color
         /// </summary>
-        public static readonly int DEFAULT_INDEXED_COLOR = 64;
+        public static readonly int DefaultIndexedColor = 64;
         /// <summary>
         /// Default pattern
         /// </summary>
-        public static readonly PatternValue DEFAULT_PATTERN_FILL = PatternValue.none;
+        public static readonly PatternValue DefaultPatternFill = PatternValue.none;
 
         #endregion
 
@@ -69,8 +69,8 @@ namespace NanoXLSX.Styles
         #endregion
 
         #region privateFields
-        private string backgroundColor = DEFAULT_COLOR;
-        private string foregroundColor = DEFAULT_COLOR;
+        private string backgroundColor = DefaultColor;
+        private string foregroundColor = DefaultColor;
         #endregion
 
         #region properties
@@ -86,7 +86,7 @@ namespace NanoXLSX.Styles
             set
             {
                 Validators.ValidateColor(value, true);
-                backgroundColor = value.ToUpper();
+                backgroundColor = ParserUtils.ToUpper(value);
                 if (PatternFill == PatternValue.none)
                 {
                     PatternFill = PatternValue.solid;
@@ -105,7 +105,7 @@ namespace NanoXLSX.Styles
             set
             {
                 Validators.ValidateColor(value, true);
-                foregroundColor = value.ToUpper();
+                foregroundColor = ParserUtils.ToUpper(value);
                 if (PatternFill == PatternValue.none)
                 {
                     PatternFill = PatternValue.solid;
@@ -130,10 +130,10 @@ namespace NanoXLSX.Styles
         /// </summary>
         public Fill()
         {
-            IndexedColor = DEFAULT_INDEXED_COLOR;
-            PatternFill = DEFAULT_PATTERN_FILL;
-            foregroundColor = DEFAULT_COLOR;
-            backgroundColor = DEFAULT_COLOR;
+            IndexedColor = DefaultIndexedColor;
+            PatternFill = DefaultPatternFill;
+            foregroundColor = DefaultColor;
+            backgroundColor = DefaultColor;
         }
         /// <summary>
         /// Constructor with foreground and background color
@@ -144,7 +144,7 @@ namespace NanoXLSX.Styles
         {
             BackgroundColor = background;
             ForegroundColor = foreground;
-            IndexedColor = DEFAULT_INDEXED_COLOR;
+            IndexedColor = DefaultIndexedColor;
             PatternFill = PatternValue.solid;
         }
 
@@ -157,15 +157,15 @@ namespace NanoXLSX.Styles
         {
             if (fillType == FillType.fillColor)
             {
-                backgroundColor = DEFAULT_COLOR;
+                backgroundColor = DefaultColor;
                 ForegroundColor = value;
             }
             else
             {
                 BackgroundColor = value;
-                foregroundColor = DEFAULT_COLOR;
+                foregroundColor = DefaultColor;
             }
-            IndexedColor = DEFAULT_INDEXED_COLOR;
+            IndexedColor = DefaultIndexedColor;
             PatternFill = PatternValue.solid;
         }
         #endregion
@@ -246,18 +246,18 @@ namespace NanoXLSX.Styles
         /// Sets the color and the depending on fill type
         /// </summary>
         /// <param name="value">color value</param>
-        /// <param name="filltype">fill type (fill or pattern)</param>
-        public void SetColor(string value, FillType filltype)
+        /// <param name="fillType">fill type (fill or pattern)</param>
+        public void SetColor(string value, FillType fillType)
         {
-            if (filltype == FillType.fillColor)
+            if (fillType == FillType.fillColor)
             {
-                backgroundColor = DEFAULT_COLOR;
+                backgroundColor = DefaultColor;
                 ForegroundColor = value;
             }
             else
             {
                 BackgroundColor = value;
-                foregroundColor = DEFAULT_COLOR;
+                foregroundColor = DefaultColor;
             }
             PatternFill = PatternValue.solid;
         }

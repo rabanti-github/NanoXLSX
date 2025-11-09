@@ -36,11 +36,11 @@ namespace NanoXLSX.Test.Core.StyleTest
         [Fact(DisplayName = "Test of the default values")]
         public void DefaultValuesTest()
         {
-            Assert.Equal(11f, Font.DEFAULT_FONT_SIZE);
-            Assert.Equal(FontFamilyValue.Swiss, Font.DEFAULT_FONT_FAMILY);
-            Assert.Equal(SchemeValue.minor, Font.DEFAULT_FONT_SCHEME);
-            Assert.Equal(VerticalTextAlignValue.none, Font.DEFAULT_VERTICAL_ALIGN);
-            Assert.Equal("Calibri", Font.DEFAULT_FONT_NAME);
+            Assert.Equal(11f, Font.DefaultFontSize);
+            Assert.Equal(FontFamilyValue.Swiss, Font.DefaultFontFamily);
+            Assert.Equal(SchemeValue.minor, Font.DefaultFontScheme);
+            Assert.Equal(VerticalTextAlignValue.none, Font.DefaultVerticalAlign);
+            Assert.Equal("Calibri", Font.DefaultFontName);
         }
 
 
@@ -48,11 +48,11 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void ConstructorTest()
         {
             Font font = new Font();
-            Assert.Equal(Font.DEFAULT_FONT_SIZE, font.Size);
-            Assert.Equal(Font.DEFAULT_FONT_NAME, font.Name);
-            Assert.Equal(Font.DEFAULT_FONT_FAMILY, font.Family);
-            Assert.Equal(Font.DEFAULT_FONT_SCHEME, font.Scheme);
-            Assert.Equal(Font.DEFAULT_VERTICAL_ALIGN, font.VerticalAlign);
+            Assert.Equal(Font.DefaultFontSize, font.Size);
+            Assert.Equal(Font.DefaultFontName, font.Name);
+            Assert.Equal(Font.DefaultFontFamily, font.Family);
+            Assert.Equal(Font.DefaultFontScheme, font.Scheme);
+            Assert.Equal(Font.DefaultVerticalAlign, font.VerticalAlign);
             Assert.Equal("", font.ColorValue);
             Assert.Equal(CharsetValue.Default, font.Charset);
             Assert.Equal(ColorSchemeElement.light1, font.ColorTheme);
@@ -142,7 +142,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void SizeTest(int value)
         {
             Font font = new Font();
-            Assert.Equal(Font.DEFAULT_FONT_SIZE, font.Size); // 11 is default
+            Assert.Equal(Font.DefaultFontSize, font.Size); // 11 is default
             font.Size = value;
             Assert.Equal(value, font.Size);
         }
@@ -169,7 +169,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void NameTest(string value)
         {
             Font font = new Font();
-            Assert.Equal(Font.DEFAULT_FONT_NAME, font.Name); // Default is 'Calibri'
+            Assert.Equal(Font.DefaultFontName, font.Name); // Default is 'Calibri'
             font.Name = value;
             Assert.Equal(value, font.Name);
         }
@@ -199,7 +199,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void FamilyTest(FontFamilyValue value)
         {
             Font font = new Font();
-            Assert.Equal(Font.DEFAULT_FONT_FAMILY, font.Family);
+            Assert.Equal(Font.DefaultFontFamily, font.Family);
             font.Family = value;
             Assert.Equal(value, font.Family);
         }
@@ -255,7 +255,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void SchmeTest(SchemeValue value)
         {
             Font font = new Font();
-            Assert.Equal(Font.DEFAULT_FONT_SCHEME, font.Scheme); // default is minor
+            Assert.Equal(Font.DefaultFontScheme, font.Scheme); // default is minor
             font.Scheme = value;
             Assert.Equal(value, font.Scheme);
         }
@@ -267,7 +267,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void VerticalAlignTest(VerticalTextAlignValue value)
         {
             Font font = new Font();
-            Assert.Equal(Font.DEFAULT_VERTICAL_ALIGN, font.VerticalAlign); // default is none
+            Assert.Equal(Font.DefaultVerticalAlign, font.VerticalAlign); // default is none
             font.VerticalAlign = value;
             Assert.Equal(value, font.VerticalAlign);
         }

@@ -357,7 +357,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Address endAddress = new Address("C3");
             worksheet.SetStyle(startAddress, endAddress, null);
             List<string> emptyCells = new List<string>();
-            AssertCellRange("B2:B3", null, worksheet, emptyCells,  cellCount);
+            AssertCellRange("B2:B3", null, worksheet, emptyCells, cellCount);
         }
 
         [Fact(DisplayName = "Test of the SetStyle function on a worksheet with existing date and time cells, and a start and end address")]

@@ -18,6 +18,44 @@ namespace NanoXLSX.Test.Core.UtilsTest
             Assert.Equal(expectedValue, value);
         }
 
+        [Theory(DisplayName = "Test of the ParserUtils StartsWith function")]
+        [InlineData("HelloWorld", "Hello", true)]
+        [InlineData("HelloWorld", "world", false)]
+        [InlineData("000", "0", true)]
+        [InlineData("", "", true)]
+        [InlineData(null, null, true)]
+        [InlineData(null, "test", false)]
+        [InlineData("test", null, false)]
+        [InlineData("012", "3", false)]
+        [InlineData("abc", "abc", true)]
+        [InlineData("abc", "ABC", false)]
+        [InlineData("   ", " ", true)]
+        [InlineData("   ", "\t", false)]
+        public void StartsWithTest(string givenValue, string startValue, bool expectedStartsWith)
+        {
+            bool startsWith = ParserUtils.StartsWith(givenValue, startValue);
+            Assert.Equal(expectedStartsWith, startsWith);
+        }
+
+        [Theory(DisplayName = "Test of the ParserUtils NotStartsWith function")]
+        [InlineData("HelloWorld", "Hello", false)]
+        [InlineData("HelloWorld", "world", true)]
+        [InlineData("000", "0", false)]
+        [InlineData("", "", false)]
+        [InlineData(null, null, false)]
+        [InlineData(null, "test", true)]
+        [InlineData("test", null, true)]
+        [InlineData("012", "3", true)]
+        [InlineData("abc", "abc", false)]
+        [InlineData("abc", "ABC", true)]
+        [InlineData("   ", " ", false)]
+        [InlineData("   ", "\t", true)]
+        public void NotStartsWithTest(string givenValue, string startValue, bool expectedStartsWith)
+        {
+            bool startsWith = ParserUtils.NotStartsWith(givenValue, startValue);
+            Assert.Equal(expectedStartsWith, startsWith);
+        }
+
         [Theory(DisplayName = "Test of the ParserUtils ToString function for integers")]
         [InlineData(-10, "-10")]
         [InlineData(0, "0")]
@@ -136,8 +174,7 @@ namespace NanoXLSX.Test.Core.UtilsTest
         [InlineData("-22.5f4", 0f, false)]
         public void TryParseFloatTest(String givenValue, float expectedValue, bool expectedMatch)
         {
-            float value;
-            bool match = ParserUtils.TryParseFloat(givenValue, out value);
+            bool match = ParserUtils.TryParseFloat(givenValue, out var value);
             Assert.Equal(expectedValue, value);
             Assert.Equal(expectedMatch, match);
         }
@@ -156,8 +193,7 @@ namespace NanoXLSX.Test.Core.UtilsTest
         [InlineData("1x1", 0, false)]
         public void TryParseIntTest(String givenValue, int expectedValue, bool expectedMatch)
         {
-            int value;
-            bool match = ParserUtils.TryParseInt(givenValue, out value);
+            bool match = ParserUtils.TryParseInt(givenValue, out var value);
             Assert.Equal(expectedValue, value);
             Assert.Equal(expectedMatch, match);
         }
@@ -177,8 +213,7 @@ namespace NanoXLSX.Test.Core.UtilsTest
         [InlineData("-42", 0, false)]
         public void TryParseUintTest(String givenValue, uint expectedValue, bool expectedMatch)
         {
-            uint value;
-            bool match = ParserUtils.TryParseUint(givenValue, out value);
+            bool match = ParserUtils.TryParseUint(givenValue, out var value);
             Assert.Equal(expectedValue, value);
             Assert.Equal(expectedMatch, match);
         }
@@ -197,8 +232,7 @@ namespace NanoXLSX.Test.Core.UtilsTest
         [InlineData("1x1", 0, false)]
         public void TryParseLongTest(String givenValue, long expectedValue, bool expectedMatch)
         {
-            long value;
-            bool match = ParserUtils.TryParseLong(givenValue, out value);
+            bool match = ParserUtils.TryParseLong(givenValue, out var value);
             Assert.Equal(expectedValue, value);
             Assert.Equal(expectedMatch, match);
         }
@@ -218,8 +252,7 @@ namespace NanoXLSX.Test.Core.UtilsTest
         [InlineData("-42", 0, false)]
         public void TryParseUlongTest(string givenValue, ulong expectedValue, bool expectedMatch)
         {
-            ulong value;
-            bool match = ParserUtils.TryParseUlong(givenValue, out value);
+            bool match = ParserUtils.TryParseUlong(givenValue, out var value);
             Assert.Equal(expectedValue, value);
             Assert.Equal(expectedMatch, match);
         }
@@ -243,8 +276,7 @@ namespace NanoXLSX.Test.Core.UtilsTest
         [InlineData("-22.5f4", 0, false)]
         public void TryParseDecimalTest(string givenValue, decimal expectedValue, bool expectedMatch)
         {
-            decimal value;
-            bool match = ParserUtils.TryParseDecimal(givenValue, out value);
+            bool match = ParserUtils.TryParseDecimal(givenValue, out var value);
             Assert.Equal(expectedValue, value);
             Assert.Equal(expectedMatch, match);
         }
@@ -269,8 +301,7 @@ namespace NanoXLSX.Test.Core.UtilsTest
         [InlineData("-22.5f4", 0, false)]
         public void TryParseDoubleTest(string givenValue, double expectedValue, bool expectedMatch)
         {
-            double value;
-            bool match = ParserUtils.TryParseDouble(givenValue, out value);
+            bool match = ParserUtils.TryParseDouble(givenValue, out var value);
             Assert.Equal(expectedValue, value);
             Assert.Equal(expectedMatch, match);
         }
@@ -281,44 +312,37 @@ namespace NanoXLSX.Test.Core.UtilsTest
         {
             bool match;
 
-            decimal dValue;
-            match = ParserUtils.TryParseDecimal("-79228162514264337593543950335", out dValue);
+            match = ParserUtils.TryParseDecimal("-79228162514264337593543950335", out var dValue);
             Assert.Equal(decimal.MinValue, dValue);
             Assert.True(match);
 
-            ulong uValue;
-            match = ParserUtils.TryParseUlong("0", out uValue);
+            match = ParserUtils.TryParseUlong("0", out var uValue);
             Assert.Equal(ulong.MinValue, uValue);
             Assert.True(match);
 
-            long lValue;
-            match = ParserUtils.TryParseLong("-9223372036854775808", out lValue);
+            match = ParserUtils.TryParseLong("-9223372036854775808", out var lValue);
             Assert.Equal(long.MinValue, lValue);
             Assert.True(match);
 
-            uint uiValue;
-            match = ParserUtils.TryParseUint("0", out uiValue);
+            match = ParserUtils.TryParseUint("0", out var uiValue);
             Assert.Equal(uint.MinValue, uiValue);
             Assert.True(match);
 
-            int iValue;
-            match = ParserUtils.TryParseInt("-2147483648", out iValue);
+            match = ParserUtils.TryParseInt("-2147483648", out var iValue);
             Assert.Equal(int.MinValue, iValue);
             Assert.True(match);
 
             iValue = ParserUtils.ParseInt("-2147483648");
             Assert.Equal(int.MinValue, iValue);
 
-            float fValue;
-            match = ParserUtils.TryParseFloat("-3.40282347E+38", out fValue);
+            match = ParserUtils.TryParseFloat("-3.40282347E+38", out var fValue);
             Assert.Equal(float.MinValue, fValue);
             Assert.True(match);
 
             fValue = ParserUtils.ParseFloat("-3.40282347E+38");
             Assert.Equal(float.MinValue, fValue);
 
-            double dbValue;
-            match = ParserUtils.TryParseDouble("-1.7976931348623157E+308", out dbValue);
+            match = ParserUtils.TryParseDouble("-1.7976931348623157E+308", out var dbValue);
             Assert.Equal(double.MinValue, dbValue);
             Assert.True(match);
         }
@@ -328,44 +352,37 @@ namespace NanoXLSX.Test.Core.UtilsTest
         {
             bool match;
 
-            decimal dValue;
-            match = ParserUtils.TryParseDecimal("79228162514264337593543950335", out dValue);
+            match = ParserUtils.TryParseDecimal("79228162514264337593543950335", out var dValue);
             Assert.Equal(decimal.MaxValue, dValue);
             Assert.True(match);
 
-            ulong uValue;
-            match = ParserUtils.TryParseUlong("18446744073709551615", out uValue);
+            match = ParserUtils.TryParseUlong("18446744073709551615", out var uValue);
             Assert.Equal(ulong.MaxValue, uValue);
             Assert.True(match);
 
-            long lValue;
-            match = ParserUtils.TryParseLong("9223372036854775807", out lValue);
+            match = ParserUtils.TryParseLong("9223372036854775807", out var lValue);
             Assert.Equal(long.MaxValue, lValue);
             Assert.True(match);
 
-            uint uiValue;
-            match = ParserUtils.TryParseUint("4294967295", out uiValue);
+            match = ParserUtils.TryParseUint("4294967295", out var uiValue);
             Assert.Equal(uint.MaxValue, uiValue);
             Assert.True(match);
 
-            int iValue;
-            match = ParserUtils.TryParseInt("2147483647", out iValue);
+            match = ParserUtils.TryParseInt("2147483647", out var iValue);
             Assert.Equal(int.MaxValue, iValue);
             Assert.True(match);
 
             iValue = ParserUtils.ParseInt("2147483647");
             Assert.Equal(int.MaxValue, iValue);
 
-            float fValue;
-            match = ParserUtils.TryParseFloat("3.40282347E+38", out fValue);
+            match = ParserUtils.TryParseFloat("3.40282347E+38", out var fValue);
             Assert.Equal(float.MaxValue, fValue);
             Assert.True(match);
 
             fValue = ParserUtils.ParseFloat("3.40282347E+38");
             Assert.Equal(float.MaxValue, fValue);
 
-            double dbValue;
-            match = ParserUtils.TryParseDouble("1.7976931348623157E+308", out dbValue);
+            match = ParserUtils.TryParseDouble("1.7976931348623157E+308", out var dbValue);
             Assert.Equal(double.MaxValue, dbValue);
             Assert.True(match);
         }

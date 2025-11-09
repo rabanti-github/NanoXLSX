@@ -20,19 +20,19 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default horizontal align value as constant
         /// </summary>
-        public static readonly HorizontalAlignValue DEFAULT_HORIZONTAL_ALIGNMENT = HorizontalAlignValue.none;
+        public static readonly HorizontalAlignValue DefaultHorizontalAlignment = HorizontalAlignValue.none;
         /// <summary>
         /// Default text break value as constant
         /// </summary>
-        public static readonly TextBreakValue DEFAULT_ALIGNMENT = TextBreakValue.none;
+        public static readonly TextBreakValue DefaultAlignment = TextBreakValue.none;
         /// <summary>
         /// Default text direction value as constant
         /// </summary>
-        public static readonly TextDirectionValue DEFAULT_TEXT_DIRECTION = TextDirectionValue.horizontal;
+        public static readonly TextDirectionValue DefaultTextDirection = TextDirectionValue.horizontal;
         /// <summary>
         /// Default vertical align value as constant
         /// </summary>
-        public static readonly VerticalAlignValue DEFAULT_VERTICAL_ALIGNMENT = VerticalAlignValue.none;
+        public static readonly VerticalAlignValue DefaultVerticalAlignment = VerticalAlignValue.none;
         #endregion
 
         #region privateFields
@@ -198,10 +198,10 @@ namespace NanoXLSX.Styles
         /// </summary>
         public CellXf()
         {
-            HorizontalAlign = DEFAULT_HORIZONTAL_ALIGNMENT;
-            Alignment = DEFAULT_ALIGNMENT;
-            textDirection = DEFAULT_TEXT_DIRECTION;
-            VerticalAlign = DEFAULT_VERTICAL_ALIGNMENT;
+            HorizontalAlign = DefaultHorizontalAlignment;
+            Alignment = DefaultAlignment;
+            textDirection = DefaultTextDirection;
+            VerticalAlign = DefaultVerticalAlignment;
             Locked = true; // Default in Excel
             textRotation = 0;
             Indent = 0;

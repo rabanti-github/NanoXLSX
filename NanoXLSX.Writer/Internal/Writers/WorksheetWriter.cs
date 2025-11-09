@@ -23,7 +23,7 @@ namespace NanoXLSX.Internal.Writers
     /// <summary>
     /// Class to generate the worksheet XML files in a XLSX file.
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WORKSHEET_WRITER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorksheetWriter)]
     internal class WorksheetWriter : IWorksheetWriter
     {
         private XmlElement worksheet;
@@ -125,7 +125,7 @@ namespace NanoXLSX.Internal.Writers
                 worksheet.AddChildElementWithAttribute("autoFilter", "ref", ws.AutoFilterRange.Value.ToString());
             }
 
-            WriterPlugInHandler.HandleInlineQueuePlugins(ref worksheet, Workbook, PlugInUUID.WORKSHEET_INLINE_WRITER, currentWorksheet.SheetID);
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref worksheet, Workbook, PlugInUUID.WorksheetInlineWriter, currentWorksheet.SheetID);
         }
 
         /// <summary>

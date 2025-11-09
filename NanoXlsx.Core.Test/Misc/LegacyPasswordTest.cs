@@ -17,8 +17,8 @@ namespace NanoXLSX.Test.Core.MiscTest
         }
 
         [Theory(DisplayName = "Test of the LegacyPassword constructor with arguments (legacy)")]
-        [InlineData(LegacyPassword.PasswordType.WORKBOOK_PROTECTION)]
-        [InlineData(LegacyPassword.PasswordType.WORKSHEET_PROTECTION)]
+        [InlineData(LegacyPassword.PasswordType.WorkbookProtection)]
+        [InlineData(LegacyPassword.PasswordType.WorksheetProtection)]
         public void ConstructorTest(LegacyPassword.PasswordType type)
         {
             LegacyPassword password = new LegacyPassword(type);
@@ -27,8 +27,8 @@ namespace NanoXLSX.Test.Core.MiscTest
         }
 
         [Theory(DisplayName = "Test of the Type property (legacy)")]
-        [InlineData(LegacyPassword.PasswordType.WORKBOOK_PROTECTION, LegacyPassword.PasswordType.WORKSHEET_PROTECTION)]
-        [InlineData(LegacyPassword.PasswordType.WORKSHEET_PROTECTION, LegacyPassword.PasswordType.WORKBOOK_PROTECTION)]
+        [InlineData(LegacyPassword.PasswordType.WorkbookProtection, LegacyPassword.PasswordType.WorksheetProtection)]
+        [InlineData(LegacyPassword.PasswordType.WorksheetProtection, LegacyPassword.PasswordType.WorkbookProtection)]
         public void PasswordTypeTest(LegacyPassword.PasswordType initialType, LegacyPassword.PasswordType type)
         {
             LegacyPassword password = new LegacyPassword(initialType);
@@ -44,7 +44,7 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("0000")]
         public void PasswordHashTest(string passwordHash)
         {
-            LegacyPassword password = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);
+            LegacyPassword password = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection);
             Assert.Null(password.PasswordHash);
             password.PasswordHash = passwordHash;
             Assert.Equal(passwordHash, password.PasswordHash);
@@ -59,7 +59,7 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("", null)]
         public void GetAndSetPasswordTest(string givenPassword, string expectedpassword)
         {
-            LegacyPassword password = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);
+            LegacyPassword password = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection);
             Assert.Null(password.GetPassword());
             password.SetPassword(givenPassword);
             Assert.Equal(expectedpassword, password.GetPassword());
@@ -73,7 +73,7 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("0000", true)]
         public void UnsetPasswordTest(string plainText, bool expectedPasswordSet)
         {
-            LegacyPassword password = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);
+            LegacyPassword password = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection);
             Assert.Null(password.PasswordHash);
             password.SetPassword(plainText);
             if (expectedPasswordSet)
@@ -103,7 +103,7 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("0000", true)]
         public void PasswordIsSetTest(string passwordHash, bool expectedPasswordSet)
         {
-            LegacyPassword password = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);
+            LegacyPassword password = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection);
             password.PasswordHash = passwordHash;
             Assert.Equal(expectedPasswordSet, password.PasswordIsSet());
         }
@@ -116,9 +116,9 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("0000")]
         public void CopyFromTest(string plainText)
         {
-            LegacyPassword source = new LegacyPassword(LegacyPassword.PasswordType.WORKSHEET_PROTECTION);
+            LegacyPassword source = new LegacyPassword(LegacyPassword.PasswordType.WorksheetProtection);
             source.SetPassword(plainText);
-            LegacyPassword target = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);
+            LegacyPassword target = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection);
             Assert.False(source.Equals(target));
             target.CopyFrom(source);
             Assert.True(source.Equals(target));
@@ -128,11 +128,11 @@ namespace NanoXLSX.Test.Core.MiscTest
         [Fact(DisplayName = "Test of the GetHashCode function (legacy)")]
         public void GetHashCodeTest()
         {
-            LegacyPassword password1 = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);
+            LegacyPassword password1 = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection);
             password1.SetPassword("test");
-            LegacyPassword password2 = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);
+            LegacyPassword password2 = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection);
             password2.SetPassword("test");
-            LegacyPassword password3 = new LegacyPassword(LegacyPassword.PasswordType.WORKSHEET_PROTECTION);
+            LegacyPassword password3 = new LegacyPassword(LegacyPassword.PasswordType.WorksheetProtection);
             password3.SetPassword(null);
             Assert.Equal(password1.GetHashCode(), password2.GetHashCode());
             Assert.NotEqual(password1.GetHashCode(), password3.GetHashCode());
@@ -141,11 +141,11 @@ namespace NanoXLSX.Test.Core.MiscTest
         [Fact(DisplayName = "Test of the Equals function (legacy)")]
         public void EqualsTest()
         {
-            LegacyPassword password1 = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);
+            LegacyPassword password1 = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection);
             password1.SetPassword("test");
-            LegacyPassword password2 = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);
+            LegacyPassword password2 = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection);
             password2.SetPassword("test");
-            LegacyPassword password3 = new LegacyPassword(LegacyPassword.PasswordType.WORKSHEET_PROTECTION);
+            LegacyPassword password3 = new LegacyPassword(LegacyPassword.PasswordType.WorksheetProtection);
             password3.SetPassword(null);
             Assert.True(password1.Equals(password2));
             Assert.False(password1.Equals(password3));

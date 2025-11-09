@@ -19,10 +19,10 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for legacy passwords
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.PASSWORD_READER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.PasswordReader)]
     public class LegacyPasswordReader : IPasswordReader
     {
-        private string passwordHash = null;
+        private string passwordHash;
 
         /// <summary>
         /// Gets whether a contemporary password algorithm was detected (not supported by core functionality)
@@ -74,7 +74,7 @@ namespace NanoXLSX.Internal.Readers
         public virtual void ReadXmlAttributes(XmlNode node)
         {
             string attribute = null;
-            if (Type == PasswordType.WORKBOOK_PROTECTION)
+            if (Type == PasswordType.WorkbookProtection)
             {
                 attribute = ReaderUtils.GetAttribute(node, "workbookAlgorithmName");
             }
@@ -94,7 +94,7 @@ namespace NanoXLSX.Internal.Readers
                 }
             }
 
-            if (Type == PasswordType.WORKBOOK_PROTECTION)
+            if (Type == PasswordType.WorkbookProtection)
             {
                 attribute = ReaderUtils.GetAttribute(node, "workbookPassword");
                 if (attribute != null)

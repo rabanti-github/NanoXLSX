@@ -68,7 +68,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void BottomStyleTest(StyleValue value)
         {
             Border border = new Border();
-            Assert.Equal(Border.DEFAULT_BORDER_STYLE, border.BottomStyle); // none is default
+            Assert.Equal(Border.DefaultBorderStyle, border.BottomStyle); // none is default
             border.BottomStyle = value;
             Assert.Equal(value, border.BottomStyle);
         }
@@ -114,7 +114,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void DiagonalStyleTest(StyleValue value)
         {
             Border border = new Border();
-            Assert.Equal(Border.DEFAULT_BORDER_STYLE, border.DiagonalStyle); // none is default
+            Assert.Equal(Border.DefaultBorderStyle, border.DiagonalStyle); // none is default
             border.DiagonalStyle = value;
             Assert.Equal(value, border.DiagonalStyle);
         }
@@ -160,7 +160,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void LeftStyleTest(StyleValue value)
         {
             Border border = new Border();
-            Assert.Equal(Border.DEFAULT_BORDER_STYLE, border.LeftStyle); // none is default
+            Assert.Equal(Border.DefaultBorderStyle, border.LeftStyle); // none is default
             border.LeftStyle = value;
             Assert.Equal(value, border.LeftStyle);
         }
@@ -206,7 +206,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void RightStyleTest(StyleValue value)
         {
             Border border = new Border();
-            Assert.Equal(Border.DEFAULT_BORDER_STYLE, border.RightStyle); // none is default
+            Assert.Equal(Border.DefaultBorderStyle, border.RightStyle); // none is default
             border.RightStyle = value;
             Assert.Equal(value, border.RightStyle);
         }
@@ -252,7 +252,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void TopStyleTest(StyleValue value)
         {
             Border border = new Border();
-            Assert.Equal(Border.DEFAULT_BORDER_STYLE, border.TopStyle); // none is default
+            Assert.Equal(Border.DefaultBorderStyle, border.TopStyle); // none is default
             border.TopStyle = value;
             Assert.Equal(value, border.TopStyle);
         }

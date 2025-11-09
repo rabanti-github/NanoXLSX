@@ -25,6 +25,6 @@ namespace NanoXLSX.Registry.Attributes
         /// Order how the annotated plug-ins are registered in case of duplicate UIDs. The higher number will override any lower. 
         /// Default is zero (order may be vary).
         /// </summary>
-        public int PlugInOrder { get; set; } = 0;
+        public int PlugInOrder { get; set; }
     }
 }

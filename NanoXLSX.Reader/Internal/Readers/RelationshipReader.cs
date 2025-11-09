@@ -12,6 +12,7 @@ using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
+using NanoXLSX.Utils;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
@@ -20,7 +21,7 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for relationship of XLSX files
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.RELATIONSHIP_READER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.RelationshipReader)]
     public partial class RelationshipReader : IPlugInReader
     {
         private Workbook workbook;
@@ -81,11 +82,11 @@ namespace NanoXLSX.Internal.Readers
                         string id = ReaderUtils.GetAttribute(relationship, "Id");
                         string type = ReaderUtils.GetAttribute(relationship, "Type");
                         string target = ReaderUtils.GetAttribute(relationship, "Target");
-                        if (target.StartsWith("/"))
+                        if (ParserUtils.StartsWith(target, "/"))
                         {
                             target = target.TrimStart('/');
                         }
-                        if (!target.StartsWith("xl/"))
+                        if (ParserUtils.NotStartsWith(target, "xl/"))
                         {
                             target = "xl/" + target;
                         }
@@ -95,9 +96,9 @@ namespace NanoXLSX.Internal.Readers
                             Type = type,
                             Target = target,
                         };
-                        Workbook.AuxiliaryData.SetData(PlugInUUID.RELATIONSHIP_READER, PlugInUUID.RELATIONSHIP_ENTITY, id, rel);
+                        Workbook.AuxiliaryData.SetData(PlugInUUID.RelationshipReader, PlugInUUID.RelationshipEntity, id, rel);
                     }
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.RELATIONSHIP_INLINE_READER);
+                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.RelationshipInlineReader);
                 }
             }
             catch (Exception ex)

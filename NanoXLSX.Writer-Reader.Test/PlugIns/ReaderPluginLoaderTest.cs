@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.IO.Compression;
 using NanoXLSX.Interfaces.Plugin;
-using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using Xunit;
@@ -67,7 +65,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 
                 string testData1 = loadedWorkbook.AuxiliaryData.GetData<string>("TEST_READER_PLUGIN_1", 0);
                 string testData2 = loadedWorkbook.AuxiliaryData.GetData<string>("TEST_READER_PLUGIN_2", 0);
-                
+
                 Assert.NotNull(testData1);
                 Assert.Equal("executed", testData1);
                 Assert.NotNull(testData2);
@@ -149,7 +147,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             return wb;
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_1", QueueUUID = PlugInUUID.READER_PREPENDING_QUEUE, PlugInOrder = 199)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_1", QueueUUID = PlugInUUID.ReaderPrependingQueue, PlugInOrder = 199)]
         internal class TestReaderPackage : IPlugInPackageReader
         {
             public string StreamEntryName => null;
@@ -167,7 +165,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_2", QueueUUID = PlugInUUID.READER_APPENDING_QUEUE, PlugInOrder = 200)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_2", QueueUUID = PlugInUUID.ReaderAppendingQueue, PlugInOrder = 200)]
         internal class TestReaderPackage2 : IPlugInPackageReader
         {
             public string StreamEntryName => null;
@@ -185,7 +183,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_ORDER_1", QueueUUID = PlugInUUID.READER_APPENDING_QUEUE, PlugInOrder = 1)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_ORDER_1", QueueUUID = PlugInUUID.ReaderAppendingQueue, PlugInOrder = 1)]
         internal class TestReaderPackageOrder1 : IPlugInPackageReader
         {
             public string StreamEntryName => null;
@@ -205,7 +203,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_ORDER_2", QueueUUID = PlugInUUID.READER_APPENDING_QUEUE, PlugInOrder = 2000)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_ORDER_2", QueueUUID = PlugInUUID.ReaderAppendingQueue, PlugInOrder = 2000)]
         internal class TestReaderPackageOrder2 : IPlugInPackageReader
         {
             public string StreamEntryName => null;
@@ -225,7 +223,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_NO_STREAM", QueueUUID = PlugInUUID.READER_APPENDING_QUEUE, PlugInOrder = 1000)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_NO_STREAM", QueueUUID = PlugInUUID.ReaderAppendingQueue, PlugInOrder = 1000)]
         internal class TestReaderPackageWithoutStream : IPlugInPackageReader
         {
             public string StreamEntryName => null;
@@ -244,7 +242,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_MISSING_STREAM", QueueUUID = PlugInUUID.READER_APPENDING_QUEUE, PlugInOrder = 100)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_MISSING_STREAM", QueueUUID = PlugInUUID.ReaderAppendingQueue, PlugInOrder = 100)]
         internal class TestReaderPackageNonExistentStream : IPlugInPackageReader
         {
             public string StreamEntryName => "xl/nonexistent/file.xml";
@@ -264,7 +262,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_EXISTING_STREAM", QueueUUID = PlugInUUID.READER_APPENDING_QUEUE, PlugInOrder = 1)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_READER_PLUGIN_EXISTING_STREAM", QueueUUID = PlugInUUID.ReaderAppendingQueue, PlugInOrder = 1)]
         internal class TestReaderPackageExistingStream : IPlugInPackageReader
         {
             public string StreamEntryName => "xl/workbook.xml";

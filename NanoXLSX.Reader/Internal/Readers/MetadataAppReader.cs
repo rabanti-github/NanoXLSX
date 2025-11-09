@@ -18,7 +18,7 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for the App metadata file (docProps) embedded in XLSX files
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.METADATA_APP_READER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataAppReader)]
     public class MetadataAppReader : IPlugInReader
     {
         private MemoryStream stream;
@@ -91,7 +91,7 @@ namespace NanoXLSX.Internal.Readers
                             metadata.HyperlinkBase = node.InnerText;
                         }
                     }
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.METADATA_APP_INLINE_READER);
+                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.MetadataAppInlineReader);
                 }
             }
             catch (Exception ex)

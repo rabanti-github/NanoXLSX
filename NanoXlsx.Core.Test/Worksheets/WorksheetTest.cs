@@ -318,7 +318,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.NotNull(worksheet.SheetProtectionPassword);
             worksheet.SheetProtectionPassword = null;
             Assert.Null(worksheet.SheetProtectionPassword);
-            LegacyPassword newInstance = new LegacyPassword(LegacyPassword.PasswordType.WORKSHEET_PROTECTION);
+            LegacyPassword newInstance = new LegacyPassword(LegacyPassword.PasswordType.WorksheetProtection);
             worksheet.SheetProtectionPassword = newInstance;
             Assert.NotNull(worksheet.SheetProtectionPassword);
         }

@@ -22,12 +22,12 @@ namespace NanoXLSX.Registry.Attributes
         /// <summary>
         /// Queue UUID for plug-ins that are not replacing a specific base plug-in, but defined as additional resource, e.g. executed before or after the writer / reader base plug-ins
         /// </summary>
-        public string QueueUUID { get; set; } = null;
+        public string QueueUUID { get; set; }
 
         /// <summary>
         /// Order how the annotated plug-ins are registered. The higher number will executed after the lower ones in the specified queue. 
         /// Default is zero (order may be vary).
         /// </summary>
-        public int PlugInOrder { get; set; } = 0;
+        public int PlugInOrder { get; set; }
     }
 }

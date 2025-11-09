@@ -20,11 +20,11 @@ namespace NanoXLSX.Internal.Enums
             /// <summary>
             /// Password is used to protect a workbook
             /// </summary>
-            WORKBOOK_PROTECTION,
+            WorkbookProtection,
             /// <summary>
             /// Password is used to protect a worksheet
             /// </summary>
-            WORKSHEET_PROTECTION
+            WorksheetProtection
         }
     }
 }

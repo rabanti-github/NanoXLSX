@@ -21,13 +21,13 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for the shared strings table of XLSX files
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.SHARED_STRINGS_READER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.SharedStringsReader)]
     public class SharedStringsReader : ISharedStringReader
     {
 
         #region privateFields
-        private bool capturePhoneticCharacters = false;
-        private readonly List<PhoneticInfo> phoneticsInfo = null;
+        private bool capturePhoneticCharacters;
+        private readonly List<PhoneticInfo> phoneticsInfo;
         private MemoryStream stream;
         private Workbook workbook;
         #endregion
@@ -106,7 +106,7 @@ namespace NanoXLSX.Internal.Readers
                             }
                         }
                     }
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.SHARED_STRINGS_INLINE_READER);
+                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.SharedStringsInlineReader);
                 }
             }
             catch (Exception ex)

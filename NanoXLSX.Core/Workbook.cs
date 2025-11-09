@@ -37,7 +37,7 @@ namespace NanoXLSX
         private int selectedWorksheet;
         private Shortener shortener;
         private List<string> mruColors = new List<string>();
-        internal bool importInProgress = false; // Used by NanoXLSX.Reader
+        internal bool importInProgress; // Used by NanoXLSX.Reader
         #endregion
 
         #region properties
@@ -706,7 +706,7 @@ namespace NanoXLSX
             worksheets = new List<Worksheet>();
             workbookMetadata = new Metadata();
             shortener = new Shortener(this);
-            workbookProtectionPassword = new LegacyPassword(LegacyPassword.PasswordType.WORKBOOK_PROTECTION);
+            workbookProtectionPassword = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection);
             AuxiliaryData = new AuxiliaryData();
         }
 

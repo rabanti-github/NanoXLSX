@@ -24,7 +24,7 @@ namespace NanoXLSX.Internal.Writers
     /// <summary>
     /// Class to generate the style XML file in a XLSX file.
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.STYLE_WRITER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.StyleWriter)]
     internal class StyleWriter : IPlugInWriter
     {
 
@@ -107,7 +107,7 @@ namespace NanoXLSX.Internal.Writers
                 }
             }
 
-            WriterPlugInHandler.HandleInlineQueuePlugins(ref styleSheet, Workbook, PlugInUUID.STYLE_INLINE_WRITER);
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref styleSheet, Workbook, PlugInUUID.StyleInlineWriter);
         }
 
         /// <summary>
@@ -418,7 +418,7 @@ namespace NanoXLSX.Internal.Writers
             List<string> tempColors = new List<string>();
             foreach (string item in ((Workbook)this.Workbook).GetMruColors())
             {
-                if (item == Fill.DEFAULT_COLOR)
+                if (item == Fill.DefaultColor)
                 {
                     continue;
                 }

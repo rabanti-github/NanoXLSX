@@ -326,8 +326,10 @@ namespace NanoXLSX.Test.Core.WorkbookTest
         {
             Workbook workbook = new Workbook();
             Assert.Empty(workbook.Worksheets);
-            Worksheet worksheet = new Worksheet();
-            worksheet.SheetName = "test";
+            Worksheet worksheet = new Worksheet
+            {
+                SheetName = "test"
+            };
             workbook.AddWorksheet(worksheet);
             Assert.Single(workbook.Worksheets);
             Assert.Equal("test", workbook.Worksheets[0].SheetName);
@@ -355,8 +357,10 @@ namespace NanoXLSX.Test.Core.WorkbookTest
         {
             Workbook workbook = new Workbook();
             workbook.AddWorksheet("Sheet1");
-            Worksheet worksheet = new Worksheet();
-            worksheet.SheetName = "Sheet1";
+            Worksheet worksheet = new Worksheet
+            {
+                SheetName = "Sheet1"
+            };
             Assert.ThrowsAny<Exception>(() => workbook.AddWorksheet(worksheet));
         }
 
@@ -410,17 +414,23 @@ namespace NanoXLSX.Test.Core.WorkbookTest
         public void AddWorksheetTest6()
         {
             Workbook workbook = new Workbook();
-            Worksheet worksheet1 = new Worksheet();
-            worksheet1.SheetName = "test";
+            Worksheet worksheet1 = new Worksheet
+            {
+                SheetName = "test"
+            };
             workbook.AddWorksheet(worksheet1, true);
             Assert.Equal(1, workbook.Worksheets[0].SheetID);
-            Worksheet worksheet2 = new Worksheet();
-            worksheet2.SheetName = "test2";
+            Worksheet worksheet2 = new Worksheet
+            {
+                SheetName = "test2"
+            };
             workbook.AddWorksheet(worksheet2, true);
             Assert.Equal(2, workbook.Worksheets[1].SheetID);
             workbook.RemoveWorksheet("test");
-            Worksheet worksheet3 = new Worksheet();
-            worksheet3.SheetName = "test3";
+            Worksheet worksheet3 = new Worksheet
+            {
+                SheetName = "test3"
+            };
             workbook.AddWorksheet(worksheet3, true);
             Assert.Equal(2, workbook.Worksheets[1].SheetID);
             workbook.RemoveWorksheet("test2");
@@ -462,7 +472,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
                     expected = name;
                 }
             }
-            AssertWorksheetRemoval<string>(workbook, workbook.RemoveWorksheet, worksheetCount, current, selectedWorksheetIndex, toRemove, expected, expectedSelectedWorksheetIndex);
+            AssertWorksheetRemoval(workbook, workbook.RemoveWorksheet, worksheetCount, current, selectedWorksheetIndex, toRemove, expected, expectedSelectedWorksheetIndex);
         }
 
         [Theory(DisplayName = "Test of the RemoveWorksheet function by index")]
@@ -497,7 +507,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
                     expected = name;
                 }
             }
-            AssertWorksheetRemoval<int>(workbook, workbook.RemoveWorksheet, worksheetCount, current, selectedWorksheetIndex, toRemove, expected, expectedSelectedWorksheetIndex);
+            AssertWorksheetRemoval(workbook, workbook.RemoveWorksheet, worksheetCount, current, selectedWorksheetIndex, toRemove, expected, expectedSelectedWorksheetIndex);
         }
 
         [Theory(DisplayName = "Test of the failing RemoveWorksheet function on an non-existing name")]
@@ -596,7 +606,6 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Workbook workbook = new Workbook();
             workbook.AddMruColor("00AAFF");
             workbook.AddMruColor("AABBCC");
-            List<string> list = (List<string>)workbook.GetMruColors();
             Assert.Equal(2, workbook.GetMruColors().Count);
             Assert.Equal("FF00AAFF", workbook.GetMruColors()[0]);
             Assert.Equal("FFAABBCC", workbook.GetMruColors()[1]);
@@ -643,7 +652,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
         }
 
         [ExcludeFromCodeCoverage]
-        private void AssertWorksheetRemoval<T>(Workbook workbook, Action<T> removalFunction, int worksheetCount, string currentWorksheet, int selectedWorksheetIndex, T worksheetToRemove, string expectedCurrentWorksheet, int expectedSelectedWorksheetIndex)
+        private static void AssertWorksheetRemoval<T>(Workbook workbook, Action<T> removalFunction, int worksheetCount, string currentWorksheet, int selectedWorksheetIndex, T worksheetToRemove, string expectedCurrentWorksheet, int expectedSelectedWorksheetIndex)
         {
             workbook.SetCurrentWorksheet(currentWorksheet);
             workbook.SetSelectedWorksheet(selectedWorksheetIndex);

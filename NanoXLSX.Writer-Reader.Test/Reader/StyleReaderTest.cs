@@ -76,7 +76,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 StyleReader styleReader = new StyleReader();
                 styleReader.Init(memStream, workbook, new ReaderOptions());
                 styleReader.Execute();
-                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY);
+                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
                 NumberFormat numberFormat = styleReaderContainer.GetNumberFormat(formatId);
                 Assert.NotNull(numberFormat);
             }
@@ -104,7 +104,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 StyleReader styleReader = new StyleReader();
                 styleReader.Init(memStream, workbook, new ReaderOptions());
                 styleReader.Execute();
-                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY);
+                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
                 NumberFormat numberFormat = styleReaderContainer.GetNumberFormat(formatId);
                 Assert.Null(numberFormat);
             }
@@ -119,7 +119,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 StyleReader styleReader = new StyleReader();
                 styleReader.Init(memStream, workbook, new ReaderOptions());
                 styleReader.Execute();
-                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY);
+                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
 
                 Style zeroStyle = styleReaderContainer.GetStyle(0);
                 Style firstStyle = styleReaderContainer.GetStyle(1);
@@ -137,7 +137,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 StyleReader styleReader = new StyleReader();
                 styleReader.Init(memStream, workbook, new ReaderOptions());
                 styleReader.Execute();
-                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY);
+                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
 
                 Style zeroStyle = styleReaderContainer.GetStyle(0, out _, out _);
                 Style firstStyle = styleReaderContainer.GetStyle(1, out _, out _);
@@ -156,7 +156,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 StyleReader styleReader = new StyleReader();
                 styleReader.Init(memStream, workbook, new ReaderOptions());
                 styleReader.Execute();
-                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY);
+                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
 
                 Assert.Equal(15, styleReaderContainer.StyleCount);
 

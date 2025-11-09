@@ -17,7 +17,7 @@ namespace NanoXLSX.Internal.Writers
     /// <summary>
     /// Class to generate the metadata XML file for the app metadata part on an XLSX file.
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.METADATA_CORE_WRITER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataCoreWriter)]
     internal class MetadataCoreWriter : IPlugInWriter
     {
         private XmlElement properties;
@@ -70,7 +70,7 @@ namespace NanoXLSX.Internal.Writers
             properties.AddChildElementWithValue("lastModifiedBy", md.Creator, "cp");
             properties.AddChildElementWithValue("keywords", md.Keywords, "cp");
             properties.AddChildElementWithValue("description", md.Description, "dc");
-            string time = DateTime.Now.ToString("yyyy-MM-ddThh:mm:ssZ", ParserUtils.INVARIANT_CULTURE);
+            string time = DateTime.Now.ToString("yyyy-MM-ddThh:mm:ssZ", ParserUtils.InvariantCulture);
             XmlElement child1 = properties.AddChildElementWithValue("created", time, "dcterms");
             child1.AddAttribute("type", "dcterms:W3CDTF", "xsi");
             XmlElement child2 = properties.AddChildElementWithValue("modified", time, "dcterms");
@@ -78,7 +78,7 @@ namespace NanoXLSX.Internal.Writers
             properties.AddChildElementWithValue("category", md.Category, "cp");
             properties.AddChildElementWithValue("contentStatus", md.ContentStatus, "cp");
 
-            WriterPlugInHandler.HandleInlineQueuePlugins(ref properties, Workbook, PlugInUUID.METADATA_CORE_INLINE_WRITER);
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref properties, Workbook, PlugInUUID.MetadataCoreInlineWriter);
         }
 
         #endregion

@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
-using System.Xml;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Styles;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using NanoXLSX.Utils;
-using NanoXLSX.Utils.Xml;
 using Xunit;
 
 namespace NanoXLSX.Test.Writer_Reader.PlugIns
@@ -27,15 +24,15 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         private const string VALUE_ID = "valueId";
 
         [Theory(DisplayName = "Test of the plug-in handling for inline reader plug-ins")]
-        [InlineData(typeof(InlineAppMetadataReader), nameof(AppMetadataTestData), "NanoXLSXv3", PlugInUUID.METADATA_APP_INLINE_READER)]
-        [InlineData(typeof(InlineCoreMetadataReader), nameof(CoreMetadataTestData), "UnitTest", PlugInUUID.METADATA_CORE_INLINE_READER)]
-        [InlineData(typeof(InlineSharedStringReader), nameof(SharedStringTestData), "TestValue", PlugInUUID.SHARED_STRINGS_INLINE_READER)]
-        [InlineData(typeof(InlineThemeReader), nameof(ThemeTestData), "Theme1", PlugInUUID.THEME_INLINE_READER)]
-        [InlineData(typeof(InlineStyleReader), nameof(StyleTestData), "Papyrus", PlugInUUID.STYLE_INLINE_READER)]
-        [InlineData(typeof(RelationshipReader), nameof(DummyTestData), "/xl/worksheets/sheet1.xml", PlugInUUID.RELATIONSHIP_INLINE_READER)]
-        [InlineData(typeof(SharedStringsReader), nameof(DummyTestData), "TestValue2", PlugInUUID.SHARED_STRINGS_INLINE_READER)]
-        [InlineData(typeof(WorkbookTestReader), nameof(WorkbookTestData), "Worksheet01", PlugInUUID.WORKBOOK_INLINE_READER)]
-        [InlineData(typeof(WorksheetReader), nameof(WorksheetTestData), "27", PlugInUUID.WORKSHEET_INLINE_READER)]
+        [InlineData(typeof(InlineAppMetadataReader), nameof(AppMetadataTestData), "NanoXLSXv3", PlugInUUID.MetadataAppInlineReader)]
+        [InlineData(typeof(InlineCoreMetadataReader), nameof(CoreMetadataTestData), "UnitTest", PlugInUUID.MetadataCoreInlineReader)]
+        [InlineData(typeof(InlineSharedStringReader), nameof(SharedStringTestData), "TestValue", PlugInUUID.SharedStringsInlineReader)]
+        [InlineData(typeof(InlineThemeReader), nameof(ThemeTestData), "Theme1", PlugInUUID.ThemeInlineReader)]
+        [InlineData(typeof(InlineStyleReader), nameof(StyleTestData), "Papyrus", PlugInUUID.StyleInlineReader)]
+        [InlineData(typeof(RelationshipReader), nameof(DummyTestData), "/xl/worksheets/sheet1.xml", PlugInUUID.RelationshipInlineReader)]
+        [InlineData(typeof(SharedStringsReader), nameof(DummyTestData), "TestValue2", PlugInUUID.SharedStringsInlineReader)]
+        [InlineData(typeof(WorkbookTestReader), nameof(WorkbookTestData), "Worksheet01", PlugInUUID.WorkbookInlineReader)]
+        [InlineData(typeof(WorksheetReader), nameof(WorksheetTestData), "27", PlugInUUID.WorksheetInlineReader)]
         public void InlineReaderPluginTest(Type readerType, string setupMethodName, string expectedReferenceValue, string pluginUuid)
         {
             Workbook wb = new Workbook("sheet1");
@@ -43,8 +40,10 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             setupMethod.Invoke(null, new object[] { wb, expectedReferenceValue });
 
-            List<Type> plugins = new List<Type>();
-            plugins.Add(readerType);
+            List<Type> plugins = new List<Type>
+            {
+                readerType
+            };
             PlugInLoader.InjectPlugins(plugins);
 
             wb.CurrentWorksheet.AddCell(expectedReferenceValue, "A1"); // Write reference value
@@ -66,7 +65,6 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                     Assert.Contains(expectedReferenceValue, values);
                     return;
                 }
-                Assert.True(false, "No suitable data could be found");
             }
 
         }
@@ -108,7 +106,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatAppReaderPlugIn1", QueueUUID = PlugInUUID.METADATA_APP_INLINE_READER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatAppReaderPlugIn1", QueueUUID = PlugInUUID.MetadataAppInlineReader)]
         public class InlineAppMetadataReader : IInlinePlugInReader
         {
             private const string TEST_NODE = "Application";
@@ -118,7 +116,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             public void Execute()
             {
                 string testValue = TestUtils.ReadFirstNodeValue(stream, TEST_NODE);
-                Workbook.AuxiliaryData.SetData(PlugInUUID.METADATA_APP_INLINE_READER, 0, testValue, true);
+                Workbook.AuxiliaryData.SetData(PlugInUUID.MetadataAppInlineReader, 0, testValue, true);
                 this.stream.Position = 0;
             }
 
@@ -130,7 +128,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatCoreReaderPlugIn1", QueueUUID = PlugInUUID.METADATA_CORE_INLINE_READER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatCoreReaderPlugIn1", QueueUUID = PlugInUUID.MetadataCoreInlineReader)]
         public class InlineCoreMetadataReader : IInlinePlugInReader
         {
             private const string TEST_NODE = "category";
@@ -140,7 +138,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             public void Execute()
             {
                 string testValue = TestUtils.ReadFirstNodeValue(stream, TEST_NODE);
-                Workbook.AuxiliaryData.SetData(PlugInUUID.METADATA_CORE_INLINE_READER, 0, testValue, true);
+                Workbook.AuxiliaryData.SetData(PlugInUUID.MetadataCoreInlineReader, 0, testValue, true);
                 this.stream.Position = 0;
             }
 
@@ -152,7 +150,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "SharedStringReaderPlugIn1", QueueUUID = PlugInUUID.SHARED_STRINGS_INLINE_READER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "SharedStringReaderPlugIn1", QueueUUID = PlugInUUID.SharedStringsInlineReader)]
         public class InlineSharedStringReader : IInlinePlugInReader
         {
             private const string TEST_NODE = "t";
@@ -162,7 +160,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             public void Execute()
             {
                 string testValue = TestUtils.ReadFirstNodeValue(stream, TEST_NODE);
-                Workbook.AuxiliaryData.SetData(PlugInUUID.SHARED_STRINGS_INLINE_READER, 0, testValue, true);
+                Workbook.AuxiliaryData.SetData(PlugInUUID.SharedStringsInlineReader, 0, testValue, true);
                 this.stream.Position = 0;
             }
 
@@ -174,7 +172,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "ThemeReaderPlugIn1", QueueUUID = PlugInUUID.THEME_INLINE_READER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "ThemeReaderPlugIn1", QueueUUID = PlugInUUID.ThemeInlineReader)]
         public class InlineThemeReader : IInlinePlugInReader
         {
             private const string TEST_NODE = "theme";
@@ -185,7 +183,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             public void Execute()
             {
                 string testValue = TestUtils.ReadFirstAttributeValue(stream, TEST_NODE, TEST_ATTRIBUTE);
-                Workbook.AuxiliaryData.SetData(PlugInUUID.THEME_INLINE_READER, 0, testValue, true);
+                Workbook.AuxiliaryData.SetData(PlugInUUID.ThemeInlineReader, 0, testValue, true);
                 this.stream.Position = 0;
             }
 
@@ -197,7 +195,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "StyleReaderPlugIn1", QueueUUID = PlugInUUID.STYLE_INLINE_READER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "StyleReaderPlugIn1", QueueUUID = PlugInUUID.StyleInlineReader)]
         public class InlineStyleReader : IInlinePlugInReader
         {
             private const string TEST_NODE = "name";
@@ -208,7 +206,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             public void Execute()
             {
                 List<string> testValues = TestUtils.ReadAllAttributeValues(stream, TEST_NODE, TEST_ATTRIBUTE);
-                Workbook.AuxiliaryData.SetData(PlugInUUID.STYLE_INLINE_READER, 1, testValues, true);
+                Workbook.AuxiliaryData.SetData(PlugInUUID.StyleInlineReader, 1, testValues, true);
                 this.stream.Position = 0;
             }
 
@@ -220,7 +218,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "RelationshipReaderPlugIn1", QueueUUID = PlugInUUID.RELATIONSHIP_INLINE_READER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "RelationshipReaderPlugIn1", QueueUUID = PlugInUUID.RelationshipInlineReader)]
         public class RelationshipReader : IInlinePlugInReader
         {
             private const string TEST_NODE = "Relationship";
@@ -231,7 +229,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             public void Execute()
             {
                 List<string> testValues = TestUtils.ReadAllAttributeValues(stream, TEST_NODE, TEST_ATTRIBUTE);
-                Workbook.AuxiliaryData.SetData(PlugInUUID.RELATIONSHIP_INLINE_READER, 1, testValues, true);
+                Workbook.AuxiliaryData.SetData(PlugInUUID.RelationshipInlineReader, 1, testValues, true);
                 this.stream.Position = 0;
             }
 
@@ -243,7 +241,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "SharedStringsReaderPlugIn1", QueueUUID = PlugInUUID.SHARED_STRINGS_INLINE_READER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "SharedStringsReaderPlugIn1", QueueUUID = PlugInUUID.SharedStringsInlineReader)]
         public class SharedStringsReader : IInlinePlugInReader
         {
             private const string TEST_NODE = "t";
@@ -253,7 +251,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             public void Execute()
             {
                 string testValue = TestUtils.ReadFirstNodeValue(stream, TEST_NODE);
-                Workbook.AuxiliaryData.SetData(PlugInUUID.SHARED_STRINGS_INLINE_READER, 0, testValue, true);
+                Workbook.AuxiliaryData.SetData(PlugInUUID.SharedStringsInlineReader, 0, testValue, true);
                 this.stream.Position = 0;
             }
 
@@ -265,7 +263,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "WorkbookReaderPlugIn1", QueueUUID = PlugInUUID.WORKBOOK_INLINE_READER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "WorkbookReaderPlugIn1", QueueUUID = PlugInUUID.WorkbookInlineReader)]
         public class WorkbookTestReader : IInlinePlugInReader
         {
             private const string TEST_NODE = "sheet";
@@ -276,7 +274,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             public void Execute()
             {
                 string testValue = TestUtils.ReadFirstAttributeValue(stream, TEST_NODE, TEST_ATTRIBUTE);
-                Workbook.AuxiliaryData.SetData(PlugInUUID.WORKBOOK_INLINE_READER, 0, testValue, true);
+                Workbook.AuxiliaryData.SetData(PlugInUUID.WorkbookInlineReader, 0, testValue, true);
                 this.stream.Position = 0;
             }
 
@@ -288,7 +286,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "WorksheetReaderPlugIn1", QueueUUID = PlugInUUID.WORKSHEET_INLINE_READER)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "WorksheetReaderPlugIn1", QueueUUID = PlugInUUID.WorksheetInlineReader)]
         public class WorksheetReader : IInlinePlugInReader
         {
             private const string TEST_NODE = "sheetFormatPr";
@@ -299,7 +297,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             public void Execute()
             {
                 string testValue = TestUtils.ReadFirstAttributeValue(stream, TEST_NODE, TEST_ATTRIBUTE);
-                Workbook.AuxiliaryData.SetData(PlugInUUID.WORKSHEET_INLINE_READER, 0, testValue, true);
+                Workbook.AuxiliaryData.SetData(PlugInUUID.WorksheetInlineReader, 0, testValue, true);
                 this.stream.Position = 0;
             }
 

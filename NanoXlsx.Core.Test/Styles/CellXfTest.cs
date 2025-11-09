@@ -70,7 +70,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void HorizontalAlignTest(HorizontalAlignValue value)
         {
             CellXf cellXf = new CellXf();
-            Assert.Equal(CellXf.DEFAULT_HORIZONTAL_ALIGNMENT, cellXf.HorizontalAlign); // none is default
+            Assert.Equal(CellXf.DefaultHorizontalAlignment, cellXf.HorizontalAlign); // none is default
             cellXf.HorizontalAlign = value;
             Assert.Equal(value, cellXf.HorizontalAlign);
         }
@@ -85,7 +85,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void VerticalAlignTest(VerticalAlignValue value)
         {
             CellXf cellXf = new CellXf();
-            Assert.Equal(CellXf.DEFAULT_VERTICAL_ALIGNMENT, cellXf.VerticalAlign); // none is default
+            Assert.Equal(CellXf.DefaultVerticalAlignment, cellXf.VerticalAlign); // none is default
             cellXf.VerticalAlign = value;
             Assert.Equal(value, cellXf.VerticalAlign);
         }
@@ -97,7 +97,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void TextDirectionTest(TextDirectionValue value)
         {
             CellXf cellXf = new CellXf();
-            Assert.Equal(CellXf.DEFAULT_TEXT_DIRECTION, cellXf.TextDirection); // horizontal is default
+            Assert.Equal(CellXf.DefaultTextDirection, cellXf.TextDirection); // horizontal is default
             cellXf.TextDirection = value;
             Assert.Equal(value, cellXf.TextDirection);
             if (value == TextDirectionValue.vertical)
@@ -142,7 +142,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void AlignTest(TextBreakValue value)
         {
             CellXf cellXf = new CellXf();
-            Assert.Equal(CellXf.DEFAULT_ALIGNMENT, cellXf.Alignment); // none is default
+            Assert.Equal(CellXf.DefaultAlignment, cellXf.Alignment); // none is default
             cellXf.Alignment = value;
             Assert.Equal(value, cellXf.Alignment);
         }

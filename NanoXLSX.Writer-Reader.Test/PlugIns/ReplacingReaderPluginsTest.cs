@@ -25,19 +25,21 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [Theory(DisplayName = "Test of the plug-in handling for replacing reader plug-ins")]
-        [InlineData(typeof(ReplaceMetadataAppReader), PlugInUUID.METADATA_APP_READER, "xmlns:vt=\"http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes\"")]
-        [InlineData(typeof(ReplaceMetadataCoreReader), PlugInUUID.METADATA_CORE_READER, "xmlns:cp=\"http://schemas.openxmlformats.org/package/2006/metadata/core-properties\"")]
-        [InlineData(typeof(ReplaceThemeReader), PlugInUUID.THEME_READER, "xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"")]
-        [InlineData(typeof(ReplaceStyleReader), PlugInUUID.STYLE_READER, "xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\"")]
-        [InlineData(typeof(ReplaceSharedStringsReader), PlugInUUID.SHARED_STRINGS_READER, "xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"")]
-        [InlineData(typeof(ReplaceRelationshipReader), PlugInUUID.RELATIONSHIP_READER, "xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"")]
-        [InlineData(typeof(ReplaceWorksheetReader), PlugInUUID.WORKSHEET_READER, "xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\"")]
-        [InlineData(typeof(ReplaceWorkbookReader), PlugInUUID.WORKBOOK_READER, "xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"")]
+        [InlineData(typeof(ReplaceMetadataAppReader), PlugInUUID.MetadataAppReader, "xmlns:vt=\"http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes\"")]
+        [InlineData(typeof(ReplaceMetadataCoreReader), PlugInUUID.MetadataCoreReader, "xmlns:cp=\"http://schemas.openxmlformats.org/package/2006/metadata/core-properties\"")]
+        [InlineData(typeof(ReplaceThemeReader), PlugInUUID.ThemeReader, "xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"")]
+        [InlineData(typeof(ReplaceStyleReader), PlugInUUID.StyleReader, "xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\"")]
+        [InlineData(typeof(ReplaceSharedStringsReader), PlugInUUID.SharedStringsReader, "xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"")]
+        [InlineData(typeof(ReplaceRelationshipReader), PlugInUUID.RelationshipReader, "xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"")]
+        [InlineData(typeof(ReplaceWorksheetReader), PlugInUUID.WorksheetReader, "xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\"")]
+        [InlineData(typeof(ReplaceWorkbookReader), PlugInUUID.WorkbookReader, "xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"")]
         public void ReplacingReaderPluginTest(Type readerType, string readerUuid, string expectedDocumentFragment)
         {
-            List<Type> plugins = new List<Type>();
-            // Note: These plug-ins may lead to an invalid XLSX document, since not ensured to process the corresponding stream parts as intended. It is just to test the plug-in functionality
-            plugins.Add(readerType);
+            List<Type> plugins = new List<Type>
+            {
+                // Note: These plug-ins may lead to an invalid XLSX document, since not ensured to process the corresponding stream parts as intended. It is just to test the plug-in functionality
+                readerType
+            };
             PlugInLoader.InjectPlugins(plugins);
             Workbook wb = new Workbook("sheet1");
             wb.CurrentWorksheet.AddCell("Test", "A1"); // Write default content
@@ -53,13 +55,15 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [Theory(DisplayName = "Test of the plug-in handling for replacing password reader plug-ins")]
-        [InlineData(typeof(ReplacePasswordReader), PlugInUUID.PASSWORD_READER, "916A", false)] // Expected hash for "TestPassword"
-        [InlineData(typeof(ReplacePasswordIncompatibleReader), PlugInUUID.PASSWORD_READER, null, true)]
+        [InlineData(typeof(ReplacePasswordReader), PlugInUUID.PasswordReader, "916A", false)] // Expected hash for "TestPassword"
+        [InlineData(typeof(ReplacePasswordIncompatibleReader), PlugInUUID.PasswordReader, null, true)]
         public void ReplacingPasswordReaderPluginTest(Type readerType, string readerUuid, string expectedDocumentFragment, bool expectedThrow)
         {
-            List<Type> plugins = new List<Type>();
-            // Note: These plug-ins may lead to an invalid XLSX document, since not ensured to process the corresponding stream parts as intended. It is just to test the plug-in functionality
-            plugins.Add(readerType);
+            List<Type> plugins = new List<Type>
+            {
+                // Note: These plug-ins may lead to an invalid XLSX document, since not ensured to process the corresponding stream parts as intended. It is just to test the plug-in functionality
+                readerType
+            };
             PlugInLoader.InjectPlugins(plugins);
             Workbook wb = new Workbook("sheet1");
             wb.CurrentWorksheet.AddCell("Test", "A1"); // Write default content
@@ -83,21 +87,19 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.METADATA_APP_READER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataAppReader)]
         public class ReplaceMetadataAppReader : MetadataAppReader, IPlugInReader
         {
             private MemoryStream stream;
             private Workbook workbook;
             private IOptions options;
 
-            [ExcludeFromCodeCoverage]
-            public Workbook Workbook { get; set; }
             public void Execute()
             {
                 this.stream.Position = 0;
                 string content = System.Text.Encoding.UTF8.GetString(this.stream.ToArray());
                 this.stream.Position = 0;
-                this.workbook.AuxiliaryData.SetData(PlugInUUID.METADATA_APP_READER, 0, content, true);
+                this.workbook.AuxiliaryData.SetData(PlugInUUID.MetadataAppReader, 0, content, true);
                 base.Execute(); // Execute regular reader
             }
 
@@ -110,21 +112,19 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.METADATA_CORE_READER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataCoreReader)]
         public class ReplaceMetadataCoreReader : MetadataCoreReader, IPlugInReader
         {
             private MemoryStream stream;
             private Workbook workbook;
             private IOptions options;
 
-            [ExcludeFromCodeCoverage]
-            public Workbook Workbook { get; set; }
             public void Execute()
             {
                 this.stream.Position = 0;
                 string content = System.Text.Encoding.UTF8.GetString(this.stream.ToArray());
                 this.stream.Position = 0;
-                this.workbook.AuxiliaryData.SetData(PlugInUUID.METADATA_CORE_READER, 0, content, true);
+                this.workbook.AuxiliaryData.SetData(PlugInUUID.MetadataCoreReader, 0, content, true);
                 base.Execute(); // Execute regular reader
             }
 
@@ -137,21 +137,19 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.THEME_READER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.ThemeReader)]
         public class ReplaceThemeReader : ThemeReader, IPlugInReader
         {
             private MemoryStream stream;
             private Workbook workbook;
             private IOptions options;
 
-            [ExcludeFromCodeCoverage]
-            public Workbook Workbook { get; set; }
             public void Execute()
             {
                 this.stream.Position = 0;
                 string content = System.Text.Encoding.UTF8.GetString(this.stream.ToArray());
                 this.stream.Position = 0;
-                this.workbook.AuxiliaryData.SetData(PlugInUUID.THEME_READER, 0, content, true);
+                this.workbook.AuxiliaryData.SetData(PlugInUUID.ThemeReader, 0, content, true);
                 base.Execute(); // Execute regular reader
             }
 
@@ -164,21 +162,19 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.STYLE_READER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.StyleReader)]
         public class ReplaceStyleReader : StyleReader, IPlugInReader
         {
             private MemoryStream stream;
             private Workbook workbook;
             private IOptions options;
 
-            [ExcludeFromCodeCoverage]
-            public Workbook Workbook { get; set; }
             public void Execute()
             {
                 this.stream.Position = 0;
                 string content = System.Text.Encoding.UTF8.GetString(this.stream.ToArray());
                 this.stream.Position = 0;
-                this.workbook.AuxiliaryData.SetData(PlugInUUID.STYLE_READER, 0, content, true);
+                this.workbook.AuxiliaryData.SetData(PlugInUUID.StyleReader, 0, content, true);
                 base.Execute(); // Execute regular reader
             }
 
@@ -191,21 +187,19 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.SHARED_STRINGS_READER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.SharedStringsReader)]
         public class ReplaceSharedStringsReader : SharedStringsReader, IPlugInReader
         {
             private MemoryStream stream;
             private Workbook workbook;
             private IOptions options;
 
-            [ExcludeFromCodeCoverage]
-            public Workbook Workbook { get; set; }
             public void Execute()
             {
                 this.stream.Position = 0;
                 string content = System.Text.Encoding.UTF8.GetString(this.stream.ToArray());
                 this.stream.Position = 0;
-                this.workbook.AuxiliaryData.SetData(PlugInUUID.SHARED_STRINGS_READER, 0, content, true);
+                this.workbook.AuxiliaryData.SetData(PlugInUUID.SharedStringsReader, 0, content, true);
                 base.Execute(); // Execute regular reader
             }
 
@@ -218,21 +212,19 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.RELATIONSHIP_READER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.RelationshipReader)]
         public class ReplaceRelationshipReader : RelationshipReader, IPlugInReader
         {
             private MemoryStream stream;
             private Workbook workbook;
             private IOptions options;
 
-            [ExcludeFromCodeCoverage]
-            public Workbook Workbook { get; set; }
             public void Execute()
             {
                 this.stream.Position = 0;
                 string content = System.Text.Encoding.UTF8.GetString(this.stream.ToArray());
                 this.stream.Position = 0;
-                this.workbook.AuxiliaryData.SetData(PlugInUUID.RELATIONSHIP_READER, 0, content, true);
+                this.workbook.AuxiliaryData.SetData(PlugInUUID.RelationshipReader, 0, content, true);
                 base.Execute(); // Execute regular reader
             }
 
@@ -245,21 +237,19 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WORKSHEET_READER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorksheetReader)]
         public class ReplaceWorksheetReader : WorksheetReader, IPlugInReader
         {
             private MemoryStream stream;
             private Workbook workbook;
             private IOptions options;
 
-            [ExcludeFromCodeCoverage]
-            public Workbook Workbook { get; set; }
             public void Execute()
             {
                 this.stream.Position = 0;
                 string content = System.Text.Encoding.UTF8.GetString(this.stream.ToArray());
                 this.stream.Position = 0;
-                this.workbook.AuxiliaryData.SetData(PlugInUUID.WORKSHEET_READER, 0, content, true);
+                this.workbook.AuxiliaryData.SetData(PlugInUUID.WorksheetReader, 0, content, true);
                 base.Execute(); // Execute regular reader
             }
 
@@ -272,21 +262,19 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WORKBOOK_READER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorkbookReader)]
         public class ReplaceWorkbookReader : Internal.Readers.WorkbookReader, IPlugInReader
         {
             private MemoryStream stream;
             private Workbook workbook;
             private IOptions options;
 
-            [ExcludeFromCodeCoverage]
-            public Workbook Workbook { get; set; }
             public void Execute()
             {
                 this.stream.Position = 0;
                 string content = System.Text.Encoding.UTF8.GetString(this.stream.ToArray());
                 this.stream.Position = 0;
-                this.workbook.AuxiliaryData.SetData(PlugInUUID.WORKBOOK_READER, 0, content, true);
+                this.workbook.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, 0, content, true);
                 base.Execute(); // Execute regular reader
             }
 
@@ -300,7 +288,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.PASSWORD_READER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.PasswordReader)]
         public class ReplacePasswordReader : IPasswordReader
         {
             public string PasswordHash { get; set; }
@@ -308,8 +296,6 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             public void ReadXmlAttributes(System.Xml.XmlNode node)
             {
                 PasswordHash = ReaderUtils.GetAttribute(node, "password"); // Dummy read to ensure the XML node is processed
-
-               // this.workbook.AuxiliaryData.SetData(PlugInUUID.PASSWORD_READER, 0, content, true);
             }
 
             public void Init(PasswordType type, ReaderOptions readerOptions)
@@ -346,12 +332,10 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.PASSWORD_READER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.PasswordReader)]
         public class ReplacePasswordIncompatibleReader : LegacyPasswordReader
         {
-            public string PasswordHash { get; set; }
-
-            public new void ReadXmlAttributes(System.Xml.XmlNode node)
+            public static new void ReadXmlAttributes(System.Xml.XmlNode node)
             {
                 // NoOp
             }
@@ -359,39 +343,6 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             public override bool ContemporaryAlgorithmDetected
             {
                 get { return true; } // Force incompatible algorithm
-            }
-
-            public void Init(PasswordType type, ReaderOptions readerOptions)
-            {
-                // NoOp
-            }
-
-            [ExcludeFromCodeCoverage]
-            public void SetPassword(string plainText)
-            {
-                // NoOp
-            }
-
-            [ExcludeFromCodeCoverage]
-            public void UnsetPassword()
-            {
-                // NoOp
-            }
-
-            public string GetPassword()
-            {
-                return null;
-            }
-
-            public bool PasswordIsSet()
-            {
-                return true;
-            }
-
-            [ExcludeFromCodeCoverage]
-            public void CopyFrom(IPassword passwordInstance)
-            {
-                // NoOp
             }
         }
 

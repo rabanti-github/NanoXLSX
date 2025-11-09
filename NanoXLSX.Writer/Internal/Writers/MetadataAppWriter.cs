@@ -15,7 +15,7 @@ namespace NanoXLSX.Internal.Writers
     /// <summary>
     /// Class to generate the metadata XML file for the app metadata part on an XLSX file.
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.METADATA_APP_WRITER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataAppWriter)]
     internal class MetadataAppWriter : IPlugInWriter
     {
         private XmlElement properties;
@@ -72,7 +72,7 @@ namespace NanoXLSX.Internal.Writers
             properties.AddChildElementWithValue("HyperlinksChanged", "false");
             properties.AddChildElementWithValue("AppVersion", md.ApplicationVersion);
 
-            WriterPlugInHandler.HandleInlineQueuePlugins(ref properties, Workbook, PlugInUUID.METADATA_APP_INLINE_WRITER);
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref properties, Workbook, PlugInUUID.MetadataAppInlineWriter);
         }
 
         #endregion

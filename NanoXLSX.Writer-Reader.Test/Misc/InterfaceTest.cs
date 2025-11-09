@@ -56,8 +56,8 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
         }
 
         [Theory(DisplayName = "Test of the failing attempt of accessing CopyFrom of LegacyPasswordReader (for code coverage)")]
-        [InlineData(ReaderPassword.PasswordType.WORKBOOK_PROTECTION)]
-        [InlineData(ReaderPassword.PasswordType.WORKSHEET_PROTECTION)]
+        [InlineData(ReaderPassword.PasswordType.WorkbookProtection)]
+        [InlineData(ReaderPassword.PasswordType.WorksheetProtection)]
         public void FailingLegacyPasswordReaderCopyFromTest(ReaderPassword.PasswordType type)
         {
             LegacyPasswordReader reader = new LegacyPasswordReader();
@@ -68,8 +68,8 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
         }
 
         [Theory(DisplayName = "Test of the failing attempt of accessing SetPassword of LegacyPasswordReader (for code coverage)")]
-        [InlineData(ReaderPassword.PasswordType.WORKBOOK_PROTECTION)]
-        [InlineData(ReaderPassword.PasswordType.WORKSHEET_PROTECTION)]
+        [InlineData(ReaderPassword.PasswordType.WorkbookProtection)]
+        [InlineData(ReaderPassword.PasswordType.WorksheetProtection)]
         public void FailingLegacyPasswordReaderSetPasswordTest(ReaderPassword.PasswordType type)
         {
             LegacyPasswordReader reader = new LegacyPasswordReader();
@@ -78,8 +78,8 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
         }
 
         [Theory(DisplayName = "Test of the failing attempt of accessing UnsetPassword of LegacyPasswordReader (for code coverage)")]
-        [InlineData(ReaderPassword.PasswordType.WORKBOOK_PROTECTION)]
-        [InlineData(ReaderPassword.PasswordType.WORKSHEET_PROTECTION)]
+        [InlineData(ReaderPassword.PasswordType.WorkbookProtection)]
+        [InlineData(ReaderPassword.PasswordType.WorksheetProtection)]
         public void FailingLegacyPasswordReaderUnsetPasswordTest(ReaderPassword.PasswordType type)
         {
             LegacyPasswordReader reader = new LegacyPasswordReader();

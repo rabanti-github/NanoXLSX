@@ -27,7 +27,7 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader for style definitions of XLSX files.
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.STYLE_READER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.StyleReader)]
     public class StyleReader : IPlugInReader
     {
 
@@ -106,9 +106,9 @@ namespace NanoXLSX.Internal.Readers
                         }
                     }
                     HandleMruColors();
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.STYLE_INLINE_READER);
+                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.StyleInlineReader);
                 }
-                Workbook.AuxiliaryData.SetData(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY, styleReaderContainer);
+                Workbook.AuxiliaryData.SetData(PlugInUUID.StyleReader, PlugInUUID.StyleEntity, styleReaderContainer);
             }
             catch (Exception ex)
             {
@@ -183,31 +183,31 @@ namespace NanoXLSX.Internal.Readers
                 if (innerNode != null)
                 {
                     borderStyle.DiagonalStyle = ParseBorderStyle(innerNode);
-                    borderStyle.DiagonalColor = GetColor(innerNode, Border.DEFAULT_COLOR);
+                    borderStyle.DiagonalColor = GetColor(innerNode, Border.DefaultBorderColor);
                 }
                 innerNode = ReaderUtils.GetChildNode(border, "top");
                 if (innerNode != null)
                 {
                     borderStyle.TopStyle = ParseBorderStyle(innerNode);
-                    borderStyle.TopColor = GetColor(innerNode, Border.DEFAULT_COLOR);
+                    borderStyle.TopColor = GetColor(innerNode, Border.DefaultBorderColor);
                 }
                 innerNode = ReaderUtils.GetChildNode(border, "bottom");
                 if (innerNode != null)
                 {
                     borderStyle.BottomStyle = ParseBorderStyle(innerNode);
-                    borderStyle.BottomColor = GetColor(innerNode, Border.DEFAULT_COLOR);
+                    borderStyle.BottomColor = GetColor(innerNode, Border.DefaultBorderColor);
                 }
                 innerNode = ReaderUtils.GetChildNode(border, "left");
                 if (innerNode != null)
                 {
                     borderStyle.LeftStyle = ParseBorderStyle(innerNode);
-                    borderStyle.LeftColor = GetColor(innerNode, Border.DEFAULT_COLOR);
+                    borderStyle.LeftColor = GetColor(innerNode, Border.DefaultBorderColor);
                 }
                 innerNode = ReaderUtils.GetChildNode(border, "right");
                 if (innerNode != null)
                 {
                     borderStyle.RightStyle = ParseBorderStyle(innerNode);
-                    borderStyle.RightColor = GetColor(innerNode, Border.DEFAULT_COLOR);
+                    borderStyle.RightColor = GetColor(innerNode, Border.DefaultBorderColor);
                 }
                 borderStyle.InternalID = this.styleReaderContainer.GetNextBorderId();
                 this.styleReaderContainer.AddStyleComponent(borderStyle);

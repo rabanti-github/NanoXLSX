@@ -76,13 +76,13 @@ namespace NanoXLSX.Internal.Readers
             this.readerOptions = readerOptions as ReaderOptions;
             if (dateStyles == null || timeStyles == null || this.resolvedStyles == null)
             {
-                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.STYLE_READER, PlugInUUID.STYLES_ENTITY);
+                StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
                 ProcessStyles(styleReaderContainer);
             }
             if (this.passwordReader == null)
             {
-                this.passwordReader = PlugInLoader.GetPlugIn<IPasswordReader>(PlugInUUID.PASSWORD_READER, new LegacyPasswordReader());
-                this.passwordReader.Init(PasswordType.WORKSHEET_PROTECTION, this.readerOptions);
+                this.passwordReader = PlugInLoader.GetPlugIn<IPasswordReader>(PlugInUUID.PasswordReader, new LegacyPasswordReader());
+                this.passwordReader.Init(PasswordType.WorksheetProtection, this.readerOptions);
             }
         }
 
@@ -94,7 +94,7 @@ namespace NanoXLSX.Internal.Readers
         {
             try
             {
-                WorksheetDefinition worksheetDefinition = Workbook.AuxiliaryData.GetData<WorksheetDefinition>(PlugInUUID.WORKBOOK_READER, PlugInUUID.WORKSHEET_DEFINITION_ENTITY, CurrentWorksheetID);
+                WorksheetDefinition worksheetDefinition = Workbook.AuxiliaryData.GetData<WorksheetDefinition>(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, CurrentWorksheetID);
                 Worksheet worksheet = new Worksheet(worksheetDefinition.WorksheetName, CurrentWorksheetID, Workbook);
                 worksheet.Hidden = worksheetDefinition.Hidden;
                 using (stream) // Close after processing
@@ -110,7 +110,7 @@ namespace NanoXLSX.Internal.Readers
                     GetColumns(document, worksheet);
                     GetSheetProtection(document, worksheet);
                     SetWorkbookRelation(worksheet);
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WORKSHEET_INLINE_READER, CurrentWorksheetID);
+                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WorksheetInlineReader, CurrentWorksheetID);
                 }
 
 
@@ -132,7 +132,7 @@ namespace NanoXLSX.Internal.Readers
         private void SetWorkbookRelation(Worksheet worksheet)
         {
             Workbook.AddWorksheet(worksheet);
-            int selectedWorksheetId = Workbook.AuxiliaryData.GetData<int>(PlugInUUID.WORKBOOK_READER, PlugInUUID.SELECTED_WORKSHEET_ENTITY);
+            int selectedWorksheetId = Workbook.AuxiliaryData.GetData<int>(PlugInUUID.WorkbookReader, PlugInUUID.SelectedWorksheetEntity);
             if (selectedWorksheetId + 1 == CurrentWorksheetID) // selectedWorksheetId is 0-based
             {
                 Workbook.SetSelectedWorksheet(worksheet);
@@ -748,7 +748,7 @@ namespace NanoXLSX.Internal.Readers
                 rawValue = GetGloballyEnforcedValue(rawValue, cellAddress);
                 rawValue = GetGloballyEnforcedFlagValues(rawValue, cellAddress);
                 importedType = ResolveType(rawValue, importedType);
-                if (importedType == Cell.CellType.DATE && rawValue is DateTime && (DateTime)rawValue < DataUtils.FIRST_ALLOWED_EXCEL_DATE)
+                if (importedType == Cell.CellType.DATE && rawValue is DateTime && (DateTime)rawValue < DataUtils.FirstAllowedExcelDate)
                 {
                     // Fix conversion from time to date, where time has no days
                     rawValue = ((DateTime)rawValue).AddDays(1);
@@ -1027,14 +1027,14 @@ namespace NanoXLSX.Internal.Readers
                 case sbyte _:
                 case int _:
                     converter = data as IConvertible;
-                    double tempDouble = converter.ToDouble(DataUtils.INVARIANT_CULTURE);
+                    double tempDouble = converter.ToDouble(DataUtils.InvariantCulture);
                     if (tempDouble > (double)decimal.MaxValue || tempDouble < (double)decimal.MinValue)
                     {
                         return data;
                     }
                     else
                     {
-                        return converter.ToDecimal(DataUtils.INVARIANT_CULTURE);
+                        return converter.ToDecimal(DataUtils.InvariantCulture);
                     }
                 case bool _:
                     if ((bool)data)
@@ -1124,7 +1124,7 @@ namespace NanoXLSX.Internal.Readers
                 case DateTime _:
                     return data;
                 case TimeSpan _:
-                    DateTime root = DataUtils.FIRST_ALLOWED_EXCEL_DATE;
+                    DateTime root = DataUtils.FirstAllowedExcelDate;
                     TimeSpan time = (TimeSpan)data;
                     root = root.AddDays(-1); // Fix offset of 1
                     root = root.AddHours(time.Hours);
@@ -1170,7 +1170,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 isDateTime = DateTime.TryParseExact(raw, readerOptions.DateTimeFormat, readerOptions.TemporalCultureInfo, DateTimeStyles.None, out dateTime);
             }
-            if (isDateTime && dateTime >= DataUtils.FIRST_ALLOWED_EXCEL_DATE && dateTime <= DataUtils.LAST_ALLOWED_EXCEL_DATE)
+            if (isDateTime && dateTime >= DataUtils.FirstAllowedExcelDate && dateTime <= DataUtils.LastAllowedExcelDate)
             {
                 return dateTime;
             }
@@ -1229,7 +1229,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 isTimeSpan = TimeSpan.TryParseExact(raw, readerOptions.TimeSpanFormat, readerOptions.TemporalCultureInfo, out timeSpan);
             }
-            if (isTimeSpan && timeSpan.Days >= 0 && timeSpan.Days < DataUtils.MAX_OADATE_VALUE)
+            if (isTimeSpan && timeSpan.Days >= 0 && timeSpan.Days < DataUtils.MaxOADateValue)
             {
                 return timeSpan;
             }
@@ -1252,7 +1252,7 @@ namespace NanoXLSX.Internal.Readers
                 resolvedType = Cell.CellType.STRING;
                 return raw;
             }
-            if ((valueType == Cell.CellType.DATE && (dValue < DataUtils.MIN_OADATE_VALUE || dValue > DataUtils.MAX_OADATE_VALUE)) || (valueType == Cell.CellType.TIME && (dValue < 0.0 || dValue > DataUtils.MAX_OADATE_VALUE)))
+            if ((valueType == Cell.CellType.DATE && (dValue < DataUtils.MinOADateValue || dValue > DataUtils.MaxOADateValue)) || (valueType == Cell.CellType.TIME && (dValue < 0.0 || dValue > DataUtils.MaxOADateValue)))
             {
                 // fallback to number (cannot be anything else)
                 resolvedType = Cell.CellType.NUMBER;
@@ -1283,10 +1283,10 @@ namespace NanoXLSX.Internal.Readers
         private object ConvertDateFromDouble(object data)
         {
             object oaDate = ConvertToDouble(data);
-            if (oaDate is double && (double)oaDate < DataUtils.MAX_OADATE_VALUE)
+            if (oaDate is double && (double)oaDate < DataUtils.MaxOADateValue)
             {
                 DateTime date = DataUtils.GetDateFromOA((double)oaDate);
-                if (date >= DataUtils.FIRST_ALLOWED_EXCEL_DATE && date <= DataUtils.LAST_ALLOWED_EXCEL_DATE)
+                if (date >= DataUtils.FirstAllowedExcelDate && date <= DataUtils.LastAllowedExcelDate)
                 {
                     return date;
                 }
@@ -1305,7 +1305,7 @@ namespace NanoXLSX.Internal.Readers
             if (oaDate is double)
             {
                 double d = (double)oaDate;
-                if (d >= DataUtils.MIN_OADATE_VALUE && d <= DataUtils.MAX_OADATE_VALUE)
+                if (d >= DataUtils.MinOADateValue && d <= DataUtils.MaxOADateValue)
                 {
                     DateTime date = DataUtils.GetDateFromOA(d);
                     return new TimeSpan((int)d, date.Hour, date.Minute, date.Second);

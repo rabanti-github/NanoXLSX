@@ -19,7 +19,7 @@ namespace NanoXLSX.Internal.Writers
     /// <summary>
     /// Class to generate the workbook XML file in a XLSX file.
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WORKBOOK_WRITER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorkbookWriter)]
     internal class WorkbookWriter : IPlugInWriter
     {
         private XmlElement workbook;
@@ -55,7 +55,7 @@ namespace NanoXLSX.Internal.Writers
         {
             this.Workbook = baseWriter.Workbook;
             IPassword passwordInstance = Workbook.WorkbookProtectionPassword;
-            this.passwordWriter = PlugInLoader.GetPlugIn<IPasswordWriter>(PlugInUUID.PASSWORD_WRITER, new LegacyPasswordWriter());
+            this.passwordWriter = PlugInLoader.GetPlugIn<IPasswordWriter>(PlugInUUID.PasswordWriter, new LegacyPasswordWriter());
             this.passwordWriter.Init(PasswordType.WORKBOOK_PROTECTION, passwordInstance.PasswordHash);
         }
 
@@ -110,7 +110,7 @@ namespace NanoXLSX.Internal.Writers
                 sheet.AddAttribute("name", "sheet1");
             }
 
-            WriterPlugInHandler.HandleInlineQueuePlugins(ref workbook, Workbook, PlugInUUID.WORKBOOK_INLINE_WRITER);
+            WriterPlugInHandler.HandleInlineQueuePlugins(ref workbook, Workbook, PlugInUUID.WorkbookInlineWriter);
         }
 
         /// <summary>

@@ -48,7 +48,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
 
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.METADATA_APP_WRITER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataAppWriter)]
         public class ReplaceAppMetadataWriter : IPlugInWriter
         {
             private string testValue = "test";
@@ -79,7 +79,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.METADATA_CORE_WRITER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataCoreWriter)]
         public class ReplaceCoreMetadataWriter : IPlugInWriter
         {
             private string testValue = "test";
@@ -110,7 +110,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.STYLE_WRITER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.StyleWriter)]
         public class ReplaceStyleWriter : IPlugInWriter
         {
             private string testValue = "test";
@@ -141,7 +141,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.THEME_WRITER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.ThemeWriter)]
         public class ReplaceThemeWriter : IPlugInWriter
         {
             private string testValue = "test";
@@ -172,7 +172,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.SHARED_STRINGS_WRITER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.SharedStringsWriter)]
         public class ReplaceSharedStringWriter : ISharedStringWriter
         {
             private string testValue = "test";
@@ -208,7 +208,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WORKSHEET_WRITER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorksheetWriter)]
         public class ReplaceWorksheetWriter : IWorksheetWriter
         {
             private string testValue = "test";
@@ -242,7 +242,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             }
         }
 
-        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WORKBOOK_WRITER)]
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorkbookWriter)]
         public class ReplaceWorkbookWriter : IPlugInWriter
         {
             private string testValue = "test";

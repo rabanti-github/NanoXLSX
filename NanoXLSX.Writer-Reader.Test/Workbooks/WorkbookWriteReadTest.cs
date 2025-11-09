@@ -50,7 +50,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
         {
             Workbook workbook = new Workbook();
             string color1 = "AACC00";
-            string color2 = Fill.DEFAULT_COLOR; // Should not be added (black)
+            string color2 = Fill.DefaultColor; // Should not be added (black)
             workbook.AddMruColor(color1);
             workbook.AddMruColor(color2);
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);

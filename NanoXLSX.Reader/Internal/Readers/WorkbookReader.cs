@@ -22,7 +22,7 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader to decompile a workbook in an XLSX files
     /// </summary>
-    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WORKBOOK_READER)]
+    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorkbookReader)]
     public partial class WorkbookReader : IPlugInReader
     {
         private MemoryStream stream;
@@ -57,8 +57,8 @@ namespace NanoXLSX.Internal.Readers
             this.stream = stream;
             this.Workbook = workbook;
             this.readerOptions = (ReaderOptions)readerOptions;
-            this.passwordReader = PlugInLoader.GetPlugIn<IPasswordReader>(PlugInUUID.PASSWORD_READER, new LegacyPasswordReader());
-            this.passwordReader.Init(PasswordType.WORKBOOK_PROTECTION, this.readerOptions);
+            this.passwordReader = PlugInLoader.GetPlugIn<IPasswordReader>(PlugInUUID.PasswordReader, new LegacyPasswordReader());
+            this.passwordReader.Init(PasswordType.WorkbookProtection, this.readerOptions);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace NanoXLSX.Internal.Readers
                             GetProtectionInformation(node);
                         }
                     }
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WORKBOOK_INLINE_READER);
+                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WorkbookInlineReader);
                 }
             }
             catch (NotSupportedContentException ex)
@@ -151,7 +151,7 @@ namespace NanoXLSX.Internal.Readers
                     attribute = ReaderUtils.GetAttribute(node, "activeTab");
                     if (!string.IsNullOrEmpty(attribute))
                     {
-                        Workbook.AuxiliaryData.SetData(PlugInUUID.WORKBOOK_READER, PlugInUUID.SELECTED_WORKSHEET_ENTITY, ParserUtils.ParseInt(attribute));
+                        Workbook.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.SelectedWorksheetEntity, ParserUtils.ParseInt(attribute));
                     }
                 }
             }
@@ -180,7 +180,7 @@ namespace NanoXLSX.Internal.Readers
                         }
                         WorksheetDefinition definition = new WorksheetDefinition(id, sheetName, relId);
                         definition.Hidden = hidden;
-                        Workbook.AuxiliaryData.SetData(PlugInUUID.WORKBOOK_READER, PlugInUUID.WORKSHEET_DEFINITION_ENTITY, id, definition);
+                        Workbook.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, id, definition);
                     }
                     catch (Exception e)
                     {

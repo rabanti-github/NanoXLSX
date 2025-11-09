@@ -84,8 +84,8 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_1", QueueUUID = PlugInUUID.WRITER_PACKAGE_REGISTRY_QUEUE)]
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_2", QueueUUID = PlugInUUID.WRITER_APPENDING_QUEUE)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_1", QueueUUID = PlugInUUID.WriterPackageRegistryQueue)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_2", QueueUUID = PlugInUUID.WriterAppendingQueue)]
         internal class TestPackage : IPlugInPackageWriter
         {
             private Workbook workbook;
@@ -126,8 +126,8 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_3", QueueUUID = PlugInUUID.WRITER_PACKAGE_REGISTRY_QUEUE)]
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_4", QueueUUID = PlugInUUID.WRITER_APPENDING_QUEUE)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_3", QueueUUID = PlugInUUID.WriterPackageRegistryQueue)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_4", QueueUUID = PlugInUUID.WriterAppendingQueue)]
         internal class TestPackage2 : IPlugInPackageWriter
         {
             private Workbook workbook;
@@ -168,8 +168,8 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             }
         }
 
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_5", QueueUUID = PlugInUUID.WRITER_PACKAGE_REGISTRY_QUEUE)]
-        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_6", QueueUUID = PlugInUUID.WRITER_APPENDING_QUEUE)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_5", QueueUUID = PlugInUUID.WriterPackageRegistryQueue)]
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_6", QueueUUID = PlugInUUID.WriterAppendingQueue)]
         public class TestRootPackage : IPlugInPackageWriter
         {
             private Workbook workbook;

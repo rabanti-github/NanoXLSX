@@ -60,7 +60,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void FormatNumberTest(FormatNumber number)
         {
             NumberFormat numberFormat = new NumberFormat();
-            Assert.Equal(NumberFormat.DEFAULT_NUMBER, numberFormat.Number); // default is none
+            Assert.Equal(NumberFormat.DefaultNumber, numberFormat.Number); // default is none
             numberFormat.Number = number;
             Assert.Equal(number, numberFormat.Number);
         }
@@ -199,14 +199,14 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the TryParseFormatNumber method")]
-        [InlineData(0, FormatRange.defined_format, FormatNumber.none)]
-        [InlineData(-1, FormatRange.invalid, FormatNumber.none)]
-        [InlineData(22, FormatRange.defined_format, FormatNumber.format_22)]
-        [InlineData(23, FormatRange.undefined, FormatNumber.none)]
-        [InlineData(163, FormatRange.undefined, FormatNumber.none)]
-        [InlineData(164, FormatRange.defined_format, FormatNumber.custom)]
-        [InlineData(165, FormatRange.custom_format, FormatNumber.custom)]
-        [InlineData(700, FormatRange.custom_format, FormatNumber.custom)]
+        [InlineData(0, FormatRange.DefinedFormat, FormatNumber.none)]
+        [InlineData(-1, FormatRange.Invalid, FormatNumber.none)]
+        [InlineData(22, FormatRange.DefinedFormat, FormatNumber.format_22)]
+        [InlineData(23, FormatRange.Undefined, FormatNumber.none)]
+        [InlineData(163, FormatRange.Undefined, FormatNumber.none)]
+        [InlineData(164, FormatRange.DefinedFormat, FormatNumber.custom)]
+        [InlineData(165, FormatRange.CustomFormat, FormatNumber.custom)]
+        [InlineData(700, FormatRange.CustomFormat, FormatNumber.custom)]
         public void TryParseFormatNumberTest(int givenNumber, FormatRange expectedRange, FormatNumber expectedFormatNumber)
         {
             FormatNumber number;
@@ -284,7 +284,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         [Fact(DisplayName = "Test of the constant of the default custom format start number")]
         public void DefaultFontNameTest()
         {
-            Assert.Equal(164, NumberFormat.CUSTOMFORMAT_START_NUMBER); // Expected 164
+            Assert.Equal(164, NumberFormat.CustomFormatStartNumber); // Expected 164
         }
 
         [Fact(DisplayName = "Test of the CompareTo method")]

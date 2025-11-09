@@ -542,7 +542,7 @@ namespace NanoXLSX
             ShowGridLines = true;
             ShowRowColumnHeaders = true;
             ShowRuler = true;
-            sheetProtectionPassword = new LegacyPassword(LegacyPassword.PasswordType.WORKSHEET_PROTECTION);
+            sheetProtectionPassword = new LegacyPassword(LegacyPassword.PasswordType.WorksheetProtection);
         }
 
         /// <summary>

@@ -159,7 +159,7 @@ namespace NanoXLSX.Test.Core.StyleTest
             Style style = BasicStyles.ColorizedBackground(hexCode);
             Assert.NotNull(style);
             Assert.Equal(expectedHexCode, style.CurrentFill.ForegroundColor);
-            Assert.Equal(Fill.DEFAULT_COLOR, style.CurrentFill.BackgroundColor);
+            Assert.Equal(Fill.DefaultColor, style.CurrentFill.BackgroundColor);
             Assert.Equal(PatternValue.solid, style.CurrentFill.PatternFill);
 
         }
@@ -186,7 +186,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         {
             Style style = BasicStyles.Font(name);
             Assert.Equal(name, style.CurrentFont.Name);
-            Assert.Equal(Font.DEFAULT_FONT_SIZE, style.CurrentFont.Size);
+            Assert.Equal(Font.DefaultFontSize, style.CurrentFont.Size);
             Assert.False(style.CurrentFont.Bold);
             Assert.False(style.CurrentFont.Italic);
         }
@@ -225,13 +225,13 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void FontTest4()
         {
             Style style = BasicStyles.Font("Arial", -1f);
-            Assert.Equal(Font.MIN_FONT_SIZE, style.CurrentFont.Size);
+            Assert.Equal(Font.MinFontSize, style.CurrentFont.Size);
             style = BasicStyles.Font("Arial", 0.5f);
-            Assert.Equal(Font.MIN_FONT_SIZE, style.CurrentFont.Size);
+            Assert.Equal(Font.MinFontSize, style.CurrentFont.Size);
             style = BasicStyles.Font("Arial", 409.1f);
-            Assert.Equal(Font.MAX_FONT_SIZE, style.CurrentFont.Size);
+            Assert.Equal(Font.MaxFontSize, style.CurrentFont.Size);
             style = BasicStyles.Font("Arial", 1000f);
-            Assert.Equal(Font.MAX_FONT_SIZE, style.CurrentFont.Size);
+            Assert.Equal(Font.MaxFontSize, style.CurrentFont.Size);
         }
 
         [Fact(DisplayName = "Test of the failing Font function on a invalid font name")]

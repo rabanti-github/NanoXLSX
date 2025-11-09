@@ -21,12 +21,12 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default border style as constant
         /// </summary>
-        public static readonly StyleValue DEFAULT_BORDER_STYLE = StyleValue.none;
+        public static readonly StyleValue DefaultBorderStyle = StyleValue.none;
 
         /// <summary>
         /// Default border color as constant
         /// </summary>
-        public static readonly string DEFAULT_COLOR = "";
+        public static readonly string DefaultBorderColor = "";
 
         #endregion
 
@@ -72,7 +72,9 @@ namespace NanoXLSX.Styles
             /// <summary>thick border</summary>
             thick,
             /// <summary>double border</summary>
+#pragma warning disable CA1707 // Suppress: Identifiers should not contain underscores
             s_double,
+#pragma warning restore CA1707
         }
         #endregion
 
@@ -89,7 +91,7 @@ namespace NanoXLSX.Styles
                 Validators.ValidateColor(value, true, true);
                 if (value != null)
                 {
-                    bottomColor = value.ToUpper();
+                    bottomColor = ParserUtils.ToUpper(value);
                 }
                 else
                 {
@@ -114,7 +116,7 @@ namespace NanoXLSX.Styles
                 Validators.ValidateColor(value, true, true);
                 if (value != null)
                 {
-                    diagonalColor = value.ToUpper();
+                    diagonalColor = ParserUtils.ToUpper(value);
                 }
                 else
                 {
@@ -149,7 +151,7 @@ namespace NanoXLSX.Styles
                 Validators.ValidateColor(value, true, true);
                 if (value != null)
                 {
-                    leftColor = value.ToUpper();
+                    leftColor = ParserUtils.ToUpper(value);
                 }
                 else
                 {
@@ -174,7 +176,7 @@ namespace NanoXLSX.Styles
                 Validators.ValidateColor(value, true, true);
                 if (value != null)
                 {
-                    rightColor = value.ToUpper();
+                    rightColor = ParserUtils.ToUpper(value);
                 }
                 else
                 {
@@ -198,7 +200,7 @@ namespace NanoXLSX.Styles
                 Validators.ValidateColor(value, true, true);
                 if (value != null)
                 {
-                    topColor = value.ToUpper();
+                    topColor = ParserUtils.ToUpper(value);
                 }
                 else
                 {
@@ -219,16 +221,16 @@ namespace NanoXLSX.Styles
         /// </summary>
         public Border()
         {
-            BottomColor = DEFAULT_COLOR;
-            TopColor = DEFAULT_COLOR;
-            LeftColor = DEFAULT_COLOR;
-            RightColor = DEFAULT_COLOR;
-            DiagonalColor = DEFAULT_COLOR;
-            LeftStyle = DEFAULT_BORDER_STYLE;
-            RightStyle = DEFAULT_BORDER_STYLE;
-            TopStyle = DEFAULT_BORDER_STYLE;
-            BottomStyle = DEFAULT_BORDER_STYLE;
-            DiagonalStyle = DEFAULT_BORDER_STYLE;
+            BottomColor = DefaultBorderColor;
+            TopColor = DefaultBorderColor;
+            LeftColor = DefaultBorderColor;
+            RightColor = DefaultBorderColor;
+            DiagonalColor = DefaultBorderColor;
+            LeftStyle = DefaultBorderStyle;
+            RightStyle = DefaultBorderStyle;
+            TopStyle = DefaultBorderStyle;
+            BottomStyle = DefaultBorderStyle;
+            DiagonalStyle = DefaultBorderStyle;
             DiagonalDown = false;
             DiagonalUp = false;
         }
@@ -343,25 +345,25 @@ namespace NanoXLSX.Styles
         internal bool IsEmpty()
         {
             bool state = true;
-            if (BottomColor != DEFAULT_COLOR)
+            if (BottomColor != DefaultBorderColor)
             { state = false; }
-            if (TopColor != DEFAULT_COLOR)
+            if (TopColor != DefaultBorderColor)
             { state = false; }
-            if (LeftColor != DEFAULT_COLOR)
+            if (LeftColor != DefaultBorderColor)
             { state = false; }
-            if (RightColor != DEFAULT_COLOR)
+            if (RightColor != DefaultBorderColor)
             { state = false; }
-            if (DiagonalColor != DEFAULT_COLOR)
+            if (DiagonalColor != DefaultBorderColor)
             { state = false; }
-            if (LeftStyle != DEFAULT_BORDER_STYLE)
+            if (LeftStyle != DefaultBorderStyle)
             { state = false; }
-            if (RightStyle != DEFAULT_BORDER_STYLE)
+            if (RightStyle != DefaultBorderStyle)
             { state = false; }
-            if (TopStyle != DEFAULT_BORDER_STYLE)
+            if (TopStyle != DefaultBorderStyle)
             { state = false; }
-            if (BottomStyle != DEFAULT_BORDER_STYLE)
+            if (BottomStyle != DefaultBorderStyle)
             { state = false; }
-            if (DiagonalStyle != DEFAULT_BORDER_STYLE)
+            if (DiagonalStyle != DefaultBorderStyle)
             { state = false; }
             if (DiagonalDown)
             { state = false; }

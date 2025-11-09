@@ -7,6 +7,7 @@
 
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
+using NanoXLSX.Utils;
 
 namespace NanoXLSX
 {
@@ -33,7 +34,7 @@ namespace NanoXLSX
                     throw new RangeException("The passed address was null or empty");
                 }
                 number = Cell.ResolveColumn(value);
-                columnAddress = value.ToUpper();
+                columnAddress = ParserUtils.ToUpper(value);
             }
         }
 
