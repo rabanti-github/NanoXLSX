@@ -31,7 +31,7 @@ namespace NanoXLSX
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
         /// <param name="valueId">ID of the value, represented as number (e.g. index)</param>
         /// <param name="value">Generic value</param>
-        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary (false = default)</param>
+        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary, just valid during the loading process (false = default)</param>
         /// \remark <remarks>The entity ID - which is neglected in this method - is automatically set to the value <see cref="DEFAULT_ENTITY_ID"/> (empty)</remarks>
         public void SetData(string plugInId, int valueId, object value, bool persistent = false)
         {
@@ -40,13 +40,26 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Registers or updates a value for a given plug-in, entity, and object.
+        /// </summary>
+        /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
+        /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
+        /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
+        /// <param name="value">Generic value</param>
+        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary, just valid during the loading process (false = default)</param>
+        public void SetData(string plugInId, int entityId, string valueId, object value, bool persistent = false)
+        {
+            string id = ParserUtils.ToString(entityId);
+            SetData(plugInId, id, valueId, value, persistent);
+        }
+
+        /// <summary>
         /// Registers or updates a value for a given plug-in, object.
         /// </summary>
         /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
         /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
         /// <param name="value">Generic value</param>
-        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary (false = default)</param>
-        /// \remark <remarks>The entity ID - which is neglected in this method - is automatically set to the value <see cref="DEFAULT_ENTITY_ID"/> (empty)</remarks>
+        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary, just valid during the loading process (false = default)</param>        /// \remark <remarks>The entity ID - which is neglected in this method - is automatically set to the value <see cref="DEFAULT_ENTITY_ID"/> (empty)</remarks>
         public void SetData(string plugInId, string valueId, object value, bool persistent = false)
         {
             SetData(plugInId, DEFAULT_ENTITY_ID, valueId, value, persistent);
@@ -59,7 +72,7 @@ namespace NanoXLSX
         /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
         /// <param name="valueId">ID of the value, represented as number (e.g. index)</param>
         /// <param name="value">Generic value</param>
-        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary (false = default)</param>
+        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary, just valid during the loading process (false = default)</param>
         public void SetData(string plugInId, string entityId, int valueId, object value, bool persistent = false)
         {
             string id = ParserUtils.ToString(valueId);
@@ -73,7 +86,7 @@ namespace NanoXLSX
         /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
         /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
         /// <param name="value">Generic value</param>
-        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary (false = default)</param>
+        /// <param name="persistent">Optional parameter that indicates whether the set data is persistent (true) or temporary, just valid during the loading process (false = default)</param>
         public void SetData(string plugInId, string entityId, string valueId, object value, bool persistent = false)
         {
             if (!data.TryGetValue(plugInId, out Dictionary<string, Dictionary<string, DataEntry>> pluginData))

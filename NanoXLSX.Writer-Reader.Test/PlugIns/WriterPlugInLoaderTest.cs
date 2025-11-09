@@ -14,7 +14,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection2))]
-    public class PluginLoaderTest : IDisposable
+    public class WriterPlugInLoaderTest : IDisposable
     {
         public void Dispose()
         {

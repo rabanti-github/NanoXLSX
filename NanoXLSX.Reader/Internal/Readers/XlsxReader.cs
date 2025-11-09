@@ -165,7 +165,7 @@ namespace NanoXLSX.Internal.Readers
             MemoryStream ms;
             Workbook wb = new Workbook();
             wb.importInProgress = true; // Disables checks during load
-            HandleQueuePlugIns(PlugInUUID.READER_APPENDING_QUEUE, zf, ref wb);
+            HandleQueuePlugIns(PlugInUUID.READER_PREPENDING_QUEUE, zf, ref wb);
 
             ISharedStringReader sharedStringsReader = PlugInLoader.GetPlugIn<ISharedStringReader>(PlugInUUID.SHARED_STRINGS_READER, new SharedStringsReader());
             ms = GetEntryStream("xl/sharedStrings.xml", zf);

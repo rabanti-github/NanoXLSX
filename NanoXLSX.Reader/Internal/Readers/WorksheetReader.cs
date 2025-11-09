@@ -452,7 +452,7 @@ namespace NanoXLSX.Internal.Readers
                 this.passwordReader.ReadXmlAttributes(sheetProtectionNode);
                 if (this.passwordReader.PasswordIsSet())
                 {
-                    if (this.passwordReader is LegacyPasswordReader && (this.passwordReader as LegacyPasswordReader).ContemporaryAlgorithmDetected && !readerOptions.IgnoreNotSupportedPasswordAlgorithms)
+                    if (this.passwordReader is LegacyPasswordReader && (this.passwordReader as LegacyPasswordReader).ContemporaryAlgorithmDetected && (readerOptions == null || !readerOptions.IgnoreNotSupportedPasswordAlgorithms))
                     {
                         throw new NotSupportedContentException("A not supported, contemporary password algorithm for the worksheet protection was detected. Check possible packages to add support to NanoXLSX, or ignore this error by a reader option");
                     }

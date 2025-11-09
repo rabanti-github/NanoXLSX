@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Interfaces.Reader;
@@ -52,8 +53,9 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [Theory(DisplayName = "Test of the plug-in handling for replacing password reader plug-ins")]
-        [InlineData(typeof(ReplacePasswordReader), PlugInUUID.PASSWORD_READER, "916A")] // Expected hash for "TestPassword"
-        public void ReplacingPasswordReaderPluginTest(Type readerType, string readerUuid, string expectedDocumentFragment)
+        [InlineData(typeof(ReplacePasswordReader), PlugInUUID.PASSWORD_READER, "916A", false)] // Expected hash for "TestPassword"
+        [InlineData(typeof(ReplacePasswordIncompatibleReader), PlugInUUID.PASSWORD_READER, null, true)]
+        public void ReplacingPasswordReaderPluginTest(Type readerType, string readerUuid, string expectedDocumentFragment, bool expectedThrow)
         {
             List<Type> plugins = new List<Type>();
             // Note: These plug-ins may lead to an invalid XLSX document, since not ensured to process the corresponding stream parts as intended. It is just to test the plug-in functionality
@@ -66,9 +68,17 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             {
                 wb.SaveAsStream(ms, true);
                 ms.Position = 0;
-                Workbook importedWorkbook = WorkbookReader.Load(ms);
-                string testValue = importedWorkbook.AuxiliaryData.GetData<string>(readerUuid, 0);
-                Assert.Equal(expectedDocumentFragment, wb.CurrentWorksheet.SheetProtectionPassword.PasswordHash);
+                if (expectedThrow)
+                {
+                    Assert.Throws<NotSupportedContentException>(() => WorkbookReader.Load(ms));
+                    return;
+                }
+                else
+                {
+                    Workbook importedWorkbook = WorkbookReader.Load(ms);
+                    string testValue = importedWorkbook.AuxiliaryData.GetData<string>(readerUuid, 0);
+                    Assert.Equal(expectedDocumentFragment, wb.CurrentWorksheet.SheetProtectionPassword.PasswordHash);
+                }
             }
         }
 
@@ -300,6 +310,55 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 PasswordHash = ReaderUtils.GetAttribute(node, "password"); // Dummy read to ensure the XML node is processed
 
                // this.workbook.AuxiliaryData.SetData(PlugInUUID.PASSWORD_READER, 0, content, true);
+            }
+
+            public void Init(PasswordType type, ReaderOptions readerOptions)
+            {
+                // NoOp
+            }
+
+            [ExcludeFromCodeCoverage]
+            public void SetPassword(string plainText)
+            {
+                // NoOp
+            }
+
+            [ExcludeFromCodeCoverage]
+            public void UnsetPassword()
+            {
+                // NoOp
+            }
+
+            public string GetPassword()
+            {
+                return null;
+            }
+
+            public bool PasswordIsSet()
+            {
+                return true;
+            }
+
+            [ExcludeFromCodeCoverage]
+            public void CopyFrom(IPassword passwordInstance)
+            {
+                // NoOp
+            }
+        }
+
+        [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.PASSWORD_READER)]
+        public class ReplacePasswordIncompatibleReader : LegacyPasswordReader
+        {
+            public string PasswordHash { get; set; }
+
+            public new void ReadXmlAttributes(System.Xml.XmlNode node)
+            {
+                // NoOp
+            }
+
+            public override bool ContemporaryAlgorithmDetected
+            {
+                get { return true; } // Force incompatible algorithm
             }
 
             public void Init(PasswordType type, ReaderOptions readerOptions)

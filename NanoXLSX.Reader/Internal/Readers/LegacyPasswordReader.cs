@@ -27,22 +27,22 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Gets whether a contemporary password algorithm was detected (not supported by core functionality)
         /// </summary>
-        public bool ContemporaryAlgorithmDetected { get; private set; }
+        public virtual bool ContemporaryAlgorithmDetected { get; private set; }
 
         /// <summary>
         /// Current target type of the password instance
         /// </summary>
-        public PasswordType Type { get; private set; }
+        public virtual PasswordType Type { get; private set; }
 
         /// <summary>
         /// Reader options
         /// </summary>
-        public ReaderOptions Options { get; private set; }
+        public virtual ReaderOptions Options { get; private set; }
 
         /// <summary>
         /// Gets or sets the password hash
         /// </summary>
-        public string PasswordHash
+        public virtual string PasswordHash
         {
             get { return passwordHash; }
             set { passwordHash = value; }
@@ -61,7 +61,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="type">Password type</param>
         /// <param name="options">Reader options</param> 
-        public void Init(PasswordType type, ReaderOptions options)
+        public virtual void Init(PasswordType type, ReaderOptions options)
         {
             this.Type = type;
             this.Options = options;
@@ -71,7 +71,7 @@ namespace NanoXLSX.Internal.Readers
         /// Reads the attributes of the passed XML node that contains password information
         /// </summary>
         /// <param name="node">XML node</param>
-        public void ReadXmlAttributes(XmlNode node)
+        public virtual void ReadXmlAttributes(XmlNode node)
         {
             string attribute = null;
             if (Type == PasswordType.WORKBOOK_PROTECTION)
@@ -116,7 +116,7 @@ namespace NanoXLSX.Internal.Readers
         /// Gets the password. This method is not supported in a reader and will always return null
         /// </summary>
         /// <returns>Always null, since the plain text password cannot be recovered</returns>
-        public string GetPassword()
+        public virtual string GetPassword()
         {
             return null; // The reader cannot recover the plain text password
         }
@@ -125,7 +125,7 @@ namespace NanoXLSX.Internal.Readers
         /// Indicates whether a password is set. This can be the case, if a legacy or contemporary password was detected, regardless of the ability of the decoding of this reader
         /// </summary>
         /// <returns>True if a password was set</returns>
-        public bool PasswordIsSet()
+        public virtual bool PasswordIsSet()
         {
             return passwordHash != null || ContemporaryAlgorithmDetected;
         }
@@ -135,7 +135,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="passwordInstance">Source instance</param>
         /// <exception cref="NotImplementedException">Throws a NotImplementedException if called in any case</exception>
-        public void CopyFrom(IPassword passwordInstance)
+        public virtual void CopyFrom(IPassword passwordInstance)
         {
             throw new NotImplementedException();
         }
@@ -145,7 +145,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="plainText"></param>
         /// <exception cref="NotImplementedException">Throws a NotImplementedException if called in any case</exception>
-        public void SetPassword(string plainText)
+        public virtual void SetPassword(string plainText)
         {
             throw new NotImplementedException();
         }
@@ -154,7 +154,7 @@ namespace NanoXLSX.Internal.Readers
         /// Not relevant for the reader (inherited from <see cref="IPassword"/>)
         /// </summary>
         /// <exception cref="NotImplementedException">Throws a NotImplementedException if called in any case</exception>
-        public void UnsetPassword()
+        public virtual void UnsetPassword()
         {
             throw new NotImplementedException();
         }

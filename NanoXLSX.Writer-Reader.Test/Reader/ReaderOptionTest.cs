@@ -256,7 +256,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the import column type: Double")]
+        [Theory(DisplayName = "Test of the reader options for the import column type: Double")]
         [InlineData("B")]
         [InlineData(1)]
         public void EnforcingColumnAsNumberTest(object column)
@@ -303,7 +303,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the import column type: Numeric")]
+        [Theory(DisplayName = "Test of the reader options for the import column type: Numeric")]
         [InlineData("B")]
         [InlineData(1)]
         public void EnforcingColumnAsNumberTest2(object column)
@@ -358,7 +358,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the import column types Numeric, Decimal and Double on parsed dates and times")]
+        [Theory(DisplayName = "Test of the reader options for the import column types Numeric, Decimal and Double on parsed dates and times")]
         [InlineData(ReaderOptions.ColumnType.Double, "2021-10-31 12:11:10", 44500.5077546296d)]
         [InlineData(ReaderOptions.ColumnType.Double, "18:20:22", 0.764143518518519d)]
         [InlineData(ReaderOptions.ColumnType.Decimal, "2021-10-31 12:11:10", "44500.5077546296")]
@@ -390,7 +390,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the import column type with wrong style information: Double and Decimal")]
+        [Theory(DisplayName = "Test of the reader options for the import column type with wrong style information: Double and Decimal")]
         [InlineData("B", ReaderOptions.ColumnType.Double)]
         [InlineData(1, ReaderOptions.ColumnType.Double)]
         [InlineData("B", ReaderOptions.ColumnType.Decimal)]
@@ -476,7 +476,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         }
 
 
-        [Theory(DisplayName = "Test of the import options for the import column type: Bool")]
+        [Theory(DisplayName = "Test of the reader options for the import column type: Bool")]
         [InlineData("B")]
         [InlineData(1)]
         public void EnforcingColumnAsBoolTest(object column)
@@ -537,7 +537,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the import column type: String")]
+        [Theory(DisplayName = "Test of the reader options for the import column type: String")]
         [InlineData("B")]
         [InlineData(1)]
         public void EnforcingColumnAsStringTest(object column)
@@ -608,7 +608,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the import column type: Date")]
+        [Theory(DisplayName = "Test of the reader options for the import column type: Date")]
         [InlineData("B")]
         [InlineData(1)]
         public void EnforcingColumnAsDateTest(object column)
@@ -667,7 +667,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the import column type (without casting to numbers) with missing formats for DateTime and TimeSpan")]
+        [Theory(DisplayName = "Test of the reader options for the import column type (without casting to numbers) with missing formats for DateTime and TimeSpan")]
         [InlineData("B", "C")]
         [InlineData(1, 2)]
         void enforcingColumnAsDateTest2(object column1, object column2)
@@ -700,7 +700,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the import column type with wrong style information: Date")]
+        [Theory(DisplayName = "Test of the reader options for the import column type with wrong style information: Date")]
         [InlineData("B", ReaderOptions.ColumnType.Date)]
         [InlineData(1, ReaderOptions.ColumnType.Date)]
         [InlineData("B", ReaderOptions.ColumnType.Time)]
@@ -754,7 +754,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, Cell>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the import column type: Time")]
+        [Theory(DisplayName = "Test of the reader options for the import column type: Time")]
         [InlineData("B")]
         [InlineData(1)]
         public void EnforcingColumnAsTimeTest(object column)
@@ -809,7 +809,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the combination of a start row and a enforced column")]
+        [Theory(DisplayName = "Test of the reader options for the combination of a start row and a enforced column")]
         [InlineData(ReaderOptions.ColumnType.Bool, "1", true)]
         [InlineData(ReaderOptions.ColumnType.Bool, false, false)]
         [InlineData(ReaderOptions.ColumnType.Double, "-2.5", -2.5d)]
@@ -851,7 +851,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options2, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import options for the combination of a start row and a enforced column on types Date and Time")]
+        [Theory(DisplayName = "Test of the reader options for the combination of a start row and a enforced column on types Date and Time")]
         [InlineData(ReaderOptions.ColumnType.Date)]
         [InlineData(ReaderOptions.ColumnType.Time)]
         public void EnforcingColumnStartRowTest2(ReaderOptions.ColumnType columnType)
@@ -946,7 +946,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         }
 
 
-        [Theory(DisplayName = "Test of the import options for custom date and time formats and culture info")]
+        [Theory(DisplayName = "Test of the reader options for custom date and time formats and culture info")]
         [InlineData(ReaderOptions.ColumnType.Date, "en-US", "yyyy-MM-dd HH:mm:ss", "2021-08-12 12:11:10", "2021-08-12 12:11:10")]
         [InlineData(ReaderOptions.ColumnType.Date, "de-DE", "dd.MM.yyyy HH:mm:ss", "12.08.2021 12:11:10", "2021-08-12 12:11:10")]
         [InlineData(ReaderOptions.ColumnType.Date, "fr-FR", "dd/MM/yyyy", "12/08/2021", "2021-08-12 00:00:00")]
@@ -1015,7 +1015,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the import option to process or discard phonetic characters in strings")]
+        [Theory(DisplayName = "Test of the reader option to process or discard phonetic characters in strings")]
         [InlineData(0, 1, false)]
         [InlineData(0, 2, true)]
         void PhnoneticCharactersImportOptionTest(int givenValuesColumn, int expectedValuesColumn, bool importOptionValue)
@@ -1039,7 +1039,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             }
         }
 
-        [Theory(DisplayName = "Test of the import option to ignore not supported password algorithms for worksheet protection")]
+        [Theory(DisplayName = "Test of the reader option to ignore not supported password algorithms for worksheet protection")]
         [InlineData(false, true)]
         [InlineData(true, false)]
         void IgnoreNotSupportedPasswordAlgorithmsTest(bool importOptionValue, bool expectedError)
@@ -1058,7 +1058,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             }
         }
 
-        [Theory(DisplayName = "Test of the import option to ignore not supported password algorithms for workbook protection")]
+        [Theory(DisplayName = "Test of the reader option to ignore not supported password algorithms for workbook protection")]
         [InlineData(false, true)]
         [InlineData(true, false)]
         void IgnoreNotSupportedPasswordAlgorithmsTest2(bool importOptionValue, bool expectedError)
@@ -1077,17 +1077,17 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             }
         }
 
-        [Theory(DisplayName = "Test of the import option property EnforceStrictValidation")]
+        [Theory(DisplayName = "Test of the reader option property EnforceStrictValidation")]
         [InlineData("valid_column_row_dimensions.xlsx", true, false, 0)]
         [InlineData("invalid_column_width_min.xlsx", true, true, -1)]
         [InlineData("invalid_column_width_max.xlsx", true, true, 1)]
         [InlineData("invalid_row_height_min.xlsx", true, true, 0)]
         [InlineData("invalid_row_height_max.xlsx", true, true, 0)]
         [InlineData("valid_column_row_dimensions.xlsx", false, false, 0)]
-        [InlineData("invalid_column_width_min.xlsx", false, false, 0)]
-        [InlineData("invalid_column_width_max.xlsx", false, false, 0)]
         [InlineData("invalid_row_height_min.xlsx", false, false, 0)]
         [InlineData("invalid_row_height_max.xlsx", false, false, 0)]
+        [InlineData("invalid_column_width_min.xlsx", false, false, -1)]
+        [InlineData("invalid_column_width_max.xlsx", false, false, 1)]
         public void EnforceValidColumnDimensionsTest(string fileName, bool givenOptionValue, bool expectedThrow, int columnFlag)
         {
             ReaderOptions options = new ReaderOptions();

@@ -345,8 +345,23 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             AssertRemovedStyles(worksheet, cellCount);
         }
 
-        [Fact(DisplayName = "Test of the SetStyle function on a worksheet with existing date and time cells, and a start and end address")]
+        [Fact(DisplayName = "Test of the SetStyle function with a null style (removes style) on a worksheet with existing cells, and a start and end address")]
         public void SetStyleTest8()
+        {
+            Worksheet worksheet = new Worksheet();
+            AddCells(worksheet, "test", "B2");
+            AddCells(worksheet, 123, "B3");
+            int cellCount = worksheet.Cells.Count;
+            Assert.NotEqual(0, cellCount);
+            Address startAddress = new Address("A1");
+            Address endAddress = new Address("C3");
+            worksheet.SetStyle(startAddress, endAddress, null);
+            List<string> emptyCells = new List<string>();
+            AssertCellRange("B2:B3", null, worksheet, emptyCells,  cellCount);
+        }
+
+        [Fact(DisplayName = "Test of the SetStyle function on a worksheet with existing date and time cells, and a start and end address")]
+        public void SetStyleTest9()
         {
             Worksheet worksheet = new Worksheet();
             AddCells(worksheet, new DateTime(2020, 11, 10, 9, 8, 7), "B2");
@@ -361,7 +376,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         }
 
         [Fact(DisplayName = "Test of the SetStyle function on a worksheet with existing date and time cells, and a start and end address with null as style")]
-        public void SetStyleTest8b()
+        public void SetStyleTest9b()
         {
             Worksheet worksheet = new Worksheet();
             AddCells(worksheet, new DateTime(2020, 11, 10, 9, 8, 7), "B2");
@@ -377,7 +392,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the SetStyle function on an empty worksheet with a singular address or its string representation")]
         [InlineData(RangeRepresentation.RangeObject)]
         [InlineData(RangeRepresentation.StringExpression)]
-        public void SetStyleTest9(RangeRepresentation representation)
+        public void SetStyleTest10(RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Empty(worksheet.Cells);
@@ -397,7 +412,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the SetStyle function on an empty worksheet with a singular address or its string representation with null as style")]
         [InlineData(RangeRepresentation.RangeObject)]
         [InlineData(RangeRepresentation.StringExpression)]
-        public void SetStyleTest9b(RangeRepresentation representation)
+        public void SetStyleTest10b(RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Empty(worksheet.Cells);
@@ -415,7 +430,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the SetStyle function on a worksheet with existing cells, and a singular address or its string representation")]
         [InlineData(RangeRepresentation.RangeObject)]
         [InlineData(RangeRepresentation.StringExpression)]
-        public void SetStyleTest10(RangeRepresentation representation)
+        public void SetStyleTest11(RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
             worksheet.AddCell(22, "B2");
@@ -437,7 +452,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the SetStyle function on a worksheet with existing cells, and a singular address or its string representation with null as style")]
         [InlineData(RangeRepresentation.RangeObject)]
         [InlineData(RangeRepresentation.StringExpression)]
-        public void SetStyleTest10b(RangeRepresentation representation)
+        public void SetStyleTest11b(RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
             worksheet.AddCell(22, "B2");
@@ -459,7 +474,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the SetStyle function on a worksheet with existing cells that have a style defined, and a singular address or its string representation")]
         [InlineData(RangeRepresentation.RangeObject)]
         [InlineData(RangeRepresentation.StringExpression)]
-        public void SetStyleTest11(RangeRepresentation representation)
+        public void SetStyleTest12(RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
             worksheet.AddCell(22, "B2", BasicStyles.BoldItalic);
@@ -481,7 +496,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the SetStyle function on a worksheet with existing cells that have a style defined, and a singular address or its string representation with null as style")]
         [InlineData(RangeRepresentation.RangeObject)]
         [InlineData(RangeRepresentation.StringExpression)]
-        public void SetStyleTest11b(RangeRepresentation representation)
+        public void SetStyleTest12b(RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
             worksheet.AddCell(22, "B2", BasicStyles.BoldItalic);
@@ -505,7 +520,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the SetStyle function on a worksheet with existing date and time cells, and a singular address or its string representation")]
         [InlineData(RangeRepresentation.RangeObject)]
         [InlineData(RangeRepresentation.StringExpression)]
-        public void SetStyleTest12(RangeRepresentation representation)
+        public void SetStyleTest13(RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
             AddCells(worksheet, new DateTime(2020, 11, 10, 9, 8, 7), "B2");
@@ -529,7 +544,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the SetStyle function on a worksheet with existing date and time cells, and a singular address or its string representation with null as style")]
         [InlineData(RangeRepresentation.RangeObject)]
         [InlineData(RangeRepresentation.StringExpression)]
-        public void SetStyleTest12b(RangeRepresentation representation)
+        public void SetStyleTest13b(RangeRepresentation representation)
         {
             Worksheet worksheet = new Worksheet();
             AddCells(worksheet, new DateTime(2020, 11, 10, 9, 8, 7), "B2");
