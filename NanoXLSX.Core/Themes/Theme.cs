@@ -142,10 +142,13 @@ namespace NanoXLSX.Themes
         /// </returns>
         public override int GetHashCode()
         {
-            int hashCode = 1172093127;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<ColorScheme>.Default.GetHashCode(Colors);
-            return hashCode;
+            unchecked
+            {
+                int hashCode = 1172093127;
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+                hashCode = hashCode * -1521134295 + EqualityComparer<ColorScheme>.Default.GetHashCode(Colors);
+                return hashCode;
+            }
         }
     }
 }

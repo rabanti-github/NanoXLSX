@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using NanoXLSX.Internal.Readers;
 using NanoXLSX.Registry;
 
-namespace NanoXLSX
+namespace NanoXLSX.Extensions
 {
     /// <summary>
     /// Class, providing functions to read Workbooks either by file or stream
@@ -28,7 +28,7 @@ namespace NanoXLSX
         /// <param name="filename">Filename of the workbook</param>
         /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
-        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static Workbook Load(string filename, ReaderOptions options = null)
         {
             XlsxReader reader = new XlsxReader(filename, options);
@@ -42,7 +42,7 @@ namespace NanoXLSX
         /// <param name="stream">Stream containing the workbook</param>
         /// /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
-        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static Workbook Load(Stream stream, ReaderOptions options = null)
         {
             XlsxReader reader = new XlsxReader(stream, options);
@@ -70,7 +70,7 @@ namespace NanoXLSX
         /// <param name="stream">Stream containing the workbook</param>
         /// /// <param name="options">Import options to override the data types of columns or cells. These options can be used to cope with wrong interpreted data, caused by irregular styles</param>
         /// <returns>Workbook object</returns>
-        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an error</exception>
+        /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static async Task<Workbook> LoadAsync(Stream stream, ReaderOptions options = null)
         {
             XlsxReader reader = new XlsxReader(stream, options);

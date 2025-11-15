@@ -176,7 +176,7 @@ namespace NanoXLSX.Utils
         {
             if (oaDate < 60)
             {
-                oaDate = oaDate + 1;
+                oaDate++;
             }
             return ROOT_DATE.AddSeconds(oaDate * 86400d);
         }

@@ -7,6 +7,7 @@
 
 using System.Text;
 using NanoXLSX.Exceptions;
+using NanoXLSX.Utils;
 
 namespace NanoXLSX.Styles
 {
@@ -74,7 +75,7 @@ namespace NanoXLSX.Styles
             CurrentFill = new Fill();
             CurrentFont = new Font();
             CurrentNumberFormat = new NumberFormat();
-            Name = this.GetHashCode().ToString();
+            Name = ParserUtils.ToString(this.GetHashCode());
         }
 
         /// <summary>
@@ -185,14 +186,17 @@ namespace NanoXLSX.Styles
             {
                 throw new StyleException("The hash of the style could not be created because one or more components are missing as references");
             }
-            int p = 241;
-            int r = 1;
-            r *= p + this.CurrentBorder.GetHashCode();
-            r *= p + this.CurrentCellXf.GetHashCode();
-            r *= p + this.CurrentFill.GetHashCode();
-            r *= p + this.CurrentFont.GetHashCode();
-            r *= p + this.CurrentNumberFormat.GetHashCode();
-            return r;
+            unchecked
+            {
+                int p = 241;
+                int r = 1;
+                r *= p + this.CurrentBorder.GetHashCode();
+                r *= p + this.CurrentCellXf.GetHashCode();
+                r *= p + this.CurrentFill.GetHashCode();
+                r *= p + this.CurrentFont.GetHashCode();
+                r *= p + this.CurrentNumberFormat.GetHashCode();
+                return r;
+            }
         }
 
         /// <summary>

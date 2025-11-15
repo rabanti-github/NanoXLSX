@@ -144,7 +144,7 @@ namespace NanoXLSX
             passwordHash = ((passwordHash >> 14) & 0x01) | ((passwordHash << 1) & 0x7fff);
             passwordHash ^= (0x8000 | ('N' << 8) | 'K');
             passwordHash ^= passwordLength;
-            return passwordHash.ToString("X");
+            return passwordHash.ToString("X", ParserUtils.InvariantCulture);
         }
 
         /// <summary>
@@ -211,11 +211,14 @@ namespace NanoXLSX
         public override int GetHashCode()
         {
             // The actual password is not considered since its hash is sufficient
-            var hashCode = 1034998357;
-            hashCode = hashCode * -1521134295 + Type.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(PasswordHash);
-            hashCode = hashCode * -1521134295 + PasswordIsSet().GetHashCode();
-            return hashCode;
+            unchecked
+            {
+                var hashCode = 1034998357;
+                hashCode = hashCode * -1521134295 + Type.GetHashCode();
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(PasswordHash);
+                hashCode = hashCode * -1521134295 + PasswordIsSet().GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

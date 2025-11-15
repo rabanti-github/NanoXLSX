@@ -179,6 +179,50 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Determines whether one specified <see cref="Address"/> is less/smaller than another specified <see cref="Address"/>.
+        /// </summary>
+        /// <param name="left">Left address</param>
+        /// <param name="right">Right address</param>
+        /// <returns>True, if the left address is less/smaller than the right one</returns>
+        public static bool operator <(Address left, Address right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        /// <summary>
+        /// Determines whether one specified <see cref="Address"/> is less/smaller or equal than another specified <see cref="Address"/>.
+        /// </summary>
+        /// <param name="left">Left address</param>
+        /// <param name="right">Right address</param>
+        /// <returns>True, if the left address is less/smaller than, or equal to the right one</returns>
+        public static bool operator <=(Address left, Address right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        /// <summary>
+        /// Determines whether one specified <see cref="Address"/> is greater/larger than another specified <see cref="Address"/>.
+        /// </summary>
+        /// <param name="left">Left address</param>
+        /// <param name="right">Right address</param>
+        /// <returns>True, if the left address is greater/larger than the right one</returns>
+        public static bool operator >(Address left, Address right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        /// <summary>
+        /// Determines whether one specified <see cref="Address"/> is greater/larger or equal than another specified <see cref="Address"/>.
+        /// </summary>
+        /// <param name="left">Left address</param>
+        /// <param name="right">Right address</param>
+        /// <returns>True, if the left address is greater/larger than, or equal to the right one</returns>
+        public static bool operator >=(Address left, Address right)
+        {
+            return left.CompareTo(right) >= 0;
+        }
+
+        /// <summary>
         /// Creates a (dereferenced, if applicable) deep copy of this address
         /// </summary>
         /// <returns>Copy of this range</returns>

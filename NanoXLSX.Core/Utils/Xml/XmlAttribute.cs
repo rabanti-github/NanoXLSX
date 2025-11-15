@@ -108,11 +108,14 @@ namespace NanoXLSX.Utils.Xml
         /// <returns>Hash code of the attribute</returns>
         public override int GetHashCode()
         {
-            var hashCode = 27885120;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Value);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Prefix);
-            return hashCode;
+            unchecked
+            {
+                var hashCode = 27885120;
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Value);
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Prefix);
+                return hashCode;
+            }
         }
     }
 }

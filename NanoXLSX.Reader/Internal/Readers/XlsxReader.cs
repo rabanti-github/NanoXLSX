@@ -27,10 +27,10 @@ namespace NanoXLSX.Internal.Readers
     public class XlsxReader
     {
         #region privateFields
-        private string filePath;
-        private Stream inputStream;
+        private readonly string filePath;
+        private readonly Stream inputStream;
+        private readonly ReaderOptions readerOptions;
         private MemoryStream memoryStream;
-        private ReaderOptions readerOptions;
         #endregion
 
         #region properties
@@ -163,8 +163,10 @@ namespace NanoXLSX.Internal.Readers
         private void ReadZip(ZipArchive zf)
         {
             MemoryStream ms;
-            Workbook wb = new Workbook();
-            wb.importInProgress = true; // Disables checks during load
+            Workbook wb = new Workbook
+            {
+                importInProgress = true // Disables checks during load
+            };
             HandleQueuePlugIns(PlugInUUID.ReaderPrependingQueue, zf, ref wb);
 
             ISharedStringReader sharedStringsReader = PlugInLoader.GetPlugIn<ISharedStringReader>(PlugInUUID.SharedStringsReader, new SharedStringsReader());
@@ -280,11 +282,10 @@ namespace NanoXLSX.Internal.Readers
         {
             Dictionary<int, string> files = new Dictionary<int, string>();
             int index = 1; // Assumption: There is no file that has the index 0 in its name
-            MemoryStream ms = null;
             while (true)
             {
                 string name = namePrefix + ParserUtils.ToString(index) + ".xml";
-                ms = GetEntryStream(name, archive);
+                var ms = GetEntryStream(name, archive);
                 if (ms != null)
                 {
                     files.Add(index, name);
@@ -306,8 +307,8 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="workbook">Workbook reference</param>
         private void HandleQueuePlugIns(string queueUuid, ZipArchive zf, ref Workbook workbook)
         {
-            IPlugInReader queueReader = null;
             string lastUuid = null;
+            IPlugInReader queueReader;
             do
             {
                 string currentUuid;

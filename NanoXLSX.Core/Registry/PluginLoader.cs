@@ -24,8 +24,8 @@ namespace NanoXLSX.Registry
         private static bool initialized;
         private static readonly object _lock = new object();
 
-        private static Dictionary<string, PlugInInstance> plugInClasses = new Dictionary<string, PlugInInstance>();
-        private static Dictionary<string, List<PlugInInstance>> queuePlugInClasses = new Dictionary<string, List<PlugInInstance>>();
+        private static readonly Dictionary<string, PlugInInstance> plugInClasses = new Dictionary<string, PlugInInstance>();
+        private static readonly Dictionary<string, List<PlugInInstance>> queuePlugInClasses = new Dictionary<string, List<PlugInInstance>>();
 
         /// <summary>
         /// Initializes the plug-in loader process. If already initialized, the method returns without action
@@ -259,7 +259,7 @@ namespace NanoXLSX.Registry
                 if (plugIn == null)
                 {
                     currentPlugInUUID = null;
-                    return default(T);
+                    return default;
                 }
                 currentPlugInUUID = plugIn.UUID;
                 return (T)Activator.CreateInstance(plugIn.Type);
@@ -267,7 +267,7 @@ namespace NanoXLSX.Registry
             else
             {
                 currentPlugInUUID = null;
-                return default(T);
+                return default;
             }
         }
 

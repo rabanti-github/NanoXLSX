@@ -73,7 +73,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="node">XML node</param>
         public virtual void ReadXmlAttributes(XmlNode node)
         {
-            string attribute = null;
+            string attribute;
             if (Type == PasswordType.WorkbookProtection)
             {
                 attribute = ReaderUtils.GetAttribute(node, "workbookAlgorithmName");

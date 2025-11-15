@@ -427,16 +427,119 @@ namespace NanoXLSX
         /// <returns>Copy of this cell</returns>
         internal Cell Copy()
         {
-            Cell copy = new Cell();
-            copy.value = this.value;
-            copy.DataType = this.DataType;
-            copy.CellAddress = this.CellAddress;
-            copy.CellAddressType = this.CellAddressType;
+            Cell copy = new Cell
+            {
+                value = this.value,
+                DataType = this.DataType,
+                CellAddress = this.CellAddress,
+                CellAddressType = this.CellAddressType
+            };
             if (this.cellStyle != null)
             {
                 copy.SetStyle(this.cellStyle, true);
             }
             return copy;
+        }
+        /// <summary>
+        /// Gets the hash code of the cell
+        /// </summary>
+        /// <returns>Hash code of the cell</returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 31 + columnNumber.GetHashCode();
+                hash = hash * 31 + rowNumber.GetHashCode();
+                hash = hash * 31 + CellAddressType.GetHashCode();
+                hash = hash * 31 + DataType.GetHashCode();
+                hash = hash * 31 + (cellStyle?.GetHashCode() ?? 0);
+                hash = hash * 31 + (value?.GetHashCode() ?? 0);
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether two <see cref="Cell"/> instances are equal.
+        /// </summary>
+        /// <param name="left">The first <see cref="Cell"/> instance to compare.</param>
+        /// <param name="right">The second <see cref="Cell"/> instance to compare.</param>
+        /// <returns><see langword="true"/> if the specified <see cref="Cell"/> instances are equal; otherwise, <see langword="false"/>.</returns>
+        public static bool operator ==(Cell left, Cell right)
+        {
+            if (ReferenceEquals(left, null))
+            {
+                return ReferenceEquals(right, null);
+            }
+
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Determines whether two <see cref="Cell"/> instances are not equal.
+        /// </summary>
+        /// <param name="left">The first <see cref="Cell"/> instance to compare.</param>
+        /// <param name="right">The second <see cref="Cell"/> instance to compare.</param>
+        /// <returns><see langword="true"/> if the specified <see cref="Cell"/> instances are not equal; otherwise, <see langword="false"/>.</returns>
+        public static bool operator !=(Cell left, Cell right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determines whether the first instance of a <see cref="Cell"/> is less/smaller as the second.
+        /// </summary>
+        /// <param name="left">The left <see cref="Cell"/> instance to compare.</param>
+        /// <param name="right">The second <see cref="Cell"/> instance to compare.</param>
+        /// <returns><see langword="true"/> if the left <see cref="Cell"/> instances is less/smaller; otherwise, <see langword="false"/>.</returns>
+        /// \remark <remarks>Note that this method only compares the row and column numbers, 
+        /// since the values or styles may be completely different types, and therefore hard to compare at all.<br />
+        /// The <see cref="Equals(object)"/> method considers values and style, though.</remarks>
+        public static bool operator <(Cell left, Cell right)
+        {
+            return ReferenceEquals(left, null) ? !ReferenceEquals(right, null) : left.CompareTo(right) < 0;
+        }
+
+        /// <summary>
+        /// Determines whether the first instance of a <see cref="Cell"/> is less/smaller or equal as the second.
+        /// </summary>
+        /// <param name="left">The left <see cref="Cell"/> instance to compare.</param>
+        /// <param name="right">The second <see cref="Cell"/> instance to compare.</param>
+        /// <returns><see langword="true"/> if the left <see cref="Cell"/> instances is less/smaller, or equal; otherwise, <see langword="false"/>.</returns>
+        /// \remark <remarks>Note that this method only compares the row and column numbers, 
+        /// since the values or styles may be completely different types, and therefore hard to compare at all.<br />
+        /// The <see cref="Equals(object)"/> method considers values and style, though.</remarks>
+        public static bool operator <=(Cell left, Cell right)
+        {
+            return ReferenceEquals(left, null) || left.CompareTo(right) <= 0;
+        }
+
+        /// <summary>
+        /// Determines whether the first instance of a <see cref="Cell"/> is greater/larger as the second.
+        /// </summary>
+        /// <param name="left">The left <see cref="Cell"/> instance to compare.</param>
+        /// <param name="right">The second <see cref="Cell"/> instance to compare.</param>
+        /// <returns><see langword="true"/> if the left <see cref="Cell"/> instances is greater/larger; otherwise, <see langword="false"/>.</returns>
+        /// \remark <remarks>Note that this method only compares the row and column numbers, 
+        /// since the values or styles may be completely different types, and therefore hard to compare at all.<br />
+        /// The <see cref="Equals(object)"/> method considers values and style, though.</remarks>
+        public static bool operator >(Cell left, Cell right)
+        {
+            return !ReferenceEquals(left, null) && left.CompareTo(right) > 0;
+        }
+
+        /// <summary>
+        /// Determines whether the first instance of a <see cref="Cell"/> is greater/larger or equal as the second.
+        /// </summary>
+        /// <param name="left">The left <see cref="Cell"/> instance to compare.</param>
+        /// <param name="right">The second <see cref="Cell"/> instance to compare.</param>
+        /// <returns><see langword="true"/> if the left <see cref="Cell"/> instances is greater/larger or equal; otherwise, <see langword="false"/>.</returns>
+        /// \remark <remarks>Note that this method only compares the row and column numbers, 
+        /// since the values or styles may be completely different types, and therefore hard to compare at all.<br />
+        /// The <see cref="Equals(object)"/> method considers values and style, though.</remarks>
+        public static bool operator >=(Cell left, Cell right)
+        {
+            return ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.CompareTo(right) >= 0;
         }
 
         #endregion
@@ -655,8 +758,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws a RangeException if the row or column number was out of range</exception>
         public static void ResolveCellCoordinate(string address, out int column, out int row)
         {
-            AddressType dummy;
-            ResolveCellCoordinate(address, out column, out row, out dummy);
+            ResolveCellCoordinate(address, out column, out row, out _);
         }
 
 
@@ -831,9 +933,7 @@ namespace NanoXLSX
                     Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
             }
         }
-
         #endregion
-
 
     }
 }

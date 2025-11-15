@@ -28,7 +28,7 @@ namespace NanoXLSX.Themes
             set
             {
                 Validators.ValidateColor(value, false);
-                colorValue = value.ToUpper();
+                colorValue = ParserUtils.ToUpper(value);
             }
         }
 
@@ -63,12 +63,21 @@ namespace NanoXLSX.Themes
             return "FF" + colorValue;
         }
 
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
+        /// <param name="obj">Other object to compare</param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             return obj is SrgbColor color &&
                    ColorValue == color.ColorValue;
         }
 
+        /// <summary>
+        /// Gets the hash code of the instance
+        /// </summary>
+        /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
             return 800285905 + EqualityComparer<string>.Default.GetHashCode(ColorValue);

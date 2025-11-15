@@ -259,8 +259,10 @@ namespace NanoXLSX.Utils.Xml
         /// <returns>A new XmlDocument representing the hierarchical XML structure.</returns>
         public XmlDocument TransformToDocument()
         {
-            XmlDocument doc = new XmlDocument();
-            doc.XmlResolver = null;
+            XmlDocument doc = new XmlDocument
+            {
+                XmlResolver = null
+            };
             XmlNamespaceManager nsManager = new XmlNamespaceManager(doc.NameTable);
             if (hasNameSpaces)
             {
@@ -388,8 +390,10 @@ namespace NanoXLSX.Utils.Xml
         /// <returns>Element instance</returns>
         internal static XmlElement CreateElementWithAttribute(string name, string attributeName, string attributeValue, string namePrefix = "", string attributePrefix = "")
         {
-            XmlElement element = new XmlElement(name, namePrefix);
-            element.Attributes = new HashSet<XmlAttribute>();
+            XmlElement element = new XmlElement(name, namePrefix)
+            {
+                Attributes = new HashSet<XmlAttribute>()
+            };
             element.Attributes.Add(XmlAttribute.CreateAttribute(attributeName, attributeValue, attributePrefix));
             element.hasAttributes = true;
             return element;

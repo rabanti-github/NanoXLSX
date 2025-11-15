@@ -268,17 +268,20 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            int hashCode = 626307906;
-            hashCode = hashCode * -1521134295 + ForceApplyAlignment.GetHashCode();
-            hashCode = hashCode * -1521134295 + Hidden.GetHashCode();
-            hashCode = hashCode * -1521134295 + HorizontalAlign.GetHashCode();
-            hashCode = hashCode * -1521134295 + Locked.GetHashCode();
-            hashCode = hashCode * -1521134295 + Alignment.GetHashCode();
-            hashCode = hashCode * -1521134295 + TextDirection.GetHashCode();
-            hashCode = hashCode * -1521134295 + TextRotation.GetHashCode();
-            hashCode = hashCode * -1521134295 + VerticalAlign.GetHashCode();
-            hashCode = hashCode * -1521134295 + Indent.GetHashCode();
-            return hashCode;
+            unchecked
+            {
+                int hashCode = 626307906;
+                hashCode = hashCode * -1521134295 + ForceApplyAlignment.GetHashCode();
+                hashCode = hashCode * -1521134295 + Hidden.GetHashCode();
+                hashCode = hashCode * -1521134295 + HorizontalAlign.GetHashCode();
+                hashCode = hashCode * -1521134295 + Locked.GetHashCode();
+                hashCode = hashCode * -1521134295 + Alignment.GetHashCode();
+                hashCode = hashCode * -1521134295 + TextDirection.GetHashCode();
+                hashCode = hashCode * -1521134295 + TextRotation.GetHashCode();
+                hashCode = hashCode * -1521134295 + VerticalAlign.GetHashCode();
+                hashCode = hashCode * -1521134295 + Indent.GetHashCode();
+                return hashCode;
+            }
         }
 
         /// <summary>
@@ -308,16 +311,18 @@ namespace NanoXLSX.Styles
         /// <returns>Copy of the current object without the internal ID</returns>
         public override AbstractStyle Copy()
         {
-            CellXf copy = new CellXf();
-            copy.HorizontalAlign = HorizontalAlign;
-            copy.Alignment = Alignment;
-            copy.TextDirection = TextDirection;
-            copy.TextRotation = TextRotation;
-            copy.VerticalAlign = VerticalAlign;
-            copy.ForceApplyAlignment = ForceApplyAlignment;
-            copy.Locked = Locked;
-            copy.Hidden = Hidden;
-            copy.Indent = Indent;
+            CellXf copy = new CellXf
+            {
+                HorizontalAlign = HorizontalAlign,
+                Alignment = Alignment,
+                TextDirection = TextDirection,
+                TextRotation = TextRotation,
+                VerticalAlign = VerticalAlign,
+                ForceApplyAlignment = ForceApplyAlignment,
+                Locked = Locked,
+                Hidden = Hidden,
+                Indent = Indent
+            };
             return copy;
         }
 

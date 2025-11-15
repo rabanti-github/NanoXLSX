@@ -222,6 +222,11 @@ namespace NanoXLSX.Themes
             }
         }
 
+        /// <summary>
+        /// Determines whether the specified object is equal to the current system color instance
+        /// </summary>
+        /// <param name="obj">Other object to compare</param>
+        /// <returns>True if both objects are equal</returns>
         public override bool Equals(object obj)
         {
             return obj is SystemColor color &&
@@ -229,12 +234,19 @@ namespace NanoXLSX.Themes
                    LastColor == color.LastColor;
         }
 
+        /// <summary>
+        /// Gets the hash code of the system color instance
+        /// </summary>
+        /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
-            int hashCode = 1425985453;
-            hashCode = hashCode * -1521134295 + ColorValue.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LastColor);
-            return hashCode;
+            unchecked
+            {
+                int hashCode = 1425985453;
+                hashCode = hashCode * -1521134295 + ColorValue.GetHashCode();
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LastColor);
+                return hashCode;
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ namespace NanoXLSX.Styles
     /// Attribute designated to control the copying of style properties
     /// </summary>
     /// <seealso cref="System.Attribute" />
+    [AttributeUsage(AttributeTargets.Property)]
     public class AppendAttribute : Attribute
     {
         /// <summary>

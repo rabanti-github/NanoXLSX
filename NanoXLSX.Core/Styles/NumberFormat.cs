@@ -305,10 +305,12 @@ namespace NanoXLSX.Styles
         /// <returns>Copy of the current object without the internal ID</returns>
         public override AbstractStyle Copy()
         {
-            NumberFormat copy = new NumberFormat();
-            copy.customFormatCode = customFormatCode;
-            copy.CustomFormatID = CustomFormatID;
-            copy.Number = Number;
+            NumberFormat copy = new NumberFormat
+            {
+                customFormatCode = customFormatCode,
+                CustomFormatID = CustomFormatID,
+                Number = Number
+            };
             return copy;
         }
 
@@ -329,11 +331,14 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            int hashCode = 495605284;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CustomFormatCode);
-            hashCode = hashCode * -1521134295 + CustomFormatID.GetHashCode();
-            hashCode = hashCode * -1521134295 + Number.GetHashCode();
-            return hashCode;
+            unchecked
+            {
+                int hashCode = 495605284;
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CustomFormatCode);
+                hashCode = hashCode * -1521134295 + CustomFormatID.GetHashCode();
+                hashCode = hashCode * -1521134295 + Number.GetHashCode();
+                return hashCode;
+            }
         }
 
         /// <summary>

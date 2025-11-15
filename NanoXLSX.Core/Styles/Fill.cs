@@ -195,11 +195,13 @@ namespace NanoXLSX.Styles
         /// <returns>Copy of the current object without the internal ID</returns>
         public override AbstractStyle Copy()
         {
-            Fill copy = new Fill();
-            copy.BackgroundColor = BackgroundColor;
-            copy.ForegroundColor = ForegroundColor;
-            copy.IndexedColor = IndexedColor;
-            copy.PatternFill = PatternFill;
+            Fill copy = new Fill
+            {
+                BackgroundColor = BackgroundColor,
+                ForegroundColor = ForegroundColor,
+                IndexedColor = IndexedColor,
+                PatternFill = PatternFill
+            };
             return copy;
         }
 
@@ -211,12 +213,15 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            int hashCode = -1564173520;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BackgroundColor);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ForegroundColor);
-            hashCode = hashCode * -1521134295 + IndexedColor.GetHashCode();
-            hashCode = hashCode * -1521134295 + PatternFill.GetHashCode();
-            return hashCode;
+            unchecked
+            {
+                int hashCode = -1564173520;
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BackgroundColor);
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ForegroundColor);
+                hashCode = hashCode * -1521134295 + IndexedColor.GetHashCode();
+                hashCode = hashCode * -1521134295 + PatternFill.GetHashCode();
+                return hashCode;
+            }
         }
 
         /// <summary>

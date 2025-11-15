@@ -65,8 +65,10 @@ namespace NanoXLSX.Internal.Readers
                 {
                     Metadata metadata = Workbook.WorkbookMetadata;
 
-                    XmlDocument xr = new XmlDocument();
-                    xr.XmlResolver = null;
+                    XmlDocument xr = new XmlDocument
+                    {
+                        XmlResolver = null
+                    };
                     xr.Load(stream);
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                     {

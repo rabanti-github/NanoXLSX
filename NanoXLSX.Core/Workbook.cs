@@ -36,7 +36,7 @@ namespace NanoXLSX
         private bool lockStructureIfProtected;
         private int selectedWorksheet;
         private Shortener shortener;
-        private List<string> mruColors = new List<string>();
+        private readonly List<string> mruColors = new List<string>();
         internal bool importInProgress; // Used by NanoXLSX.Reader
         #endregion
 

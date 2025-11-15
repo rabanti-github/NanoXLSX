@@ -86,8 +86,10 @@ namespace NanoXLSX.Internal.Readers
             {
                 using (stream) // Close after processing
                 {
-                    XmlDocument xr = new XmlDocument();
-                    xr.XmlResolver = null;
+                    XmlDocument xr = new XmlDocument
+                    {
+                        XmlResolver = null
+                    };
                     xr.Load(stream);
                     StringBuilder sb = new StringBuilder();
                     foreach (XmlNode node in xr.DocumentElement.ChildNodes)

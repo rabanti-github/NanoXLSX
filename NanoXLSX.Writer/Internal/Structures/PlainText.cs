@@ -61,7 +61,11 @@ namespace NanoXLSX.Internal.Structures
             this.Value = value;
         }
 
-
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
+        /// <param name="obj">Other object to compare</param>
+        /// <returns>True if both objects are equal</returns>
         public override bool Equals(object obj)
         {
             if (this.Value == null && obj == null || (this.Value == null && ((PlainText)obj).Value == null))
@@ -75,6 +79,10 @@ namespace NanoXLSX.Internal.Structures
             return this.Value.Equals(((PlainText)obj).Value, StringComparison.Ordinal);
         }
 
+        /// <summary>
+        /// Gets the hash code based on the value
+        /// </summary>
+        /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
             if (this.Value == null)

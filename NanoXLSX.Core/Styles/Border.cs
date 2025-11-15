@@ -245,20 +245,23 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            int hashCode = -153001865;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BottomColor);
-            hashCode = hashCode * -1521134295 + BottomStyle.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(DiagonalColor);
-            hashCode = hashCode * -1521134295 + DiagonalDown.GetHashCode();
-            hashCode = hashCode * -1521134295 + DiagonalUp.GetHashCode();
-            hashCode = hashCode * -1521134295 + DiagonalStyle.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LeftColor);
-            hashCode = hashCode * -1521134295 + LeftStyle.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(RightColor);
-            hashCode = hashCode * -1521134295 + RightStyle.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(TopColor);
-            hashCode = hashCode * -1521134295 + TopStyle.GetHashCode();
-            return hashCode;
+            unchecked
+            {
+                int hashCode = -153001865;
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BottomColor);
+                hashCode = hashCode * -1521134295 + BottomStyle.GetHashCode();
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(DiagonalColor);
+                hashCode = hashCode * -1521134295 + DiagonalDown.GetHashCode();
+                hashCode = hashCode * -1521134295 + DiagonalUp.GetHashCode();
+                hashCode = hashCode * -1521134295 + DiagonalStyle.GetHashCode();
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LeftColor);
+                hashCode = hashCode * -1521134295 + LeftStyle.GetHashCode();
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(RightColor);
+                hashCode = hashCode * -1521134295 + RightStyle.GetHashCode();
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(TopColor);
+                hashCode = hashCode * -1521134295 + TopStyle.GetHashCode();
+                return hashCode;
+            }
         }
 
         /// <summary>
@@ -289,19 +292,21 @@ namespace NanoXLSX.Styles
         /// <returns>Copy of the current object without the internal ID</returns>
         public override AbstractStyle Copy()
         {
-            Border copy = new Border();
-            copy.BottomColor = BottomColor;
-            copy.BottomStyle = BottomStyle;
-            copy.DiagonalColor = DiagonalColor;
-            copy.DiagonalDown = DiagonalDown;
-            copy.DiagonalStyle = DiagonalStyle;
-            copy.DiagonalUp = DiagonalUp;
-            copy.LeftColor = LeftColor;
-            copy.LeftStyle = LeftStyle;
-            copy.RightColor = RightColor;
-            copy.RightStyle = RightStyle;
-            copy.TopColor = TopColor;
-            copy.TopStyle = TopStyle;
+            Border copy = new Border
+            {
+                BottomColor = BottomColor,
+                BottomStyle = BottomStyle,
+                DiagonalColor = DiagonalColor,
+                DiagonalDown = DiagonalDown,
+                DiagonalStyle = DiagonalStyle,
+                DiagonalUp = DiagonalUp,
+                LeftColor = LeftColor,
+                LeftStyle = LeftStyle,
+                RightColor = RightColor,
+                RightStyle = RightStyle,
+                TopColor = TopColor,
+                TopStyle = TopStyle
+            };
             return copy;
         }
 

@@ -111,21 +111,24 @@ namespace NanoXLSX.Themes
         /// </returns>
         public override int GetHashCode()
         {
-            int hashCode = -1016302979;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Dark1);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Light1);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Dark2);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Light2);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Accent1);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Accent2);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Accent3);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Accent4);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Accent5);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Accent6);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Hyperlink);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(FollowedHyperlink);
-            return hashCode;
+            unchecked
+            {
+                int hashCode = -1016302979;
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+                hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Dark1);
+                hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Light1);
+                hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Dark2);
+                hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Light2);
+                hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Accent1);
+                hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Accent2);
+                hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Accent3);
+                hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Accent4);
+                hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Accent5);
+                hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Accent6);
+                hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(Hyperlink);
+                hashCode = hashCode * -1521134295 + EqualityComparer<IColor>.Default.GetHashCode(FollowedHyperlink);
+                return hashCode;
+            }
         }
 
     }

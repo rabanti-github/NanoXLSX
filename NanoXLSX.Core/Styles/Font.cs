@@ -485,19 +485,21 @@ namespace NanoXLSX.Styles
         /// <returns>Copy of the current object without the internal ID</returns>
         public override AbstractStyle Copy()
         {
-            Font copy = new Font();
-            copy.Bold = Bold;
-            copy.Charset = Charset;
-            copy.ColorTheme = ColorTheme;
-            copy.ColorValue = ColorValue;
-            copy.VerticalAlign = VerticalAlign;
-            copy.Family = Family;
-            copy.Italic = Italic;
-            copy.Name = Name;
-            copy.Scheme = Scheme;
-            copy.Size = Size;
-            copy.Strike = Strike;
-            copy.Underline = Underline;
+            Font copy = new Font
+            {
+                Bold = Bold,
+                Charset = Charset,
+                ColorTheme = ColorTheme,
+                ColorValue = ColorValue,
+                VerticalAlign = VerticalAlign,
+                Family = Family,
+                Italic = Italic,
+                Name = Name,
+                Scheme = Scheme,
+                Size = Size,
+                Strike = Strike,
+                Underline = Underline
+            };
             return copy;
         }
 
@@ -509,20 +511,23 @@ namespace NanoXLSX.Styles
         /// </returns>
         public override int GetHashCode()
         {
-            int hashCode = -924704582;
-            hashCode = hashCode * -1521134295 + size.GetHashCode();
-            hashCode = hashCode * -1521134295 + Bold.GetHashCode();
-            hashCode = hashCode * -1521134295 + Charset.GetHashCode();
-            hashCode = hashCode * -1521134295 + ColorTheme.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ColorValue);
-            hashCode = hashCode * -1521134295 + Family.GetHashCode();
-            hashCode = hashCode * -1521134295 + Italic.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + Scheme.GetHashCode();
-            hashCode = hashCode * -1521134295 + Strike.GetHashCode();
-            hashCode = hashCode * -1521134295 + Underline.GetHashCode();
-            hashCode = hashCode * -1521134295 + VerticalAlign.GetHashCode();
-            return hashCode;
+            unchecked
+            {
+                int hashCode = -924704582;
+                hashCode = hashCode * -1521134295 + size.GetHashCode();
+                hashCode = hashCode * -1521134295 + Bold.GetHashCode();
+                hashCode = hashCode * -1521134295 + Charset.GetHashCode();
+                hashCode = hashCode * -1521134295 + ColorTheme.GetHashCode();
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ColorValue);
+                hashCode = hashCode * -1521134295 + Family.GetHashCode();
+                hashCode = hashCode * -1521134295 + Italic.GetHashCode();
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+                hashCode = hashCode * -1521134295 + Scheme.GetHashCode();
+                hashCode = hashCode * -1521134295 + Strike.GetHashCode();
+                hashCode = hashCode * -1521134295 + Underline.GetHashCode();
+                hashCode = hashCode * -1521134295 + VerticalAlign.GetHashCode();
+                return hashCode;
+            }
         }
 
         /// <summary>
