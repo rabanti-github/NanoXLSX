@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using System.Xml;
+using NanoXLSX.Extensions;
 using NanoXLSX.Styles;
 using Xunit;
 using static NanoXLSX.Cell;

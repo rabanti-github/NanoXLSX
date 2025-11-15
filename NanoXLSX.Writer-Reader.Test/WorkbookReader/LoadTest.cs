@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using NanoXLSX.Extensions;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
 

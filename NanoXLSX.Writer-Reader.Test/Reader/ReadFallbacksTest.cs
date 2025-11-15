@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using NanoXLSX.Extensions;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
 using static NanoXLSX.Styles.Border;

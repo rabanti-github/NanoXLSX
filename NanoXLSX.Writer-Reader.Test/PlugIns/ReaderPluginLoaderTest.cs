@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using NanoXLSX.Extensions;
 using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;

@@ -226,6 +226,67 @@ namespace NanoXLSX.Test.Core.CellTest
             int result = address.CompareTo(otherAddress);
             Assert.Equal(expectedResult, result);
         }
+
+        [Theory(DisplayName = "Test of the < address operator")]
+        [InlineData("A1", "A1", false)]
+        [InlineData("A10", "A2", false)]
+        [InlineData("B2", "D4", true)]
+        [InlineData("$X$99", "X99", false)] // $ Should have no influence
+        [InlineData("A100", "A$20", false)] // $ Should have no influence
+        [InlineData("$C$2", "$D$4", true)] // $ Should have no influence
+        public void CompareToTest2(string address1, string address2, bool expectedResult)
+        {
+            Address address = new Address(address1);
+            Address otherAddress = new Address(address2);
+            bool result = address < otherAddress;
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Theory(DisplayName = "Test of the <= address operator")]
+        [InlineData("A1", "A1", true)]
+        [InlineData("A10", "A2", false)]
+        [InlineData("B2", "D4", true)]
+        [InlineData("$X$99", "X99", true)] // $ Should have no influence
+        [InlineData("A100", "A$20", false)] // $ Should have no influence
+        [InlineData("$C$2", "$D$4", true)] // $ Should have no influence
+        public void CompareToTest3(string address1, string address2, bool expectedResult)
+        {
+            Address address = new Address(address1);
+            Address otherAddress = new Address(address2);
+            bool result = address <= otherAddress;
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Theory(DisplayName = "Test of the > address operator")]
+        [InlineData("A1", "A1", false)]
+        [InlineData("A10", "A2", true)]
+        [InlineData("B2", "D4", false)]
+        [InlineData("$X$99", "X99", false)] // $ Should have no influence
+        [InlineData("A100", "A$20", true)] // $ Should have no influence
+        [InlineData("$C$2", "$D$4", false)] // $ Should have no influence
+        public void CompareToTest4(string address1, string address2, bool expectedResult)
+        {
+            Address address = new Address(address1);
+            Address otherAddress = new Address(address2);
+            bool result = address > otherAddress;
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Theory(DisplayName = "Test of the >= address operator")]
+        [InlineData("A1", "A1", true)]
+        [InlineData("A10", "A2", true)]
+        [InlineData("B2", "D4", false)]
+        [InlineData("$X$99", "X99", true)] // $ Should have no influence
+        [InlineData("A100", "A$20", true)] // $ Should have no influence
+        [InlineData("$C$2", "$D$4", false)] // $ Should have no influence
+        public void CompareToTest5(string address1, string address2, bool expectedResult)
+        {
+            Address address = new Address(address1);
+            Address otherAddress = new Address(address2);
+            bool result = address >= otherAddress;
+            Assert.Equal(expectedResult, result);
+        }
+
         #endregion
 
     }

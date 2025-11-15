@@ -591,6 +591,143 @@ namespace NanoXLSX.Test.Core.CellTest
             Assert.Equal(expectedScope, scope);
         }
 
+        [Theory(DisplayName = "Test of the GetHashCode function of cells")]
+        [InlineData("A1", "A1", 23, 23, CellType.NUMBER, CellType.NUMBER, true)]
+        [InlineData("C3", "C3", 42, 42, CellType.NUMBER, CellType.NUMBER, true)]
+        [InlineData("D10", "D10", true, true, CellType.BOOL, CellType.BOOL, true)]
+        [InlineData("E5", "E5", "3+4", "3+4", CellType.FORMULA, CellType.FORMULA, true)]
+        [InlineData("F7", "F7", 1, 1, CellType.NUMBER, CellType.BOOL, false)]
+        [InlineData("G8", "G8", "5+5", "5+5", CellType.FORMULA, CellType.NUMBER, false)]
+        [InlineData("H4", "H4", 10, 11, CellType.NUMBER, CellType.NUMBER, false)]
+        [InlineData("J12", "J12", false, true, CellType.BOOL, CellType.BOOL, false)]
+        [InlineData("A1", "$A$1", 12, 12, CellType.NUMBER, CellType.NUMBER, false)]
+        [InlineData("$B2", "B$2", 0.5, 0.5, CellType.NUMBER, CellType.NUMBER, false)]
+        [InlineData("A1", "A2", 5, 5, CellType.NUMBER, CellType.NUMBER, false)]
+        [InlineData("C10", "D10", true, true, CellType.BOOL, CellType.BOOL, false)]
+        [InlineData("K1", "K1", "2024-01-01", "2024-01-01", CellType.DATE, CellType.DATE, true)]
+        [InlineData("K2", "K2", "2024-01-01", "2024-01-02", CellType.DATE, CellType.DATE, false)]
+        [InlineData("L1", "L1", "12:30:00", "12:30:00", CellType.TIME, CellType.TIME, true)]
+        [InlineData("M1", "M1", null, null, CellType.EMPTY, CellType.EMPTY, true)]
+        [InlineData("M2", "M2", null, 0, CellType.EMPTY, CellType.NUMBER, false)]
+        [InlineData("N5", "N5", "SUM(A1:A3)", "SUM(A1:A3)", CellType.FORMULA, CellType.FORMULA, true)]
+        [InlineData("N6", "N6", "5", 5, CellType.FORMULA, CellType.NUMBER, false)]
+        public void CellGetHashCodeTest(string address1, string address2, object value1, object value2, CellType type1, CellType type2,  bool expectedEquality)
+        {
+            Cell cell1 = new Cell(value1, type1, address1);
+            Cell cell2 = new Cell(value2, type2, address2);
+            if (expectedEquality)
+            {
+                Assert.Equal(cell1.GetHashCode(), cell2.GetHashCode());
+            }
+            else
+            {
+                Assert.NotEqual(cell1.GetHashCode(), cell2.GetHashCode());
+            }
+        }
+
+        [Fact(DisplayName = "Test of the == operator of cells")]
+        public void CellEqualsTest()
+        {
+            Cell cell1 = new Cell(25, CellType.NUMBER, "A1");
+            Cell cell2 = new Cell(25, CellType.NUMBER, "A1");
+            Cell cell3 = new Cell(30, CellType.NUMBER, "A1");
+            Cell cell4 = new Cell(25, CellType.NUMBER, "B2");
+            Assert.True(cell1 == cell2);
+            Assert.False(cell1 == cell3);
+            Assert.False(cell1 == cell4);
+            Assert.False(cell1 == null);
+            Assert.False(null == cell2);
+        }
+
+        [Fact(DisplayName = "Test of the != operator of cells")]
+        public void CellNotEqualsTest()
+        {
+            Cell cell1 = new Cell(25, CellType.NUMBER, "A1");
+            Cell cell2 = new Cell(25, CellType.NUMBER, "A1");
+            Cell cell3 = new Cell(30, CellType.NUMBER, "A1");
+            Cell cell4 = new Cell(25, CellType.NUMBER, "B2");
+            Assert.False(cell1 != cell2);
+            Assert.True(cell1 != cell3);
+            Assert.True(cell1 != cell4);
+            Assert.True(cell1 != null);
+            Assert.True(null != cell2);
+        }
+
+        [Theory(DisplayName = "Test of the > operator of cells (checks only row and column numbers)")]
+        [InlineData(1, 1, 0, 0, 25, 11, true)]
+        [InlineData(1, 1, 0, 0, 11, 25, true)] // data should have no effect
+        [InlineData(1, 0, 0, 1, 25, 11, true)]
+        [InlineData(0, 0, 1, 1, 25, 11, false)]
+        [InlineData(0, 0, 1, 1, 11, 25, false)] // data should have no effect
+        [InlineData(0, 1, 1, 0, 25, 11, false)]
+        [InlineData(10, 10, 9, 9, true, -60, true)]
+        [InlineData(100, 100, 99, 99, "test", null, true)]
+        [InlineData(0, 0, 0, 0, 25, 11, false)]
+        [InlineData(100, 100, 100, 100, 25, 11, false)]
+        public void CellGreaterThanTest(int row1, int column1, int row2, int column2, object sampleData1, object sampleData2, bool expectedResult)
+        {
+            Cell cell1 = new Cell(sampleData1, CellType.DEFAULT, new Address(column1, row1));
+            Cell cell2 = new Cell(sampleData2, CellType.DEFAULT, new Address(column2, row2));
+            bool result = cell1 > cell2;
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Theory(DisplayName = "Test of the >= operator of cells (checks only row and column numbers)")]
+        [InlineData(1, 1, 0, 0, 25, 11, true)]
+        [InlineData(1, 1, 0, 0, 11, 25, true)] // data should have no effect
+        [InlineData(1, 0, 0, 1, 25, 11, true)]
+        [InlineData(0, 0, 1, 1, 25, 11, false)]
+        [InlineData(0, 0, 1, 1, 11, 25, false)] // data should have no effect
+        [InlineData(0, 1, 1, 0, 25, 11, false)]
+        [InlineData(10, 10, 9, 9, true, -60, true)]
+        [InlineData(100, 100, 99, 99, "test", null, true)]
+        [InlineData(0, 0, 0, 0, 25, 11, true)]
+        [InlineData(100, 100, 100, 100, 25, 11, true)]
+        public void CellGreaterOrEqualsThanTest(int row1, int column1, int row2, int column2, object sampleData1, object sampleData2, bool expectedResult)
+        {
+            Cell cell1 = new Cell(sampleData1, CellType.DEFAULT, new Address(column1, row1));
+            Cell cell2 = new Cell(sampleData2, CellType.DEFAULT, new Address(column2, row2));
+            bool result = cell1 >= cell2;
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Theory(DisplayName = "Test of the < operator of cells (checks only row and column numbers)")]
+        [InlineData(1, 1, 0, 0, 25, 11, false)]
+        [InlineData(1, 1, 0, 0, 11, 25, false)] // data should have no effect
+        [InlineData(1, 0, 0, 1, 25, 11, false)]
+        [InlineData(0, 0, 1, 1, 25, 11, true)]
+        [InlineData(0, 0, 1, 1, 11, 25, true)] // data should have no effect
+        [InlineData(0, 1, 1, 0, 25, 11, true)]
+        [InlineData(10, 10, 9, 9, true, -60, false)]
+        [InlineData(100, 100, 99, 99, "test", null, false)]
+        [InlineData(0, 0, 0, 0, 25, 11, false)]
+        [InlineData(100, 100, 100, 100, 25, 11, false)]
+        public void CellSmallerThanTest(int row1, int column1, int row2, int column2, object sampleData1, object sampleData2, bool expectedResult)
+        {
+            Cell cell1 = new Cell(sampleData1, CellType.DEFAULT, new Address(column1, row1));
+            Cell cell2 = new Cell(sampleData2, CellType.DEFAULT, new Address(column2, row2));
+            bool result = cell1 < cell2;
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Theory(DisplayName = "Test of the < operator of cells (checks only row and column numbers)")]
+        [InlineData(1, 1, 0, 0, 25, 11, false)]
+        [InlineData(1, 1, 0, 0, 11, 25, false)] // data should have no effect
+        [InlineData(1, 0, 0, 1, 25, 11, false)]
+        [InlineData(0, 0, 1, 1, 25, 11, true)]
+        [InlineData(0, 0, 1, 1, 11, 25, true)] // data should have no effect
+        [InlineData(0, 1, 1, 0, 25, 11, true)]
+        [InlineData(10, 10, 9, 9, true, -60, false)]
+        [InlineData(100, 100, 99, 99, "test", null, false)]
+        [InlineData(0, 0, 0, 0, 25, 11, true)]
+        [InlineData(100, 100, 100, 100, 25, 11, true)]
+        public void CellSmallerOrEqualsThanTest(int row1, int column1, int row2, int column2, object sampleData1, object sampleData2, bool expectedResult)
+        {
+            Cell cell1 = new Cell(sampleData1, CellType.DEFAULT, new Address(column1, row1));
+            Cell cell2 = new Cell(sampleData2, CellType.DEFAULT, new Address(column2, row2));
+            bool result = cell1 <= cell2;
+            Assert.Equal(expectedResult, result);
+        }
 
     }
 }

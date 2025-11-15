@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using NanoXLSX.Exceptions;
+using NanoXLSX.Extensions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Interfaces.Reader;
@@ -47,7 +48,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             {
                 wb.SaveAsStream(ms, true);
                 ms.Position = 0;
-                Workbook importedWorkbook = WorkbookReader.Load(ms);
+                Workbook importedWorkbook = Extensions.WorkbookReader.Load(ms);
                 string testValue = importedWorkbook.AuxiliaryData.GetData<string>(readerUuid, 0);
                 Assert.Contains(expectedDocumentFragment, testValue);
             }
@@ -74,12 +75,12 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 ms.Position = 0;
                 if (expectedThrow)
                 {
-                    Assert.Throws<NotSupportedContentException>(() => WorkbookReader.Load(ms));
+                    Assert.Throws<NotSupportedContentException>(() => Extensions.WorkbookReader.Load(ms));
                     return;
                 }
                 else
                 {
-                    Workbook importedWorkbook = WorkbookReader.Load(ms);
+                    Workbook importedWorkbook = Extensions.WorkbookReader.Load(ms);
                     string testValue = importedWorkbook.AuxiliaryData.GetData<string>(readerUuid, 0);
                     Assert.Equal(expectedDocumentFragment, wb.CurrentWorksheet.SheetProtectionPassword.PasswordHash);
                 }
@@ -335,6 +336,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.PasswordReader)]
         public class ReplacePasswordIncompatibleReader : LegacyPasswordReader
         {
+            [ExcludeFromCodeCoverage]
             public static new void ReadXmlAttributes(System.Xml.XmlNode node)
             {
                 // NoOp

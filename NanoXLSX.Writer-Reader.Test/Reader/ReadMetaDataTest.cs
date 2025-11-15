@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using NanoXLSX.Extensions;
 using Xunit;
 
 namespace NanoXLSX.Test.Writer_Reader.ReaderTest
