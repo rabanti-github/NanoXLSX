@@ -157,7 +157,9 @@ namespace NanoXLSX
             char[] chars;
             if (string.IsNullOrEmpty(plaintextPassword))
             {
+#pragma warning disable CA1825 // Suppress: 0-length array allocation (sugeston is not .Net 5.0 compatible)
                 chars = new char[0];
+#pragma warning restore CA1825 // Suppress: 0-length array allocation
             }
             else
             {

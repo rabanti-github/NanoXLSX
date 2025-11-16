@@ -23,7 +23,7 @@ namespace NanoXLSX.Themes
         /// The value was extracted from a valid Excel file, created with Excel 2019. However, although '16' can be assumed to be the Version of Excel 2019, 
         /// the build part '6925' cannot be originated, is not reflecting the retrieved application build version, and seems not to be listed publicly
         /// </remarks>
-        public const string DEFAULT_THEME_VERSION = "166925";
+        public const string DefaultThemeVersion = "166925";
 
         #endregion
 

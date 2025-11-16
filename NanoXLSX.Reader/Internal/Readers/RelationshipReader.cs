@@ -74,31 +74,33 @@ namespace NanoXLSX.Internal.Readers
                     {
                         XmlResolver = null
                     };
-                    xr.Load(stream);
-
-                    XmlNodeList relationships = xr.GetElementsByTagName("Relationship");
-                    foreach (XmlNode relationship in relationships)
+                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
                     {
-                        string id = ReaderUtils.GetAttribute(relationship, "Id");
-                        string type = ReaderUtils.GetAttribute(relationship, "Type");
-                        string target = ReaderUtils.GetAttribute(relationship, "Target");
-                        if (ParserUtils.StartsWith(target, "/"))
+                        xr.Load(reader);
+                        XmlNodeList relationships = xr.GetElementsByTagName("Relationship");
+                        foreach (XmlNode relationship in relationships)
                         {
-                            target = target.TrimStart('/');
+                            string id = ReaderUtils.GetAttribute(relationship, "Id");
+                            string type = ReaderUtils.GetAttribute(relationship, "Type");
+                            string target = ReaderUtils.GetAttribute(relationship, "Target");
+                            if (ParserUtils.StartsWith(target, "/"))
+                            {
+                                target = target.TrimStart('/');
+                            }
+                            if (ParserUtils.NotStartsWith(target, "xl/"))
+                            {
+                                target = "xl/" + target;
+                            }
+                            Relationship rel = new Relationship
+                            {
+                                RID = id,
+                                Type = type,
+                                Target = target,
+                            };
+                            Workbook.AuxiliaryData.SetData(PlugInUUID.RelationshipReader, PlugInUUID.RelationshipEntity, id, rel);
                         }
-                        if (ParserUtils.NotStartsWith(target, "xl/"))
-                        {
-                            target = "xl/" + target;
-                        }
-                        Relationship rel = new Relationship
-                        {
-                            RID = id,
-                            Type = type,
-                            Target = target,
-                        };
-                        Workbook.AuxiliaryData.SetData(PlugInUUID.RelationshipReader, PlugInUUID.RelationshipEntity, id, rel);
+                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.RelationshipInlineReader);
                     }
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.RelationshipInlineReader);
                 }
             }
             catch (Exception ex)

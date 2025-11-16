@@ -146,7 +146,7 @@ namespace NanoXLSX.Test.Core.ExceptionTest
         {
             BinaryFormatter formatter = new BinaryFormatter();
             TException deserializedException;
-
+#pragma warning disable SYSLIB0011
             using (var stream = new System.IO.MemoryStream())
             {
                 formatter.Serialize(stream, originalException);
@@ -154,6 +154,7 @@ namespace NanoXLSX.Test.Core.ExceptionTest
                 stream.Seek(0, System.IO.SeekOrigin.Begin);
                 deserializedException = (TException)formatter.Deserialize(stream);
             }
+#pragma warning restore SYSLIB0011
             Assert.Equal(originalException.Message, deserializedException.Message);
         }
 

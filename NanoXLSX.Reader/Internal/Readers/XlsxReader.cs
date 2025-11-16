@@ -24,7 +24,7 @@ namespace NanoXLSX.Internal.Readers
     /// <summary>
     /// Class representing a reader to decompile XLSX files
     /// </summary>
-    public class XlsxReader
+    public class XlsxReader : IDisposable
     {
         #region privateFields
         private readonly string filePath;
@@ -81,11 +81,11 @@ namespace NanoXLSX.Internal.Readers
                     ReadInternal().GetAwaiter().GetResult();
                 }
             }
-            catch (NotSupportedContentException ex)
+            catch (NotSupportedContentException)
             {
-                throw ex; // rethrow
+                throw; // rethrow
             }
-            catch (IOException ex)
+            catch (IOException)
             {
                 throw; // rethrow
             }
@@ -111,7 +111,7 @@ namespace NanoXLSX.Internal.Readers
                     await ReadInternal();
                 }
             }
-            catch (IOException ex)
+            catch (IOException)
             {
                 throw; // rethrow
             }
@@ -255,7 +255,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="name">Name of the XML file within the XLSX file</param>
         /// <param name="archive">Zip file (XLSX)</param>
         /// <returns>MemoryStream object of the specified file</returns>
-        private MemoryStream GetEntryStream(string name, ZipArchive archive)
+        private static MemoryStream GetEntryStream(string name, ZipArchive archive)
         {
             MemoryStream stream = null;
             for (int i = 0; i < archive.Entries.Count; i++)
@@ -278,7 +278,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="namePrefix">filename prefix</param>
         /// <param name="archive">Zip archive instance</param>
         /// <returns>Dictionary of filename, where the key is the extracted index of the filename</returns>
-        private Dictionary<int, string> GetSequentialStreamNames(string namePrefix, ZipArchive archive)
+        private static Dictionary<int, string> GetSequentialStreamNames(string namePrefix, ZipArchive archive)
         {
             Dictionary<int, string> files = new Dictionary<int, string>();
             int index = 1; // Assumption: There is no file that has the index 0 in its name
@@ -340,6 +340,17 @@ namespace NanoXLSX.Internal.Readers
 
             } while (queueReader != null);
         }
+
+        /// <summary>
+        /// Disposes the XlsxReader instance
+        /// </summary>
+        public void Dispose()
+        {
+            this.inputStream?.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+
         #endregion
     }
 }

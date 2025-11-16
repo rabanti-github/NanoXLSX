@@ -110,7 +110,7 @@ namespace NanoXLSX.Utils.Xml
         {
             unchecked
             {
-                var hashCode = 27885120;
+                int hashCode = 27885120;
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Value);
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Prefix);

@@ -71,42 +71,44 @@ namespace NanoXLSX.Internal.Readers
             {
                 using (stream) // Close after processing
                 {
-                    XmlDocument xr = new XmlDocument();
-                    xr.XmlResolver = null;
-                    xr.Load(stream);
-                    foreach (XmlNode node in xr.DocumentElement.ChildNodes)
+                    XmlDocument xr = new XmlDocument() { XmlResolver = null };
+                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
                     {
-                        if (node.LocalName.Equals("numfmts", StringComparison.OrdinalIgnoreCase)) // Handles custom number formats
+                        xr.Load(reader);
+                        foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                         {
-                            GetNumberFormats(node);
+                            if (node.LocalName.Equals("numfmts", StringComparison.OrdinalIgnoreCase)) // Handles custom number formats
+                            {
+                                GetNumberFormats(node);
+                            }
+                            else if (node.LocalName.Equals("borders", StringComparison.OrdinalIgnoreCase)) // Handles borders
+                            {
+                                GetBorders(node);
+                            }
+                            else if (node.LocalName.Equals("fills", StringComparison.OrdinalIgnoreCase)) // Handles fills
+                            {
+                                GetFills(node);
+                            }
+                            else if (node.LocalName.Equals("fonts", StringComparison.OrdinalIgnoreCase)) // Handles fonts
+                            {
+                                GetFonts(node);
+                            }
+                            else if (node.LocalName.Equals("colors", StringComparison.OrdinalIgnoreCase)) // Handles MRU colors
+                            {
+                                GetColors(node);
+                            }
+                            // TODO: Implement other style components
                         }
-                        else if (node.LocalName.Equals("borders", StringComparison.OrdinalIgnoreCase)) // Handles borders
+                        foreach (XmlNode node in xr.DocumentElement.ChildNodes) // Redo for composition after all style parts are gathered; standard number formats
                         {
-                            GetBorders(node);
+                            if (node.LocalName.Equals("cellxfs", StringComparison.OrdinalIgnoreCase))
+                            {
+                                GetCellXfs(node);
+                            }
                         }
-                        else if (node.LocalName.Equals("fills", StringComparison.OrdinalIgnoreCase)) // Handles fills
-                        {
-                            GetFills(node);
-                        }
-                        else if (node.LocalName.Equals("fonts", StringComparison.OrdinalIgnoreCase)) // Handles fonts
-                        {
-                            GetFonts(node);
-                        }
-                        else if (node.LocalName.Equals("colors", StringComparison.OrdinalIgnoreCase)) // Handles MRU colors
-                        {
-                            GetColors(node);
-                        }
-                        // TODO: Implement other style components
+                        HandleMruColors();
+                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.StyleInlineReader);
                     }
-                    foreach (XmlNode node in xr.DocumentElement.ChildNodes) // Redo for composition after all style parts are gathered; standard number formats
-                    {
-                        if (node.LocalName.Equals("cellxfs", StringComparison.OrdinalIgnoreCase))
-                        {
-                            GetCellXfs(node);
-                        }
-                    }
-                    HandleMruColors();
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.StyleInlineReader);
                 }
                 Workbook.AuxiliaryData.SetData(PlugInUUID.StyleReader, PlugInUUID.StyleEntity, styleReaderContainer);
             }

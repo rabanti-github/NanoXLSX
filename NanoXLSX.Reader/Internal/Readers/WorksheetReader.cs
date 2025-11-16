@@ -30,10 +30,10 @@ namespace NanoXLSX.Internal.Readers
         #region privateFields
         private MemoryStream stream;
         private ReaderOptions readerOptions;
-        private List<string> dateStyles = null;
-        private List<string> timeStyles = null;
-        private Dictionary<string, Style> resolvedStyles = null;
-        private IPasswordReader passwordReader = null;
+        private List<string> dateStyles;
+        private List<string> timeStyles;
+        private Dictionary<string, Style> resolvedStyles;
+        private IPasswordReader passwordReader;
         #endregion
 
         #region properties
@@ -99,18 +99,20 @@ namespace NanoXLSX.Internal.Readers
                 worksheet.Hidden = worksheetDefinition.Hidden;
                 using (stream) // Close after processing
                 {
-                    XmlDocument document = new XmlDocument();
-                    document.XmlResolver = null;
-                    document.Load(stream);
-                    GetRows(document, worksheet);
-                    GetSheetView(document, worksheet);
-                    GetMergedCells(document, worksheet);
-                    GetSheetFormats(document, worksheet);
-                    GetAutoFilters(document, worksheet);
-                    GetColumns(document, worksheet);
-                    GetSheetProtection(document, worksheet);
-                    SetWorkbookRelation(worksheet);
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WorksheetInlineReader, CurrentWorksheetID);
+                    XmlDocument document = new XmlDocument() { XmlResolver = null };
+                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
+                    {
+                        document.Load(reader);
+                        GetRows(document, worksheet);
+                        GetSheetView(document, worksheet);
+                        GetMergedCells(document, worksheet);
+                        GetSheetFormats(document, worksheet);
+                        GetAutoFilters(document, worksheet);
+                        GetColumns(document, worksheet);
+                        GetSheetProtection(document, worksheet);
+                        SetWorkbookRelation(worksheet);
+                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WorksheetInlineReader, CurrentWorksheetID);
+                    }
                 }
 
 
@@ -210,7 +212,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private void GetSheetView(XmlDocument xmlDocument, Worksheet worksheet)
+        private static void GetSheetView(XmlDocument xmlDocument, Worksheet worksheet)
         {
             XmlNodeList sheetViewsNodes = xmlDocument.GetElementsByTagName("sheetViews");
             if (sheetViewsNodes != null && sheetViewsNodes.Count > 0)
@@ -309,7 +311,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="attribute">Raw range/cell as string</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private void CollectSelectedCells(string attribute, Worksheet worksheet)
+        private static void CollectSelectedCells(string attribute, Worksheet worksheet)
         {
             if (attribute.Contains(":"))
             {
@@ -328,7 +330,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="paneNode">XML node</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private void SetPaneSplit(XmlNode paneNode, Worksheet worksheet)
+        private static void SetPaneSplit(XmlNode paneNode, Worksheet worksheet)
         {
             string attribute = ReaderUtils.GetAttribute(paneNode, "state");
             bool useNumbers = false;
@@ -343,7 +345,7 @@ namespace NanoXLSX.Internal.Readers
             Worksheet.WorksheetPane? activePane = null;
             if (attribute != null)
             {
-                if (attribute.ToLower() == "frozen" || attribute.ToLower() == "frozensplit")
+                if (ParserUtils.ToLower(attribute) == "frozen" || ParserUtils.ToLower(attribute) == "frozensplit")
                 {
                     frozenState = true;
                 }
@@ -467,7 +469,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="node">Sheet protection node</param>
         /// <param name="sheetProtectionValue">Value to check and maintain (if defined)</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private int ManageSheetProtection(XmlNode node, Worksheet.SheetProtectionValue sheetProtectionValue, Worksheet worksheet)
+        private static int ManageSheetProtection(XmlNode node, Worksheet.SheetProtectionValue sheetProtectionValue, Worksheet worksheet)
         {
             int hasProtection = 0;
             string attributeName = Enum.GetName(typeof(Worksheet.SheetProtectionValue), sheetProtectionValue);
@@ -487,7 +489,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private void GetMergedCells(XmlDocument xmlDocument, Worksheet worksheet)
+        private static void GetMergedCells(XmlDocument xmlDocument, Worksheet worksheet)
         {
             XmlNodeList mergedCellsNodes = xmlDocument.GetElementsByTagName("mergeCells");
             if (mergedCellsNodes != null && mergedCellsNodes.Count > 0)
@@ -535,7 +537,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private void GetAutoFilters(XmlDocument xmlDocument, Worksheet worksheet)
+        private static void GetAutoFilters(XmlDocument xmlDocument, Worksheet worksheet)
         {
             XmlNodeList autoFilterNodes = xmlDocument.GetElementsByTagName("autoFilter");
             if (autoFilterNodes != null && autoFilterNodes.Count > 0)
@@ -599,9 +601,9 @@ namespace NanoXLSX.Internal.Readers
                 }
                 attribute = ReaderUtils.GetAttribute(columnNode, "style");
                 Style defaultStyle = null;
-                if (attribute != null && resolvedStyles.ContainsKey(attribute))
+                if (attribute != null && resolvedStyles.TryGetValue(attribute, out var attributeValue))
                 {
-                    defaultStyle = resolvedStyles[attribute];
+                    defaultStyle = attributeValue;
                 }
                 foreach (int index in indices)
                 {
@@ -763,7 +765,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="value">Value of the cell</param>
         /// <param name="defaultType">Originally resolved type. If a formula, the method immediately returns</param>
         /// <returns>Resolved cell type</returns>
-        private Cell.CellType ResolveType(object value, Cell.CellType defaultType)
+        private static Cell.CellType ResolveType(object value, Cell.CellType defaultType)
         {
             if (defaultType == Cell.CellType.FORMULA)
             {
@@ -883,7 +885,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 return data;
             }
-            if (!readerOptions.EnforcedColumnTypes.ContainsKey(address.Column))
+            if (!readerOptions.EnforcedColumnTypes.TryGetValue(address.Column, out var columnType))
             {
                 return data;
             }
@@ -891,7 +893,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 return data;
             }
-            switch (readerOptions.EnforcedColumnTypes[address.Column])
+            switch (columnType)
             {
                 case ReaderOptions.ColumnType.Numeric:
                     return GetNumericValue(data, importedTyp);
@@ -962,7 +964,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <returns>Object of the type bool or null if not able to parse</returns>
-        private bool? TryParseBool(string raw)
+        private static bool? TryParseBool(string raw)
         {
             if (raw == "0")
             {
@@ -1076,7 +1078,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="data">Raw data</param>
         /// <returns>Integer value or null if not possible to convert</returns>
-        private object ConvertToInt(object data)
+        private static object ConvertToInt(object data)
         {
             double tempDouble;
             switch (data)
@@ -1093,7 +1095,7 @@ namespace NanoXLSX.Internal.Readers
                     return ConvertDoubleToInt(tempDouble);
                 case float _:
                 case double _:
-                    object tempInt = TryConvertDoubleToInt(data);
+                    int? tempInt = TryConvertDoubleToInt(data);
                     if (tempInt != null)
                     {
                         return tempInt;
@@ -1213,7 +1215,7 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Tris to parse a TimeSpan instance from a string
+        /// Tries to parse a TimeSpan instance from a string
         /// </summary>
         /// <param name="raw">String to parse</param>
         /// <returns>TimeSpan instance or null if not possible to parse</returns>
@@ -1244,7 +1246,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="valueType">Type of the value to be converted: Valid values are DATE and TIME</param>
         /// <param name="resolvedType">Out parameter for the determined value type</param>
         /// <returns>Object of the type TimeSpan or null if not possible to parse</returns>
-        private object GetDateTimeValue(string raw, Cell.CellType valueType, out Cell.CellType resolvedType)
+        private static object GetDateTimeValue(string raw, Cell.CellType valueType, out Cell.CellType resolvedType)
         {
             double dValue;
             if (!ParserUtils.TryParseDouble(raw, out dValue))
@@ -1319,7 +1321,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="data">Numeric value (possibly integer)</param>
         /// <returns>Converted value if possible to convert, otherwise null</returns>
-        private object TryConvertDoubleToInt(object data)
+        private static int? TryConvertDoubleToInt(object data)
         {
             IConvertible converter = data as IConvertible;
             double dValue = converter.ToDouble(ReaderOptions.DEFAULT_CULTURE_INFO);
@@ -1335,7 +1337,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="data">Numeric value</param>
         /// <returns>Converted Value</returns>
-        public object ConvertDoubleToInt(object data)
+        private static int ConvertDoubleToInt(object data)
         {
             IConvertible converter = data as IConvertible;
             return converter.ToInt32(ReaderOptions.DEFAULT_CULTURE_INFO);
@@ -1365,9 +1367,9 @@ namespace NanoXLSX.Internal.Readers
                 case bool _:
                     return ((bool)data).ToString(ReaderOptions.DEFAULT_CULTURE_INFO);
                 case DateTime _:
-                    return ((DateTime)data).ToString(readerOptions.DateTimeFormat);
+                    return ((DateTime)data).ToString(readerOptions.DateTimeFormat, ParserUtils.InvariantCulture);
                 case TimeSpan _:
-                    return ((TimeSpan)data).ToString(readerOptions.TimeSpanFormat);
+                    return ((TimeSpan)data).ToString(readerOptions.TimeSpanFormat, ParserUtils.InvariantCulture);
                 default:
                     if (data == null)
                     {
@@ -1437,7 +1439,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="raw">Raw value as string</param>
         /// <returns>Value of the type int, float, double or null as fall-back</returns>
-        private object GetNumericValue(string raw)
+        private static object GetNumericValue(string raw)
         {
             // integer section
             uint uiValue;
@@ -1598,9 +1600,9 @@ namespace NanoXLSX.Internal.Readers
         private Cell CreateCell(object value, Cell.CellType type, Address address, string styleNumber = null)
         {
             Cell cell = new Cell(value, type, address);
-            if (styleNumber != null && resolvedStyles.ContainsKey(styleNumber))
+            if (styleNumber != null && resolvedStyles.TryGetValue(styleNumber, out var styleValue))
             {
-                cell.SetStyle(resolvedStyles[styleNumber]);
+                cell.SetStyle(styleValue);
             }
             return cell;
         }

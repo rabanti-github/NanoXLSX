@@ -65,41 +65,43 @@ namespace NanoXLSX.Internal.Readers
                 {
                     Metadata metadata = Workbook.WorkbookMetadata;
 
-                    XmlDocument xr = new XmlDocument();
-                    xr.XmlResolver = null;
-                    xr.Load(stream);
-                    foreach (XmlNode node in xr.DocumentElement.ChildNodes)
+                    XmlDocument xr = new XmlDocument() { XmlResolver = null };
+                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
                     {
-                        if (node.LocalName.Equals("Category", StringComparison.OrdinalIgnoreCase))
+                        xr.Load(reader);
+                        foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                         {
-                            metadata.Category = node.InnerText;
+                            if (node.LocalName.Equals("Category", StringComparison.OrdinalIgnoreCase))
+                            {
+                                metadata.Category = node.InnerText;
+                            }
+                            else if (node.LocalName.Equals("ContentStatus", StringComparison.OrdinalIgnoreCase))
+                            {
+                                metadata.ContentStatus = node.InnerText;
+                            }
+                            else if (node.LocalName.Equals("Creator", StringComparison.OrdinalIgnoreCase))
+                            {
+                                metadata.Creator = node.InnerText;
+                            }
+                            else if (node.LocalName.Equals("Description", StringComparison.OrdinalIgnoreCase))
+                            {
+                                metadata.Description = node.InnerText;
+                            }
+                            else if (node.LocalName.Equals("Keywords", StringComparison.OrdinalIgnoreCase))
+                            {
+                                metadata.Keywords = node.InnerText;
+                            }
+                            else if (node.LocalName.Equals("Subject", StringComparison.OrdinalIgnoreCase))
+                            {
+                                metadata.Subject = node.InnerText;
+                            }
+                            else if (node.LocalName.Equals("Title", StringComparison.OrdinalIgnoreCase))
+                            {
+                                metadata.Title = node.InnerText;
+                            }
                         }
-                        else if (node.LocalName.Equals("ContentStatus", StringComparison.OrdinalIgnoreCase))
-                        {
-                            metadata.ContentStatus = node.InnerText;
-                        }
-                        else if (node.LocalName.Equals("Creator", StringComparison.OrdinalIgnoreCase))
-                        {
-                            metadata.Creator = node.InnerText;
-                        }
-                        else if (node.LocalName.Equals("Description", StringComparison.OrdinalIgnoreCase))
-                        {
-                            metadata.Description = node.InnerText;
-                        }
-                        else if (node.LocalName.Equals("Keywords", StringComparison.OrdinalIgnoreCase))
-                        {
-                            metadata.Keywords = node.InnerText;
-                        }
-                        else if (node.LocalName.Equals("Subject", StringComparison.OrdinalIgnoreCase))
-                        {
-                            metadata.Subject = node.InnerText;
-                        }
-                        else if (node.LocalName.Equals("Title", StringComparison.OrdinalIgnoreCase))
-                        {
-                            metadata.Title = node.InnerText;
-                        }
+                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.MetadataCoreInlineReader);
                     }
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.MetadataCoreInlineReader);
                 }
             }
             catch (Exception ex)

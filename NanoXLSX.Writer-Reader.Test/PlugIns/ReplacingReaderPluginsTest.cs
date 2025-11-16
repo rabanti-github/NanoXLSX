@@ -104,7 +104,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
             {
                 base.Init(stream, workbook, readerOptions);
                 this.stream = stream;
@@ -129,7 +129,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
             {
                 base.Init(stream, workbook, readerOptions);
                 this.stream = stream;
@@ -154,7 +154,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
             {
                 base.Init(stream, workbook, readerOptions);
                 this.stream = stream;
@@ -179,7 +179,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
             {
                 base.Init(stream, workbook, readerOptions);
                 this.stream = stream;
@@ -204,7 +204,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
             {
                 base.Init(stream, workbook, readerOptions);
                 this.stream = stream;
@@ -229,7 +229,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
             {
                 base.Init(stream, workbook, readerOptions);
                 this.stream = stream;
@@ -254,7 +254,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
             {
                 base.Init(stream, workbook, readerOptions);
                 this.stream = stream;
@@ -279,7 +279,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
             {
                 base.Init(stream, workbook, readerOptions);
                 this.stream = stream;

@@ -18,6 +18,18 @@ namespace NanoXLSX.Test.Core.UtilsTest
             Assert.Equal(expectedValue, value);
         }
 
+        [Theory(DisplayName = "Test of the ParserUtils ToLower function")]
+        [InlineData("", "")]
+        [InlineData(null, null)]
+        [InlineData("123", "123")]
+        [InlineData("abc", "abc")]
+        [InlineData("ABC", "abc")]
+        public void ToLowerTest(string givenValue, string expectedValue)
+        {
+            string value = ParserUtils.ToLower(givenValue);
+            Assert.Equal(expectedValue, value);
+        }
+
         [Theory(DisplayName = "Test of the ParserUtils StartsWith function")]
         [InlineData("HelloWorld", "Hello", true)]
         [InlineData("HelloWorld", "world", false)]

@@ -18,6 +18,9 @@ namespace NanoXLSX.Themes
     /// </summary>
     public class SystemColor : ITypedColor<Value>
     {
+        /// <summary>
+        /// Enum defining the available system colors
+        /// </summary>
         public enum Value
         {
             ///<summary>3D Dark System Color: Specifies a Dark shadow color for three-dimensional display elements</summary>

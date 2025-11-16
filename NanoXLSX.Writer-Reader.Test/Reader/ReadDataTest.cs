@@ -54,18 +54,18 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             given.Add("A11", "\r\r\r");
             given.Add("A12", "\n\r"); // irregular use
             Dictionary<string, string> expected = new Dictionary<string, string>();
-            expected.Add("A1", "\r\n");
-            expected.Add("A2", "\r\n");
-            expected.Add("A3", "\r\n");
-            expected.Add("A4", "a\r\n");
-            expected.Add("A5", "\r\nx");
-            expected.Add("A6", "a\r\n");
-            expected.Add("A7", "\r\nx");
-            expected.Add("A8", "a\r\n");
-            expected.Add("A9", "\r\nx");
-            expected.Add("A10", "\r\n\r\n\r\n");
-            expected.Add("A11", "\r\n\r\n\r\n");
-            expected.Add("A12", "\r\n");
+            expected.Add("A1", "\n");
+            expected.Add("A2", "\n");
+            expected.Add("A3", "\n");
+            expected.Add("A4", "a\n");
+            expected.Add("A5", "\nx");
+            expected.Add("A6", "a\n");
+            expected.Add("A7", "\nx");
+            expected.Add("A8", "a\n");
+            expected.Add("A9", "\nx");
+            expected.Add("A10", "\n\n\n");
+            expected.Add("A11", "\n\n\n");
+            expected.Add("A12", "\n");
             AssertValues<string>(given, AssertEquals, expected);
         }
 
@@ -393,7 +393,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         }
 
         [Fact(DisplayName = "Test of the workbook reader if the only workbook entry is a chart")]
-        public void ReadChartsheetTest()
+        public void ReadChartSheetTest()
         {
             Stream stream = TestUtils.GetResource("chartsheet.xlsx");
             Workbook workbook = WorkbookReader.Load(stream);
@@ -402,7 +402,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         }
 
         [Fact(DisplayName = "Test of the workbook reader if the workbook contains worksheets chats and embedded charts")]
-        public void ReadChartsheetTest2()
+        public void ReadChartSheetTest2()
         {
             // Note: Sheet1 and Sheet3 contains data. Diagram1 (worksheet2) is just a chart and should be empty
             Stream stream = TestUtils.GetResource("chartsheet2.xlsx");

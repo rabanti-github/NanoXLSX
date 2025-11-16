@@ -79,6 +79,16 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
+        /// Transforms a string to lower case with null check and invariant culture
+        /// </summary>
+        /// <param name="input">String to transform</param>
+        /// <returns>Lower case string</returns>
+        public static string ToLower(string input)
+        {
+            return !string.IsNullOrEmpty(input) ? input.ToLower(InvariantCulture) : input;
+        }
+
+        /// <summary>
         /// Transforms an integer to an invariant sting
         /// </summary>
         /// <param name="input">Integer to transform</param>

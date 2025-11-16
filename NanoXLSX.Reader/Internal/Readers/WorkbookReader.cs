@@ -14,6 +14,7 @@ using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils;
+using NanoXLSX.Utils.Xml;
 using static NanoXLSX.Internal.Enums.ReaderPassword;
 using IOException = NanoXLSX.Exceptions.IOException;
 
@@ -71,25 +72,27 @@ namespace NanoXLSX.Internal.Readers
             {
                 using (stream) // Close after processing
                 {
-                    XmlDocument xr = new XmlDocument();
-                    xr.XmlResolver = null;
-                    xr.Load(stream);
-                    foreach (XmlNode node in xr.DocumentElement.ChildNodes)
+                    XmlDocument xr = new XmlDocument() { XmlResolver = null };
+                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
                     {
-                        if (node.LocalName.Equals("sheets", StringComparison.OrdinalIgnoreCase) && node.HasChildNodes)
+                        xr.Load(reader);
+                        foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                         {
-                            GetWorksheetInformation(node.ChildNodes);
+                            if (node.LocalName.Equals("sheets", StringComparison.OrdinalIgnoreCase) && node.HasChildNodes)
+                            {
+                                GetWorksheetInformation(node.ChildNodes);
+                            }
+                            else if (node.LocalName.Equals("bookViews", StringComparison.OrdinalIgnoreCase) && node.HasChildNodes)
+                            {
+                                GetViewInformation(node.ChildNodes);
+                            }
+                            else if (node.LocalName.Equals("workbookProtection", StringComparison.OrdinalIgnoreCase))
+                            {
+                                GetProtectionInformation(node);
+                            }
                         }
-                        else if (node.LocalName.Equals("bookViews", StringComparison.OrdinalIgnoreCase) && node.HasChildNodes)
-                        {
-                            GetViewInformation(node.ChildNodes);
-                        }
-                        else if (node.LocalName.Equals("workbookProtection", StringComparison.OrdinalIgnoreCase))
-                        {
-                            GetProtectionInformation(node);
-                        }
+                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WorkbookInlineReader);
                     }
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WorkbookInlineReader);
                 }
             }
             catch (NotSupportedContentException ex)
@@ -144,7 +147,7 @@ namespace NanoXLSX.Internal.Readers
                 if (node.LocalName.Equals("workbookView", StringComparison.OrdinalIgnoreCase))
                 {
                     string attribute = ReaderUtils.GetAttribute(node, "visibility");
-                    if (attribute != null && attribute.ToLower() == "hidden")
+                    if (attribute != null && ParserUtils.ToLower(attribute) == "hidden")
                     {
                         this.Workbook.Hidden = true;
                     }
@@ -174,7 +177,7 @@ namespace NanoXLSX.Internal.Readers
                         string relId = ReaderUtils.GetAttribute(node, "r:id");
                         string state = ReaderUtils.GetAttribute(node, "state");
                         bool hidden = false;
-                        if (state != null && state.ToLower() == "hidden")
+                        if (state != null && ParserUtils.ToLower(state) == "hidden")
                         {
                             hidden = true;
                         }

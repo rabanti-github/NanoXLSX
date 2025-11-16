@@ -69,31 +69,34 @@ namespace NanoXLSX.Internal.Readers
                     {
                         XmlResolver = null
                     };
-                    xr.Load(stream);
-                    foreach (XmlNode node in xr.DocumentElement.ChildNodes)
+                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
                     {
-                        if (node.LocalName.Equals("Application", StringComparison.OrdinalIgnoreCase))
+                        xr.Load(reader);
+                        foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                         {
-                            metadata.Application = node.InnerText;
+                            if (node.LocalName.Equals("Application", StringComparison.OrdinalIgnoreCase))
+                            {
+                                metadata.Application = node.InnerText;
+                            }
+                            else if (node.LocalName.Equals("AppVersion", StringComparison.OrdinalIgnoreCase))
+                            {
+                                metadata.ApplicationVersion = node.InnerText;
+                            }
+                            else if (node.LocalName.Equals("Company", StringComparison.OrdinalIgnoreCase))
+                            {
+                                metadata.Company = node.InnerText;
+                            }
+                            else if (node.LocalName.Equals("Manager", StringComparison.OrdinalIgnoreCase))
+                            {
+                                metadata.Manager = node.InnerText;
+                            }
+                            else if (node.LocalName.Equals("HyperlinkBase", StringComparison.OrdinalIgnoreCase))
+                            {
+                                metadata.HyperlinkBase = node.InnerText;
+                            }
                         }
-                        else if (node.LocalName.Equals("AppVersion", StringComparison.OrdinalIgnoreCase))
-                        {
-                            metadata.ApplicationVersion = node.InnerText;
-                        }
-                        else if (node.LocalName.Equals("Company", StringComparison.OrdinalIgnoreCase))
-                        {
-                            metadata.Company = node.InnerText;
-                        }
-                        else if (node.LocalName.Equals("Manager", StringComparison.OrdinalIgnoreCase))
-                        {
-                            metadata.Manager = node.InnerText;
-                        }
-                        else if (node.LocalName.Equals("HyperlinkBase", StringComparison.OrdinalIgnoreCase))
-                        {
-                            metadata.HyperlinkBase = node.InnerText;
-                        }
+                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.MetadataAppInlineReader);
                     }
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.MetadataAppInlineReader);
                 }
             }
             catch (Exception ex)

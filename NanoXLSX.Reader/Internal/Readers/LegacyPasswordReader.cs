@@ -60,11 +60,11 @@ namespace NanoXLSX.Internal.Readers
         /// Initialization method (interface implementation)
         /// </summary>
         /// <param name="type">Password type</param>
-        /// <param name="options">Reader options</param> 
-        public virtual void Init(PasswordType type, ReaderOptions options)
+        /// <param name="readerOptions">Reader options</param> 
+        public virtual void Init(PasswordType type, ReaderOptions readerOptions)
         {
             this.Type = type;
-            this.Options = options;
+            this.Options = readerOptions;
         }
 
         /// <summary>

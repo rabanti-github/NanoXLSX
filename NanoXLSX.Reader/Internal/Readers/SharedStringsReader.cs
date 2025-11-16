@@ -90,25 +90,28 @@ namespace NanoXLSX.Internal.Readers
                     {
                         XmlResolver = null
                     };
-                    xr.Load(stream);
-                    StringBuilder sb = new StringBuilder();
-                    foreach (XmlNode node in xr.DocumentElement.ChildNodes)
+                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
                     {
-                        if (node.LocalName.Equals("si", StringComparison.OrdinalIgnoreCase))
+                        xr.Load(reader);
+                        StringBuilder sb = new StringBuilder();
+                        foreach (XmlNode node in xr.DocumentElement.ChildNodes)
                         {
-                            sb.Clear();
-                            GetTextToken(node, ref sb);
-                            if (capturePhoneticCharacters)
+                            if (node.LocalName.Equals("si", StringComparison.OrdinalIgnoreCase))
                             {
-                                SharedStrings.Add(ProcessPhoneticCharacters(sb));
-                            }
-                            else
-                            {
-                                SharedStrings.Add(sb.ToString());
+                                sb.Clear();
+                                GetTextToken(node, ref sb);
+                                if (capturePhoneticCharacters)
+                                {
+                                    SharedStrings.Add(ProcessPhoneticCharacters(sb));
+                                }
+                                else
+                                {
+                                    SharedStrings.Add(sb.ToString());
+                                }
                             }
                         }
+                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.SharedStringsInlineReader);
                     }
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.SharedStringsInlineReader);
                 }
             }
             catch (Exception ex)

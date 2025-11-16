@@ -66,68 +66,70 @@ namespace NanoXLSX.Internal.Readers
             {
                 using (stream) // Close after processing
                 {
-                    XmlDocument xr = new XmlDocument();
-                    xr.XmlResolver = null;
-                    xr.Load(stream);
-                    string prefix = ReaderUtils.DiscoverPrefix(xr, "theme");
-                    XmlNodeList themes = ReaderUtils.GetElementsByTagName(xr, "theme", prefix);
-                    string themeName = ReaderUtils.GetAttribute(themes[0], "name"); // If this fails, something is completely wrong
-                    Workbook.WorkbookTheme = new Theme(themeName);
-                    ColorScheme colorScheme = new ColorScheme();
-                    Workbook.WorkbookTheme.Colors = colorScheme;
-                    XmlNodeList colors = ReaderUtils.GetElementsByTagName(xr, "clrScheme", prefix);
-
-                    foreach (XmlNode color in colors)
+                    XmlDocument xr = new XmlDocument() { XmlResolver = null };
+                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
                     {
-                        string colorSchemeName = ReaderUtils.GetAttribute(color, "name", "");
-                        Workbook.WorkbookTheme.Colors.Name = colorSchemeName;
-                        XmlNodeList colorNodes = color.ChildNodes;
-                        foreach (XmlNode colorNode in colorNodes)
-                        {
-                            string name = colorNode.LocalName;
-                            switch (name)
-                            {
-                                case "dk1":
-                                    colorScheme.Dark1 = ParseColor(colorNode.ChildNodes);
-                                    break;
-                                case "lt1":
-                                    colorScheme.Light1 = ParseColor(colorNode.ChildNodes);
-                                    break;
-                                case "dk2":
-                                    colorScheme.Dark2 = ParseColor(colorNode.ChildNodes);
-                                    break;
-                                case "lt2":
-                                    colorScheme.Light2 = ParseColor(colorNode.ChildNodes);
-                                    break;
-                                case "accent1":
-                                    colorScheme.Accent1 = ParseColor(colorNode.ChildNodes);
-                                    break;
-                                case "accent2":
-                                    colorScheme.Accent2 = ParseColor(colorNode.ChildNodes);
-                                    break;
-                                case "accent3":
-                                    colorScheme.Accent3 = ParseColor(colorNode.ChildNodes);
-                                    break;
-                                case "accent4":
-                                    colorScheme.Accent4 = ParseColor(colorNode.ChildNodes);
-                                    break;
-                                case "accent5":
-                                    colorScheme.Accent5 = ParseColor(colorNode.ChildNodes);
-                                    break;
-                                case "accent6":
-                                    colorScheme.Accent6 = ParseColor(colorNode.ChildNodes);
-                                    break;
-                                case "hlink":
-                                    colorScheme.Hyperlink = ParseColor(colorNode.ChildNodes);
-                                    break;
-                                case "folHlink":
-                                    colorScheme.FollowedHyperlink = ParseColor(colorNode.ChildNodes);
-                                    break;
-                            }
+                        xr.Load(reader);
+                        string prefix = ReaderUtils.DiscoverPrefix(xr, "theme");
+                        XmlNodeList themes = ReaderUtils.GetElementsByTagName(xr, "theme", prefix);
+                        string themeName = ReaderUtils.GetAttribute(themes[0], "name"); // If this fails, something is completely wrong
+                        Workbook.WorkbookTheme = new Theme(themeName);
+                        ColorScheme colorScheme = new ColorScheme();
+                        Workbook.WorkbookTheme.Colors = colorScheme;
+                        XmlNodeList colors = ReaderUtils.GetElementsByTagName(xr, "clrScheme", prefix);
 
+                        foreach (XmlNode color in colors)
+                        {
+                            string colorSchemeName = ReaderUtils.GetAttribute(color, "name", "");
+                            Workbook.WorkbookTheme.Colors.Name = colorSchemeName;
+                            XmlNodeList colorNodes = color.ChildNodes;
+                            foreach (XmlNode colorNode in colorNodes)
+                            {
+                                string name = colorNode.LocalName;
+                                switch (name)
+                                {
+                                    case "dk1":
+                                        colorScheme.Dark1 = ParseColor(colorNode.ChildNodes);
+                                        break;
+                                    case "lt1":
+                                        colorScheme.Light1 = ParseColor(colorNode.ChildNodes);
+                                        break;
+                                    case "dk2":
+                                        colorScheme.Dark2 = ParseColor(colorNode.ChildNodes);
+                                        break;
+                                    case "lt2":
+                                        colorScheme.Light2 = ParseColor(colorNode.ChildNodes);
+                                        break;
+                                    case "accent1":
+                                        colorScheme.Accent1 = ParseColor(colorNode.ChildNodes);
+                                        break;
+                                    case "accent2":
+                                        colorScheme.Accent2 = ParseColor(colorNode.ChildNodes);
+                                        break;
+                                    case "accent3":
+                                        colorScheme.Accent3 = ParseColor(colorNode.ChildNodes);
+                                        break;
+                                    case "accent4":
+                                        colorScheme.Accent4 = ParseColor(colorNode.ChildNodes);
+                                        break;
+                                    case "accent5":
+                                        colorScheme.Accent5 = ParseColor(colorNode.ChildNodes);
+                                        break;
+                                    case "accent6":
+                                        colorScheme.Accent6 = ParseColor(colorNode.ChildNodes);
+                                        break;
+                                    case "hlink":
+                                        colorScheme.Hyperlink = ParseColor(colorNode.ChildNodes);
+                                        break;
+                                    case "folHlink":
+                                        colorScheme.FollowedHyperlink = ParseColor(colorNode.ChildNodes);
+                                        break;
+                                }
+
+                            }
                         }
+                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.ThemeInlineReader);
                     }
-                    RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.ThemeInlineReader);
                 }
             }
             catch (Exception ex)
@@ -141,7 +143,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="childNodes">List of XML nodes that can contain color values</param>
         /// <returns><see cref="IColor"/> value or null, if no color could be determined</returns>
-        private IColor ParseColor(XmlNodeList childNodes)
+        private static IColor ParseColor(XmlNodeList childNodes)
         {
             foreach (XmlNode node in childNodes)
             {
