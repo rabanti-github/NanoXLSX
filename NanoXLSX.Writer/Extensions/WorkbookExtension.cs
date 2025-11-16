@@ -5,6 +5,9 @@ using NanoXLSX.Internal.Writers;
 
 namespace NanoXLSX
 {
+    /// <summary>
+    /// Writer extension methods for the <see cref="NanoXLSX.Workbook">Workbook</see> class
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class WorkbookExtension
     {

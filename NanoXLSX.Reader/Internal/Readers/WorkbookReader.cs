@@ -95,9 +95,9 @@ namespace NanoXLSX.Internal.Readers
                     }
                 }
             }
-            catch (NotSupportedContentException ex)
+            catch (NotSupportedContentException)
             {
-                throw ex; // rethrow
+                throw; // rethrow
             }
             catch (Exception ex)
             {

@@ -335,7 +335,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         public void SetDefaultColumnStyleTest()
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Equal(0, worksheet.Columns.Count);
+            Assert.Empty(worksheet.Columns);
             Style style1 = BasicStyles.Font("Calibri Light", 13).Append(BasicStyles.BoldItalic);
             Style style2 = BasicStyles.Font("Arial", 11).Append(BasicStyles.DoubleUnderline);
             worksheet.SetColumnDefaultStyle(0, style1);

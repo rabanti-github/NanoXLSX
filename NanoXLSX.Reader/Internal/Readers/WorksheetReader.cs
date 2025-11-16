@@ -117,9 +117,9 @@ namespace NanoXLSX.Internal.Readers
 
 
             }
-            catch (NotSupportedContentException ex)
+            catch (NotSupportedContentException)
             {
-                throw ex; // rethrow
+                throw; // rethrow
             }
             catch (Exception ex)
             {
@@ -1166,7 +1166,7 @@ namespace NanoXLSX.Internal.Readers
             bool isDateTime;
             if (readerOptions == null || string.IsNullOrEmpty(readerOptions.DateTimeFormat) || readerOptions.TemporalCultureInfo == null)
             {
-                isDateTime = DateTime.TryParse(raw, ReaderOptions.DEFAULT_CULTURE_INFO, DateTimeStyles.None, out dateTime);
+                isDateTime = DateTime.TryParse(raw, ReaderOptions.DefaultCultureInfo, DateTimeStyles.None, out dateTime);
             }
             else
             {
@@ -1225,7 +1225,7 @@ namespace NanoXLSX.Internal.Readers
             bool isTimeSpan;
             if (readerOptions == null || string.IsNullOrEmpty(readerOptions.TimeSpanFormat) || readerOptions.TemporalCultureInfo == null)
             {
-                isTimeSpan = TimeSpan.TryParse(raw, ReaderOptions.DEFAULT_CULTURE_INFO, out timeSpan);
+                isTimeSpan = TimeSpan.TryParse(raw, ReaderOptions.DefaultCultureInfo, out timeSpan);
             }
             else
             {
@@ -1324,10 +1324,10 @@ namespace NanoXLSX.Internal.Readers
         private static int? TryConvertDoubleToInt(object data)
         {
             IConvertible converter = data as IConvertible;
-            double dValue = converter.ToDouble(ReaderOptions.DEFAULT_CULTURE_INFO);
+            double dValue = converter.ToDouble(ReaderOptions.DefaultCultureInfo);
             if (dValue > int.MinValue && dValue < int.MaxValue)
             {
-                return converter.ToInt32(ReaderOptions.DEFAULT_CULTURE_INFO);
+                return converter.ToInt32(ReaderOptions.DefaultCultureInfo);
             }
             return null;
         }
@@ -1340,7 +1340,7 @@ namespace NanoXLSX.Internal.Readers
         private static int ConvertDoubleToInt(object data)
         {
             IConvertible converter = data as IConvertible;
-            return converter.ToInt32(ReaderOptions.DEFAULT_CULTURE_INFO);
+            return converter.ToInt32(ReaderOptions.DefaultCultureInfo);
         }
 
         /// <summary>
@@ -1353,19 +1353,19 @@ namespace NanoXLSX.Internal.Readers
             switch (data)
             {
                 case int _:
-                    return ((int)data).ToString(ReaderOptions.DEFAULT_CULTURE_INFO);
+                    return ((int)data).ToString(ReaderOptions.DefaultCultureInfo);
                 case uint _:
-                    return ((uint)data).ToString(ReaderOptions.DEFAULT_CULTURE_INFO);
+                    return ((uint)data).ToString(ReaderOptions.DefaultCultureInfo);
                 case long _:
-                    return ((long)data).ToString(ReaderOptions.DEFAULT_CULTURE_INFO);
+                    return ((long)data).ToString(ReaderOptions.DefaultCultureInfo);
                 case ulong _:
-                    return ((ulong)data).ToString(ReaderOptions.DEFAULT_CULTURE_INFO);
+                    return ((ulong)data).ToString(ReaderOptions.DefaultCultureInfo);
                 case float _:
-                    return ((float)data).ToString(ReaderOptions.DEFAULT_CULTURE_INFO);
+                    return ((float)data).ToString(ReaderOptions.DefaultCultureInfo);
                 case double _:
-                    return ((double)data).ToString(ReaderOptions.DEFAULT_CULTURE_INFO);
+                    return ((double)data).ToString(ReaderOptions.DefaultCultureInfo);
                 case bool _:
-                    return ((bool)data).ToString(ReaderOptions.DEFAULT_CULTURE_INFO);
+                    return ((bool)data).ToString(ReaderOptions.DefaultCultureInfo);
                 case DateTime _:
                     return ((DateTime)data).ToString(readerOptions.DateTimeFormat, ParserUtils.InvariantCulture);
                 case TimeSpan _:

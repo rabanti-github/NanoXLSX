@@ -33,17 +33,15 @@ namespace NanoXLSX.Internal.Writers
     {
 
         #region staticFields
-        private static DocumentPath WORKBOOK = new DocumentPath("workbook.xml", "xl/");
-        private static DocumentPath STYLES = new DocumentPath("styles.xml", "xl/");
-        private static DocumentPath APP_PROPERTIES = new DocumentPath("app.xml", "docProps/");
-        private static DocumentPath CORE_PROPERTIES = new DocumentPath("core.xml", "docProps/");
-        private static DocumentPath SHARED_STRINGS = new DocumentPath("sharedStrings.xml", "xl/");
-        private static DocumentPath THEME = new DocumentPath("theme1.xml", "xl/theme/");
+        private static readonly DocumentPath WORKBOOK = new DocumentPath("workbook.xml", "xl/");
+        private static readonly DocumentPath STYLES = new DocumentPath("styles.xml", "xl/");
+        private static readonly DocumentPath APP_PROPERTIES = new DocumentPath("app.xml", "docProps/");
+        private static readonly DocumentPath CORE_PROPERTIES = new DocumentPath("core.xml", "docProps/");
+        private static readonly DocumentPath SHARED_STRINGS = new DocumentPath("sharedStrings.xml", "xl/");
+        private static readonly DocumentPath THEME = new DocumentPath("theme1.xml", "xl/theme/");
         #endregion
 
         #region privateFields
-        private Workbook workbook;
-        private StyleManager styles;
         private int rootPackageIndex = 1;
         private int xlPackageIndex = 1;
 
@@ -59,18 +57,12 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Workbook to be saved
         /// </summary>
-        public Workbook Workbook
-        {
-            get { return workbook; }
-        }
+        public Workbook Workbook { get; }
 
         /// <summary>
         /// Style manager attached to the workbook to save
         /// </summary>
-        public StyleManager Styles
-        {
-            get { return styles; }
-        }
+        public StyleManager Styles { get; private set; }
 
         /// <summary>
         /// Shared string writer attached to the workbook to save
@@ -86,7 +78,7 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="workbook">Workbook to process</param>
         public XlsxWriter(Workbook workbook)
         {
-            this.workbook = workbook;
+            this.Workbook = workbook;
         }
         #endregion
 
@@ -97,14 +89,14 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <exception cref="IOException">Throws IOException in case of an error</exception>
         /// <exception cref="RangeException">Throws a RangeException if the start or end address of a handled cell range was out of range</exception>
-        /// <exception cref="FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
+        /// <exception cref="Exceptions.FormatException">Throws a FormatException if a handled date cannot be translated to (Excel internal) OADate</exception>
         /// <exception cref="StyleException">Throws a StyleException if one of the styles of the workbook cannot be referenced or is null</exception>
         /// \remark <remarks>The StyleException should never happen in this state if the internally managed style collection was not tampered. </remarks>
         public void Save()
         {
             try
             {
-                FileStream fs = new FileStream(workbook.Filename, FileMode.Create);
+                FileStream fs = new FileStream(Workbook.Filename, FileMode.Create);
                 SaveAsStream(fs);
 
             }
@@ -131,20 +123,20 @@ namespace NanoXLSX.Internal.Writers
         {
             // Workbook should always be the lowest index
             RegisterPackagePart(PackagePartType.Root, PackagePartDefinition.WORKBOOK_PACKAGE_PART_INDEX, WORKBOOK, @"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument");
-            if (this.workbook.WorkbookMetadata != null)
+            if (this.Workbook.WorkbookMetadata != null)
             {
                 int index = PackagePartDefinition.METADATA_PACKAGE_PART_START_INDEX;
                 RegisterPackagePart(PackagePartType.Root, index, CORE_PROPERTIES, @"application/vnd.openxmlformats-package.core-properties+xml", @"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties");
                 RegisterPackagePart(PackagePartType.Root, index + 1000, APP_PROPERTIES, @"application/vnd.openxmlformats-officedocument.extended-properties+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties");
             }
             int worksheetOrderNumber = PackagePartDefinition.WORKSHEET_PACKAGE_PART_START_INDEX;
-            if (this.workbook.Worksheets.Count == 0)
+            if (this.Workbook.Worksheets.Count == 0)
             {
                 RegisterPackagePart(PackagePartType.Worksheet, worksheetOrderNumber, "sheet1.xml", "xl/worksheets", @"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet");
             }
             else
             {
-                for (int i = 0; i < this.workbook.Worksheets.Count; i++)
+                for (int i = 0; i < this.Workbook.Worksheets.Count; i++)
                 {
                     string fileName = "sheet" + ParserUtils.ToString(i + 1) + ".xml";
                     RegisterPackagePart(PackagePartType.Worksheet, worksheetOrderNumber, fileName, "xl/worksheets", @"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet");
@@ -152,7 +144,7 @@ namespace NanoXLSX.Internal.Writers
                 }
             }
             int postWorksheetOrderNumber = PackagePartDefinition.POST_WORSHEET_PACKAGE_PART_START_INDEX;
-            if (workbook.WorkbookTheme != null)
+            if (Workbook.WorkbookTheme != null)
             {
                 RegisterPackagePart(PackagePartType.Other, postWorksheetOrderNumber, THEME, @"application/vnd.openxmlformats-officedocument.theme+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme");
                 postWorksheetOrderNumber += 1000;
@@ -166,8 +158,7 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Method to prepare the package as source of the XLSX file to be written. Package parts are to be registered before calling this method
         /// </summary>
-        /// <param name="package">Root package</param>
-        private void PreparePackage(Package package)
+        private void PreparePackage()
         {
             List<PackagePartDefinition> definitions = PackagePartDefinition.Sort(this.packagePartDefinitions);
             PackagePartDefinition workbookDefinition = definitions.First(p => p.OrderNumber == PackagePartDefinition.WORKBOOK_PACKAGE_PART_INDEX);
@@ -269,8 +260,8 @@ namespace NanoXLSX.Internal.Writers
         /// \remark <remarks>Possible Exceptions are <see cref="IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="Exceptions.FormatException">FormatException</see> and <see cref="StyleException">StyleException</see>.</remarks>
         public void SaveAsStream(Stream stream, bool leaveOpen = false)
         {
-            workbook.ResolveMergedCells();
-            this.styles = StyleManager.GetManagedStyles(workbook);
+            Workbook.ResolveMergedCells();
+            this.Styles = StyleManager.GetManagedStyles(Workbook);
             try
             {
                 HandlePackageRegistryQueuePlugIns();
@@ -280,7 +271,7 @@ namespace NanoXLSX.Internal.Writers
                 using (Package xlsxPackage = Package.Open(stream, FileMode.Create))
                 {
                     this.package = xlsxPackage;
-                    PreparePackage(this.package);
+                    PreparePackage();
                     PackagePart part;
 
                     // Workbook
@@ -303,11 +294,11 @@ namespace NanoXLSX.Internal.Writers
                     // Worksheets
                     IWorksheetWriter worksheetWriter = PlugInLoader.GetPlugIn<IWorksheetWriter>(PlugInUUID.WorksheetWriter, new WorksheetWriter());
                     worksheetWriter.Init(this);
-                    if (workbook.Worksheets.Count > 0)
+                    if (Workbook.Worksheets.Count > 0)
                     {
-                        for (int i = 0; i < workbook.Worksheets.Count; i++)
+                        for (int i = 0; i < Workbook.Worksheets.Count; i++)
                         {
-                            Worksheet item = workbook.Worksheets[i];
+                            Worksheet item = Workbook.Worksheets[i];
                             part = packageParts[worksheetPaths[i].Path][worksheetPaths[i].Filename];
                             worksheetWriter.CurrentWorksheet = item;
                             worksheetWriter.Execute();
@@ -328,7 +319,7 @@ namespace NanoXLSX.Internal.Writers
                     AppendXmlToPackagePart(SharedStringWriter.XmlElement, part);
 
                     // Metadata
-                    if (this.workbook.WorkbookMetadata != null)
+                    if (this.Workbook.WorkbookMetadata != null)
                     {
                         IPlugInWriter metadataAppWriter = PlugInLoader.GetPlugIn<IPlugInWriter>(PlugInUUID.MetadataAppWriter, new MetadataAppWriter());
                         metadataAppWriter.Init(this);
@@ -343,7 +334,7 @@ namespace NanoXLSX.Internal.Writers
                     }
 
                     // Theme
-                    if (workbook.WorkbookTheme != null)
+                    if (Workbook.WorkbookTheme != null)
                     {
                         IPlugInWriter themeWriter = PlugInLoader.GetPlugIn<IPlugInWriter>(PlugInUUID.ThemeWriter, new ThemeWriter());
                         themeWriter.Init(this);
@@ -388,12 +379,11 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="queueUuid">Queue UUID</param>
         private void HandleQueuePlugIns(string queueUuid)
         {
-            IPlugInWriter queueWriter = null;
+            IPlugInWriter queueWriter;
             string lastUuid = null;
             do
             {
-                string currentUuid;
-                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPlugInWriter>(queueUuid, lastUuid, out currentUuid);
+                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPlugInWriter>(queueUuid, lastUuid, out string currentUuid);
                 if (queueWriter != null)
                 {
                     queueWriter.Init(this);
@@ -424,12 +414,11 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         private void HandlePackageRegistryQueuePlugIns()
         {
-            IPlugInPackageWriter queueWriter = null;
+            IPlugInPackageWriter queueWriter;
             string lastUuid = null;
             do
             {
-                string currentUuid;
-                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPlugInPackageWriter>(PlugInUUID.WriterPackageRegistryQueue, lastUuid, out currentUuid);
+                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPlugInPackageWriter>(PlugInUUID.WriterPackageRegistryQueue, lastUuid, out string currentUuid);
                 if (queueWriter != null)
                 {
                     queueWriter.Execute(); // Execute anything that could be defined

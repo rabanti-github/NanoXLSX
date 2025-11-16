@@ -21,17 +21,17 @@ namespace NanoXLSX
         /// <summary>
         /// Default format if DateTime values are cast to strings
         /// </summary>
-        public const string DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+        public const string DefaultDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
         /// <summary>
         /// Default format if TimeSpan values are cast to strings
         /// </summary>
-        public const string DEFAULT_TIMESPAN_FORMAT = "hh\\:mm\\:ss";
+        public const string DefaultTimeSpanFormat = "hh\\:mm\\:ss";
 
         /// <summary>
         /// Default culture info instance (invariant culture) used for date and time parsing, if no custom culture info is defined
         /// </summary>
-        public static readonly CultureInfo DEFAULT_CULTURE_INFO = CultureInfo.InvariantCulture;
+        public static readonly CultureInfo DefaultCultureInfo = CultureInfo.InvariantCulture;
 
         /// <summary>
         /// Global conversion types to enforce during the load process. All types other than <see cref="GlobalType.Default" /> will override defined <see cref="ColumnType">Column types</see>
@@ -131,25 +131,25 @@ namespace NanoXLSX
         /// <summary>
         /// The row number (zero-based) where enforcing rules are started to be applied. This is, for instance, to prevent enforcing types in a header row. Any enforcing rule is skipped until this row number is reached
         /// </summary>
-        public int EnforcingStartRowNumber { get; set; } = 0;
+        public int EnforcingStartRowNumber { get; set; }
 
         /// <summary>
         /// Format if DateTime values are cast to strings or DateTime objects are parsed from strings. If null or empty, parsing will be tried with 'best effort', according to <see cref="System.DateTime.Parse(string)"> System.DateTime.Parse(string)</see>. 
         /// See also  <see cref="TemporalCultureInfo"/>
         /// </summary>
-        public string DateTimeFormat { get; set; } = DEFAULT_DATE_TIME_FORMAT;
+        public string DateTimeFormat { get; set; } = DefaultDateTimeFormat;
 
         /// <summary>
         /// Format if TimeSpan values are cast to strings
         /// </summary>
         /// \remark <remarks>The separators like period or semicolon must be escaped by backslashes. See: <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-timespan-format-strings"/></remarks>
-        public string TimeSpanFormat { get; set; } = DEFAULT_TIMESPAN_FORMAT;
+        public string TimeSpanFormat { get; set; } = DefaultTimeSpanFormat;
 
         /// <summary>
         /// Culture info instance, used to parse DateTime or TimeSpan objects from strings. If null, parsing will be tried with 'best effort', according to <see cref="System.DateTime.Parse(string)">System.DateTime.Parse(string)</see> <see cref="System.DateTime.Parse(string)">System.DateTime.Parse(string)</see>.
         /// See also  <see cref="DateTimeFormat"/> and <see cref="TimeSpanFormat"/>
         /// </summary>
-        public CultureInfo TemporalCultureInfo { get; set; } = DEFAULT_CULTURE_INFO;
+        public CultureInfo TemporalCultureInfo { get; set; } = DefaultCultureInfo;
 
         /// <summary>
         /// If set to true, worksheet or workbook protection passwords with unknown / not supported algorithms will be ignored (password hash may not be read). 

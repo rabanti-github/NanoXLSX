@@ -578,8 +578,8 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("B1", "1");
             expectedCells.Add("B2", "Test");
             expectedCells.Add("B3", "False");
-            expectedCells.Add("B4", time.ToString(ReaderOptions.DEFAULT_TIMESPAN_FORMAT));
-            expectedCells.Add("B5", date.ToString(ReaderOptions.DEFAULT_DATE_TIME_FORMAT));
+            expectedCells.Add("B4", time.ToString(ReaderOptions.DefaultTimeSpanFormat));
+            expectedCells.Add("B5", date.ToString(ReaderOptions.DefaultDateTimeFormat));
             expectedCells.Add("B6", "0");
             expectedCells.Add("B7", "True");
             expectedCells.Add("B8", "-10");

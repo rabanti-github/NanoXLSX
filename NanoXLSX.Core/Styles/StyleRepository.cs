@@ -65,11 +65,12 @@ namespace NanoXLSX.Styles
                     return null;
                 }
                 int hashCode = style.GetHashCode();
-                if (!styles.ContainsKey(hashCode))
+                if (!styles.TryGetValue(hashCode, out var value))
                 {
-                    styles.Add(hashCode, style);
+                    value = style;
+                    styles.Add(hashCode, value);
                 }
-                return styles[hashCode];
+                return value;
             }
         }
 
