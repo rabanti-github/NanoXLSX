@@ -1,5 +1,19 @@
 # Migration Guide v2.x to v3.0.0
 
+## Introduction
+
+NanoXLSX underwent several changes in version 3.0.0, to improve usability, consistency and modularization. This caused some breaking changes, that are summarized in this migration guide.
+
+In the most cases, just namespaces have to be added or adapted, e.g. `using NanoXLSX.Extensions;` for the new reader extension methods.
+
+Furthermore, a lot of constants were renamed to follow the C# naming conventions.
+
+However, most important change is the modularization of NanoXLSX, where the reading and writing functionalities were moved to separate packages: `NanoXLSX.Reader` and `NanoXLSX.Writer`. The core package `NanoXLSX.Core` now only contains the core classes, like `Workbook`, `Worksheet`, `Cell`, `Style`, etc.
+
+The following guides lists all necessary changes, as well as changed behaviors of properties and methods.
+
+---
+
 ## Core classes
 
 ### Workbook
@@ -52,13 +66,28 @@
 	
 ---
 
+### Address (struct)
+
+- The property `Row` is now read-only (immutable). To change the property, a new Address object has to be created
+- The property `Column` is now read-only (immutable). To change the property, a new Address object has to be created
+- The property `Type` is now read-only (immutable). To change the property, a new Address object has to be created
+
+---
+
+### Range (struct)
+
+- The property `StartAddress` is now read-only (immutable). To change the property, a new Range object has to be created
+- The property `EndAddress` is now read-only (immutable). To change the property, a new Range object has to be created
+ 
+---
+
 ### Styles 
 
 Styles were undergoing several changes in version 3.0.0, to improve usability and consistency.
 Especially the `Font` class was completely redesigned, according to the Excel specifications.
 Furthermore, a lot of constants were renamed to follow the C# naming conventions.
 
----
+- General in any Style class: All (s)RGB values are automatically validated and cast to upper case. If valid hex values are used, no actions are necessary. If existing code uses invalid hex values, these have to be adapted.
 
 #### Font
 
@@ -91,7 +120,6 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 - The property `Font.ColorScheme` was changed from type `int` to the enum `Theme.ColorSchemeElement`. The value has to be replaced by one of the available values (See **Theme section** ). The initialization default value is `Theme.ColorSchemeElement.light1`.
 - The property `Font.VerticalAlign` was changed from type `Font.VerticalAlignValue` to the enum `Font.VerticalTextAlignValue`. Only the enum name has to be changed (see below):
 - The enum `Font.VerticalAlignValue` was renamed to `Font.VerticalTextAlignValue`. The available values remain unchanged
-
 
 #### Border
 
@@ -143,11 +171,10 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 | `FormatRange.invalied`   | `FormatRange.Inavlid`  |          |
 | `FormatRange.undefined`  | `FormatRange.Undefined`|          |
 
-
 ---
 
 ### Theme
-The `Theme` class was introduced with NanoXLSX v3. It represents the theme of a workbook, which contains several color schemes and font schemes.
+The `Theme` class was introduced with NanoXLSX v3.0.0 It represents the theme of a workbook, which contains several color schemes and font schemes.
 The class can mostly be ignored unless specific stylings are required.
 Theme may be references ind Styles, especially in Fonts.
 - The enum `Theme.ColorSchemeElement` was introduced to represent the color scheme elements of a theme. The available values are:
@@ -176,7 +203,6 @@ When it comes to reading workbooks, the reader was completely separated form Nan
 
   - If a workbook does not contain Metadata information, the property `Workbook.WorkbookMetadata` returned null. Now, an empty Metadata object is created by default in this case. The default object may also contain default properties, like a defined Application
 
-
   ---
 
 ### ImportOptions
@@ -202,9 +228,7 @@ When it comes to reading workbooks, the reader was completely separated form Nan
 
 ### Cell
 
-  - When reading Worksheets, All sorts of new line combinations could be read in for string cell values, like `\n\r` that was transformed to `\r\n\r\n`. All new lines are transformed now to `\n`, and `\r` is always stripped in combination with `\n`
-
-
+  - When reading Worksheets, All sorts of new line combinations could be read in for string cell values, like `\n\r`, that was transformed to `\r\n\r\n`. All new lines are transformed now just to `\n`, and `\r` is always stripped in combination with `\n`
 
 ---
 
@@ -214,11 +238,9 @@ When it comes to reading workbooks, the reader was completely separated form Nan
 - The architecture of all internally used reader classes was changed redesigned from scratch. If you have modified such classes, these modifications probably have to be redone.
 - **Please note**: The reader classes are not intended to be directly modified. However, you can implement custom readers that either replaces existing readers, or can be appended at several positions during the read process. This is part of the introduced plugin architecture.
 
-
-
 ## Common
 
-All changes related to common functions
+All changes related to common, mostly static functions
 
 ### Utils
 
@@ -250,32 +272,3 @@ All changes related to common functions
 | `Utils.FIRST_ALLOWED_EXCEL_DATE` | `DataUtils.FirstAllowedExcelDate`|
 | `Utils.LAST_ALLOWED_EXCEL_DATE`  | `DataUtils.LastAllowedExcelDate` |
 | `Utils.INVARIANT_CULTURE`   | `DataUtils.InvariantCulture` |
-
-
-
-
-
-- Workbook.Load() vs WorkbokReader.Load()
-- ImportOptions vs ReaderOptions
-  + EnforceValidRowDimensions and EnforceValidColumnDimensions are replaced by EnforceStrictValidation (default = false)
-
-## Workbook
-- Deprecated methods removed: AddStyle, AddStyleComponent, RemoveStyle (several overloads)
-
-## Worksheet
-
-- Password handling
-  - LegacyPassword is always defined (should never be null) 
-
-### Methods
-- Method SetSelectedCells was replaced by AddSelectedCell, RemoveSelectedCells and ClearSelectedCells. Further overload methods were added to the first two methods
-
-## Address
-- Address fields `Row`, `Column` and `Type` are now read-only (immutable) properties. To change one of the properties, a new Address object has to be created
-
-
-## Range
-- Range fields `StartAddress`, and `EndAddress` are now read-only (immutable) properties. To change one of the properties, a new Range object has to be created
-
-## Style (general)
-- All (s)RGB values are automatically validated and cast to upper case. If valid hex values are used, no actions are necessary
