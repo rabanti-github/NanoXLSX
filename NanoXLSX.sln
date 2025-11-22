@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36603.0 d17.14
+VisualStudioVersion = 17.14.36603.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Core", "NanoXLSX.Core\NanoXLSX.Core.csproj", "{A70E40AA-98C1-453A-8030-B4798A89EBFC}"
 EndProject
@@ -21,6 +21,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Reader", "NanoXLSX.Reader\NanoXLSX.Reader.csproj", "{0B68C119-7C4E-47CE-AE74-212A97AA9B43}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoXLSX.Writer-Reader.Test", "NanoXLSX.Writer-Reader.Test\NanoXLSX.Writer-Reader.Test.csproj", "{D146F1DC-1F3A-484E-8DB3-9892EE102A51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoXLSX", "NanoXLSX\NanoXLSX.csproj", "{C60B7FC1-8BD6-4266-B9E1-995AF23E5CB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 		{D146F1DC-1F3A-484E-8DB3-9892EE102A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D146F1DC-1F3A-484E-8DB3-9892EE102A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D146F1DC-1F3A-484E-8DB3-9892EE102A51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C60B7FC1-8BD6-4266-B9E1-995AF23E5CB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C60B7FC1-8BD6-4266-B9E1-995AF23E5CB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C60B7FC1-8BD6-4266-B9E1-995AF23E5CB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C60B7FC1-8BD6-4266-B9E1-995AF23E5CB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

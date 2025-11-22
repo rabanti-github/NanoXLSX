@@ -10,7 +10,7 @@
 		<Company>Raphael Stoeckli</Company>
 		<Authors>Raphael Stoeckli</Authors>
 		<Copyright>Copyright Raphael Stoeckli © 2025</Copyright>
-		<Description>NanoXLSX Reader contains the extension methods to load XLSX files</Description>
+		<Description>NanoXLSX Reader contains the extension methods to load XLSX files. This package is the reader plugin library of NanoXLSX.</Description>
 		<PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.git</RepositoryUrl>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -54,7 +54,7 @@
 		<PackageReference Include="NanoXLSX.Core" Version="3.0.*" />
 	</ItemGroup>
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	  <Exec Command="@echo off&#xD;&#xA;echo PROJECT_NUMBER = $(Version) &gt; &quot;$(ProjectDir)Documentation\projectNumber.doxygen&quot;&#xD;&#xA;echo PROJECT_NAME = $(ProjectName) &gt; &quot;$(ProjectDir)Documentation\projectName.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = $(SolutionDir)docs\$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\outputDirectory.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = $(SolutionDir)docs\$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\htmlOutput.doxygen&quot;" />
+	  <Exec Command="@echo off&#xD;&#xA;echo PROJECT_NUMBER = $(Version) &gt; &quot;$(ProjectDir)Documentation\projectNumber.doxygen&quot;&#xD;&#xA;echo PROJECT_NAME = $(ProjectName) &gt; &quot;$(ProjectDir)Documentation\projectName.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = ..\docs\$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\outputDirectory.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = ..\docs\$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\htmlOutput.doxygen&quot;" />
 	</Target>
 	<ItemGroup>
 		<None Include="Documentation\NanoXLSXlib.png">

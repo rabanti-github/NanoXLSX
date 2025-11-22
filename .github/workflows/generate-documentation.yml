@@ -1,0 +1,47 @@
+name: Build Documentation
+
+on:
+  push:
+    branches:
+      - dev-v3
+    paths-ignore: 
+      - 'docs/**'
+      - '.github/**'
+  pull_request:
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PUSH_TOKEN }}
+
+      - name: Install Doxygen
+        uses: mattnotmitt/doxygen-action@1.9.8
+
+      - name: Generate NanoXLSX.Core docs
+        working-directory: ./src/NanoXLSX.Core
+        run: doxygen documentation.doxygen
+
+      - name: Generate NanoXLSX docs
+        working-directory: ./src/NanoXLSX
+        run: doxygen documentation.doxygen
+
+      - name: Generate NanoXLSX.Import docs
+        working-directory: ./src/NanoXLSX.Import
+        run: doxygen documentation.doxygen
+
+      - name: Upload docs as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: docs/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.PUSH_TOKEN }}
+          publish_dir: ./docs

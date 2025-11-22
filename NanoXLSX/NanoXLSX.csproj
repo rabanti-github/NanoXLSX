@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+
+    <!-- Don't build assemblies, only the .nupkg -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+
+    <!-- NuGet metadata -->
+    <PackageId>NanoXLSX</PackageId>
+    <Version>3.0.0-rc.1</Version>
+    <Authors>Raphael Stoeckli</Authors>
+    <Description>NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way. This package is the meta package of NanoXLSX and should be used in most cases as dependency in your project.</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+
+    <!-- Optional -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>NanoXLSX (Meta-Package)</Title>
+    <Copyright>Copyright Raphael Stoeckli © 2025</Copyright>
+    <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
+    <PackageIcon>NanoXLSX.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Excel Office XLSX</PackageTags>
+    <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
+	<Version>3.0.0-rc.1</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="NanoXLSX.Core" Version="[3.0.0-rc.1]" />
+		<PackageReference Include="NanoXLSX.Reader" Version="[3.0.0-rc.1]" />
+		<PackageReference Include="NanoXLSX.Writer" Version="[3.0.0-rc.1]" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="NanoXLSX.png" Pack="true" PackagePath="." />
+		<None Include="../README.md" Pack="true" PackagePath="." />
+	</ItemGroup>
+
+</Project>
