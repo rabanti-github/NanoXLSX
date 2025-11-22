@@ -19,27 +19,33 @@ jobs:
         with:
           token: ${{ secrets.PUSH_TOKEN }}
 
+      # Install Doxygen
       - name: Install Doxygen
         uses: mattnotmitt/doxygen-action@1.9.8
 
+      # Generate docs for NanoXLSX.Core
       - name: Generate NanoXLSX.Core docs
         working-directory: ./src/NanoXLSX.Core
         run: doxygen documentation.doxygen
 
+      # Generate docs for NanoXLSX.Reader
       - name: Generate NanoXLSX.Reader docs
         working-directory: ./src/NanoXLSX.Reader
         run: doxygen documentation.doxygen
 
+      # Generate docs for NanoXLSX.Writer
       - name: Generate NanoXLSX.Writer docs
         working-directory: ./src/NanoXLSX.Writer
         run: doxygen documentation.doxygen
 
-      - name: Upload docs as artifact
+      # Upload docs as artifact (optional)
+      - name: Upload docs artifact
         uses: actions/upload-artifact@v4
         with:
           name: docs
           path: docs/
 
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
