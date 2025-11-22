@@ -26,12 +26,12 @@ jobs:
         working-directory: ./src/NanoXLSX.Core
         run: doxygen documentation.doxygen
 
-      - name: Generate NanoXLSX docs
-        working-directory: ./src/NanoXLSX
+      - name: Generate NanoXLSX.Reader docs
+        working-directory: ./src/NanoXLSX.Reader
         run: doxygen documentation.doxygen
 
-      - name: Generate NanoXLSX.Import docs
-        working-directory: ./src/NanoXLSX.Import
+      - name: Generate NanoXLSX.Writer docs
+        working-directory: ./src/NanoXLSX.Writer
         run: doxygen documentation.doxygen
 
       - name: Upload docs as artifact
