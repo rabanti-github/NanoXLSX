@@ -6,7 +6,7 @@ on:
       - dev-v3
     paths-ignore: 
       - 'docs/**'
-      - '.github/**'
+#      - '.github/**'
   pull_request:
 
 jobs:
