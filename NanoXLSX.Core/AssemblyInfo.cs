@@ -1,5 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 
+// Meta packages
+[assembly: InternalsVisibleTo("NanoXLSX")]
+[assembly: InternalsVisibleTo("PicoXLSX")]
+
 // Core packages
 [assembly: InternalsVisibleTo("NanoXLSX.Writer")]
 [assembly: InternalsVisibleTo("NanoXLSX.Reader")]

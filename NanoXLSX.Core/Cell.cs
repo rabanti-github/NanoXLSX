@@ -913,10 +913,10 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Thrown if the passed column number is out of range</exception>
         public static void ValidateColumnNumber(int column)
         {
-            if (column > Worksheet.MAX_COLUMN_NUMBER || column < Worksheet.MIN_COLUMN_NUMBER)
+            if (column > Worksheet.MaxColumnNumber || column < Worksheet.MinColumnNumber)
             {
                 throw new RangeException("The column number (" + column + ") is out of range. Range is from " +
-                    Worksheet.MIN_COLUMN_NUMBER + " to " + Worksheet.MAX_COLUMN_NUMBER + " (" + (Worksheet.MAX_COLUMN_NUMBER + 1) + " columns).");
+                    Worksheet.MinColumnNumber + " to " + Worksheet.MaxColumnNumber + " (" + (Worksheet.MaxColumnNumber + 1) + " columns).");
             }
         }
 
@@ -927,10 +927,10 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Thrown if the passed row number is out of range</exception>
         public static void ValidateRowNumber(int row)
         {
-            if (row > Worksheet.MAX_ROW_NUMBER || row < Worksheet.MIN_ROW_NUMBER)
+            if (row > Worksheet.MaxRowNumber || row < Worksheet.MinRowNumber)
             {
                 throw new RangeException("The row number (" + row + ") is out of range. Range is from " +
-                    Worksheet.MIN_ROW_NUMBER + " to " + Worksheet.MAX_ROW_NUMBER + " (" + (Worksheet.MAX_ROW_NUMBER + 1) + " rows).");
+                    Worksheet.MinRowNumber + " to " + Worksheet.MaxRowNumber + " (" + (Worksheet.MaxRowNumber + 1) + " rows).");
             }
         }
         #endregion

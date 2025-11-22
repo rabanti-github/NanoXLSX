@@ -106,7 +106,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.Contains(worksheet.Columns, item => item.Key == 1);
             Assert.False(worksheet.Columns[1].IsHidden);
             Assert.True(worksheet.Columns[1].HasAutoFilter);
-            Assert.Equal(Worksheet.DEFAULT_COLUMN_WIDTH, worksheet.Columns[1].Width);
+            Assert.Equal(Worksheet.DefaultWorksheetColumnWidth, worksheet.Columns[1].Width);
         }
 
         [Fact(DisplayName = "Test of the GetCurrentColumnNumber function")]
@@ -247,11 +247,11 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.Equal(2, worksheet.Columns.Count);
             Assert.Equal(width, worksheet.Columns[0].Width);
             Assert.Equal(width, worksheet.Columns[1].Width);
-            worksheet.SetColumnWidth(0, Worksheet.DEFAULT_COLUMN_WIDTH);
-            worksheet.SetColumnWidth("B", Worksheet.DEFAULT_COLUMN_WIDTH);
+            worksheet.SetColumnWidth(0, Worksheet.DefaultWorksheetColumnWidth);
+            worksheet.SetColumnWidth("B", Worksheet.DefaultWorksheetColumnWidth);
             Assert.Equal(2, worksheet.Columns.Count); // No removal so far
-            Assert.Equal(Worksheet.DEFAULT_COLUMN_WIDTH, worksheet.Columns[0].Width);
-            Assert.Equal(Worksheet.DEFAULT_COLUMN_WIDTH, worksheet.Columns[1].Width);
+            Assert.Equal(Worksheet.DefaultWorksheetColumnWidth, worksheet.Columns[0].Width);
+            Assert.Equal(Worksheet.DefaultWorksheetColumnWidth, worksheet.Columns[1].Width);
         }
 
         [Theory(DisplayName = "Test of the failing SetColumnWidth function with column number")]

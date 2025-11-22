@@ -173,8 +173,8 @@ namespace NanoXLSX
         /// <returns>-1 if the other address is greater, 0 if equal and 1 if smaller</returns>
         public int CompareTo(Address other)
         {
-            long thisCoordinate = (long)Column * (long)Worksheet.MAX_ROW_NUMBER + Row;
-            long otherCoordinate = (long)other.Column * (long)Worksheet.MAX_ROW_NUMBER + other.Row;
+            long thisCoordinate = (long)Column * (long)Worksheet.MaxRowNumber + Row;
+            long otherCoordinate = (long)other.Column * (long)Worksheet.MaxRowNumber + other.Row;
             return thisCoordinate.CompareTo(otherCoordinate);
         }
 

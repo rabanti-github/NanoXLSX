@@ -157,9 +157,9 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             worksheet.SetRowHeight(0, height);
             Assert.Single(worksheet.RowHeights);
             Assert.Equal(height, worksheet.RowHeights[0]);
-            worksheet.SetRowHeight(0, Worksheet.DEFAULT_ROW_HEIGHT);
+            worksheet.SetRowHeight(0, Worksheet.DefaultWorksheetRowHeight);
             Assert.Single(worksheet.RowHeights); // No removal so far
-            Assert.Equal(Worksheet.DEFAULT_ROW_HEIGHT, worksheet.RowHeights[0]);
+            Assert.Equal(Worksheet.DefaultWorksheetRowHeight, worksheet.RowHeights[0]);
         }
 
         [Theory(DisplayName = "Test of the failing SetRowHeight function")]

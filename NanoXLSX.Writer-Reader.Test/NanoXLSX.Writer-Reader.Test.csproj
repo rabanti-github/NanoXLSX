@@ -54,7 +54,6 @@
 	  <None Remove="Resources\new_format.xlsx" />
 	  <None Remove="Resources\omitted_style_refs.xlsx" />
 	  <None Remove="Resources\phonetics.xlsx" />
-	  <None Remove="Resources\semi-large-amount.xlsx" />
 	  <None Remove="Resources\tampered.xlsx" />
 	  <None Remove="Resources\undefined_theme_system_color.xlsx" />
 	  <None Remove="Resources\unknown_style_enums.xlsx" />
@@ -89,7 +88,6 @@
 	  <EmbeddedResource Include="Resources\new_format.xlsx" />
 	  <EmbeddedResource Include="Resources\omitted_style_refs.xlsx" />
 	  <EmbeddedResource Include="Resources\phonetics.xlsx" />
-	  <EmbeddedResource Include="Resources\semi-large-amount.xlsx" />
 	  <EmbeddedResource Include="Resources\tampered.xlsx" />
 	  <EmbeddedResource Include="Resources\undefined_theme_system_color.xlsx" />
 	  <EmbeddedResource Include="Resources\unknown_style_enums.xlsx" />

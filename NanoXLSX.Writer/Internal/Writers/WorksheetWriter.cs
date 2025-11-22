@@ -524,7 +524,7 @@ namespace NanoXLSX.Internal.Writers
                 }
                 else
                 {
-                    height += DataUtils.GetInternalRowHeight(Worksheet.DEFAULT_ROW_HEIGHT);
+                    height += DataUtils.GetInternalRowHeight(Worksheet.DefaultWorksheetRowHeight);
                 }
             }
             return DataUtils.GetInternalPaneSplitHeight(height);
@@ -547,7 +547,7 @@ namespace NanoXLSX.Internal.Writers
                 }
                 else
                 {
-                    width += DataUtils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
+                    width += DataUtils.GetInternalColumnWidth(Worksheet.DefaultWorksheetColumnWidth);
                 }
             }
             // Add padding of 75 per column

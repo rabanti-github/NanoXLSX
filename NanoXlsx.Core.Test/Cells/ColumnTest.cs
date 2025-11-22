@@ -80,7 +80,7 @@ namespace NanoXLSX.Test.Core.ColumnTest
         public void WidthTest(float initialValue, float expectedValue)
         {
             Column column = new Column(0);
-            Assert.Equal(Worksheet.DEFAULT_COLUMN_WIDTH, column.Width);
+            Assert.Equal(Worksheet.DefaultWorksheetColumnWidth, column.Width);
             column.Width = initialValue;
             Assert.Equal(expectedValue, column.Width);
         }

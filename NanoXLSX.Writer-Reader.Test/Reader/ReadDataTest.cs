@@ -223,9 +223,28 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("A3", -10.22f);
             cells.Add("A4", 999999.9f);
             cells.Add("A5", -999999.9f);
-            cells.Add("A6", float.MinValue);
-            cells.Add("A7", float.MaxValue);
+            cells.Add("A7", float.MinValue);
+            cells.Add("A8", float.MaxValue);
             AssertValues<float>(cells, AssertApproximateFloat);
+        }
+
+        [Fact(DisplayName = "Test of the reader functionality for decimal values")]
+        public void ReadDecimalTest()
+        {
+            Dictionary<string, double> cells = new Dictionary<string, double>();
+            cells.Add("A1", 4372449.78);      // 7 digits before decimal
+            cells.Add("A3", -10.2234567);     // 7+ decimal places
+            cells.Add("A4", 123456789.123456); // High precision
+            AssertValues<double>(cells, AssertApproximateDouble);
+        }
+
+        [Fact(DisplayName = "Test of the reader functionality for high precision ¨decimal/single values")]
+        public void ReadDecimalTest2()
+        {
+            Dictionary<string, Single> cells = new Dictionary<string, Single>();
+            cells.Add("A1", (Single)0.00000001);
+            cells.Add("A2", -(Single)0.00000001);
+            AssertValues<Single>(cells, AssertApproximateSingle);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for double values (above single32 range)")]
@@ -519,6 +538,11 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             Assert.True(Math.Abs(given - expected) < threshold);
         }
 
+        private static void AssertApproximateSingle(Single expected, Single given)
+        {
+            double threshold = 0.00000001;
+            Assert.True(Math.Abs(given - expected) < threshold);
+        }
 
     }
 }

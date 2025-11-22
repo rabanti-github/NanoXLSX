@@ -77,7 +77,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
                 }
                 else
                 {
-                    expectedHeight += DataUtils.GetInternalRowHeight(Worksheet.DEFAULT_ROW_HEIGHT);
+                    expectedHeight += DataUtils.GetInternalRowHeight(Worksheet.DefaultWorksheetRowHeight);
                 }
 
             }
@@ -158,7 +158,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
                 }
                 else
                 {
-                    expectedWidth += DataUtils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH);
+                    expectedWidth += DataUtils.GetInternalColumnWidth(Worksheet.DefaultWorksheetColumnWidth);
                 }
 
             }
@@ -435,7 +435,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
                 }
                 else
                 {
-                    float width = DataUtils.GetInternalColumnWidth(Worksheet.DEFAULT_COLUMN_WIDTH) * columnNumber;
+                    float width = DataUtils.GetInternalColumnWidth(Worksheet.DefaultWorksheetColumnWidth) * columnNumber;
                     if (width == 0)
                     {
                         // Not applied as x split
@@ -469,7 +469,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
                 }
                 else
                 {
-                    float height = Worksheet.DEFAULT_ROW_HEIGHT * rowNumber;
+                    float height = Worksheet.DefaultWorksheetRowHeight * rowNumber;
                     Assert.Equal(height, givenWorksheet.PaneSplitTopHeight);
                     Assert.Null(givenWorksheet.FreezeSplitPanes);
                 }

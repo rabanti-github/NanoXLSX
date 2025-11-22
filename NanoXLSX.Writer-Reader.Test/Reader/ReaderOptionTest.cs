@@ -129,7 +129,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("A12", "28");
             cells.Add("A13", new Cell("=A1", Cell.CellType.FORMULA, "A13"));
             cells.Add("A14", 8589934592L);
-            cells.Add("A15", 2147483650.6f);
+            cells.Add("A15", 2147483650.6d);
             cells.Add("A16", 4294967294u);
             cells.Add("A17", 18446744073709551614);
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
@@ -147,7 +147,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("A12", 28);
             expectedCells.Add("A13", new Cell("=A1", Cell.CellType.FORMULA, "A13"));
             expectedCells.Add("A14", 8589934592L);
-            expectedCells.Add("A15", 2147483650.6f);
+            expectedCells.Add("A15", 2147483650.6);
             expectedCells.Add("A16", 4294967294u);
             expectedCells.Add("A17", 18446744073709551614);
             ReaderOptions options = new ReaderOptions();
@@ -1104,11 +1104,11 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 Workbook workbook = WorkbookReader.Load(stream, options);
                 if (columnFlag == -1)
                 {
-                    Assert.Equal(Worksheet.MIN_COLUMN_WIDTH, workbook.GetWorksheet(0).Columns[0].Width);
+                    Assert.Equal(Worksheet.MinColumnWidth, workbook.GetWorksheet(0).Columns[0].Width);
                 }
                 else if (columnFlag == 1)
                 {
-                    Assert.Equal(Worksheet.MAX_COLUMN_WIDTH, workbook.GetWorksheet(0).Columns[0].Width);
+                    Assert.Equal(Worksheet.MaxColumnWidth, workbook.GetWorksheet(0).Columns[0].Width);
                 }
                 else
                 {

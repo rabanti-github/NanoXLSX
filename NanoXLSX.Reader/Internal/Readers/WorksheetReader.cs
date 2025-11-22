@@ -584,7 +584,7 @@ namespace NanoXLSX.Internal.Readers
                     }
                 }
                 attribute = ReaderUtils.GetAttribute(columnNode, "width");
-                float width = Worksheet.DEFAULT_COLUMN_WIDTH;
+                float width = Worksheet.DefaultWorksheetColumnWidth;
                 if (attribute != null)
                 {
                     width = ParserUtils.ParseFloat(attribute);
@@ -613,7 +613,7 @@ namespace NanoXLSX.Internal.Readers
                         worksheet.SetColumnDefaultStyle(columnAddress, defaultStyle);
                     }
 
-                    if (width != Worksheet.DEFAULT_COLUMN_WIDTH)
+                    if (width != Worksheet.DefaultWorksheetColumnWidth)
                     {
                         worksheet.SetColumnWidth(columnAddress, GetValidatedWidth(width));
                     }
@@ -1441,44 +1441,57 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Value of the type int, float, double or null as fall-back</returns>
         private static object GetNumericValue(string raw)
         {
-            // integer section
-            uint uiValue;
-            int iValue;
-            bool canBeUint = ParserUtils.TryParseUint(raw, out uiValue);
-            bool canBeInt = ParserUtils.TryParseInt(raw, out iValue);
-            if (canBeUint && !canBeInt)
+            bool hasDecimalPoint = raw.Contains(".");
+
+            // Only try integer parsing if there's no decimal point
+            if (!hasDecimalPoint)
             {
-                return uiValue;
+                // integer section (unchanged)
+                uint uiValue;
+                int iValue;
+                bool canBeUint = ParserUtils.TryParseUint(raw, out uiValue);
+                bool canBeInt = ParserUtils.TryParseInt(raw, out iValue);
+                if (canBeUint && !canBeInt)
+                {
+                    return uiValue;
+                }
+                else if (canBeInt)
+                {
+                    return iValue;
+                }
+                ulong ulValue;
+                long lValue;
+                bool canBeUlong = ParserUtils.TryParseUlong(raw, out ulValue);
+                bool canBeLong = ParserUtils.TryParseLong(raw, out lValue);
+                if (canBeUlong && !canBeLong)
+                {
+                    return ulValue;
+                }
+                else if (canBeLong)
+                {
+                    return lValue;
+                }
             }
-            else if (canBeInt)
-            {
-                return iValue;
-            }
-            ulong ulValue;
-            long lValue;
-            bool canBeUlong = ParserUtils.TryParseUlong(raw, out ulValue);
-            bool canBeLong = ParserUtils.TryParseLong(raw, out lValue);
-            if (canBeUlong && !canBeLong)
-            {
-                return ulValue;
-            }
-            else if (canBeLong)
-            {
-                return lValue;
-            }
+
             decimal dcValue;
             double dValue;
             float fValue;
-            // float section
+
+            // Decimal/float section
             if (ParserUtils.TryParseDecimal(raw, out dcValue))
             {
-                int decimals = BitConverter.GetBytes(decimal.GetBits(dcValue)[3])[2];
-                if (decimals < 7)
+                // Check if the value can be accurately represented as float
+                float testFloat = decimal.ToSingle(dcValue);
+                decimal backToDecimal = (decimal)testFloat;
+
+                // If converting to float and back preserves the value, use float
+                if (dcValue == backToDecimal)
                 {
-                    return decimal.ToSingle(dcValue);
+                    return testFloat;
                 }
                 else
                 {
+                    // Otherwise use double for better precision
                     return decimal.ToDouble(dcValue);
                 }
             }
@@ -1502,7 +1515,7 @@ namespace NanoXLSX.Internal.Readers
         /// <exception cref="WorksheetException">Throws a WorksheetException if the raw value was invalid and <see cref="ReaderOptions.EnforceStrictValidation"/> is set to true</exception>
         private float GetValidatedWidth(float rawValue)
         {
-            if (rawValue < Worksheet.MIN_COLUMN_WIDTH)
+            if (rawValue < Worksheet.MinColumnWidth)
             {
                 if (readerOptions.EnforceStrictValidation)
                 {
@@ -1510,10 +1523,10 @@ namespace NanoXLSX.Internal.Readers
                 }
                 else
                 {
-                    return Worksheet.MIN_COLUMN_WIDTH;
+                    return Worksheet.MinColumnWidth;
                 }
             }
-            else if (rawValue > Worksheet.MAX_COLUMN_WIDTH)
+            else if (rawValue > Worksheet.MaxColumnWidth)
             {
                 if (readerOptions.EnforceStrictValidation)
                 {
@@ -1521,7 +1534,7 @@ namespace NanoXLSX.Internal.Readers
                 }
                 else
                 {
-                    return Worksheet.MAX_COLUMN_WIDTH;
+                    return Worksheet.MaxColumnWidth;
                 }
             }
             else
@@ -1538,7 +1551,7 @@ namespace NanoXLSX.Internal.Readers
         /// <exception cref="WorksheetException">Throws a WorksheetException if the raw value was invalid and <see cref="ReaderOptions.EnforceStrictValidation"/> is set to true</exception>
         private float GetValidatedHeight(float rawValue)
         {
-            if (rawValue < Worksheet.MIN_ROW_HEIGHT)
+            if (rawValue < Worksheet.MinRowHeight)
             {
                 if (readerOptions.EnforceStrictValidation)
                 {
@@ -1546,10 +1559,10 @@ namespace NanoXLSX.Internal.Readers
                 }
                 else
                 {
-                    return Worksheet.MIN_ROW_HEIGHT;
+                    return Worksheet.MinRowHeight;
                 }
             }
-            else if (rawValue > Worksheet.MAX_ROW_HEIGHT)
+            else if (rawValue > Worksheet.MaxRowHeight)
             {
                 if (readerOptions.EnforceStrictValidation)
                 {
@@ -1557,7 +1570,7 @@ namespace NanoXLSX.Internal.Readers
                 }
                 else
                 {
-                    return Worksheet.MAX_ROW_HEIGHT;
+                    return Worksheet.MaxRowHeight;
                 }
             }
             else

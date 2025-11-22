@@ -68,9 +68,9 @@ namespace NanoXLSX
             get { return width; }
             set
             {
-                if (value < Worksheet.MIN_COLUMN_WIDTH || value > Worksheet.MAX_COLUMN_WIDTH)
+                if (value < Worksheet.MinColumnWidth || value > Worksheet.MaxColumnWidth)
                 {
-                    throw new RangeException("The passed column width is out of range (" + Worksheet.MIN_COLUMN_WIDTH + " to " + Worksheet.MAX_COLUMN_WIDTH + ")");
+                    throw new RangeException("The passed column width is out of range (" + Worksheet.MinColumnWidth + " to " + Worksheet.MaxColumnWidth + ")");
                 }
                 width = value;
             }
@@ -113,7 +113,7 @@ namespace NanoXLSX
         /// </summary>
         private Column()
         {
-            Width = Worksheet.DEFAULT_COLUMN_WIDTH;
+            Width = Worksheet.DefaultWorksheetColumnWidth;
             defaultColumnStyle = null;
         }
 

@@ -33,47 +33,47 @@ namespace NanoXLSX
         /// <summary>
         /// Maximum number of characters a worksheet name can have
         /// </summary>
-        public static readonly int MAX_WORKSHEET_NAME_LENGTH = 31;
+        public static readonly int MaxWorksheetNameLength = 31;
         /// <summary>
         /// Default column width as constant
         /// </summary>
-        public static readonly float DEFAULT_COLUMN_WIDTH = 10f;
+        public static readonly float DefaultWorksheetColumnWidth = 10f;
         /// <summary>
         /// Default row height as constant
         /// </summary>
-        public static readonly float DEFAULT_ROW_HEIGHT = 15f;
+        public static readonly float DefaultWorksheetRowHeight = 15f;
         /// <summary>
         /// Maximum column number (zero-based) as constant
         /// </summary>
-        public static readonly int MAX_COLUMN_NUMBER = 16383;
+        public static readonly int MaxColumnNumber = 16383;
         /// <summary>
         /// Minimum column number (zero-based) as constant
         /// </summary>
-        public static readonly int MIN_COLUMN_NUMBER = 0;
+        public static readonly int MinColumnNumber = 0;
         /// <summary>
         /// Minimum column width as constant
         /// </summary>
-        public static readonly float MIN_COLUMN_WIDTH = 0f;
+        public static readonly float MinColumnWidth = 0f;
         /// <summary>
         /// Minimum row height as constant
         /// </summary>
-        public static readonly float MIN_ROW_HEIGHT = 0f;
+        public static readonly float MinRowHeight = 0f;
         /// <summary>
         /// Maximum column width as constant
         /// </summary>
-        public static readonly float MAX_COLUMN_WIDTH = 255f;
+        public static readonly float MaxColumnWidth = 255f;
         /// <summary>
         /// Maximum row number (zero-based) as constant
         /// </summary>
-        public static readonly int MAX_ROW_NUMBER = 1048575;
+        public static readonly int MaxRowNumber = 1048575;
         /// <summary>
         /// Minimum row number (zero-based) as constant
         /// </summary>
-        public static readonly int MIN_ROW_NUMBER = 0;
+        public static readonly int MinRowNumber = 0;
         /// <summary>
         /// Maximum row height as constant
         /// </summary>
-        public static readonly float MAX_ROW_HEIGHT = 409.5f;
+        public static readonly float MaxRowHeight = 409.5f;
         /// <summary>
         /// Automatic zoom factor of a worksheet
         /// </summary>
@@ -238,9 +238,9 @@ namespace NanoXLSX
             get { return defaultColumnWidth; }
             set
             {
-                if (value < MIN_COLUMN_WIDTH || value > MAX_COLUMN_WIDTH)
+                if (value < MinColumnWidth || value > MaxColumnWidth)
                 {
-                    throw new RangeException("The passed default column width is out of range (" + MIN_COLUMN_WIDTH + " to " + MAX_COLUMN_WIDTH + ")");
+                    throw new RangeException("The passed default column width is out of range (" + MinColumnWidth + " to " + MaxColumnWidth + ")");
                 }
                 defaultColumnWidth = value;
             }
@@ -255,9 +255,9 @@ namespace NanoXLSX
             get { return defaultRowHeight; }
             set
             {
-                if (value < MIN_ROW_HEIGHT || value > MAX_ROW_HEIGHT)
+                if (value < MinRowHeight || value > MaxRowHeight)
                 {
-                    throw new RangeException("The passed default row height is out of range (" + MIN_ROW_HEIGHT + " to " + MAX_ROW_HEIGHT + ")");
+                    throw new RangeException("The passed default row height is out of range (" + MinRowHeight + " to " + MaxRowHeight + ")");
                 }
                 defaultRowHeight = value;
             }
@@ -526,8 +526,8 @@ namespace NanoXLSX
             cells = new Dictionary<string, Cell>();
             currentRowNumber = 0;
             currentColumnNumber = 0;
-            defaultColumnWidth = DEFAULT_COLUMN_WIDTH;
-            defaultRowHeight = DEFAULT_ROW_HEIGHT;
+            defaultColumnWidth = DefaultWorksheetColumnWidth;
+            defaultRowHeight = DefaultWorksheetRowHeight;
             rowHeights = new Dictionary<int, float>();
             mergedCells = new Dictionary<string, Range>();
             selectedCells = new List<Range>();
@@ -1688,7 +1688,7 @@ namespace NanoXLSX
             else if (columns.ContainsKey(columnNumber))
             {
                 columns[columnNumber].IsHidden = false;
-                columns[columnNumber].Width = DEFAULT_COLUMN_WIDTH;
+                columns[columnNumber].Width = DefaultWorksheetColumnWidth;
             }
         }
 
@@ -1901,7 +1901,7 @@ namespace NanoXLSX
             List<int> columnsToDelete = new List<int>();
             foreach (KeyValuePair<int, Column> col in columns)
             {
-                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Comparators.CompareDimensions(col.Value.Width, DEFAULT_COLUMN_WIDTH) == 0 && col.Value.DefaultColumnStyle == null)
+                if (!col.Value.HasAutoFilter && !col.Value.IsHidden && Comparators.CompareDimensions(col.Value.Width, DefaultWorksheetColumnWidth) == 0 && col.Value.DefaultColumnStyle == null)
                 {
                     columnsToDelete.Add(col.Key);
                 }
@@ -2120,7 +2120,7 @@ namespace NanoXLSX
                 c.IsHidden = true;
                 columns.Add(columnNumber, c);
             }
-            if (!columns[columnNumber].IsHidden && Comparators.CompareDimensions(columns[columnNumber].Width, DEFAULT_COLUMN_WIDTH) == 0 && !columns[columnNumber].HasAutoFilter)
+            if (!columns[columnNumber].IsHidden && Comparators.CompareDimensions(columns[columnNumber].Width, DefaultWorksheetColumnWidth) == 0 && !columns[columnNumber].HasAutoFilter)
             {
                 columns.Remove(columnNumber);
             }
@@ -2147,9 +2147,9 @@ namespace NanoXLSX
         public void SetColumnWidth(int columnNumber, float width)
         {
             Cell.ValidateColumnNumber(columnNumber);
-            if (width < MIN_COLUMN_WIDTH || width > MAX_COLUMN_WIDTH)
+            if (width < MinColumnWidth || width > MaxColumnWidth)
             {
-                throw new RangeException("The column width (" + width + ") is out of range. Range is from " + MIN_COLUMN_WIDTH + " to " + MAX_COLUMN_WIDTH + " (chars).");
+                throw new RangeException("The column width (" + width + ") is out of range. Range is from " + MinColumnWidth + " to " + MaxColumnWidth + " (chars).");
             }
             if (columns.ContainsKey(columnNumber))
             {
@@ -2364,9 +2364,9 @@ namespace NanoXLSX
         public void SetRowHeight(int rowNumber, float height)
         {
             Cell.ValidateRowNumber(rowNumber);
-            if (height < MIN_ROW_HEIGHT || height > MAX_ROW_HEIGHT)
+            if (height < MinRowHeight || height > MaxRowHeight)
             {
-                throw new RangeException("The row height (" + height + ") is out of range. Range is from " + MIN_ROW_HEIGHT + " to " + MAX_ROW_HEIGHT + " (equals 546px).");
+                throw new RangeException("The row height (" + height + ") is out of range. Range is from " + MinRowHeight + " to " + MaxRowHeight + " (equals 546px).");
             }
             if (rowHeights.ContainsKey(rowNumber))
             {
@@ -2413,11 +2413,11 @@ namespace NanoXLSX
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new FormatException("the worksheet name must be between 1 and " + MAX_WORKSHEET_NAME_LENGTH + " characters");
+                throw new FormatException("the worksheet name must be between 1 and " + MaxWorksheetNameLength + " characters");
             }
-            if (name.Length > MAX_WORKSHEET_NAME_LENGTH)
+            if (name.Length > MaxWorksheetNameLength)
             {
-                throw new FormatException("the worksheet name must be between 1 and " + MAX_WORKSHEET_NAME_LENGTH + " characters");
+                throw new FormatException("the worksheet name must be between 1 and " + MaxWorksheetNameLength + " characters");
             }
             Regex regex = new Regex(@"[\[\]\*\?/\\]");
             Match match = regex.Match(name);
@@ -2682,15 +2682,15 @@ namespace NanoXLSX
                 input = "Sheet1";
             }
             int len;
-            if (input.Length > MAX_WORKSHEET_NAME_LENGTH)
+            if (input.Length > MaxWorksheetNameLength)
             {
-                len = MAX_WORKSHEET_NAME_LENGTH;
+                len = MaxWorksheetNameLength;
             }
             else
             {
                 len = input.Length;
             }
-            StringBuilder sb = new StringBuilder(MAX_WORKSHEET_NAME_LENGTH);
+            StringBuilder sb = new StringBuilder(MaxWorksheetNameLength);
             char c;
             for (int i = 0; i < len; i++)
             {
@@ -2757,9 +2757,9 @@ namespace NanoXLSX
             while (true)
             {
                 string numberString = ParserUtils.ToString(number);
-                if (numberString.Length + prefix.Length > MAX_WORKSHEET_NAME_LENGTH)
+                if (numberString.Length + prefix.Length > MaxWorksheetNameLength)
                 {
-                    int endIndex = prefix.Length - (numberString.Length + prefix.Length - MAX_WORKSHEET_NAME_LENGTH);
+                    int endIndex = prefix.Length - (numberString.Length + prefix.Length - MaxWorksheetNameLength);
                     prefix = prefix.Substring(0, endIndex);
                 }
                 string newName = prefix + numberString;

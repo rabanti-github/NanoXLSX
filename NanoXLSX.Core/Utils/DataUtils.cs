@@ -200,9 +200,9 @@ namespace NanoXLSX.Utils
         /// <exception cref="FormatException">Throws a FormatException if the column width is out of range</exception>
         public static float GetInternalColumnWidth(float columnWidth, float maxDigitWidth = 7f, float textPadding = 5f)
         {
-            if (columnWidth < Worksheet.MIN_COLUMN_WIDTH || columnWidth > Worksheet.MAX_COLUMN_WIDTH)
+            if (columnWidth < Worksheet.MinColumnWidth || columnWidth > Worksheet.MaxColumnWidth)
             {
-                throw new FormatException("The column width " + columnWidth + " is not valid. The valid range is between " + Worksheet.MIN_COLUMN_WIDTH + " and " + Worksheet.MAX_COLUMN_WIDTH);
+                throw new FormatException("The column width " + columnWidth + " is not valid. The valid range is between " + Worksheet.MinColumnWidth + " and " + Worksheet.MaxColumnWidth);
             }
             if (columnWidth <= 0f || maxDigitWidth <= 0f)
             {
@@ -229,9 +229,9 @@ namespace NanoXLSX.Utils
         /// <exception cref="FormatException">Throws a FormatException if the row height is out of range</exception>
         public static float GetInternalRowHeight(float rowHeight)
         {
-            if (rowHeight < Worksheet.MIN_ROW_HEIGHT || rowHeight > Worksheet.MAX_ROW_HEIGHT)
+            if (rowHeight < Worksheet.MinRowHeight || rowHeight > Worksheet.MaxRowHeight)
             {
-                throw new FormatException("The row height " + rowHeight + " is not valid. The valid range is between " + Worksheet.MIN_ROW_HEIGHT + " and " + Worksheet.MAX_ROW_HEIGHT);
+                throw new FormatException("The row height " + rowHeight + " is not valid. The valid range is between " + Worksheet.MinRowHeight + " and " + Worksheet.MaxRowHeight);
             }
             if (rowHeight == 0f)
             {

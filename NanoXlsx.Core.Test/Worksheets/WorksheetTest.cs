@@ -152,7 +152,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         public void DefaultColumnWidthTest(float value)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Equal(Worksheet.DEFAULT_COLUMN_WIDTH, worksheet.DefaultColumnWidth);
+            Assert.Equal(Worksheet.DefaultWorksheetColumnWidth, worksheet.DefaultColumnWidth);
             worksheet.DefaultColumnWidth = value;
             Assert.Equal(value, worksheet.DefaultColumnWidth);
         }
@@ -174,7 +174,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         public void DefaultRowHeightTest(float value)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Equal(Worksheet.DEFAULT_ROW_HEIGHT, worksheet.DefaultRowHeight);
+            Assert.Equal(Worksheet.DefaultWorksheetRowHeight, worksheet.DefaultRowHeight);
             worksheet.DefaultRowHeight = value;
             Assert.Equal(value, worksheet.DefaultRowHeight);
         }
@@ -417,7 +417,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         }
 
         [Fact(DisplayName = "Test of the RemoveCell function with column and row")]
-        public void RemoveCelltest()
+        public void RemoveCellTest()
         {
             Worksheet worksheet = new Worksheet();
             List<string> values = new List<string> { "test1", "test2", "test3" };
@@ -1063,7 +1063,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             worksheet.SetColumnWidth(1, 22.5f);
             worksheet.SetColumnWidth(2, 22.8f);
             worksheet.AddHiddenColumn(3);
-            worksheet.SetColumnWidth(1, Worksheet.DEFAULT_COLUMN_WIDTH); // should not remove the column
+            worksheet.SetColumnWidth(1, Worksheet.DefaultWorksheetColumnWidth); // should not remove the column
             Assert.Equal(3, worksheet.Columns.Count);
             workbook.SaveAsStream(new MemoryStream()); // Dummy call to invoke recalculation
             Assert.Equal(2, worksheet.Columns.Count);
@@ -1603,7 +1603,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("a/b", false, null)]
         [InlineData("a\\b", false, null)]
         [InlineData("--------------------------------", false, null)]
-        public void SetSheetnameTest(string name, bool expectedValid, string expectedName)
+        public void SetSheetNameTest(string name, bool expectedValid, string expectedName)
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.SheetName);
@@ -1980,8 +1980,8 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.Empty(worksheet.Cells);
             Assert.Equal(0, worksheet.GetCurrentRowNumber());
             Assert.Equal(0, worksheet.GetCurrentColumnNumber());
-            Assert.Equal(Worksheet.DEFAULT_COLUMN_WIDTH, worksheet.DefaultColumnWidth);
-            Assert.Equal(Worksheet.DEFAULT_ROW_HEIGHT, worksheet.DefaultRowHeight);
+            Assert.Equal(Worksheet.DefaultWorksheetColumnWidth, worksheet.DefaultColumnWidth);
+            Assert.Equal(Worksheet.DefaultWorksheetRowHeight, worksheet.DefaultRowHeight);
             Assert.NotNull(worksheet.RowHeights);
             Assert.Empty(worksheet.RowHeights);
             Assert.NotNull(worksheet.MergedCells);
