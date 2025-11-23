@@ -51,8 +51,8 @@ var NAVTREEINDEX =
 "classNanoXLSX_1_1Styles_1_1Font.html#a3dd8af1c30acf6852de4b1ab03c06ea8",
 "classNanoXLSX_1_1Styles_1_1Style.html#a5c67b704325bd1f46f2007b43b75b289",
 "classNanoXLSX_1_1Utils_1_1DataUtils.html#aed02c37cec9c39db1ef00bd68dcdd1cc",
-"classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05afea087517c26fadd409bd4b9dc642555",
-"classNanoXLSX_1_1Worksheet.html#ae76b46b9f8ce5efe4c2b6f6ed6b7d382",
+"classNanoXLSX_1_1Worksheet.html#a1ea0190ddae08526aa492adf27fa3d9e",
+"classNanoXLSX_1_1Worksheet.html#ae53c8d06a9ce1ab80f01a7ab7abc98ec",
 "structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#aeb4a3306e0e6ab21ae628ad68c2e2c2d"
 ];
 

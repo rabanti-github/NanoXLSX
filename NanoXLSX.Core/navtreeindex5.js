@@ -183,8 +183,8 @@ var NAVTREEINDEX5 =
 "classNanoXLSX_1_1Worksheet.html#a00c92cca2f3eec6373d2cc3320868d6b":[1,0,0,15,35],
 "classNanoXLSX_1_1Worksheet.html#a013e06750365d96acfbec7e56764e390":[0,0,0,15,47],
 "classNanoXLSX_1_1Worksheet.html#a013e06750365d96acfbec7e56764e390":[1,0,0,15,47],
-"classNanoXLSX_1_1Worksheet.html#a015a76a5b1c99b322693ce7b460584f9":[0,0,0,15,118],
-"classNanoXLSX_1_1Worksheet.html#a015a76a5b1c99b322693ce7b460584f9":[1,0,0,15,118],
+"classNanoXLSX_1_1Worksheet.html#a015a76a5b1c99b322693ce7b460584f9":[0,0,0,15,117],
+"classNanoXLSX_1_1Worksheet.html#a015a76a5b1c99b322693ce7b460584f9":[1,0,0,15,117],
 "classNanoXLSX_1_1Worksheet.html#a01af83cf5f43426a9613da2a6e1cb553":[0,0,0,15,105],
 "classNanoXLSX_1_1Worksheet.html#a01af83cf5f43426a9613da2a6e1cb553":[1,0,0,15,105],
 "classNanoXLSX_1_1Worksheet.html#a023d95eace6c803500714f73062bb228":[0,0,0,15,130],
@@ -221,8 +221,6 @@ var NAVTREEINDEX5 =
 "classNanoXLSX_1_1Worksheet.html#a0c87fae9697afda2644bfbb89a684c3baacc0c4e4f36a6e07f50397967f122e75":[1,0,0,15,0,0],
 "classNanoXLSX_1_1Worksheet.html#a0c87fae9697afda2644bfbb89a684c3bab9f5c797ebbf55adccdd8539a65a0241":[0,0,0,15,0,2],
 "classNanoXLSX_1_1Worksheet.html#a0c87fae9697afda2644bfbb89a684c3bab9f5c797ebbf55adccdd8539a65a0241":[1,0,0,15,0,2],
-"classNanoXLSX_1_1Worksheet.html#a0cd30692af9fda643142fc1845f68d20":[0,0,0,15,110],
-"classNanoXLSX_1_1Worksheet.html#a0cd30692af9fda643142fc1845f68d20":[1,0,0,15,110],
 "classNanoXLSX_1_1Worksheet.html#a0d0b2761ed1a5000ab8c3b4744104d98":[0,0,0,15,50],
 "classNanoXLSX_1_1Worksheet.html#a0d0b2761ed1a5000ab8c3b4744104d98":[1,0,0,15,50],
 "classNanoXLSX_1_1Worksheet.html#a0dfafc07fb098665d8022791a813ccd4":[0,0,0,15,127],
@@ -249,5 +247,7 @@ var NAVTREEINDEX5 =
 "classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05a50c846e62c1b3c954d4ad4a1cf79bda1":[1,0,0,15,2,1],
 "classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05acb2eaff2572d77970dbdc2c33824a296":[0,0,0,15,2,2],
 "classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05acb2eaff2572d77970dbdc2c33824a296":[1,0,0,15,2,2],
-"classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05afea087517c26fadd409bd4b9dc642555":[0,0,0,15,2,0]
+"classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05afea087517c26fadd409bd4b9dc642555":[0,0,0,15,2,0],
+"classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05afea087517c26fadd409bd4b9dc642555":[1,0,0,15,2,0],
+"classNanoXLSX_1_1Worksheet.html#a1ea0190ddae08526aa492adf27fa3d9e":[0,0,0,15,56]
 };

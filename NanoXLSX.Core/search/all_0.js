@@ -43,8 +43,8 @@ var searchData=
   ['appworkspace_40',['AppWorkspace',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03a1f9ec33fd22b2dab91bd7d64e433a474',1,'NanoXLSX::Themes::SystemColor']]],
   ['arabic_41',['Arabic',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001aca272ccb8592bafde0baf1dedce0fd3ac2',1,'NanoXLSX::Styles::Font']]],
   ['attributes_42',['Attributes',['../classNanoXLSX_1_1Utils_1_1Xml_1_1XmlElement.html#a58397529acd47aaa18dbe23220208928',1,'NanoXLSX::Utils::Xml::XmlElement']]],
-  ['auto_5fzoom_5ffactor_43',['AUTO_ZOOM_FACTOR',['../classNanoXLSX_1_1Worksheet.html#a0cd30692af9fda643142fc1845f68d20',1,'NanoXLSX::Worksheet']]],
-  ['autofilter_44',['autoFilter',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca2e640414788bd72cec6c0bdceb249cff',1,'NanoXLSX::Worksheet']]],
-  ['autofilterrange_45',['AutoFilterRange',['../classNanoXLSX_1_1Worksheet.html#ae0352eae9de2f30c1612ed72e29489d7',1,'NanoXLSX::Worksheet']]],
+  ['autofilter_43',['autoFilter',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca2e640414788bd72cec6c0bdceb249cff',1,'NanoXLSX::Worksheet']]],
+  ['autofilterrange_44',['AutoFilterRange',['../classNanoXLSX_1_1Worksheet.html#ae0352eae9de2f30c1612ed72e29489d7',1,'NanoXLSX::Worksheet']]],
+  ['autozoomfactor_45',['AutoZoomFactor',['../classNanoXLSX_1_1Worksheet.html#a936ee03eb31e0da3c0a128b843a37019',1,'NanoXLSX::Worksheet']]],
   ['average_46',['Average',['../classNanoXLSX_1_1BasicFormulas.html#a0921dcfccdb88ef834885279a75568a0',1,'NanoXLSX.BasicFormulas.Average(Range range)'],['../classNanoXLSX_1_1BasicFormulas.html#a8c04824fbbb84fd7b22f6e3ff6630b66',1,'NanoXLSX.BasicFormulas.Average(Worksheet target, Range range)']]]
 ];

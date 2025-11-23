@@ -347,7 +347,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a327d7c1126426d3a5b40ad02c6b016ad" id="r_a327d7c1126426d3a5b40ad02c6b016ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a9cee0b1ab00bf75dc0556ef92c360bac">Worksheet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a327d7c1126426d3a5b40ad02c6b016ad">Copy</a> ()</td></tr>
 <tr class="memdesc:a327d7c1126426d3a5b40ad02c6b016ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a (dereferenced) deep copy of this worksheet.  <br /></td></tr>
 <tr class="memitem:ab34d9902c0af0fcddd452153b39ec066" id="r_ab34d9902c0af0fcddd452153b39ec066"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab34d9902c0af0fcddd452153b39ec066">SetZoomFactor</a> (<a class="el" href="#a15e8e33d23ededb900bf73961a62dc05">SheetViewType</a> sheetViewType, int zoomFactor)</td></tr>
-<tr class="memdesc:ab34d9902c0af0fcddd452153b39ec066"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a zoom factor for a given <a class="el" href="#a15e8e33d23ededb900bf73961a62dc05" title="Enum to define how a worksheet is displayed in the spreadsheet application (Excel).">SheetViewType</a>. If <a class="el" href="#a0cd30692af9fda643142fc1845f68d20" title="Automatic zoom factor of a worksheet.">AUTO_ZOOM_FACTOR</a>, the zoom factor is set to automatic.  <br /></td></tr>
+<tr class="memdesc:ab34d9902c0af0fcddd452153b39ec066"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a zoom factor for a given <a class="el" href="#a15e8e33d23ededb900bf73961a62dc05" title="Enum to define how a worksheet is displayed in the spreadsheet application (Excel).">SheetViewType</a>. If <a class="el" href="#a936ee03eb31e0da3c0a128b843a37019" title="Automatic zoom factor of a worksheet.">AutoZoomFactor</a>, the zoom factor is set to automatic.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -378,12 +378,12 @@ Static Public Attributes</h2></td></tr>
 <tr class="memdesc:abf5284468b561d248e617766604c3e90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum row number (zero-based) as constant.  <br /></td></tr>
 <tr class="memitem:aeedcdff6ec997ce71713e264a8ebbb41" id="r_aeedcdff6ec997ce71713e264a8ebbb41"><td class="memItemLeft" align="right" valign="top">static readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeedcdff6ec997ce71713e264a8ebbb41">MaxRowHeight</a> = 409.5f</td></tr>
 <tr class="memdesc:aeedcdff6ec997ce71713e264a8ebbb41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum row height as constant.  <br /></td></tr>
-<tr class="memitem:a0cd30692af9fda643142fc1845f68d20" id="r_a0cd30692af9fda643142fc1845f68d20"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0cd30692af9fda643142fc1845f68d20">AUTO_ZOOM_FACTOR</a> = 0</td></tr>
-<tr class="memdesc:a0cd30692af9fda643142fc1845f68d20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatic zoom factor of a worksheet.  <br /></td></tr>
-<tr class="memitem:a5683cc74edfeb9a4006174e7382a598a" id="r_a5683cc74edfeb9a4006174e7382a598a"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5683cc74edfeb9a4006174e7382a598a">MIN_ZOOM_FACTOR</a> = 10</td></tr>
-<tr class="memdesc:a5683cc74edfeb9a4006174e7382a598a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic.  <br /></td></tr>
-<tr class="memitem:afb41c29a160e90e7024c37f215ed7445" id="r_afb41c29a160e90e7024c37f215ed7445"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb41c29a160e90e7024c37f215ed7445">MAX_ZOOM_FACTOR</a> = 400</td></tr>
-<tr class="memdesc:afb41c29a160e90e7024c37f215ed7445"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum zoom factor of a worksheet.  <br /></td></tr>
+<tr class="memitem:a936ee03eb31e0da3c0a128b843a37019" id="r_a936ee03eb31e0da3c0a128b843a37019"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a936ee03eb31e0da3c0a128b843a37019">AutoZoomFactor</a> = 0</td></tr>
+<tr class="memdesc:a936ee03eb31e0da3c0a128b843a37019"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatic zoom factor of a worksheet.  <br /></td></tr>
+<tr class="memitem:ae177222a119c746ca23d038d3dffb142" id="r_ae177222a119c746ca23d038d3dffb142"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae177222a119c746ca23d038d3dffb142">MinZoomFactor</a> = 10</td></tr>
+<tr class="memdesc:ae177222a119c746ca23d038d3dffb142"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic.  <br /></td></tr>
+<tr class="memitem:acd2c83ef6e953992ed4285b6293e8f12" id="r_acd2c83ef6e953992ed4285b6293e8f12"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd2c83ef6e953992ed4285b6293e8f12">maxZoomFactor</a> = 400</td></tr>
+<tr class="memdesc:acd2c83ef6e953992ed4285b6293e8f12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum zoom factor of a worksheet.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -459,9 +459,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a8b657335b5f76385124e2678a61118e6" id="r_a8b657335b5f76385124e2678a61118e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a15e8e33d23ededb900bf73961a62dc05">SheetViewType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b657335b5f76385124e2678a61118e6">ViewType</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a8b657335b5f76385124e2678a61118e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets how the current worksheet is displayed in the spreadsheet application (Excel).  <br /></td></tr>
 <tr class="memitem:a06c3d58921bcd633c0583d5a96f5ab1d" id="r_a06c3d58921bcd633c0583d5a96f5ab1d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a06c3d58921bcd633c0583d5a96f5ab1d">ZoomFactor</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a06c3d58921bcd633c0583d5a96f5ab1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the zoom factor of the <a class="el" href="#a8b657335b5f76385124e2678a61118e6" title="Gets or sets how the current worksheet is displayed in the spreadsheet application (Excel).">ViewType</a> of the current worksheet. If <a class="el" href="#a0cd30692af9fda643142fc1845f68d20" title="Automatic zoom factor of a worksheet.">AUTO_ZOOM_FACTOR</a>, the zoom factor is set to automatic.  <br /></td></tr>
+<tr class="memdesc:a06c3d58921bcd633c0583d5a96f5ab1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the zoom factor of the <a class="el" href="#a8b657335b5f76385124e2678a61118e6" title="Gets or sets how the current worksheet is displayed in the spreadsheet application (Excel).">ViewType</a> of the current worksheet. If <a class="el" href="#a936ee03eb31e0da3c0a128b843a37019" title="Automatic zoom factor of a worksheet.">AutoZoomFactor</a>, the zoom factor is set to automatic.  <br /></td></tr>
 <tr class="memitem:a15e8c34d6554db096d58a5e483cc04d1" id="r_a15e8c34d6554db096d58a5e483cc04d1"><td class="memItemLeft" align="right" valign="top">Dictionary&lt; <a class="el" href="#a15e8e33d23ededb900bf73961a62dc05">SheetViewType</a>, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15e8c34d6554db096d58a5e483cc04d1">ZoomFactors</a><code> [get]</code></td></tr>
-<tr class="memdesc:a15e8c34d6554db096d58a5e483cc04d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets all defined zoom factors per <a class="el" href="#a15e8e33d23ededb900bf73961a62dc05" title="Enum to define how a worksheet is displayed in the spreadsheet application (Excel).">SheetViewType</a> of the current worksheet. Use <a class="el" href="#ab34d9902c0af0fcddd452153b39ec066" title="Sets a zoom factor for a given SheetViewType. If AUTO_ZOOM_FACTOR, the zoom factor is set to automati...">SetZoomFactor(SheetViewType, int)</a> to define the values.  <br /></td></tr>
+<tr class="memdesc:a15e8c34d6554db096d58a5e483cc04d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets all defined zoom factors per <a class="el" href="#a15e8e33d23ededb900bf73961a62dc05" title="Enum to define how a worksheet is displayed in the spreadsheet application (Excel).">SheetViewType</a> of the current worksheet. Use <a class="el" href="#ab34d9902c0af0fcddd452153b39ec066" title="Sets a zoom factor for a given SheetViewType. If AutoZoomFactor, the zoom factor is set to automatic.">SetZoomFactor(SheetViewType, int)</a> to define the values.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a worksheet of a workbook. </p>
@@ -4097,7 +4097,7 @@ The parameter is nullable</td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sets a zoom factor for a given <a class="el" href="#a15e8e33d23ededb900bf73961a62dc05" title="Enum to define how a worksheet is displayed in the spreadsheet application (Excel).">SheetViewType</a>. If <a class="el" href="#a0cd30692af9fda643142fc1845f68d20" title="Automatic zoom factor of a worksheet.">AUTO_ZOOM_FACTOR</a>, the zoom factor is set to automatic. </p>
+<p>Sets a zoom factor for a given <a class="el" href="#a15e8e33d23ededb900bf73961a62dc05" title="Enum to define how a worksheet is displayed in the spreadsheet application (Excel).">SheetViewType</a>. If <a class="el" href="#a936ee03eb31e0da3c0a128b843a37019" title="Automatic zoom factor of a worksheet.">AutoZoomFactor</a>, the zoom factor is set to automatic. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sheetViewType</td><td>Sheet view type to apply the zoom factor on</td></tr>
@@ -4105,10 +4105,10 @@ The parameter is nullable</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section remark"><dt>Remarks</dt><dd>This factor is not the currently set factor. use the property <a class="el" href="#a06c3d58921bcd633c0583d5a96f5ab1d" title="Gets or sets the zoom factor of the ViewType of the current worksheet. If AUTO_ZOOM_FACTOR,...">ZoomFactor</a> to set the factor for the current <a class="el" href="#a8b657335b5f76385124e2678a61118e6" title="Gets or sets how the current worksheet is displayed in the spreadsheet application (Excel).">ViewType</a></dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>This factor is not the currently set factor. use the property <a class="el" href="#a06c3d58921bcd633c0583d5a96f5ab1d" title="Gets or sets the zoom factor of the ViewType of the current worksheet. If AutoZoomFactor,...">ZoomFactor</a> to set the factor for the current <a class="el" href="#a8b657335b5f76385124e2678a61118e6" title="Gets or sets how the current worksheet is displayed in the spreadsheet application (Excel).">ViewType</a></dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a> if the zoom factor is not <a class="el" href="#a0cd30692af9fda643142fc1845f68d20" title="Automatic zoom factor of a worksheet.">AUTO_ZOOM_FACTOR</a> or below <a class="el" href="#a5683cc74edfeb9a4006174e7382a598a" title="Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic.">MIN_ZOOM_FACTOR</a> or above <a class="el" href="#afb41c29a160e90e7024c37f215ed7445" title="Maximum zoom factor of a worksheet.">MAX_ZOOM_FACTOR</a></td></tr>
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a> if the zoom factor is not <a class="el" href="#a936ee03eb31e0da3c0a128b843a37019" title="Automatic zoom factor of a worksheet.">AutoZoomFactor</a> or below <a class="el" href="#ae177222a119c746ca23d038d3dffb142" title="Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic.">MinZoomFactor</a> or above <a class="el" href="#acd2c83ef6e953992ed4285b6293e8f12" title="Maximum zoom factor of a worksheet.">maxZoomFactor</a></td></tr>
   </table>
   </dd>
 </dl>
@@ -4118,8 +4118,8 @@ The parameter is nullable</td></tr>
 </div>
 </div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
-<a id="a0cd30692af9fda643142fc1845f68d20" name="a0cd30692af9fda643142fc1845f68d20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0cd30692af9fda643142fc1845f68d20">&#9670;&#160;</a></span>AUTO_ZOOM_FACTOR</h2>
+<a id="a936ee03eb31e0da3c0a128b843a37019" name="a936ee03eb31e0da3c0a128b843a37019"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a936ee03eb31e0da3c0a128b843a37019">&#9670;&#160;</a></span>AutoZoomFactor</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4128,7 +4128,7 @@ The parameter is nullable</td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const int NanoXLSX.Worksheet.AUTO_ZOOM_FACTOR = 0</td>
+          <td class="memname">const int NanoXLSX.Worksheet.AutoZoomFactor = 0</td>
         </tr>
       </table>
   </td>
@@ -4193,32 +4193,6 @@ The parameter is nullable</td></tr>
 <p>Default row height as constant. </p>
 
 <p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00044">44</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
-
-</div>
-</div>
-<a id="afb41c29a160e90e7024c37f215ed7445" name="afb41c29a160e90e7024c37f215ed7445"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb41c29a160e90e7024c37f215ed7445">&#9670;&#160;</a></span>MAX_ZOOM_FACTOR</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const int NanoXLSX.Worksheet.MAX_ZOOM_FACTOR = 400</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Maximum zoom factor of a worksheet. </p>
-
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00088">88</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4352,8 +4326,8 @@ The parameter is nullable</td></tr>
 
 </div>
 </div>
-<a id="a5683cc74edfeb9a4006174e7382a598a" name="a5683cc74edfeb9a4006174e7382a598a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5683cc74edfeb9a4006174e7382a598a">&#9670;&#160;</a></span>MIN_ZOOM_FACTOR</h2>
+<a id="acd2c83ef6e953992ed4285b6293e8f12" name="acd2c83ef6e953992ed4285b6293e8f12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd2c83ef6e953992ed4285b6293e8f12">&#9670;&#160;</a></span>maxZoomFactor</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4362,7 +4336,7 @@ The parameter is nullable</td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const int NanoXLSX.Worksheet.MIN_ZOOM_FACTOR = 10</td>
+          <td class="memname">const int NanoXLSX.Worksheet.maxZoomFactor = 400</td>
         </tr>
       </table>
   </td>
@@ -4372,9 +4346,9 @@ The parameter is nullable</td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic. </p>
+<p>Maximum zoom factor of a worksheet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00084">84</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00088">88</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4479,6 +4453,32 @@ The parameter is nullable</td></tr>
 <p>Minimum row number (zero-based) as constant. </p>
 
 <p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00072">72</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+
+</div>
+</div>
+<a id="ae177222a119c746ca23d038d3dffb142" name="ae177222a119c746ca23d038d3dffb142"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae177222a119c746ca23d038d3dffb142">&#9670;&#160;</a></span>MinZoomFactor</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NanoXLSX.Worksheet.MinZoomFactor = 10</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic. </p>
+
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00084">84</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5262,11 +5262,11 @@ The parameter is nullable</td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets or sets the zoom factor of the <a class="el" href="#a8b657335b5f76385124e2678a61118e6" title="Gets or sets how the current worksheet is displayed in the spreadsheet application (Excel).">ViewType</a> of the current worksheet. If <a class="el" href="#a0cd30692af9fda643142fc1845f68d20" title="Automatic zoom factor of a worksheet.">AUTO_ZOOM_FACTOR</a>, the zoom factor is set to automatic. </p>
-<dl class="section remark"><dt>Remarks</dt><dd>It is possible to add further zoom factors for inactive view types, using the function <a class="el" href="#ab34d9902c0af0fcddd452153b39ec066" title="Sets a zoom factor for a given SheetViewType. If AUTO_ZOOM_FACTOR, the zoom factor is set to automati...">SetZoomFactor(SheetViewType, int)</a> </dd></dl>
+<p>Gets or sets the zoom factor of the <a class="el" href="#a8b657335b5f76385124e2678a61118e6" title="Gets or sets how the current worksheet is displayed in the spreadsheet application (Excel).">ViewType</a> of the current worksheet. If <a class="el" href="#a936ee03eb31e0da3c0a128b843a37019" title="Automatic zoom factor of a worksheet.">AutoZoomFactor</a>, the zoom factor is set to automatic. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>It is possible to add further zoom factors for inactive view types, using the function <a class="el" href="#ab34d9902c0af0fcddd452153b39ec066" title="Sets a zoom factor for a given SheetViewType. If AutoZoomFactor, the zoom factor is set to automatic.">SetZoomFactor(SheetViewType, int)</a> </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a> if the zoom factor is not <a class="el" href="#a0cd30692af9fda643142fc1845f68d20" title="Automatic zoom factor of a worksheet.">AUTO_ZOOM_FACTOR</a> or below <a class="el" href="#a5683cc74edfeb9a4006174e7382a598a" title="Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic.">MIN_ZOOM_FACTOR</a> or above <a class="el" href="#afb41c29a160e90e7024c37f215ed7445" title="Maximum zoom factor of a worksheet.">MAX_ZOOM_FACTOR</a></td></tr>
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a> if the zoom factor is not <a class="el" href="#a936ee03eb31e0da3c0a128b843a37019" title="Automatic zoom factor of a worksheet.">AutoZoomFactor</a> or below <a class="el" href="#ae177222a119c746ca23d038d3dffb142" title="Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic.">MinZoomFactor</a> or above <a class="el" href="#acd2c83ef6e953992ed4285b6293e8f12" title="Maximum zoom factor of a worksheet.">maxZoomFactor</a></td></tr>
   </table>
   </dd>
 </dl>
@@ -5295,7 +5295,7 @@ The parameter is nullable</td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets all defined zoom factors per <a class="el" href="#a15e8e33d23ededb900bf73961a62dc05" title="Enum to define how a worksheet is displayed in the spreadsheet application (Excel).">SheetViewType</a> of the current worksheet. Use <a class="el" href="#ab34d9902c0af0fcddd452153b39ec066" title="Sets a zoom factor for a given SheetViewType. If AUTO_ZOOM_FACTOR, the zoom factor is set to automati...">SetZoomFactor(SheetViewType, int)</a> to define the values. </p>
+<p>Gets all defined zoom factors per <a class="el" href="#a15e8e33d23ededb900bf73961a62dc05" title="Enum to define how a worksheet is displayed in the spreadsheet application (Excel).">SheetViewType</a> of the current worksheet. Use <a class="el" href="#ab34d9902c0af0fcddd452153b39ec066" title="Sets a zoom factor for a given SheetViewType. If AutoZoomFactor, the zoom factor is set to automatic.">SetZoomFactor(SheetViewType, int)</a> to define the values. </p>
 
 <p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00507">507</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
