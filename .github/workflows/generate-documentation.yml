@@ -19,6 +19,9 @@ jobs:
         with:
           token: ${{ secrets.PUSH_TOKEN }}
 
+      - name: List repo contents
+        run: ls -R
+
       # Install Doxygen
       - name: Install Doxygen
         uses: ssciwr/doxygen-install@v1
