@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['scheme_0',['Scheme',['../classNanoXLSX_1_1Styles_1_1Font.html#a73c13a61fb8d4f1fdd722dd67592f3b5',1,'NanoXLSX::Styles::Font']]],
+  ['selectedcells_1',['SelectedCells',['../classNanoXLSX_1_1Worksheet.html#aa16ed20167da847aba9cc06bd0502a10',1,'NanoXLSX::Worksheet']]],
+  ['selectedworksheet_2',['SelectedWorksheet',['../classNanoXLSX_1_1Workbook.html#a25adaace203f007c42411616dfe09a86',1,'NanoXLSX::Workbook']]],
+  ['sheetid_3',['SheetID',['../classNanoXLSX_1_1Worksheet.html#a08d32d0cc7dff7c7c9ff9e67d8e5e53e',1,'NanoXLSX::Worksheet']]],
+  ['sheetname_4',['SheetName',['../classNanoXLSX_1_1Worksheet.html#a8be7e79192352c33b4ea4d84924a4627',1,'NanoXLSX::Worksheet']]],
+  ['sheetprotectionpassword_5',['SheetProtectionPassword',['../classNanoXLSX_1_1Worksheet.html#ac896da9bbd348ed3375099e5a8eefbaf',1,'NanoXLSX::Worksheet']]],
+  ['sheetprotectionvalues_6',['SheetProtectionValues',['../classNanoXLSX_1_1Worksheet.html#ab2c2f59da0c336040bd5077db20a1763',1,'NanoXLSX::Worksheet']]],
+  ['showgridlines_7',['ShowGridLines',['../classNanoXLSX_1_1Worksheet.html#a3874ba72ed5adb08cb23c80228122e6e',1,'NanoXLSX::Worksheet']]],
+  ['showrowcolumnheaders_8',['ShowRowColumnHeaders',['../classNanoXLSX_1_1Worksheet.html#ac7d58a9834ce7f711db380043ca87c2f',1,'NanoXLSX::Worksheet']]],
+  ['showruler_9',['ShowRuler',['../classNanoXLSX_1_1Worksheet.html#a0f9337bbc4f226eb91fb0d30be2aa687',1,'NanoXLSX::Worksheet']]],
+  ['size_10',['Size',['../classNanoXLSX_1_1Styles_1_1Font.html#abc58aa643a51264c12779736ecc81a23',1,'NanoXLSX::Styles::Font']]],
+  ['startaddress_11',['StartAddress',['../structNanoXLSX_1_1Range.html#a9aaea5001c405c3ad5452a40bd6feebc',1,'NanoXLSX::Range']]],
+  ['strike_12',['Strike',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#a1432025ecde73b4bbec0aa703bed79d6',1,'NanoXLSX.Styles.BasicStyles.Strike'],['../classNanoXLSX_1_1Styles_1_1Font.html#aa0f414dd071a9561fff145e29f835c77',1,'NanoXLSX.Styles.Font.Strike']]],
+  ['stringvalue_13',['StringValue',['../interfaceNanoXLSX_1_1Interfaces_1_1IColor.html#af3384df089bdd2da40e649e048cc8c2b',1,'NanoXLSX.Interfaces.IColor.StringValue'],['../classNanoXLSX_1_1Themes_1_1SrgbColor.html#a66db42e010b325bf19aafc0dd192fafe',1,'NanoXLSX.Themes.SrgbColor.StringValue'],['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e522598c4fad528e1c969d4edabe30d',1,'NanoXLSX.Themes.SystemColor.StringValue']]],
+  ['styles_14',['Styles',['../classNanoXLSX_1_1Styles_1_1StyleRepository.html#a9b6f65745fd292c9ba26a86a3aa578ab',1,'NanoXLSX::Styles::StyleRepository']]],
+  ['subject_15',['Subject',['../classNanoXLSX_1_1Metadata.html#ae4eed25d5fc2d59630f7ca800d592045',1,'NanoXLSX::Metadata']]]
+];
