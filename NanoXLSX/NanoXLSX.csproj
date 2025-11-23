@@ -41,8 +41,42 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="NanoXLSX.png" Pack="true" PackagePath="." />
+		<None Include="NanoXLSX.png" Pack="true" PackagePath=".">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Include="../README.md" Pack="true" PackagePath="." />
 	</ItemGroup>
+
+  <PropertyGroup>
+    <DocsProjectName>$(PackageId)</DocsProjectName>
+    <DocsVersion>$(Version)</DocsVersion>
+</PropertyGroup>
+	
+	
+	<Target Name="GenerateDocsIndex" AfterTargets="Build">
+		<Exec Command="dotnet run --project ../Docs.IndexGenerator" />
+	</Target>
+
+	<PropertyGroup>
+		<DocsGeneratorConfig>$(SolutionDir)\Docs.IndexGenerator\Config\root-config.json</DocsGeneratorConfig>
+	</PropertyGroup>
+
+	<Target Name="WriteDocsRootConfig" BeforeTargets="BeforeBuild">
+		<!-- Prepare JSON lines (escape double quotes) -->
+		<ItemGroup>
+			<_Lines Include="{" />
+			<_Lines Include="  &quot;projectName&quot;: &quot;$(MSBuildProjectName)&quot;," />
+			<_Lines Include="  &quot;version&quot;: &quot;$(Version)&quot;," />
+			<_Lines Include="  &quot;description&quot;: &quot;$(Description)&quot;" />
+			<_Lines Include="}" />
+		</ItemGroup>
+
+		<!-- Ensure target directory exists -->
+		<MakeDir Directories="$(DocsGeneratorConfig)\.." />
+
+		<!-- Write file (overwrites) -->
+		<WriteLinesToFile File="$(DocsGeneratorConfig)" Lines="@(_Lines)" Overwrite="true" Encoding="UTF-8" />
+		<Message Text="Wrote docs config to $(DocsGeneratorConfig)" Importance="High" />
+	</Target>
 
 </Project>

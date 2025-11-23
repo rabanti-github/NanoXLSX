@@ -1,0 +1,22 @@
+﻿{
+  "entries": [
+    {
+      "id": "NanoXLSX.Core",
+      "title": "NanoXLSX.Core API",
+      "path": "NanoXLSX.Core",
+      "description": "Core library"
+    },
+    {
+      "id": "NanoXLSX.Reader",
+      "title": "NanoXLSX.Reader API",
+      "path": "NanoXLSX.Reader",
+      "description": "Reader component, to load XLSX files"
+    },
+    {
+      "id": "NanoXLSX.Writer",
+      "title": "NanoXLSX.Writer API",
+      "path": "NanoXLSX.Writer",
+      "description": "Writer component, to save XLSX files"
+    }
+  ]
+}
