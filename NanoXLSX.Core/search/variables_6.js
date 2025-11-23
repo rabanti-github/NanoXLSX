@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['max_5fzoom_5ffactor_0',['MAX_ZOOM_FACTOR',['../classNanoXLSX_1_1Worksheet.html#afb41c29a160e90e7024c37f215ed7445',1,'NanoXLSX::Worksheet']]],
+  ['maxcolumnnumber_1',['MaxColumnNumber',['../classNanoXLSX_1_1Worksheet.html#a7afa5eee0a2e7d0a6b663c96786b6caf',1,'NanoXLSX::Worksheet']]],
+  ['maxcolumnwidth_2',['MaxColumnWidth',['../classNanoXLSX_1_1Worksheet.html#acefe14f0b7485a7810716f70ab54477b',1,'NanoXLSX::Worksheet']]],
+  ['maxfontsize_3',['MaxFontSize',['../classNanoXLSX_1_1Styles_1_1Font.html#ab3ab9b12f6c31a329bf77c1dd9309dac',1,'NanoXLSX::Styles::Font']]],
+  ['maxoadatevalue_4',['MaxOADateValue',['../classNanoXLSX_1_1Utils_1_1DataUtils.html#a04ba1cefdcfa50566806438a2f155448',1,'NanoXLSX::Utils::DataUtils']]],
+  ['maxrowheight_5',['MaxRowHeight',['../classNanoXLSX_1_1Worksheet.html#aeedcdff6ec997ce71713e264a8ebbb41',1,'NanoXLSX::Worksheet']]],
+  ['maxrownumber_6',['MaxRowNumber',['../classNanoXLSX_1_1Worksheet.html#a5ba242d4798c72738e722f6ab5df968d',1,'NanoXLSX::Worksheet']]],
+  ['maxworksheetnamelength_7',['MaxWorksheetNameLength',['../classNanoXLSX_1_1Worksheet.html#a015a76a5b1c99b322693ce7b460584f9',1,'NanoXLSX::Worksheet']]],
+  ['metadataappinlinereader_8',['MetadataAppInlineReader',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a355037c173e7ca7ecaf15694c51eb72f',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['metadataappinlinewriter_9',['MetadataAppInlineWriter',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a03d717251e99ddb26946c7e82cc98458',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['metadataappreader_10',['MetadataAppReader',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ae80faba5a067f74833f36006dcc985f6',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['metadataappwriter_11',['MetadataAppWriter',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad4cbb582cb8dccaa4d459a745c035a3d',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['metadatacoreinlinereader_12',['MetadataCoreInlineReader',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a30e1edfbcfa2e88f07f7b9f151ce568b',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['metadatacoreinlinewriter_13',['MetadataCoreInlineWriter',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a2627bfc5ed901daa21dae5cabf0a6455',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['metadatacorereader_14',['MetadataCoreReader',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a1561f86b7425fcfc616201612fc09adc',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['metadatacorewriter_15',['MetadataCoreWriter',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a8140e52d6f7b4fbe19acb758eb7e9193',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['min_5fzoom_5ffactor_16',['MIN_ZOOM_FACTOR',['../classNanoXLSX_1_1Worksheet.html#a5683cc74edfeb9a4006174e7382a598a',1,'NanoXLSX::Worksheet']]],
+  ['mincolumnnumber_17',['MinColumnNumber',['../classNanoXLSX_1_1Worksheet.html#a2ad4cb6310df8d3959335f63e5dc6462',1,'NanoXLSX::Worksheet']]],
+  ['mincolumnwidth_18',['MinColumnWidth',['../classNanoXLSX_1_1Worksheet.html#abd849651ee8c47e146f8783ecebc7392',1,'NanoXLSX::Worksheet']]],
+  ['minfontsize_19',['MinFontSize',['../classNanoXLSX_1_1Styles_1_1Font.html#a16877e05c6bdbf7a6d18d9c4360ad1c3',1,'NanoXLSX::Styles::Font']]],
+  ['minoadatevalue_20',['MinOADateValue',['../classNanoXLSX_1_1Utils_1_1DataUtils.html#aa63631310e54c632dc3a9b636801ae1d',1,'NanoXLSX::Utils::DataUtils']]],
+  ['minrowheight_21',['MinRowHeight',['../classNanoXLSX_1_1Worksheet.html#aec217d4aa954380af428896ec1d09bb2',1,'NanoXLSX::Worksheet']]],
+  ['minrownumber_22',['MinRowNumber',['../classNanoXLSX_1_1Worksheet.html#abf5284468b561d248e617766604c3e90',1,'NanoXLSX::Worksheet']]]
+];

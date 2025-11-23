@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['defaultalignment_0',['DefaultAlignment',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a5edc8aeb8b90f729e322522c2e3820e1',1,'NanoXLSX::Styles::CellXf']]],
+  ['defaultapplicationname_1',['DefaultApplicationName',['../classNanoXLSX_1_1Metadata.html#ad0e29915931ca2d1ab6b640435b4aa79',1,'NanoXLSX::Metadata']]],
+  ['defaultbordercolor_2',['DefaultBorderColor',['../classNanoXLSX_1_1Styles_1_1Border.html#a791a3fcd952e6557bf18cb26fa043e22',1,'NanoXLSX::Styles::Border']]],
+  ['defaultborderstyle_3',['DefaultBorderStyle',['../classNanoXLSX_1_1Styles_1_1Border.html#a3d77ab5ff846009bd5fa5caffc538f99',1,'NanoXLSX::Styles::Border']]],
+  ['defaultcolor_4',['DefaultColor',['../classNanoXLSX_1_1Styles_1_1Fill.html#a881a4a280f81a655aab70df18665ffec',1,'NanoXLSX::Styles::Fill']]],
+  ['defaultfontfamily_5',['DefaultFontFamily',['../classNanoXLSX_1_1Styles_1_1Font.html#a3dd8af1c30acf6852de4b1ab03c06ea8',1,'NanoXLSX::Styles::Font']]],
+  ['defaultfontname_6',['DefaultFontName',['../classNanoXLSX_1_1Styles_1_1Font.html#a344eaa540ba5d87f563872f9620c2d2d',1,'NanoXLSX::Styles::Font']]],
+  ['defaultfontscheme_7',['DefaultFontScheme',['../classNanoXLSX_1_1Styles_1_1Font.html#a7a60d2c8949bdd0e4b99bc9caa424cff',1,'NanoXLSX::Styles::Font']]],
+  ['defaultfontsize_8',['DefaultFontSize',['../classNanoXLSX_1_1Styles_1_1Font.html#a338ffe457dfff6103b20906bff28d6c4',1,'NanoXLSX::Styles::Font']]],
+  ['defaulthorizontalalignment_9',['DefaultHorizontalAlignment',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a1c5ebce3ccc07eef0b16f733100f0f3f',1,'NanoXLSX::Styles::CellXf']]],
+  ['defaultindexedcolor_10',['DefaultIndexedColor',['../classNanoXLSX_1_1Styles_1_1Fill.html#a79b15177fcf2c9f583adc91c39025bdd',1,'NanoXLSX::Styles::Fill']]],
+  ['defaultmajorfont_11',['DefaultMajorFont',['../classNanoXLSX_1_1Styles_1_1Font.html#a32fd401aae7888a5fbec3a67fe3d1600',1,'NanoXLSX::Styles::Font']]],
+  ['defaultminorfont_12',['DefaultMinorFont',['../classNanoXLSX_1_1Styles_1_1Font.html#aa234a6eeb70b1a066a18ea82ed23cf2d',1,'NanoXLSX::Styles::Font']]],
+  ['defaultnumber_13',['DefaultNumber',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#a080174f515c2832b69ccf4cb7cfacf13',1,'NanoXLSX::Styles::NumberFormat']]],
+  ['defaultpatternfill_14',['DefaultPatternFill',['../classNanoXLSX_1_1Styles_1_1Fill.html#a302ab4b5d70bbb5e2235a9df9cbc48d4',1,'NanoXLSX::Styles::Fill']]],
+  ['defaulttextdirection_15',['DefaultTextDirection',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a075443bb3c30821006f97af157a9f999',1,'NanoXLSX::Styles::CellXf']]],
+  ['defaultthemeversion_16',['DefaultThemeVersion',['../classNanoXLSX_1_1Themes_1_1Theme.html#a577fe2f10c1a690d2b5a386ca9693b07',1,'NanoXLSX::Themes::Theme']]],
+  ['defaultverticalalign_17',['DefaultVerticalAlign',['../classNanoXLSX_1_1Styles_1_1Font.html#a233ad5b9d9d811f5eb82f6d2e9462e0f',1,'NanoXLSX::Styles::Font']]],
+  ['defaultverticalalignment_18',['DefaultVerticalAlignment',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a320b7cee27f764e9620ff33e1d320fc4',1,'NanoXLSX::Styles::CellXf']]],
+  ['defaultworksheetcolumnwidth_19',['DefaultWorksheetColumnWidth',['../classNanoXLSX_1_1Worksheet.html#a548798eab8abf531a42431efbd13a181',1,'NanoXLSX::Worksheet']]],
+  ['defaultworksheetrowheight_20',['DefaultWorksheetRowHeight',['../classNanoXLSX_1_1Worksheet.html#a553d3c6126761d625cc0fc25a7684c63',1,'NanoXLSX::Worksheet']]]
+];

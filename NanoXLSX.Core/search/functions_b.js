@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['normalizenewlines_0',['NormalizeNewLines',['../classNanoXLSX_1_1Utils_1_1ParserUtils.html#acacf22f27a2dbc50b5b888452ba280ac',1,'NanoXLSX::Utils::ParserUtils']]],
+  ['notstartswith_1',['NotStartsWith',['../classNanoXLSX_1_1Utils_1_1ParserUtils.html#a8fa1f8d7145cb3ade442b079d8f40fa6',1,'NanoXLSX::Utils::ParserUtils']]],
+  ['notsupportedcontentexception_2',['NotSupportedContentException',['../classNanoXLSX_1_1Exceptions_1_1NotSupportedContentException.html#a4554c819a51021fb65a88c7f27839778',1,'NanoXLSX.Exceptions.NotSupportedContentException.NotSupportedContentException()'],['../classNanoXLSX_1_1Exceptions_1_1NotSupportedContentException.html#ad4c8076ab72660ed30a52a3dfc0fcb07',1,'NanoXLSX.Exceptions.NotSupportedContentException.NotSupportedContentException(string message)'],['../classNanoXLSX_1_1Exceptions_1_1NotSupportedContentException.html#a9ccbf9dfb92561da31a473d8582025b6',1,'NanoXLSX.Exceptions.NotSupportedContentException.NotSupportedContentException(string message, Exception inner)'],['../classNanoXLSX_1_1Exceptions_1_1NotSupportedContentException.html#ab9b7629af94fe84b1b4d79cf929e5dc2',1,'NanoXLSX.Exceptions.NotSupportedContentException.NotSupportedContentException(SerializationInfo info, StreamingContext context)']]],
+  ['numberformat_3',['NumberFormat',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#ac6a54b34492e6ac2338bbf465a2ecb83',1,'NanoXLSX::Styles::NumberFormat']]]
+];
