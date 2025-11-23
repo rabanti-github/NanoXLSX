@@ -19,9 +19,6 @@ jobs:
         with:
           token: ${{ secrets.PUSH_TOKEN }}
 
-      - name: List repo contents
-        run: ls -R
-
       # Install Doxygen
       - name: Install Doxygen
         uses: ssciwr/doxygen-install@v1
@@ -31,19 +28,19 @@ jobs:
       # Generate docs for NanoXLSX.Core
       - name: Generate NanoXLSX.Core docs
         run: |
-          cd src/NanoXLSX.Core
+          cd NanoXLSX.Core/Documentation
           doxygen documentation.doxygen
 
       # Generate docs for NanoXLSX.Reader
       - name: Generate NanoXLSX.Reader docs
         run: |
-          cd src/NanoXLSX.Reader
+          cd NanoXLSX.Reader/Documentation
           doxygen documentation.doxygen
 
       # Generate docs for NanoXLSX.Writer
       - name: Generate NanoXLSX.Writer docs
         run: |
-          cd src/NanoXLSX.Writer
+          cd NanoXLSX.Writer/Documentation
           doxygen documentation.doxygen
 
       # Upload docs artifact
