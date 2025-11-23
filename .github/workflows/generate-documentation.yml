@@ -21,24 +21,29 @@ jobs:
 
       # Install Doxygen
       - name: Install Doxygen
-        uses: mattnotmitt/doxygen-action@1.9.8
+        uses: ssciwr/doxygen-install@v1
+        with:
+          version: "1.15.0"
 
       # Generate docs for NanoXLSX.Core
       - name: Generate NanoXLSX.Core docs
-        working-directory: ./src/NanoXLSX.Core
-        run: doxygen documentation.doxygen
+        run: |
+          cd src/NanoXLSX.Core
+          doxygen documentation.doxygen
 
       # Generate docs for NanoXLSX.Reader
       - name: Generate NanoXLSX.Reader docs
-        working-directory: ./src/NanoXLSX.Reader
-        run: doxygen documentation.doxygen
+        run: |
+          cd src/NanoXLSX.Reader
+          doxygen documentation.doxygen
 
       # Generate docs for NanoXLSX.Writer
       - name: Generate NanoXLSX.Writer docs
-        working-directory: ./src/NanoXLSX.Writer
-        run: doxygen documentation.doxygen
+        run: |
+          cd src/NanoXLSX.Writer
+          doxygen documentation.doxygen
 
-      # Upload docs as artifact (optional)
+      # Upload docs artifact
       - name: Upload docs artifact
         uses: actions/upload-artifact@v4
         with:
