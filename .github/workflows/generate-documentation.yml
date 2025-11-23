@@ -11,7 +11,7 @@ on:
 
 jobs:
   build-docs:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -24,6 +24,13 @@ jobs:
         uses: ssciwr/doxygen-install@v1
         with:
           version: "1.15.0"
+
+      # Maintain folder structure
+      - name: Ensure doc output directories exist
+        run: |
+          mkdir -p docs/NanoXLSX.Core
+          mkdir -p docs/NanoXLSX.Reader
+          mkdir -p docs/NanoXLSX.Writer
 
       # Generate docs for NanoXLSX.Core
       - name: Generate NanoXLSX.Core docs
