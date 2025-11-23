@@ -51,12 +51,12 @@ jobs:
           doxygen documentation.doxygen
 
       # Move files locally
-      - name: Prepare docs folder
-        run: |
-          mkdir -p docs
-          mv NanoXLSX.Core docs/
-          mv NanoXLSX.Reader docs/
-          mv NanoXLSX.Writer docs/
+      #- name: Prepare docs folder
+      #  run: |
+      #    mkdir -p docs
+      #    mv NanoXLSX.Core docs/
+      #    mv NanoXLSX.Reader docs/
+      #    mv NanoXLSX.Writer docs/
 
       # Upload docs artifact
       - name: Upload docs artifact
