@@ -25,14 +25,6 @@ jobs:
         with:
           version: "1.15.0"
 
-      # Installing msbuild   
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
-
-      # Build the solution (all projects)
-      - name: Build NanoXLSX solution
-        run: msbuild NanoXLSX.sln /p:Configuration=Release
-
       # Generate docs for NanoXLSX.Core
       - name: Generate NanoXLSX.Core docs
         run: |
