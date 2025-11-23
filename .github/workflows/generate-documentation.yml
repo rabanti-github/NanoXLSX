@@ -70,4 +70,4 @@ jobs:
         with:
           github_token: ${{ secrets.PUSH_TOKEN }}
           publish_dir: ./docs
-          publish_branch: dev-v3
+          publish_branch: gh-pages
