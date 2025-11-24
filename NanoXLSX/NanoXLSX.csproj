@@ -58,14 +58,14 @@
 	</Target>
 
 	<PropertyGroup>
-		<DocsGeneratorConfig>$(SolutionDir)\Docs.IndexGenerator\Config\root-config.json</DocsGeneratorConfig>
+		<DocsGeneratorConfig>$(SolutionDir)\Docs.IndexGenerator\Config\meta-package-config.json</DocsGeneratorConfig>
 	</PropertyGroup>
 
 	<Target Name="WriteDocsRootConfig" BeforeTargets="BeforeBuild">
 		<!-- Prepare JSON lines (escape double quotes) -->
 		<ItemGroup>
 			<_Lines Include="{" />
-			<_Lines Include="  &quot;projectName&quot;: &quot;$(MSBuildProjectName)&quot;," />
+			<_Lines Include="  &quot;packageName&quot;: &quot;$(MSBuildProjectName)&quot;," />
 			<_Lines Include="  &quot;version&quot;: &quot;$(Version)&quot;," />
 			<_Lines Include="  &quot;description&quot;: &quot;$(Description)&quot;" />
 			<_Lines Include="}" />

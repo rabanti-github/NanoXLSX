@@ -13,7 +13,8 @@ using System.Text.Json;
 namespace Docs.IndexGenerator
 {
     internal record DocEntry(string id, string title, string path, string? description);
-    internal record RootConfig(string projectName, string version, string? description);
+    internal record RootConfig(string projectName, string baseDescription, string rootDescription);
+    internal record MetaPackageConfig(string packageName, string version, string? description);
     internal record PluginConfig(DocEntry[] entries);
 
     public class Program
@@ -22,8 +23,9 @@ namespace Docs.IndexGenerator
         {
 
             string rootConfigPath = "../Docs.IndexGenerator/Config/root-config.json";
+            string metaPackageConfigPath = "../Docs.IndexGenerator/Config/meta-package-config.json";
             string pluginConfigPath = "../Docs.IndexGenerator/Config/plugin-config.json";
-            string outDir = Path.Combine("..", "docs"); // default relative to project dir
+            string outDir = Path.Combine("..","Docs.IndexGenerator", "Output");
 
             for (int i = 0; i < args.Length; i++)
             {
@@ -31,19 +33,28 @@ namespace Docs.IndexGenerator
                 {
                     rootConfigPath = args[++i];
                 }
+                else if (args[i] == "--metaPackageConfig" && i + 1 < args.Length)
+                {
+                    metaPackageConfigPath = args[++i];
+                }
                 else if (args[i] == "--pluginConfig" && i + 1 < args.Length)
                 {
                     pluginConfigPath = args[++i];
                 }
                 else if (args[i] == "--out" && i + 1 < args.Length)
                 {
-                    outDir = args[++i]; 
+                    outDir = args[++i];
                 }
             }
 
             if (!File.Exists(rootConfigPath))
             {
                 Console.Error.WriteLine($"Config file not found: {rootConfigPath}");
+                return 2;
+            }
+            if (!File.Exists(metaPackageConfigPath))
+            {
+                Console.Error.WriteLine($"Config file not found: {metaPackageConfigPath}");
                 return 2;
             }
             if (!File.Exists(pluginConfigPath))
@@ -53,13 +64,16 @@ namespace Docs.IndexGenerator
             }
 
             string rootJson = File.ReadAllText(rootConfigPath);
+            string metPackageJson = File.ReadAllText(metaPackageConfigPath);
             string pluginJson = File.ReadAllText(pluginConfigPath);
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            MetaPackageConfig metaPackageConfig;
             RootConfig rootConfig;
             PluginConfig pluginConfig;
             try
             {
                 rootConfig = JsonSerializer.Deserialize<RootConfig>(rootJson, options) ?? throw new Exception("Root config deserialized to null");
+                metaPackageConfig = JsonSerializer.Deserialize<MetaPackageConfig>(metPackageJson, options) ?? throw new Exception("Meta-package config deserialized to null");
                 pluginConfig = JsonSerializer.Deserialize<PluginConfig>(pluginJson, options) ?? throw new Exception("Plugin config deserialized to null");
             }
             catch (Exception ex)
@@ -71,48 +85,73 @@ namespace Docs.IndexGenerator
             Directory.CreateDirectory(outDir);
 
             // index.html
-            string indexHtml = $@"<!doctype html>
+            string indexHtml = $@"
+<!doctype html>
 <html lang=""en"">
-<head>
-  <meta charset=""utf-8"">
-  <meta name=""viewport"" content=""width=device-width,initial-scale=1"">
-  <title>{EscapeHtml(rootConfig.projectName)} — Documentation</title>
-  <link rel=""stylesheet"" href=""style.css"">
-</head>
-<body>
-  <main>
-    <header>
-    <h1>
-        <img src=""NanoXLSX.png""
-             alt=""NanoXLSX Icon""
-             style=""height:48px; vertical-align:middle; margin-right:10px;"">
-        {EscapeHtml(rootConfig.projectName)}
-    </h1>
-    <hr>
-      <p class=""version"">Version {EscapeHtml(rootConfig.version)}</p>
-      <p class=""desc"">{EscapeHtml(rootConfig.description ?? "")}</p>
-    </header>
+    <head>
+      <meta charset=""utf-8"">
+      <meta name=""viewport"" content=""width=device-width,initial-scale=1"">
+      <title>{EscapeHtml(rootConfig.projectName)} — Documentation</title>
+      <link rel=""stylesheet"" href=""style.css"">
+    </head>
+    <body>
+      <main>
+        <header>
+        <h1>
+            <img src=""NanoXLSX.png""
+                 alt=""NanoXLSX""
+                 style=""height:48px; vertical-align:middle; margin-right:10px;"">
+            {EscapeHtml(rootConfig.projectName)}
+        </h1>
+        <p>
+        {EscapeHtml(rootConfig.baseDescription)}<br>
+        {EscapeHtml(rootConfig.rootDescription)}
+        <p>
 
-    <section>
-      <h2>Available documentation</h2>
-      <ul class=""list"">
-{GenerateListItems(pluginConfig)}
-      </ul>
-    </section>
-  </main>
-</body>
+        <hr>
+
+          <h2>Meta Package</h2>
+            <section>
+            {GenerateMetaPackageItem(metaPackageConfig, rootConfig)}
+            </section>
+
+          <p class=""version"">Version {EscapeHtml(metaPackageConfig.version)}</p>
+        </header>
+
+        <hr>
+
+        <section>
+          <h2>Dependency Package Documentation</h2>
+          <ul class=""list"">
+    {GenerateListItems(pluginConfig)}
+          </ul>
+        </section>
+      </main>
+    </body>
 </html>";
 
             File.WriteAllText(Path.Combine(outDir, "index.html"), indexHtml);
 
-            // style.css (very small)
+            // style.css
             string css = @"body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; color: #222; margin: 32px; }
 main { max-width: 900px; margin: auto; }
 header h1 { margin: 0; }
 .version { color: #666; margin-top: 4px; }
 .list { line-height: 1.8; }
 .list a { color: #0366d6; text-decoration: none; }
-.list a:hover { text-decoration: underline; }";
+.list a:hover { text-decoration: underline; }
+.version {
+    display: inline-block;
+    background-color: #f2f4f7;
+    color: #555;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid #d0d7de;
+    margin-top: 8px;
+}
+";
             File.WriteAllText(Path.Combine(outDir, "style.css"), css);
             var assetDest = Path.Combine(outDir, "NanoXLSX.png");
 
@@ -138,6 +177,38 @@ header h1 { margin: 0; }
             return sb.ToString();
         }
 
-        static string EscapeHtml(string s) => System.Web.HttpUtility.HtmlEncode(s);
+        static string GenerateMetaPackageItem(MetaPackageConfig metaPackageConfig, RootConfig rootConfig)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("<ul class=\"list\">");
+            string description = CreatePrefix(rootConfig, metaPackageConfig.description);
+            sb.AppendLine($"        <li><strong>{EscapeHtml(metaPackageConfig.packageName)}</strong> — {EscapeHtml(description ?? "")}</li>");
+            sb.AppendLine("</ul>");
+            return sb.ToString();
+        }
+
+        static string CreatePrefix(RootConfig config, string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return input;
+            }
+            if (input.StartsWith(config.baseDescription))
+            {
+                return input.Substring(config.baseDescription.Length);
+            }
+            return input;
+        }
+
+        static string EscapeHtml(string s)
+        {
+            // Use a placeholder that will never appear in normal text
+            const string BR = "##BR##";
+            s = s.Replace("<br>", BR).Replace("<br/>", BR).Replace("<br />", BR);
+            s = System.Web.HttpUtility.HtmlEncode(s);
+
+            // Restore <br>
+            return s.Replace(BR, "<br>");
+        }
     }
 }

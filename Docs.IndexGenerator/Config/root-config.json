@@ -1,5 +1,5 @@
 ﻿{
-"projectName": "NanoXLSX",
-"version": "3.0.0-rc.1",
-"description": "NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way. This package is the meta package of NanoXLSX and should be used in most cases as dependency in your project."
+  "projectName":  "NanoXLSX",
+  "baseDescription": "NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way.",
+  "rootDescription": "The library is modular and consists of one core and several optional dependencies.<br>This documentation page contains the links to all relevant documentation sub-pages."
 }
