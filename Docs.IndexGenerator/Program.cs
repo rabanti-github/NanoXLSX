@@ -101,8 +101,29 @@ namespace Docs.IndexGenerator
             <img src=""NanoXLSX.png""
                  alt=""NanoXLSX""
                  style=""height:48px; vertical-align:middle; margin-right:10px;"">
-            {EscapeHtml(rootConfig.projectName)}
+            {EscapeHtml(rootConfig.projectName)} v2.x
         </h1>
+        
+          <h2>API Documentation</h2>
+            <section>
+            <ul class=""list"">
+                <li><a href=""v2/"">NanoXLSX 2.x</a> — Current version</li>
+            </ul>
+            </section>
+
+          <p class=""version"">Version 2.6.7</p>
+
+        <br>
+        <hr>
+        <br>
+
+        <h1>
+            <img src=""NanoXLSX.png""
+                 alt=""NanoXLSX""
+                 style=""height:48px; vertical-align:middle; margin-right:10px;"">
+            {EscapeHtml(rootConfig.projectName)} v3.x
+        </h1>
+
         <p>
         {EscapeHtml(rootConfig.baseDescription)}<br>
         {EscapeHtml(rootConfig.rootDescription)}
@@ -110,9 +131,10 @@ namespace Docs.IndexGenerator
 
         <hr>
 
-          <h2>Meta Package</h2>
+          <h2>Meta Package v{EscapeHtml(metaPackageConfig.version)}</h2>
             <section>
             {GenerateMetaPackageItem(metaPackageConfig, rootConfig)}
+            <p>There is no documentation for the meta package. Please see the section <b>Dependency Package Documentation</b> for the complete API documentation.</p>
             </section>
 
           <p class=""version"">Version {EscapeHtml(metaPackageConfig.version)}</p>
