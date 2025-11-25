@@ -10,7 +10,7 @@ Furthermore, a lot of constants were renamed to follow the C# naming conventions
 
 However, most important change is the modularization of NanoXLSX, where the reading and writing functionalities were moved to separate packages: `NanoXLSX.Reader` and `NanoXLSX.Writer`. The core package `NanoXLSX.Core` now only contains the core classes, like `Workbook`, `Worksheet`, `Cell`, `Style`, etc.
 
-The following guides lists all necessary changes, as well as changed behaviors of properties and methods.
+The following guide lists all necessary changes, as well as changed behaviors of properties and methods.
 
 ---
 
@@ -21,7 +21,7 @@ The following guides lists all necessary changes, as well as changed behaviors o
   - The method `Workbook.Load(...)` and `Workbook.LoadAsync(...)` were removed due to the modularization of NanoXLSX. Please see the  **Reader section** for more details. 
   - The method `Workbook.AddStyle(Style)` was completely removed, after marked as obsolete in version 2.x. Styles should be added directly to cells or ranges. 
   - The method `Workbook.AddStyleComponent(Style, AbstractStyle)` was completely removed, after marked as obsolete in version 2.x. Styles should be modified directly on cells, e.g. `workbook.CurrentWorksheet.Cells["A1"].CellStyle.CurrentFont.Bold = true;` or `workbook.CurrentWorksheet.Cells["A1"].CellStyle.Append(fontStyle)`. 
-  - The methods `Workbook.RemoveStyle(Style)`, `Workbook.RemoveStyle(Style, bool)`, `Workbook.RemoveStyle(string)` and `Workbook.RemoveStyle(string, bool)` were completely removed, after marked as obsolete in version 2.x. Styles should be removed directly from cells (e.g. `workbook.CurrentWorksheet.Cells["A1"].RemoveStyle()`). 
+  - The methods `Workbook.RemoveStyle(Style)`, `Workbook.RemoveStyle(Style, bool)`, `Workbook.RemoveStyle(string)` and `Workbook.RemoveStyle(string, bool)` were completely removed, after marked as obsolete in version 2.x. Styles should be removed directly from cells (e.g. `workbook.CurrentWorksheet.Cells["A1"].RemoveStyle()`.
 
 ---
 
@@ -94,7 +94,7 @@ Furthermore, a lot of constants were renamed to follow the C# naming conventions
 - The public constant values of the `Font` class were renamed, according to the following overview:
 
 | Old Constant             | New Constant           | Remarks  |
-|--------------------------|-----------------------------------|
+|--------------------------|------------------------|----------|
 | `DEFAULT_MAJOR_FONT`     | `DefaultMajorFont`     |          |
 | `DEFAULT_MINOR_FONT`     | `DefaultMinorFont`     |          |
 | `DEFAULT_FONT_NAME`      | `DefaultFontName`      |          |
@@ -126,7 +126,7 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 - The public constant values of the `Border` class were renamed, according to the following overview:
 
 | Old Constant             | New Constant           | Remarks  |
-|--------------------------|-----------------------------------|
+|--------------------------|------------------------|----------|
 | `DEFAULT_BORDER_STYLE`   | `DefaultBorderStyle`   |          |
 | `DEFAULT_COLOR`          | `DefaultBorderColor`   |          |
 
@@ -135,7 +135,7 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 - The public constant values of the `Fill` class were renamed, according to the following overview:
 
 | Old Constant             | New Constant           | Remarks  |
-|--------------------------|-----------------------------------|
+|--------------------------|------------------------|----------|
 | `DEFAULT_COLOR`          | `DefaultColor`         |          |
 | `DEFAULT_INDEXED_COLOR`  | `DefaultIndexedColor`  |          |
 | `DEFAULT_PATTERN_FILL`   | `DefaultPatternFill`   |          |
@@ -147,7 +147,7 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 - The public constant values of the `CellXf` class were renamed, according to the following overview:
 
 | Old Constant             | New Constant           | Remarks  |
-|--------------------------|-----------------------------------|
+|--------------------------|------------------------|----------|
 | `DEFAULT_HORIZONTAL_ALIGNMENT` | `DefaultHorizontalAlignment`|          |
 | `DEFAULT_ALIGNMENT`      | `DefaultAlignment`     |          |
 | `DEFAULT_TEXT_DIRECTION` | `DefaultTextDirection` |          |
@@ -158,14 +158,14 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 - The public constant values of the `NumberFormat` class were renamed, according to the following overview:
 
 | Old Constant             | New Constant           | Remarks  |
-|--------------------------|-----------------------------------|
+|--------------------------|------------------------|----------|
 | `CUSTOMFORMAT_START_NUMBER` | `CustomFormatStartNumber`|          |
 | `DEFAULT_NUMBER`         | `DefaultNumber`        |          |
 
 - The enum values of `NumberFormat.FormatRange` were renamed, according to the following overview:
 
 | Old Enum Value           | New Enum Value         | Remarks  |
-|--------------------------|-----------------------------------|
+|--------------------------|------------------------|----------|
 | `FormatRange.defined_format` | `FormatRange.DefinedFormat`   |          |
 | `FormatRange.custom_format_` | `FormatRange.CustomFormat`    |          |
 | `FormatRange.invalied`   | `FormatRange.Inavlid`  |          |
