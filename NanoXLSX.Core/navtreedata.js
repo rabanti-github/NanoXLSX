@@ -25,6 +25,9 @@
 var NAVTREE =
 [
   [ "NanoXLSX.Core", "index.html", [
+    [ "Change Log - NanoXLSX.Core", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html", [
+      [ "v3.0.0-rc.1", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1", null ]
+    ] ],
     [ "Packages", "namespaces.html", [
       [ "Package List", "namespaces.html", "namespaces_dup" ]
     ] ],
@@ -53,7 +56,7 @@ var NAVTREEINDEX =
 "classNanoXLSX_1_1Utils_1_1DataUtils.html#aed02c37cec9c39db1ef00bd68dcdd1cc",
 "classNanoXLSX_1_1Worksheet.html#a1ea0190ddae08526aa492adf27fa3d9e",
 "classNanoXLSX_1_1Worksheet.html#ae53c8d06a9ce1ab80f01a7ab7abc98ec",
-"structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#aeb4a3306e0e6ab21ae628ad68c2e2c2d"
+"structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#a9e81c7239f59499bdfe5dd61804ead63"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

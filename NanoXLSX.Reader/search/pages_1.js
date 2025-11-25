@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nanoxlsx_20reader_0',['NanoXLSX.Reader',['..//home/runner/work/NanoXLSX/NanoXLSX/NanoXLSX.Reader/README.md#autotoc_md0',1,'']]]
+  ['1_0',['v3.0.0-rc.1',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md1',1,'']]]
 ];

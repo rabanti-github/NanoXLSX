@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bool_0',['Bool',['../classNanoXLSX_1_1ReaderOptions.html#a1a81aa0a84ee1ed6c02936b57bd618e3ac26f15e86e3de4c398a8273272aba034',1,'NanoXLSX::ReaderOptions']]]
+  ['1_0',['v3.0.0-rc.1',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md1',1,'']]]
 ];

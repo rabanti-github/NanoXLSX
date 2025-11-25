@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['package_20content_0',['Package content',['..//home/runner/work/NanoXLSX/NanoXLSX/NanoXLSX.Reader/README.md#autotoc_md1',1,'']]]
+  ['change_20log_20nanoxlsx_20reader_0',['Change Log - NanoXLSX.Reader',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html',1,'']]],
+  ['changes_1',['Changes',['..//home/runner/work/NanoXLSX/NanoXLSX/NanoXLSX.Reader/README.md#autotoc_md8',1,'']]]
 ];

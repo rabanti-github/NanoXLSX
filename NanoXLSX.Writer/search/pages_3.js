@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['reader_0',['NanoXLSX.Reader',['..//home/runner/work/NanoXLSX/NanoXLSX/NanoXLSX.Writer/README.md#autotoc_md0',1,'']]]
+  ['dependencies_0',['Dependencies',['..//home/runner/work/NanoXLSX/NanoXLSX/NanoXLSX.Writer/README.md#autotoc_md6',1,'']]],
+  ['description_1',['Description',['..//home/runner/work/NanoXLSX/NanoXLSX/NanoXLSX.Writer/README.md#autotoc_md5',1,'']]]
 ];

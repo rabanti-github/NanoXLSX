@@ -1,13 +1,12 @@
 var searchData=
 [
-  ['read_0',['Read',['../classNanoXLSX_1_1Internal_1_1Readers_1_1XlsxReader.html#ae332c791f49521b3dfa4b07e81d4338d',1,'NanoXLSX::Internal::Readers::XlsxReader']]],
-  ['readasync_1',['ReadAsync',['../classNanoXLSX_1_1Internal_1_1Readers_1_1XlsxReader.html#a1aff497e9af9854fee8cd98629b79ff0',1,'NanoXLSX::Internal::Readers::XlsxReader']]],
-  ['reader_2',['NanoXLSX.Reader',['..//home/runner/work/NanoXLSX/NanoXLSX/NanoXLSX.Reader/README.md#autotoc_md0',1,'']]],
-  ['readeroptions_3',['ReaderOptions',['../classNanoXLSX_1_1ReaderOptions.html',1,'NanoXLSX']]],
-  ['readerpassword_4',['ReaderPassword',['../classNanoXLSX_1_1Internal_1_1Enums_1_1ReaderPassword.html',1,'NanoXLSX::Internal::Enums']]],
-  ['readerutils_5',['ReaderUtils',['../classNanoXLSX_1_1Internal_1_1ReaderUtils.html',1,'NanoXLSX::Internal']]],
-  ['readxmlattributes_6',['ReadXmlAttributes',['../interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html#a5312dfd92cc3dcd99b9cfd74568deea6',1,'NanoXLSX.Interfaces.Reader.IPasswordReader.ReadXmlAttributes()'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html#a99fcbf36b1f3c2e8f1c5f74e08cc79bf',1,'NanoXLSX.Internal.Readers.LegacyPasswordReader.ReadXmlAttributes()']]],
-  ['relationship_7',['Relationship',['../classNanoXLSX_1_1Internal_1_1Readers_1_1Relationship.html',1,'NanoXLSX::Internal::Readers']]],
-  ['relationshipreader_8',['RelationshipReader',['../classNanoXLSX_1_1Internal_1_1Readers_1_1RelationshipReader.html',1,'NanoXLSX.Internal.Readers.RelationshipReader'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1RelationshipReader.html#a1e2f65f637d20444328b9cab8a2cdb43',1,'NanoXLSX.Internal.Readers.RelationshipReader.RelationshipReader()']]],
-  ['rid_9',['RID',['../classNanoXLSX_1_1Internal_1_1Readers_1_1Relationship.html#aad2b7dc2531e1f395e1c511dd5e72f80',1,'NanoXLSX::Internal::Readers::Relationship']]]
+  ['nanoxlsx_0',['NanoXLSX',['../namespaceNanoXLSX.html',1,'']]],
+  ['nanoxlsx_20reader_1',['NanoXLSX Reader',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html',1,'Change Log - NanoXLSX.Reader'],['..//home/runner/work/NanoXLSX/NanoXLSX/NanoXLSX.Reader/README.md#autotoc_md3',1,'NanoXLSX.Reader']]],
+  ['nanoxlsx_3a_3aextensions_2',['Extensions',['../namespaceNanoXLSX_1_1Extensions.html',1,'NanoXLSX']]],
+  ['nanoxlsx_3a_3ainterfaces_3',['Interfaces',['../namespaceNanoXLSX_1_1Interfaces.html',1,'NanoXLSX']]],
+  ['nanoxlsx_3a_3ainterfaces_3a_3areader_4',['Reader',['../namespaceNanoXLSX_1_1Interfaces_1_1Reader.html',1,'NanoXLSX::Interfaces']]],
+  ['nanoxlsx_3a_3ainternal_5',['Internal',['../namespaceNanoXLSX_1_1Internal.html',1,'NanoXLSX']]],
+  ['nanoxlsx_3a_3ainternal_3a_3aenums_6',['Enums',['../namespaceNanoXLSX_1_1Internal_1_1Enums.html',1,'NanoXLSX::Internal']]],
+  ['nanoxlsx_3a_3ainternal_3a_3areaders_7',['Readers',['../namespaceNanoXLSX_1_1Internal_1_1Readers.html',1,'NanoXLSX::Internal']]],
+  ['numeric_8',['Numeric',['../classNanoXLSX_1_1ReaderOptions.html#a1a81aa0a84ee1ed6c02936b57bd618e3a87322391cc6e8948ce9fd5d6cb84fced',1,'NanoXLSX::ReaderOptions']]]
 ];

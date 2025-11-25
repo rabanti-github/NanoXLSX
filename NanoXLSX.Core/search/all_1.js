@@ -1,24 +1,4 @@
 var searchData=
 [
-  ['background_0',['Background',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03aa9ded1e5ce5d75814730bb4caaf49419',1,'NanoXLSX::Themes::SystemColor']]],
-  ['backgroundcolor_1',['BackgroundColor',['../classNanoXLSX_1_1Styles_1_1Fill.html#a1a89aded6498ff112cf696561218db70',1,'NanoXLSX::Styles::Fill']]],
-  ['baltic_2',['Baltic',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001acae94ad2a63805bd9086605894461fe1b2',1,'NanoXLSX::Styles::Font']]],
-  ['basicformulas_3',['BasicFormulas',['../classNanoXLSX_1_1BasicFormulas.html',1,'NanoXLSX']]],
-  ['basicstyles_4',['BasicStyles',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html',1,'NanoXLSX::Styles']]],
-  ['big5_5',['Big5',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001aca21582eb7d47212957220531b276fabcf',1,'NanoXLSX::Styles::Font']]],
-  ['bold_6',['Bold',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#acd6baa4a5ed2f5713692b74b31d08be1',1,'NanoXLSX.Styles.BasicStyles.Bold'],['../classNanoXLSX_1_1Styles_1_1Font.html#a0b803f729ce9c66a388bba7074b99c8d',1,'NanoXLSX.Styles.Font.Bold']]],
-  ['bolditalic_7',['BoldItalic',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#aeff34c98786b0866ce6581a5572539be',1,'NanoXLSX::Styles::BasicStyles']]],
-  ['bool_8',['BOOL',['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aaa97b2c144243b2b9d2c593ec268b62f5',1,'NanoXLSX::Cell']]],
-  ['border_9',['Border',['../classNanoXLSX_1_1Styles_1_1Border.html',1,'NanoXLSX.Styles.Border'],['../classNanoXLSX_1_1Styles_1_1Border.html#a9ac8a036834b0bb5e108bd8756a54419',1,'NanoXLSX.Styles.Border.Border()']]],
-  ['borderframe_10',['BorderFrame',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#ab38c20f2ab20235fe66ee588519178c7',1,'NanoXLSX::Styles::BasicStyles']]],
-  ['borderframeheader_11',['BorderFrameHeader',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#ae998fd946cd8a5f03882401515d25c07',1,'NanoXLSX::Styles::BasicStyles']]],
-  ['bottom_12',['bottom',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a63e51aa1f960e6073ed767321967d1c4a71f262d796bed1ab30e8a2d5a8ddee6f',1,'NanoXLSX::Styles::CellXf']]],
-  ['bottomcolor_13',['BottomColor',['../classNanoXLSX_1_1Styles_1_1Border.html#aab4bae29dd1f151761510ba91985d8a5',1,'NanoXLSX::Styles::Border']]],
-  ['bottomleft_14',['bottomLeft',['../classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a5d42a1b01d408cdd65bb03d50fa0dd22',1,'NanoXLSX::Worksheet']]],
-  ['bottomright_15',['bottomRight',['../classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a83da849839b8af951893682450a363a1',1,'NanoXLSX::Worksheet']]],
-  ['bottomstyle_16',['BottomStyle',['../classNanoXLSX_1_1Styles_1_1Border.html#a82e1271661722d132c61522d7efe24c8',1,'NanoXLSX::Styles::Border']]],
-  ['buttonface_17',['ButtonFace',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03ac6aea4426794a471bbd122c68be204f5',1,'NanoXLSX::Themes::SystemColor']]],
-  ['buttonhighlight_18',['ButtonHighlight',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03ab5f03654c2c5a40b2784071ed2162b33',1,'NanoXLSX::Themes::SystemColor']]],
-  ['buttonshadow_19',['ButtonShadow',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03a3354ddb078243c2cdbbf6d823895a8b7',1,'NanoXLSX::Themes::SystemColor']]],
-  ['buttontext_20',['ButtonText',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03a332985df69ddb2491fcf1da0cc94a900',1,'NanoXLSX::Themes::SystemColor']]]
+  ['1_0',['v3.0.0-rc.1',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1',1,'']]]
 ];

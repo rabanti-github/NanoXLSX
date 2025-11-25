@@ -1,12 +1,7 @@
 var searchData=
 [
-  ['nanoxlsx_0',['NanoXLSX',['../namespaceNanoXLSX.html',1,'']]],
-  ['nanoxlsx_20reader_1',['NanoXLSX.Reader',['..//home/runner/work/NanoXLSX/NanoXLSX/NanoXLSX.Reader/README.md#autotoc_md0',1,'']]],
-  ['nanoxlsx_3a_3aextensions_2',['Extensions',['../namespaceNanoXLSX_1_1Extensions.html',1,'NanoXLSX']]],
-  ['nanoxlsx_3a_3ainterfaces_3',['Interfaces',['../namespaceNanoXLSX_1_1Interfaces.html',1,'NanoXLSX']]],
-  ['nanoxlsx_3a_3ainterfaces_3a_3areader_4',['Reader',['../namespaceNanoXLSX_1_1Interfaces_1_1Reader.html',1,'NanoXLSX::Interfaces']]],
-  ['nanoxlsx_3a_3ainternal_5',['Internal',['../namespaceNanoXLSX_1_1Internal.html',1,'NanoXLSX']]],
-  ['nanoxlsx_3a_3ainternal_3a_3aenums_6',['Enums',['../namespaceNanoXLSX_1_1Internal_1_1Enums.html',1,'NanoXLSX::Internal']]],
-  ['nanoxlsx_3a_3ainternal_3a_3areaders_7',['Readers',['../namespaceNanoXLSX_1_1Internal_1_1Readers.html',1,'NanoXLSX::Internal']]],
-  ['numeric_8',['Numeric',['../classNanoXLSX_1_1ReaderOptions.html#a1a81aa0a84ee1ed6c02936b57bd618e3a87322391cc6e8948ce9fd5d6cb84fced',1,'NanoXLSX::ReaderOptions']]]
+  ['ignorenotsupportedpasswordalgorithms_0',['IgnoreNotSupportedPasswordAlgorithms',['../classNanoXLSX_1_1ReaderOptions.html#a7d1703cb3de5215fa1b532dd383a7f17',1,'NanoXLSX::ReaderOptions']]],
+  ['init_1',['Init',['../interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html#afc414eefea336b14a6e2d28c332c9034',1,'NanoXLSX.Interfaces.Reader.IPasswordReader.Init()'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html#a2606b4956a490713cdfb0c239f7a9368',1,'NanoXLSX.Internal.Readers.LegacyPasswordReader.Init()'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataAppReader.html#a48d9839bc2d50dbd847a725df5b35e30',1,'NanoXLSX.Internal.Readers.MetadataAppReader.Init()'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataCoreReader.html#a57544ab1467ca29733feaf06b1346114',1,'NanoXLSX.Internal.Readers.MetadataCoreReader.Init()'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1RelationshipReader.html#ad824a220f807497d9c8ed35e27480282',1,'NanoXLSX.Internal.Readers.RelationshipReader.Init()'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1SharedStringsReader.html#a1eba1b98d7b7f73ec1aefb90e74e78ab',1,'NanoXLSX.Internal.Readers.SharedStringsReader.Init()'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1StyleReader.html#af76c4180eaaa4bf5c3a4f25e9575ebac',1,'NanoXLSX.Internal.Readers.StyleReader.Init()'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1ThemeReader.html#aa2888a261dafc02be5de823c87ebef7d',1,'NanoXLSX.Internal.Readers.ThemeReader.Init()'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a5a273ffa21def3c664d30257ece7e7ba',1,'NanoXLSX.Internal.Readers.WorkbookReader.Init()'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#ae1347c00dbdf7b65f95aa29af4ee7650',1,'NanoXLSX.Internal.Readers.WorksheetReader.Init()']]],
+  ['ioexception_2',['IOException',['../namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72',1,'NanoXLSX::Internal::Readers']]],
+  ['ipasswordreader_3',['IPasswordReader',['../interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html',1,'NanoXLSX::Interfaces::Reader']]]
 ];

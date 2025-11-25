@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['workbook_5fprotection_0',['WORKBOOK_PROTECTION',['../classNanoXLSX_1_1Internal_1_1Enums_1_1WriterPassword.html#a457d74409a0c68599200357d615150d7a250b8bfea71305844cc2507342144626',1,'NanoXLSX::Internal::Enums::WriterPassword']]],
-  ['workbookextension_1',['WorkbookExtension',['../classNanoXLSX_1_1WorkbookExtension.html',1,'NanoXLSX']]],
-  ['worksheet_5fprotection_2',['WORKSHEET_PROTECTION',['../classNanoXLSX_1_1Internal_1_1Enums_1_1WriterPassword.html#a457d74409a0c68599200357d615150d7a716a35c86bc68f72496a8b7790f81d5d',1,'NanoXLSX::Internal::Enums::WriterPassword']]],
-  ['writerpassword_3',['WriterPassword',['../classNanoXLSX_1_1Internal_1_1Enums_1_1WriterPassword.html',1,'NanoXLSX::Internal::Enums']]]
+  ['save_0',['Save',['../classNanoXLSX_1_1WorkbookExtension.html#ac29824af37b4943f1b09f16261ae4993',1,'NanoXLSX::WorkbookExtension']]],
+  ['saveas_1',['SaveAs',['../classNanoXLSX_1_1WorkbookExtension.html#af574d67a23ed38401695163a4ce8cb34',1,'NanoXLSX::WorkbookExtension']]],
+  ['saveasasync_2',['SaveAsAsync',['../classNanoXLSX_1_1WorkbookExtension.html#a3d5f4f755f2728ef328b2baf108e260a',1,'NanoXLSX::WorkbookExtension']]],
+  ['saveasstream_3',['SaveAsStream',['../classNanoXLSX_1_1WorkbookExtension.html#a5b328fd5b2de73fd55c8d52ff1454e2b',1,'NanoXLSX::WorkbookExtension']]],
+  ['saveasstreamasync_4',['SaveAsStreamAsync',['../classNanoXLSX_1_1WorkbookExtension.html#a64e0f74017c5e2ae677c44c4e3cc06c1',1,'NanoXLSX::WorkbookExtension']]],
+  ['saveasync_5',['SaveAsync',['../classNanoXLSX_1_1WorkbookExtension.html#a0db20d21239871d32472e27fbe0ac74f',1,'NanoXLSX::WorkbookExtension']]],
+  ['setpassword_6',['SetPassword',['../classNanoXLSX_1_1Internal_1_1Writers_1_1LegacyPasswordWriter.html#a161843cb9a0679a7067266ade8219f74',1,'NanoXLSX::Internal::Writers::LegacyPasswordWriter']]]
 ];

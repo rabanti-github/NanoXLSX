@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['equals_0',['Equals',['../classNanoXLSX_1_1Internal_1_1Structures_1_1PlainText.html#a4d77f1f01ccf36118c251cb76ba224a4',1,'NanoXLSX::Internal::Structures::PlainText']]]
+  ['1_0',['v3.0.0-rc.1',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html#autotoc_md1',1,'']]]
 ];
