@@ -1,6 +1,6 @@
-![NanoXLSX](https://raw.githubusercontent.com/rabanti-github/NanoXLSX/refs/heads/master/Documentation/icons/NanoXLSXlib.png)
+![NanoXLSX](https://raw.githubusercontent.com/rabanti-github/NanoXLSX/refs/heads/master/Documentation/icons/NanoXLSX.png)
 
-# NanoXLSX.Reader 
+# NanoXLSX.Reader
 
 ![nuget](https://img.shields.io/nuget/v/NanoXLSX.Core.svg?maxAge=86400)
 ![license](https://img.shields.io/github/license/rabanti-github/NanoXlsx.svg)
@@ -8,8 +8,24 @@
 
 NanoXLSX is a small .NET library written in C#, to create and read Microsoft Excel files in the XLSX format (Microsoft Excel 2007 or newer) in an easy and native way
 
-## Package content
+---
 
-NanoXLSX.Reader contains the reder components to load XLSX files
+## Description
 
-**TBD**
+NanoXLSX.Reader contains the components to read workbooks and all its components.
+
+## Dependencies
+
+The reader packages has the following dependencies:
+
+| Dependency          | Version | Scope     | Description |
+| --------------------|---------|-----------|-------------|
+| **NanoXLSX.Core**   | 3.0.x   | Mandatory | Base functionalities, like workbooks, worksheet or cells and all standard operations |
+
+## Further References
+
+Please see the **[main readme](https://github.com/rabanti-github/NanoXLSX/blob/master/README.md)** for further references, like system requirements, installation or code examples.
+
+## Changes
+
+For changes of the reader package, please see **[library change log](https://github.com/rabanti-github/NanoXLSX/blob/dev-v3/NanoXLSX.Reader/Changelog.md)** or the **[main change log](https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md)**.

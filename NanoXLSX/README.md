@@ -1,8 +1,8 @@
 ![NanoXLSX](https://raw.githubusercontent.com/rabanti-github/NanoXLSX/refs/heads/master/Documentation/icons/NanoXLSX.png)
 
-# NanoXLSX.Writer
+# NanoXLSX - Meta Package
 
-![nuget](https://img.shields.io/nuget/v/NanoXLSX.Core.svg?maxAge=86400)
+![nuget](https://img.shields.io/nuget/v/NanoXLSX.svg?maxAge=86400)
 ![license](https://img.shields.io/github/license/rabanti-github/NanoXlsx.svg)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_shield)
 
@@ -12,15 +12,17 @@ NanoXLSX is a small .NET library written in C#, to create and read Microsoft Exc
 
 ## Description
 
-NanoXLSX.Writer contains the components to write workbooks and all its components as streams or into files.
+The meta package of NanoXLSX defines the necessary dependencies to run the library with the recommended feature set.
 
-## Dependencies
+## Feature Set
 
-The writer packages has the following dependencies:
+The feature set of the meta package is:
 
 | Dependency          | Version | Scope     | Description |
 | --------------------|---------|-----------|-------------|
 | **NanoXLSX.Core**   | 3.0.x   | Mandatory | Base functionalities, like workbooks, worksheet or cells and all standard operations |
+| **NanoXLSX.Reader** | 3.0.x   | Optional  | Functions to read workbooks and its parts like worksheets, styles or shared strings |
+| **NanoXLSX.Writer** | 3.0.x   | Optional  | Functions to write workbooks and its parts like worksheets, styles or shared strings |
 
 ## Further References
 
@@ -28,4 +30,5 @@ Please see the **[main readme](https://github.com/rabanti-github/NanoXLSX/blob/m
 
 ## Changes
 
-For changes of the writer package, please see **[library change log](https://github.com/rabanti-github/NanoXLSX/blob/dev-v3/NanoXLSX.Writer/Changelog.md)** or the **[main change log](https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md)**.
+The meta package does not provide changes. Please see the **[main change log](https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md)** or the particular change logs of the listed dependencies
+

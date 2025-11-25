@@ -2,7 +2,6 @@
 
 # NanoXLSX
 
-Test
 
 ![nuget](https://img.shields.io/nuget/v/NanoXLSX.svg?maxAge=86400)
 ![license](https://img.shields.io/github/license/rabanti-github/NanoXlsx.svg)
