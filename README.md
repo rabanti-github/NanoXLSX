@@ -7,6 +7,15 @@
 ![GitHub License](https://img.shields.io/github/license/rabanti-github/NanoXLSX)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_shield)
 
+## Pre-Release v3.x
+
+The pre-release of NanoXLSX is now available as [Nuget Package](https://www.nuget.org/packages/NanoXLSX/3.0.0-rc.1), version **3.0.0-rc.1**.
+Since there are breaking changes between NanoXLSX v2.x and v3.0.0-rc1, please see the **[Migration guide](https://raw.githubusercontent.com/rabanti-github/NanoXLSX/refs/heads/dev-v3/MigrationGuide.md)**, to migrate applications from v2 to v3. Please feel free to open issues, in case of problems with the pre-release.
+
+There will be possibly further adaptions and additional pre-releases before the final release.
+
+---
+
 NanoXLSX is a small .NET library written in C#, to create and read Microsoft Excel files in the XLSX format (Microsoft Excel 2007 or newer) in an easy and native way
 
 * **Minimum of dependencies** (\*
