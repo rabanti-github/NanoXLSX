@@ -150,6 +150,7 @@ var NAVTREEINDEX7 =
 "interfaceNanoXLSX_1_1Interfaces_1_1Plugin_1_1IOptions.html":[2,0,0,1,0,0],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html":[0],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1":[0,0],
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md3":[0,1],
 "namespaceNanoXLSX.html":[1,0,0],
 "namespaceNanoXLSX_1_1Exceptions.html":[1,0,0,0],
 "namespaceNanoXLSX_1_1Interfaces.html":[1,0,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX7 =
 "structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#a69f3deb4b652198c89949397f909a0c0":[2,0,0,5,0,0,3],
 "structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#a6d135b0187d6a4bb3f2d702b55715e78":[1,0,0,5,0,0,4],
 "structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#a6d135b0187d6a4bb3f2d702b55715e78":[2,0,0,5,0,0,4],
-"structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#a6e043efe8c9150781b606d014493d976":[1,0,0,5,0,0,0],
-"structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#a6e043efe8c9150781b606d014493d976":[2,0,0,5,0,0,0]
+"structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#a6e043efe8c9150781b606d014493d976":[1,0,0,5,0,0,0]
 };

@@ -76,6 +76,7 @@ var NAVTREEINDEX0 =
 "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#aee6e8af4d30ba1c746288eeeee56eb2e":[2,0,0,0,0,0,2],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html":[0],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html#autotoc_md1":[0,0],
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html#autotoc_md3":[0,1],
 "namespaceNanoXLSX.html":[1,0,0],
 "namespaceNanoXLSX_1_1Interfaces.html":[1,0,0,0],
 "namespaceNanoXLSX_1_1Interfaces_1_1Writer.html":[1,0,0,0,0],

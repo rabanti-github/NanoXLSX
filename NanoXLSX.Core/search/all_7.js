@@ -61,5 +61,5 @@ var searchData=
   ['formatrows_58',['FormatRows',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acaabd565d8bbc714b2681f797c936313d2',1,'NanoXLSX::Worksheet']]],
   ['formula_59',['Formula',['../classNanoXLSX_1_1Shortener.html#a83a61ec5b41255df880bb5f39bab0e94',1,'NanoXLSX.Shortener.Formula(string cellFormula)'],['../classNanoXLSX_1_1Shortener.html#a904393e2761e4e5fb0c04ab3bceae39c',1,'NanoXLSX.Shortener.Formula(string cellFormula, Style style)'],['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa313a6a3d25aa041ee3dc3cbd65d4f22b',1,'NanoXLSX.Cell.Formula']]],
   ['freezesplitpanes_60',['FreezeSplitPanes',['../classNanoXLSX_1_1Worksheet.html#ad21cd1a8a489d8d3d0643c18f92855db',1,'NanoXLSX::Worksheet']]],
-  ['further_20references_61',['Further References',['..//home/runner/work/NanoXLSX/NanoXLSX/NanoXLSX.Core/README.md#autotoc_md7',1,'']]]
+  ['further_20references_61',['Further References',['..//home/runner/work/NanoXLSX/NanoXLSX/NanoXLSX.Core/README.md#autotoc_md9',1,'']]]
 ];
