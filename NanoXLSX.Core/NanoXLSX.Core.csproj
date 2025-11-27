@@ -21,9 +21,9 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageTags>Excel Office XLSX</PackageTags>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<Version>3.0.0-rc.1</Version>
-		<AssemblyVersion>3.0.0-rc.1</AssemblyVersion>
-		<FileVersion>3.0.0-rc.1</FileVersion>
+		<Version>3.0.0-rc.2</Version>
+		<AssemblyVersion>3.0.0-rc.2</AssemblyVersion>
+		<FileVersion>3.0.0-rc.2</FileVersion>
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
 	<PropertyGroup>

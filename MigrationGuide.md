@@ -73,7 +73,7 @@ The following guide lists all necessary changes, as well as changed behaviors of
 | `SheetProtectionValue.formatCells`          | `SheetProtectionValue.FormatCells`         |         |
 | `SheetProtectionValue.formatColumns`        | `SheetProtectionValue.FormatColumns`       |         |
 | `SheetProtectionValue.formatRows`           | `SheetProtectionValue.FormatRows`          |         |
-| `SheetProtectionValue.insertColumns`       | `SheetProtectionValue.InsertColumns`       |         |
+| `SheetProtectionValue.insertColumns`        | `SheetProtectionValue.InsertColumns`       |         |
 | `SheetProtectionValue.insertRows`           | `SheetProtectionValue.InsertRows`          |         |
 | `SheetProtectionValue.insertHyperlinks`     | `SheetProtectionValue.InsertHyperlinks`    |         |
 | `SheetProtectionValue.deleteColumns`        | `SheetProtectionValue.DeleteColumns`       |         |
@@ -117,7 +117,6 @@ The following guide lists all necessary changes, as well as changed behaviors of
 | `CellType.FORMULA`  | `CellType.Formula`     |          |
 | `CellType.EMPTY`    | `CellType.Empty`       |          |
 | `CellType.DEFAULT`  | `CellType.Default`     |          |
-
 
 ---
 
