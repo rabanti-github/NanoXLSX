@@ -42,7 +42,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
 
         private void AssertCellCreation<T>(T initialValue, T expectedValue, CellType expectedType, Func<T, T, bool> comparer, Style style)
         {
-            Cell actualCell = new Cell(initialValue, Cell.CellType.DEFAULT, this.cellAddress);
+            Cell actualCell = new Cell(initialValue, Cell.CellType.Default, this.cellAddress);
             if (style != null)
             {
                 actualCell.SetStyle(style);
@@ -64,7 +64,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
 
         public Cell CreateVariantCell<T>(T value, Address cellAddress, Style style = null)
         {
-            Cell givenCell = new Cell(value, CellType.DEFAULT, cellAddress);
+            Cell givenCell = new Cell(value, CellType.Default, cellAddress);
             if (style != null)
             {
                 givenCell.SetStyle(style);

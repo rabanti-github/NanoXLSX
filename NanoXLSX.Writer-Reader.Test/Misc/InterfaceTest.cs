@@ -51,7 +51,7 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
             PlainText plainText = new PlainText("test1");
             workbook.CurrentWorksheet.AddCell(plainText, "A1");
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
-            Assert.Equal(Cell.CellType.STRING, givenWorkbook.CurrentWorksheet.Cells["A1"].DataType);
+            Assert.Equal(Cell.CellType.String, givenWorkbook.CurrentWorksheet.Cells["A1"].DataType);
             Assert.Equal("test1", givenWorkbook.CurrentWorksheet.Cells["A1"].Value.ToString());
         }
 

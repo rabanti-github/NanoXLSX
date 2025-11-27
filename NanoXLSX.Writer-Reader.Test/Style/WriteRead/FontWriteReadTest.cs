@@ -44,11 +44,11 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         }
 
         [Theory(DisplayName = "Test of the 'underline' value when writing and reading a Font style")]
-        [InlineData(UnderlineValue.u_single, "test")]
-        [InlineData(UnderlineValue.u_double, 0.5f)]
-        [InlineData(UnderlineValue.doubleAccounting, true)]
-        [InlineData(UnderlineValue.singleAccounting, 42)]
-        [InlineData(UnderlineValue.none, "")]
+        [InlineData(UnderlineValue.Single, "test")]
+        [InlineData(UnderlineValue.Double, 0.5f)]
+        [InlineData(UnderlineValue.DoubleAccounting, true)]
+        [InlineData(UnderlineValue.SingleAccounting, 42)]
+        [InlineData(UnderlineValue.None, "")]
         public void UnderlineFontTest(UnderlineValue styleValue, object value)
         {
             Style style = new Style();
@@ -58,9 +58,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         }
 
         [Theory(DisplayName = "Test of the 'vertical alignment' value when writing and reading a Font style")]
-        [InlineData(VerticalTextAlignValue.subscript, "test")]
-        [InlineData(VerticalTextAlignValue.superscript, 0.5f)]
-        [InlineData(VerticalTextAlignValue.none, true)]
+        [InlineData(VerticalTextAlignValue.Subscript, "test")]
+        [InlineData(VerticalTextAlignValue.Superscript, 0.5f)]
+        [InlineData(VerticalTextAlignValue.None, true)]
         public void VerticalAlignFontTest(VerticalTextAlignValue styleValue, object value)
         {
             Style style = new Style();
@@ -152,8 +152,8 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
 
 
         [Theory(DisplayName = "Test of the 'scheme' value when writing and reading a Font style")]
-        [InlineData(SchemeValue.minor, "test")]
-        [InlineData(SchemeValue.major, 0.5f)]
+        [InlineData(SchemeValue.Minor, "test")]
+        [InlineData(SchemeValue.Major, 0.5f)]
         public void SchemeFontTest(SchemeValue styleValue, object value)
         {
             Style style = new Style();

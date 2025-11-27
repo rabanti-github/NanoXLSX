@@ -27,7 +27,8 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("A7", new DateTime(2020, 11, 10, 9, 8, 7, 0));
             cells.Add("A8", new TimeSpan(18, 15, 12));
             cells.Add("A9", null);
-            cells.Add("A10", new Cell("=A1", Cell.CellType.FORMULA, "A10"));
+            cells.Add("A10", new Cell("=A1", Cell.CellType.Formula, "A10"));
+            cells.Add("A11", 8294967296.25d); // high-range double
             Dictionary<string, string> expectedCells = new Dictionary<string, string>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", "True");
@@ -39,6 +40,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("A8", "18:15:12");
             expectedCells.Add("A9", null); // Empty remains empty
             expectedCells.Add("A10", "=A1");
+            expectedCells.Add("A11", "8294967296.25");
 
             ReaderOptions options = new ReaderOptions();
             options.GlobalEnforcingType = ReaderOptions.GlobalType.EverythingToString;
@@ -60,7 +62,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("A8", new TimeSpan(18, 15, 12));
             cells.Add("A9", null);
             cells.Add("A10", "27");
-            cells.Add("A11", new Cell("=A1", Cell.CellType.FORMULA, "A11"));
+            cells.Add("A11", new Cell("=A1", Cell.CellType.Formula, "A11"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", decimal.One);
@@ -72,7 +74,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("A8", (decimal)DataUtils.GetOATime(new TimeSpan(18, 15, 12)));
             expectedCells.Add("A9", null);
             expectedCells.Add("A10", 27m);
-            expectedCells.Add("A11", new Cell("=A1", Cell.CellType.FORMULA, "A11"));
+            expectedCells.Add("A11", new Cell("=A1", Cell.CellType.Formula, "A11"));
             ReaderOptions options = new ReaderOptions();
             options.GlobalEnforcingType = ReaderOptions.GlobalType.AllNumbersToDecimal;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
@@ -93,7 +95,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("A8", new TimeSpan(18, 15, 12));
             cells.Add("A9", null);
             cells.Add("A10", "27");
-            cells.Add("A11", new Cell("=A1", Cell.CellType.FORMULA, "A11"));
+            cells.Add("A11", new Cell("=A1", Cell.CellType.Formula, "A11"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", 1d);
@@ -105,7 +107,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("A8", DataUtils.GetOATime(new TimeSpan(18, 15, 12)));
             expectedCells.Add("A9", null);
             expectedCells.Add("A10", 27d);
-            expectedCells.Add("A11", new Cell("=A1", Cell.CellType.FORMULA, "A11"));
+            expectedCells.Add("A11", new Cell("=A1", Cell.CellType.Formula, "A11"));
             ReaderOptions options = new ReaderOptions();
             options.GlobalEnforcingType = ReaderOptions.GlobalType.AllNumbersToDouble;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
@@ -127,7 +129,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("A10", 0.49d);
             cells.Add("A11", null);
             cells.Add("A12", "28");
-            cells.Add("A13", new Cell("=A1", Cell.CellType.FORMULA, "A13"));
+            cells.Add("A13", new Cell("=A1", Cell.CellType.Formula, "A13"));
             cells.Add("A14", 8589934592L);
             cells.Add("A15", 2147483650.6d);
             cells.Add("A16", 4294967294u);
@@ -145,7 +147,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("A10", 0);
             expectedCells.Add("A11", null);
             expectedCells.Add("A12", 28);
-            expectedCells.Add("A13", new Cell("=A1", Cell.CellType.FORMULA, "A13"));
+            expectedCells.Add("A13", new Cell("=A1", Cell.CellType.Formula, "A13"));
             expectedCells.Add("A14", 8589934592L);
             expectedCells.Add("A15", 2147483650.6);
             expectedCells.Add("A16", 4294967294u);
@@ -164,14 +166,14 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("A3", 22.2d);
             cells.Add("A4", null);
             cells.Add("A5", "");
-            cells.Add("A6", new Cell("=A1", Cell.CellType.FORMULA, "A6"));
+            cells.Add("A6", new Cell("=A1", Cell.CellType.Formula, "A6"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", "test");
             expectedCells.Add("A2", true);
             expectedCells.Add("A3", 22.2f); // Import will go to the smallest float unit (float 32 / single)
             expectedCells.Add("A4", "");
             expectedCells.Add("A5", "");
-            expectedCells.Add("A6", new Cell("=A1", Cell.CellType.FORMULA, "A6"));
+            expectedCells.Add("A6", new Cell("=A1", Cell.CellType.Formula, "A6"));
             ReaderOptions options = new ReaderOptions();
             options.EnforceEmptyValuesAsString = true;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
@@ -183,15 +185,15 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             Dictionary<string, Object> cells = new Dictionary<string, object>();
             cells.Add("A1", 22);
             cells.Add("A2", true);
-            cells.Add("A3", new Cell("=A1", Cell.CellType.FORMULA, "A3"));
+            cells.Add("A3", new Cell("=A1", Cell.CellType.Formula, "A3"));
             cells.Add("A4", 22);
             cells.Add("A5", true);
             cells.Add("A6", 22.5d);
-            cells.Add("A7", new Cell("=A1", Cell.CellType.FORMULA, "A7"));
+            cells.Add("A7", new Cell("=A1", Cell.CellType.Formula, "A7"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", true);
-            expectedCells.Add("A3", new Cell("=A1", Cell.CellType.FORMULA, "A3"));
+            expectedCells.Add("A3", new Cell("=A1", Cell.CellType.Formula, "A3"));
             expectedCells.Add("A4", "22");
             expectedCells.Add("A5", "True");
             expectedCells.Add("A6", "22.5");
@@ -213,14 +215,14 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("A3", date);
             cells.Add("A4", time);
             cells.Add("A5", 22.5f);
-            cells.Add("A6", new Cell("=A1", Cell.CellType.FORMULA, "A6"));
+            cells.Add("A6", new Cell("=A1", Cell.CellType.Formula, "A6"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", true);
             expectedCells.Add("A3", DataUtils.GetOADateTime(date));
             expectedCells.Add("A4", DataUtils.GetOATime(time));
             expectedCells.Add("A5", 22.5f);
-            expectedCells.Add("A6", new Cell("=A1", Cell.CellType.FORMULA, "A6"));
+            expectedCells.Add("A6", new Cell("=A1", Cell.CellType.Formula, "A6"));
             ReaderOptions options = new ReaderOptions();
             options.EnforceDateTimesAsNumbers = true;
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
@@ -241,7 +243,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("B1", date);
             cells.Add("B2", time);
             cells.Add("B3", givenLowNumber);
-            cells.Add("B4", new Cell("=A1", Cell.CellType.FORMULA, "B4"));
+            cells.Add("B4", new Cell("=A1", Cell.CellType.Formula, "B4"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", true);
@@ -250,7 +252,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("B1", DataUtils.GetOADateTime(date));
             expectedCells.Add("B2", DataUtils.GetOATime(time));
             expectedCells.Add("B3", expectedLowNumber);
-            expectedCells.Add("B4", new Cell("=A1", Cell.CellType.FORMULA, "B4"));
+            expectedCells.Add("B4", new Cell("=A1", Cell.CellType.Formula, "B4"));
             ReaderOptions options = new ReaderOptions();
             options.EnforceDateTimesAsNumbers = true;
             options.AddEnforcedColumn(1, columnType);
@@ -274,10 +276,10 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("B4", time);
             cells.Add("B5", date);
             cells.Add("B6", null);
-            cells.Add("B7", new Cell("=A1", Cell.CellType.FORMULA, "B7"));
+            cells.Add("B7", new Cell("=A1", Cell.CellType.Formula, "B7"));
             cells.Add("C1", "2");
             cells.Add("C2", new TimeSpan(12, 14, 16));
-            cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
+            cells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", "21");
@@ -288,10 +290,10 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("B4", DataUtils.GetOATime(time));
             expectedCells.Add("B5", DataUtils.GetOADateTime(date));
             expectedCells.Add("B6", null);
-            expectedCells.Add("B7", new Cell("=A1", Cell.CellType.FORMULA, "B7"));
+            expectedCells.Add("B7", new Cell("=A1", Cell.CellType.Formula, "B7"));
             expectedCells.Add("C1", "2");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
-            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
+            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
             ReaderOptions options = new ReaderOptions();
             if (column is string)
             {
@@ -320,7 +322,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("B3", time);
             cells.Add("B4", date);
             cells.Add("B5", null);
-            cells.Add("B6", new Cell("=A1", Cell.CellType.FORMULA, "B6"));
+            cells.Add("B6", new Cell("=A1", Cell.CellType.Formula, "B6"));
             cells.Add("B7", "true");
             cells.Add("B8", "false");
             cells.Add("B9", true);
@@ -328,7 +330,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("B11", "XYZ");
             cells.Add("C1", "2");
             cells.Add("C2", new TimeSpan(12, 14, 16));
-            cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
+            cells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 22);
             expectedCells.Add("A2", "21");
@@ -338,7 +340,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("B3", DataUtils.GetOATime(time));
             expectedCells.Add("B4", DataUtils.GetOADateTime(date));
             expectedCells.Add("B5", null);
-            expectedCells.Add("B6", new Cell("=A1", Cell.CellType.FORMULA, "B6"));
+            expectedCells.Add("B6", new Cell("=A1", Cell.CellType.Formula, "B6"));
             expectedCells.Add("B7", 1);
             expectedCells.Add("B8", 0);
             expectedCells.Add("B9", 1);
@@ -346,7 +348,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("B11", "XYZ");
             expectedCells.Add("C1", "2");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
-            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
+            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
             ReaderOptions options = new ReaderOptions();
             if (column is string)
             {
@@ -425,20 +427,20 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 exOb5 = float.MaxValue;
             }
             Dictionary<string, Object> cells = new Dictionary<string, object>();
-            Cell a1 = new Cell(1, Cell.CellType.NUMBER, "A1");
-            Cell b1 = new Cell(ob1, Cell.CellType.NUMBER, "B1");
+            Cell a1 = new Cell(1, Cell.CellType.Number, "A1");
+            Cell b1 = new Cell(ob1, Cell.CellType.Number, "B1");
             b1.SetStyle(BasicStyles.DateFormat);
-            Cell b2 = new Cell(ob2, Cell.CellType.NUMBER, "B2");
+            Cell b2 = new Cell(ob2, Cell.CellType.Number, "B2");
             b1.SetStyle(BasicStyles.TimeFormat);
-            Cell b3 = new Cell(ob3, Cell.CellType.STRING, "B3");
+            Cell b3 = new Cell(ob3, Cell.CellType.String, "B3");
             b1.SetStyle(BasicStyles.DateFormat);
-            Cell b4 = new Cell(ob4, Cell.CellType.STRING, "B4");
+            Cell b4 = new Cell(ob4, Cell.CellType.String, "B4");
             b1.SetStyle(BasicStyles.DateFormat);
-            Cell b5 = new Cell(ob5, Cell.CellType.NUMBER, "B5");
+            Cell b5 = new Cell(ob5, Cell.CellType.Number, "B5");
             b1.SetStyle(BasicStyles.DateFormat);
-            Cell b6 = new Cell(ob6, Cell.CellType.STRING, "B6");
+            Cell b6 = new Cell(ob6, Cell.CellType.String, "B6");
             b5.SetStyle(BasicStyles.DateFormat);
-            Cell c1 = new Cell(10, Cell.CellType.NUMBER, "C1");
+            Cell c1 = new Cell(10, Cell.CellType.Number, "C1");
             cells.Add("A1", a1);
             cells.Add("B1", b1);
             cells.Add("B2", b2);
@@ -448,14 +450,14 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("B6", b6);
             cells.Add("C1", c1);
             Dictionary<string, Cell> expectedCells = new Dictionary<string, Cell>();
-            Cell exA1 = new Cell(1, Cell.CellType.NUMBER, "A1");
-            Cell exB1 = new Cell(exOb1, Cell.CellType.NUMBER, "B1");
-            Cell exB2 = new Cell(exOb2, Cell.CellType.NUMBER, "B2");
-            Cell exB3 = new Cell(ob3, Cell.CellType.STRING, "B3");
-            Cell exB4 = new Cell(exOb4, Cell.CellType.STRING, "B4");
-            Cell exB5 = new Cell(exOb5, Cell.CellType.NUMBER, "B5");
-            Cell exB6 = new Cell(ob6, Cell.CellType.STRING, "B6");
-            Cell exC1 = new Cell(10, Cell.CellType.NUMBER, "C1");
+            Cell exA1 = new Cell(1, Cell.CellType.Number, "A1");
+            Cell exB1 = new Cell(exOb1, Cell.CellType.Number, "B1");
+            Cell exB2 = new Cell(exOb2, Cell.CellType.Number, "B2");
+            Cell exB3 = new Cell(ob3, Cell.CellType.String, "B3");
+            Cell exB4 = new Cell(exOb4, Cell.CellType.String, "B4");
+            Cell exB5 = new Cell(exOb5, Cell.CellType.Number, "B5");
+            Cell exB6 = new Cell(ob6, Cell.CellType.String, "B6");
+            Cell exC1 = new Cell(10, Cell.CellType.Number, "C1");
             expectedCells.Add("A1", exA1);
             expectedCells.Add("B1", exB1);
             expectedCells.Add("B2", exB2);
@@ -498,13 +500,13 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("B8", "Test");
             cells.Add("B9", 1.0d);
             cells.Add("B10", null);
-            cells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
+            cells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
             cells.Add("B12", 2);
             cells.Add("B13", "0");
             cells.Add("B14", "");
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
-            cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
+            cells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 1);
             expectedCells.Add("A2", "21");
@@ -519,13 +521,13 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("B8", "Test");
             expectedCells.Add("B9", true);
             expectedCells.Add("B10", null);
-            expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
+            expectedCells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
             expectedCells.Add("B12", 2);
             expectedCells.Add("B13", false);
             expectedCells.Add("B14", "");
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
-            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
+            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
             ReaderOptions options = new ReaderOptions();
             if (column is string)
             {
@@ -559,7 +561,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("B8", -10);
             cells.Add("B9", 1.111d);
             cells.Add("B10", null);
-            cells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
+            cells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
             cells.Add("B12", 2147483650);
             cells.Add("B13", 9223372036854775806);
             cells.Add("B14", 18446744073709551614);
@@ -570,7 +572,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("B19", (byte)17);
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
-            cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
+            cells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 1);
             expectedCells.Add("A2", "21");
@@ -596,7 +598,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("B19", "17");
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
-            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
+            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
             ReaderOptions options = new ReaderOptions();
             if (column is string)
             {
@@ -630,12 +632,12 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("B8", -10);
             cells.Add("B9", 44494.5f);
             cells.Add("B10", null);
-            cells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
+            cells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
             cells.Add("B12", 2147483650);
             cells.Add("B13", 2958466);
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
-            cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
+            cells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 1);
             expectedCells.Add("A2", "21");
@@ -650,12 +652,12 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("B8", -10);
             expectedCells.Add("B9", new DateTime(2021, 10, 25, 12, 0, 0, 0));
             expectedCells.Add("B10", null);
-            expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
+            expectedCells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
             expectedCells.Add("B12", 2147483650);
             expectedCells.Add("B13", 2958466); // Exceeds year 9999
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
-            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
+            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
             ReaderOptions options = new ReaderOptions();
             if (column is string)
             {
@@ -709,18 +711,18 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         public void EnforcingColumnAsDateTest2(object column, ReaderOptions.ColumnType type)
         {
             Dictionary<string, Object> cells = new Dictionary<string, object>();
-            Cell a1 = new Cell(1, Cell.CellType.NUMBER, "A1");
-            Cell b1 = new Cell(-10, Cell.CellType.NUMBER, "B1");
+            Cell a1 = new Cell(1, Cell.CellType.Number, "A1");
+            Cell b1 = new Cell(-10, Cell.CellType.Number, "B1");
             b1.SetStyle(BasicStyles.DateFormat);
-            Cell b2 = new Cell(-5.5f, Cell.CellType.NUMBER, "B2");
+            Cell b2 = new Cell(-5.5f, Cell.CellType.Number, "B2");
             b2.SetStyle(BasicStyles.TimeFormat);
-            Cell b3 = new Cell("5-7", Cell.CellType.STRING, "B3");
+            Cell b3 = new Cell("5-7", Cell.CellType.String, "B3");
             b3.SetStyle(BasicStyles.DateFormat);
-            Cell b4 = new Cell("-1", Cell.CellType.STRING, "B4");
+            Cell b4 = new Cell("-1", Cell.CellType.String, "B4");
             b4.SetStyle(BasicStyles.TimeFormat);
-            Cell b5 = new Cell("1870-06-06 12:12:00", Cell.CellType.STRING, "B5");
+            Cell b5 = new Cell("1870-06-06 12:12:00", Cell.CellType.String, "B5");
             b5.SetStyle(BasicStyles.DateFormat);
-            Cell c1 = new Cell(10, Cell.CellType.NUMBER, "C1");
+            Cell c1 = new Cell(10, Cell.CellType.Number, "C1");
             cells.Add("A1", a1);
             cells.Add("B1", b1);
             cells.Add("B2", b2);
@@ -729,13 +731,13 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("B5", b5);
             cells.Add("C1", c1);
             Dictionary<string, Cell> expectedCells = new Dictionary<string, Cell>();
-            Cell exA1 = new Cell(1, Cell.CellType.NUMBER, "A1");
-            Cell exB1 = new Cell(-10, Cell.CellType.NUMBER, "B1");
-            Cell exB2 = new Cell(-5.5f, Cell.CellType.NUMBER, "B2");
-            Cell exB3 = new Cell("5-7", Cell.CellType.STRING, "B3");
-            Cell exB4 = new Cell("-1", Cell.CellType.STRING, "B4");
-            Cell exB5 = new Cell("1870-06-06 12:12:00", Cell.CellType.STRING, "B5");
-            Cell exC1 = new Cell(10, Cell.CellType.NUMBER, "C1");
+            Cell exA1 = new Cell(1, Cell.CellType.Number, "A1");
+            Cell exB1 = new Cell(-10, Cell.CellType.Number, "B1");
+            Cell exB2 = new Cell(-5.5f, Cell.CellType.Number, "B2");
+            Cell exB3 = new Cell("5-7", Cell.CellType.String, "B3");
+            Cell exB4 = new Cell("-1", Cell.CellType.String, "B4");
+            Cell exB5 = new Cell("1870-06-06 12:12:00", Cell.CellType.String, "B5");
+            Cell exC1 = new Cell(10, Cell.CellType.Number, "C1");
             expectedCells.Add("A1", exA1);
             expectedCells.Add("B1", exB1);
             expectedCells.Add("B2", exB2);
@@ -776,10 +778,10 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("B8", -10);
             cells.Add("B9", 44494.5f);
             cells.Add("B10", null);
-            cells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
+            cells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
             cells.Add("C1", "0");
             cells.Add("C2", new TimeSpan(12, 14, 16));
-            cells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
+            cells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
             expectedCells.Add("A1", 1);
             expectedCells.Add("A2", "21");
@@ -794,10 +796,10 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             expectedCells.Add("B8", -10);
             expectedCells.Add("B9", new TimeSpan(44494, 12, 0, 0));
             expectedCells.Add("B10", null);
-            expectedCells.Add("B11", new Cell("=A1", Cell.CellType.FORMULA, "B11"));
+            expectedCells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
             expectedCells.Add("C1", "0");
             expectedCells.Add("C2", new TimeSpan(12, 14, 16));
-            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.FORMULA, "C3"));
+            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
             ReaderOptions options = new ReaderOptions();
             if (column is string)
             {
@@ -1138,7 +1140,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 D expectedValue = expectedCells[address];
                 if (expectedValue == null)
                 {
-                    Assert.Equal(Cell.CellType.EMPTY, givenCell.DataType);
+                    Assert.Equal(Cell.CellType.Empty, givenCell.DataType);
                 }
                 else if (expectedValue is Cell && (givenCell != null))
                 {
@@ -1147,7 +1149,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 //  else if (expectedValue is Cell)
                 //  {
                 //      assertionAction.Invoke((D)(expectedValue as Cell).Value, (D)givenCell.Value);
-                //      Assert.Equal(Cell.CellType.FORMULA, givenCell.DataType);
+                //      Assert.Equal(Cell.CellType.Formula, givenCell.DataType);
                 //  }
                 else
                 {

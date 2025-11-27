@@ -18,11 +18,11 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             // Cell A1 contains a border style with unknown line type
             // This causes neither in Excel a crash, nor should the library crash
             Cell cell = getCell("unknown_style_enums.xlsx");
-            Assert.Equal(StyleValue.none, cell.CellStyle.CurrentBorder.TopStyle);
-            Assert.Equal(StyleValue.none, cell.CellStyle.CurrentBorder.BottomStyle);
-            Assert.Equal(StyleValue.none, cell.CellStyle.CurrentBorder.LeftStyle);
-            Assert.Equal(StyleValue.none, cell.CellStyle.CurrentBorder.RightStyle);
-            Assert.Equal(StyleValue.none, cell.CellStyle.CurrentBorder.DiagonalStyle);
+            Assert.Equal(StyleValue.None, cell.CellStyle.CurrentBorder.TopStyle);
+            Assert.Equal(StyleValue.None, cell.CellStyle.CurrentBorder.BottomStyle);
+            Assert.Equal(StyleValue.None, cell.CellStyle.CurrentBorder.LeftStyle);
+            Assert.Equal(StyleValue.None, cell.CellStyle.CurrentBorder.RightStyle);
+            Assert.Equal(StyleValue.None, cell.CellStyle.CurrentBorder.DiagonalStyle);
         }
 
         [Fact(DisplayName = "Test of the fallback behavior on unexpected pattern fill types")]
@@ -31,7 +31,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             // The file contains a pattern fill definition with an unknown value
             // This causes neither in Excel a crash, nor should the library crash
             Cell cell = getCell("unknown_style_enums.xlsx");
-            Assert.Equal(PatternValue.none, cell.CellStyle.CurrentFill.PatternFill);
+            Assert.Equal(PatternValue.None, cell.CellStyle.CurrentFill.PatternFill);
         }
 
         [Fact(DisplayName = "Test of the fallback behavior on unexpected vertical align font types")]
@@ -40,7 +40,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             // The file contains a font definition with an unknown vertical align value
             // This causes an auto-fixing action in Excel (but not a crash). The library will auto-fix this too
             Cell cell = getCell("unknown_style_enums.xlsx");
-            Assert.Equal(VerticalTextAlignValue.none, cell.CellStyle.CurrentFont.VerticalAlign);
+            Assert.Equal(VerticalTextAlignValue.None, cell.CellStyle.CurrentFont.VerticalAlign);
         }
 
 
@@ -50,7 +50,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             // The file contains a CellXF definition with an unknown horizontal align value
             // This causes neither in Excel a crash, nor should the library crash
             Cell cell = getCell("unknown_style_enums.xlsx");
-            Assert.Equal(HorizontalAlignValue.none, cell.CellStyle.CurrentCellXf.HorizontalAlign);
+            Assert.Equal(HorizontalAlignValue.None, cell.CellStyle.CurrentCellXf.HorizontalAlign);
         }
 
         [Fact(DisplayName = "Test of the fallback behavior on unexpected vertical align cellXF types")]
@@ -59,7 +59,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             // The file contains a CellXF definition with an unknown vertical align value
             // This causes neither in Excel a crash, nor should the library crash
             Cell cell = getCell("unknown_style_enums.xlsx");
-            Assert.Equal(VerticalAlignValue.none, cell.CellStyle.CurrentCellXf.VerticalAlign);
+            Assert.Equal(VerticalAlignValue.None, cell.CellStyle.CurrentCellXf.VerticalAlign);
         }
 
         [Fact(DisplayName = "Test of the fallback behavior on missing ID references in the CellXF section")]

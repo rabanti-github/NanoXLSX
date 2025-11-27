@@ -18,7 +18,6 @@ namespace NanoXLSX.Internal.Readers
     using NanoXLSX.Utils;
     using static NanoXLSX.Styles.Border;
     using static NanoXLSX.Styles.CellXf;
-    using static NanoXLSX.Styles.Fill;
     using static NanoXLSX.Styles.Font;
     using static NanoXLSX.Styles.NumberFormat;
     using static NanoXLSX.Themes.Theme;
@@ -146,7 +145,7 @@ namespace NanoXLSX.Internal.Readers
                     int id = ParserUtils.ParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId")); // Default will (justified) throw an exception
                     string code = ReaderUtils.GetAttribute(childNode, "formatCode", string.Empty);
                     numberFormat.CustomFormatID = id;
-                    numberFormat.Number = FormatNumber.custom;
+                    numberFormat.Number = FormatNumber.Custom;
                     numberFormat.InternalID = id;
                     numberFormat.CustomFormatCode = code;
                     this.styleReaderContainer.AddStyleComponent(numberFormat);
@@ -226,17 +225,9 @@ namespace NanoXLSX.Internal.Readers
             string value = ReaderUtils.GetAttribute(innerNode, "style");
             if (value != null)
             {
-                if (value.Equals("double", StringComparison.OrdinalIgnoreCase))
-                {
-                    return StyleValue.s_double; // special handling, since double is not a valid enum value
-                }
-                StyleValue styleType;
-                if (Enum.TryParse(value, out styleType))
-                {
-                    return styleType;
-                }
+                return Border.GetStyleEnum(value);
             }
-            return StyleValue.none;
+            return StyleValue.None;
         }
 
         /// <summary>
@@ -252,12 +243,8 @@ namespace NanoXLSX.Internal.Readers
                 XmlNode innerNode = ReaderUtils.GetChildNode(fill, "patternFill");
                 if (innerNode != null)
                 {
-                    string pattern = ReaderUtils.GetAttribute(innerNode, "patternType");
-                    PatternValue patternValue;
-                    if (Enum.TryParse<PatternValue>(pattern, out patternValue))
-                    {
-                        fillStyle.PatternFill = patternValue;
-                    }
+                    string pattern = ReaderUtils.GetAttribute(innerNode, "patternType", string.Empty);
+                    fillStyle.PatternFill = Fill.GetPatternEnum(pattern);
                     if (ReaderUtils.GetAttributeOfChild(innerNode, "fgColor", "rgb", out attribute))
                     {
                         if (!string.IsNullOrEmpty(attribute))
@@ -313,27 +300,18 @@ namespace NanoXLSX.Internal.Readers
                 }
                 if (ReaderUtils.GetAttributeOfChild(font, "u", "val", out attribute))
                 {
-                    fontStyle.Underline = UnderlineValue.u_single; // default
-                    switch (attribute)
+                    if (attribute == null)
                     {
-                        case "double":
-                            fontStyle.Underline = UnderlineValue.u_double;
-                            break;
-                        case "singleAccounting":
-                            fontStyle.Underline = UnderlineValue.singleAccounting;
-                            break;
-                        case "doubleAccounting":
-                            fontStyle.Underline = UnderlineValue.doubleAccounting;
-                            break;
+                        fontStyle.Underline = Font.UnderlineValue.Single; // Default value
+                    }
+                    else
+                    {
+                        fontStyle.Underline = Font.GetUnderlineEnum(attribute);
                     }
                 }
                 if (ReaderUtils.GetAttributeOfChild(font, "vertAlign", "val", out attribute))
                 {
-                    VerticalTextAlignValue vertAlignValue;
-                    if (Enum.TryParse<VerticalTextAlignValue>(attribute, out vertAlignValue))
-                    {
-                        fontStyle.VerticalAlign = vertAlignValue;
-                    }
+                    fontStyle.VerticalAlign = Font.GetVerticalTextAlignEnum(attribute);
                 }
                 if (ReaderUtils.GetAttributeOfChild(font, "sz", "val", out attribute))
                 {
@@ -453,10 +431,10 @@ namespace NanoXLSX.Internal.Readers
                     switch (attribute)
                     {
                         case "major":
-                            fontStyle.Scheme = SchemeValue.major;
+                            fontStyle.Scheme = SchemeValue.Major;
                             break;
                         case "minor":
-                            fontStyle.Scheme = SchemeValue.minor;
+                            fontStyle.Scheme = SchemeValue.Minor;
                             break;
                     }
                 }
@@ -558,26 +536,18 @@ namespace NanoXLSX.Internal.Readers
                             int value = ParserUtils.ParseBinaryBool(attribute);
                             if (value == 1)
                             {
-                                cellXfStyle.Alignment = TextBreakValue.shrinkToFit;
+                                cellXfStyle.Alignment = TextBreakValue.ShrinkToFit;
                             }
                         }
                         attribute = ReaderUtils.GetAttribute(alignmentNode, "wrapText");
                         if (attribute != null && attribute == "1")
                         {
-                            cellXfStyle.Alignment = TextBreakValue.wrapText;
+                            cellXfStyle.Alignment = TextBreakValue.WrapText;
                         }
-                        attribute = ReaderUtils.GetAttribute(alignmentNode, "horizontal");
-                        HorizontalAlignValue horizontalAlignValue;
-                        if (Enum.TryParse<HorizontalAlignValue>(attribute, out horizontalAlignValue))
-                        {
-                            cellXfStyle.HorizontalAlign = horizontalAlignValue;
-                        }
-                        attribute = ReaderUtils.GetAttribute(alignmentNode, "vertical");
-                        VerticalAlignValue verticalAlignValue;
-                        if (Enum.TryParse<VerticalAlignValue>(attribute, out verticalAlignValue))
-                        {
-                            cellXfStyle.VerticalAlign = verticalAlignValue;
-                        }
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "horizontal", string.Empty);
+                        cellXfStyle.HorizontalAlign = CellXf.GetHorizontalAlignEnum(attribute);
+                        attribute = ReaderUtils.GetAttribute(alignmentNode, "vertical", string.Empty);
+                        cellXfStyle.VerticalAlign = CellXf.GetVerticalAlignEnum(attribute);
                         attribute = ReaderUtils.GetAttribute(alignmentNode, "indent");
                         if (attribute != null)
                         {

@@ -316,25 +316,25 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             foreach (string address in cells.Keys)
             {
                 Cell givenCell = givenWorksheet.GetCell(new Address(address));
-                Assert.Equal(Cell.CellType.FORMULA, givenCell.DataType);
+                Assert.Equal(Cell.CellType.Formula, givenCell.DataType);
                 Assert.Equal(cells[address], givenCell.Value);
             }
         }
 
         [Theory(DisplayName = "Test of the reader functionality on invalid / unexpected values")]
-        [InlineData("A1", Cell.CellType.STRING, "Test")]
-        [InlineData("B1", Cell.CellType.STRING, "x")]
-        [InlineData("C1", Cell.CellType.NUMBER, -1.8538541667)]
-        [InlineData("D1", Cell.CellType.NUMBER, 2)]
-        [InlineData("E1", Cell.CellType.STRING, "x")]
-        [InlineData("F1", Cell.CellType.STRING, "1")] // Reference 1 is casted to string '1'
-        [InlineData("G1", Cell.CellType.NUMBER, -1.5f)]
-        [InlineData("H1", Cell.CellType.STRING, "y")]
-        [InlineData("I1", Cell.CellType.BOOL, true)]
-        [InlineData("J1", Cell.CellType.BOOL, false)]
-        [InlineData("K1", Cell.CellType.STRING, "z")]
-        [InlineData("L1", Cell.CellType.STRING, "z")]
-        [InlineData("M1", Cell.CellType.STRING, "a")]
+        [InlineData("A1", Cell.CellType.String, "Test")]
+        [InlineData("B1", Cell.CellType.String, "x")]
+        [InlineData("C1", Cell.CellType.Number, -1.8538541667)]
+        [InlineData("D1", Cell.CellType.Number, 2)]
+        [InlineData("E1", Cell.CellType.String, "x")]
+        [InlineData("F1", Cell.CellType.String, "1")] // Reference 1 is casted to string '1'
+        [InlineData("G1", Cell.CellType.Number, -1.5f)]
+        [InlineData("H1", Cell.CellType.String, "y")]
+        [InlineData("I1", Cell.CellType.Bool, true)]
+        [InlineData("J1", Cell.CellType.Bool, false)]
+        [InlineData("K1", Cell.CellType.String, "z")]
+        [InlineData("L1", Cell.CellType.String, "z")]
+        [InlineData("M1", Cell.CellType.String, "a")]
         public void ReadInvalidDataTest(string cellAddress, Cell.CellType expectedType, object expectedValue)
         {
             // Note: Cell A1 is a valid string
@@ -460,10 +460,10 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             Workbook workbook = WorkbookReader.Load(stream);
             Worksheet worksheet = workbook.CurrentWorksheet;
 
-            Assert.Equal(Cell.CellType.STRING, worksheet.Cells["A1"].DataType);
+            Assert.Equal(Cell.CellType.String, worksheet.Cells["A1"].DataType);
             Assert.Equal("InlineString", worksheet.Cells["A1"].Value);
 
-            Assert.Equal(Cell.CellType.STRING, worksheet.Cells["B1"].DataType);
+            Assert.Equal(Cell.CellType.String, worksheet.Cells["B1"].DataType);
             Assert.Equal("SharedString", worksheet.Cells["B1"].Value);
         }
 
@@ -485,7 +485,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
 
                 if (value == null)
                 {
-                    Assert.Equal(Cell.CellType.EMPTY, givenCell.DataType);
+                    Assert.Equal(Cell.CellType.Empty, givenCell.DataType);
                 }
                 else
                 {

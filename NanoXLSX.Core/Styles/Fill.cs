@@ -28,7 +28,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default pattern
         /// </summary>
-        public static readonly PatternValue DefaultPatternFill = PatternValue.none;
+        public static readonly PatternValue DefaultPatternFill = PatternValue.None;
 
         #endregion
 
@@ -39,9 +39,9 @@ namespace NanoXLSX.Styles
         public enum FillType
         {
             /// <summary>Color defines a pattern color </summary>
-            patternColor,
+            PatternColor,
             /// <summary>Color defines a solid fill color </summary>
-            fillColor,
+            FillColor,
         }
         /// <summary>
         /// Enum for the pattern values, used by the <see cref="Fill"/> class
@@ -52,19 +52,19 @@ namespace NanoXLSX.Styles
             /// No pattern (default)
             /// </summary>
             /// \remark <remarks>The value none will lead to a invalidation of the foreground or background color values</remarks>
-            none,
+            None,
             /// <summary>Solid fill (for colors)</summary>
-            solid,
+            Solid,
             /// <summary>Dark gray fill</summary>
-            darkGray,
+            DarkGray,
             /// <summary>Medium gray fill</summary>
-            mediumGray,
+            MediumGray,
             /// <summary>Light gray fill</summary>
-            lightGray,
+            LightGray,
             /// <summary>6.25% gray fill</summary>
-            gray0625,
+            Gray0625,
             /// <summary>12.5% gray fill</summary>
-            gray125,
+            Gray125,
         }
         #endregion
 
@@ -77,8 +77,8 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Gets or sets the background color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF. If set, the value will be cast to upper case
         /// </summary>
-        /// \remark <remarks>If a background color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.none">PatternValue.none</see>, 
-        /// the PatternFill property will be automatically set to <see cref="PatternValue.solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
+        /// \remark <remarks>If a background color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.None">PatternValue.none</see>, 
+        /// the PatternFill property will be automatically set to <see cref="PatternValue.Solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
         [Append]
         public string BackgroundColor
         {
@@ -87,17 +87,17 @@ namespace NanoXLSX.Styles
             {
                 Validators.ValidateColor(value, true);
                 backgroundColor = ParserUtils.ToUpper(value);
-                if (PatternFill == PatternValue.none)
+                if (PatternFill == PatternValue.None)
                 {
-                    PatternFill = PatternValue.solid;
+                    PatternFill = PatternValue.Solid;
                 }
             }
         }
         /// <summary>
         /// Gets or sets the foreground color of the fill. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF. If set, the value will be bast to upper case
         /// </summary>
-        /// \remark <remarks>If a foreground color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.none">PatternValue.none</see>, 
-        /// the PatternFill property will be automatically set to <see cref="PatternValue.solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
+        /// \remark <remarks>If a foreground color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.None">PatternValue.none</see>, 
+        /// the PatternFill property will be automatically set to <see cref="PatternValue.Solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
         [Append]
         public string ForegroundColor
         {
@@ -106,9 +106,9 @@ namespace NanoXLSX.Styles
             {
                 Validators.ValidateColor(value, true);
                 foregroundColor = ParserUtils.ToUpper(value);
-                if (PatternFill == PatternValue.none)
+                if (PatternFill == PatternValue.None)
                 {
-                    PatternFill = PatternValue.solid;
+                    PatternFill = PatternValue.Solid;
                 }
             }
         }
@@ -145,7 +145,7 @@ namespace NanoXLSX.Styles
             BackgroundColor = background;
             ForegroundColor = foreground;
             IndexedColor = DefaultIndexedColor;
-            PatternFill = PatternValue.solid;
+            PatternFill = PatternValue.Solid;
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace NanoXLSX.Styles
         /// <param name="fillType">Fill type (fill or pattern)</param>
         public Fill(string value, FillType fillType)
         {
-            if (fillType == FillType.fillColor)
+            if (fillType == FillType.FillColor)
             {
                 backgroundColor = DefaultColor;
                 ForegroundColor = value;
@@ -166,7 +166,7 @@ namespace NanoXLSX.Styles
                 foregroundColor = DefaultColor;
             }
             IndexedColor = DefaultIndexedColor;
-            PatternFill = PatternValue.solid;
+            PatternFill = PatternValue.Solid;
         }
         #endregion
 
@@ -254,7 +254,7 @@ namespace NanoXLSX.Styles
         /// <param name="fillType">fill type (fill or pattern)</param>
         public void SetColor(string value, FillType fillType)
         {
-            if (fillType == FillType.fillColor)
+            if (fillType == FillType.FillColor)
             {
                 backgroundColor = DefaultColor;
                 ForegroundColor = value;
@@ -264,7 +264,7 @@ namespace NanoXLSX.Styles
                 BackgroundColor = value;
                 foregroundColor = DefaultColor;
             }
-            PatternFill = PatternValue.solid;
+            PatternFill = PatternValue.Solid;
         }
         #endregion
 
@@ -279,22 +279,22 @@ namespace NanoXLSX.Styles
             string output;
             switch (pattern)
             {
-                case PatternValue.solid:
+                case PatternValue.Solid:
                     output = "solid";
                     break;
-                case PatternValue.darkGray:
+                case PatternValue.DarkGray:
                     output = "darkGray";
                     break;
-                case PatternValue.mediumGray:
+                case PatternValue.MediumGray:
                     output = "mediumGray";
                     break;
-                case PatternValue.lightGray:
+                case PatternValue.LightGray:
                     output = "lightGray";
                     break;
-                case PatternValue.gray0625:
+                case PatternValue.Gray0625:
                     output = "gray0625";
                     break;
-                case PatternValue.gray125:
+                case PatternValue.Gray125:
                     output = "gray125";
                     break;
                 default:
@@ -304,6 +304,24 @@ namespace NanoXLSX.Styles
             return output;
         }
 
+        /// <summary>
+        /// Converts a string to its corresponding PatternValue enum
+        /// </summary>
+        internal static PatternValue GetPatternEnum(string name)
+        {
+            switch (name)
+            {
+                case "none": return PatternValue.None;
+                case "solid": return PatternValue.Solid;
+                case "darkGray": return PatternValue.DarkGray;
+                case "mediumGray": return PatternValue.MediumGray;
+                case "lightGray": return PatternValue.LightGray;
+                case "gray0625": return PatternValue.Gray0625;
+                case "gray125": return PatternValue.Gray125;
+                default:
+                    return PatternValue.None;
+            }
+        }
 
         #endregion
 

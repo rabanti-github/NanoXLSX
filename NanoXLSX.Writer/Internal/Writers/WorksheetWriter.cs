@@ -5,10 +5,6 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
@@ -16,6 +12,10 @@ using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using static NanoXLSX.Internal.Enums.WriterPassword;
 
 namespace NanoXLSX.Internal.Writers
@@ -626,7 +626,7 @@ namespace NanoXLSX.Internal.Writers
                 {
                     styleDef = XmlAttribute.CreateAttribute("s", ParserUtils.ToString(item.CellStyle.InternalID.Value));
                 }
-                if (item.DataType == Cell.CellType.BOOL)
+                if (item.DataType == Cell.CellType.Bool)
                 {
                     typeDef = XmlAttribute.CreateAttribute("t", "b");
                     if ((bool)item.Value) { valueDef = "1"; }
@@ -634,7 +634,7 @@ namespace NanoXLSX.Internal.Writers
 
                 }
                 // Number casting
-                else if (item.DataType == Cell.CellType.NUMBER)
+                else if (item.DataType == Cell.CellType.Number)
                 {
                     typeDef = XmlAttribute.CreateAttribute("t", "n");
                     Type t = item.Value.GetType();
@@ -652,13 +652,13 @@ namespace NanoXLSX.Internal.Writers
                     else if (t == typeof(ushort)) { valueDef = ParserUtils.ToString((ushort)item.Value); }
                 }
                 // Date parsing
-                else if (item.DataType == Cell.CellType.DATE)
+                else if (item.DataType == Cell.CellType.Date)
                 {
                     DateTime date = (DateTime)item.Value;
                     valueDef = DataUtils.GetOADateTimeString(date);
                 }
                 // Time parsing
-                else if (item.DataType == Cell.CellType.TIME)
+                else if (item.DataType == Cell.CellType.Time)
                 {
                     TimeSpan time = (TimeSpan)item.Value;
                     valueDef = DataUtils.GetOATimeString(time);
@@ -674,7 +674,7 @@ namespace NanoXLSX.Internal.Writers
                     }
                     else // Handle sharedStrings
                     {
-                        if (item.DataType == Cell.CellType.FORMULA)
+                        if (item.DataType == Cell.CellType.Formula)
                         {
                             typeAttribute = "str";
                             valueDef = item.Value.ToString();
@@ -695,12 +695,12 @@ namespace NanoXLSX.Internal.Writers
                     }
                     typeDef = XmlAttribute.CreateAttribute("t", typeAttribute);
                 }
-                if (item.DataType != Cell.CellType.EMPTY)
+                if (item.DataType != Cell.CellType.Empty)
                 {
                     XmlElement c = row.AddChildElementWithAttribute("c", "r", item.CellAddress);
                     c.AddAttribute(typeDef);
                     c.AddAttribute(styleDef);
-                    if (item.DataType == Cell.CellType.FORMULA)
+                    if (item.DataType == Cell.CellType.Formula)
                     {
                         c.AddChildElementWithValue("f", XmlUtils.SanitizeXmlValue(item.Value.ToString()));
                     }
@@ -709,7 +709,7 @@ namespace NanoXLSX.Internal.Writers
                         c.AddChildElementWithValue("v", XmlUtils.SanitizeXmlValue(valueDef));
                     }
                 }
-                else if (valueDef == null || item.DataType == Cell.CellType.EMPTY) // Empty cell
+                else if (valueDef == null || item.DataType == Cell.CellType.Empty) // Empty cell
                 {
                     XmlElement c = row.AddChildElementWithAttribute("c", "r", item.CellAddress);
                     c.AddAttribute(styleDef);

@@ -20,8 +20,8 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [Fact(DisplayName = "Bool value cell test: Test of the cell values, as well as proper modification")]
         public void BoolCellTest()
         {
-            utils.AssertCellCreation<bool>(true, true, CellType.BOOL, (curent, other) => { return curent.Equals(other); });
-            utils.AssertCellCreation<bool>(true, false, CellType.BOOL, (curent, other) => { return curent.Equals(other); });
+            utils.AssertCellCreation<bool>(true, true, CellType.Bool, (curent, other) => { return curent.Equals(other); });
+            utils.AssertCellCreation<bool>(true, false, CellType.Bool, (curent, other) => { return curent.Equals(other); });
         }
 
 
@@ -29,8 +29,8 @@ namespace NanoXLSX.Test.Core.Cells.Types
         public void BoolCellTest2()
         {
             Style style = BasicStyles.Bold;
-            utils.AssertStyledCellCreation<bool>(true, true, CellType.BOOL, (curent, other) => { return curent.Equals(other); }, style);
-            utils.AssertStyledCellCreation<bool>(true, false, CellType.BOOL, (curent, other) => { return curent.Equals(other); }, style);
+            utils.AssertStyledCellCreation<bool>(true, true, CellType.Bool, (curent, other) => { return curent.Equals(other); }, style);
+            utils.AssertStyledCellCreation<bool>(true, false, CellType.Bool, (curent, other) => { return curent.Equals(other); }, style);
         }
 
 

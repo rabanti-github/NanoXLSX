@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using NanoXLSX.Exceptions;
-using NanoXLSX.Extensions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Interfaces.Reader;

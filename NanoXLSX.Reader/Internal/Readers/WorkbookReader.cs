@@ -14,7 +14,6 @@ using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils;
-using NanoXLSX.Utils.Xml;
 using static NanoXLSX.Internal.Enums.ReaderPassword;
 using IOException = NanoXLSX.Exceptions.IOException;
 

@@ -19,7 +19,7 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentFill.ForegroundColor);
-            Assert.NotEqual(PatternValue.none, cell.CellStyle.CurrentFill.PatternFill);
+            Assert.NotEqual(PatternValue.None, cell.CellStyle.CurrentFill.PatternFill);
         }
 
         [Theory(DisplayName = "Test of the 'background' value when writing and reading a Fill style")]
@@ -31,21 +31,21 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         {
             Style style = new Style();
             style.CurrentFill.BackgroundColor = color;
-            style.CurrentFill.PatternFill = PatternValue.darkGray;
+            style.CurrentFill.PatternFill = PatternValue.DarkGray;
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentFill.BackgroundColor);
-            Assert.Equal(PatternValue.darkGray, cell.CellStyle.CurrentFill.PatternFill);
+            Assert.Equal(PatternValue.DarkGray, cell.CellStyle.CurrentFill.PatternFill);
         }
 
         [Theory(DisplayName = "Test of the 'patternFill' value when writing and reading a Fill style")]
-        [InlineData(PatternValue.solid, "test")]
-        [InlineData(PatternValue.darkGray, 0.5f)]
-        [InlineData(PatternValue.gray0625, true)]
-        [InlineData(PatternValue.gray125, null)]
-        [InlineData(PatternValue.lightGray, "")]
-        [InlineData(PatternValue.mediumGray, 0)]
-        [InlineData(PatternValue.none, true)]
+        [InlineData(PatternValue.Solid, "test")]
+        [InlineData(PatternValue.DarkGray, 0.5f)]
+        [InlineData(PatternValue.Gray0625, true)]
+        [InlineData(PatternValue.Gray125, null)]
+        [InlineData(PatternValue.LightGray, "")]
+        [InlineData(PatternValue.MediumGray, 0)]
+        [InlineData(PatternValue.None, true)]
         public void PatternValueTest(PatternValue pattern, object value)
         {
             Style style = new Style();

@@ -5,13 +5,13 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
-using System.Collections.Generic;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils.Xml;
+using System;
+using System.Collections.Generic;
 using static NanoXLSX.Internal.Enums.WriterPassword;
 
 namespace NanoXLSX.Internal.Writers

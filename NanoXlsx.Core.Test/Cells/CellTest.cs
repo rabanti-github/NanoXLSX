@@ -37,23 +37,23 @@ namespace NanoXLSX.Test.Core.CellTest
         public void CellConstructorTest()
         {
             Cell cell = new Cell();
-            Assert.Equal(CellType.DEFAULT, cell.DataType);
+            Assert.Equal(CellType.Default, cell.DataType);
             Assert.Null(cell.Value);
             Assert.Null(cell.CellStyle);
             Assert.Equal("A1", cell.CellAddress); // The address comes from initial row and column of 0
         }
 
         [Theory(DisplayName = "Test of the constructor with value and type")]
-        [InlineData("string", "string", CellType.STRING, CellType.STRING)]
-        [InlineData(true, true, CellType.BOOL, CellType.BOOL)]
-        [InlineData(false, false, CellType.BOOL, CellType.BOOL)]
-        [InlineData(22, 22, CellType.NUMBER, CellType.NUMBER)]
-        [InlineData(22.1f, 22.1f, CellType.NUMBER, CellType.NUMBER)]
-        [InlineData("=B1", "=B1", CellType.FORMULA, CellType.FORMULA)]
-        [InlineData("", "", CellType.DEFAULT, CellType.STRING)]
-        [InlineData(null, null, CellType.DEFAULT, CellType.EMPTY)]
-        [InlineData("", null, CellType.EMPTY, CellType.EMPTY)]
-        [InlineData(11, null, CellType.EMPTY, CellType.EMPTY)]
+        [InlineData("string", "string", CellType.String, CellType.String)]
+        [InlineData(true, true, CellType.Bool, CellType.Bool)]
+        [InlineData(false, false, CellType.Bool, CellType.Bool)]
+        [InlineData(22, 22, CellType.Number, CellType.Number)]
+        [InlineData(22.1f, 22.1f, CellType.Number, CellType.Number)]
+        [InlineData("=B1", "=B1", CellType.Formula, CellType.Formula)]
+        [InlineData("", "", CellType.Default, CellType.String)]
+        [InlineData(null, null, CellType.Default, CellType.Empty)]
+        [InlineData("", null, CellType.Empty, CellType.Empty)]
+        [InlineData(11, null, CellType.Empty, CellType.Empty)]
         public void CellConstructorTest2(object givenValue, object expectedValue, CellType givenType, CellType expectedType)
         {
             Cell cell = new Cell(givenValue, givenType);
@@ -67,24 +67,24 @@ namespace NanoXLSX.Test.Core.CellTest
         public void CellConstructorTest2b()
         {
             DateTime date = DateTime.Now;
-            Cell cell = new Cell(date, CellType.DEFAULT);
-            Assert.Equal(CellType.DATE, cell.DataType);
+            Cell cell = new Cell(date, CellType.Default);
+            Assert.Equal(CellType.Date, cell.DataType);
             Assert.Equal(date, cell.Value);
             Assert.NotNull(cell.CellStyle);
             Assert.True(BasicStyles.DateFormat.Equals(cell.CellStyle));
         }
 
         [Theory(DisplayName = "Test of the constructor with value, type and address string")]
-        [InlineData("string", "string", CellType.STRING, CellType.STRING, "C$7", "C$7")]
-        [InlineData(true, true, CellType.BOOL, CellType.BOOL, "D100", "D100")]
-        [InlineData(false, false, CellType.BOOL, CellType.BOOL, "$A$2", "$A$2")]
-        [InlineData(22, 22, CellType.NUMBER, CellType.NUMBER, "$B5", "$B5")]
-        [InlineData(22.1f, 22.1f, CellType.NUMBER, CellType.NUMBER, "AA10", "AA10")]
-        [InlineData("=B1", "=B1", CellType.FORMULA, CellType.FORMULA, "$A$15", "$A$15")]
-        [InlineData("", "", CellType.DEFAULT, CellType.STRING, "r1", "R1")]
-        [InlineData(null, null, CellType.DEFAULT, CellType.EMPTY, "$ab$999", "$AB$999")]
-        [InlineData("", null, CellType.EMPTY, CellType.EMPTY, "c$90000", "C$90000")]
-        [InlineData(11, null, CellType.EMPTY, CellType.EMPTY, "a17", "A17")]
+        [InlineData("string", "string", CellType.String, CellType.String, "C$7", "C$7")]
+        [InlineData(true, true, CellType.Bool, CellType.Bool, "D100", "D100")]
+        [InlineData(false, false, CellType.Bool, CellType.Bool, "$A$2", "$A$2")]
+        [InlineData(22, 22, CellType.Number, CellType.Number, "$B5", "$B5")]
+        [InlineData(22.1f, 22.1f, CellType.Number, CellType.Number, "AA10", "AA10")]
+        [InlineData("=B1", "=B1", CellType.Formula, CellType.Formula, "$A$15", "$A$15")]
+        [InlineData("", "", CellType.Default, CellType.String, "r1", "R1")]
+        [InlineData(null, null, CellType.Default, CellType.Empty, "$ab$999", "$AB$999")]
+        [InlineData("", null, CellType.Empty, CellType.Empty, "c$90000", "C$90000")]
+        [InlineData(11, null, CellType.Empty, CellType.Empty, "a17", "A17")]
         public void CellConstructorTest3(object givenValue, object expectedValue, CellType givenType, CellType expectedType, string givenAddress, string expectedAddress)
         {
             Cell cell = new Cell(givenValue, givenType, givenAddress);
@@ -95,16 +95,16 @@ namespace NanoXLSX.Test.Core.CellTest
         }
 
         [Theory(DisplayName = "Test of the constructor with value, type and address object or row and column")]
-        [InlineData("string", "string", CellType.STRING, CellType.STRING, 2, 6, "C7")]
-        [InlineData(true, true, CellType.BOOL, CellType.BOOL, 3, 99, "D100")]
-        [InlineData(false, false, CellType.BOOL, CellType.BOOL, 0, 1, "A2")]
-        [InlineData(22, 22, CellType.NUMBER, CellType.NUMBER, 1, 4, "B5")]
-        [InlineData(22.1f, 22.1f, CellType.NUMBER, CellType.NUMBER, 26, 9, "AA10")]
-        [InlineData("=B1", "=B1", CellType.FORMULA, CellType.FORMULA, 0, 14, "A15")]
-        [InlineData("", "", CellType.DEFAULT, CellType.STRING, 17, 0, "R1")]
-        [InlineData(null, null, CellType.DEFAULT, CellType.EMPTY, 27, 998, "AB999")]
-        [InlineData("", null, CellType.EMPTY, CellType.EMPTY, 2, 89999, "C90000")]
-        [InlineData(11, null, CellType.EMPTY, CellType.EMPTY, 0, 16, "A17")]
+        [InlineData("string", "string", CellType.String, CellType.String, 2, 6, "C7")]
+        [InlineData(true, true, CellType.Bool, CellType.Bool, 3, 99, "D100")]
+        [InlineData(false, false, CellType.Bool, CellType.Bool, 0, 1, "A2")]
+        [InlineData(22, 22, CellType.Number, CellType.Number, 1, 4, "B5")]
+        [InlineData(22.1f, 22.1f, CellType.Number, CellType.Number, 26, 9, "AA10")]
+        [InlineData("=B1", "=B1", CellType.Formula, CellType.Formula, 0, 14, "A15")]
+        [InlineData("", "", CellType.Default, CellType.String, 17, 0, "R1")]
+        [InlineData(null, null, CellType.Default, CellType.Empty, 27, 998, "AB999")]
+        [InlineData("", null, CellType.Empty, CellType.Empty, 2, 89999, "C90000")]
+        [InlineData(11, null, CellType.Empty, CellType.Empty, 0, 16, "A17")]
         public void CellConstructorTest4(object givenValue, object expectedValue, CellType givenType, CellType expectedType, int givenColumn, int givenRow, string expectedAddress)
         {
             Address address = new Address(givenColumn, givenRow);
@@ -190,7 +190,7 @@ namespace NanoXLSX.Test.Core.CellTest
         [Fact(DisplayName = "Test of the get function of the Style property, when no style was assigned")]
         public void CellStyleTest2()
         {
-            Cell cell = new Cell(42, CellType.NUMBER, this.cellAddress);
+            Cell cell = new Cell(42, CellType.Number, this.cellAddress);
             Assert.Null(cell.CellStyle);
         }
 
@@ -225,19 +225,19 @@ namespace NanoXLSX.Test.Core.CellTest
         [Fact(DisplayName = "Test of the failing set function of the Style property, when the style is null")]
         public void CellStyleFailTest()
         {
-            Cell intCell = new Cell(42, CellType.NUMBER, this.cellAddress);
+            Cell intCell = new Cell(42, CellType.Number, this.cellAddress);
             Style style = null;
             Exception ex = Assert.Throws<StyleException>(() => intCell.SetStyle(style));
             Assert.Equal(typeof(StyleException), ex.GetType());
         }
 
         [Theory(DisplayName = "Test of the set function of the Value property on changing the data type of the cell")]
-        [InlineData(0, Cell.CellType.NUMBER, "test", CellType.STRING)]
-        [InlineData(true, Cell.CellType.BOOL, 1, CellType.NUMBER)]
-        [InlineData(22.5f, Cell.CellType.NUMBER, 22, CellType.NUMBER)]
-        [InlineData("True", Cell.CellType.STRING, true, CellType.BOOL)]
-        [InlineData(null, Cell.CellType.EMPTY, 22, CellType.NUMBER)]
-        [InlineData("test", Cell.CellType.STRING, null, CellType.EMPTY)]
+        [InlineData(0, Cell.CellType.Number, "test", CellType.String)]
+        [InlineData(true, Cell.CellType.Bool, 1, CellType.Number)]
+        [InlineData(22.5f, Cell.CellType.Number, 22, CellType.Number)]
+        [InlineData("True", Cell.CellType.String, true, CellType.Bool)]
+        [InlineData(null, Cell.CellType.Empty, 22, CellType.Number)]
+        [InlineData("test", Cell.CellType.String, null, CellType.Empty)]
         public void SetValuePropertyTest(object initialValue, Cell.CellType initialType, object givenValue, Cell.CellType expectedType)
         {
             Cell cell2 = new Cell(initialValue, initialType);
@@ -267,11 +267,11 @@ namespace NanoXLSX.Test.Core.CellTest
         [InlineData("A1", null, -1)]
         public void CompareToTest(string cell1Address, string cell2Address, int expectedResult)
         {
-            Cell cell1 = new Cell("Test", CellType.DEFAULT, cell1Address);
+            Cell cell1 = new Cell("Test", CellType.Default, cell1Address);
             Cell cell2 = null;
             if (cell2Address != null)
             {
-                cell2 = new Cell("Test", CellType.DEFAULT, cell2Address);
+                cell2 = new Cell("Test", CellType.Default, cell2Address);
             }
             Assert.Equal(expectedResult, cell1.CompareTo(cell2));
         }
@@ -330,22 +330,22 @@ namespace NanoXLSX.Test.Core.CellTest
         }
 
         [Theory(DisplayName = "Test of the CompareTo method (simplified use cases)")]
-        [InlineData("string", CellType.NUMBER, CellType.STRING)]
-        [InlineData(12, CellType.STRING, CellType.NUMBER)]
-        [InlineData(-12.12d, CellType.STRING, CellType.NUMBER)]
-        [InlineData(true, CellType.STRING, CellType.BOOL)]
-        [InlineData(false, CellType.STRING, CellType.BOOL)]
-        [InlineData("=A2", CellType.FORMULA, CellType.FORMULA)]
-        [InlineData(null, CellType.STRING, CellType.EMPTY)]
-        [InlineData("Actually not empty", CellType.EMPTY, CellType.EMPTY)]
-        [InlineData("string", CellType.DEFAULT, CellType.STRING)]
-        [InlineData(0, CellType.DEFAULT, CellType.NUMBER)]
-        [InlineData(-12.12f, CellType.DEFAULT, CellType.NUMBER)]
-        [InlineData(true, CellType.DEFAULT, CellType.BOOL)]
-        [InlineData(false, CellType.DEFAULT, CellType.BOOL)]
-        [InlineData("=A2", CellType.DEFAULT, CellType.STRING)]
-        [InlineData("", CellType.DEFAULT, CellType.STRING)]
-        [InlineData(null, CellType.DEFAULT, CellType.EMPTY)]
+        [InlineData("string", CellType.Number, CellType.String)]
+        [InlineData(12, CellType.String, CellType.Number)]
+        [InlineData(-12.12d, CellType.String, CellType.Number)]
+        [InlineData(true, CellType.String, CellType.Bool)]
+        [InlineData(false, CellType.String, CellType.Bool)]
+        [InlineData("=A2", CellType.Formula, CellType.Formula)]
+        [InlineData(null, CellType.String, CellType.Empty)]
+        [InlineData("Actually not empty", CellType.Empty, CellType.Empty)]
+        [InlineData("string", CellType.Default, CellType.String)]
+        [InlineData(0, CellType.Default, CellType.Number)]
+        [InlineData(-12.12f, CellType.Default, CellType.Number)]
+        [InlineData(true, CellType.Default, CellType.Bool)]
+        [InlineData(false, CellType.Default, CellType.Bool)]
+        [InlineData("=A2", CellType.Default, CellType.String)]
+        [InlineData("", CellType.Default, CellType.String)]
+        [InlineData(null, CellType.Default, CellType.Empty)]
         public void ResolveCellTypeTest(object givenValue, CellType givenCellType, CellType expectedCllType)
         {
             Cell cell = new Cell(givenValue, givenCellType, this.cellAddress);
@@ -356,18 +356,18 @@ namespace NanoXLSX.Test.Core.CellTest
         [Fact(DisplayName = "Test of the CompareTo method for dates and times")]
         public void ResolveCellTypeTest2()
         {
-            Cell dateCell = new Cell(DateTime.Now, CellType.NUMBER, this.cellAddress);
+            Cell dateCell = new Cell(DateTime.Now, CellType.Number, this.cellAddress);
             dateCell.ResolveCellType();
-            Assert.Equal(CellType.DATE, dateCell.DataType);
-            dateCell = new Cell(DateTime.Now, CellType.DEFAULT, this.cellAddress);
+            Assert.Equal(CellType.Date, dateCell.DataType);
+            dateCell = new Cell(DateTime.Now, CellType.Default, this.cellAddress);
             dateCell.ResolveCellType();
-            Assert.Equal(CellType.DATE, dateCell.DataType);
-            Cell timeCell = new Cell(TimeSpan.FromMinutes(60), CellType.NUMBER, this.cellAddress);
+            Assert.Equal(CellType.Date, dateCell.DataType);
+            Cell timeCell = new Cell(TimeSpan.FromMinutes(60), CellType.Number, this.cellAddress);
             timeCell.ResolveCellType();
-            Assert.Equal(CellType.TIME, timeCell.DataType);
-            timeCell = new Cell(TimeSpan.FromMinutes(60), CellType.DEFAULT, this.cellAddress);
+            Assert.Equal(CellType.Time, timeCell.DataType);
+            timeCell = new Cell(TimeSpan.FromMinutes(60), CellType.Default, this.cellAddress);
             dateCell.ResolveCellType();
-            Assert.Equal(CellType.TIME, timeCell.DataType);
+            Assert.Equal(CellType.Time, timeCell.DataType);
         }
 
         [Theory(DisplayName = "Test of the SetCellLockedState method")]
@@ -392,13 +392,13 @@ namespace NanoXLSX.Test.Core.CellTest
         {
             Style style = new Style();
             style.CurrentFont.Italic = true;
-            style.CurrentCellXf.HorizontalAlign = HorizontalAlignValue.justify;
+            style.CurrentCellXf.HorizontalAlign = HorizontalAlignValue.Justify;
             Cell cell = utils.CreateVariantCell<string>("test", this.cellAddress, style);
             cell.SetCellLockedState(isLocked, isHidden);
             Assert.Equal(isLocked, cell.CellStyle.CurrentCellXf.Locked);
             Assert.Equal(isHidden, cell.CellStyle.CurrentCellXf.Hidden);
             Assert.True(cell.CellStyle.CurrentFont.Italic);
-            Assert.Equal(HorizontalAlignValue.justify, cell.CellStyle.CurrentCellXf.HorizontalAlign);
+            Assert.Equal(HorizontalAlignValue.Justify, cell.CellStyle.CurrentCellXf.HorizontalAlign);
         }
 
         [Theory(DisplayName = "Test of the GetCellRange method with string as range")]
@@ -592,26 +592,26 @@ namespace NanoXLSX.Test.Core.CellTest
         }
 
         [Theory(DisplayName = "Test of the GetHashCode function of cells")]
-        [InlineData("A1", "A1", 23, 23, CellType.NUMBER, CellType.NUMBER, true)]
-        [InlineData("C3", "C3", 42, 42, CellType.NUMBER, CellType.NUMBER, true)]
-        [InlineData("D10", "D10", true, true, CellType.BOOL, CellType.BOOL, true)]
-        [InlineData("E5", "E5", "3+4", "3+4", CellType.FORMULA, CellType.FORMULA, true)]
-        [InlineData("F7", "F7", 1, 1, CellType.NUMBER, CellType.BOOL, false)]
-        [InlineData("G8", "G8", "5+5", "5+5", CellType.FORMULA, CellType.NUMBER, false)]
-        [InlineData("H4", "H4", 10, 11, CellType.NUMBER, CellType.NUMBER, false)]
-        [InlineData("J12", "J12", false, true, CellType.BOOL, CellType.BOOL, false)]
-        [InlineData("A1", "$A$1", 12, 12, CellType.NUMBER, CellType.NUMBER, false)]
-        [InlineData("$B2", "B$2", 0.5, 0.5, CellType.NUMBER, CellType.NUMBER, false)]
-        [InlineData("A1", "A2", 5, 5, CellType.NUMBER, CellType.NUMBER, false)]
-        [InlineData("C10", "D10", true, true, CellType.BOOL, CellType.BOOL, false)]
-        [InlineData("K1", "K1", "2024-01-01", "2024-01-01", CellType.DATE, CellType.DATE, true)]
-        [InlineData("K2", "K2", "2024-01-01", "2024-01-02", CellType.DATE, CellType.DATE, false)]
-        [InlineData("L1", "L1", "12:30:00", "12:30:00", CellType.TIME, CellType.TIME, true)]
-        [InlineData("M1", "M1", null, null, CellType.EMPTY, CellType.EMPTY, true)]
-        [InlineData("M2", "M2", null, 0, CellType.EMPTY, CellType.NUMBER, false)]
-        [InlineData("N5", "N5", "SUM(A1:A3)", "SUM(A1:A3)", CellType.FORMULA, CellType.FORMULA, true)]
-        [InlineData("N6", "N6", "5", 5, CellType.FORMULA, CellType.NUMBER, false)]
-        public void CellGetHashCodeTest(string address1, string address2, object value1, object value2, CellType type1, CellType type2,  bool expectedEquality)
+        [InlineData("A1", "A1", 23, 23, CellType.Number, CellType.Number, true)]
+        [InlineData("C3", "C3", 42, 42, CellType.Number, CellType.Number, true)]
+        [InlineData("D10", "D10", true, true, CellType.Bool, CellType.Bool, true)]
+        [InlineData("E5", "E5", "3+4", "3+4", CellType.Formula, CellType.Formula, true)]
+        [InlineData("F7", "F7", 1, 1, CellType.Number, CellType.Bool, false)]
+        [InlineData("G8", "G8", "5+5", "5+5", CellType.Formula, CellType.Number, false)]
+        [InlineData("H4", "H4", 10, 11, CellType.Number, CellType.Number, false)]
+        [InlineData("J12", "J12", false, true, CellType.Bool, CellType.Bool, false)]
+        [InlineData("A1", "$A$1", 12, 12, CellType.Number, CellType.Number, false)]
+        [InlineData("$B2", "B$2", 0.5, 0.5, CellType.Number, CellType.Number, false)]
+        [InlineData("A1", "A2", 5, 5, CellType.Number, CellType.Number, false)]
+        [InlineData("C10", "D10", true, true, CellType.Bool, CellType.Bool, false)]
+        [InlineData("K1", "K1", "2024-01-01", "2024-01-01", CellType.Date, CellType.Date, true)]
+        [InlineData("K2", "K2", "2024-01-01", "2024-01-02", CellType.Date, CellType.Date, false)]
+        [InlineData("L1", "L1", "12:30:00", "12:30:00", CellType.Time, CellType.Time, true)]
+        [InlineData("M1", "M1", null, null, CellType.Empty, CellType.Empty, true)]
+        [InlineData("M2", "M2", null, 0, CellType.Empty, CellType.Number, false)]
+        [InlineData("N5", "N5", "SUM(A1:A3)", "SUM(A1:A3)", CellType.Formula, CellType.Formula, true)]
+        [InlineData("N6", "N6", "5", 5, CellType.Formula, CellType.Number, false)]
+        public void CellGetHashCodeTest(string address1, string address2, object value1, object value2, CellType type1, CellType type2, bool expectedEquality)
         {
             Cell cell1 = new Cell(value1, type1, address1);
             Cell cell2 = new Cell(value2, type2, address2);
@@ -628,10 +628,10 @@ namespace NanoXLSX.Test.Core.CellTest
         [Fact(DisplayName = "Test of the == operator of cells")]
         public void CellEqualsTest()
         {
-            Cell cell1 = new Cell(25, CellType.NUMBER, "A1");
-            Cell cell2 = new Cell(25, CellType.NUMBER, "A1");
-            Cell cell3 = new Cell(30, CellType.NUMBER, "A1");
-            Cell cell4 = new Cell(25, CellType.NUMBER, "B2");
+            Cell cell1 = new Cell(25, CellType.Number, "A1");
+            Cell cell2 = new Cell(25, CellType.Number, "A1");
+            Cell cell3 = new Cell(30, CellType.Number, "A1");
+            Cell cell4 = new Cell(25, CellType.Number, "B2");
             Assert.True(cell1 == cell2);
             Assert.False(cell1 == cell3);
             Assert.False(cell1 == cell4);
@@ -642,10 +642,10 @@ namespace NanoXLSX.Test.Core.CellTest
         [Fact(DisplayName = "Test of the != operator of cells")]
         public void CellNotEqualsTest()
         {
-            Cell cell1 = new Cell(25, CellType.NUMBER, "A1");
-            Cell cell2 = new Cell(25, CellType.NUMBER, "A1");
-            Cell cell3 = new Cell(30, CellType.NUMBER, "A1");
-            Cell cell4 = new Cell(25, CellType.NUMBER, "B2");
+            Cell cell1 = new Cell(25, CellType.Number, "A1");
+            Cell cell2 = new Cell(25, CellType.Number, "A1");
+            Cell cell3 = new Cell(30, CellType.Number, "A1");
+            Cell cell4 = new Cell(25, CellType.Number, "B2");
             Assert.False(cell1 != cell2);
             Assert.True(cell1 != cell3);
             Assert.True(cell1 != cell4);
@@ -666,8 +666,8 @@ namespace NanoXLSX.Test.Core.CellTest
         [InlineData(100, 100, 100, 100, 25, 11, false)]
         public void CellGreaterThanTest(int row1, int column1, int row2, int column2, object sampleData1, object sampleData2, bool expectedResult)
         {
-            Cell cell1 = new Cell(sampleData1, CellType.DEFAULT, new Address(column1, row1));
-            Cell cell2 = new Cell(sampleData2, CellType.DEFAULT, new Address(column2, row2));
+            Cell cell1 = new Cell(sampleData1, CellType.Default, new Address(column1, row1));
+            Cell cell2 = new Cell(sampleData2, CellType.Default, new Address(column2, row2));
             bool result = cell1 > cell2;
             Assert.Equal(expectedResult, result);
         }
@@ -685,8 +685,8 @@ namespace NanoXLSX.Test.Core.CellTest
         [InlineData(100, 100, 100, 100, 25, 11, true)]
         public void CellGreaterOrEqualsThanTest(int row1, int column1, int row2, int column2, object sampleData1, object sampleData2, bool expectedResult)
         {
-            Cell cell1 = new Cell(sampleData1, CellType.DEFAULT, new Address(column1, row1));
-            Cell cell2 = new Cell(sampleData2, CellType.DEFAULT, new Address(column2, row2));
+            Cell cell1 = new Cell(sampleData1, CellType.Default, new Address(column1, row1));
+            Cell cell2 = new Cell(sampleData2, CellType.Default, new Address(column2, row2));
             bool result = cell1 >= cell2;
             Assert.Equal(expectedResult, result);
         }
@@ -704,8 +704,8 @@ namespace NanoXLSX.Test.Core.CellTest
         [InlineData(100, 100, 100, 100, 25, 11, false)]
         public void CellSmallerThanTest(int row1, int column1, int row2, int column2, object sampleData1, object sampleData2, bool expectedResult)
         {
-            Cell cell1 = new Cell(sampleData1, CellType.DEFAULT, new Address(column1, row1));
-            Cell cell2 = new Cell(sampleData2, CellType.DEFAULT, new Address(column2, row2));
+            Cell cell1 = new Cell(sampleData1, CellType.Default, new Address(column1, row1));
+            Cell cell2 = new Cell(sampleData2, CellType.Default, new Address(column2, row2));
             bool result = cell1 < cell2;
             Assert.Equal(expectedResult, result);
         }
@@ -723,8 +723,8 @@ namespace NanoXLSX.Test.Core.CellTest
         [InlineData(100, 100, 100, 100, 25, 11, true)]
         public void CellSmallerOrEqualsThanTest(int row1, int column1, int row2, int column2, object sampleData1, object sampleData2, bool expectedResult)
         {
-            Cell cell1 = new Cell(sampleData1, CellType.DEFAULT, new Address(column1, row1));
-            Cell cell2 = new Cell(sampleData2, CellType.DEFAULT, new Address(column2, row2));
+            Cell cell1 = new Cell(sampleData1, CellType.Default, new Address(column1, row1));
+            Cell cell2 = new Cell(sampleData2, CellType.Default, new Address(column2, row2));
             bool result = cell1 <= cell2;
             Assert.Equal(expectedResult, result);
         }

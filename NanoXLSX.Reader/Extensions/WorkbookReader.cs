@@ -31,9 +31,11 @@ namespace NanoXLSX.Extensions
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static Workbook Load(string filename, ReaderOptions options = null)
         {
-            XlsxReader reader = new XlsxReader(filename, options);
-            reader.Read();
-            return reader.Workbook;
+            using (XlsxReader reader = new XlsxReader(filename, options))
+            {
+                reader.Read();
+                return reader.Workbook;
+            }
         }
 
         /// <summary>
@@ -45,9 +47,11 @@ namespace NanoXLSX.Extensions
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static Workbook Load(Stream stream, ReaderOptions options = null)
         {
-            XlsxReader reader = new XlsxReader(stream, options);
-            reader.Read();
-            return reader.Workbook;
+            using (XlsxReader reader = new XlsxReader(stream, options))
+            {
+                reader.Read();
+                return reader.Workbook;
+            }
         }
 
         /// <summary>
@@ -59,9 +63,11 @@ namespace NanoXLSX.Extensions
         /// <exception cref="IOException">Throws IOException in case of an error</exception>
         public static async Task<Workbook> LoadAsync(string filename, ReaderOptions options = null)
         {
-            XlsxReader reader = new XlsxReader(filename, options);
-            await reader.ReadAsync();
-            return reader.Workbook;
+            using (XlsxReader reader = new XlsxReader(filename, options))
+            {
+                await reader.ReadAsync();
+                return reader.Workbook;
+            }
         }
 
         /// <summary>
@@ -73,9 +79,11 @@ namespace NanoXLSX.Extensions
         /// <exception cref="Exceptions.IOException">Throws IOException in case of an error</exception>
         public static async Task<Workbook> LoadAsync(Stream stream, ReaderOptions options = null)
         {
-            XlsxReader reader = new XlsxReader(stream, options);
-            await reader.ReadAsync();
-            return reader.Workbook;
+            using (XlsxReader reader = new XlsxReader(stream, options))
+            {
+                await reader.ReadAsync();
+                return reader.Workbook;
+            }
         }
     }
 }

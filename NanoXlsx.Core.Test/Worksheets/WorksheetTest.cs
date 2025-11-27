@@ -1082,11 +1082,11 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             workbook.SaveAsStream(new MemoryStream()); // Dummy call to invoke resolution
             Assert.Equal(3, worksheet.Cells.Count);
             Assert.Null(worksheet.Cells["B1"].CellStyle);
-            Assert.Equal(Cell.CellType.EMPTY, worksheet.Cells["C1"].DataType);
+            Assert.Equal(Cell.CellType.Empty, worksheet.Cells["C1"].DataType);
             Assert.True(BasicStyles.MergeCellStyle.Equals(worksheet.Cells["C1"].CellStyle));
             Assert.Equal(22.2f, worksheet.Cells["C1"].Value);
             Assert.True(BasicStyles.MergeCellStyle.Equals(worksheet.Cells["D1"].CellStyle));
-            Assert.Equal(Cell.CellType.EMPTY, worksheet.Cells["D1"].DataType);
+            Assert.Equal(Cell.CellType.Empty, worksheet.Cells["D1"].DataType);
         }
 
         [Fact(DisplayName = "Test of the RemoveAutoFilter function")]
@@ -1811,8 +1811,8 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         public void FirstCellByValue_ShouldReturnCorrectCell(object? matchingValue)
         {
             var worksheet = new Worksheet();
-            var cell1 = new Cell("Test1", CellType.STRING, "A1");
-            var cell2 = new Cell(matchingValue, CellType.DEFAULT, "B1");
+            var cell1 = new Cell("Test1", CellType.String, "A1");
+            var cell2 = new Cell(matchingValue, CellType.Default, "B1");
             worksheet.Cells.Add("A1", cell1);
             worksheet.Cells.Add("B1", cell2);
 
@@ -1827,9 +1827,9 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         public void FirstCellByValue_ShouldReturnCorrectCell2()
         {
             var worksheet = new Worksheet();
-            var cell1 = new Cell("Test1", CellType.STRING, "A1");
+            var cell1 = new Cell("Test1", CellType.String, "A1");
             DateTime matchingValue = new DateTime(2025, 02, 10, 5, 6, 7, DateTimeKind.Utc);
-            var cell2 = new Cell(matchingValue, CellType.DATE, "B1");
+            var cell2 = new Cell(matchingValue, CellType.Date, "B1");
             worksheet.Cells.Add("A1", cell1);
             worksheet.Cells.Add("B1", cell2);
 
@@ -1852,7 +1852,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         public void FirstCellByValue_ShouldReturnNull_WhenValueNotFound(object? notMatchingValue)
         {
             var worksheet = new Worksheet();
-            var cell1 = new Cell("Test1", CellType.STRING, "A1");
+            var cell1 = new Cell("Test1", CellType.String, "A1");
             worksheet.Cells.Add("A1", cell1);
 
             var result = worksheet.FirstCellByValue(notMatchingValue);

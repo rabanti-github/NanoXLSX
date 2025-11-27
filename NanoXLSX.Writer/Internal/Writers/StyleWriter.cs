@@ -5,7 +5,6 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System.Collections.Generic;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
@@ -13,6 +12,7 @@ using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
+using System.Collections.Generic;
 using static NanoXLSX.Styles.Border;
 using static NanoXLSX.Styles.CellXf;
 using static NanoXLSX.Styles.Fill;
@@ -81,25 +81,25 @@ namespace NanoXLSX.Internal.Writers
             if (numFormatCount > 0)
             {
                 XmlElement numFmts = XmlElement.CreateElementWithAttribute("numFmts", "count", ParserUtils.ToString(numFormatCount));
-                numFmts.AddChildElements(getNumberFormatElements());
+                numFmts.AddChildElements(GetNumberFormatElements());
                 styleSheet.AddChildElement(numFmts);
             }
             XmlElement fonts = XmlElement.CreateElementWithAttribute("fonts", "count", ParserUtils.ToString(fontCount));
             fonts.AddAttribute("knownFonts", "1", "x14ac");
-            fonts.AddChildElements(getFontElements());
+            fonts.AddChildElements(GetFontElements());
             styleSheet.AddChildElement(fonts);
             XmlElement fills = XmlElement.CreateElementWithAttribute("fills", "count", ParserUtils.ToString(fillCount));
-            fills.AddChildElements(getFillElements());
+            fills.AddChildElements(GetFillElements());
             styleSheet.AddChildElement(fills);
             XmlElement borders = XmlElement.CreateElementWithAttribute("borders", "count", ParserUtils.ToString(borderCount));
-            borders.AddChildElements(getBorderElements());
+            borders.AddChildElements(GetBorderElements());
             styleSheet.AddChildElement(borders);
             XmlElement cellXfs = XmlElement.CreateElementWithAttribute("cellXfs", "count", ParserUtils.ToString(styleCount));
-            cellXfs.AddChildElements(getCellXfElements());
+            cellXfs.AddChildElements(GetCellXfElements());
             styleSheet.AddChildElement(cellXfs);
             if (Workbook.WorkbookMetadata != null)
             {
-                XmlElement mruElement = getMruElement();
+                XmlElement mruElement = GetMruElement();
                 if (mruElement != null)
                 {
                     XmlElement colors = styleSheet.AddChildElement("colors");
@@ -114,7 +114,7 @@ namespace NanoXLSX.Internal.Writers
         /// Method to get all border elements of the style
         /// </summary>
         /// <returns>IEnumerable of border elements</returns>
-        private IEnumerable<XmlElement> getBorderElements()
+        private IEnumerable<XmlElement> GetBorderElements()
         {
             Border[] borderStyles = styles.GetBorders();
             List<XmlElement> borders = new List<XmlElement>(borderStyles.Length);
@@ -128,7 +128,7 @@ namespace NanoXLSX.Internal.Writers
                     border.AddAttribute("diagonalDown", "1");
                     border.AddAttribute("diagonalUp", "1");
                 }
-                if (item.LeftStyle != StyleValue.none)
+                if (item.LeftStyle != StyleValue.None)
                 {
                     XmlElement left = border.AddChildElementWithAttribute("left", "style", Border.GetStyleName(item.LeftStyle));
                     if (!string.IsNullOrEmpty(item.LeftColor)) { left.AddChildElementWithAttribute("color", "rgb", item.LeftColor); }
@@ -138,7 +138,7 @@ namespace NanoXLSX.Internal.Writers
                 {
                     border.AddChildElement("left");
                 }
-                if (item.RightStyle != StyleValue.none)
+                if (item.RightStyle != StyleValue.None)
                 {
                     XmlElement right = border.AddChildElementWithAttribute("right", "style", Border.GetStyleName(item.RightStyle));
                     if (!string.IsNullOrEmpty(item.RightColor)) { right.AddChildElementWithAttribute("color", "rgb", item.RightColor); }
@@ -148,7 +148,7 @@ namespace NanoXLSX.Internal.Writers
                 {
                     border.AddChildElement("right");
                 }
-                if (item.TopStyle != StyleValue.none)
+                if (item.TopStyle != StyleValue.None)
                 {
                     XmlElement top = border.AddChildElementWithAttribute("top", "style", Border.GetStyleName(item.TopStyle));
                     if (!string.IsNullOrEmpty(item.TopColor)) { top.AddChildElementWithAttribute("color", "rgb", item.TopColor); }
@@ -158,7 +158,7 @@ namespace NanoXLSX.Internal.Writers
                 {
                     border.AddChildElement("top");
                 }
-                if (item.BottomStyle != StyleValue.none)
+                if (item.BottomStyle != StyleValue.None)
                 {
                     XmlElement bottom = border.AddChildElementWithAttribute("bottom", "style", Border.GetStyleName(item.BottomStyle));
                     if (!string.IsNullOrEmpty(item.BottomColor)) { bottom.AddChildElementWithAttribute("color", "rgb", item.BottomColor); }
@@ -168,7 +168,7 @@ namespace NanoXLSX.Internal.Writers
                 {
                     border.AddChildElement("bottom");
                 }
-                if (item.DiagonalStyle != StyleValue.none)
+                if (item.DiagonalStyle != StyleValue.None)
                 {
                     XmlElement diagonal = border.AddChildElementWithAttribute("diagonal", "style", Border.GetStyleName(item.DiagonalStyle));
                     if (!string.IsNullOrEmpty(item.DiagonalColor)) { diagonal.AddChildElementWithAttribute("color", "rgb", item.DiagonalColor); }
@@ -187,7 +187,7 @@ namespace NanoXLSX.Internal.Writers
         /// Method to get all font elements of the style
         /// </summary>
         /// <returns>IEnumerable of font elements</returns>
-        private IEnumerable<XmlElement> getFontElements()
+        private IEnumerable<XmlElement> GetFontElements()
         {
             Font[] fontStyles = styles.GetFonts();
             List<XmlElement> fonts = new List<XmlElement>(fontStyles.Length);
@@ -197,15 +197,18 @@ namespace NanoXLSX.Internal.Writers
                 if (item.Bold) { font.AddChildElement("b"); }
                 if (item.Italic) { font.AddChildElement("i"); }
                 if (item.Strike) { font.AddChildElement("strike"); }
-                if (item.Underline != UnderlineValue.none)
+                if (item.Underline != UnderlineValue.None && item.Underline != UnderlineValue.Single)
                 {
-                    if (item.Underline == UnderlineValue.u_double) { font.AddChildElementWithAttribute("u", "val", "double"); }
-                    else if (item.Underline == UnderlineValue.singleAccounting) { font.AddChildElementWithAttribute("u", "val", "singleAccounting"); }
-                    else if (item.Underline == UnderlineValue.doubleAccounting) { font.AddChildElementWithAttribute("u", "val", "doubleAccounting"); }
-                    else { font.AddChildElement("u"); }
+                    font.AddChildElementWithAttribute("u", "val", Font.GetUnderlineName(item.Underline));
                 }
-                if (item.VerticalAlign == VerticalTextAlignValue.subscript) { font.AddChildElementWithAttribute("vertAlign", "val", "subscript"); }
-                else if (item.VerticalAlign == VerticalTextAlignValue.superscript) { font.AddChildElementWithAttribute("vertAlign", "val", "superscript"); }
+                else if (item.Underline == UnderlineValue.Single)
+                {
+                    font.AddChildElement("u");
+                }
+                if (item.VerticalAlign != VerticalTextAlignValue.None)
+                {
+                    font.AddChildElementWithAttribute("vertAlign", "val", Font.GetVerticalTextAlignName(item.VerticalAlign));
+                }
                 font.AddChildElementWithAttribute("sz", "val", ParserUtils.ToString(item.Size));
                 if (string.IsNullOrEmpty(item.ColorValue))
                 {
@@ -217,11 +220,11 @@ namespace NanoXLSX.Internal.Writers
                 }
                 font.AddChildElementWithAttribute("name", "val", item.Name);
                 font.AddChildElementWithAttribute("family", "val", ParserUtils.ToString((int)item.Family));
-                if (item.Scheme != SchemeValue.none)
+                if (item.Scheme != SchemeValue.None)
                 {
-                    if (item.Scheme == SchemeValue.major)
+                    if (item.Scheme == SchemeValue.Major)
                     { font.AddChildElementWithAttribute("scheme", "val", "major"); }
-                    else if (item.Scheme == SchemeValue.minor)
+                    else if (item.Scheme == SchemeValue.Minor)
                     { font.AddChildElementWithAttribute("scheme", "val", "minor"); }
                 }
                 font.AddChildElementWithAttribute("charset", "val", ParserUtils.ToString((int)item.Charset));
@@ -234,7 +237,7 @@ namespace NanoXLSX.Internal.Writers
         /// Method to get all fill elements of the style
         /// </summary>
         /// <returns>IEnumerable of fill elements</returns>
-        private IEnumerable<XmlElement> getFillElements()
+        private IEnumerable<XmlElement> GetFillElements()
         {
             Fill[] fillStyles = styles.GetFills();
             List<XmlElement> fills = new List<XmlElement>(fillStyles.Length);
@@ -243,12 +246,12 @@ namespace NanoXLSX.Internal.Writers
                 XmlElement fill = XmlElement.CreateElement("fill");
                 XmlElement patternFill = fill.AddChildElement("patternFill");
                 patternFill.AddAttribute("patternType", Fill.GetPatternName(item.PatternFill));
-                if (item.PatternFill == PatternValue.solid)
+                if (item.PatternFill == PatternValue.Solid)
                 {
                     patternFill.AddChildElementWithAttribute("fgColor", "rgb", item.ForegroundColor);
                     patternFill.AddChildElementWithAttribute("bgColor", "indexed", ParserUtils.ToString(item.IndexedColor));
                 }
-                else if (item.PatternFill == PatternValue.mediumGray || item.PatternFill == PatternValue.lightGray || item.PatternFill == PatternValue.gray0625 || item.PatternFill == PatternValue.darkGray)
+                else if (item.PatternFill == PatternValue.MediumGray || item.PatternFill == PatternValue.LightGray || item.PatternFill == PatternValue.Gray0625 || item.PatternFill == PatternValue.DarkGray)
                 {
                     patternFill.AddChildElementWithAttribute("fgColor", "rgb", item.ForegroundColor);
                     if (!string.IsNullOrEmpty(item.BackgroundColor))
@@ -265,7 +268,7 @@ namespace NanoXLSX.Internal.Writers
         /// Method to get all numberFormat elements of the style
         /// </summary>
         /// <returns>IEnumerable of numberFormat elements</returns>
-        private IEnumerable<XmlElement> getNumberFormatElements()
+        private IEnumerable<XmlElement> GetNumberFormatElements()
         {
             NumberFormat[] numberFormatStyles = styles.GetNumberFormats();
             List<XmlElement> elements = new List<XmlElement>(numberFormatStyles.Length);
@@ -291,7 +294,7 @@ namespace NanoXLSX.Internal.Writers
         /// Method to get all cellXf elements of the style
         /// </summary>
         /// <returns>IEnumerable of cellXf elements</returns>
-        private IEnumerable<XmlElement> getCellXfElements()
+        private IEnumerable<XmlElement> GetCellXfElements()
         {
             Style[] styleItems = this.styles.GetStyles();
             List<XmlElement> xfs = new List<XmlElement>(styleItems.Length);
@@ -300,38 +303,29 @@ namespace NanoXLSX.Internal.Writers
                 int textRotation = style.CurrentCellXf.CalculateInternalRotation();
                 XmlElement alignment = null;
                 XmlElement protection = null;
-                if (style.CurrentCellXf.HorizontalAlign != HorizontalAlignValue.none || style.CurrentCellXf.VerticalAlign != VerticalAlignValue.none || style.CurrentCellXf.Alignment != TextBreakValue.none || textRotation != 0)
+                if (style.CurrentCellXf.HorizontalAlign != HorizontalAlignValue.None || style.CurrentCellXf.VerticalAlign != VerticalAlignValue.None || style.CurrentCellXf.Alignment != TextBreakValue.None || textRotation != 0)
                 {
                     alignment = XmlElement.CreateElement("alignment");
-                    if (style.CurrentCellXf.HorizontalAlign != HorizontalAlignValue.none)
+                    if (style.CurrentCellXf.HorizontalAlign != HorizontalAlignValue.None)
                     {
-                        if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.center) { alignment.AddAttribute("horizontal", "center"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.right) { alignment.AddAttribute("horizontal", "right"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.centerContinuous) { alignment.AddAttribute("horizontal", "centerContinuous"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.distributed) { alignment.AddAttribute("horizontal", "distributed"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.fill) { alignment.AddAttribute("horizontal", "fill"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.general) { alignment.AddAttribute("horizontal", "general"); }
-                        else if (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.justify) { alignment.AddAttribute("horizontal", "justify"); }
-                        else { alignment.AddAttribute("horizontal", "left"); }
+                        string alignValue = CellXf.GetHorizontalAlignName(style.CurrentCellXf.HorizontalAlign);
+                        alignment.AddAttribute("horizontal", alignValue);
                     }
-                    if (style.CurrentCellXf.VerticalAlign != VerticalAlignValue.none)
+                    if (style.CurrentCellXf.VerticalAlign != VerticalAlignValue.None)
                     {
-                        if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.center) { alignment.AddAttribute("vertical", "center"); }
-                        else if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.distributed) { alignment.AddAttribute("vertical", "distributed"); }
-                        else if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.justify) { alignment.AddAttribute("vertical", "justify"); }
-                        else if (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.top) { alignment.AddAttribute("vertical", "top"); }
-                        else { alignment.AddAttribute("vertical", "bottom"); }
+                        string alignValue = CellXf.GetVerticalAlignName(style.CurrentCellXf.VerticalAlign);
+                        alignment.AddAttribute("vertical", alignValue);
                     }
                     if (style.CurrentCellXf.Indent > 0 &&
-                        (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.left
-                        || style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.right
-                        || style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.distributed))
+                        (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.Left
+                        || style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.Right
+                        || style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.Distributed))
                     {
                         alignment.AddAttribute("indent", ParserUtils.ToString(style.CurrentCellXf.Indent));
                     }
-                    if (style.CurrentCellXf.Alignment != TextBreakValue.none)
+                    if (style.CurrentCellXf.Alignment != TextBreakValue.None)
                     {
-                        if (style.CurrentCellXf.Alignment == TextBreakValue.shrinkToFit) { alignment.AddAttribute("shrinkToFit", "1"); }
+                        if (style.CurrentCellXf.Alignment == TextBreakValue.ShrinkToFit) { alignment.AddAttribute("shrinkToFit", "1"); }
                         else { alignment.AddAttribute("wrapText", "1"); }
                     }
                     if (textRotation != 0)
@@ -378,7 +372,7 @@ namespace NanoXLSX.Internal.Writers
                 {
                     xf.AddAttribute("applyFont", "1");
                 }
-                if (style.CurrentFill.PatternFill != PatternValue.none)
+                if (style.CurrentFill.PatternFill != PatternValue.None)
                 {
                     xf.AddAttribute("applyFill", "1");
                 }
@@ -394,7 +388,7 @@ namespace NanoXLSX.Internal.Writers
                 {
                     xf.AddAttribute("applyProtection", "1");
                 }
-                if (style.CurrentNumberFormat.Number != FormatNumber.none)
+                if (style.CurrentNumberFormat.Number != FormatNumber.None)
                 {
                     xf.AddAttribute("applyNumberFormat", "1");
                 }
@@ -412,7 +406,7 @@ namespace NanoXLSX.Internal.Writers
         /// Method to get the Color MRU element of the style
         /// </summary>
         /// <returns>XmlElement, holding Color MRU information</returns>
-        private XmlElement getMruElement()
+        private XmlElement GetMruElement()
         {
             XmlElement mruColors = null;
             List<string> tempColors = new List<string>();

@@ -65,6 +65,7 @@ namespace NanoXLSX
         /// </summary>
         public enum ColumnType
         {
+#pragma warning disable CA1720 // Identifier contains type name
             /// <summary>
             /// Cells are tried to be imported as numbers (automatic determination of numeric type)
             /// </summary>
@@ -93,6 +94,7 @@ namespace NanoXLSX
             /// Cells are all imported as strings, using the ToString() method
             /// </summary>
             String
+#pragma warning restore CA1720 // Identifier contains type name
         }
 
         /// <summary>

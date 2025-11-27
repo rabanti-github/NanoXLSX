@@ -66,8 +66,8 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.NotNull(style.CurrentFill);
             Assert.Equal(numberFormat.GetHashCode(), style.CurrentNumberFormat.GetHashCode());
             style.CurrentNumberFormat = numberFormat;
-            numberFormat.Number = FormatNumber.format_15;
-            Assert.Equal(FormatNumber.format_15, style.CurrentNumberFormat.Number);
+            numberFormat.Number = FormatNumber.Format15;
+            Assert.Equal(FormatNumber.Format15, style.CurrentNumberFormat.Number);
         }
 
         [Fact(DisplayName = "Test of the get and set function of the Name property")]
@@ -148,7 +148,7 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(border.GetHashCode(), style.CurrentBorder.GetHashCode());
             Border modified = new Border();
             modified.BottomColor = "FFAABBCC";
-            modified.BottomStyle = StyleValue.dashDotDot;
+            modified.BottomStyle = StyleValue.DashDotDot;
             style.Append(modified);
             Assert.Equal(modified.GetHashCode(), style.CurrentBorder.GetHashCode());
         }
@@ -186,7 +186,7 @@ namespace NanoXLSX.Test.Core.StyleTest
             CellXf cellXf = new CellXf();
             Assert.Equal(cellXf.GetHashCode(), style.CurrentCellXf.GetHashCode());
             CellXf modified = new CellXf();
-            modified.HorizontalAlign = HorizontalAlignValue.distributed;
+            modified.HorizontalAlign = HorizontalAlignValue.Distributed;
             modified.TextRotation = 35;
             style.Append(modified);
             Assert.Equal(modified.GetHashCode(), style.CurrentCellXf.GetHashCode());
@@ -199,7 +199,7 @@ namespace NanoXLSX.Test.Core.StyleTest
             NumberFormat numberFormat = new NumberFormat();
             Assert.Equal(numberFormat.GetHashCode(), style.CurrentNumberFormat.GetHashCode());
             NumberFormat modified = new NumberFormat();
-            modified.Number = FormatNumber.format_11;
+            modified.Number = FormatNumber.Format11;
             style.Append(modified);
             Assert.Equal(modified.GetHashCode(), style.CurrentNumberFormat.GetHashCode());
         }
@@ -209,14 +209,14 @@ namespace NanoXLSX.Test.Core.StyleTest
         {
             Style style = new Style();
             style.CurrentFont.Size = 18f;
-            style.CurrentCellXf.Alignment = TextBreakValue.shrinkToFit;
+            style.CurrentCellXf.Alignment = TextBreakValue.ShrinkToFit;
             style.CurrentBorder.BottomColor = "FFAA3344";
             style.CurrentFill.BackgroundColor = "FF55AACC";
             style.CurrentNumberFormat.CustomFormatID = 190;
             Font font = new Font();
             font.Name = "Arial";
             CellXf cellXf = new CellXf();
-            cellXf.HorizontalAlign = HorizontalAlignValue.justify;
+            cellXf.HorizontalAlign = HorizontalAlignValue.Justify;
             Border border = new Border();
             border.TopColor = "FF55BB11";
             Fill fill = new Fill();
@@ -231,8 +231,8 @@ namespace NanoXLSX.Test.Core.StyleTest
             style.Append(numberFormat);
             Assert.Equal(18f, style.CurrentFont.Size);
             Assert.Equal("Arial", style.CurrentFont.Name);
-            Assert.Equal(TextBreakValue.shrinkToFit, style.CurrentCellXf.Alignment);
-            Assert.Equal(HorizontalAlignValue.justify, style.CurrentCellXf.HorizontalAlign);
+            Assert.Equal(TextBreakValue.ShrinkToFit, style.CurrentCellXf.Alignment);
+            Assert.Equal(HorizontalAlignValue.Justify, style.CurrentCellXf.HorizontalAlign);
             Assert.Equal("FFAA3344", style.CurrentBorder.BottomColor);
             Assert.Equal("FF55BB11", style.CurrentBorder.TopColor);
             Assert.Equal("FF55AACC", style.CurrentFill.BackgroundColor);
@@ -246,14 +246,14 @@ namespace NanoXLSX.Test.Core.StyleTest
         {
             Style style = new Style();
             style.CurrentFont.Size = 18f;
-            style.CurrentCellXf.Alignment = TextBreakValue.shrinkToFit;
+            style.CurrentCellXf.Alignment = TextBreakValue.ShrinkToFit;
             style.CurrentBorder.BottomColor = "FFAA3344";
             style.CurrentFill.BackgroundColor = "FF55AACC";
             style.CurrentNumberFormat.CustomFormatID = 190;
 
             Style style2 = new Style();
             style2.CurrentFont.Name = "Arial";
-            style2.CurrentCellXf.HorizontalAlign = HorizontalAlignValue.justify;
+            style2.CurrentCellXf.HorizontalAlign = HorizontalAlignValue.Justify;
             style2.CurrentBorder.TopColor = "FF55BB11";
             style2.CurrentFill.ForegroundColor = "FFDDDDDD";
             style2.CurrentNumberFormat.CustomFormatCode = "##--##";
@@ -261,8 +261,8 @@ namespace NanoXLSX.Test.Core.StyleTest
             style.Append(style2);
             Assert.Equal(18f, style.CurrentFont.Size);
             Assert.Equal("Arial", style.CurrentFont.Name);
-            Assert.Equal(TextBreakValue.shrinkToFit, style.CurrentCellXf.Alignment);
-            Assert.Equal(HorizontalAlignValue.justify, style.CurrentCellXf.HorizontalAlign);
+            Assert.Equal(TextBreakValue.ShrinkToFit, style.CurrentCellXf.Alignment);
+            Assert.Equal(HorizontalAlignValue.Justify, style.CurrentCellXf.HorizontalAlign);
             Assert.Equal("FFAA3344", style.CurrentBorder.BottomColor);
             Assert.Equal("FF55BB11", style.CurrentBorder.TopColor);
             Assert.Equal("FF55AACC", style.CurrentFill.BackgroundColor);

@@ -20,10 +20,10 @@ namespace NanoXLSX.Test.Core.Cells.Types
         public void UnknownClassesCellTest()
         {
             DummyClass obj1 = new DummyClass(1);
-            Cell actualCell = new Cell(obj1, Cell.CellType.DEFAULT, utils.CellAddress);
+            Cell actualCell = new Cell(obj1, Cell.CellType.Default, utils.CellAddress);
             Assert.Equal(DummyClass.PREFIX + "1", actualCell.Value.ToString());
             Assert.Equal(typeof(DummyClass), actualCell.Value.GetType());
-            Assert.Equal(CellType.STRING, actualCell.DataType);
+            Assert.Equal(CellType.String, actualCell.DataType);
             actualCell.Value = new DummyClass2(2);
             Assert.Equal(DummyClass2.PREFIX + "2", actualCell.Value.ToString());
             Assert.Equal(typeof(DummyClass2), actualCell.Value.GetType()); // should return the new class type

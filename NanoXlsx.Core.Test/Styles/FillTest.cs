@@ -19,13 +19,13 @@ namespace NanoXLSX.Test.Core.StyleTest
             exampleStyle.BackgroundColor = "FFAABB00";
             exampleStyle.ForegroundColor = "1188FF00";
             exampleStyle.IndexedColor = 99;
-            exampleStyle.PatternFill = PatternValue.darkGray;
+            exampleStyle.PatternFill = PatternValue.DarkGray;
 
             comparisonStyle = new Fill();
             exampleStyle.BackgroundColor = "77CCBB00";
             exampleStyle.ForegroundColor = "DD33CC00";
             exampleStyle.IndexedColor = 32;
-            exampleStyle.PatternFill = PatternValue.lightGray;
+            exampleStyle.PatternFill = PatternValue.LightGray;
         }
 
 
@@ -34,7 +34,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         {
             Assert.Equal("FF000000", Fill.DefaultColor);
             Assert.Equal(64, Fill.DefaultIndexedColor);
-            Assert.Equal(PatternValue.none, Fill.DefaultPatternFill);
+            Assert.Equal(PatternValue.None, Fill.DefaultPatternFill);
         }
 
 
@@ -53,20 +53,20 @@ namespace NanoXLSX.Test.Core.StyleTest
         {
             Fill fill = new Fill("FFAABBCC", "FF001122");
             Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor);
-            Assert.Equal(PatternValue.solid, fill.PatternFill);
+            Assert.Equal(PatternValue.Solid, fill.PatternFill);
             Assert.Equal("FFAABBCC", fill.ForegroundColor);
             Assert.Equal("FF001122", fill.BackgroundColor);
         }
 
 
         [Theory(DisplayName = "Test of the constructor with color and fill type")]
-        [InlineData("FFAABBCC", FillType.fillColor, "FFAABBCC", "FF000000")]
-        [InlineData("FF112233", FillType.patternColor, "FF000000", "FF112233")]
+        [InlineData("FFAABBCC", FillType.FillColor, "FFAABBCC", "FF000000")]
+        [InlineData("FF112233", FillType.PatternColor, "FF000000", "FF112233")]
         public void ConstructorTest3(string color, FillType fillType, string expectedForeground, string expectedBackground)
         {
             Fill fill = new Fill(color, fillType);
             Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor);
-            Assert.Equal(PatternValue.solid, fill.PatternFill);
+            Assert.Equal(PatternValue.Solid, fill.PatternFill);
             Assert.Equal(expectedForeground, fill.ForegroundColor);
             Assert.Equal(expectedBackground, fill.BackgroundColor);
         }
@@ -92,16 +92,16 @@ namespace NanoXLSX.Test.Core.StyleTest
 
 
         [Theory(DisplayName = "Test of the failing constructor with color and fill type")]
-        [InlineData("", FillType.fillColor)]
-        [InlineData(null, FillType.fillColor)]
-        [InlineData("x", FillType.fillColor)]
-        [InlineData("FFAABBCCDD", FillType.fillColor)]
-        [InlineData("FFAABB", FillType.fillColor)]
-        [InlineData("", FillType.patternColor)]
-        [InlineData(null, FillType.patternColor)]
-        [InlineData("x", FillType.patternColor)]
-        [InlineData("FFAABBCCDD", FillType.patternColor)]
-        [InlineData("FFAABB", FillType.patternColor)]
+        [InlineData("", FillType.FillColor)]
+        [InlineData(null, FillType.FillColor)]
+        [InlineData("x", FillType.FillColor)]
+        [InlineData("FFAABBCCDD", FillType.FillColor)]
+        [InlineData("FFAABB", FillType.FillColor)]
+        [InlineData("", FillType.PatternColor)]
+        [InlineData(null, FillType.PatternColor)]
+        [InlineData("x", FillType.PatternColor)]
+        [InlineData("FFAABBCCDD", FillType.PatternColor)]
+        [InlineData("FFAABB", FillType.PatternColor)]
         public void ConstructorFailTest2(string color, FillType fillType)
         {
             Assert.Throws<StyleException>(() => new Fill(color, fillType));
@@ -170,13 +170,13 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the get and set function of the PatternFill property")]
-        [InlineData(PatternValue.darkGray)]
-        [InlineData(PatternValue.gray0625)]
-        [InlineData(PatternValue.gray125)]
-        [InlineData(PatternValue.lightGray)]
-        [InlineData(PatternValue.mediumGray)]
-        [InlineData(PatternValue.none)]
-        [InlineData(PatternValue.solid)]
+        [InlineData(PatternValue.DarkGray)]
+        [InlineData(PatternValue.Gray0625)]
+        [InlineData(PatternValue.Gray125)]
+        [InlineData(PatternValue.LightGray)]
+        [InlineData(PatternValue.MediumGray)]
+        [InlineData(PatternValue.None)]
+        [InlineData(PatternValue.Solid)]
         public void PatternFillTest(PatternValue value)
         {
             Fill fill = new Fill();
@@ -186,17 +186,17 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the SetColor function")]
-        [InlineData("FFAABBCC", FillType.fillColor, "FFAABBCC", "FF000000")]
-        [InlineData("FF112233", FillType.patternColor, "FF000000", "FF112233")]
+        [InlineData("FFAABBCC", FillType.FillColor, "FFAABBCC", "FF000000")]
+        [InlineData("FF112233", FillType.PatternColor, "FF000000", "FF112233")]
         public void SetColorTest(string color, FillType fillType, string expectedForeground, string expectedBackground)
         {
             Fill fill = new Fill();
             Assert.Equal(Fill.DefaultColor, fill.ForegroundColor);
             Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
-            Assert.Equal(PatternValue.none, fill.PatternFill);
+            Assert.Equal(PatternValue.None, fill.PatternFill);
             fill.SetColor(color, fillType);
             Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor);
-            Assert.Equal(PatternValue.solid, fill.PatternFill);
+            Assert.Equal(PatternValue.Solid, fill.PatternFill);
             Assert.Equal(expectedForeground, fill.ForegroundColor);
             Assert.Equal(expectedBackground, fill.BackgroundColor);
         }
@@ -278,7 +278,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void EqualsTest2d()
         {
             Fill style2 = (Fill)exampleStyle.Copy();
-            style2.PatternFill = PatternValue.solid;
+            style2.PatternFill = PatternValue.Solid;
             Assert.False(exampleStyle.Equals(style2));
         }
 

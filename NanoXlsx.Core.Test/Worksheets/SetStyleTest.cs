@@ -589,7 +589,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
                 }
                 if (createdCells != null && createdCells.Contains(address.GetAddress()))
                 {
-                    Assert.Equal(Cell.CellType.EMPTY, worksheet.Cells[address.GetAddress()].DataType);
+                    Assert.Equal(Cell.CellType.Empty, worksheet.Cells[address.GetAddress()].DataType);
                 }
             }
         }
@@ -608,7 +608,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             List<string> addresses = TestUtils.SplitValuesAsList(addressString);
             foreach (string address in addresses)
             {
-                Cell cell = new Cell(sample, Cell.CellType.DEFAULT);
+                Cell cell = new Cell(sample, Cell.CellType.Default);
                 worksheet.AddCell(cell, address, style);
             }
         }

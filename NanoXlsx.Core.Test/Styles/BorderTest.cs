@@ -14,17 +14,17 @@ namespace NanoXLSX.Test.Core.StyleTest
         {
             exampleStyle = new Border();
             exampleStyle.BottomColor = "11001100";
-            exampleStyle.BottomStyle = StyleValue.dashDot;
+            exampleStyle.BottomStyle = StyleValue.DashDot;
             exampleStyle.DiagonalColor = "8877AA00";
             exampleStyle.DiagonalDown = true;
-            exampleStyle.DiagonalStyle = StyleValue.thick;
+            exampleStyle.DiagonalStyle = StyleValue.Thick;
             exampleStyle.DiagonalUp = true;
             exampleStyle.LeftColor = "9911DD00";
-            exampleStyle.LeftStyle = StyleValue.mediumDashDotDot;
+            exampleStyle.LeftStyle = StyleValue.MediumDashDotDot;
             exampleStyle.RightColor = "FF00AA00";
-            exampleStyle.RightStyle = StyleValue.dashDotDot;
+            exampleStyle.RightStyle = StyleValue.DashDotDot;
             exampleStyle.TopColor = "22222200";
-            exampleStyle.TopStyle = StyleValue.dashed;
+            exampleStyle.TopStyle = StyleValue.Dashed;
         }
 
         [Theory(DisplayName = "Test of the get and set function of the BottomColor property")]
@@ -51,20 +51,20 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the get and set function of the BottomStyle property")]
-        [InlineData(StyleValue.dashDot)]
-        [InlineData(StyleValue.dashDotDot)]
-        [InlineData(StyleValue.dashed)]
-        [InlineData(StyleValue.dotted)]
-        [InlineData(StyleValue.hair)]
-        [InlineData(StyleValue.medium)]
-        [InlineData(StyleValue.mediumDashDot)]
-        [InlineData(StyleValue.mediumDashDotDot)]
-        [InlineData(StyleValue.mediumDashed)]
-        [InlineData(StyleValue.none)]
-        [InlineData(StyleValue.slantDashDot)]
-        [InlineData(StyleValue.s_double)]
-        [InlineData(StyleValue.thick)]
-        [InlineData(StyleValue.thin)]
+        [InlineData(StyleValue.DashDot)]
+        [InlineData(StyleValue.DashDotDot)]
+        [InlineData(StyleValue.Dashed)]
+        [InlineData(StyleValue.Dotted)]
+        [InlineData(StyleValue.Hair)]
+        [InlineData(StyleValue.Medium)]
+        [InlineData(StyleValue.MediumDashDot)]
+        [InlineData(StyleValue.MediumDashDotDot)]
+        [InlineData(StyleValue.MediumDashed)]
+        [InlineData(StyleValue.None)]
+        [InlineData(StyleValue.SlantDashDot)]
+        [InlineData(StyleValue.Double)]
+        [InlineData(StyleValue.Thick)]
+        [InlineData(StyleValue.Thin)]
         public void BottomStyleTest(StyleValue value)
         {
             Border border = new Border();
@@ -97,20 +97,20 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the get and set function of the DiagonalStyle property")]
-        [InlineData(StyleValue.dashDot)]
-        [InlineData(StyleValue.dashDotDot)]
-        [InlineData(StyleValue.dashed)]
-        [InlineData(StyleValue.dotted)]
-        [InlineData(StyleValue.hair)]
-        [InlineData(StyleValue.medium)]
-        [InlineData(StyleValue.mediumDashDot)]
-        [InlineData(StyleValue.mediumDashDotDot)]
-        [InlineData(StyleValue.mediumDashed)]
-        [InlineData(StyleValue.none)]
-        [InlineData(StyleValue.slantDashDot)]
-        [InlineData(StyleValue.s_double)]
-        [InlineData(StyleValue.thick)]
-        [InlineData(StyleValue.thin)]
+        [InlineData(StyleValue.DashDot)]
+        [InlineData(StyleValue.DashDotDot)]
+        [InlineData(StyleValue.Dashed)]
+        [InlineData(StyleValue.Dotted)]
+        [InlineData(StyleValue.Hair)]
+        [InlineData(StyleValue.Medium)]
+        [InlineData(StyleValue.MediumDashDot)]
+        [InlineData(StyleValue.MediumDashDotDot)]
+        [InlineData(StyleValue.MediumDashed)]
+        [InlineData(StyleValue.None)]
+        [InlineData(StyleValue.SlantDashDot)]
+        [InlineData(StyleValue.Double)]
+        [InlineData(StyleValue.Thick)]
+        [InlineData(StyleValue.Thin)]
         public void DiagonalStyleTest(StyleValue value)
         {
             Border border = new Border();
@@ -143,20 +143,20 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the get and set function of the LeftColor property")]
-        [InlineData(StyleValue.dashDot)]
-        [InlineData(StyleValue.dashDotDot)]
-        [InlineData(StyleValue.dashed)]
-        [InlineData(StyleValue.dotted)]
-        [InlineData(StyleValue.hair)]
-        [InlineData(StyleValue.medium)]
-        [InlineData(StyleValue.mediumDashDot)]
-        [InlineData(StyleValue.mediumDashDotDot)]
-        [InlineData(StyleValue.mediumDashed)]
-        [InlineData(StyleValue.none)]
-        [InlineData(StyleValue.slantDashDot)]
-        [InlineData(StyleValue.s_double)]
-        [InlineData(StyleValue.thick)]
-        [InlineData(StyleValue.thin)]
+        [InlineData(StyleValue.DashDot)]
+        [InlineData(StyleValue.DashDotDot)]
+        [InlineData(StyleValue.Dashed)]
+        [InlineData(StyleValue.Dotted)]
+        [InlineData(StyleValue.Hair)]
+        [InlineData(StyleValue.Medium)]
+        [InlineData(StyleValue.MediumDashDot)]
+        [InlineData(StyleValue.MediumDashDotDot)]
+        [InlineData(StyleValue.MediumDashed)]
+        [InlineData(StyleValue.None)]
+        [InlineData(StyleValue.SlantDashDot)]
+        [InlineData(StyleValue.Double)]
+        [InlineData(StyleValue.Thick)]
+        [InlineData(StyleValue.Thin)]
         public void LeftStyleTest(StyleValue value)
         {
             Border border = new Border();
@@ -189,20 +189,20 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the get and set function of the RightStyle property")]
-        [InlineData(StyleValue.dashDot)]
-        [InlineData(StyleValue.dashDotDot)]
-        [InlineData(StyleValue.dashed)]
-        [InlineData(StyleValue.dotted)]
-        [InlineData(StyleValue.hair)]
-        [InlineData(StyleValue.medium)]
-        [InlineData(StyleValue.mediumDashDot)]
-        [InlineData(StyleValue.mediumDashDotDot)]
-        [InlineData(StyleValue.mediumDashed)]
-        [InlineData(StyleValue.none)]
-        [InlineData(StyleValue.slantDashDot)]
-        [InlineData(StyleValue.s_double)]
-        [InlineData(StyleValue.thick)]
-        [InlineData(StyleValue.thin)]
+        [InlineData(StyleValue.DashDot)]
+        [InlineData(StyleValue.DashDotDot)]
+        [InlineData(StyleValue.Dashed)]
+        [InlineData(StyleValue.Dotted)]
+        [InlineData(StyleValue.Hair)]
+        [InlineData(StyleValue.Medium)]
+        [InlineData(StyleValue.MediumDashDot)]
+        [InlineData(StyleValue.MediumDashDotDot)]
+        [InlineData(StyleValue.MediumDashed)]
+        [InlineData(StyleValue.None)]
+        [InlineData(StyleValue.SlantDashDot)]
+        [InlineData(StyleValue.Double)]
+        [InlineData(StyleValue.Thick)]
+        [InlineData(StyleValue.Thin)]
         public void RightStyleTest(StyleValue value)
         {
             Border border = new Border();
@@ -235,20 +235,20 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the get and set function of the TopStyle property")]
-        [InlineData(StyleValue.dashDot)]
-        [InlineData(StyleValue.dashDotDot)]
-        [InlineData(StyleValue.dashed)]
-        [InlineData(StyleValue.dotted)]
-        [InlineData(StyleValue.hair)]
-        [InlineData(StyleValue.medium)]
-        [InlineData(StyleValue.mediumDashDot)]
-        [InlineData(StyleValue.mediumDashDotDot)]
-        [InlineData(StyleValue.mediumDashed)]
-        [InlineData(StyleValue.none)]
-        [InlineData(StyleValue.slantDashDot)]
-        [InlineData(StyleValue.s_double)]
-        [InlineData(StyleValue.thick)]
-        [InlineData(StyleValue.thin)]
+        [InlineData(StyleValue.DashDot)]
+        [InlineData(StyleValue.DashDotDot)]
+        [InlineData(StyleValue.Dashed)]
+        [InlineData(StyleValue.Dotted)]
+        [InlineData(StyleValue.Hair)]
+        [InlineData(StyleValue.Medium)]
+        [InlineData(StyleValue.MediumDashDot)]
+        [InlineData(StyleValue.MediumDashDotDot)]
+        [InlineData(StyleValue.MediumDashed)]
+        [InlineData(StyleValue.None)]
+        [InlineData(StyleValue.SlantDashDot)]
+        [InlineData(StyleValue.Double)]
+        [InlineData(StyleValue.Thick)]
+        [InlineData(StyleValue.Thin)]
         public void TopStyleTest(StyleValue value)
         {
             Border border = new Border();
@@ -283,7 +283,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void EqualsTest2b()
         {
             Border style2 = (Border)exampleStyle.Copy();
-            style2.BottomStyle = StyleValue.s_double;
+            style2.BottomStyle = StyleValue.Double;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -299,7 +299,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void EqualsTest2d()
         {
             Border style2 = (Border)exampleStyle.Copy();
-            style2.TopStyle = StyleValue.s_double;
+            style2.TopStyle = StyleValue.Double;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -315,7 +315,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void EqualsTest2f()
         {
             Border style2 = (Border)exampleStyle.Copy();
-            style2.LeftStyle = StyleValue.s_double;
+            style2.LeftStyle = StyleValue.Double;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -331,7 +331,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void EqualsTest2h()
         {
             Border style2 = (Border)exampleStyle.Copy();
-            style2.RightStyle = StyleValue.s_double;
+            style2.RightStyle = StyleValue.Double;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -347,7 +347,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void EqualsTest2j()
         {
             Border style2 = (Border)exampleStyle.Copy();
-            style2.DiagonalStyle = StyleValue.s_double;
+            style2.DiagonalStyle = StyleValue.Double;
             Assert.False(exampleStyle.Equals(style2));
         }
 

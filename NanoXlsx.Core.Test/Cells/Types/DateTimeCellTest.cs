@@ -21,8 +21,8 @@ namespace NanoXLSX.Test.Core.Cells.Types
         {
             // Date is hard to parametrize, therefore hardcoded
             DateTime defaultDateTime = new DateTime(2020, 11, 1, 11, 22, 13, 99);
-            utils.AssertCellCreation<DateTime>(defaultDateTime, new DateTime(1900, 1, 1), CellType.DATE, (current, other) => { return current.Equals(other); });
-            utils.AssertCellCreation<DateTime>(defaultDateTime, new DateTime(9999, 12, 31, 23, 59, 59), CellType.DATE, (current, other) => { return current.Equals(other); });
+            utils.AssertCellCreation<DateTime>(defaultDateTime, new DateTime(1900, 1, 1), CellType.Date, (current, other) => { return current.Equals(other); });
+            utils.AssertCellCreation<DateTime>(defaultDateTime, new DateTime(9999, 12, 31, 23, 59, 59), CellType.Date, (current, other) => { return current.Equals(other); });
         }
 
 
@@ -31,8 +31,8 @@ namespace NanoXLSX.Test.Core.Cells.Types
         {
             // TimeSpan is hard to parametrize, therefore hardcoded
             TimeSpan defaultTime = new TimeSpan(0, 22, 11, 7, 135);
-            utils.AssertCellCreation<TimeSpan>(defaultTime, new TimeSpan(0, 0, 0), CellType.TIME, (current, other) => { return current.Equals(other); });
-            utils.AssertCellCreation<TimeSpan>(defaultTime, new TimeSpan(2958465, 23, 59, 59, 999), CellType.TIME, (current, other) => { return current.Equals(other); });
+            utils.AssertCellCreation<TimeSpan>(defaultTime, new TimeSpan(0, 0, 0), CellType.Time, (current, other) => { return current.Equals(other); });
+            utils.AssertCellCreation<TimeSpan>(defaultTime, new TimeSpan(2958465, 23, 59, 59, 999), CellType.Time, (current, other) => { return current.Equals(other); });
         }
 
         [Fact(DisplayName = "Test of the DateTime comparison method on cells")]

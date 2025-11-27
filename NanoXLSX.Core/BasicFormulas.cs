@@ -285,7 +285,7 @@ namespace NanoXLSX
             if (exactMatch)
             { arg4 = "TRUE"; }
             else { arg4 = "FALSE"; }
-            return new Cell("VLOOKUP(" + arg1 + "," + arg2 + "," + arg3 + "," + arg4 + ")", Cell.CellType.FORMULA);
+            return new Cell("VLOOKUP(" + arg1 + "," + arg2 + "," + arg3 + "," + arg4 + ")", Cell.CellType.Formula);
         }
 
 
@@ -311,7 +311,7 @@ namespace NanoXLSX
             if (range.StartAddress.Equals(range.EndAddress))
             { arg1 = prefix + range.StartAddress; }
             else { arg1 = prefix + range; }
-            return new Cell(functionName + "(" + arg1 + arg2 + ")", Cell.CellType.FORMULA);
+            return new Cell(functionName + "(" + arg1 + arg2 + ")", Cell.CellType.Formula);
         }
     }
 

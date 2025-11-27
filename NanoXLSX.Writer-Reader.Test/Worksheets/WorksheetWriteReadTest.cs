@@ -609,7 +609,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         {
             Workbook workbook = new Workbook("Sheet1");
             Style xfStyle = new Style();
-            xfStyle.CurrentCellXf.Alignment = TextBreakValue.shrinkToFit;
+            xfStyle.CurrentCellXf.Alignment = TextBreakValue.ShrinkToFit;
             Style style = BasicStyles.Bold.Append(xfStyle);
             workbook.CurrentWorksheet.AddCell("", "A1", style);
             workbook.CurrentWorksheet.AddCell("B", "A2", style);
@@ -620,11 +620,11 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
             Assert.False(workbook.CurrentWorksheet.Cells["A3"].CellStyle.CurrentCellXf.ForceApplyAlignment);
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, 0);
             Assert.True(givenWorksheet.Cells["A1"].CellStyle.CurrentCellXf.ForceApplyAlignment);
-            Assert.Equal(TextBreakValue.shrinkToFit, givenWorksheet.Cells["A1"].CellStyle.CurrentCellXf.Alignment);
+            Assert.Equal(TextBreakValue.ShrinkToFit, givenWorksheet.Cells["A1"].CellStyle.CurrentCellXf.Alignment);
             Assert.True(givenWorksheet.Cells["A2"].CellStyle.CurrentCellXf.ForceApplyAlignment);
-            Assert.Equal(TextBreakValue.shrinkToFit, givenWorksheet.Cells["A2"].CellStyle.CurrentCellXf.Alignment);
+            Assert.Equal(TextBreakValue.ShrinkToFit, givenWorksheet.Cells["A2"].CellStyle.CurrentCellXf.Alignment);
             Assert.True(givenWorksheet.Cells["A3"].CellStyle.CurrentCellXf.ForceApplyAlignment);
-            Assert.Equal(TextBreakValue.shrinkToFit, givenWorksheet.Cells["A3"].CellStyle.CurrentCellXf.Alignment);
+            Assert.Equal(TextBreakValue.ShrinkToFit, givenWorksheet.Cells["A3"].CellStyle.CurrentCellXf.Alignment);
         }
 
 

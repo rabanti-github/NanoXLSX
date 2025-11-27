@@ -24,7 +24,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default format number as constant
         /// </summary>
-        public static readonly FormatNumber DefaultNumber = FormatNumber.none;
+        public static readonly FormatNumber DefaultNumber = FormatNumber.None;
 
         #endregion
         private int customFormatID;
@@ -37,74 +37,72 @@ namespace NanoXLSX.Styles
         /// whereas the officially listed ones are implicitly used and not declared in the style document</remarks>
         public enum FormatNumber
         {
-#pragma warning disable CA1707 // Supperss: Identifiers should not contain underscores
             /// <summary>No format / Default</summary>
-            none = 0,
+            None = 0,
             /// <summary>Format: 0</summary>
-            format_1 = 1,
+            Format1 = 1,
             /// <summary>Format: 0.00</summary>
-            format_2 = 2,
+            Format2 = 2,
             /// <summary>Format: #,##0</summary>
-            format_3 = 3,
+            Format3 = 3,
             /// <summary>Format: #,##0.00</summary>
-            format_4 = 4,
+            Format4 = 4,
             /// <summary>Format: $#,##0_);($#,##0)</summary>
-            format_5 = 5,
+            Format5 = 5,
             /// <summary>Format: $#,##0_);[Red]($#,##0)</summary>
-            format_6 = 6,
+            Format6 = 6,
             /// <summary>Format: $#,##0.00_);($#,##0.00)</summary>
-            format_7 = 7,
+            Format7 = 7,
             /// <summary>Format: $#,##0.00_);[Red]($#,##0.00)</summary>
-            format_8 = 8,
+            Format8 = 8,
             /// <summary>Format: 0%</summary>
-            format_9 = 9,
+            Format9 = 9,
             /// <summary>Format: 0.00%</summary>
-            format_10 = 10,
+            Format10 = 10,
             /// <summary>Format: 0.00E+00</summary>
-            format_11 = 11,
+            Format11 = 11,
             /// <summary>Format: # ?/?</summary>
-            format_12 = 12,
+            Format12 = 12,
             /// <summary>Format: # ??/??</summary>
-            format_13 = 13,
+            Format13 = 13,
             /// <summary>Format: m/d/yyyy</summary>
-            format_14 = 14,
+            Format14 = 14,
             /// <summary>Format: d-mmm-yy</summary>
-            format_15 = 15,
+            Format15 = 15,
             /// <summary>Format: d-mmm</summary>
-            format_16 = 16,
+            Format16 = 16,
             /// <summary>Format: mmm-yy</summary>
-            format_17 = 17,
+            Format17 = 17,
             /// <summary>Format: mm AM/PM</summary>
-            format_18 = 18,
+            Format18 = 18,
             /// <summary>Format: h:mm:ss AM/PM</summary>
-            format_19 = 19,
+            Format19 = 19,
             /// <summary>Format: h:mm</summary>
-            format_20 = 20,
+            Format20 = 20,
             /// <summary>Format: h:mm:ss</summary>
-            format_21 = 21,
+            Format21 = 21,
             /// <summary>Format: m/d/yyyy h:mm</summary>
-            format_22 = 22,
+            Format22 = 22,
             /// <summary>Format: #,##0_);(#,##0)</summary>
-            format_37 = 37,
+            Format37 = 37,
             /// <summary>Format: #,##0_);[Red](#,##0)</summary>
-            format_38 = 38,
+            Format38 = 38,
             /// <summary>Format: #,##0.00_);(#,##0.00)</summary>
-            format_39 = 39,
+            Format39 = 39,
             /// <summary>Format: #,##0.00_);[Red](#,##0.00)</summary>
-            format_40 = 40,
+            Format40 = 40,
             /// <summary>Format: mm:ss</summary>
-            format_45 = 45,
+            Format45 = 45,
             /// <summary>Format: [h]:mm:ss</summary>
-            format_46 = 46,
+            Format46 = 46,
             /// <summary>Format: mm:ss.0</summary>
-            format_47 = 47,
+            Format47 = 47,
             /// <summary>Format: ##0.0E+0</summary>
-            format_48 = 48,
+            Format48 = 48,
             /// <summary>Format: #</summary>
-            format_49 = 49,
+            Format49 = 49,
             /// <summary>Custom Format (ID 164 and higher)</summary>
-            custom = 164,
-#pragma warning restore CA1707
+            Custom = 164,
         }
 
         /// <summary>
@@ -181,7 +179,7 @@ namespace NanoXLSX.Styles
         {
             get
             {
-                if (Number == FormatNumber.custom)
+                if (Number == FormatNumber.Custom)
                 { return true; }
                 else { return false; }
             }
@@ -206,82 +204,6 @@ namespace NanoXLSX.Styles
         #endregion
 
         #region methods
-
-        /// <summary>
-        /// Determines whether a defined style format number represents a date (or date and time)
-        /// </summary>
-        /// <param name="number">Format number to check</param>
-        /// <returns>True if the format represents a date, otherwise false</returns>
-        /// \remark <remarks>Custom number formats (higher than 164), as well as not officially defined numbers (below 164) are currently not considered during the check and will return false</remarks>
-        public static bool IsDateFormat(FormatNumber number)
-        {
-            switch (number)
-            {
-                case FormatNumber.format_14:
-                case FormatNumber.format_15:
-                case FormatNumber.format_16:
-                case FormatNumber.format_17:
-                case FormatNumber.format_22:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        /// <summary>
-        /// Determines whether a defined style format number represents a time)
-        /// </summary>
-        /// <param name="number">Format number to check</param>
-        /// <returns>True if the format represents a time, otherwise false</returns>
-        /// \remark <remarks>Custom number formats (higher than 164), as well as not officially defined numbers (below 164) are currently not considered during the check and will return false</remarks>
-        public static bool IsTimeFormat(FormatNumber number)
-        {
-            switch (number)
-            {
-                case FormatNumber.format_18:
-                case FormatNumber.format_19:
-                case FormatNumber.format_20:
-                case FormatNumber.format_21:
-                case FormatNumber.format_45:
-                case FormatNumber.format_46:
-                case FormatNumber.format_47:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        /// <summary>
-        /// Tries to parse registered format numbers. If the parsing fails, it is assumed that the number is a custom format number (164 or higher) and 'custom' is returned 
-        /// </summary>
-        /// <param name="number">Raw number to parse</param>
-        /// <param name="formatNumber">Out parameter with the parsed format enum value. If parsing failed, 'custom' will be returned</param>
-        /// <returns>Format range. Will return 'invalid' if out of any range (e.g. negative value)</returns>
-        public static FormatRange TryParseFormatNumber(int number, out FormatNumber formatNumber)
-        {
-
-            bool isDefined = System.Enum.IsDefined(typeof(FormatNumber), number);
-            if (isDefined)
-            {
-                formatNumber = (FormatNumber)number;
-                return FormatRange.DefinedFormat;
-            }
-            if (number < 0)
-            {
-                formatNumber = FormatNumber.none;
-                return FormatRange.Invalid;
-            }
-            else if (number > 0 && number < CustomFormatStartNumber)
-            {
-                formatNumber = FormatNumber.none;
-                return FormatRange.Undefined;
-            }
-            else
-            {
-                formatNumber = FormatNumber.custom;
-                return FormatRange.CustomFormat;
-            }
-        }
 
         /// <summary>
         /// Override toString method
@@ -355,5 +277,86 @@ namespace NanoXLSX.Styles
         }
 
         #endregion
+
+        #region staticMethods
+
+        /// <summary>
+        /// Determines whether a defined style format number represents a date (or date and time)
+        /// </summary>
+        /// <param name="number">Format number to check</param>
+        /// <returns>True if the format represents a date, otherwise false</returns>
+        /// \remark <remarks>Custom number formats (higher than 164), as well as not officially defined numbers (below 164) are currently not considered during the check and will return false</remarks>
+        public static bool IsDateFormat(FormatNumber number)
+        {
+            switch (number)
+            {
+                case FormatNumber.Format14:
+                case FormatNumber.Format15:
+                case FormatNumber.Format16:
+                case FormatNumber.Format17:
+                case FormatNumber.Format22:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether a defined style format number represents a time)
+        /// </summary>
+        /// <param name="number">Format number to check</param>
+        /// <returns>True if the format represents a time, otherwise false</returns>
+        /// \remark <remarks>Custom number formats (higher than 164), as well as not officially defined numbers (below 164) are currently not considered during the check and will return false</remarks>
+        public static bool IsTimeFormat(FormatNumber number)
+        {
+            switch (number)
+            {
+                case FormatNumber.Format18:
+                case FormatNumber.Format19:
+                case FormatNumber.Format20:
+                case FormatNumber.Format21:
+                case FormatNumber.Format45:
+                case FormatNumber.Format46:
+                case FormatNumber.Format47:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Tries to parse registered format numbers. If the parsing fails, it is assumed that the number is a custom format number (164 or higher) and 'custom' is returned 
+        /// </summary>
+        /// <param name="number">Raw number to parse</param>
+        /// <param name="formatNumber">Out parameter with the parsed format enum value. If parsing failed, 'custom' will be returned</param>
+        /// <returns>Format range. Will return 'invalid' if out of any range (e.g. negative value)</returns>
+        public static FormatRange TryParseFormatNumber(int number, out FormatNumber formatNumber)
+        {
+
+            bool isDefined = System.Enum.IsDefined(typeof(FormatNumber), number);
+            if (isDefined)
+            {
+                formatNumber = (FormatNumber)number;
+                return FormatRange.DefinedFormat;
+            }
+            if (number < 0)
+            {
+                formatNumber = FormatNumber.None;
+                return FormatRange.Invalid;
+            }
+            else if (number > 0 && number < CustomFormatStartNumber)
+            {
+                formatNumber = FormatNumber.None;
+                return FormatRange.Undefined;
+            }
+            else
+            {
+                formatNumber = FormatNumber.Custom;
+                return FormatRange.CustomFormat;
+            }
+        }
+
+        #endregion
+
     }
 }

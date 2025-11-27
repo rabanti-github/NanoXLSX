@@ -26,7 +26,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [InlineData("start\tend")]
         public void StringsCellTest(string value)
         {
-            utils.AssertCellCreation<string>("Initial Value", value, CellType.STRING, CompareString);
+            utils.AssertCellCreation<string>("Initial Value", value, CellType.String, CompareString);
         }
 
         [Theory(DisplayName = "Test of the string comparison method on cells")]

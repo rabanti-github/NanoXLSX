@@ -27,14 +27,14 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [InlineData(byte.MaxValue)]
         public void ByteCellTest(byte value)
         {
-            utils.AssertCellCreation<byte>(8, value, CellType.NUMBER, (current, other) => { return current.Equals(other); });
+            utils.AssertCellCreation<byte>(8, value, CellType.Number, (current, other) => { return current.Equals(other); });
         }
 
         [Fact(DisplayName = "Byte value cell test with style")]
         public void ByteCellTest2()
         {
             Style style = BasicStyles.Italic;
-            utils.AssertStyledCellCreation<byte>(0, 8, CellType.NUMBER, (current, other) => { return current.Equals(other); }, style);
+            utils.AssertStyledCellCreation<byte>(0, 8, CellType.Number, (current, other) => { return current.Equals(other); }, style);
         }
 
         [Theory(DisplayName = "Signed Byte value cell test: Test of the cell values, as well as proper modification")]
@@ -44,7 +44,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [InlineData(sbyte.MaxValue)]
         public void SByteCellTest(sbyte value)
         {
-            utils.AssertCellCreation<sbyte>(8, value, CellType.NUMBER, (current, other) => { return current.Equals(other); });
+            utils.AssertCellCreation<sbyte>(8, value, CellType.Number, (current, other) => { return current.Equals(other); });
         }
 
         [Theory(DisplayName = "Short value cell test: Test of the cell values, as well as proper modification")]
@@ -54,7 +54,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [InlineData(short.MaxValue)]
         public void ShortCellTest(short value)
         {
-            utils.AssertCellCreation<short>(-6, value, CellType.NUMBER, (current, other) => { return current.Equals(other); });
+            utils.AssertCellCreation<short>(-6, value, CellType.Number, (current, other) => { return current.Equals(other); });
         }
 
         [Theory(DisplayName = "Unsigned Short value cell test: Test of the cell values, as well as proper modification")]
@@ -64,7 +64,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [InlineData(ushort.MaxValue)]
         public void UShortCellTest(ushort value)
         {
-            utils.AssertCellCreation<ushort>(3398, value, CellType.NUMBER, (current, other) => { return current.Equals(other); });
+            utils.AssertCellCreation<ushort>(3398, value, CellType.Number, (current, other) => { return current.Equals(other); });
         }
 
         [Theory(DisplayName = "Int value cell test: Test of the cell values, as well as proper modification")]
@@ -74,7 +74,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [InlineData(int.MaxValue)]
         public void IntCellTest(int value)
         {
-            utils.AssertCellCreation<int>(99, value, CellType.NUMBER, (current, other) => { return current.Equals(other); });
+            utils.AssertCellCreation<int>(99, value, CellType.Number, (current, other) => { return current.Equals(other); });
         }
 
         [Theory(DisplayName = "Unsigned Int value cell test: Test of the cell values, as well as proper modification")]
@@ -84,7 +84,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [InlineData(uint.MaxValue)]
         public void UIntCellTest(uint value)
         {
-            utils.AssertCellCreation<uint>(98, value, CellType.NUMBER, (current, other) => { return current.Equals(other); });
+            utils.AssertCellCreation<uint>(98, value, CellType.Number, (current, other) => { return current.Equals(other); });
         }
 
         [Theory(DisplayName = "Long value cell test: Test of the cell values, as well as proper modification")]
@@ -94,7 +94,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [InlineData(long.MaxValue)]
         public void LongCellTest(long value)
         {
-            utils.AssertCellCreation<long>(-6, value, CellType.NUMBER, (current, other) => { return current.Equals(other); });
+            utils.AssertCellCreation<long>(-6, value, CellType.Number, (current, other) => { return current.Equals(other); });
         }
 
         [Theory(DisplayName = "Unsigned Long value cell test: Test of the cell values, as well as proper modification")]
@@ -104,17 +104,17 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [InlineData(ulong.MaxValue)]
         public void ULongCellTest(ulong value)
         {
-            utils.AssertCellCreation<ulong>(99, value, CellType.NUMBER, (current, other) => { return current.Equals(other); });
+            utils.AssertCellCreation<ulong>(99, value, CellType.Number, (current, other) => { return current.Equals(other); });
         }
 
         [Fact(DisplayName = "Decimal value cell test: Test of the cell values, as well as proper modification")]
         public void DecimalCellTest()
         {
             // foalt.MinValue and float.MaxValue are not constants. Test must be hardcoded
-            utils.AssertCellCreation<decimal>(-2.338m, 0, CellType.NUMBER, CompareDecimal);
-            utils.AssertCellCreation<decimal>(-2.338m, -0.0057m, CellType.NUMBER, CompareDecimal);
-            utils.AssertCellCreation<decimal>(-2.338m, decimal.MinValue, CellType.NUMBER, CompareDecimal);
-            utils.AssertCellCreation<decimal>(-2.338m, decimal.MaxValue, CellType.NUMBER, CompareDecimal);
+            utils.AssertCellCreation<decimal>(-2.338m, 0, CellType.Number, CompareDecimal);
+            utils.AssertCellCreation<decimal>(-2.338m, -0.0057m, CellType.Number, CompareDecimal);
+            utils.AssertCellCreation<decimal>(-2.338m, decimal.MinValue, CellType.Number, CompareDecimal);
+            utils.AssertCellCreation<decimal>(-2.338m, decimal.MaxValue, CellType.Number, CompareDecimal);
         }
 
 
@@ -125,7 +125,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [InlineData(float.MaxValue)]
         public void FloatCellTest(float value)
         {
-            utils.AssertCellCreation<float>(-2.338f, value, CellType.NUMBER, CompareFloat);
+            utils.AssertCellCreation<float>(-2.338f, value, CellType.Number, CompareFloat);
         }
 
         [Theory(DisplayName = "Double value cell test: Test of the cell values, as well as proper modification")]
@@ -135,7 +135,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [InlineData(double.MaxValue)]
         public void DoubleCellTest(double value)
         {
-            utils.AssertCellCreation<double>(42.778, value, CellType.NUMBER, CompareDouble);
+            utils.AssertCellCreation<double>(42.778, value, CellType.Number, CompareDouble);
         }
 
         [Theory(DisplayName = "Test of the byte comparison method on cells")]

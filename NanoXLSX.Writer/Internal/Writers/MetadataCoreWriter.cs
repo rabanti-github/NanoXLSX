@@ -5,12 +5,12 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
+using System;
 
 namespace NanoXLSX.Internal.Writers
 {

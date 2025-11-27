@@ -698,7 +698,7 @@ namespace NanoXLSX
             }
             else
             {
-                c = new Cell(value, Cell.CellType.DEFAULT, column, row);
+                c = new Cell(value, Cell.CellType.Default, column, row);
             }
             return c;
         }
@@ -795,7 +795,7 @@ namespace NanoXLSX
             int column;
             int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, column, row);
+            Cell c = new Cell(formula, Cell.CellType.Formula, column, row);
             AddNextCell(c, false, null);
         }
 
@@ -813,7 +813,7 @@ namespace NanoXLSX
             int column;
             int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, column, row);
+            Cell c = new Cell(formula, Cell.CellType.Formula, column, row);
             AddNextCell(c, false, style);
         }
 
@@ -826,7 +826,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public void AddCellFormula(string formula, int columnNumber, int rowNumber)
         {
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, columnNumber, rowNumber);
+            Cell c = new Cell(formula, Cell.CellType.Formula, columnNumber, rowNumber);
             AddNextCell(c, false, null);
         }
 
@@ -840,7 +840,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public void AddCellFormula(string formula, int columnNumber, int rowNumber, Style style)
         {
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, columnNumber, rowNumber);
+            Cell c = new Cell(formula, Cell.CellType.Formula, columnNumber, rowNumber);
             AddNextCell(c, false, style);
         }
 
@@ -851,7 +851,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Trows a RangeException if the next cell is out of range (on row or column)</exception>
         public void AddNextCellFormula(string formula)
         {
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, currentColumnNumber, currentRowNumber);
+            Cell c = new Cell(formula, Cell.CellType.Formula, currentColumnNumber, currentRowNumber);
             AddNextCell(c, true, null);
         }
 
@@ -863,7 +863,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Trows a RangeException if the next cell is out of range (on row or column)</exception>
         public void AddNextCellFormula(string formula, Style style)
         {
-            Cell c = new Cell(formula, Cell.CellType.FORMULA, currentColumnNumber, currentRowNumber);
+            Cell c = new Cell(formula, Cell.CellType.Formula, currentColumnNumber, currentRowNumber);
             AddNextCell(c, true, style);
         }
 
@@ -1439,7 +1439,7 @@ namespace NanoXLSX
                 for (int i = 0; i < numberOfNewRows; i++)
                 {
                     Address newAddress = new Address(cell.CellAddress2.Column, cell.CellAddress2.Row + 1 + i);
-                    Cell newCell = new Cell(null, Cell.CellType.EMPTY, newAddress);
+                    Cell newCell = new Cell(null, Cell.CellType.Empty, newAddress);
                     if (cell.CellStyle != null)
                         newCell.SetStyle(cell.CellStyle);
                     this.Cells.Add(newAddress.GetAddress(), newCell);
@@ -1490,7 +1490,7 @@ namespace NanoXLSX
                 for (int i = 0; i < numberOfNewColumns; i++)
                 {
                     Address newAddress = new Address(cell.CellAddress2.Column + 1 + i, cell.CellAddress2.Row);
-                    Cell newCell = new Cell(null, Cell.CellType.EMPTY, newAddress);
+                    Cell newCell = new Cell(null, Cell.CellType.Empty, newAddress);
                     if (cell.CellStyle != null)
                         newCell.SetStyle(cell.CellStyle);
                     this.Cells.Add(newAddress.GetAddress(), newCell);
@@ -1930,7 +1930,7 @@ namespace NanoXLSX
                     if (!Cells.ContainsKey(address.GetAddress()))
                     {
                         cell = new Cell();
-                        cell.DataType = Cell.CellType.EMPTY;
+                        cell.DataType = Cell.CellType.Empty;
                         cell.RowNumber = address.Row;
                         cell.ColumnNumber = address.Column;
                         AddCell(cell, cell.ColumnNumber, cell.RowNumber);
@@ -1941,7 +1941,7 @@ namespace NanoXLSX
                     }
                     if (pos != 0)
                     {
-                        cell.DataType = Cell.CellType.EMPTY;
+                        cell.DataType = Cell.CellType.Empty;
                         if (cell.CellStyle == null)
                         {
                             cell.SetStyle(mergeStyle);

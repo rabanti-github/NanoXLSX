@@ -27,14 +27,14 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         {
             Style style = new Style();
             style.CurrentBorder.DiagonalColor = color;
-            style.CurrentBorder.DiagonalStyle = StyleValue.dashDot;
+            style.CurrentBorder.DiagonalStyle = StyleValue.DashDot;
             style.CurrentBorder.DiagonalUp = diagonalUp;
             style.CurrentBorder.DiagonalDown = diagonalDown;
 
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.DiagonalColor);
-            Assert.Equal(StyleValue.dashDot, cell.CellStyle.CurrentBorder.DiagonalStyle);
+            Assert.Equal(StyleValue.DashDot, cell.CellStyle.CurrentBorder.DiagonalStyle);
             Assert.Equal(diagonalUp, cell.CellStyle.CurrentBorder.DiagonalUp);
             Assert.Equal(diagonalDown, cell.CellStyle.CurrentBorder.DiagonalDown);
         }
@@ -49,12 +49,12 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         {
             Style style = new Style();
             style.CurrentBorder.TopColor = color;
-            style.CurrentBorder.TopStyle = StyleValue.s_double;
+            style.CurrentBorder.TopStyle = StyleValue.Double;
 
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.TopColor);
-            Assert.Equal(StyleValue.s_double, cell.CellStyle.CurrentBorder.TopStyle);
+            Assert.Equal(StyleValue.Double, cell.CellStyle.CurrentBorder.TopStyle);
         }
 
 
@@ -68,12 +68,12 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         {
             Style style = new Style();
             style.CurrentBorder.BottomColor = color;
-            style.CurrentBorder.BottomStyle = StyleValue.thin;
+            style.CurrentBorder.BottomStyle = StyleValue.Thin;
 
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.BottomColor);
-            Assert.Equal(StyleValue.thin, cell.CellStyle.CurrentBorder.BottomStyle);
+            Assert.Equal(StyleValue.Thin, cell.CellStyle.CurrentBorder.BottomStyle);
         }
 
         [Theory(DisplayName = "Test of the 'left' value when writing and reading a Border style")]
@@ -86,12 +86,12 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         {
             Style style = new Style();
             style.CurrentBorder.LeftColor = color;
-            style.CurrentBorder.LeftStyle = StyleValue.dashDotDot;
+            style.CurrentBorder.LeftStyle = StyleValue.DashDotDot;
 
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.LeftColor);
-            Assert.Equal(StyleValue.dashDotDot, cell.CellStyle.CurrentBorder.LeftStyle);
+            Assert.Equal(StyleValue.DashDotDot, cell.CellStyle.CurrentBorder.LeftStyle);
         }
 
         [Theory(DisplayName = "Test of the 'right' value when writing and reading a Border style")]
@@ -104,29 +104,29 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         {
             Style style = new Style();
             style.CurrentBorder.RightColor = color;
-            style.CurrentBorder.RightStyle = StyleValue.dashed;
+            style.CurrentBorder.RightStyle = StyleValue.Dashed;
 
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.RightColor);
-            Assert.Equal(StyleValue.dashed, cell.CellStyle.CurrentBorder.RightStyle);
+            Assert.Equal(StyleValue.Dashed, cell.CellStyle.CurrentBorder.RightStyle);
         }
 
         [Theory(DisplayName = "Test of the 'styleValue' property when writing and reading a Font style")]
-        [InlineData(StyleValue.dashDotDot, BorderDirection.Bottom)]
-        [InlineData(StyleValue.dashDot, BorderDirection.Top)]
-        [InlineData(StyleValue.dashed, BorderDirection.Left)]
-        [InlineData(StyleValue.dotted, BorderDirection.Right)]
-        [InlineData(StyleValue.hair, BorderDirection.Diagonal)]
-        [InlineData(StyleValue.medium, BorderDirection.Bottom)]
-        [InlineData(StyleValue.mediumDashDot, BorderDirection.Top)]
-        [InlineData(StyleValue.mediumDashDotDot, BorderDirection.Left)]
-        [InlineData(StyleValue.mediumDashed, BorderDirection.Right)]
-        [InlineData(StyleValue.slantDashDot, BorderDirection.Diagonal)]
-        [InlineData(StyleValue.thin, BorderDirection.Bottom)]
-        [InlineData(StyleValue.s_double, BorderDirection.Top)]
-        [InlineData(StyleValue.thick, BorderDirection.Left)]
-        [InlineData(StyleValue.none, BorderDirection.Right)]
+        [InlineData(StyleValue.DashDotDot, BorderDirection.Bottom)]
+        [InlineData(StyleValue.DashDot, BorderDirection.Top)]
+        [InlineData(StyleValue.Dashed, BorderDirection.Left)]
+        [InlineData(StyleValue.Dotted, BorderDirection.Right)]
+        [InlineData(StyleValue.Hair, BorderDirection.Diagonal)]
+        [InlineData(StyleValue.Medium, BorderDirection.Bottom)]
+        [InlineData(StyleValue.MediumDashDot, BorderDirection.Top)]
+        [InlineData(StyleValue.MediumDashDotDot, BorderDirection.Left)]
+        [InlineData(StyleValue.MediumDashed, BorderDirection.Right)]
+        [InlineData(StyleValue.SlantDashDot, BorderDirection.Diagonal)]
+        [InlineData(StyleValue.Thin, BorderDirection.Bottom)]
+        [InlineData(StyleValue.Double, BorderDirection.Top)]
+        [InlineData(StyleValue.Thick, BorderDirection.Left)]
+        [InlineData(StyleValue.None, BorderDirection.Right)]
         public void BorderStyleTest(StyleValue styleValue, BorderDirection direction)
         {
             Style style = new Style();

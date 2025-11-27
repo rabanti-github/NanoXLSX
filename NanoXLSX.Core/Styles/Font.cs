@@ -56,12 +56,12 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default font scheme
         /// </summary>
-        public static readonly SchemeValue DefaultFontScheme = SchemeValue.minor;
+        public static readonly SchemeValue DefaultFontScheme = SchemeValue.Minor;
 
         /// <summary>
         /// Default vertical alignment
         /// </summary>
-        public static readonly VerticalTextAlignValue DefaultVerticalAlign = VerticalTextAlignValue.none;
+        public static readonly VerticalTextAlignValue DefaultVerticalAlign = VerticalTextAlignValue.None;
         #endregion
 
         #region enums
@@ -71,11 +71,11 @@ namespace NanoXLSX.Styles
         public enum SchemeValue
         {
             /// <summary>Font scheme is major</summary>
-            major,
+            Major,
             /// <summary>Font scheme is minor (default)</summary>
-            minor,
+            Minor,
             /// <summary>No Font scheme is used</summary>
-            none,
+            None,
         }
         /// <summary>
         /// Enum for the vertical alignment of the text from baseline, used by the <see cref="Font"/> class
@@ -84,11 +84,11 @@ namespace NanoXLSX.Styles
         {
             // baseline, // Maybe not used in Excel
             /// <summary>Text will be rendered as subscript</summary>
-            subscript,
+            Subscript,
             /// <summary>Text will be rendered as superscript</summary>
-            superscript,
+            Superscript,
             /// <summary>Text will be rendered normal</summary>
-            none,
+            None,
         }
 
         /// <summary>
@@ -97,17 +97,17 @@ namespace NanoXLSX.Styles
         public enum UnderlineValue
         {
             /// <summary>Text contains a single underline</summary>
-#pragma warning disable CA1707 // Suppress: Identifiers should not contain underscores
-            u_single,
+#pragma warning disable CA1720 // Suppress: Identifiers should not contain type
+            Single,
             /// <summary>Text contains a double underline</summary>
-            u_double,
+            Double,
 #pragma warning restore CA1707
             /// <summary>Text contains a single, accounting underline</summary>
-            singleAccounting,
+            SingleAccounting,
             /// <summary>Text contains a double, accounting underline</summary>
-            doubleAccounting,
+            DoubleAccounting,
             /// <summary>Text contains no underline (default)</summary>
-            none,
+            None,
         }
 
         /// <summary>
@@ -294,10 +294,10 @@ namespace NanoXLSX.Styles
         [Append]
         public bool Strike { get; set; }
         /// <summary>
-        /// Gets or sets the underline style of the font. If set to <see cref="UnderlineValue.none">none</see> no underline will be applied (default)
+        /// Gets or sets the underline style of the font. If set to <see cref="UnderlineValue.None">none</see> no underline will be applied (default)
         /// </summary>
         [Append]
-        public UnderlineValue Underline { get; set; } = UnderlineValue.none;
+        public UnderlineValue Underline { get; set; } = UnderlineValue.None;
 
         /// <summary>
         /// Gets or sets the char set of the Font
@@ -442,15 +442,15 @@ namespace NanoXLSX.Styles
             }
             if (name.Equals(DefaultMinorFont, System.StringComparison.Ordinal))
             {
-                Scheme = SchemeValue.minor;
+                Scheme = SchemeValue.Minor;
             }
             else if (name.Equals(DefaultMajorFont, System.StringComparison.Ordinal))
             {
-                Scheme = SchemeValue.major;
+                Scheme = SchemeValue.Major;
             }
             else
             {
-                Scheme = SchemeValue.none;
+                Scheme = SchemeValue.None;
             }
         }
 
@@ -562,5 +562,68 @@ namespace NanoXLSX.Styles
         }
 
         #endregion
+
+        #region staticMethods
+
+        /// <summary>
+        /// Converts a VerticalTextAlignValue enum to its string representation
+        /// </summary>
+        internal static string GetVerticalTextAlignName(VerticalTextAlignValue align)
+        {
+            string output = "";
+            switch (align)
+            {
+                case VerticalTextAlignValue.Subscript: output = "subscript"; break;
+                case VerticalTextAlignValue.Superscript: output = "superscript"; break;
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Converts a string to its corresponding VerticalTextAlignValue enum
+        /// </summary>
+        internal static VerticalTextAlignValue GetVerticalTextAlignEnum(string name)
+        {
+            switch (name)
+            {
+                case "subscript": return VerticalTextAlignValue.Subscript;
+                case "superscript": return VerticalTextAlignValue.Superscript;
+                default:
+                    return VerticalTextAlignValue.None;
+            }
+        }
+
+        /// <summary>
+        /// Converts an UnderlineValue enum to its string representation
+        /// </summary>
+        internal static string GetUnderlineName(UnderlineValue underline)
+        {
+            string output = "";
+            switch (underline)
+            {
+                case UnderlineValue.Double: output = "double"; break;
+                case UnderlineValue.SingleAccounting: output = "singleAccounting"; break;
+                case UnderlineValue.DoubleAccounting: output = "doubleAccounting"; break;
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Converts a string to its corresponding UnderlineValue enum
+        /// </summary>
+        internal static UnderlineValue GetUnderlineEnum(string name)
+        {
+            UnderlineValue output = UnderlineValue.None;
+            switch (name)
+            {
+                case "double": output = UnderlineValue.Double; break;
+                case "singleAccounting": output = UnderlineValue.SingleAccounting; break;
+                case "doubleAccounting": output = UnderlineValue.DoubleAccounting; break;
+            }
+            return output;
+        }
+
+        #endregion
+
     }
 }

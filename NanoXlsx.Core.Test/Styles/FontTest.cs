@@ -20,7 +20,7 @@ namespace NanoXLSX.Test.Core.StyleTest
             exampleStyle = new Font();
             exampleStyle.Bold = true;
             exampleStyle.Italic = true;
-            exampleStyle.Underline = UnderlineValue.u_double;
+            exampleStyle.Underline = UnderlineValue.Double;
             exampleStyle.Strike = true;
             exampleStyle.Charset = CharsetValue.ANSI;
             exampleStyle.Size = 15;
@@ -28,8 +28,8 @@ namespace NanoXLSX.Test.Core.StyleTest
             exampleStyle.Family = FontFamilyValue.Script;
             exampleStyle.ColorTheme = ColorSchemeElement.accent5;
             exampleStyle.ColorValue = "FF22AACC";
-            exampleStyle.Scheme = SchemeValue.minor;
-            exampleStyle.VerticalAlign = VerticalTextAlignValue.subscript;
+            exampleStyle.Scheme = SchemeValue.Minor;
+            exampleStyle.VerticalAlign = VerticalTextAlignValue.Subscript;
         }
 
 
@@ -38,8 +38,8 @@ namespace NanoXLSX.Test.Core.StyleTest
         {
             Assert.Equal(11f, Font.DefaultFontSize);
             Assert.Equal(FontFamilyValue.Swiss, Font.DefaultFontFamily);
-            Assert.Equal(SchemeValue.minor, Font.DefaultFontScheme);
-            Assert.Equal(VerticalTextAlignValue.none, Font.DefaultVerticalAlign);
+            Assert.Equal(SchemeValue.Minor, Font.DefaultFontScheme);
+            Assert.Equal(VerticalTextAlignValue.None, Font.DefaultVerticalAlign);
             Assert.Equal("Calibri", Font.DefaultFontName);
         }
 
@@ -82,15 +82,15 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the get and set function of the Underline property")]
-        [InlineData(UnderlineValue.none)]
-        [InlineData(UnderlineValue.doubleAccounting)]
-        [InlineData(UnderlineValue.singleAccounting)]
-        [InlineData(UnderlineValue.u_double)]
-        [InlineData(UnderlineValue.u_single)]
+        [InlineData(UnderlineValue.None)]
+        [InlineData(UnderlineValue.DoubleAccounting)]
+        [InlineData(UnderlineValue.SingleAccounting)]
+        [InlineData(UnderlineValue.Double)]
+        [InlineData(UnderlineValue.Single)]
         public void UnderlineTest(UnderlineValue value)
         {
             Font font = new Font();
-            Assert.Equal(UnderlineValue.none, font.Underline);
+            Assert.Equal(UnderlineValue.None, font.Underline);
             font.Underline = value;
             Assert.Equal(value, font.Underline);
         }
@@ -249,9 +249,9 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the get and set function of the Scheme property")]
-        [InlineData(SchemeValue.major)]
-        [InlineData(SchemeValue.minor)]
-        [InlineData(SchemeValue.none)]
+        [InlineData(SchemeValue.Major)]
+        [InlineData(SchemeValue.Minor)]
+        [InlineData(SchemeValue.None)]
         public void SchmeTest(SchemeValue value)
         {
             Font font = new Font();
@@ -261,9 +261,9 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the get and set function of the VerticalAlign property")]
-        [InlineData(VerticalTextAlignValue.none)]
-        [InlineData(VerticalTextAlignValue.subscript)]
-        [InlineData(VerticalTextAlignValue.superscript)]
+        [InlineData(VerticalTextAlignValue.None)]
+        [InlineData(VerticalTextAlignValue.Subscript)]
+        [InlineData(VerticalTextAlignValue.Superscript)]
         public void VerticalAlignTest(VerticalTextAlignValue value)
         {
             Font font = new Font();
@@ -283,10 +283,10 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the automatic assignment of font schemes on font names")]
-        [InlineData("Calibri", SchemeValue.minor)]
-        [InlineData("Calibri Light", SchemeValue.major)]
-        [InlineData("Arial", SchemeValue.none)]
-        [InlineData("---", SchemeValue.none)] // Not a font but a valid string
+        [InlineData("Calibri", SchemeValue.Minor)]
+        [InlineData("Calibri Light", SchemeValue.Major)]
+        [InlineData("Arial", SchemeValue.None)]
+        [InlineData("---", SchemeValue.None)] // Not a font but a valid string
         public void ValidateFontSchemeTest(string fontName, SchemeValue scheme)
         {
             Font font = new Font();
@@ -328,7 +328,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void EqualsTest2c()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.Underline = UnderlineValue.doubleAccounting;
+            style2.Underline = UnderlineValue.DoubleAccounting;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -392,7 +392,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void EqualsTest2l()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.Scheme = SchemeValue.none;
+            style2.Scheme = SchemeValue.None;
             Assert.False(exampleStyle.Equals(style2));
         }
 
@@ -400,7 +400,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void EqualsTest2m()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.VerticalAlign = VerticalTextAlignValue.none;
+            style2.VerticalAlign = VerticalTextAlignValue.None;
             Assert.False(exampleStyle.Equals(style2));
         }
 

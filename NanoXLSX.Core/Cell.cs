@@ -35,22 +35,22 @@ namespace NanoXLSX
         {
             /// <summary>Type for single characters and strings</summary>
 #pragma warning disable CA1720 // Suppress warning: Identifier contains type name
-            STRING,
+            String,
 #pragma warning restore CA1720
             /// <summary>Type for all numeric types (long, integer, float, double, short, byte and decimal; signed and unsigned, if available)</summary>
-            NUMBER,
+            Number,
             /// <summary>Type for dates (Note: Dates before 1900-01-01 and after 9999-12-31 are not allowed)</summary>
-            DATE,
+            Date,
             /// <summary>Type for times (Note: Internally handled as OAdate, represented by <see cref="TimeSpan"/>)</summary>
-            TIME,
+            Time,
             /// <summary>Type for boolean</summary>
-            BOOL,
+            Bool,
             /// <summary>Type for Formulas (The cell will be handled differently)</summary>
-            FORMULA,
+            Formula,
             /// <summary>Type for empty cells. This type is only used for merged cells (all cells except the first of the cell range)</summary>
-            EMPTY,
+            Empty,
             /// <summary>Default Type, not specified</summary>
-            DEFAULT
+            Default
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace NanoXLSX
         /// <summary>Default constructor. Cells created with this constructor do not have a link to a worksheet initially</summary>
         public Cell()
         {
-            DataType = CellType.DEFAULT;
+            DataType = CellType.Default;
         }
 
         /// <summary>
@@ -186,10 +186,10 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
-        /// \remark <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
+        /// \remark <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.Empty"/> any passed value will be set to null</remarks>
         public Cell(object value, CellType type)
         {
-            if (type == CellType.EMPTY)
+            if (type == CellType.Empty)
             {
                 this.value = null;
             }
@@ -198,7 +198,7 @@ namespace NanoXLSX
                 this.value = value;
             }
             DataType = type;
-            if (type == CellType.DEFAULT)
+            if (type == CellType.Default)
             {
                 ResolveCellType();
             }
@@ -210,10 +210,10 @@ namespace NanoXLSX
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address of the cell</param>
-        /// \remark <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
+        /// \remark <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.Empty"/> any passed value will be set to null</remarks>
         public Cell(object value, CellType type, string address)
         {
-            if (type == CellType.EMPTY)
+            if (type == CellType.Empty)
             {
                 this.value = null;
             }
@@ -223,7 +223,7 @@ namespace NanoXLSX
             }
             DataType = type;
             CellAddress = address;
-            if (type == CellType.DEFAULT)
+            if (type == CellType.Default)
             {
                 ResolveCellType();
             }
@@ -235,10 +235,10 @@ namespace NanoXLSX
         /// <param name="value">Value of the cell</param>
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address struct of the cell</param>
-        /// \remark <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
+        /// \remark <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.Empty"/> any passed value will be set to null</remarks>
         public Cell(object value, CellType type, Address address)
         {
-            if (type == CellType.EMPTY)
+            if (type == CellType.Empty)
             {
                 this.value = null;
             }
@@ -250,7 +250,7 @@ namespace NanoXLSX
             columnNumber = address.Column;
             rowNumber = address.Row;
             CellAddressType = address.Type;
-            if (type == CellType.DEFAULT)
+            if (type == CellType.Default)
             {
                 ResolveCellType();
             }
@@ -268,7 +268,7 @@ namespace NanoXLSX
             ColumnNumber = column;
             RowNumber = row;
             CellAddressType = AddressType.Default;
-            if (type == CellType.DEFAULT)
+            if (type == CellType.Default)
             {
                 ResolveCellType();
             }
@@ -345,41 +345,41 @@ namespace NanoXLSX
         {
             if (this.value == null)
             {
-                DataType = CellType.EMPTY;
+                DataType = CellType.Empty;
                 this.value = null;
                 return;
             }
-            if (DataType == CellType.FORMULA)
+            if (DataType == CellType.Formula)
             { return; }
             Type t = this.value.GetType();
             if (t == typeof(bool))
-            { DataType = CellType.BOOL; }
+            { DataType = CellType.Bool; }
             else if (t == typeof(byte) || t == typeof(sbyte))
-            { DataType = CellType.NUMBER; }
+            { DataType = CellType.Number; }
             else if (t == typeof(decimal))
-            { DataType = CellType.NUMBER; }
+            { DataType = CellType.Number; }
             else if (t == typeof(double))
-            { DataType = CellType.NUMBER; }
+            { DataType = CellType.Number; }
             else if (t == typeof(float))
-            { DataType = CellType.NUMBER; }
+            { DataType = CellType.Number; }
             else if (t == typeof(int) || t == typeof(uint))
-            { DataType = CellType.NUMBER; }
+            { DataType = CellType.Number; }
             else if (t == typeof(long) || t == typeof(ulong))
-            { DataType = CellType.NUMBER; }
+            { DataType = CellType.Number; }
             else if (t == typeof(short) || t == typeof(ushort))
-            { DataType = CellType.NUMBER; }
+            { DataType = CellType.Number; }
             else if (t == typeof(DateTime)) // Not native but standard
             {
-                DataType = CellType.DATE;
+                DataType = CellType.Date;
                 SetStyle(BasicStyles.DateFormat);
             }
 
             else if (t == typeof(TimeSpan)) // Not native but standard
             {
-                DataType = CellType.TIME;
+                DataType = CellType.Time;
                 SetStyle(BasicStyles.TimeFormat);
             }
-            else { DataType = CellType.STRING; } // Default (char, string, object)
+            else { DataType = CellType.String; } // Default (char, string, object)
         }
 
         /// <summary>
@@ -565,7 +565,7 @@ namespace NanoXLSX
             {
                 if (item == null) // DO NOT LISTEN to code suggestions! This is wrong for bool: if (object.Equals(item, default(T)))
                 {
-                    c = new Cell(null, CellType.EMPTY);
+                    c = new Cell(null, CellType.Empty);
                     output.Add(c);
                     continue;
                 }
@@ -574,44 +574,44 @@ namespace NanoXLSX
                 if (t == typeof(Cell))
                 { c = item as Cell; }
                 else if (t == typeof(bool))
-                { c = new Cell((bool)o, CellType.BOOL); }
+                { c = new Cell((bool)o, CellType.Bool); }
                 else if (t == typeof(byte))
-                { c = new Cell((byte)o, CellType.NUMBER); }
+                { c = new Cell((byte)o, CellType.Number); }
                 else if (t == typeof(sbyte))
-                { c = new Cell((sbyte)o, CellType.NUMBER); }
+                { c = new Cell((sbyte)o, CellType.Number); }
                 else if (t == typeof(decimal))
-                { c = new Cell((decimal)o, CellType.NUMBER); }
+                { c = new Cell((decimal)o, CellType.Number); }
                 else if (t == typeof(double))
-                { c = new Cell((double)o, CellType.NUMBER); }
+                { c = new Cell((double)o, CellType.Number); }
                 else if (t == typeof(float))
-                { c = new Cell((float)o, CellType.NUMBER); }
+                { c = new Cell((float)o, CellType.Number); }
                 else if (t == typeof(int))
-                { c = new Cell((int)o, CellType.NUMBER); }
+                { c = new Cell((int)o, CellType.Number); }
                 else if (t == typeof(uint))
-                { c = new Cell((uint)o, CellType.NUMBER); }
+                { c = new Cell((uint)o, CellType.Number); }
                 else if (t == typeof(long))
-                { c = new Cell((long)o, CellType.NUMBER); }
+                { c = new Cell((long)o, CellType.Number); }
                 else if (t == typeof(ulong))
-                { c = new Cell((ulong)o, CellType.NUMBER); }
+                { c = new Cell((ulong)o, CellType.Number); }
                 else if (t == typeof(short))
-                { c = new Cell((short)o, CellType.NUMBER); }
+                { c = new Cell((short)o, CellType.Number); }
                 else if (t == typeof(ushort))
-                { c = new Cell((ushort)o, CellType.NUMBER); }
+                { c = new Cell((ushort)o, CellType.Number); }
                 else if (t == typeof(DateTime))
                 {
-                    c = new Cell((DateTime)o, CellType.DATE);
+                    c = new Cell((DateTime)o, CellType.Date);
                     c.SetStyle(BasicStyles.DateFormat);
                 }
                 else if (t == typeof(TimeSpan))
                 {
-                    c = new Cell((TimeSpan)o, CellType.TIME);
+                    c = new Cell((TimeSpan)o, CellType.Time);
                     c.SetStyle(BasicStyles.TimeFormat);
                 }
                 else if (t == typeof(string))
-                { c = new Cell((string)o, CellType.STRING); }
+                { c = new Cell((string)o, CellType.String); }
                 else // Default = unspecified object
                 {
-                    c = new Cell(o.ToString(), CellType.DEFAULT);
+                    c = new Cell(o.ToString(), CellType.Default);
                 }
                 output.Add(c);
             }

@@ -235,24 +235,24 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             ListTuple list = new ListTuple(startColumn, startRow, type);
             // IMPORTANT: The list must contain 12 entries
-            list.Add(22, Cell.CellType.NUMBER);
-            list.Add(-0.55f, Cell.CellType.NUMBER);
-            list.Add(22.22d, Cell.CellType.NUMBER);
-            list.Add(true, Cell.CellType.BOOL);
-            list.Add(false, Cell.CellType.BOOL);
-            list.Add("", Cell.CellType.STRING);
-            list.Add("test", Cell.CellType.STRING);
-            list.Add((byte)64, Cell.CellType.NUMBER);
-            list.Add(77777L, Cell.CellType.NUMBER);
-            list.Add(new DateTime(2020, 11, 1, 11, 22, 13, 99), Cell.CellType.DATE);
-            list.Add(new TimeSpan(13, 16, 22), Cell.CellType.TIME);
+            list.Add(22, Cell.CellType.Number);
+            list.Add(-0.55f, Cell.CellType.Number);
+            list.Add(22.22d, Cell.CellType.Number);
+            list.Add(true, Cell.CellType.Bool);
+            list.Add(false, Cell.CellType.Bool);
+            list.Add("", Cell.CellType.String);
+            list.Add("test", Cell.CellType.String);
+            list.Add((byte)64, Cell.CellType.Number);
+            list.Add(77777L, Cell.CellType.Number);
+            list.Add(new DateTime(2020, 11, 1, 11, 22, 13, 99), Cell.CellType.Date);
+            list.Add(new TimeSpan(13, 16, 22), Cell.CellType.Time);
             if (addNull)
             {
-                list.Add(null, Cell.CellType.EMPTY);
+                list.Add(null, Cell.CellType.Empty);
             }
             else
             {
-                list.Add("substitute", Cell.CellType.STRING);
+                list.Add("substitute", Cell.CellType.String);
             }
             return list;
         }
@@ -262,24 +262,24 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             ListTuple list = new ListTuple(startColumn, startRow, type);
             // IMPORTANT: The list must contain 12 entries
-            list.Add(new Cell(23, Cell.CellType.DEFAULT, "X1"), Cell.CellType.NUMBER);
-            list.Add(new Cell(-0.65f, Cell.CellType.DEFAULT, "X2"), Cell.CellType.NUMBER);
-            list.Add(new Cell(42.22d, Cell.CellType.DEFAULT, "X3"), Cell.CellType.NUMBER);
-            list.Add(new Cell(false, Cell.CellType.DEFAULT, "X4"), Cell.CellType.BOOL);
-            list.Add(new Cell(true, Cell.CellType.DEFAULT, "X5"), Cell.CellType.BOOL);
-            list.Add(new Cell("test2", Cell.CellType.DEFAULT, "X6"), Cell.CellType.STRING);
-            list.Add(new Cell("", Cell.CellType.DEFAULT, "X7"), Cell.CellType.STRING);
-            list.Add(new Cell((byte)64, Cell.CellType.DEFAULT, "X8"), Cell.CellType.NUMBER);
-            list.Add(new Cell(88888L, Cell.CellType.DEFAULT, "X9"), Cell.CellType.NUMBER);
-            list.Add(new Cell(new DateTime(2020, 10, 1, 11, 22, 13, 99), Cell.CellType.DEFAULT, "X10"), Cell.CellType.DATE);
-            list.Add(new Cell(new TimeSpan(13, 15, 22), Cell.CellType.DEFAULT, "X11"), Cell.CellType.TIME);
+            list.Add(new Cell(23, Cell.CellType.Default, "X1"), Cell.CellType.Number);
+            list.Add(new Cell(-0.65f, Cell.CellType.Default, "X2"), Cell.CellType.Number);
+            list.Add(new Cell(42.22d, Cell.CellType.Default, "X3"), Cell.CellType.Number);
+            list.Add(new Cell(false, Cell.CellType.Default, "X4"), Cell.CellType.Bool);
+            list.Add(new Cell(true, Cell.CellType.Default, "X5"), Cell.CellType.Bool);
+            list.Add(new Cell("test2", Cell.CellType.Default, "X6"), Cell.CellType.String);
+            list.Add(new Cell("", Cell.CellType.Default, "X7"), Cell.CellType.String);
+            list.Add(new Cell((byte)64, Cell.CellType.Default, "X8"), Cell.CellType.Number);
+            list.Add(new Cell(88888L, Cell.CellType.Default, "X9"), Cell.CellType.Number);
+            list.Add(new Cell(new DateTime(2020, 10, 1, 11, 22, 13, 99), Cell.CellType.Default, "X10"), Cell.CellType.Date);
+            list.Add(new Cell(new TimeSpan(13, 15, 22), Cell.CellType.Default, "X11"), Cell.CellType.Time);
             if (addNull)
             {
-                list.Add(new Cell(null, Cell.CellType.DEFAULT, "X12"), Cell.CellType.EMPTY);
+                list.Add(new Cell(null, Cell.CellType.Default, "X12"), Cell.CellType.Empty);
             }
             else
             {
-                list.Add(new Cell("substitute2", Cell.CellType.DEFAULT, "X12"), Cell.CellType.STRING);
+                list.Add(new Cell("substitute2", Cell.CellType.Default, "X12"), Cell.CellType.String);
             }
             return list;
         }
@@ -320,11 +320,11 @@ namespace NanoXLSX.Test.Core.WorksheetTest
                 }
                 Types.Add(type);
                 Addresses.Add(preparedAddresses[currentIndex]);
-                if (type.Equals(Cell.CellType.DATE))
+                if (type.Equals(Cell.CellType.Date))
                 {
                     Styles.Add(BasicStyles.DateFormat);
                 }
-                else if (type.Equals(Cell.CellType.TIME))
+                else if (type.Equals(Cell.CellType.Time))
                 {
                     Styles.Add(BasicStyles.TimeFormat);
                 }

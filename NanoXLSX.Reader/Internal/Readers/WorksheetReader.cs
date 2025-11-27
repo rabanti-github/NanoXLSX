@@ -684,60 +684,60 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Cell object with either the originally loaded or modified (by import options) value</returns>
         private Cell ResolveCellData(string raw, string type, string styleNumber, string address)
         {
-            Cell.CellType importedType = Cell.CellType.DEFAULT;
+            Cell.CellType importedType = Cell.CellType.Default;
             object rawValue;
             if (type == "b")
             {
                 rawValue = TryParseBool(raw);
                 if (rawValue != null)
                 {
-                    importedType = Cell.CellType.BOOL;
+                    importedType = Cell.CellType.Bool;
                 }
                 else
                 {
                     rawValue = GetNumericValue(raw);
                     if (rawValue != null)
                     {
-                        importedType = Cell.CellType.NUMBER;
+                        importedType = Cell.CellType.Number;
                     }
                 }
             }
             else if (type == "s")
             {
-                importedType = Cell.CellType.STRING;
+                importedType = Cell.CellType.String;
                 rawValue = ResolveSharedString(raw);
             }
             else if (type == "str")
             {
-                importedType = Cell.CellType.FORMULA;
+                importedType = Cell.CellType.Formula;
                 rawValue = raw;
             }
             else if (type == "inlineStr")
             {
-                importedType = Cell.CellType.STRING;
+                importedType = Cell.CellType.String;
                 rawValue = raw;
             }
             else if (dateStyles.Contains(styleNumber) && (type == null || type == "" || type == "n"))
             {
-                rawValue = GetDateTimeValue(raw, Cell.CellType.DATE, out importedType);
+                rawValue = GetDateTimeValue(raw, Cell.CellType.Date, out importedType);
             }
             else if (timeStyles.Contains(styleNumber) && (type == null || type == "" || type == "n"))
             {
-                rawValue = GetDateTimeValue(raw, Cell.CellType.TIME, out importedType);
+                rawValue = GetDateTimeValue(raw, Cell.CellType.Time, out importedType);
             }
             else
             {
-                importedType = Cell.CellType.NUMBER;
+                importedType = Cell.CellType.Number;
                 rawValue = GetNumericValue(raw);
             }
             if (rawValue == null && raw == "")
             {
-                importedType = Cell.CellType.EMPTY;
+                importedType = Cell.CellType.Empty;
                 rawValue = null;
             }
             else if (rawValue == null && raw.Length > 0)
             {
-                importedType = Cell.CellType.STRING;
+                importedType = Cell.CellType.String;
                 rawValue = raw;
             }
             Address cellAddress = new Address(address);
@@ -750,7 +750,7 @@ namespace NanoXLSX.Internal.Readers
                 rawValue = GetGloballyEnforcedValue(rawValue, cellAddress);
                 rawValue = GetGloballyEnforcedFlagValues(rawValue, cellAddress);
                 importedType = ResolveType(rawValue, importedType);
-                if (importedType == Cell.CellType.DATE && rawValue is DateTime && (DateTime)rawValue < DataUtils.FirstAllowedExcelDate)
+                if (importedType == Cell.CellType.Date && rawValue is DateTime && (DateTime)rawValue < DataUtils.FirstAllowedExcelDate)
                 {
                     // Fix conversion from time to date, where time has no days
                     rawValue = ((DateTime)rawValue).AddDays(1);
@@ -767,13 +767,13 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Resolved cell type</returns>
         private static Cell.CellType ResolveType(object value, Cell.CellType defaultType)
         {
-            if (defaultType == Cell.CellType.FORMULA)
+            if (defaultType == Cell.CellType.Formula)
             {
                 return defaultType;
             }
             if (value == null)
             {
-                return Cell.CellType.EMPTY;
+                return Cell.CellType.Empty;
             }
             switch (value)
             {
@@ -787,15 +787,15 @@ namespace NanoXLSX.Internal.Readers
                 case byte _:
                 case sbyte _:
                 case int _:
-                    return Cell.CellType.NUMBER;
+                    return Cell.CellType.Number;
                 case DateTime _:
-                    return Cell.CellType.DATE;
+                    return Cell.CellType.Date;
                 case TimeSpan _:
-                    return Cell.CellType.TIME;
+                    return Cell.CellType.Time;
                 case bool _:
-                    return Cell.CellType.BOOL;
+                    return Cell.CellType.Bool;
                 default:
-                    return Cell.CellType.STRING;
+                    return Cell.CellType.String;
             }
         }
 
@@ -889,7 +889,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 return data;
             }
-            if (importedTyp == Cell.CellType.FORMULA)
+            if (importedTyp == Cell.CellType.Formula)
             {
                 return data;
             }
@@ -1251,13 +1251,13 @@ namespace NanoXLSX.Internal.Readers
             double dValue;
             if (!ParserUtils.TryParseDouble(raw, out dValue))
             {
-                resolvedType = Cell.CellType.STRING;
+                resolvedType = Cell.CellType.String;
                 return raw;
             }
-            if ((valueType == Cell.CellType.DATE && (dValue < DataUtils.MinOADateValue || dValue > DataUtils.MaxOADateValue)) || (valueType == Cell.CellType.TIME && (dValue < 0.0 || dValue > DataUtils.MaxOADateValue)))
+            if ((valueType == Cell.CellType.Date && (dValue < DataUtils.MinOADateValue || dValue > DataUtils.MaxOADateValue)) || (valueType == Cell.CellType.Time && (dValue < 0.0 || dValue > DataUtils.MaxOADateValue)))
             {
                 // fallback to number (cannot be anything else)
-                resolvedType = Cell.CellType.NUMBER;
+                resolvedType = Cell.CellType.Number;
                 return GetNumericValue(raw);
             }
             DateTime tempDate = DataUtils.GetDateFromOA(dValue);
@@ -1265,14 +1265,14 @@ namespace NanoXLSX.Internal.Readers
             {
                 tempDate = tempDate.AddDays(1); // Modify wrong 1st date when < 1
             }
-            if (valueType == Cell.CellType.DATE)
+            if (valueType == Cell.CellType.Date)
             {
-                resolvedType = Cell.CellType.DATE;
+                resolvedType = Cell.CellType.Date;
                 return tempDate;
             }
             else
             {
-                resolvedType = Cell.CellType.TIME;
+                resolvedType = Cell.CellType.Time;
                 return new TimeSpan((int)dValue, tempDate.Hour, tempDate.Minute, tempDate.Second);
             }
         }
@@ -1394,7 +1394,7 @@ namespace NanoXLSX.Internal.Readers
             object tempObject;
             switch (importedType)
             {
-                case Cell.CellType.STRING:
+                case Cell.CellType.String:
                     string tempString = raw.ToString();
                     tempObject = GetNumericValue(tempString);
                     if (tempObject != null)
@@ -1417,13 +1417,13 @@ namespace NanoXLSX.Internal.Readers
                         return (bool)tempObject ? 1 : 0;
                     }
                     break;
-                case Cell.CellType.NUMBER:
+                case Cell.CellType.Number:
                     return raw;
-                case Cell.CellType.DATE:
+                case Cell.CellType.Date:
                     return DataUtils.GetOADateTime((DateTime)raw);
-                case Cell.CellType.TIME:
+                case Cell.CellType.Time:
                     return DataUtils.GetOATime((TimeSpan)raw);
-                case Cell.CellType.BOOL:
+                case Cell.CellType.Bool:
                     if ((bool)raw)
                     {
                         return 1;

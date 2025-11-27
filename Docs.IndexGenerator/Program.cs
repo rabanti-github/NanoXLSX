@@ -25,7 +25,7 @@ namespace Docs.IndexGenerator
             string rootConfigPath = "../Docs.IndexGenerator/Config/root-config.json";
             string metaPackageConfigPath = "../Docs.IndexGenerator/Config/meta-package-config.json";
             string pluginConfigPath = "../Docs.IndexGenerator/Config/plugin-config.json";
-            string outDir = Path.Combine("..","Docs.IndexGenerator", "Output");
+            string outDir = Path.Combine("..", "Docs.IndexGenerator", "Output");
 
             for (int i = 0; i < args.Length; i++)
             {

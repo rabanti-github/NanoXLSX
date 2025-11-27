@@ -8,6 +8,7 @@
 using System.Text;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Utils;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX.Styles
 {
@@ -20,19 +21,19 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default horizontal align value as constant
         /// </summary>
-        public static readonly HorizontalAlignValue DefaultHorizontalAlignment = HorizontalAlignValue.none;
+        public static readonly HorizontalAlignValue DefaultHorizontalAlignment = HorizontalAlignValue.None;
         /// <summary>
         /// Default text break value as constant
         /// </summary>
-        public static readonly TextBreakValue DefaultAlignment = TextBreakValue.none;
+        public static readonly TextBreakValue DefaultAlignment = TextBreakValue.None;
         /// <summary>
         /// Default text direction value as constant
         /// </summary>
-        public static readonly TextDirectionValue DefaultTextDirection = TextDirectionValue.horizontal;
+        public static readonly TextDirectionValue DefaultTextDirection = TextDirectionValue.Horizontal;
         /// <summary>
         /// Default vertical align value as constant
         /// </summary>
-        public static readonly VerticalAlignValue DefaultVerticalAlignment = VerticalAlignValue.none;
+        public static readonly VerticalAlignValue DefaultVerticalAlignment = VerticalAlignValue.None;
         #endregion
 
         #region privateFields
@@ -48,23 +49,23 @@ namespace NanoXLSX.Styles
         public enum HorizontalAlignValue
         {
             /// <summary>Content will be aligned left</summary>
-            left,
+            Left,
             /// <summary>Content will be aligned in the center</summary>
-            center,
+            Center,
             /// <summary>Content will be aligned right</summary>
-            right,
+            Right,
             /// <summary>Content will fill up the cell</summary>
-            fill,
+            Fill,
             /// <summary>justify alignment</summary>
-            justify,
+            Justify,
             /// <summary>General alignment</summary>
-            general,
+            General,
             /// <summary>Center continuous alignment</summary>
-            centerContinuous,
+            CenterContinuous,
             /// <summary>Distributed alignment</summary>
-            distributed,
+            Distributed,
             /// <summary>No alignment. The alignment will not be used in a style</summary>
-            none,
+            None,
         }
 
         /// <summary>
@@ -73,11 +74,11 @@ namespace NanoXLSX.Styles
         public enum TextBreakValue
         {
             /// <summary>Word wrap is active</summary>
-            wrapText,
+            WrapText,
             /// <summary>Text will be resized to fit the cell</summary>
-            shrinkToFit,
+            ShrinkToFit,
             /// <summary>Text will overflow in cell</summary>
-            none,
+            None,
         }
 
         /// <summary>
@@ -86,9 +87,9 @@ namespace NanoXLSX.Styles
         public enum TextDirectionValue
         {
             /// <summary>Text direction is horizontal (default)</summary>
-            horizontal,
+            Horizontal,
             /// <summary>Text direction is vertical</summary>
-            vertical,
+            Vertical,
         }
 
         /// <summary>
@@ -97,17 +98,17 @@ namespace NanoXLSX.Styles
         public enum VerticalAlignValue
         {
             /// <summary>Content will be aligned on the bottom (default)</summary>
-            bottom,
+            Bottom,
             /// <summary>Content will be aligned on the top</summary>
-            top,
+            Top,
             /// <summary>Content will be aligned in the center</summary>
-            center,
+            Center,
             /// <summary>justify alignment</summary>
-            justify,
+            Justify,
             /// <summary>Distributed alignment</summary>
-            distributed,
+            Distributed,
             /// <summary>No alignment. The alignment will not be used in a style</summary>
-            none,
+            None,
         }
         #endregion
 
@@ -160,7 +161,7 @@ namespace NanoXLSX.Styles
             set
             {
                 textRotation = value;
-                TextDirection = TextDirectionValue.horizontal;
+                TextDirection = TextDirectionValue.Horizontal;
                 CalculateInternalRotation();
             }
         }
@@ -220,7 +221,7 @@ namespace NanoXLSX.Styles
             {
                 throw new FormatException("The rotation value (" + ParserUtils.ToString(textRotation) + "°) is out of range. Range is form -90° to +90°");
             }
-            if (textDirection == TextDirectionValue.vertical)
+            if (textDirection == TextDirectionValue.Vertical)
             {
                 textRotation = 255;
                 return textRotation;
@@ -334,6 +335,84 @@ namespace NanoXLSX.Styles
         {
             return (CellXf)Copy();
         }
+        #endregion
+
+        #region staticMethods
+
+        /// <summary>
+        /// Converts a HorizontalAlignValue enum to its string representation
+        /// </summary>
+        internal static string GetHorizontalAlignName(HorizontalAlignValue align)
+        {
+            string output = "";
+            switch (align)
+            {
+                case HorizontalAlignValue.Left: output = "left"; break;
+                case HorizontalAlignValue.Center: output = "center"; break;
+                case HorizontalAlignValue.Right: output = "right"; break;
+                case HorizontalAlignValue.Fill: output = "fill"; break;
+                case HorizontalAlignValue.Justify: output = "justify"; break;
+                case HorizontalAlignValue.General: output = "general"; break;
+                case HorizontalAlignValue.CenterContinuous: output = "centerContinuous"; break;
+                case HorizontalAlignValue.Distributed: output = "distributed"; break;
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Converts a string to its corresponding HorizontalAlignValue enum
+        /// </summary>
+        internal static HorizontalAlignValue GetHorizontalAlignEnum(string name)
+        {
+            switch (name)
+            {
+                case "left": return HorizontalAlignValue.Left;
+                case "center": return HorizontalAlignValue.Center;
+                case "right": return HorizontalAlignValue.Right;
+                case "fill": return HorizontalAlignValue.Fill;
+                case "justify": return HorizontalAlignValue.Justify;
+                case "general": return HorizontalAlignValue.General;
+                case "centerContinuous": return HorizontalAlignValue.CenterContinuous;
+                case "distributed": return HorizontalAlignValue.Distributed;
+                default:
+                    return HorizontalAlignValue.None;
+            }
+        }
+
+        /// <summary>
+        /// Converts a VerticalAlignValue enum to its string representation
+        /// </summary>
+        internal static string GetVerticalAlignName(VerticalAlignValue align)
+        {
+            string output = "";
+            switch (align)
+            {
+                case VerticalAlignValue.Bottom: output = "bottom"; break;
+                case VerticalAlignValue.Top: output = "top"; break;
+                case VerticalAlignValue.Center: output = "center"; break;
+                case VerticalAlignValue.Justify: output = "justify"; break;
+                case VerticalAlignValue.Distributed: output = "distributed"; break;
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Converts a string to its corresponding VerticalAlignValue enum
+        /// </summary>
+        internal static VerticalAlignValue GetVerticalAlignEnum(string name)
+        {
+            switch (name)
+            {
+                case "bottom": return VerticalAlignValue.Bottom;
+                case "top": return VerticalAlignValue.Top;
+                case "center": return VerticalAlignValue.Center;
+                case "justify": return VerticalAlignValue.Justify;
+                case "distributed": return VerticalAlignValue.Distributed;
+                default:
+                    return VerticalAlignValue.None;
+            }
+        }
+
         #endregion
 
     }

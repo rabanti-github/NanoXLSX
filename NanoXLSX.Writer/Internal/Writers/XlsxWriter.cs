@@ -5,6 +5,12 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
+using NanoXLSX.Interfaces.Writer;
+using NanoXLSX.Internal.Structures;
+using NanoXLSX.Registry;
+using NanoXLSX.Styles;
+using NanoXLSX.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,12 +19,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using NanoXLSX.Exceptions;
-using NanoXLSX.Interfaces.Writer;
-using NanoXLSX.Internal.Structures;
-using NanoXLSX.Registry;
-using NanoXLSX.Styles;
-using NanoXLSX.Utils;
 using IOException = NanoXLSX.Exceptions.IOException;
 using PackagePartType = NanoXLSX.Internal.Structures.PackagePartDefinition.PackagePartType;
 using XmlElement = NanoXLSX.Utils.Xml.XmlElement;

@@ -163,7 +163,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 FormatNumber formatNumber = styleReaderContainer.GetStyle(14, out var isDateStyle, out _).CurrentNumberFormat.Number;
 
                 Assert.True(isDateStyle);
-                Assert.Equal(FormatNumber.format_14, formatNumber);
+                Assert.Equal(FormatNumber.Format14, formatNumber);
             }
         }
     }

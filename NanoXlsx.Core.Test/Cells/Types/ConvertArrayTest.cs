@@ -118,10 +118,10 @@ namespace NanoXLSX.Test.Core.Cells.Types
         public void ConvertCellArrayTest()
         {
             Cell[] array = new Cell[4];
-            array[0] = new Cell("", Cell.CellType.STRING);
-            array[1] = new Cell("test", Cell.CellType.STRING);
-            array[2] = new Cell("x", Cell.CellType.STRING);
-            array[3] = new Cell(" ", Cell.CellType.STRING);
+            array[0] = new Cell("", Cell.CellType.String);
+            array[1] = new Cell("test", Cell.CellType.String);
+            array[2] = new Cell("x", Cell.CellType.String);
+            array[3] = new Cell(" ", Cell.CellType.String);
             AssertArray<Cell>(array, typeof(string), new string[] { "", "test", "x", " " });
         }
 

@@ -18,7 +18,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.Average(range);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Average function on a Range object and a target worksheet")]
@@ -34,7 +34,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.Average(worksheet, range);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Ceil function on a value and a number of decimals")]
@@ -48,7 +48,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Address address = new Address(addressExpression);
             Cell formula = BasicFormulas.Ceil(address, numberOfDecimals);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Ceil function on a value and a number of decimals")]
@@ -63,7 +63,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Address address = new Address(addressExpression);
             Cell formula = BasicFormulas.Ceil(worksheet, address, numberOfDecimals);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Floor function on a value and a number of decimals")]
@@ -77,7 +77,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Address address = new Address(addressExpression);
             Cell formula = BasicFormulas.Floor(address, numberOfDecimals);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Floor function on a value and a number of decimals")]
@@ -92,7 +92,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Address address = new Address(addressExpression);
             Cell formula = BasicFormulas.Floor(worksheet, address, numberOfDecimals);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Max function on a Range object")]
@@ -107,7 +107,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.Max(range);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Max function on a Range object and a target worksheet")]
@@ -123,7 +123,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.Max(worksheet, range);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Min function on a Range object")]
@@ -138,7 +138,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.Min(range);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Min function on a Range object and a target worksheet")]
@@ -154,7 +154,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.Min(worksheet, range);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Median function on a Range object")]
@@ -169,7 +169,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.Median(range);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Median function on a Range object and a target worksheet")]
@@ -185,7 +185,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.Median(worksheet, range);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Round function on a value and a number of decimals")]
@@ -199,7 +199,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Address address = new Address(addressExpression);
             Cell formula = BasicFormulas.Round(address, numberOfDecimals);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Round function on a value and a number of decimals")]
@@ -214,7 +214,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Address address = new Address(addressExpression);
             Cell formula = BasicFormulas.Round(worksheet, address, numberOfDecimals);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Sum function on a Range object")]
@@ -229,7 +229,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.Sum(range);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the Sum function on a Range object and a target worksheet")]
@@ -245,7 +245,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.Sum(worksheet, range);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the VLookup function on a Range object with an arbitrary number, the column index and the option of an exact match")]
@@ -258,7 +258,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.VLookup(number, range, columnIndex, exactMatch);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the VLookup function on a Range object with an arbitrary number, the column index, the option of an exact match and a target worksheet")]
@@ -272,7 +272,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.VLookup(number, worksheet, range, columnIndex, exactMatch);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the VLookup function on a Range object with reference address, the column index and the option of an exact match")]
@@ -286,7 +286,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.VLookup(address, range, columnIndex, exactMatch);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Theory(DisplayName = "Test of the VLookup function on a Range object with reference address, the column index, the option of an exact match and tow target worksheets")]
@@ -302,7 +302,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Range range = new Range(rangeExpression);
             Cell formula = BasicFormulas.VLookup(valueWorksheet, address, rangeWorksheet, range, columnIndex, exactMatch);
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
         [Fact(DisplayName = "Test of the VLookup function for byte as value")]
@@ -425,7 +425,7 @@ namespace NanoXLSX.Test.Core.MiscTest
             Cell formula = BasicFormulas.VLookup(number, range, column, exactMatch);
             string expectedFormula = "VLOOKUP(" + expectedLookupValue + "," + range.ToString() + "," + column.ToString() + "," + exactMatch.ToString().ToUpper() + ")";
             Assert.Equal(expectedFormula, formula.Value.ToString());
-            Assert.Equal(Cell.CellType.FORMULA, formula.DataType);
+            Assert.Equal(Cell.CellType.Formula, formula.DataType);
         }
 
     }

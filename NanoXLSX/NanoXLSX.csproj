@@ -32,6 +32,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
+	  <PackageType>MetaPackage</PackageType>
   </PropertyGroup>
 
 	<ItemGroup>

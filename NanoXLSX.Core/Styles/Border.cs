@@ -21,7 +21,7 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default border style as constant
         /// </summary>
-        public static readonly StyleValue DefaultBorderStyle = StyleValue.none;
+        public static readonly StyleValue DefaultBorderStyle = StyleValue.None;
 
         /// <summary>
         /// Default border color as constant
@@ -46,35 +46,35 @@ namespace NanoXLSX.Styles
         public enum StyleValue
         {
             /// <summary>no border</summary>
-            none,
+            None,
             /// <summary>hair border</summary>
-            hair,
+            Hair,
             /// <summary>dotted border</summary>
-            dotted,
+            Dotted,
             /// <summary>dashed border with double-dots</summary>
-            dashDotDot,
+            DashDotDot,
             /// <summary>dash-dotted border</summary>
-            dashDot,
+            DashDot,
             /// <summary>dashed border</summary>
-            dashed,
+            Dashed,
             /// <summary>thin border</summary>
-            thin,
+            Thin,
             /// <summary>medium-dashed border with double-dots</summary>
-            mediumDashDotDot,
+            MediumDashDotDot,
             /// <summary>slant dash-dotted border</summary>
-            slantDashDot,
+            SlantDashDot,
             /// <summary>medium dash-dotted border</summary>
-            mediumDashDot,
+            MediumDashDot,
             /// <summary>medium dashed border</summary>
-            mediumDashed,
+            MediumDashed,
             /// <summary>medium border</summary>
-            medium,
+            Medium,
             /// <summary>thick border</summary>
-            thick,
+            Thick,
             /// <summary>double border</summary>
-#pragma warning disable CA1707 // Suppress: Identifiers should not contain underscores
-            s_double,
-#pragma warning restore CA1707
+#pragma warning disable CA1720 // Suppress: Identifiers should not contain types
+            Double,
+#pragma warning restore CA1720
         }
         #endregion
 
@@ -389,48 +389,49 @@ namespace NanoXLSX.Styles
             string output = "";
             switch (style)
             {
-                case StyleValue.hair:
-                    output = "hair";
-                    break;
-                case StyleValue.dotted:
-                    output = "dotted";
-                    break;
-                case StyleValue.dashDotDot:
-                    output = "dashDotDot";
-                    break;
-                case StyleValue.dashDot:
-                    output = "dashDot";
-                    break;
-                case StyleValue.dashed:
-                    output = "dashed";
-                    break;
-                case StyleValue.thin:
-                    output = "thin";
-                    break;
-                case StyleValue.mediumDashDotDot:
-                    output = "mediumDashDotDot";
-                    break;
-                case StyleValue.slantDashDot:
-                    output = "slantDashDot";
-                    break;
-                case StyleValue.mediumDashDot:
-                    output = "mediumDashDot";
-                    break;
-                case StyleValue.mediumDashed:
-                    output = "mediumDashed";
-                    break;
-                case StyleValue.medium:
-                    output = "medium";
-                    break;
-                case StyleValue.thick:
-                    output = "thick";
-                    break;
-                case StyleValue.s_double:
-                    output = "double";
-                    break;
-                    // Default / none is already handled (ignored)
+                case StyleValue.Hair: output = "hair"; break;
+                case StyleValue.Dotted: output = "dotted"; break;
+                case StyleValue.DashDotDot: output = "dashDotDot"; break;
+                case StyleValue.DashDot: output = "dashDot"; break;
+                case StyleValue.Dashed: output = "dashed"; break;
+                case StyleValue.Thin: output = "thin"; break;
+                case StyleValue.MediumDashDotDot: output = "mediumDashDotDot"; break;
+                case StyleValue.SlantDashDot: output = "slantDashDot"; break;
+                case StyleValue.MediumDashDot: output = "mediumDashDot"; break;
+                case StyleValue.MediumDashed: output = "mediumDashed"; break;
+                case StyleValue.Medium: output = "medium"; break;
+                case StyleValue.Thick: output = "thick"; break;
+                case StyleValue.Double: output = "double"; break; // Default / none is already handled (ignored)
             }
             return output;
+        }
+
+        /// <summary>
+        /// Parses the border style name and returns the matching enum.
+        /// </summary>
+        /// <param name="styleName">String to parse</param>
+        /// <returns>The corresponding StyleValue enum</returns>
+        internal static StyleValue GetStyleEnum(string styleName)
+        {
+            switch (styleName)
+            {
+                case "hair": return StyleValue.Hair;
+                case "dotted": return StyleValue.Dotted;
+                case "dashDotDot": return StyleValue.DashDotDot;
+                case "dashDot": return StyleValue.DashDot;
+                case "dashed": return StyleValue.Dashed;
+                case "thin": return StyleValue.Thin;
+                case "mediumDashDotDot": return StyleValue.MediumDashDotDot;
+                case "slantDashDot": return StyleValue.SlantDashDot;
+                case "mediumDashDot": return StyleValue.MediumDashDot;
+                case "mediumDashed": return StyleValue.MediumDashed;
+                case "medium": return StyleValue.Medium;
+                case "thick": return StyleValue.Thick;
+                case "double": return StyleValue.Double;
+
+                default:
+                    return StyleValue.None; // fallback – change to throw if you'd prefer strict handling
+            }
         }
         #endregion
 

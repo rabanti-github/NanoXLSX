@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
+﻿using NanoXLSX.Internal.Writers;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
-using NanoXLSX.Internal.Writers;
 
 namespace NanoXLSX
 {

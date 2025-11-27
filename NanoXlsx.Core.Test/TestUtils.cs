@@ -15,9 +15,9 @@ namespace NanoXLSX.Test.Core.Utils
     {
         public static void AssertEquals<T>(T value1, T value2, T inequalValue, Address cellAddress)
         {
-            Cell cell1 = new Cell(value1, CellType.DEFAULT, cellAddress);
-            Cell cell2 = new Cell(value2, CellType.DEFAULT, cellAddress);
-            Cell cell3 = new Cell(inequalValue, CellType.DEFAULT, cellAddress);
+            Cell cell1 = new Cell(value1, CellType.Default, cellAddress);
+            Cell cell2 = new Cell(value2, CellType.Default, cellAddress);
+            Cell cell3 = new Cell(inequalValue, CellType.Default, cellAddress);
             Assert.True(cell1.Equals(cell2));
             Assert.False(cell1.Equals(cell3));
         }
