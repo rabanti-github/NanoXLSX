@@ -63,7 +63,61 @@ The following guide lists all necessary changes, as well as changed behaviors of
 | `AUTO_ZOOM_FACTOR`          | `AutoZoomFactor`         |
 | `MIN_ZOOM_FACTOR`           | `MinZoomFactor`          |
 | `MAX_ZOOM_FACTOR`           | `MaxZoomFactor`          |
-	
+
+- The enum values of `Worksheet.SheetProtectionValue` were renamed, according to the following overview:
+
+| Old Enum Value                              | New Enum Value                  | Remarks |
+| ------------------------------------------- | ------------------------------- | ------- |
+| `SheetProtectionValue.objects`              | `SheetProtectionValue.Objects`             |         |
+| `SheetProtectionValue.scenarios`            | `SheetProtectionValue.Scenarios`           |         |
+| `SheetProtectionValue.formatCells`          | `SheetProtectionValue.FormatCells`         |         |
+| `SheetProtectionValue.formatColumns`        | `SheetProtectionValue.FormatColumns`       |         |
+| `SheetProtectionValue.formatRows`           | `SheetProtectionValue.FormatRows`          |         |
+| `SheetProtectionValue.insertColumns`        | `SheetProtectionValue.InsertColumns`       |         |
+| `SheetProtectionValue.insertRows`           | `SheetProtectionValue.InsertRows`          |         |
+| `SheetProtectionValue.insertHyperlinks`     | `SheetProtectionValue.InsertHyperlinks`    |         |
+| `SheetProtectionValue.deleteColumns`        | `SheetProtectionValue.DeleteColumns`       |         |
+| `SheetProtectionValue.deleteRows`           | `SheetProtectionValue.DeleteRows`          |         |
+| `SheetProtectionValue.selectLockedCells`    | `SheetProtectionValue.SelectLockedCells`   |         |
+| `SheetProtectionValue.sort`                 | `SheetProtectionValue.Sort`                |         |
+| `SheetProtectionValue.autoFilter`           | `SheetProtectionValue.AutoFilter`          |         |
+| `SheetProtectionValue.pivotTables`          | `SheetProtectionValue.PivotTables`         |         |
+| `SheetProtectionValue.selectUnlockedCells`  | `SheetProtectionValue.SelectUnlockedCells` |         |
+
+- The enum values of `Worksheet.WorksheetPane` were renamed, according to the following overview:
+
+| Old Enum Value                | New Enum Value                  | Remarks |
+| ----------------------------- | ------------------------------- | ------- |
+| `WorksheetPane.bottomRight`   | `WorksheetPane.BottomRight`     |         |
+| `WorksheetPane.topRight`	    | `WorksheetPane.TopRight`        |         |
+| `WorksheetPane.bottomLeft`    | `WorksheetPane.BottomLeft`      |         |
+| `WorksheetPane.topLeft`       | `WorksheetPane.TopLeft`         |         |
+
+- The enum values of `Worksheet.SheetViewType` were renamed, according to the following overview:
+
+| Old Enum Value                   | New Enum Value                  | Remarks |
+| -------------------------------- | ------------------------------- | ------- |
+| `SheetViewType.normal`           | `SheetViewType.Normal`          |         |
+| `SheetViewType.PageBreakPreview` | `SheetViewType.PageBreakPreview`|         |
+| `SheetViewType.PageLayout`       | `SheetViewType.PageLayout`      |         |
+
+---
+
+### Cell
+
+- The enum values of `Cell.CellType` were renamed, according to the following overview:
+
+| Old Enum Value      | New Enum Value         | Remarks  |
+|---------------------|------------------------|----------|
+| `CellType.STRING`   | `CellType.String`      |          |
+| `CellType.NUMBER`   | `CellType.Number`      |          |
+| `CellType.DATE`     | `CellType.Date`        |          |
+| `CellType.TIME`     | `CellType.Time`        |          |
+| `CellType.BOOL`     | `CellType.Bool`        |          |
+| `CellType.FORMULA`  | `CellType.Formula`     |          |
+| `CellType.EMPTY`    | `CellType.Empty`       |          |
+| `CellType.DEFAULT`  | `CellType.Default`     |          |
+
 ---
 
 ### Address (struct)
@@ -105,6 +159,32 @@ Furthermore, a lot of constants were renamed to follow the C# naming conventions
 | `DEFAULT_FONT_FAMILY`    | `DefaultFontSize`      | The type was changed from `int` to the enum `Font.FontFamilyValue` |
 | `DEFAULT_VERTICAL_ALIGN` | `DefaultVerticalAlign` | The type was changed from enum `Font.VerticalAlignValue` to `Font.VerticalTextAlignValue` |
 
+- The enum values of `Font.SchemeValue` were renamed, according to the following overview:
+
+| Old Enum Value                | New Enum Value              | Remarks |
+| ----------------------------- | --------------------------- | ------- |
+| `SchemeValue.major`           | `SchemeValue.Major`         |         |
+| `SchemeValue.minor`           | `SchemeValue.Minor`         |         |
+| `SchemeValue.none`            | `SchemeValue.None`          |         |
+
+- The enum values of `Font.VerticalTextAlignValue` were renamed, according to the following overview:
+
+| Old Enum Value                      | New Enum Value              | Remarks |
+| ----------------------------------- | --------------------------- | ------- |
+| `VerticalTextAlignValue.subscript`  | `VerticalTextAlignValue.Subscript`    |         |
+| `VerticalTextAlignValue.superscript`| `VerticalTextAlignValue.Superscript`  |         |
+| `VerticalTextAlignValue.none`       | `VerticalTextAlignValue.None`         |         |
+
+- The enum values of `Font.UnderlineValue` were renamed, according to the following overview:
+
+| Old Enum Value                      | New Enum Value              | Remarks |
+| ----------------------------------- | --------------------------- | ------- |
+| `UnderlineValue.u_single`           | `UnderlineValue.Single`     |         |
+| `UnderlineValue.u_double_`          | `UnderlineValue.Double`     |         |
+| `UnderlineValue.singleAccounting`   | `UnderlineValue.SingleAccounting`  |         |
+| `UnderlineValue.doubleAccounting`   | `UnderlineValue.DoubleAccounting`  |         |
+| `UnderlineValue.none`               | `UnderlineValue.None`       |         |
+
 - The property `Font.Family` was changed from type `string` to the enum `Font.FontFamilyValue`.The value has to be replaced by one of the following available values:
 ```cs
 NotApplicable, Roman, Swiss, Modern, Script, Decorative, Reserved1, Reserved2, Reserved3, Reserved4, Reserved5, Reserved6, Reserved7, Reserved8, Reserved9
@@ -130,6 +210,24 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 | `DEFAULT_BORDER_STYLE`   | `DefaultBorderStyle`   |          |
 | `DEFAULT_COLOR`          | `DefaultBorderColor`   |          |
 
+- The enum values of `Border.StyleValue` were renamed, according to the following overview:
+
+| Old Enum Value                | New Enum Value              | Remarks |
+| ----------------------------- | --------------------------- | ------- |
+| `StyleValue.hair`             | `CellType.Hair`             |         |
+| `StyleValue.dotted`           | `CellType.Dotted`           |         |
+| `StyleValue.dashDotDot`       | `CellType.DashDotDot`       |         |
+| `StyleValue.dashDot`          | `CellType.DashDot`          |         |
+| `StyleValue.dashed`           | `CellType.Dashed`           |         |
+| `StyleValue.thin`             | `CellType.Thin`             |         |
+| `StyleValue.mediumDashDotDot` | `CellType.MediumDashDotDot` |         |
+| `StyleValue.slantDashDot`     | `CellType.SlantDashDot`     |         |
+| `StyleValue.mediumDashDot`    | `CellType.MediumDashDot`    |         |
+| `StyleValue.mediumDashed`     | `CellType.MediumDashed`     |         |
+| `StyleValue.medium`           | `CellType.Medium`           |         |
+| `StyleValue.thick`            | `CellType.Thick`            |         |
+| `StyleValue.s_double`         | `CellType.Double`           |         |
+
 #### Fill
 
 - The public constant values of the `Fill` class were renamed, according to the following overview:
@@ -139,6 +237,25 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 | `DEFAULT_COLOR`          | `DefaultColor`         |          |
 | `DEFAULT_INDEXED_COLOR`  | `DefaultIndexedColor`  |          |
 | `DEFAULT_PATTERN_FILL`   | `DefaultPatternFill`   |          |
+
+- The enum values of `Fill.FillType` were renamed, according to the following overview:
+
+| Old Enum Value          | New Enum Value              | Remarks |
+| ----------------------- | --------------------------- | ------- |
+| `FillType.patternColor` | `FillType.PatternColor` |         |
+| `FillType.fillColor`    | `FillType.FillColor`    |         |
+
+- The enum values of `Fill.PatternValue` were renamed, according to the following overview:
+
+| Old Enum Value           | New Enum Value             | Remarks |
+| ------------------------ | -------------------------- | ------- |
+| `PatternValue.solid`     | `PatternValue.Solid`       |         |
+| `PatternValue.darkGray`  | `PatternValue.DarkGray`    |         |
+| `PatternValue.mediumGray`| `PatternValue.MediumGray`  |         |
+| `PatternValue.lightGray` | `PatternValue.LightGray`   |         |
+| `PatternValue.gray0625`  | `PatternValue.Gray0625`    |         |
+| `PatternValue.gray125`   | `PatternValue.Gray125`     |         |
+| `PatternValue.none`      | `PatternValue.None`        |         |
 
 - The static method `Fill.ValidateColr(string,bool, bool)` was moved to the utils class `Validators.ValidateColr(string,bool, bool)` in namespace `NanoXLSX.Utils`. The class has to be changed in the code, but the method signature remains unchanged.
 
@@ -152,6 +269,46 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 | `DEFAULT_ALIGNMENT`      | `DefaultAlignment`     |          |
 | `DEFAULT_TEXT_DIRECTION` | `DefaultTextDirection` |          |
 | `DEFAULT_VERTICAL_ALIGNMENT`   | `DefaultVerticalAlignment`  |          |
+
+- The enum values of `CellXf.HorizontalAlignValue` were renamed, according to the following overview:
+
+| Old Enum Value                | New Enum Value              | Remarks |
+| ------------------------------- | --------------------------- | ------- |
+| `HorizontalAlignValue.left`     | `HorizontalAlignValue.Left`      |         |
+| `HorizontalAlignValue.center`   | `HorizontalAlignValue.Center`    |         |
+| `HorizontalAlignValue.right`    | `HorizontalAlignValue.Right`     |         |
+| `HorizontalAlignValue.fill`     | `HorizontalAlignValue.Fill`      |         |
+| `HorizontalAlignValue.justify`  | `HorizontalAlignValue.Justify`   |         |
+| `HorizontalAlignValue.general`  | `HorizontalAlignValue.General`   |         |
+| `HorizontalAlignValue.centerContinuous` | `HorizontalAlignValue.CenterContinuous` |         |
+| `HorizontalAlignValue.distributed` | `HorizontalAlignValue.Distributed` |         |
+| `HorizontalAlignValue.none`     | `HorizontalAlignValue.None` |         |
+
+- The enum values of `CellXf.TextBreakValue` were renamed, according to the following overview:
+
+| Old Enum Value                | New Enum Value              | Remarks |
+| ----------------------------- | --------------------------- | ------- |
+| `TextBreakValue.wrapText`     | `TextBreakValue.WrapText`   |         |
+| `TextBreakValue.shrinkToFit`  | `TextBreakValue.ShrinkToFit`|         |
+| `TextBreakValue.none`         | `TextBreakValue.None`       |         |
+
+- The enum values of `CellXf.TextDirectionValue` were renamed, according to the following overview:
+
+| Old Enum Value                  | New Enum Value              | Remarks |
+| ------------------------------- | --------------------------- | ------- |
+| `TextDirectionValue.horizontal` | `TextDirectionValue.Horizontal` |         |
+| `TextDirectionValue.vertical`   | `TextDirectionValue.Vertical`   |         |
+
+- The enum values of `CellXf.VerticalAlignValue` were renamed, according to the following overview:
+
+| Old Enum Value                  | New Enum Value              | Remarks |
+| ------------------------------- | --------------------------- | ------- |
+| `VerticalAlignValue.bottom`     | `VerticalAlignValue.Horizontal` |         |
+| `VerticalAlignValue.top`        | `VerticalAlignValue.Vertical`   |         |
+| `VerticalAlignValue.center`     | `VerticalAlignValue.Horizontal` |         |
+| `VerticalAlignValue.justify`    | `VerticalAlignValue.Justify`    |         |
+| `VerticalAlignValue.distributed`| `VerticalAlignValue.Distributed`|         |
+| `VerticalAlignValue.none`       | `VerticalAlignValue.None`       |         |
 
 #### NumberFormat
 
@@ -170,6 +327,44 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 | `FormatRange.custom_format_` | `FormatRange.CustomFormat`    |          |
 | `FormatRange.invalied`   | `FormatRange.Inavlid`  |          |
 | `FormatRange.undefined`  | `FormatRange.Undefined`|          |
+
+- The enum values of `NumberFormat.NumberFormat` were renamed, according to the following overview:
+
+| Old Enum Value           | New Enum Value          | Remarks                   |
+| ------------------------ | ----------------------- | ------------------------- |
+| `NumberFormat.format_1`  | `NumberFormat.Format1`  |                           |
+| `NumberFormat.format_2`  | `NumberFormat.Format2`  |                           |
+| `NumberFormat.format_3`  | `NumberFormat.Format3`  |                           |
+| `NumberFormat.format_4`  | `NumberFormat.Format4`  |                           |
+| `NumberFormat.format_5`  | `NumberFormat.Format5`  |                           |
+| `NumberFormat.format_6`  | `NumberFormat.Format6`  |                           |
+| `NumberFormat.format_7`  | `NumberFormat.Format7`  |                           |
+| `NumberFormat.format_8`  | `NumberFormat.Format8`  |                           |
+| `NumberFormat.format_9`  | `NumberFormat.Format9`  |                           |
+| `NumberFormat.format_10` | `NumberFormat.Format10` |                           |
+| `NumberFormat.format_11` | `NumberFormat.Format11` |                           |
+| `NumberFormat.format_12` | `NumberFormat.Format12` |                           |
+| `NumberFormat.format_13` | `NumberFormat.Format13` |                           |
+| `NumberFormat.format_14` | `NumberFormat.Format14` |                           |
+| `NumberFormat.format_15` | `NumberFormat.Format15` |                           |
+| `NumberFormat.format_16` | `NumberFormat.Format16` |                           |
+| `NumberFormat.format_17` | `NumberFormat.Format17` |                           |
+| `NumberFormat.format_18` | `NumberFormat.Format18` |                           |
+| `NumberFormat.format_19` | `NumberFormat.Format19` |                           |
+| `NumberFormat.format_20` | `NumberFormat.Format20` |                           |
+| `NumberFormat.format_21` | `NumberFormat.Format21` |                           |
+| `NumberFormat.format_22` | `NumberFormat.Format22` |                           |
+| `NumberFormat.format_37` | `NumberFormat.Format37` |                           |
+| `NumberFormat.format_38` | `NumberFormat.Format38` |                           |
+| `NumberFormat.format_39` | `NumberFormat.Format39` |                           |
+| `NumberFormat.format_40` | `NumberFormat.Format40` |                           |
+| `NumberFormat.format_45` | `NumberFormat.Format45` |                           |
+| `NumberFormat.format_46` | `NumberFormat.Format46` |                           |
+| `NumberFormat.format_47` | `NumberFormat.Format47` |                           |
+| `NumberFormat.format_48` | `NumberFormat.Format48` |                           |
+| `NumberFormat.format_49` | `NumberFormat.Format49` |                           |
+| `NumberFormat.custom`    | `NumberFormat.Custom`   | Custom formats (ID ≥ 164) |
+| `NumberFormat.none`      | `NumberFormat.None`     |                           |
 
 ---
 
