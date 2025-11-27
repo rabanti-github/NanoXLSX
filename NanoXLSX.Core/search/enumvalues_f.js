@@ -10,7 +10,7 @@ var searchData=
   ['reserved7_7',['Reserved7',['../classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dca6bfa8aa28d901b8a2a489e7edef42897',1,'NanoXLSX::Styles::Font']]],
   ['reserved8_8',['Reserved8',['../classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dcaf1815ef33cbdfc91a6c12fc6ce34caec',1,'NanoXLSX::Styles::Font']]],
   ['reserved9_9',['Reserved9',['../classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dca58229395553fe05863343dec97153cba',1,'NanoXLSX::Styles::Font']]],
-  ['right_10',['right',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a269c0dcaae26cf108d1c140fe18d91e7a7c4f29407893c334a6cb7a87bf045c0d',1,'NanoXLSX::Styles::CellXf']]],
+  ['right_10',['Right',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a269c0dcaae26cf108d1c140fe18d91e7a92b09c7c48c520c3c55e497875da437c',1,'NanoXLSX::Styles::CellXf']]],
   ['roman_11',['Roman',['../classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dcab5df36ac79aa6391ffb432b9e5ad7880',1,'NanoXLSX::Styles::Font']]],
   ['rowtorow_12',['RowToRow',['../classNanoXLSX_1_1Worksheet.html#a0c87fae9697afda2644bfbb89a684c3ba03201ebf57ae247ec2060e089c231134',1,'NanoXLSX::Worksheet']]],
   ['russian_13',['Russian',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001acadeba6920e70615401385fe1fb5a379ec',1,'NanoXLSX::Styles::Font']]]

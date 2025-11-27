@@ -24,7 +24,7 @@ var searchData=
   ['worksheetreader_21',['WorksheetReader',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a787bd2668ced0c8bbdd02f97a12acab5',1,'NanoXLSX::Registry::PlugInUUID']]],
   ['worksheets_22',['Worksheets',['../classNanoXLSX_1_1Workbook.html#a9a17c70ffeca8d99e7993697008669cc',1,'NanoXLSX::Workbook']]],
   ['worksheetwriter_23',['WorksheetWriter',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a5d7b235b885d4496f625b455ee8867c6',1,'NanoXLSX::Registry::PlugInUUID']]],
-  ['wraptext_24',['wrapText',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a7b81d2db6ded2ef30173a3befa20b1c4a3fd16afbf294a49d34de7aec97bdf717',1,'NanoXLSX::Styles::CellXf']]],
+  ['wraptext_24',['WrapText',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a7b81d2db6ded2ef30173a3befa20b1c4a17056eca791f68623421db900f30d49d',1,'NanoXLSX::Styles::CellXf']]],
   ['writerappendingqueue_25',['WriterAppendingQueue',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a9e1d9e96cf5bae65416f7d5e177bc3d6',1,'NanoXLSX::Registry::PlugInUUID']]],
   ['writerpackageregistryqueue_26',['WriterPackageRegistryQueue',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a132678b47ea4d8582f77c8ccd5e0d246',1,'NanoXLSX::Registry::PlugInUUID']]],
   ['writerprependingqueue_27',['WriterPrependingQueue',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#aeb6b79dbe489cac0f3521a2002d1be2a',1,'NanoXLSX::Registry::PlugInUUID']]],

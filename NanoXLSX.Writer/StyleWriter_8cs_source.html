@@ -100,14 +100,14 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">using </span>System.Collections.Generic;</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">using </span>NanoXLSX.Exceptions;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">using </span><a class="code hl_namespace" href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a>;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">using </span>NanoXLSX.Registry;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">using </span>NanoXLSX.Registry.Attributes;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">using </span>NanoXLSX.Styles;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">using </span>NanoXLSX.Utils;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">using </span>NanoXLSX.Utils.Xml;</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">using </span>NanoXLSX.Exceptions;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">using </span><a class="code hl_namespace" href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a>;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">using </span>NanoXLSX.Registry;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">using </span>NanoXLSX.Registry.Attributes;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">using </span>NanoXLSX.Styles;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">using </span>NanoXLSX.Utils;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">using </span>NanoXLSX.Utils.Xml;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">using </span>System.Collections.Generic;</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">using </span>static <a class="code hl_namespace" href="namespaceNanoXLSX.html">NanoXLSX</a>.Styles.Border;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">using </span>static <a class="code hl_namespace" href="namespaceNanoXLSX.html">NanoXLSX</a>.Styles.CellXf;</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">using </span>static <a class="code hl_namespace" href="namespaceNanoXLSX.html">NanoXLSX</a>.Styles.Fill;</div>
@@ -157,25 +157,25 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            <span class="keywordflow">if</span> (numFormatCount &gt; 0)</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            {</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                XmlElement numFmts = XmlElement.CreateElementWithAttribute(<span class="stringliteral">&quot;numFmts&quot;</span>, <span class="stringliteral">&quot;count&quot;</span>, ParserUtils.ToString(numFormatCount));</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                numFmts.AddChildElements(getNumberFormatElements());</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                numFmts.AddChildElements(GetNumberFormatElements());</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                styleSheet.AddChildElement(numFmts);</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            }</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            XmlElement fonts = XmlElement.CreateElementWithAttribute(<span class="stringliteral">&quot;fonts&quot;</span>, <span class="stringliteral">&quot;count&quot;</span>, ParserUtils.ToString(fontCount));</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            fonts.AddAttribute(<span class="stringliteral">&quot;knownFonts&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>, <span class="stringliteral">&quot;x14ac&quot;</span>);</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            fonts.AddChildElements(getFontElements());</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            fonts.AddChildElements(GetFontElements());</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            styleSheet.AddChildElement(fonts);</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            XmlElement fills = XmlElement.CreateElementWithAttribute(<span class="stringliteral">&quot;fills&quot;</span>, <span class="stringliteral">&quot;count&quot;</span>, ParserUtils.ToString(fillCount));</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            fills.AddChildElements(getFillElements());</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            fills.AddChildElements(GetFillElements());</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            styleSheet.AddChildElement(fills);</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            XmlElement borders = XmlElement.CreateElementWithAttribute(<span class="stringliteral">&quot;borders&quot;</span>, <span class="stringliteral">&quot;count&quot;</span>, ParserUtils.ToString(borderCount));</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            borders.AddChildElements(getBorderElements());</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            borders.AddChildElements(GetBorderElements());</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            styleSheet.AddChildElement(borders);</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            XmlElement cellXfs = XmlElement.CreateElementWithAttribute(<span class="stringliteral">&quot;cellXfs&quot;</span>, <span class="stringliteral">&quot;count&quot;</span>, ParserUtils.ToString(styleCount));</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            cellXfs.AddChildElements(getCellXfElements());</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            cellXfs.AddChildElements(GetCellXfElements());</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            styleSheet.AddChildElement(cellXfs);</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            <span class="keywordflow">if</span> (Workbook.WorkbookMetadata != <span class="keyword">null</span>)</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                XmlElement mruElement = getMruElement();</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                XmlElement mruElement = GetMruElement();</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                <span class="keywordflow">if</span> (mruElement != <span class="keyword">null</span>)</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                {</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                    XmlElement colors = styleSheet.AddChildElement(<span class="stringliteral">&quot;colors&quot;</span>);</div>
@@ -186,7 +186,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            WriterPlugInHandler.HandleInlineQueuePlugins(ref styleSheet, Workbook, PlugInUUID.StyleInlineWriter);</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        }</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; getBorderElements()</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; GetBorderElements()</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        {</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>            Border[] borderStyles = styles.GetBorders();</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>            List&lt;XmlElement&gt; borders = <span class="keyword">new</span> List&lt;XmlElement&gt;(borderStyles.Length);</div>
@@ -200,7 +200,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                    border.AddAttribute(<span class="stringliteral">&quot;diagonalDown&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>                    border.AddAttribute(<span class="stringliteral">&quot;diagonalUp&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                }</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                <span class="keywordflow">if</span> (item.LeftStyle != StyleValue.none)</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                <span class="keywordflow">if</span> (item.LeftStyle != StyleValue.None)</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                {</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                    XmlElement left = border.AddChildElementWithAttribute(<span class="stringliteral">&quot;left&quot;</span>, <span class="stringliteral">&quot;style&quot;</span>, Border.GetStyleName(item.LeftStyle));</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                    <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(item.LeftColor)) { left.AddChildElementWithAttribute(<span class="stringliteral">&quot;color&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.LeftColor); }</div>
@@ -210,7 +210,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                {</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                    border.AddChildElement(<span class="stringliteral">&quot;left&quot;</span>);</div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                }</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                <span class="keywordflow">if</span> (item.RightStyle != StyleValue.none)</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                <span class="keywordflow">if</span> (item.RightStyle != StyleValue.None)</div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>                {</div>
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>                    XmlElement right = border.AddChildElementWithAttribute(<span class="stringliteral">&quot;right&quot;</span>, <span class="stringliteral">&quot;style&quot;</span>, Border.GetStyleName(item.RightStyle));</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                    <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(item.RightColor)) { right.AddChildElementWithAttribute(<span class="stringliteral">&quot;color&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.RightColor); }</div>
@@ -220,7 +220,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                {</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                    border.AddChildElement(<span class="stringliteral">&quot;right&quot;</span>);</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                }</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>                <span class="keywordflow">if</span> (item.TopStyle != StyleValue.none)</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>                <span class="keywordflow">if</span> (item.TopStyle != StyleValue.None)</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>                {</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                    XmlElement top = border.AddChildElementWithAttribute(<span class="stringliteral">&quot;top&quot;</span>, <span class="stringliteral">&quot;style&quot;</span>, Border.GetStyleName(item.TopStyle));</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                    <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(item.TopColor)) { top.AddChildElementWithAttribute(<span class="stringliteral">&quot;color&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.TopColor); }</div>
@@ -230,7 +230,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>                {</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                    border.AddChildElement(<span class="stringliteral">&quot;top&quot;</span>);</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                }</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                <span class="keywordflow">if</span> (item.BottomStyle != StyleValue.none)</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                <span class="keywordflow">if</span> (item.BottomStyle != StyleValue.None)</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>                {</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                    XmlElement bottom = border.AddChildElementWithAttribute(<span class="stringliteral">&quot;bottom&quot;</span>, <span class="stringliteral">&quot;style&quot;</span>, Border.GetStyleName(item.BottomStyle));</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>                    <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(item.BottomColor)) { bottom.AddChildElementWithAttribute(<span class="stringliteral">&quot;color&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.BottomColor); }</div>
@@ -240,7 +240,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>                {</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>                    border.AddChildElement(<span class="stringliteral">&quot;bottom&quot;</span>);</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                }</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                <span class="keywordflow">if</span> (item.DiagonalStyle != StyleValue.none)</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                <span class="keywordflow">if</span> (item.DiagonalStyle != StyleValue.None)</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                {</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                    XmlElement diagonal = border.AddChildElementWithAttribute(<span class="stringliteral">&quot;diagonal&quot;</span>, <span class="stringliteral">&quot;style&quot;</span>, Border.GetStyleName(item.DiagonalStyle));</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                    <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(item.DiagonalColor)) { diagonal.AddChildElementWithAttribute(<span class="stringliteral">&quot;color&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.DiagonalColor); }</div>
@@ -255,7 +255,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>            <span class="keywordflow">return</span> borders;</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        }</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span></div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; getFontElements()</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; GetFontElements()</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        {</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>            Font[] fontStyles = styles.GetFonts();</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>            List&lt;XmlElement&gt; fonts = <span class="keyword">new</span> List&lt;XmlElement&gt;(fontStyles.Length);</div>
@@ -265,230 +265,224 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>                <span class="keywordflow">if</span> (item.Bold) { font.AddChildElement(<span class="stringliteral">&quot;b&quot;</span>); }</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                <span class="keywordflow">if</span> (item.Italic) { font.AddChildElement(<span class="stringliteral">&quot;i&quot;</span>); }</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>                <span class="keywordflow">if</span> (item.Strike) { font.AddChildElement(<span class="stringliteral">&quot;strike&quot;</span>); }</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>                <span class="keywordflow">if</span> (item.Underline != UnderlineValue.none)</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>                <span class="keywordflow">if</span> (item.Underline != UnderlineValue.None &amp;&amp; item.Underline != UnderlineValue.Single)</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>                {</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>                    <span class="keywordflow">if</span> (item.Underline == UnderlineValue.u_double) { font.AddChildElementWithAttribute(<span class="stringliteral">&quot;u&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, <span class="stringliteral">&quot;double&quot;</span>); }</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (item.Underline == UnderlineValue.singleAccounting) { font.AddChildElementWithAttribute(<span class="stringliteral">&quot;u&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, <span class="stringliteral">&quot;singleAccounting&quot;</span>); }</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (item.Underline == UnderlineValue.doubleAccounting) { font.AddChildElementWithAttribute(<span class="stringliteral">&quot;u&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, <span class="stringliteral">&quot;doubleAccounting&quot;</span>); }</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>                    <span class="keywordflow">else</span> { font.AddChildElement(<span class="stringliteral">&quot;u&quot;</span>); }</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>                }</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>                <span class="keywordflow">if</span> (item.VerticalAlign == VerticalTextAlignValue.subscript) { font.AddChildElementWithAttribute(<span class="stringliteral">&quot;vertAlign&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, <span class="stringliteral">&quot;subscript&quot;</span>); }</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (item.VerticalAlign == VerticalTextAlignValue.superscript) { font.AddChildElementWithAttribute(<span class="stringliteral">&quot;vertAlign&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, <span class="stringliteral">&quot;superscript&quot;</span>); }</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>                font.AddChildElementWithAttribute(<span class="stringliteral">&quot;sz&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, ParserUtils.ToString(item.Size));</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>                <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(item.ColorValue))</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                {</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>                    font.AddChildElementWithAttribute(<span class="stringliteral">&quot;color&quot;</span>, <span class="stringliteral">&quot;theme&quot;</span>, ParserUtils.ToString((<span class="keywordtype">int</span>)item.ColorTheme));</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>                }</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>                <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>                {</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>                    font.AddChildElementWithAttribute(<span class="stringliteral">&quot;color&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.ColorValue);</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>                }</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>                font.AddChildElementWithAttribute(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, item.Name);</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>                font.AddChildElementWithAttribute(<span class="stringliteral">&quot;family&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, ParserUtils.ToString((<span class="keywordtype">int</span>)item.Family));</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>                <span class="keywordflow">if</span> (item.Scheme != SchemeValue.none)</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>                {</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>                    <span class="keywordflow">if</span> (item.Scheme == SchemeValue.major)</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>                    { font.AddChildElementWithAttribute(<span class="stringliteral">&quot;scheme&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, <span class="stringliteral">&quot;major&quot;</span>); }</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (item.Scheme == SchemeValue.minor)</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>                    { font.AddChildElementWithAttribute(<span class="stringliteral">&quot;scheme&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, <span class="stringliteral">&quot;minor&quot;</span>); }</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>                }</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>                font.AddChildElementWithAttribute(<span class="stringliteral">&quot;charset&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, ParserUtils.ToString((<span class="keywordtype">int</span>)item.Charset));</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>                fonts.Add(font);</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>            }</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>            <span class="keywordflow">return</span> fonts;</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        }</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span></div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; getFillElements()</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        {</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>            Fill[] fillStyles = styles.GetFills();</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>            List&lt;XmlElement&gt; fills = <span class="keyword">new</span> List&lt;XmlElement&gt;(fillStyles.Length);</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>            <span class="keywordflow">foreach</span> (Fill item <span class="keywordflow">in</span> fillStyles)</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            {</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                XmlElement fill = XmlElement.CreateElement(<span class="stringliteral">&quot;fill&quot;</span>);</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                XmlElement patternFill = fill.AddChildElement(<span class="stringliteral">&quot;patternFill&quot;</span>);</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>                patternFill.AddAttribute(<span class="stringliteral">&quot;patternType&quot;</span>, Fill.GetPatternName(item.PatternFill));</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                <span class="keywordflow">if</span> (item.PatternFill == PatternValue.solid)</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>                {</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>                    patternFill.AddChildElementWithAttribute(<span class="stringliteral">&quot;fgColor&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.ForegroundColor);</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>                    patternFill.AddChildElementWithAttribute(<span class="stringliteral">&quot;bgColor&quot;</span>, <span class="stringliteral">&quot;indexed&quot;</span>, ParserUtils.ToString(item.IndexedColor));</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>                }</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (item.PatternFill == PatternValue.mediumGray || item.PatternFill == PatternValue.lightGray || item.PatternFill == PatternValue.gray0625 || item.PatternFill == PatternValue.darkGray)</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>                {</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>                    patternFill.AddChildElementWithAttribute(<span class="stringliteral">&quot;fgColor&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.ForegroundColor);</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                    <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(item.BackgroundColor))</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                    {</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>                        patternFill.AddChildElementWithAttribute(<span class="stringliteral">&quot;bgColor&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.BackgroundColor);</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>                    }</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>                }</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                fills.Add(fill);</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>            }</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>            <span class="keywordflow">return</span> fills;</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        }</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span></div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; getNumberFormatElements()</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        {</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>            NumberFormat[] numberFormatStyles = styles.GetNumberFormats();</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>            List&lt;XmlElement&gt; elements = <span class="keyword">new</span> List&lt;XmlElement&gt;(numberFormatStyles.Length);</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>            <span class="keywordflow">foreach</span> (NumberFormat item <span class="keywordflow">in</span> numberFormatStyles)</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>            {</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                <span class="keywordflow">if</span> (item.IsCustomFormat)</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                {</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>                    <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(item.CustomFormatCode))</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>                    {</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                        <span class="keywordflow">throw</span> <span class="keyword">new</span> FormatException(<span class="stringliteral">&quot;The number format style component with the ID &quot;</span> + ParserUtils.ToString(item.CustomFormatID) + <span class="stringliteral">&quot; cannot be null or empty&quot;</span>);</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                    }</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>                    <span class="comment">// OOXML: Escaping according to Chp.18.8.31</span></div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>                    <span class="comment">// TODO: v3&gt; Add a custom format builder</span></div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                    XmlElement element = XmlElement.CreateElementWithAttribute(<span class="stringliteral">&quot;numFmt&quot;</span>, <span class="stringliteral">&quot;formatCode&quot;</span>, XmlUtils.SanitizeXmlValue(item.CustomFormatCode));</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>                    element.AddAttribute(<span class="stringliteral">&quot;numFmtId&quot;</span>, ParserUtils.ToString(item.CustomFormatID));</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                    elements.Add(element);</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                }</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>            }</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>            <span class="keywordflow">return</span> elements;</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>        }</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span></div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; getCellXfElements()</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>        {</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>            Style[] styleItems = this.styles.GetStyles();</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>            List&lt;XmlElement&gt; xfs = <span class="keyword">new</span> List&lt;XmlElement&gt;(styleItems.Length);</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>            <span class="keywordflow">foreach</span> (Style style <span class="keywordflow">in</span> styleItems)</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>            {</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>                <span class="keywordtype">int</span> textRotation = style.CurrentCellXf.CalculateInternalRotation();</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>                XmlElement alignment = <span class="keyword">null</span>;</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>                XmlElement protection = <span class="keyword">null</span>;</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>                <span class="keywordflow">if</span> (style.CurrentCellXf.HorizontalAlign != HorizontalAlignValue.none || style.CurrentCellXf.VerticalAlign != VerticalAlignValue.none || style.CurrentCellXf.Alignment != TextBreakValue.none || textRotation != 0)</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>                {</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>                    alignment = XmlElement.CreateElement(<span class="stringliteral">&quot;alignment&quot;</span>);</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>                    <span class="keywordflow">if</span> (style.CurrentCellXf.HorizontalAlign != HorizontalAlignValue.none)</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>                    {</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>                        <span class="keywordflow">if</span> (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.center) { alignment.AddAttribute(<span class="stringliteral">&quot;horizontal&quot;</span>, <span class="stringliteral">&quot;center&quot;</span>); }</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.right) { alignment.AddAttribute(<span class="stringliteral">&quot;horizontal&quot;</span>, <span class="stringliteral">&quot;right&quot;</span>); }</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.centerContinuous) { alignment.AddAttribute(<span class="stringliteral">&quot;horizontal&quot;</span>, <span class="stringliteral">&quot;centerContinuous&quot;</span>); }</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.distributed) { alignment.AddAttribute(<span class="stringliteral">&quot;horizontal&quot;</span>, <span class="stringliteral">&quot;distributed&quot;</span>); }</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.fill) { alignment.AddAttribute(<span class="stringliteral">&quot;horizontal&quot;</span>, <span class="stringliteral">&quot;fill&quot;</span>); }</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.general) { alignment.AddAttribute(<span class="stringliteral">&quot;horizontal&quot;</span>, <span class="stringliteral">&quot;general&quot;</span>); }</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.justify) { alignment.AddAttribute(<span class="stringliteral">&quot;horizontal&quot;</span>, <span class="stringliteral">&quot;justify&quot;</span>); }</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                        <span class="keywordflow">else</span> { alignment.AddAttribute(<span class="stringliteral">&quot;horizontal&quot;</span>, <span class="stringliteral">&quot;left&quot;</span>); }</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>                    }</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>                    <span class="keywordflow">if</span> (style.CurrentCellXf.VerticalAlign != VerticalAlignValue.none)</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>                    {</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>                        <span class="keywordflow">if</span> (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.center) { alignment.AddAttribute(<span class="stringliteral">&quot;vertical&quot;</span>, <span class="stringliteral">&quot;center&quot;</span>); }</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.distributed) { alignment.AddAttribute(<span class="stringliteral">&quot;vertical&quot;</span>, <span class="stringliteral">&quot;distributed&quot;</span>); }</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.justify) { alignment.AddAttribute(<span class="stringliteral">&quot;vertical&quot;</span>, <span class="stringliteral">&quot;justify&quot;</span>); }</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (style.CurrentCellXf.VerticalAlign == VerticalAlignValue.top) { alignment.AddAttribute(<span class="stringliteral">&quot;vertical&quot;</span>, <span class="stringliteral">&quot;top&quot;</span>); }</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>                        <span class="keywordflow">else</span> { alignment.AddAttribute(<span class="stringliteral">&quot;vertical&quot;</span>, <span class="stringliteral">&quot;bottom&quot;</span>); }</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>                    }</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>                    <span class="keywordflow">if</span> (style.CurrentCellXf.Indent &gt; 0 &amp;&amp;</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>                        (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.left</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>                        || style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.right</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>                        || style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.distributed))</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>                    {</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>                        alignment.AddAttribute(<span class="stringliteral">&quot;indent&quot;</span>, ParserUtils.ToString(style.CurrentCellXf.Indent));</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>                    }</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>                    <span class="keywordflow">if</span> (style.CurrentCellXf.Alignment != TextBreakValue.none)</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>                    {</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>                        <span class="keywordflow">if</span> (style.CurrentCellXf.Alignment == TextBreakValue.shrinkToFit) { alignment.AddAttribute(<span class="stringliteral">&quot;shrinkToFit&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>); }</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>                        <span class="keywordflow">else</span> { alignment.AddAttribute(<span class="stringliteral">&quot;wrapText&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>); }</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>                    }</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>                    <span class="keywordflow">if</span> (textRotation != 0)</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>                    {</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>                        alignment.AddAttribute(<span class="stringliteral">&quot;textRotation&quot;</span>, ParserUtils.ToString(textRotation));</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>                    }</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>                }</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>                <span class="keywordflow">if</span> (!style.CurrentCellXf.Locked || style.CurrentCellXf.Hidden)</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>                {</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>                    protection = XmlElement.CreateElement(<span class="stringliteral">&quot;protection&quot;</span>);</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>                    <span class="keywordflow">if</span> (style.CurrentCellXf.Hidden &amp;&amp; style.CurrentCellXf.Locked)</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>                    {</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>                        protection.AddAttribute(<span class="stringliteral">&quot;hidden&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>); <span class="comment">// Locked is true by default (no need to define)</span></div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>                    }</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (style.CurrentCellXf.Hidden &amp;&amp; !style.CurrentCellXf.Locked)</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>                    {</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>                        protection.AddAttribute(<span class="stringliteral">&quot;hidden&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>                        protection.AddAttribute(<span class="stringliteral">&quot;locked&quot;</span>, <span class="stringliteral">&quot;0&quot;</span>);</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>                    }</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!style.CurrentCellXf.Hidden &amp;&amp; !style.CurrentCellXf.Locked)</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>                    {</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>                        protection.AddAttribute(<span class="stringliteral">&quot;locked&quot;</span>, <span class="stringliteral">&quot;0&quot;</span>); <span class="comment">// To be defined, since locked is true by default (no need for hidden, since false by default)</span></div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span> </div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>                    }</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>                }</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>                <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>                {</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>                    protection = <span class="keyword">null</span>; <span class="comment">// No definition if only locked == true</span></div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>                }</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>                XmlElement xf = XmlElement.CreateElement(<span class="stringliteral">&quot;xf&quot;</span>);</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>                <span class="keywordflow">if</span> (style.CurrentNumberFormat.IsCustomFormat)</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>                {</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>                    xf.AddAttribute(<span class="stringliteral">&quot;numFmtId&quot;</span>, ParserUtils.ToString(style.CurrentNumberFormat.CustomFormatID));</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>                }</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>                <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>                {</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>                    <span class="keywordtype">int</span> formatNumber = (int)style.CurrentNumberFormat.Number;</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>                    xf.AddAttribute(<span class="stringliteral">&quot;numFmtId&quot;</span>, ParserUtils.ToString(formatNumber));</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>                }</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>                xf.AddAttribute(<span class="stringliteral">&quot;borderId&quot;</span>, ParserUtils.ToString(style.CurrentBorder.InternalID.Value));</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>                xf.AddAttribute(<span class="stringliteral">&quot;fillId&quot;</span>, ParserUtils.ToString(style.CurrentFill.InternalID.Value));</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>                xf.AddAttribute(<span class="stringliteral">&quot;fontId&quot;</span>, ParserUtils.ToString(style.CurrentFont.InternalID.Value));</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>                <span class="keywordflow">if</span> (!style.CurrentFont.IsDefaultFont)</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>                {</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>                    xf.AddAttribute(<span class="stringliteral">&quot;applyFont&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>                }</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>                <span class="keywordflow">if</span> (style.CurrentFill.PatternFill != PatternValue.none)</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>                {</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>                    xf.AddAttribute(<span class="stringliteral">&quot;applyFill&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>                }</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>                <span class="keywordflow">if</span> (!style.CurrentBorder.IsEmpty())</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>                {</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>                    xf.AddAttribute(<span class="stringliteral">&quot;applyBorder&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>                }</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>                <span class="keywordflow">if</span> (alignment != <span class="keyword">null</span> || style.CurrentCellXf.ForceApplyAlignment)</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>                {</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>                    xf.AddAttribute(<span class="stringliteral">&quot;applyAlignment&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>                }</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>                <span class="keywordflow">if</span> (protection != <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>                {</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>                    xf.AddAttribute(<span class="stringliteral">&quot;applyProtection&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>                }</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>                <span class="keywordflow">if</span> (style.CurrentNumberFormat.Number != FormatNumber.none)</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>                {</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>                    xf.AddAttribute(<span class="stringliteral">&quot;applyNumberFormat&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>                }</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>                <span class="keywordflow">if</span> (alignment != <span class="keyword">null</span> || protection != <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>                {</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>                    xf.AddChildElement(alignment);</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>                    xf.AddChildElement(protection);</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>                }</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>                xfs.Add(xf);</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>            }</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>            <span class="keywordflow">return</span> xfs;</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>        }</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span></div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>        <span class="keyword">private</span> XmlElement getMruElement()</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>        {</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>            XmlElement mruColors = <span class="keyword">null</span>;</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>            List&lt;string&gt; tempColors = <span class="keyword">new</span> List&lt;string&gt;();</div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>            <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> item <span class="keywordflow">in</span> ((Workbook)this.Workbook).GetMruColors())</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>            {</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>                <span class="keywordflow">if</span> (item == Fill.DefaultColor)</div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>                {</div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>                    <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>                }</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>                <span class="keywordflow">if</span> (!tempColors.Contains(item)) { tempColors.Add(item); }</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>            }</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>            <span class="keywordflow">if</span> (tempColors.Count &gt; 0)</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>            {</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>                mruColors = XmlElement.CreateElement(<span class="stringliteral">&quot;mruColors&quot;</span>);</div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>                <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> item <span class="keywordflow">in</span> tempColors)</div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>                {</div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>                    mruColors.AddChildElementWithAttribute(<span class="stringliteral">&quot;color&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item);</div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>                }</div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>            }</div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>            <span class="keywordflow">return</span> mruColors;</div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>        }</div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="preprocessor">        #endregion</span></div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>    }</div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>}</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>                    font.AddChildElementWithAttribute(<span class="stringliteral">&quot;u&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, Font.GetUnderlineName(item.Underline));</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>                }</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (item.Underline == UnderlineValue.Single)</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>                {</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>                    font.AddChildElement(<span class="stringliteral">&quot;u&quot;</span>);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>                }</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>                <span class="keywordflow">if</span> (item.VerticalAlign != VerticalTextAlignValue.None)</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>                {</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>                    font.AddChildElementWithAttribute(<span class="stringliteral">&quot;vertAlign&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, Font.GetVerticalTextAlignName(item.VerticalAlign));</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                }</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>                font.AddChildElementWithAttribute(<span class="stringliteral">&quot;sz&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, ParserUtils.ToString(item.Size));</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>                <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(item.ColorValue))</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>                {</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>                    font.AddChildElementWithAttribute(<span class="stringliteral">&quot;color&quot;</span>, <span class="stringliteral">&quot;theme&quot;</span>, ParserUtils.ToString((<span class="keywordtype">int</span>)item.ColorTheme));</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>                }</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>                <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>                {</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>                    font.AddChildElementWithAttribute(<span class="stringliteral">&quot;color&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.ColorValue);</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>                }</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>                font.AddChildElementWithAttribute(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, item.Name);</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>                font.AddChildElementWithAttribute(<span class="stringliteral">&quot;family&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, ParserUtils.ToString((<span class="keywordtype">int</span>)item.Family));</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>                <span class="keywordflow">if</span> (item.Scheme != SchemeValue.None)</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>                {</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>                    <span class="keywordflow">if</span> (item.Scheme == SchemeValue.Major)</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>                    { font.AddChildElementWithAttribute(<span class="stringliteral">&quot;scheme&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, <span class="stringliteral">&quot;major&quot;</span>); }</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (item.Scheme == SchemeValue.Minor)</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>                    { font.AddChildElementWithAttribute(<span class="stringliteral">&quot;scheme&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, <span class="stringliteral">&quot;minor&quot;</span>); }</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>                }</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>                font.AddChildElementWithAttribute(<span class="stringliteral">&quot;charset&quot;</span>, <span class="stringliteral">&quot;val&quot;</span>, ParserUtils.ToString((<span class="keywordtype">int</span>)item.Charset));</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>                fonts.Add(font);</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>            }</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>            <span class="keywordflow">return</span> fonts;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        }</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; GetFillElements()</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        {</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            Fill[] fillStyles = styles.GetFills();</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>            List&lt;XmlElement&gt; fills = <span class="keyword">new</span> List&lt;XmlElement&gt;(fillStyles.Length);</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>            <span class="keywordflow">foreach</span> (Fill item <span class="keywordflow">in</span> fillStyles)</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>            {</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                XmlElement fill = XmlElement.CreateElement(<span class="stringliteral">&quot;fill&quot;</span>);</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>                XmlElement patternFill = fill.AddChildElement(<span class="stringliteral">&quot;patternFill&quot;</span>);</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>                patternFill.AddAttribute(<span class="stringliteral">&quot;patternType&quot;</span>, Fill.GetPatternName(item.PatternFill));</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>                <span class="keywordflow">if</span> (item.PatternFill == PatternValue.Solid)</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>                {</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                    patternFill.AddChildElementWithAttribute(<span class="stringliteral">&quot;fgColor&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.ForegroundColor);</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>                    patternFill.AddChildElementWithAttribute(<span class="stringliteral">&quot;bgColor&quot;</span>, <span class="stringliteral">&quot;indexed&quot;</span>, ParserUtils.ToString(item.IndexedColor));</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>                }</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (item.PatternFill == PatternValue.MediumGray || item.PatternFill == PatternValue.LightGray || item.PatternFill == PatternValue.Gray0625 || item.PatternFill == PatternValue.DarkGray)</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                {</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>                    patternFill.AddChildElementWithAttribute(<span class="stringliteral">&quot;fgColor&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.ForegroundColor);</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>                    <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(item.BackgroundColor))</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>                    {</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                        patternFill.AddChildElementWithAttribute(<span class="stringliteral">&quot;bgColor&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item.BackgroundColor);</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                    }</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>                }</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>                fills.Add(fill);</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>            }</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>            <span class="keywordflow">return</span> fills;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        }</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; GetNumberFormatElements()</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        {</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>            NumberFormat[] numberFormatStyles = styles.GetNumberFormats();</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>            List&lt;XmlElement&gt; elements = <span class="keyword">new</span> List&lt;XmlElement&gt;(numberFormatStyles.Length);</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>            <span class="keywordflow">foreach</span> (NumberFormat item <span class="keywordflow">in</span> numberFormatStyles)</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>            {</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>                <span class="keywordflow">if</span> (item.IsCustomFormat)</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                {</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                    <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(item.CustomFormatCode))</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>                    {</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>                        <span class="keywordflow">throw</span> <span class="keyword">new</span> FormatException(<span class="stringliteral">&quot;The number format style component with the ID &quot;</span> + ParserUtils.ToString(item.CustomFormatID) + <span class="stringliteral">&quot; cannot be null or empty&quot;</span>);</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                    }</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>                    <span class="comment">// OOXML: Escaping according to Chp.18.8.31</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                    <span class="comment">// TODO: v3&gt; Add a custom format builder</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                    XmlElement element = XmlElement.CreateElementWithAttribute(<span class="stringliteral">&quot;numFmt&quot;</span>, <span class="stringliteral">&quot;formatCode&quot;</span>, XmlUtils.SanitizeXmlValue(item.CustomFormatCode));</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                    element.AddAttribute(<span class="stringliteral">&quot;numFmtId&quot;</span>, ParserUtils.ToString(item.CustomFormatID));</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                    elements.Add(element);</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                }</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>            }</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>            <span class="keywordflow">return</span> elements;</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        }</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; GetCellXfElements()</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        {</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>            Style[] styleItems = this.styles.GetStyles();</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>            List&lt;XmlElement&gt; xfs = <span class="keyword">new</span> List&lt;XmlElement&gt;(styleItems.Length);</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>            <span class="keywordflow">foreach</span> (Style style <span class="keywordflow">in</span> styleItems)</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>            {</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>                <span class="keywordtype">int</span> textRotation = style.CurrentCellXf.CalculateInternalRotation();</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>                XmlElement alignment = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>                XmlElement protection = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>                <span class="keywordflow">if</span> (style.CurrentCellXf.HorizontalAlign != HorizontalAlignValue.None || style.CurrentCellXf.VerticalAlign != VerticalAlignValue.None || style.CurrentCellXf.Alignment != TextBreakValue.None || textRotation != 0)</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>                {</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>                    alignment = XmlElement.CreateElement(<span class="stringliteral">&quot;alignment&quot;</span>);</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>                    <span class="keywordflow">if</span> (style.CurrentCellXf.HorizontalAlign != HorizontalAlignValue.None)</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>                    {</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>                        <span class="keywordtype">string</span> alignValue = CellXf.GetHorizontalAlignName(style.CurrentCellXf.HorizontalAlign);</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>                        alignment.AddAttribute(<span class="stringliteral">&quot;horizontal&quot;</span>, alignValue);</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                    }</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>                    <span class="keywordflow">if</span> (style.CurrentCellXf.VerticalAlign != VerticalAlignValue.None)</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                    {</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>                        <span class="keywordtype">string</span> alignValue = CellXf.GetVerticalAlignName(style.CurrentCellXf.VerticalAlign);</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>                        alignment.AddAttribute(<span class="stringliteral">&quot;vertical&quot;</span>, alignValue);</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>                    }</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>                    <span class="keywordflow">if</span> (style.CurrentCellXf.Indent &gt; 0 &amp;&amp;</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>                        (style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.Left</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>                        || style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.Right</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>                        || style.CurrentCellXf.HorizontalAlign == HorizontalAlignValue.Distributed))</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>                    {</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>                        alignment.AddAttribute(<span class="stringliteral">&quot;indent&quot;</span>, ParserUtils.ToString(style.CurrentCellXf.Indent));</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>                    }</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>                    <span class="keywordflow">if</span> (style.CurrentCellXf.Alignment != TextBreakValue.None)</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>                    {</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>                        <span class="keywordflow">if</span> (style.CurrentCellXf.Alignment == TextBreakValue.ShrinkToFit) { alignment.AddAttribute(<span class="stringliteral">&quot;shrinkToFit&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>); }</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>                        <span class="keywordflow">else</span> { alignment.AddAttribute(<span class="stringliteral">&quot;wrapText&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>); }</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>                    }</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>                    <span class="keywordflow">if</span> (textRotation != 0)</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>                    {</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>                        alignment.AddAttribute(<span class="stringliteral">&quot;textRotation&quot;</span>, ParserUtils.ToString(textRotation));</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>                    }</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>                }</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>                <span class="keywordflow">if</span> (!style.CurrentCellXf.Locked || style.CurrentCellXf.Hidden)</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>                {</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>                    protection = XmlElement.CreateElement(<span class="stringliteral">&quot;protection&quot;</span>);</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>                    <span class="keywordflow">if</span> (style.CurrentCellXf.Hidden &amp;&amp; style.CurrentCellXf.Locked)</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>                    {</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>                        protection.AddAttribute(<span class="stringliteral">&quot;hidden&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>); <span class="comment">// Locked is true by default (no need to define)</span></div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>                    }</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (style.CurrentCellXf.Hidden &amp;&amp; !style.CurrentCellXf.Locked)</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>                    {</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>                        protection.AddAttribute(<span class="stringliteral">&quot;hidden&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>                        protection.AddAttribute(<span class="stringliteral">&quot;locked&quot;</span>, <span class="stringliteral">&quot;0&quot;</span>);</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>                    }</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!style.CurrentCellXf.Hidden &amp;&amp; !style.CurrentCellXf.Locked)</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>                    {</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>                        protection.AddAttribute(<span class="stringliteral">&quot;locked&quot;</span>, <span class="stringliteral">&quot;0&quot;</span>); <span class="comment">// To be defined, since locked is true by default (no need for hidden, since false by default)</span></div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>                    }</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>                }</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>                <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>                {</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>                    protection = <span class="keyword">null</span>; <span class="comment">// No definition if only locked == true</span></div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>                }</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>                XmlElement xf = XmlElement.CreateElement(<span class="stringliteral">&quot;xf&quot;</span>);</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>                <span class="keywordflow">if</span> (style.CurrentNumberFormat.IsCustomFormat)</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>                {</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>                    xf.AddAttribute(<span class="stringliteral">&quot;numFmtId&quot;</span>, ParserUtils.ToString(style.CurrentNumberFormat.CustomFormatID));</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>                }</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>                <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>                {</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>                    <span class="keywordtype">int</span> formatNumber = (int)style.CurrentNumberFormat.Number;</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>                    xf.AddAttribute(<span class="stringliteral">&quot;numFmtId&quot;</span>, ParserUtils.ToString(formatNumber));</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>                }</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>                xf.AddAttribute(<span class="stringliteral">&quot;borderId&quot;</span>, ParserUtils.ToString(style.CurrentBorder.InternalID.Value));</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>                xf.AddAttribute(<span class="stringliteral">&quot;fillId&quot;</span>, ParserUtils.ToString(style.CurrentFill.InternalID.Value));</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>                xf.AddAttribute(<span class="stringliteral">&quot;fontId&quot;</span>, ParserUtils.ToString(style.CurrentFont.InternalID.Value));</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>                <span class="keywordflow">if</span> (!style.CurrentFont.IsDefaultFont)</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>                {</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>                    xf.AddAttribute(<span class="stringliteral">&quot;applyFont&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>                }</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>                <span class="keywordflow">if</span> (style.CurrentFill.PatternFill != PatternValue.None)</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>                {</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>                    xf.AddAttribute(<span class="stringliteral">&quot;applyFill&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>                }</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>                <span class="keywordflow">if</span> (!style.CurrentBorder.IsEmpty())</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>                {</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>                    xf.AddAttribute(<span class="stringliteral">&quot;applyBorder&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>                }</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>                <span class="keywordflow">if</span> (alignment != <span class="keyword">null</span> || style.CurrentCellXf.ForceApplyAlignment)</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>                {</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>                    xf.AddAttribute(<span class="stringliteral">&quot;applyAlignment&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>                }</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>                <span class="keywordflow">if</span> (protection != <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>                {</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>                    xf.AddAttribute(<span class="stringliteral">&quot;applyProtection&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>                }</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>                <span class="keywordflow">if</span> (style.CurrentNumberFormat.Number != FormatNumber.None)</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>                {</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>                    xf.AddAttribute(<span class="stringliteral">&quot;applyNumberFormat&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>);</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>                }</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>                <span class="keywordflow">if</span> (alignment != <span class="keyword">null</span> || protection != <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>                {</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>                    xf.AddChildElement(alignment);</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>                    xf.AddChildElement(protection);</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>                }</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>                xfs.Add(xf);</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>            }</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>            <span class="keywordflow">return</span> xfs;</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>        }</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span></div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>        <span class="keyword">private</span> XmlElement GetMruElement()</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>        {</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>            XmlElement mruColors = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>            List&lt;string&gt; tempColors = <span class="keyword">new</span> List&lt;string&gt;();</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>            <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> item <span class="keywordflow">in</span> ((Workbook)this.Workbook).GetMruColors())</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>            {</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>                <span class="keywordflow">if</span> (item == Fill.DefaultColor)</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>                {</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>                    <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>                }</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>                <span class="keywordflow">if</span> (!tempColors.Contains(item)) { tempColors.Add(item); }</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>            }</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>            <span class="keywordflow">if</span> (tempColors.Count &gt; 0)</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>            {</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>                mruColors = XmlElement.CreateElement(<span class="stringliteral">&quot;mruColors&quot;</span>);</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>                <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> item <span class="keywordflow">in</span> tempColors)</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>                {</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>                    mruColors.AddChildElementWithAttribute(<span class="stringliteral">&quot;color&quot;</span>, <span class="stringliteral">&quot;rgb&quot;</span>, item);</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>                }</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>            }</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>            <span class="keywordflow">return</span> mruColors;</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>        }</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span><span class="preprocessor">        #endregion</span></div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>    }</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>}</div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_1_1Writer_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a></div><div class="ttdef"><b>Definition</b> <a href="IPasswordWriter_8cs_source.html#l00012">IPasswordWriter.cs:13</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Writers_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Writers.html">NanoXLSX.Internal.Writers</a></div><div class="ttdef"><b>Definition</b> <a href="LegacyPasswordWriter_8cs_source.html#l00017">LegacyPasswordWriter.cs:18</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_html"><div class="ttname"><a href="namespaceNanoXLSX.html">NanoXLSX</a></div><div class="ttdef"><b>Definition</b> <a href="WorkbookExtension_8cs_source.html#l00006">WorkbookExtension.cs:7</a></div></div>

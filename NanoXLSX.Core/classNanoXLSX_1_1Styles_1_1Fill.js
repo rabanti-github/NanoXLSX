@@ -1,17 +1,17 @@
 var classNanoXLSX_1_1Styles_1_1Fill =
 [
     [ "FillType", "classNanoXLSX_1_1Styles_1_1Fill.html#a023297fe4d4475eaa1ac8035065afdd6", [
-      [ "patternColor", "classNanoXLSX_1_1Styles_1_1Fill.html#a023297fe4d4475eaa1ac8035065afdd6afbb09227d0e100e3f6238b78bfe80b2c", null ],
-      [ "fillColor", "classNanoXLSX_1_1Styles_1_1Fill.html#a023297fe4d4475eaa1ac8035065afdd6a1fde055d3ff900e04ca08bc82066d7fd", null ]
+      [ "PatternColor", "classNanoXLSX_1_1Styles_1_1Fill.html#a023297fe4d4475eaa1ac8035065afdd6a2253769d6acf8f426ed310f417dadf19", null ],
+      [ "FillColor", "classNanoXLSX_1_1Styles_1_1Fill.html#a023297fe4d4475eaa1ac8035065afdd6a6876a5fdead44d4a4531d97ede9c5462", null ]
     ] ],
     [ "PatternValue", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437", [
-      [ "none", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437a334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
-      [ "solid", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437aec03f91ae56e478455e3786e91559194", null ],
-      [ "darkGray", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437a1ecc550729daa251c89f5c5a66153620", null ],
-      [ "mediumGray", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437ac46ebdb6d9dd16040b55ab42819fa035", null ],
-      [ "lightGray", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437ae5eb223cdbd00a16e0376aad779433a5", null ],
-      [ "gray0625", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437ad7125f7b686c60dc7d4c204776cdc292", null ],
-      [ "gray125", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437a317dc8b3395afe8d6bf3501d4f855540", null ]
+      [ "None", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437a6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "Solid", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437ae41480b6bbfbf7407974a88d3d34f4fa", null ],
+      [ "DarkGray", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437a91e93fc984985226ad4d319a4e4134ab", null ],
+      [ "MediumGray", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437a20c0214c0f19685f88629f12f9be63fc", null ],
+      [ "LightGray", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437afb55202637692de4a494e9ade4cff2dd", null ],
+      [ "Gray0625", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437a47adfabab20827bfc732673736fcb1c9", null ],
+      [ "Gray125", "classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437a0f1cef7eb98b5cea7b3de8c5348c9afb", null ]
     ] ],
     [ "Fill", "classNanoXLSX_1_1Styles_1_1Fill.html#a27021880029b7379b443bc0c60e8821d", null ],
     [ "Fill", "classNanoXLSX_1_1Styles_1_1Fill.html#ae67631122d76bd91e52c4922204a639c", null ],

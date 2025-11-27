@@ -12,14 +12,14 @@ var classNanoXLSX_1_1Cell =
       [ "FixedRowAndColumn", "classNanoXLSX_1_1Cell.html#a6eec9f04ff3237d4589ddb4b118dbdf8aa9b1f271e93290702491cbaefbc80d6c", null ]
     ] ],
     [ "CellType", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26a", [
-      [ "STRING", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa63b588d5559f64f89a416e656880b949", null ],
-      [ "NUMBER", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa34f55eca38e0605a84f169ff61a2a396", null ],
-      [ "DATE", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa633a6c7a6b9958f8174250094daf1e6a", null ],
-      [ "TIME", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa346ff32eaa3c09983fb2ec057816d352", null ],
-      [ "BOOL", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aaa97b2c144243b2b9d2c593ec268b62f5", null ],
-      [ "FORMULA", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aaadc4995cd52208dde39433fb069ddd61", null ],
-      [ "EMPTY", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aaba2b45bdc11e2a4a6e86aab2ac693cbb", null ],
-      [ "DEFAULT", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa5b39c8b553c821e7cddc6da64b5bd2ee", null ]
+      [ "String", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa27118326006d3829667a400ad23d5d98", null ],
+      [ "Number", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aab2ee912b91d69b435159c7c3f6df7f5f", null ],
+      [ "Date", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa44749712dbec183e983dcd78a7736c41", null ],
+      [ "Time", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aaa76d4ef5f3f6a672bbfab2865563e530", null ],
+      [ "Bool", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aac26f15e86e3de4c398a8273272aba034", null ],
+      [ "Formula", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa313a6a3d25aa041ee3dc3cbd65d4f22b", null ],
+      [ "Empty", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aace2c8aed9c2fa0cfbed56cbda4d8bf07", null ],
+      [ "Default", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa7a1920d61156abc05a60135aefe8bc67", null ]
     ] ],
     [ "Cell", "classNanoXLSX_1_1Cell.html#a40d7104e0759b58e20fe25bd88cb76c7", null ],
     [ "Cell", "classNanoXLSX_1_1Cell.html#abd07a8f4d82bbe3ac52c3bff9688d361", null ],

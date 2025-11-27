@@ -40,21 +40,21 @@ var classNanoXLSX_1_1Styles_1_1Font =
       [ "Reserved9", "classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dca58229395553fe05863343dec97153cba", null ]
     ] ],
     [ "SchemeValue", "classNanoXLSX_1_1Styles_1_1Font.html#a0a8e67775810f81cdac28e2cba1c3cea", [
-      [ "major", "classNanoXLSX_1_1Styles_1_1Font.html#a0a8e67775810f81cdac28e2cba1c3ceaaf1425da40a9f2d21ab702a1c7feae026", null ],
-      [ "minor", "classNanoXLSX_1_1Styles_1_1Font.html#a0a8e67775810f81cdac28e2cba1c3ceaaab846c0e3717a3e7d14af45cab70b44a", null ],
-      [ "none", "classNanoXLSX_1_1Styles_1_1Font.html#a0a8e67775810f81cdac28e2cba1c3ceaa334c4a4c42fdb79d7ebc3e73b517e6f8", null ]
+      [ "Major", "classNanoXLSX_1_1Styles_1_1Font.html#a0a8e67775810f81cdac28e2cba1c3ceaa3b329734e45b57e60f3df64c2cf412a9", null ],
+      [ "Minor", "classNanoXLSX_1_1Styles_1_1Font.html#a0a8e67775810f81cdac28e2cba1c3ceaa6fed0c378a4b4e8c1e7dc5c16dabb388", null ],
+      [ "None", "classNanoXLSX_1_1Styles_1_1Font.html#a0a8e67775810f81cdac28e2cba1c3ceaa6adf97f83acf6453d4a6a4b1070f3754", null ]
     ] ],
     [ "UnderlineValue", "classNanoXLSX_1_1Styles_1_1Font.html#add6ba3a6696a9c2291a2cda4d1f97525", [
-      [ "u_single", "classNanoXLSX_1_1Styles_1_1Font.html#add6ba3a6696a9c2291a2cda4d1f97525a0f5429998b731aa456c7c83000fd3805", null ],
-      [ "u_double", "classNanoXLSX_1_1Styles_1_1Font.html#add6ba3a6696a9c2291a2cda4d1f97525a5a02457ac54596d5a5e052159cfe70c5", null ],
-      [ "singleAccounting", "classNanoXLSX_1_1Styles_1_1Font.html#add6ba3a6696a9c2291a2cda4d1f97525a16afd6193e5949493475f0754a9698a5", null ],
-      [ "doubleAccounting", "classNanoXLSX_1_1Styles_1_1Font.html#add6ba3a6696a9c2291a2cda4d1f97525a858360c0b0b298056f1084423b184c22", null ],
-      [ "none", "classNanoXLSX_1_1Styles_1_1Font.html#add6ba3a6696a9c2291a2cda4d1f97525a334c4a4c42fdb79d7ebc3e73b517e6f8", null ]
+      [ "Single", "classNanoXLSX_1_1Styles_1_1Font.html#add6ba3a6696a9c2291a2cda4d1f97525a66ba162102bbf6ae31b522aec561735e", null ],
+      [ "Double", "classNanoXLSX_1_1Styles_1_1Font.html#add6ba3a6696a9c2291a2cda4d1f97525ad909d38d705ce75386dd86e611a82f5b", null ],
+      [ "SingleAccounting", "classNanoXLSX_1_1Styles_1_1Font.html#add6ba3a6696a9c2291a2cda4d1f97525aa2e6a3055e6302592a2067efee7ca47f", null ],
+      [ "DoubleAccounting", "classNanoXLSX_1_1Styles_1_1Font.html#add6ba3a6696a9c2291a2cda4d1f97525aa9bdd9354700ae243dda27ae07a33097", null ],
+      [ "None", "classNanoXLSX_1_1Styles_1_1Font.html#add6ba3a6696a9c2291a2cda4d1f97525a6adf97f83acf6453d4a6a4b1070f3754", null ]
     ] ],
     [ "VerticalTextAlignValue", "classNanoXLSX_1_1Styles_1_1Font.html#a083ddab7b6c5f11a4fef9221e2ff013d", [
-      [ "subscript", "classNanoXLSX_1_1Styles_1_1Font.html#a083ddab7b6c5f11a4fef9221e2ff013da8796114e5be2cd5eb900e81d6b20cf9c", null ],
-      [ "superscript", "classNanoXLSX_1_1Styles_1_1Font.html#a083ddab7b6c5f11a4fef9221e2ff013dacf03822c2734438628856fa09197d093", null ],
-      [ "none", "classNanoXLSX_1_1Styles_1_1Font.html#a083ddab7b6c5f11a4fef9221e2ff013da334c4a4c42fdb79d7ebc3e73b517e6f8", null ]
+      [ "Subscript", "classNanoXLSX_1_1Styles_1_1Font.html#a083ddab7b6c5f11a4fef9221e2ff013da928558e2f9712e38d447d674f2672200", null ],
+      [ "Superscript", "classNanoXLSX_1_1Styles_1_1Font.html#a083ddab7b6c5f11a4fef9221e2ff013da6316f99acec341fbdd5cc006dc5a7ba7", null ],
+      [ "None", "classNanoXLSX_1_1Styles_1_1Font.html#a083ddab7b6c5f11a4fef9221e2ff013da6adf97f83acf6453d4a6a4b1070f3754", null ]
     ] ],
     [ "Font", "classNanoXLSX_1_1Styles_1_1Font.html#ac1d995d0f8c6250f1bac25434caa180b", null ],
     [ "Copy", "classNanoXLSX_1_1Styles_1_1Font.html#a5b5a3b4e6eb03493180be3d77e219fd0", null ],

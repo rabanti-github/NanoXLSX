@@ -689,60 +689,60 @@ $(function(){initNavTree('WorksheetReader_8cs_source.html','',''); });
 <div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span></div>
 <div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>        <span class="keyword">private</span> Cell ResolveCellData(<span class="keywordtype">string</span> raw, <span class="keywordtype">string</span> type, <span class="keywordtype">string</span> styleNumber, <span class="keywordtype">string</span> address)</div>
 <div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>        {</div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>            Cell.CellType importedType = Cell.CellType.DEFAULT;</div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>            Cell.CellType importedType = Cell.CellType.Default;</div>
 <div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>            <span class="keywordtype">object</span> rawValue;</div>
 <div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>            <span class="keywordflow">if</span> (type == <span class="stringliteral">&quot;b&quot;</span>)</div>
 <div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span>            {</div>
 <div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>                rawValue = TryParseBool(raw);</div>
 <div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>                <span class="keywordflow">if</span> (rawValue != <span class="keyword">null</span>)</div>
 <div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>                {</div>
-<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>                    importedType = Cell.CellType.BOOL;</div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>                    importedType = Cell.CellType.Bool;</div>
 <div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>                }</div>
 <div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>                <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>                {</div>
 <div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>                    rawValue = GetNumericValue(raw);</div>
 <div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>                    <span class="keywordflow">if</span> (rawValue != <span class="keyword">null</span>)</div>
 <div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>                    {</div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>                        importedType = Cell.CellType.NUMBER;</div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>                        importedType = Cell.CellType.Number;</div>
 <div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>                    }</div>
 <div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>                }</div>
 <div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>            }</div>
 <div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (type == <span class="stringliteral">&quot;s&quot;</span>)</div>
 <div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>            {</div>
-<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>                importedType = Cell.CellType.STRING;</div>
+<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>                importedType = Cell.CellType.String;</div>
 <div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>                rawValue = ResolveSharedString(raw);</div>
 <div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>            }</div>
 <div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (type == <span class="stringliteral">&quot;str&quot;</span>)</div>
 <div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>            {</div>
-<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>                importedType = Cell.CellType.FORMULA;</div>
+<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>                importedType = Cell.CellType.Formula;</div>
 <div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>                rawValue = raw;</div>
 <div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>            }</div>
 <div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (type == <span class="stringliteral">&quot;inlineStr&quot;</span>)</div>
 <div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>            {</div>
-<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>                importedType = Cell.CellType.STRING;</div>
+<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>                importedType = Cell.CellType.String;</div>
 <div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>                rawValue = raw;</div>
 <div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span>            }</div>
 <div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dateStyles.Contains(styleNumber) &amp;&amp; (type == <span class="keyword">null</span> || type == <span class="stringliteral">&quot;&quot;</span> || type == <span class="stringliteral">&quot;n&quot;</span>))</div>
 <div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>            {</div>
-<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>                rawValue = GetDateTimeValue(raw, Cell.CellType.DATE, out importedType);</div>
+<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>                rawValue = GetDateTimeValue(raw, Cell.CellType.Date, out importedType);</div>
 <div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>            }</div>
 <div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (timeStyles.Contains(styleNumber) &amp;&amp; (type == <span class="keyword">null</span> || type == <span class="stringliteral">&quot;&quot;</span> || type == <span class="stringliteral">&quot;n&quot;</span>))</div>
 <div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>            {</div>
-<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>                rawValue = GetDateTimeValue(raw, Cell.CellType.TIME, out importedType);</div>
+<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>                rawValue = GetDateTimeValue(raw, Cell.CellType.Time, out importedType);</div>
 <div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>            }</div>
 <div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>            <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>            {</div>
-<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>                importedType = Cell.CellType.NUMBER;</div>
+<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>                importedType = Cell.CellType.Number;</div>
 <div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span>                rawValue = GetNumericValue(raw);</div>
 <div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>            }</div>
 <div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>            <span class="keywordflow">if</span> (rawValue == <span class="keyword">null</span> &amp;&amp; raw == <span class="stringliteral">&quot;&quot;</span>)</div>
 <div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>            {</div>
-<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>                importedType = Cell.CellType.EMPTY;</div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>                importedType = Cell.CellType.Empty;</div>
 <div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>                rawValue = <span class="keyword">null</span>;</div>
 <div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>            }</div>
 <div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (rawValue == <span class="keyword">null</span> &amp;&amp; raw.Length &gt; 0)</div>
 <div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>            {</div>
-<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>                importedType = Cell.CellType.STRING;</div>
+<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>                importedType = Cell.CellType.String;</div>
 <div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>                rawValue = raw;</div>
 <div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>            }</div>
 <div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>            Address cellAddress = <span class="keyword">new</span> Address(address);</div>
@@ -755,7 +755,7 @@ $(function(){initNavTree('WorksheetReader_8cs_source.html','',''); });
 <div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>                rawValue = GetGloballyEnforcedValue(rawValue, cellAddress);</div>
 <div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span>                rawValue = GetGloballyEnforcedFlagValues(rawValue, cellAddress);</div>
 <div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span>                importedType = ResolveType(rawValue, importedType);</div>
-<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span>                <span class="keywordflow">if</span> (importedType == Cell.CellType.DATE &amp;&amp; rawValue is DateTime &amp;&amp; (DateTime)rawValue &lt; DataUtils.FirstAllowedExcelDate)</div>
+<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span>                <span class="keywordflow">if</span> (importedType == Cell.CellType.Date &amp;&amp; rawValue is DateTime &amp;&amp; (DateTime)rawValue &lt; DataUtils.FirstAllowedExcelDate)</div>
 <div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span>                {</div>
 <div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>                    <span class="comment">// Fix conversion from time to date, where time has no days</span></div>
 <div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>                    rawValue = ((DateTime)rawValue).AddDays(1);</div>
@@ -766,13 +766,13 @@ $(function(){initNavTree('WorksheetReader_8cs_source.html','',''); });
 <div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span></div>
 <div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>        <span class="keyword">private</span> <span class="keyword">static</span> Cell.CellType ResolveType(<span class="keywordtype">object</span> value, Cell.CellType defaultType)</div>
 <div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>        {</div>
-<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>            <span class="keywordflow">if</span> (defaultType == Cell.CellType.FORMULA)</div>
+<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>            <span class="keywordflow">if</span> (defaultType == Cell.CellType.Formula)</div>
 <div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>            {</div>
 <div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>                <span class="keywordflow">return</span> defaultType;</div>
 <div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>            }</div>
 <div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>            <span class="keywordflow">if</span> (value == <span class="keyword">null</span>)</div>
 <div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>            {</div>
-<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>                <span class="keywordflow">return</span> Cell.CellType.EMPTY;</div>
+<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>                <span class="keywordflow">return</span> Cell.CellType.Empty;</div>
 <div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>            }</div>
 <div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>            <span class="keywordflow">switch</span> (value)</div>
 <div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>            {</div>
@@ -786,15 +786,15 @@ $(function(){initNavTree('WorksheetReader_8cs_source.html','',''); });
 <div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>                <span class="keywordflow">case</span> <span class="keywordtype">byte</span> _:</div>
 <div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>                <span class="keywordflow">case</span> sbyte _:</div>
 <div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>                <span class="keywordflow">case</span> <span class="keywordtype">int</span> _:</div>
-<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>                    <span class="keywordflow">return</span> Cell.CellType.NUMBER;</div>
+<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>                    <span class="keywordflow">return</span> Cell.CellType.Number;</div>
 <div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>                <span class="keywordflow">case</span> DateTime _:</div>
-<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>                    <span class="keywordflow">return</span> Cell.CellType.DATE;</div>
+<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>                    <span class="keywordflow">return</span> Cell.CellType.Date;</div>
 <div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>                <span class="keywordflow">case</span> TimeSpan _:</div>
-<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>                    <span class="keywordflow">return</span> Cell.CellType.TIME;</div>
+<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>                    <span class="keywordflow">return</span> Cell.CellType.Time;</div>
 <div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>                <span class="keywordflow">case</span> <span class="keywordtype">bool</span> _:</div>
-<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>                    <span class="keywordflow">return</span> Cell.CellType.BOOL;</div>
+<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>                    <span class="keywordflow">return</span> Cell.CellType.Bool;</div>
 <div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>                <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>                    <span class="keywordflow">return</span> Cell.CellType.STRING;</div>
+<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>                    <span class="keywordflow">return</span> Cell.CellType.String;</div>
 <div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>            }</div>
 <div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>        }</div>
 <div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span></div>
@@ -869,7 +869,7 @@ $(function(){initNavTree('WorksheetReader_8cs_source.html','',''); });
 <div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>            {</div>
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>                <span class="keywordflow">return</span> data;</div>
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>            }</div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>            <span class="keywordflow">if</span> (importedTyp == Cell.CellType.FORMULA)</div>
+<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>            <span class="keywordflow">if</span> (importedTyp == Cell.CellType.Formula)</div>
 <div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>            {</div>
 <div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>                <span class="keywordflow">return</span> data;</div>
 <div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>            }</div>
@@ -1178,13 +1178,13 @@ $(function(){initNavTree('WorksheetReader_8cs_source.html','',''); });
 <div class="line"><a id="l01251" name="l01251"></a><span class="lineno"> 1251</span>            <span class="keywordtype">double</span> dValue;</div>
 <div class="line"><a id="l01252" name="l01252"></a><span class="lineno"> 1252</span>            <span class="keywordflow">if</span> (!ParserUtils.TryParseDouble(raw, out dValue))</div>
 <div class="line"><a id="l01253" name="l01253"></a><span class="lineno"> 1253</span>            {</div>
-<div class="line"><a id="l01254" name="l01254"></a><span class="lineno"> 1254</span>                resolvedType = Cell.CellType.STRING;</div>
+<div class="line"><a id="l01254" name="l01254"></a><span class="lineno"> 1254</span>                resolvedType = Cell.CellType.String;</div>
 <div class="line"><a id="l01255" name="l01255"></a><span class="lineno"> 1255</span>                <span class="keywordflow">return</span> raw;</div>
 <div class="line"><a id="l01256" name="l01256"></a><span class="lineno"> 1256</span>            }</div>
-<div class="line"><a id="l01257" name="l01257"></a><span class="lineno"> 1257</span>            <span class="keywordflow">if</span> ((valueType == Cell.CellType.DATE &amp;&amp; (dValue &lt; DataUtils.MinOADateValue || dValue &gt; DataUtils.MaxOADateValue)) || (valueType == Cell.CellType.TIME &amp;&amp; (dValue &lt; 0.0 || dValue &gt; DataUtils.MaxOADateValue)))</div>
+<div class="line"><a id="l01257" name="l01257"></a><span class="lineno"> 1257</span>            <span class="keywordflow">if</span> ((valueType == Cell.CellType.Date &amp;&amp; (dValue &lt; DataUtils.MinOADateValue || dValue &gt; DataUtils.MaxOADateValue)) || (valueType == Cell.CellType.Time &amp;&amp; (dValue &lt; 0.0 || dValue &gt; DataUtils.MaxOADateValue)))</div>
 <div class="line"><a id="l01258" name="l01258"></a><span class="lineno"> 1258</span>            {</div>
 <div class="line"><a id="l01259" name="l01259"></a><span class="lineno"> 1259</span>                <span class="comment">// fallback to number (cannot be anything else)</span></div>
-<div class="line"><a id="l01260" name="l01260"></a><span class="lineno"> 1260</span>                resolvedType = Cell.CellType.NUMBER;</div>
+<div class="line"><a id="l01260" name="l01260"></a><span class="lineno"> 1260</span>                resolvedType = Cell.CellType.Number;</div>
 <div class="line"><a id="l01261" name="l01261"></a><span class="lineno"> 1261</span>                <span class="keywordflow">return</span> GetNumericValue(raw);</div>
 <div class="line"><a id="l01262" name="l01262"></a><span class="lineno"> 1262</span>            }</div>
 <div class="line"><a id="l01263" name="l01263"></a><span class="lineno"> 1263</span>            DateTime tempDate = DataUtils.GetDateFromOA(dValue);</div>
@@ -1192,14 +1192,14 @@ $(function(){initNavTree('WorksheetReader_8cs_source.html','',''); });
 <div class="line"><a id="l01265" name="l01265"></a><span class="lineno"> 1265</span>            {</div>
 <div class="line"><a id="l01266" name="l01266"></a><span class="lineno"> 1266</span>                tempDate = tempDate.AddDays(1); <span class="comment">// Modify wrong 1st date when &lt; 1</span></div>
 <div class="line"><a id="l01267" name="l01267"></a><span class="lineno"> 1267</span>            }</div>
-<div class="line"><a id="l01268" name="l01268"></a><span class="lineno"> 1268</span>            <span class="keywordflow">if</span> (valueType == Cell.CellType.DATE)</div>
+<div class="line"><a id="l01268" name="l01268"></a><span class="lineno"> 1268</span>            <span class="keywordflow">if</span> (valueType == Cell.CellType.Date)</div>
 <div class="line"><a id="l01269" name="l01269"></a><span class="lineno"> 1269</span>            {</div>
-<div class="line"><a id="l01270" name="l01270"></a><span class="lineno"> 1270</span>                resolvedType = Cell.CellType.DATE;</div>
+<div class="line"><a id="l01270" name="l01270"></a><span class="lineno"> 1270</span>                resolvedType = Cell.CellType.Date;</div>
 <div class="line"><a id="l01271" name="l01271"></a><span class="lineno"> 1271</span>                <span class="keywordflow">return</span> tempDate;</div>
 <div class="line"><a id="l01272" name="l01272"></a><span class="lineno"> 1272</span>            }</div>
 <div class="line"><a id="l01273" name="l01273"></a><span class="lineno"> 1273</span>            <span class="keywordflow">else</span></div>
 <div class="line"><a id="l01274" name="l01274"></a><span class="lineno"> 1274</span>            {</div>
-<div class="line"><a id="l01275" name="l01275"></a><span class="lineno"> 1275</span>                resolvedType = Cell.CellType.TIME;</div>
+<div class="line"><a id="l01275" name="l01275"></a><span class="lineno"> 1275</span>                resolvedType = Cell.CellType.Time;</div>
 <div class="line"><a id="l01276" name="l01276"></a><span class="lineno"> 1276</span>                <span class="keywordflow">return</span> <span class="keyword">new</span> TimeSpan((<span class="keywordtype">int</span>)dValue, tempDate.Hour, tempDate.Minute, tempDate.Second);</div>
 <div class="line"><a id="l01277" name="l01277"></a><span class="lineno"> 1277</span>            }</div>
 <div class="line"><a id="l01278" name="l01278"></a><span class="lineno"> 1278</span>        }</div>
@@ -1290,7 +1290,7 @@ $(function(){initNavTree('WorksheetReader_8cs_source.html','',''); });
 <div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span>            <span class="keywordtype">object</span> tempObject;</div>
 <div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span>            <span class="keywordflow">switch</span> (importedType)</div>
 <div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>            {</div>
-<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>                <span class="keywordflow">case</span> Cell.CellType.STRING:</div>
+<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>                <span class="keywordflow">case</span> Cell.CellType.String:</div>
 <div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span>                    <span class="keywordtype">string</span> tempString = raw.ToString();</div>
 <div class="line"><a id="l01399" name="l01399"></a><span class="lineno"> 1399</span>                    tempObject = GetNumericValue(tempString);</div>
 <div class="line"><a id="l01400" name="l01400"></a><span class="lineno"> 1400</span>                    <span class="keywordflow">if</span> (tempObject != <span class="keyword">null</span>)</div>
@@ -1313,13 +1313,13 @@ $(function(){initNavTree('WorksheetReader_8cs_source.html','',''); });
 <div class="line"><a id="l01417" name="l01417"></a><span class="lineno"> 1417</span>                        <span class="keywordflow">return</span> (<span class="keywordtype">bool</span>)tempObject ? 1 : 0;</div>
 <div class="line"><a id="l01418" name="l01418"></a><span class="lineno"> 1418</span>                    }</div>
 <div class="line"><a id="l01419" name="l01419"></a><span class="lineno"> 1419</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01420" name="l01420"></a><span class="lineno"> 1420</span>                <span class="keywordflow">case</span> Cell.CellType.NUMBER:</div>
+<div class="line"><a id="l01420" name="l01420"></a><span class="lineno"> 1420</span>                <span class="keywordflow">case</span> Cell.CellType.Number:</div>
 <div class="line"><a id="l01421" name="l01421"></a><span class="lineno"> 1421</span>                    <span class="keywordflow">return</span> raw;</div>
-<div class="line"><a id="l01422" name="l01422"></a><span class="lineno"> 1422</span>                <span class="keywordflow">case</span> Cell.CellType.DATE:</div>
+<div class="line"><a id="l01422" name="l01422"></a><span class="lineno"> 1422</span>                <span class="keywordflow">case</span> Cell.CellType.Date:</div>
 <div class="line"><a id="l01423" name="l01423"></a><span class="lineno"> 1423</span>                    <span class="keywordflow">return</span> DataUtils.GetOADateTime((DateTime)raw);</div>
-<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"> 1424</span>                <span class="keywordflow">case</span> Cell.CellType.TIME:</div>
+<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"> 1424</span>                <span class="keywordflow">case</span> Cell.CellType.Time:</div>
 <div class="line"><a id="l01425" name="l01425"></a><span class="lineno"> 1425</span>                    <span class="keywordflow">return</span> DataUtils.GetOATime((TimeSpan)raw);</div>
-<div class="line"><a id="l01426" name="l01426"></a><span class="lineno"> 1426</span>                <span class="keywordflow">case</span> Cell.CellType.BOOL:</div>
+<div class="line"><a id="l01426" name="l01426"></a><span class="lineno"> 1426</span>                <span class="keywordflow">case</span> Cell.CellType.Bool:</div>
 <div class="line"><a id="l01427" name="l01427"></a><span class="lineno"> 1427</span>                    <span class="keywordflow">if</span> ((<span class="keywordtype">bool</span>)raw)</div>
 <div class="line"><a id="l01428" name="l01428"></a><span class="lineno"> 1428</span>                    {</div>
 <div class="line"><a id="l01429" name="l01429"></a><span class="lineno"> 1429</span>                        <span class="keywordflow">return</span> 1;</div>
@@ -1504,7 +1504,7 @@ $(function(){initNavTree('WorksheetReader_8cs_source.html','',''); });
 <div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_1_1Reader_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces_1_1Reader.html">NanoXLSX.Interfaces.Reader</a></div><div class="ttdef"><b>Definition</b> <a href="IPasswordReader_8cs_source.html#l00011">IPasswordReader.cs:12</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Enums_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Enums.html">NanoXLSX.Internal.Enums</a></div><div class="ttdef"><b>Definition</b> <a href="ReaderPassword_8cs_source.html#l00008">ReaderPassword.cs:9</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Readers_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Readers.html">NanoXLSX.Internal.Readers</a></div><div class="ttdef"><b>Definition</b> <a href="LegacyPasswordReader_8cs_source.html#l00017">LegacyPasswordReader.cs:18</a></div></div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Readers_html_a1e95196e5ad470954e386d4b11b48a72"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72">NanoXLSX.Internal.Readers.IOException</a></div><div class="ttdeci">Exceptions.IOException IOException</div><div class="ttdef"><b>Definition</b> <a href="StyleReader_8cs_source.html#l00025">StyleReader.cs:25</a></div></div>
+<div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Readers_html_a1e95196e5ad470954e386d4b11b48a72"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72">NanoXLSX.Internal.Readers.IOException</a></div><div class="ttdeci">Exceptions.IOException IOException</div><div class="ttdef"><b>Definition</b> <a href="StyleReader_8cs_source.html#l00024">StyleReader.cs:24</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Internal_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal.html">NanoXLSX.Internal</a></div><div class="ttdef"><b>Definition</b> <a href="ReaderPassword_8cs_source.html#l00008">ReaderPassword.cs:9</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_html"><div class="ttname"><a href="namespaceNanoXLSX.html">NanoXLSX</a></div><div class="ttdef"><b>Definition</b> <a href="Extensions_2WorkbookReader_8cs_source.html#l00013">Extensions/WorkbookReader.cs:14</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

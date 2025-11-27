@@ -17,7 +17,7 @@ var searchData=
   ['passwordreader_14',['PasswordReader',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a8b050ef4049361295278d162a73300bf',1,'NanoXLSX::Registry::PlugInUUID']]],
   ['passwordtype_15',['PasswordType',['../classNanoXLSX_1_1LegacyPassword.html#ad8b6afb43b2f117065e28a6c11dedf32',1,'NanoXLSX::LegacyPassword']]],
   ['passwordwriter_16',['PasswordWriter',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a3464082f4a8844ee9f11244102265615',1,'NanoXLSX::Registry::PlugInUUID']]],
-  ['patterncolor_17',['patternColor',['../classNanoXLSX_1_1Styles_1_1Fill.html#a023297fe4d4475eaa1ac8035065afdd6afbb09227d0e100e3f6238b78bfe80b2c',1,'NanoXLSX::Styles::Fill']]],
+  ['patterncolor_17',['PatternColor',['../classNanoXLSX_1_1Styles_1_1Fill.html#a023297fe4d4475eaa1ac8035065afdd6a2253769d6acf8f426ed310f417dadf19',1,'NanoXLSX::Styles::Fill']]],
   ['patternfill_18',['PatternFill',['../classNanoXLSX_1_1Styles_1_1Fill.html#ad96e83f56bdb1c0a058d78362b65c417',1,'NanoXLSX::Styles::Fill']]],
   ['patternvalue_19',['PatternValue',['../classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437',1,'NanoXLSX::Styles::Fill']]],
   ['pivottables_20',['pivotTables',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca02ac3798de7776ae1b87869ca6a91ff5',1,'NanoXLSX::Worksheet']]],
