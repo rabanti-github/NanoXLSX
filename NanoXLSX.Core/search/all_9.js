@@ -14,7 +14,6 @@ var searchData=
   ['horizontalalign_11',['HorizontalAlign',['../classNanoXLSX_1_1Styles_1_1CellXf.html#af3e2a4d4346b78a7d9368881f0b3062f',1,'NanoXLSX::Styles::CellXf']]],
   ['horizontalalignvalue_12',['HorizontalAlignValue',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a269c0dcaae26cf108d1c140fe18d91e7',1,'NanoXLSX::Styles::CellXf']]],
   ['hotlight_13',['HotLight',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03a0160f25ab45d4a433ddad3f46bbbbd29',1,'NanoXLSX::Themes::SystemColor']]],
-  ['hyperlink_14',['Hyperlink',['../interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a67f4abe2ae03a642cf5c695ba82dfa74',1,'NanoXLSX.Interfaces.IColorScheme.Hyperlink'],['../classNanoXLSX_1_1Themes_1_1ColorScheme.html#aff7c440c6f9ef70f5c29104cf24a1467',1,'NanoXLSX.Themes.ColorScheme.Hyperlink']]],
-  ['hyperlink_15',['hyperlink',['../classNanoXLSX_1_1Themes_1_1Theme.html#a0e467ba338f678508adf89a56ad3e966a0f6811b05660fde57651fda214919653',1,'NanoXLSX::Themes::Theme']]],
-  ['hyperlinkbase_16',['HyperlinkBase',['../classNanoXLSX_1_1Metadata.html#a4720430768d5fd8c195545200617eb44',1,'NanoXLSX::Metadata']]]
+  ['hyperlink_14',['Hyperlink',['../interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a67f4abe2ae03a642cf5c695ba82dfa74',1,'NanoXLSX.Interfaces.IColorScheme.Hyperlink'],['../classNanoXLSX_1_1Themes_1_1ColorScheme.html#aff7c440c6f9ef70f5c29104cf24a1467',1,'NanoXLSX.Themes.ColorScheme.Hyperlink'],['../classNanoXLSX_1_1Themes_1_1Theme.html#a0e467ba338f678508adf89a56ad3e966a79cd387280b73179eee47b96dadafc7b',1,'NanoXLSX.Themes.Theme.Hyperlink']]],
+  ['hyperlinkbase_15',['HyperlinkBase',['../classNanoXLSX_1_1Metadata.html#a4720430768d5fd8c195545200617eb44',1,'NanoXLSX::Metadata']]]
 ];

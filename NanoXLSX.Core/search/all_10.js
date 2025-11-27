@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['objects_0',['objects',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca5891da2d64975cae48d175d1e001f5da',1,'NanoXLSX::Worksheet']]],
+  ['objects_0',['Objects',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acac8308b1eba7ba926a61b8fd802194386',1,'NanoXLSX::Worksheet']]],
   ['oem_1',['OEM',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001aca4dbd00e25b3cdb095ded24a65cc7b94c',1,'NanoXLSX::Styles::Font']]],
   ['operator_21_3d_2',['operator!=',['../structNanoXLSX_1_1Address.html#a5b45000808063f9cedcc494031b4ca8d',1,'NanoXLSX.Address.operator!=()'],['../classNanoXLSX_1_1Cell.html#a8fdc93ec52938eaa3cf85b2986bb1d75',1,'NanoXLSX.Cell.operator!=()'],['../structNanoXLSX_1_1Range.html#aa560962678b8a5af6dfdf6d378e25428',1,'NanoXLSX.Range.operator!=()']]],
   ['operator_3c_3',['operator&lt;',['../structNanoXLSX_1_1Address.html#a12714e176cee7fab67ab0dcdd487460e',1,'NanoXLSX.Address.operator&lt;()'],['../classNanoXLSX_1_1Cell.html#a64b5e5d8854b85e9017549de6b8de3cf',1,'NanoXLSX.Cell.operator&lt;()']]],

@@ -7,7 +7,7 @@ var searchData=
   ['threedimensionallight_4',['ThreeDimensionalLight',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03a94e5378d45fe1007aeb5b30c4ebbd3ce',1,'NanoXLSX::Themes::SystemColor']]],
   ['time_5',['Time',['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aaa76d4ef5f3f6a672bbfab2865563e530',1,'NanoXLSX::Cell']]],
   ['top_6',['Top',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a63e51aa1f960e6073ed767321967d1c4aa4ffdcf0dc1f31b9acaf295d75b51d00',1,'NanoXLSX::Styles::CellXf']]],
-  ['topleft_7',['topLeft',['../classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a79ad18f72445fe00af22637f175bf878',1,'NanoXLSX::Worksheet']]],
-  ['topright_8',['topRight',['../classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a3dc32cc133f011c0f50bca1a9b09e7a1',1,'NanoXLSX::Worksheet']]],
+  ['topleft_7',['TopLeft',['../classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871ab32beb056fbfe36afbabc6c88c81ab36',1,'NanoXLSX::Worksheet']]],
+  ['topright_8',['TopRight',['../classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a1d85a557894c340c318493f33bfa8efb',1,'NanoXLSX::Worksheet']]],
   ['turkish_9',['Turkish',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001acac1612bbdebfa45467e8ab814e08daff1',1,'NanoXLSX::Styles::Font']]]
 ];

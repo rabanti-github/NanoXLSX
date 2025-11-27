@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['dark1_0',['dark1',['../classNanoXLSX_1_1Themes_1_1Theme.html#a0e467ba338f678508adf89a56ad3e966a3ebc3ddb064e6e34777b7943f8cd36f6',1,'NanoXLSX::Themes::Theme']]],
-  ['dark2_1',['dark2',['../classNanoXLSX_1_1Themes_1_1Theme.html#a0e467ba338f678508adf89a56ad3e966a1de2d45f0f35c3ae2bfb6e67312a4c0f',1,'NanoXLSX::Themes::Theme']]],
+  ['dark1_0',['Dark1',['../classNanoXLSX_1_1Themes_1_1Theme.html#a0e467ba338f678508adf89a56ad3e966a11b54e82c72ddf5b3e3384d4e0557f02',1,'NanoXLSX::Themes::Theme']]],
+  ['dark2_1',['Dark2',['../classNanoXLSX_1_1Themes_1_1Theme.html#a0e467ba338f678508adf89a56ad3e966a78463cdf5741dcbcc24924ee5113f34d',1,'NanoXLSX::Themes::Theme']]],
   ['darkgray_2',['DarkGray',['../classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437a91e93fc984985226ad4d319a4e4134ab',1,'NanoXLSX::Styles::Fill']]],
   ['dashdot_3',['DashDot',['../classNanoXLSX_1_1Styles_1_1Border.html#ad14a31ed0b823e2cd91972105ad6a598aef1c598821948808c4dbd57821281a31',1,'NanoXLSX::Styles::Border']]],
   ['dashdotdot_4',['DashDotDot',['../classNanoXLSX_1_1Styles_1_1Border.html#ad14a31ed0b823e2cd91972105ad6a598adc2d758876a30f7b99cf8edbc50b3a87',1,'NanoXLSX::Styles::Border']]],
@@ -10,8 +10,8 @@ var searchData=
   ['decorative_7',['Decorative',['../classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dcac830fbfb2e5085792d8abe7553533b1e',1,'NanoXLSX::Styles::Font']]],
   ['default_8',['Default',['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa7a1920d61156abc05a60135aefe8bc67',1,'NanoXLSX.Cell.Default'],['../classNanoXLSX_1_1Cell.html#a6eec9f04ff3237d4589ddb4b118dbdf8a7a1920d61156abc05a60135aefe8bc67',1,'NanoXLSX.Cell.Default'],['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001aca7a1920d61156abc05a60135aefe8bc67',1,'NanoXLSX.Styles.Font.Default']]],
   ['definedformat_9',['DefinedFormat',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#ace4b0f3dd46d80eb035f2a52c1287286aab3814ce08a719aabcab11749e472560',1,'NanoXLSX::Styles::NumberFormat']]],
-  ['deletecolumns_10',['deleteColumns',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca1ddbeefeaf197daa1e671515d1961b39',1,'NanoXLSX::Worksheet']]],
-  ['deleterows_11',['deleteRows',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca9450ab1cc64d4ef0c42959edf44f4b76',1,'NanoXLSX::Worksheet']]],
+  ['deletecolumns_10',['DeleteColumns',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca76951fc2fbd41bca91112763ac7fa63a',1,'NanoXLSX::Worksheet']]],
+  ['deleterows_11',['DeleteRows',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca85ec0faa62c6d1cd416bd79b535365bc',1,'NanoXLSX::Worksheet']]],
   ['disabled_12',['Disabled',['../classNanoXLSX_1_1Worksheet.html#a0c87fae9697afda2644bfbb89a684c3bab9f5c797ebbf55adccdd8539a65a0241',1,'NanoXLSX::Worksheet']]],
   ['distributed_13',['Distributed',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a269c0dcaae26cf108d1c140fe18d91e7a8c16cbebef45d87fd2b36ce69f46c526',1,'NanoXLSX.Styles.CellXf.Distributed'],['../classNanoXLSX_1_1Styles_1_1CellXf.html#a63e51aa1f960e6073ed767321967d1c4a8c16cbebef45d87fd2b36ce69f46c526',1,'NanoXLSX.Styles.CellXf.Distributed']]],
   ['dotted_14',['Dotted',['../classNanoXLSX_1_1Styles_1_1Border.html#ad14a31ed0b823e2cd91972105ad6a598a90c09393a4c0970bc9a6703ad527781c',1,'NanoXLSX::Styles::Border']]],

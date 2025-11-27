@@ -1,8 +1,8 @@
 var searchData=
 [
   ['packageexception_0',['PackageException',['../classNanoXLSX_1_1Exceptions_1_1PackageException.html',1,'NanoXLSX.Exceptions.PackageException'],['../classNanoXLSX_1_1Exceptions_1_1PackageException.html#a1b2b2fe8fad2fe2030572f14a752c3c8',1,'NanoXLSX.Exceptions.PackageException.PackageException()'],['../classNanoXLSX_1_1Exceptions_1_1PackageException.html#a061a4bb849415c6df6aad832d203c5c8',1,'NanoXLSX.Exceptions.PackageException.PackageException(string message)'],['../classNanoXLSX_1_1Exceptions_1_1PackageException.html#ac64064a50b6ae30b0846e3cfc19ef59d',1,'NanoXLSX.Exceptions.PackageException.PackageException(string message, Exception inner)'],['../classNanoXLSX_1_1Exceptions_1_1PackageException.html#ac2356bc5fe14c172b0a9fe9d43f187f8',1,'NanoXLSX.Exceptions.PackageException.PackageException(SerializationInfo info, StreamingContext context)']]],
-  ['pagebreakpreview_1',['pageBreakPreview',['../classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05a50c846e62c1b3c954d4ad4a1cf79bda1',1,'NanoXLSX::Worksheet']]],
-  ['pagelayout_2',['pageLayout',['../classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05acb2eaff2572d77970dbdc2c33824a296',1,'NanoXLSX::Worksheet']]],
+  ['pagebreakpreview_1',['PageBreakPreview',['../classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05a3d3a0ef47799c3ed9839097c9c029bcc',1,'NanoXLSX::Worksheet']]],
+  ['pagelayout_2',['PageLayout',['../classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05a932e0cd60f6e3347fb5be24041681e02',1,'NanoXLSX::Worksheet']]],
   ['panesplitaddress_3',['PaneSplitAddress',['../classNanoXLSX_1_1Worksheet.html#a978cd0ccb605d126d186ce9e1bb8b14b',1,'NanoXLSX::Worksheet']]],
   ['panesplitleftwidth_4',['PaneSplitLeftWidth',['../classNanoXLSX_1_1Worksheet.html#afc2ed93e67f7bc16a7d01294b48391d6',1,'NanoXLSX::Worksheet']]],
   ['panesplittopheight_5',['PaneSplitTopHeight',['../classNanoXLSX_1_1Worksheet.html#a94e16977b51c3ed60bc103888b45f4c6',1,'NanoXLSX::Worksheet']]],
@@ -20,7 +20,7 @@ var searchData=
   ['patterncolor_17',['PatternColor',['../classNanoXLSX_1_1Styles_1_1Fill.html#a023297fe4d4475eaa1ac8035065afdd6a2253769d6acf8f426ed310f417dadf19',1,'NanoXLSX::Styles::Fill']]],
   ['patternfill_18',['PatternFill',['../classNanoXLSX_1_1Styles_1_1Fill.html#ad96e83f56bdb1c0a058d78362b65c417',1,'NanoXLSX::Styles::Fill']]],
   ['patternvalue_19',['PatternValue',['../classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437',1,'NanoXLSX::Styles::Fill']]],
-  ['pivottables_20',['pivotTables',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca02ac3798de7776ae1b87869ca6a91ff5',1,'NanoXLSX::Worksheet']]],
+  ['pivottables_20',['PivotTables',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca0f2c56ee18e9b07f03bad920a9d07796',1,'NanoXLSX::Worksheet']]],
   ['pluginloader_21',['PlugInLoader',['../classNanoXLSX_1_1Registry_1_1PlugInLoader.html',1,'NanoXLSX::Registry']]],
   ['pluginorder_22',['PlugInOrder',['../classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a0df68d1eec9bea305c4f024cbea4d80f',1,'NanoXLSX.Registry.Attributes.NanoXlsxPlugInAttribute.PlugInOrder'],['../classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxQueuePlugInAttribute.html#a4f561c68c23a10abe358cbd577a74c3f',1,'NanoXLSX.Registry.Attributes.NanoXlsxQueuePlugInAttribute.PlugInOrder']]],
   ['pluginuuid_23',['PlugInUUID',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html',1,'NanoXLSX.Registry.PlugInUUID'],['../classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a7ccebd1fc9cc6b6a22c28acfd8a40cbd',1,'NanoXLSX.Registry.Attributes.NanoXlsxPlugInAttribute.PlugInUUID'],['../classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxQueuePlugInAttribute.html#a3a292d9e2aa6dbd3dec3b1f54307882a',1,'NanoXLSX.Registry.Attributes.NanoXlsxQueuePlugInAttribute.PlugInUUID']]],

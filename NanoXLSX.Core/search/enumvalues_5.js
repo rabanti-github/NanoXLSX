@@ -5,7 +5,7 @@ var searchData=
   ['fixedcolumn_2',['FixedColumn',['../classNanoXLSX_1_1Cell.html#a6eec9f04ff3237d4589ddb4b118dbdf8a611bf3bd6b16439b2001e871411bdd88',1,'NanoXLSX::Cell']]],
   ['fixedrow_3',['FixedRow',['../classNanoXLSX_1_1Cell.html#a6eec9f04ff3237d4589ddb4b118dbdf8a7e4bc3929e8cbe600a695b9b3bb395fc',1,'NanoXLSX::Cell']]],
   ['fixedrowandcolumn_4',['FixedRowAndColumn',['../classNanoXLSX_1_1Cell.html#a6eec9f04ff3237d4589ddb4b118dbdf8aa9b1f271e93290702491cbaefbc80d6c',1,'NanoXLSX::Cell']]],
-  ['followedhyperlink_5',['followedHyperlink',['../classNanoXLSX_1_1Themes_1_1Theme.html#a0e467ba338f678508adf89a56ad3e966aa83cfe72b99bb80afb88f68529476a19',1,'NanoXLSX::Themes::Theme']]],
+  ['followedhyperlink_5',['FollowedHyperlink',['../classNanoXLSX_1_1Themes_1_1Theme.html#a0e467ba338f678508adf89a56ad3e966a1dedc688ffd87da3d6bde16bc4d79298',1,'NanoXLSX::Themes::Theme']]],
   ['format1_6',['Format1',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a285fa8fb8bfa38dee54ea197a54dd2df',1,'NanoXLSX::Styles::NumberFormat']]],
   ['format10_7',['Format10',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a43583c7ea832e49528126f9db0f474a8',1,'NanoXLSX::Styles::NumberFormat']]],
   ['format11_8',['Format11',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3af864247256177d495cc1d8e236b40279',1,'NanoXLSX::Styles::NumberFormat']]],
@@ -37,8 +37,8 @@ var searchData=
   ['format7_34',['Format7',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3add5263d0179b1faa5841835eb81bdbf9',1,'NanoXLSX::Styles::NumberFormat']]],
   ['format8_35',['Format8',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3abc2aade897adf43352966a8c66f3fb20',1,'NanoXLSX::Styles::NumberFormat']]],
   ['format9_36',['Format9',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a259af6e53fb6e8fcfc25bfaf5a625c4c',1,'NanoXLSX::Styles::NumberFormat']]],
-  ['formatcells_37',['formatCells',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca2006ebd967c8e541d6f0e382d9f2eb71',1,'NanoXLSX::Worksheet']]],
-  ['formatcolumns_38',['formatColumns',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca32b212afc3a6b941213796bc76babc86',1,'NanoXLSX::Worksheet']]],
-  ['formatrows_39',['formatRows',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca8b1570f93a3faec7e588b8ce0b262cd9',1,'NanoXLSX::Worksheet']]],
+  ['formatcells_37',['FormatCells',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca362e5c489b3cb3e0b574f7cd2a8c8fee',1,'NanoXLSX::Worksheet']]],
+  ['formatcolumns_38',['FormatColumns',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca86378202afc51f3550ea0304fca63009',1,'NanoXLSX::Worksheet']]],
+  ['formatrows_39',['FormatRows',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acaabd565d8bbc714b2681f797c936313d2',1,'NanoXLSX::Worksheet']]],
   ['formula_40',['Formula',['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa313a6a3d25aa041ee3dc3cbd65d4f22b',1,'NanoXLSX::Cell']]]
 ];

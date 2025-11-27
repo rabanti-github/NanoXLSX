@@ -6,32 +6,32 @@ var classNanoXLSX_1_1Worksheet =
       [ "Disabled", "classNanoXLSX_1_1Worksheet.html#a0c87fae9697afda2644bfbb89a684c3bab9f5c797ebbf55adccdd8539a65a0241", null ]
     ] ],
     [ "SheetProtectionValue", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84ac", [
-      [ "objects", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca5891da2d64975cae48d175d1e001f5da", null ],
-      [ "scenarios", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acaf7c7eeee199dc0ef47fe322cc223be88", null ],
-      [ "formatCells", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca2006ebd967c8e541d6f0e382d9f2eb71", null ],
-      [ "formatColumns", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca32b212afc3a6b941213796bc76babc86", null ],
-      [ "formatRows", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca8b1570f93a3faec7e588b8ce0b262cd9", null ],
-      [ "insertColumns", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca1edb9012dbe9bd0b6e1a50076ad4e459", null ],
-      [ "insertRows", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca01ecc46a4b71239317f0e108a9580369", null ],
-      [ "insertHyperlinks", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca5fff443ecc306e6a8d3c6a41a5abba41", null ],
-      [ "deleteColumns", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca1ddbeefeaf197daa1e671515d1961b39", null ],
-      [ "deleteRows", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca9450ab1cc64d4ef0c42959edf44f4b76", null ],
-      [ "selectLockedCells", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acaeda59c448e09836e069c313d7f74d9ac", null ],
-      [ "sort", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acacadc8c8db42409733582cb3e2298ef87", null ],
-      [ "autoFilter", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca2e640414788bd72cec6c0bdceb249cff", null ],
-      [ "pivotTables", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca02ac3798de7776ae1b87869ca6a91ff5", null ],
-      [ "selectUnlockedCells", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca4c3f078b1d540141bc0e44d3ee117941", null ]
+      [ "Objects", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acac8308b1eba7ba926a61b8fd802194386", null ],
+      [ "Scenarios", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca85051346c766b4444af7bfaaa0c189f5", null ],
+      [ "FormatCells", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca362e5c489b3cb3e0b574f7cd2a8c8fee", null ],
+      [ "FormatColumns", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca86378202afc51f3550ea0304fca63009", null ],
+      [ "FormatRows", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acaabd565d8bbc714b2681f797c936313d2", null ],
+      [ "InsertColumns", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca68fa8465a67fb95a35b9d02853bc4939", null ],
+      [ "InsertRows", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acaa103032dc6fecfd0e457d4c5198edb32", null ],
+      [ "InsertHyperlinks", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca51d004a52f9bc32cd84d224b7156269e", null ],
+      [ "DeleteColumns", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca76951fc2fbd41bca91112763ac7fa63a", null ],
+      [ "DeleteRows", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca85ec0faa62c6d1cd416bd79b535365bc", null ],
+      [ "SelectLockedCells", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acafdf428e8a01f6d9406f50f2ab590772f", null ],
+      [ "Sort", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca6b46ae48421828d9973deec5fa9aa0c3", null ],
+      [ "AutoFilter", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acab1b70ac3876a7311d95e1b50100aaa97", null ],
+      [ "PivotTables", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca0f2c56ee18e9b07f03bad920a9d07796", null ],
+      [ "SelectUnlockedCells", "classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acaebcc091b34025eaadf61fbeb68fae2b6", null ]
     ] ],
     [ "SheetViewType", "classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05", [
-      [ "normal", "classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05afea087517c26fadd409bd4b9dc642555", null ],
-      [ "pageBreakPreview", "classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05a50c846e62c1b3c954d4ad4a1cf79bda1", null ],
-      [ "pageLayout", "classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05acb2eaff2572d77970dbdc2c33824a296", null ]
+      [ "Normal", "classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05a960b44c579bc2f6818d2daaf9e4c16f0", null ],
+      [ "PageBreakPreview", "classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05a3d3a0ef47799c3ed9839097c9c029bcc", null ],
+      [ "PageLayout", "classNanoXLSX_1_1Worksheet.html#a15e8e33d23ededb900bf73961a62dc05a932e0cd60f6e3347fb5be24041681e02", null ]
     ] ],
     [ "WorksheetPane", "classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871", [
-      [ "bottomRight", "classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a83da849839b8af951893682450a363a1", null ],
-      [ "topRight", "classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a3dc32cc133f011c0f50bca1a9b09e7a1", null ],
-      [ "bottomLeft", "classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a5d42a1b01d408cdd65bb03d50fa0dd22", null ],
-      [ "topLeft", "classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a79ad18f72445fe00af22637f175bf878", null ]
+      [ "BottomRight", "classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a9146bfc669fddc88db2c4d89297d0e9a", null ],
+      [ "TopRight", "classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a1d85a557894c340c318493f33bfa8efb", null ],
+      [ "BottomLeft", "classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a98e5a1c44509157ebcaf46c515c78875", null ],
+      [ "TopLeft", "classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871ab32beb056fbfe36afbabc6c88c81ab36", null ]
     ] ],
     [ "Worksheet", "classNanoXLSX_1_1Worksheet.html#a9cee0b1ab00bf75dc0556ef92c360bac", null ],
     [ "Worksheet", "classNanoXLSX_1_1Worksheet.html#a2143074c0812c5de52a4443f7419f40d", null ],
