@@ -26,7 +26,7 @@ namespace NanoXLSX.Test.Core.StyleTest
             exampleStyle.Size = 15;
             exampleStyle.Name = "Arial";
             exampleStyle.Family = FontFamilyValue.Script;
-            exampleStyle.ColorTheme = ColorSchemeElement.accent5;
+            exampleStyle.ColorTheme = ColorSchemeElement.Accent5;
             exampleStyle.ColorValue = "FF22AACC";
             exampleStyle.Scheme = SchemeValue.Minor;
             exampleStyle.VerticalAlign = VerticalTextAlignValue.Subscript;
@@ -55,7 +55,7 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(Font.DefaultVerticalAlign, font.VerticalAlign);
             Assert.Equal("", font.ColorValue);
             Assert.Equal(CharsetValue.Default, font.Charset);
-            Assert.Equal(ColorSchemeElement.light1, font.ColorTheme);
+            Assert.Equal(ColorSchemeElement.Light1, font.ColorTheme);
         }
 
 
@@ -205,22 +205,22 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the get and set function of the ColorTheme property")]
-        [InlineData(ColorSchemeElement.dark1)]
-        [InlineData(ColorSchemeElement.light1)]
-        [InlineData(ColorSchemeElement.dark2)]
-        [InlineData(ColorSchemeElement.light2)]
-        [InlineData(ColorSchemeElement.accent1)]
-        [InlineData(ColorSchemeElement.accent2)]
-        [InlineData(ColorSchemeElement.accent3)]
-        [InlineData(ColorSchemeElement.accent4)]
-        [InlineData(ColorSchemeElement.accent5)]
-        [InlineData(ColorSchemeElement.accent6)]
-        [InlineData(ColorSchemeElement.hyperlink)]
-        [InlineData(ColorSchemeElement.followedHyperlink)]
+        [InlineData(ColorSchemeElement.Dark1)]
+        [InlineData(ColorSchemeElement.Light1)]
+        [InlineData(ColorSchemeElement.Dark2)]
+        [InlineData(ColorSchemeElement.Light2)]
+        [InlineData(ColorSchemeElement.Accent1)]
+        [InlineData(ColorSchemeElement.Accent2)]
+        [InlineData(ColorSchemeElement.Accent3)]
+        [InlineData(ColorSchemeElement.Accent4)]
+        [InlineData(ColorSchemeElement.Accent5)]
+        [InlineData(ColorSchemeElement.Accent6)]
+        [InlineData(ColorSchemeElement.Hyperlink)]
+        [InlineData(ColorSchemeElement.FollowedHyperlink)]
         public void ColorThemeTest(ColorSchemeElement element)
         {
             Font font = new Font();
-            Assert.Equal(ColorSchemeElement.light1, font.ColorTheme); // light1 is default
+            Assert.Equal(ColorSchemeElement.Light1, font.ColorTheme); // light1 is default
             font.ColorTheme = element;
             Assert.Equal(element, font.ColorTheme);
         }
@@ -376,7 +376,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void EqualsTest2j()
         {
             Font style2 = (Font)exampleStyle.Copy();
-            style2.ColorTheme = ColorSchemeElement.light2;
+            style2.ColorTheme = ColorSchemeElement.Light2;
             Assert.False(exampleStyle.Equals(style2));
         }
 

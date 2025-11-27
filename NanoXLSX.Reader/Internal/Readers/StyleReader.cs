@@ -327,40 +327,40 @@ namespace NanoXLSX.Internal.Readers
                         switch (attribute)
                         {
                             case "0":
-                                fontStyle.ColorTheme = ColorSchemeElement.dark1;
+                                fontStyle.ColorTheme = ColorSchemeElement.Dark1;
                                 break;
                             case "1":
-                                fontStyle.ColorTheme = ColorSchemeElement.light1;
+                                fontStyle.ColorTheme = ColorSchemeElement.Light1;
                                 break;
                             case "2":
-                                fontStyle.ColorTheme = ColorSchemeElement.dark2;
+                                fontStyle.ColorTheme = ColorSchemeElement.Dark2;
                                 break;
                             case "3":
-                                fontStyle.ColorTheme = ColorSchemeElement.light2;
+                                fontStyle.ColorTheme = ColorSchemeElement.Light2;
                                 break;
                             case "4":
-                                fontStyle.ColorTheme = ColorSchemeElement.accent1;
+                                fontStyle.ColorTheme = ColorSchemeElement.Accent1;
                                 break;
                             case "5":
-                                fontStyle.ColorTheme = ColorSchemeElement.accent2;
+                                fontStyle.ColorTheme = ColorSchemeElement.Accent2;
                                 break;
                             case "6":
-                                fontStyle.ColorTheme = ColorSchemeElement.accent3;
+                                fontStyle.ColorTheme = ColorSchemeElement.Accent3;
                                 break;
                             case "7":
-                                fontStyle.ColorTheme = ColorSchemeElement.accent4;
+                                fontStyle.ColorTheme = ColorSchemeElement.Accent4;
                                 break;
                             case "8":
-                                fontStyle.ColorTheme = ColorSchemeElement.accent5;
+                                fontStyle.ColorTheme = ColorSchemeElement.Accent5;
                                 break;
                             case "9":
-                                fontStyle.ColorTheme = ColorSchemeElement.accent6;
+                                fontStyle.ColorTheme = ColorSchemeElement.Accent6;
                                 break;
                             case "10":
-                                fontStyle.ColorTheme = ColorSchemeElement.hyperlink;
+                                fontStyle.ColorTheme = ColorSchemeElement.Hyperlink;
                                 break;
                             case "11":
-                                fontStyle.ColorTheme = ColorSchemeElement.followedHyperlink;
+                                fontStyle.ColorTheme = ColorSchemeElement.FollowedHyperlink;
                                 break;
                         }
                     }

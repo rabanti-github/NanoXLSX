@@ -63,7 +63,44 @@ The following guide lists all necessary changes, as well as changed behaviors of
 | `AUTO_ZOOM_FACTOR`          | `AutoZoomFactor`         |
 | `MIN_ZOOM_FACTOR`           | `MinZoomFactor`          |
 | `MAX_ZOOM_FACTOR`           | `MaxZoomFactor`          |
-	
+
+- The enum values of `Worksheet.SheetProtectionValue` were renamed, according to the following overview:
+
+| Old Enum Value                              | New Enum Value                  | Remarks |
+| ------------------------------------------- | ------------------------------- | ------- |
+| `SheetProtectionValue.objects`              | `SheetProtectionValue.Objects`             |         |
+| `SheetProtectionValue.scenarios`            | `SheetProtectionValue.Scenarios`           |         |
+| `SheetProtectionValue.formatCells`          | `SheetProtectionValue.FormatCells`         |         |
+| `SheetProtectionValue.formatColumns`        | `SheetProtectionValue.FormatColumns`       |         |
+| `SheetProtectionValue.formatRows`           | `SheetProtectionValue.FormatRows`          |         |
+| `SheetProtectionValue.insertColumns`       | `SheetProtectionValue.InsertColumns`       |         |
+| `SheetProtectionValue.insertRows`           | `SheetProtectionValue.InsertRows`          |         |
+| `SheetProtectionValue.insertHyperlinks`     | `SheetProtectionValue.InsertHyperlinks`    |         |
+| `SheetProtectionValue.deleteColumns`        | `SheetProtectionValue.DeleteColumns`       |         |
+| `SheetProtectionValue.deleteRows`           | `SheetProtectionValue.DeleteRows`          |         |
+| `SheetProtectionValue.selectLockedCells`    | `SheetProtectionValue.SelectLockedCells`   |         |
+| `SheetProtectionValue.sort`                 | `SheetProtectionValue.Sort`                |         |
+| `SheetProtectionValue.autoFilter`           | `SheetProtectionValue.AutoFilter`          |         |
+| `SheetProtectionValue.pivotTables`          | `SheetProtectionValue.PivotTables`         |         |
+| `SheetProtectionValue.selectUnlockedCells`  | `SheetProtectionValue.SelectUnlockedCells` |         |
+
+- The enum values of `Worksheet.WorksheetPane` were renamed, according to the following overview:
+
+| Old Enum Value                | New Enum Value                  | Remarks |
+| ----------------------------- | ------------------------------- | ------- |
+| `WorksheetPane.bottomRight`   | `WorksheetPane.BottomRight`     |         |
+| `WorksheetPane.topRight`	    | `WorksheetPane.TopRight`        |         |
+| `WorksheetPane.bottomLeft`    | `WorksheetPane.BottomLeft`      |         |
+| `WorksheetPane.topLeft`       | `WorksheetPane.TopLeft`         |         |
+
+- The enum values of `Worksheet.SheetViewType` were renamed, according to the following overview:
+
+| Old Enum Value                   | New Enum Value                  | Remarks |
+| -------------------------------- | ------------------------------- | ------- |
+| `SheetViewType.normal`           | `SheetViewType.Normal`          |         |
+| `SheetViewType.PageBreakPreview` | `SheetViewType.PageBreakPreview`|         |
+| `SheetViewType.PageLayout`       | `SheetViewType.PageLayout`      |         |
+
 ---
 
 ### Cell

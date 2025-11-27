@@ -329,14 +329,14 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Worksheet worksheet = new Worksheet();
             Assert.NotNull(worksheet.SheetProtectionValues);
             Assert.Empty(worksheet.SheetProtectionValues);
-            worksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.deleteRows);
-            worksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.formatRows);
+            worksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.DeleteRows);
+            worksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.FormatRows);
             Assert.Equal(2, worksheet.SheetProtectionValues.Count);
-            Assert.Contains(worksheet.SheetProtectionValues, item => (item.Equals(Worksheet.SheetProtectionValue.deleteRows)));
-            Assert.Contains(worksheet.SheetProtectionValues, item => (item.Equals(Worksheet.SheetProtectionValue.formatRows)));
-            worksheet.RemoveAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.deleteRows);
+            Assert.Contains(worksheet.SheetProtectionValues, item => (item.Equals(Worksheet.SheetProtectionValue.DeleteRows)));
+            Assert.Contains(worksheet.SheetProtectionValues, item => (item.Equals(Worksheet.SheetProtectionValue.FormatRows)));
+            worksheet.RemoveAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.DeleteRows);
             Assert.Single(worksheet.SheetProtectionValues);
-            Assert.Contains(worksheet.SheetProtectionValues, item => (item.Equals(Worksheet.SheetProtectionValue.formatRows)));
+            Assert.Contains(worksheet.SheetProtectionValues, item => (item.Equals(Worksheet.SheetProtectionValue.FormatRows)));
         }
 
         [Fact(DisplayName = "Test of the UseSheetProtection property")]
@@ -460,21 +460,21 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the AddAllowedActionOnSheetProtection function")]
-        [InlineData(SheetProtectionValue.deleteRows, 1, null)]
-        [InlineData(SheetProtectionValue.formatRows, 1, null)]
-        [InlineData(SheetProtectionValue.selectLockedCells, 2, SheetProtectionValue.selectUnlockedCells)]
-        [InlineData(SheetProtectionValue.selectUnlockedCells, 1, null)]
-        [InlineData(SheetProtectionValue.autoFilter, 1, null)]
-        [InlineData(SheetProtectionValue.sort, 1, null)]
-        [InlineData(SheetProtectionValue.insertRows, 1, null)]
-        [InlineData(SheetProtectionValue.deleteColumns, 1, null)]
-        [InlineData(SheetProtectionValue.formatCells, 1, null)]
-        [InlineData(SheetProtectionValue.formatColumns, 1, null)]
-        [InlineData(SheetProtectionValue.insertHyperlinks, 1, null)]
-        [InlineData(SheetProtectionValue.insertColumns, 1, null)]
-        [InlineData(SheetProtectionValue.objects, 1, null)]
-        [InlineData(SheetProtectionValue.pivotTables, 1, null)]
-        [InlineData(SheetProtectionValue.scenarios, 1, null)]
+        [InlineData(SheetProtectionValue.DeleteRows, 1, null)]
+        [InlineData(SheetProtectionValue.FormatRows, 1, null)]
+        [InlineData(SheetProtectionValue.SelectLockedCells, 2, SheetProtectionValue.SelectUnlockedCells)]
+        [InlineData(SheetProtectionValue.SelectUnlockedCells, 1, null)]
+        [InlineData(SheetProtectionValue.AutoFilter, 1, null)]
+        [InlineData(SheetProtectionValue.Sort, 1, null)]
+        [InlineData(SheetProtectionValue.InsertRows, 1, null)]
+        [InlineData(SheetProtectionValue.DeleteColumns, 1, null)]
+        [InlineData(SheetProtectionValue.FormatCells, 1, null)]
+        [InlineData(SheetProtectionValue.FormatColumns, 1, null)]
+        [InlineData(SheetProtectionValue.InsertHyperlinks, 1, null)]
+        [InlineData(SheetProtectionValue.InsertColumns, 1, null)]
+        [InlineData(SheetProtectionValue.Objects, 1, null)]
+        [InlineData(SheetProtectionValue.PivotTables, 1, null)]
+        [InlineData(SheetProtectionValue.Scenarios, 1, null)]
 
         public void AddAllowedActionOnSheetProtectionTest(SheetProtectionValue typeOfProtection, int expectedSize, SheetProtectionValue? additionalExpectedValue)
         {
@@ -491,13 +491,13 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             worksheet.AddAllowedActionOnSheetProtection(typeOfProtection); // Should not lead to an additional value
             Assert.Equal(expectedSize, worksheet.SheetProtectionValues.Count);
             SheetProtectionValue additionalValue;
-            if (typeOfProtection == SheetProtectionValue.objects)
+            if (typeOfProtection == SheetProtectionValue.Objects)
             {
-                additionalValue = SheetProtectionValue.sort;
+                additionalValue = SheetProtectionValue.Sort;
             }
             else
             {
-                additionalValue = SheetProtectionValue.objects;
+                additionalValue = SheetProtectionValue.Objects;
             }
             worksheet.AddAllowedActionOnSheetProtection(additionalValue);
             Assert.Contains(worksheet.SheetProtectionValues, item => item == additionalValue);
@@ -1200,21 +1200,21 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the RemoveAllowedActionOnSheetProtection function")]
-        [InlineData(SheetProtectionValue.deleteRows, SheetProtectionValue.objects, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.formatRows, SheetProtectionValue.objects, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.selectLockedCells, SheetProtectionValue.objects, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.selectUnlockedCells, SheetProtectionValue.objects, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.autoFilter, SheetProtectionValue.objects, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.sort, SheetProtectionValue.objects, SheetProtectionValue.formatRows)]
-        [InlineData(SheetProtectionValue.insertRows, SheetProtectionValue.objects, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.deleteColumns, SheetProtectionValue.objects, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.formatCells, SheetProtectionValue.objects, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.formatColumns, SheetProtectionValue.objects, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.insertHyperlinks, SheetProtectionValue.objects, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.insertColumns, SheetProtectionValue.objects, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.objects, SheetProtectionValue.formatColumns, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.pivotTables, SheetProtectionValue.objects, SheetProtectionValue.sort)]
-        [InlineData(SheetProtectionValue.scenarios, SheetProtectionValue.objects, SheetProtectionValue.sort)]
+        [InlineData(SheetProtectionValue.DeleteRows, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.FormatRows, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.SelectLockedCells, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.SelectUnlockedCells, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.AutoFilter, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.Sort, SheetProtectionValue.Objects, SheetProtectionValue.FormatRows)]
+        [InlineData(SheetProtectionValue.InsertRows, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.DeleteColumns, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.FormatCells, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.FormatColumns, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.InsertHyperlinks, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.InsertColumns, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.Objects, SheetProtectionValue.FormatColumns, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.PivotTables, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
+        [InlineData(SheetProtectionValue.Scenarios, SheetProtectionValue.Objects, SheetProtectionValue.Sort)]
         public void RemoveAllowedActionOnSheetProtectionTest(SheetProtectionValue typeOfProtection, SheetProtectionValue additionalValue, SheetProtectionValue notPresentValue)
         {
             Worksheet worksheet = new Worksheet();

@@ -11,7 +11,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.PaneSplitTopHeight);
-            worksheet.SetSplit(10f, 22.2f, new Address("A2"), Worksheet.WorksheetPane.bottomLeft);
+            worksheet.SetSplit(10f, 22.2f, new Address("A2"), Worksheet.WorksheetPane.BottomLeft);
             Assert.NotNull(worksheet.PaneSplitTopHeight);
             Assert.Equal(22.2f, worksheet.PaneSplitTopHeight);
             worksheet.ResetSplit();
@@ -23,7 +23,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.PaneSplitLeftWidth);
-            worksheet.SetSplit(11.1f, 20f, new Address("A2"), Worksheet.WorksheetPane.bottomLeft);
+            worksheet.SetSplit(11.1f, 20f, new Address("A2"), Worksheet.WorksheetPane.BottomLeft);
             Assert.NotNull(worksheet.PaneSplitLeftWidth);
             Assert.Equal(11.1f, worksheet.PaneSplitLeftWidth);
             worksheet.ResetSplit();
@@ -35,7 +35,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.FreezeSplitPanes);
-            worksheet.SetSplit(2, 2, true, new Address("D4"), Worksheet.WorksheetPane.bottomRight);
+            worksheet.SetSplit(2, 2, true, new Address("D4"), Worksheet.WorksheetPane.BottomRight);
             Assert.NotNull(worksheet.FreezeSplitPanes);
             Assert.Equal(true, worksheet.FreezeSplitPanes);
             worksheet.ResetSplit();
@@ -47,7 +47,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.PaneSplitTopLeftCell);
-            worksheet.SetSplit(10f, 22.2f, new Address("C4"), Worksheet.WorksheetPane.bottomLeft);
+            worksheet.SetSplit(10f, 22.2f, new Address("C4"), Worksheet.WorksheetPane.BottomLeft);
             Assert.NotNull(worksheet.PaneSplitTopLeftCell);
             Assert.Equal("C4", worksheet.PaneSplitTopLeftCell.Value.GetAddress());
             worksheet.ResetSplit();
@@ -59,7 +59,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.PaneSplitAddress);
-            worksheet.SetSplit(2, 2, true, new Address("D4"), Worksheet.WorksheetPane.bottomRight);
+            worksheet.SetSplit(2, 2, true, new Address("D4"), Worksheet.WorksheetPane.BottomRight);
             Assert.NotNull(worksheet.PaneSplitAddress);
             Assert.Equal("C3", worksheet.PaneSplitAddress.Value.GetAddress());
             worksheet.ResetSplit();
@@ -71,23 +71,23 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.ActivePane);
-            worksheet.SetSplit(2, 2, true, new Address("D4"), Worksheet.WorksheetPane.bottomRight);
+            worksheet.SetSplit(2, 2, true, new Address("D4"), Worksheet.WorksheetPane.BottomRight);
             Assert.NotNull(worksheet.ActivePane);
-            Assert.Equal(Worksheet.WorksheetPane.bottomRight, worksheet.ActivePane);
+            Assert.Equal(Worksheet.WorksheetPane.BottomRight, worksheet.ActivePane);
             worksheet.ResetSplit();
             Assert.Null(worksheet.ActivePane);
         }
 
         [Theory(DisplayName = "Test of the SetHorizontalSplit function with height definition")]
-        [InlineData(22.2f, "B2", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(0f, "B2", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(500f, "B2", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(22.2f, "X1", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(0f, "A1", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(500f, "XFD1048576", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(22.2f, "B2", Worksheet.WorksheetPane.topRight)]
-        [InlineData(0f, "B2", Worksheet.WorksheetPane.bottomRight)]
-        [InlineData(500f, "B2", Worksheet.WorksheetPane.topLeft)]
+        [InlineData(22.2f, "B2", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(0f, "B2", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(500f, "B2", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(22.2f, "X1", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(0f, "A1", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(500f, "XFD1048576", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(22.2f, "B2", Worksheet.WorksheetPane.TopRight)]
+        [InlineData(0f, "B2", Worksheet.WorksheetPane.BottomRight)]
+        [InlineData(500f, "B2", Worksheet.WorksheetPane.TopLeft)]
         public void SetHorizontalSplitTest(float height, string topLeftCellAddress, Worksheet.WorksheetPane activePane)
         {
             Worksheet worksheet = new Worksheet();
@@ -103,14 +103,14 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the SetHorizontalSplit function with row definition")]
-        [InlineData(3, false, "A1", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(10, true, "K11", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(3, false, "E2", Worksheet.WorksheetPane.bottomRight)]
-        [InlineData(10, true, "L100", Worksheet.WorksheetPane.bottomRight)]
-        [InlineData(3, false, "F3", Worksheet.WorksheetPane.topLeft)]
-        [InlineData(10, true, "M200", Worksheet.WorksheetPane.topLeft)]
-        [InlineData(3, false, "F3", Worksheet.WorksheetPane.topRight)]
-        [InlineData(10, true, "M11", Worksheet.WorksheetPane.topRight)]
+        [InlineData(3, false, "A1", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(10, true, "K11", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(3, false, "E2", Worksheet.WorksheetPane.BottomRight)]
+        [InlineData(10, true, "L100", Worksheet.WorksheetPane.BottomRight)]
+        [InlineData(3, false, "F3", Worksheet.WorksheetPane.TopLeft)]
+        [InlineData(10, true, "M200", Worksheet.WorksheetPane.TopLeft)]
+        [InlineData(3, false, "F3", Worksheet.WorksheetPane.TopRight)]
+        [InlineData(10, true, "M11", Worksheet.WorksheetPane.TopRight)]
         public void SetHorizontalSplitTest2(int rowNumber, bool freeze, string topLeftCellAddress, Worksheet.WorksheetPane activePane)
         {
             Worksheet worksheet = new Worksheet();
@@ -138,24 +138,24 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Address address = new Address(topLeftCellAddress);
             if (expectedValid)
             {
-                worksheet.SetHorizontalSplit(rowNumber, freeze, address, Worksheet.WorksheetPane.bottomLeft);
+                worksheet.SetHorizontalSplit(rowNumber, freeze, address, Worksheet.WorksheetPane.BottomLeft);
             }
             else
             {
-                Assert.Throws<WorksheetException>(() => worksheet.SetHorizontalSplit(rowNumber, freeze, address, Worksheet.WorksheetPane.bottomLeft));
+                Assert.Throws<WorksheetException>(() => worksheet.SetHorizontalSplit(rowNumber, freeze, address, Worksheet.WorksheetPane.BottomLeft));
             }
         }
 
         [Theory(DisplayName = "Test of the SetVerticalSplit function with width definition")]
-        [InlineData(22.2f, "B2", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(0f, "B2", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(500f, "B2", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(22.2f, "X1", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(0f, "A1", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(500f, "XFD1048576", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(22.2f, "B2", Worksheet.WorksheetPane.topRight)]
-        [InlineData(0f, "B2", Worksheet.WorksheetPane.bottomRight)]
-        [InlineData(500f, "B2", Worksheet.WorksheetPane.topLeft)]
+        [InlineData(22.2f, "B2", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(0f, "B2", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(500f, "B2", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(22.2f, "X1", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(0f, "A1", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(500f, "XFD1048576", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(22.2f, "B2", Worksheet.WorksheetPane.TopRight)]
+        [InlineData(0f, "B2", Worksheet.WorksheetPane.BottomRight)]
+        [InlineData(500f, "B2", Worksheet.WorksheetPane.TopLeft)]
         public void SetVerticalSplitTest(float width, string topLeftCellAddress, Worksheet.WorksheetPane activePane)
         {
             Worksheet worksheet = new Worksheet();
@@ -171,14 +171,14 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the SetVerticalSplit function with column definition")]
-        [InlineData(3, false, "A1", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(10, true, "K11", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(3, false, "E2", Worksheet.WorksheetPane.bottomRight)]
-        [InlineData(10, true, "L100", Worksheet.WorksheetPane.bottomRight)]
-        [InlineData(3, false, "F3", Worksheet.WorksheetPane.topLeft)]
-        [InlineData(10, true, "M200", Worksheet.WorksheetPane.topLeft)]
-        [InlineData(3, false, "F3", Worksheet.WorksheetPane.topRight)]
-        [InlineData(10, true, "M11", Worksheet.WorksheetPane.topRight)]
+        [InlineData(3, false, "A1", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(10, true, "K11", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(3, false, "E2", Worksheet.WorksheetPane.BottomRight)]
+        [InlineData(10, true, "L100", Worksheet.WorksheetPane.BottomRight)]
+        [InlineData(3, false, "F3", Worksheet.WorksheetPane.TopLeft)]
+        [InlineData(10, true, "M200", Worksheet.WorksheetPane.TopLeft)]
+        [InlineData(3, false, "F3", Worksheet.WorksheetPane.TopRight)]
+        [InlineData(10, true, "M11", Worksheet.WorksheetPane.TopRight)]
         public void SetVerticalSplitTest2(int columnNumber, bool freeze, string topLeftCellAddress, Worksheet.WorksheetPane activePane)
         {
             Worksheet worksheet = new Worksheet();
@@ -206,24 +206,24 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Address address = new Address(topLeftCellAddress);
             if (expectedValid)
             {
-                worksheet.SetVerticalSplit(columnNumber, freeze, address, Worksheet.WorksheetPane.bottomLeft);
+                worksheet.SetVerticalSplit(columnNumber, freeze, address, Worksheet.WorksheetPane.BottomLeft);
             }
             else
             {
-                Assert.Throws<WorksheetException>(() => worksheet.SetVerticalSplit(columnNumber, freeze, address, Worksheet.WorksheetPane.bottomLeft));
+                Assert.Throws<WorksheetException>(() => worksheet.SetVerticalSplit(columnNumber, freeze, address, Worksheet.WorksheetPane.BottomLeft));
             }
         }
 
         [Theory(DisplayName = "Test of the SetSplit function with height and width definition")]
-        [InlineData(22.2f, 11.1f, "B2", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(0f, 0f, "B2", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(500f, 200f, "B2", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(22.2f, 0f, "X1", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(null, 0f, "A1", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(500f, null, "XFD1048576", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(null, 22.2f, "B2", Worksheet.WorksheetPane.topRight)]
-        [InlineData(0f, null, "B2", Worksheet.WorksheetPane.bottomRight)]
-        [InlineData(null, 500f, "B2", Worksheet.WorksheetPane.topLeft)]
+        [InlineData(22.2f, 11.1f, "B2", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(0f, 0f, "B2", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(500f, 200f, "B2", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(22.2f, 0f, "X1", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(null, 0f, "A1", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(500f, null, "XFD1048576", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(null, 22.2f, "B2", Worksheet.WorksheetPane.TopRight)]
+        [InlineData(0f, null, "B2", Worksheet.WorksheetPane.BottomRight)]
+        [InlineData(null, 500f, "B2", Worksheet.WorksheetPane.TopLeft)]
         public void SetSplitTest(float? height, float? width, string topLeftCellAddress, Worksheet.WorksheetPane activePane)
         {
             Worksheet worksheet = new Worksheet();
@@ -240,14 +240,14 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the SetSplit function with column and definition")]
-        [InlineData(3, 3, false, "A1", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(10, 2, true, "K11", Worksheet.WorksheetPane.bottomLeft)]
-        [InlineData(3, 1, false, "E2", Worksheet.WorksheetPane.bottomRight)]
-        [InlineData(10, 99, true, "L100", Worksheet.WorksheetPane.bottomRight)]
-        [InlineData(3, null, false, "F3", Worksheet.WorksheetPane.topLeft)]
-        [InlineData(null, 1, true, "M200", Worksheet.WorksheetPane.topLeft)]
-        [InlineData(3, null, false, "F3", Worksheet.WorksheetPane.topRight)]
-        [InlineData(null, 10, true, "M11", Worksheet.WorksheetPane.topRight)]
+        [InlineData(3, 3, false, "A1", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(10, 2, true, "K11", Worksheet.WorksheetPane.BottomLeft)]
+        [InlineData(3, 1, false, "E2", Worksheet.WorksheetPane.BottomRight)]
+        [InlineData(10, 99, true, "L100", Worksheet.WorksheetPane.BottomRight)]
+        [InlineData(3, null, false, "F3", Worksheet.WorksheetPane.TopLeft)]
+        [InlineData(null, 1, true, "M200", Worksheet.WorksheetPane.TopLeft)]
+        [InlineData(3, null, false, "F3", Worksheet.WorksheetPane.TopRight)]
+        [InlineData(null, 10, true, "M11", Worksheet.WorksheetPane.TopRight)]
         public void SetSplitTest2(int? columnNumber, int? rowNumber, bool freeze, string topLeftCellAddress, Worksheet.WorksheetPane activePane)
         {
             Worksheet worksheet = new Worksheet();
@@ -287,11 +287,11 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Address address = new Address(topLeftCellAddress);
             if (expectedValid)
             {
-                worksheet.SetSplit(columnNumber, rowNumber, freeze, address, Worksheet.WorksheetPane.bottomLeft);
+                worksheet.SetSplit(columnNumber, rowNumber, freeze, address, Worksheet.WorksheetPane.BottomLeft);
             }
             else
             {
-                Assert.Throws<WorksheetException>(() => worksheet.SetSplit(columnNumber, rowNumber, freeze, address, Worksheet.WorksheetPane.bottomLeft));
+                Assert.Throws<WorksheetException>(() => worksheet.SetSplit(columnNumber, rowNumber, freeze, address, Worksheet.WorksheetPane.BottomLeft));
             }
         }
 
@@ -300,7 +300,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             AssertInitializedPaneSplit(worksheet);
-            worksheet.SetHorizontalSplit(22.2f, new Address("A1"), Worksheet.WorksheetPane.bottomLeft);
+            worksheet.SetHorizontalSplit(22.2f, new Address("A1"), Worksheet.WorksheetPane.BottomLeft);
             worksheet.ResetSplit();
             AssertInitializedPaneSplit(worksheet);
         }
@@ -310,7 +310,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             AssertInitializedPaneSplit(worksheet);
-            worksheet.SetHorizontalSplit(5, true, new Address("R6"), Worksheet.WorksheetPane.bottomLeft);
+            worksheet.SetHorizontalSplit(5, true, new Address("R6"), Worksheet.WorksheetPane.BottomLeft);
             worksheet.ResetSplit();
             AssertInitializedPaneSplit(worksheet);
         }
@@ -321,7 +321,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             AssertInitializedPaneSplit(worksheet);
-            worksheet.SetVerticalSplit(22.2f, new Address("A1"), Worksheet.WorksheetPane.bottomLeft);
+            worksheet.SetVerticalSplit(22.2f, new Address("A1"), Worksheet.WorksheetPane.BottomLeft);
             worksheet.ResetSplit();
             AssertInitializedPaneSplit(worksheet);
         }
@@ -331,7 +331,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             AssertInitializedPaneSplit(worksheet);
-            worksheet.SetVerticalSplit(5, true, new Address("R6"), Worksheet.WorksheetPane.bottomLeft);
+            worksheet.SetVerticalSplit(5, true, new Address("R6"), Worksheet.WorksheetPane.BottomLeft);
             worksheet.ResetSplit();
             AssertInitializedPaneSplit(worksheet);
         }
@@ -341,7 +341,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             AssertInitializedPaneSplit(worksheet);
-            worksheet.SetSplit(22.2f, 22.2f, new Address("A1"), Worksheet.WorksheetPane.bottomLeft);
+            worksheet.SetSplit(22.2f, 22.2f, new Address("A1"), Worksheet.WorksheetPane.BottomLeft);
             worksheet.ResetSplit();
             AssertInitializedPaneSplit(worksheet);
         }
@@ -351,7 +351,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             AssertInitializedPaneSplit(worksheet);
-            worksheet.SetSplit(5, 5, true, new Address("R6"), Worksheet.WorksheetPane.bottomLeft);
+            worksheet.SetSplit(5, 5, true, new Address("R6"), Worksheet.WorksheetPane.BottomLeft);
             worksheet.ResetSplit();
             AssertInitializedPaneSplit(worksheet);
         }
@@ -384,13 +384,13 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the get function of the ViewType property")]
-        [InlineData(Worksheet.SheetViewType.normal)]
-        [InlineData(Worksheet.SheetViewType.pageBreakPreview)]
-        [InlineData(Worksheet.SheetViewType.pageLayout)]
+        [InlineData(Worksheet.SheetViewType.Normal)]
+        [InlineData(Worksheet.SheetViewType.PageBreakPreview)]
+        [InlineData(Worksheet.SheetViewType.PageLayout)]
         public void ViewTypeTest(Worksheet.SheetViewType viewType)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Equal(Worksheet.SheetViewType.normal, worksheet.ViewType);
+            Assert.Equal(Worksheet.SheetViewType.Normal, worksheet.ViewType);
             worksheet.ViewType = viewType;
             Assert.Equal(viewType, worksheet.ViewType);
         }
@@ -421,17 +421,17 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Worksheet worksheet = new Worksheet();
             Assert.Single(worksheet.ZoomFactors);
             Assert.Equal(100, worksheet.ZoomFactor);
-            Assert.Equal(Worksheet.SheetViewType.normal, worksheet.ViewType);
+            Assert.Equal(Worksheet.SheetViewType.Normal, worksheet.ViewType);
             worksheet.ZoomFactor = normalZoomFactor;
-            worksheet.ViewType = Worksheet.SheetViewType.pageBreakPreview;
+            worksheet.ViewType = Worksheet.SheetViewType.PageBreakPreview;
             worksheet.ZoomFactor = pageBreakZoomFactor;
-            worksheet.ViewType = Worksheet.SheetViewType.pageLayout;
+            worksheet.ViewType = Worksheet.SheetViewType.PageLayout;
             worksheet.ZoomFactor = pageLayoutZoomFactor;
 
             Assert.Equal(3, worksheet.ZoomFactors.Count);
-            Assert.Equal(normalZoomFactor, worksheet.ZoomFactors[Worksheet.SheetViewType.normal]);
-            Assert.Equal(pageBreakZoomFactor, worksheet.ZoomFactors[Worksheet.SheetViewType.pageBreakPreview]);
-            Assert.Equal(pageLayoutZoomFactor, worksheet.ZoomFactors[Worksheet.SheetViewType.pageLayout]);
+            Assert.Equal(normalZoomFactor, worksheet.ZoomFactors[Worksheet.SheetViewType.Normal]);
+            Assert.Equal(pageBreakZoomFactor, worksheet.ZoomFactors[Worksheet.SheetViewType.PageBreakPreview]);
+            Assert.Equal(pageLayoutZoomFactor, worksheet.ZoomFactors[Worksheet.SheetViewType.PageLayout]);
         }
 
         [Theory(DisplayName = "Test of the failing ZoomFactor set function")]
@@ -449,13 +449,13 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the SetZoomFactor function")]
-        [InlineData(0, Worksheet.SheetViewType.normal)]
-        [InlineData(10, Worksheet.SheetViewType.pageBreakPreview)]
-        [InlineData(23, Worksheet.SheetViewType.pageLayout)]
-        [InlineData(101, Worksheet.SheetViewType.normal)]
-        [InlineData(255, Worksheet.SheetViewType.pageBreakPreview)]
-        [InlineData(399, Worksheet.SheetViewType.pageLayout)]
-        [InlineData(400, Worksheet.SheetViewType.normal)]
+        [InlineData(0, Worksheet.SheetViewType.Normal)]
+        [InlineData(10, Worksheet.SheetViewType.PageBreakPreview)]
+        [InlineData(23, Worksheet.SheetViewType.PageLayout)]
+        [InlineData(101, Worksheet.SheetViewType.Normal)]
+        [InlineData(255, Worksheet.SheetViewType.PageBreakPreview)]
+        [InlineData(399, Worksheet.SheetViewType.PageLayout)]
+        [InlineData(400, Worksheet.SheetViewType.Normal)]
         public void SetZoomFactorTest(int zoomFactor, Worksheet.SheetViewType viewType)
         {
             Worksheet worksheet = new Worksheet();
@@ -465,12 +465,12 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the failing ZoomFactor set function")]
-        [InlineData(-1, Worksheet.SheetViewType.normal)]
-        [InlineData(-99, Worksheet.SheetViewType.pageBreakPreview)]
-        [InlineData(1, Worksheet.SheetViewType.normal)]
-        [InlineData(9, Worksheet.SheetViewType.normal)]
-        [InlineData(401, Worksheet.SheetViewType.pageLayout)]
-        [InlineData(999, Worksheet.SheetViewType.normal)]
+        [InlineData(-1, Worksheet.SheetViewType.Normal)]
+        [InlineData(-99, Worksheet.SheetViewType.PageBreakPreview)]
+        [InlineData(1, Worksheet.SheetViewType.Normal)]
+        [InlineData(9, Worksheet.SheetViewType.Normal)]
+        [InlineData(401, Worksheet.SheetViewType.PageLayout)]
+        [InlineData(999, Worksheet.SheetViewType.Normal)]
         public void SetZoomFactorFailTest(int zoomFactor, Worksheet.SheetViewType viewType)
         {
             Worksheet worksheet = new Worksheet();

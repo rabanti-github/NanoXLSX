@@ -82,18 +82,18 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         }
 
         [Theory(DisplayName = "Test of the 'theme' value when writing and reading a Font style")]
-        [InlineData(ColorSchemeElement.dark1, "test")]
-        [InlineData(ColorSchemeElement.light1, 0.5f)]
-        [InlineData(ColorSchemeElement.dark2, true)]
-        [InlineData(ColorSchemeElement.light2, 42)]
-        [InlineData(ColorSchemeElement.accent1, false)]
-        [InlineData(ColorSchemeElement.accent2, null)]
-        [InlineData(ColorSchemeElement.accent3, " ")]
-        [InlineData(ColorSchemeElement.accent4, -3.33f)]
-        [InlineData(ColorSchemeElement.accent5, 0)]
-        [InlineData(ColorSchemeElement.accent6, "")]
-        [InlineData(ColorSchemeElement.hyperlink, "test")]
-        [InlineData(ColorSchemeElement.followedHyperlink, 0.5f)]
+        [InlineData(ColorSchemeElement.Dark1, "test")]
+        [InlineData(ColorSchemeElement.Light1, 0.5f)]
+        [InlineData(ColorSchemeElement.Dark2, true)]
+        [InlineData(ColorSchemeElement.Light2, 42)]
+        [InlineData(ColorSchemeElement.Accent1, false)]
+        [InlineData(ColorSchemeElement.Accent2, null)]
+        [InlineData(ColorSchemeElement.Accent3, " ")]
+        [InlineData(ColorSchemeElement.Accent4, -3.33f)]
+        [InlineData(ColorSchemeElement.Accent5, 0)]
+        [InlineData(ColorSchemeElement.Accent6, "")]
+        [InlineData(ColorSchemeElement.Hyperlink, "test")]
+        [InlineData(ColorSchemeElement.FollowedHyperlink, 0.5f)]
 
         public void ThemeFontTest(ColorSchemeElement element, object value)
         {

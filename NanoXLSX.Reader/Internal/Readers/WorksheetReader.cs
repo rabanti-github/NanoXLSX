@@ -222,15 +222,8 @@ namespace NanoXLSX.Internal.Readers
                 // Go through all possible views
                 foreach (XmlNode sheetView in sheetViewNodes)
                 {
-                    attribute = ReaderUtils.GetAttribute(sheetView, "view");
-                    if (attribute != null)
-                    {
-                        Worksheet.SheetViewType viewType;
-                        if (Enum.TryParse<Worksheet.SheetViewType>(attribute, out viewType))
-                        {
-                            worksheet.ViewType = viewType;
-                        }
-                    }
+                    attribute = ReaderUtils.GetAttribute(sheetView, "view", string.Empty);
+                    worksheet.ViewType = Worksheet.GetSheetViewTypeEnum(attribute);
                     attribute = ReaderUtils.GetAttribute(sheetView, "zoomScale");
                     if (attribute != null)
                     {
@@ -240,19 +233,19 @@ namespace NanoXLSX.Internal.Readers
                     if (attribute != null)
                     {
                         int scale = ParserUtils.ParseInt(attribute);
-                        worksheet.ZoomFactors[Worksheet.SheetViewType.normal] = scale;
+                        worksheet.ZoomFactors[Worksheet.SheetViewType.Normal] = scale;
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "zoomScalePageLayoutView");
                     if (attribute != null)
                     {
                         int scale = ParserUtils.ParseInt(attribute);
-                        worksheet.ZoomFactors[Worksheet.SheetViewType.pageLayout] = scale;
+                        worksheet.ZoomFactors[Worksheet.SheetViewType.PageLayout] = scale;
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "zoomScaleSheetLayoutView");
                     if (attribute != null)
                     {
                         int scale = ParserUtils.ParseInt(attribute);
-                        worksheet.ZoomFactors[Worksheet.SheetViewType.pageBreakPreview] = scale;
+                        worksheet.ZoomFactors[Worksheet.SheetViewType.PageBreakPreview] = scale;
                     }
                     attribute = ReaderUtils.GetAttribute(sheetView, "showGridLines");
                     if (attribute != null)
@@ -382,12 +375,8 @@ namespace NanoXLSX.Internal.Readers
             {
                 topLeftCell = new Address(attribute);
             }
-            attribute = ReaderUtils.GetAttribute(paneNode, "activePane");
-            if (attribute != null)
-            {
-                activePane = (Worksheet.WorksheetPane)Enum.Parse(typeof(Worksheet.WorksheetPane), attribute);
-            }
-            // assign to worksheet
+            attribute = ReaderUtils.GetAttribute(paneNode, "activePane", string.Empty);
+            activePane = Worksheet.GetWorksheetPaneEnum(attribute);
             if (frozenState)
             {
                 if (ySplitDefined && !xSplitDefined)
@@ -432,21 +421,21 @@ namespace NanoXLSX.Internal.Readers
             {
                 int hasProtection = 0;
                 XmlNode sheetProtectionNode = sheetProtectionNodes[0];
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.autoFilter, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.deleteColumns, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.deleteRows, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.formatCells, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.formatColumns, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.formatRows, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.insertColumns, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.insertHyperlinks, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.insertRows, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.objects, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.pivotTables, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.scenarios, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectLockedCells, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.selectUnlockedCells, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.sort, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.AutoFilter, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.DeleteColumns, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.DeleteRows, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.FormatCells, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.FormatColumns, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.FormatRows, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.InsertColumns, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.InsertHyperlinks, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.InsertRows, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.Objects, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.PivotTables, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.Scenarios, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.SelectLockedCells, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.SelectUnlockedCells, worksheet);
+                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.Sort, worksheet);
                 if (hasProtection > 0)
                 {
                     worksheet.UseSheetProtection = true;
@@ -472,14 +461,12 @@ namespace NanoXLSX.Internal.Readers
         private static int ManageSheetProtection(XmlNode node, Worksheet.SheetProtectionValue sheetProtectionValue, Worksheet worksheet)
         {
             int hasProtection = 0;
-            string attributeName = Enum.GetName(typeof(Worksheet.SheetProtectionValue), sheetProtectionValue);
+            string attributeName = Worksheet.GetSheetProtectionName(sheetProtectionValue);
             string attribute = ReaderUtils.GetAttribute(node, attributeName);
             if (attribute != null)
             {
                 hasProtection = 1;
-                // hasProtection = ParserUtils.ParseBinaryBool(attribute) != 0;
                 worksheet.SheetProtectionValues.Add(sheetProtectionValue);
-                //WorksheetProtection.Add(sheetProtectionValue, value);
             }
             return hasProtection;
         }

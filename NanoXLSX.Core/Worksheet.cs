@@ -109,35 +109,35 @@ namespace NanoXLSX
         {
             // sheet, // Is always on 1 if protected
             /// <summary>If selected, the user can edit objects if the worksheets is protected</summary>
-            objects,
+            Objects,
             /// <summary>If selected, the user can edit scenarios if the worksheets is protected</summary>
-            scenarios,
+            Scenarios,
             /// <summary>If selected, the user can format cells if the worksheets is protected</summary>
-            formatCells,
+            FormatCells,
             /// <summary>If selected, the user can format columns if the worksheets is protected</summary>
-            formatColumns,
+            FormatColumns,
             /// <summary>If selected, the user can format rows if the worksheets is protected</summary>
-            formatRows,
+            FormatRows,
             /// <summary>If selected, the user can insert columns if the worksheets is protected</summary>
-            insertColumns,
+            InsertColumns,
             /// <summary>If selected, the user can insert rows if the worksheets is protected</summary>
-            insertRows,
+            InsertRows,
             /// <summary>If selected, the user can insert hyper links if the worksheets is protected</summary>
-            insertHyperlinks,
+            InsertHyperlinks,
             /// <summary>If selected, the user can delete columns if the worksheets is protected</summary>
-            deleteColumns,
+            DeleteColumns,
             /// <summary>If selected, the user can delete rows if the worksheets is protected</summary>
-            deleteRows,
+            DeleteRows,
             /// <summary>If selected, the user can select locked cells if the worksheets is protected</summary>
-            selectLockedCells,
+            SelectLockedCells,
             /// <summary>If selected, the user can sort cells if the worksheets is protected</summary>
-            sort,
+            Sort,
             /// <summary>If selected, the user can use auto filters if the worksheets is protected</summary>
-            autoFilter,
+            AutoFilter,
             /// <summary>If selected, the user can use pivot tables if the worksheets is protected</summary>
-            pivotTables,
+            PivotTables,
             /// <summary>If selected, the user can select unlocked cells if the worksheets is protected</summary>
-            selectUnlockedCells
+            SelectUnlockedCells
         }
 
         /// <summary>
@@ -146,13 +146,13 @@ namespace NanoXLSX
         public enum WorksheetPane
         {
             /// <summary>The pane is located in the bottom right of the split worksheet</summary>
-            bottomRight,
+            BottomRight,
             /// <summary>The pane is located in the top right of the split worksheet</summary>
-            topRight,
+            TopRight,
             /// <summary>The pane is located in the bottom left of the split worksheet</summary>
-            bottomLeft,
+            BottomLeft,
             /// <summary>The pane is located in the top left of the split worksheet</summary>
-            topLeft
+            TopLeft
         }
 
         /// <summary>
@@ -161,11 +161,11 @@ namespace NanoXLSX
         public enum SheetViewType
         {
             /// <summary>The worksheet is displayed without pagination (default)</summary>
-            normal,
+            Normal,
             /// <summary>The worksheet is displayed with indicators where the page would break if it were printed</summary>
-            pageBreakPreview,
+            PageBreakPreview,
             /// <summary>The worksheet is displayed like it would be printed</summary>
-            pageLayout
+            PageLayout
         }
         #endregion
 
@@ -464,7 +464,7 @@ namespace NanoXLSX
         public bool ShowRowColumnHeaders { get; set; }
 
         /// <summary>
-        /// Gets or sets whether a ruler is displayed over the column headers. This value only applies if <see cref="ViewType"/> is set to <see cref="SheetViewType.pageLayout"/>. Default is true
+        /// Gets or sets whether a ruler is displayed over the column headers. This value only applies if <see cref="ViewType"/> is set to <see cref="SheetViewType.PageLayout"/>. Default is true
         /// </summary>
         public bool ShowRuler { get; set; }
 
@@ -536,7 +536,7 @@ namespace NanoXLSX
             columns = new Dictionary<int, Column>();
             activeStyle = null;
             workbookReference = null;
-            viewType = SheetViewType.normal;
+            viewType = SheetViewType.Normal;
             zoomFactor = new Dictionary<SheetViewType, int>();
             zoomFactor.Add(viewType, 100);
             ShowGridLines = true;
@@ -1567,14 +1567,14 @@ namespace NanoXLSX
         /// Method to add allowed actions if the worksheet is protected. If one or more values are added, UseSheetProtection will be set to true
         /// </summary>
         /// <param name="typeOfProtection">Allowed action on the worksheet or cells</param>
-        /// \remark <remarks>If <see cref="SheetProtectionValue.selectLockedCells"/> is added, <see cref="SheetProtectionValue.selectUnlockedCells"/> is added automatically</remarks>
+        /// \remark <remarks>If <see cref="SheetProtectionValue.SelectLockedCells"/> is added, <see cref="SheetProtectionValue.SelectUnlockedCells"/> is added automatically</remarks>
         public void AddAllowedActionOnSheetProtection(SheetProtectionValue typeOfProtection)
         {
             if (!sheetProtectionValues.Contains(typeOfProtection))
             {
-                if (typeOfProtection == SheetProtectionValue.selectLockedCells && !sheetProtectionValues.Contains(SheetProtectionValue.selectUnlockedCells))
+                if (typeOfProtection == SheetProtectionValue.SelectLockedCells && !sheetProtectionValues.Contains(SheetProtectionValue.SelectUnlockedCells))
                 {
-                    sheetProtectionValues.Add(SheetProtectionValue.selectUnlockedCells);
+                    sheetProtectionValues.Add(SheetProtectionValue.SelectUnlockedCells);
                 }
                 sheetProtectionValues.Add(typeOfProtection);
                 UseSheetProtection = true;
@@ -2788,9 +2788,67 @@ namespace NanoXLSX
             return false;
         }
 
+        /// <summary>
+        /// Converts a SheetProtectionValue enum to its string representation
+        /// </summary>
+        internal static string GetSheetProtectionName(SheetProtectionValue protection)
+        {
+            string output = "";
+            switch (protection)
+            {
+                case SheetProtectionValue.Objects: output = "objects"; break;
+                case SheetProtectionValue.Scenarios: output = "scenarios"; break;
+                case SheetProtectionValue.FormatCells: output = "formatCells"; break;
+                case SheetProtectionValue.FormatColumns: output = "formatColumns"; break;
+                case SheetProtectionValue.FormatRows: output = "formatRows"; break;
+                case SheetProtectionValue.InsertColumns: output = "insertColumns"; break;
+                case SheetProtectionValue.InsertRows: output = "insertRows"; break;
+                case SheetProtectionValue.InsertHyperlinks: output = "insertHyperlinks"; break;
+                case SheetProtectionValue.DeleteColumns: output = "deleteColumns"; break;
+                case SheetProtectionValue.DeleteRows: output = "deleteRows"; break;
+                case SheetProtectionValue.SelectLockedCells: output = "selectLockedCells"; break;
+                case SheetProtectionValue.Sort: output = "sort"; break;
+                case SheetProtectionValue.AutoFilter: output = "autoFilter"; break;
+                case SheetProtectionValue.PivotTables: output = "pivotTables"; break;
+                case SheetProtectionValue.SelectUnlockedCells: output = "selectUnlockedCells"; break;
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Converts a string representation of a worksheet pane to its enum value
+        /// </summary>
+        /// <param name="pane">String value</param>
+        /// <returns>Enum value or null if not matching</returns>
+        internal static WorksheetPane? GetWorksheetPaneEnum(string pane)
+        {
+            WorksheetPane? output = null;
+            switch (pane)
+            {
+                case "topLeft": output = WorksheetPane.TopLeft; break;
+                case "topRight": output = WorksheetPane.TopRight; break;
+                case "bottomLeft": output = WorksheetPane.BottomLeft; break;
+                case "bottomRight": output = WorksheetPane.BottomRight; break;
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Converts a string representation of a sheet view type to its enum value
+        /// </summary>
+        /// <param name="viewType">String value</param>
+        /// <returns>Enum value</returns>
+        internal static SheetViewType GetSheetViewTypeEnum(string viewType)
+        {
+            SheetViewType output = SheetViewType.Normal;
+            switch (viewType)
+            {
+                case "pageBreakPreview": output = SheetViewType.PageBreakPreview; break;
+                case "pageLayout": output = SheetViewType.PageLayout; break;
+            }
+            return output;
+        }
         #endregion
-
-
         #endregion
 
     }

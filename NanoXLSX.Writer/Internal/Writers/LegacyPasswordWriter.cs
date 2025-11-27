@@ -121,7 +121,7 @@ namespace NanoXLSX.Internal.Writers
         public IEnumerable<XmlAttribute> GetAttributes()
         {
             List<XmlAttribute> attributes = new List<XmlAttribute>();
-            if (Type == PasswordType.WORKSHEET_PROTECTION)
+            if (Type == PasswordType.WorksheetProtection)
             {
                 attributes.Add(XmlAttribute.CreateAttribute("password", PasswordHash));
             }

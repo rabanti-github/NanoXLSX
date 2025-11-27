@@ -56,7 +56,7 @@ namespace NanoXLSX.Internal.Writers
             this.Workbook = baseWriter.Workbook;
             IPassword passwordInstance = Workbook.WorkbookProtectionPassword;
             this.passwordWriter = PlugInLoader.GetPlugIn<IPasswordWriter>(PlugInUUID.PasswordWriter, new LegacyPasswordWriter());
-            this.passwordWriter.Init(PasswordType.WORKBOOK_PROTECTION, passwordInstance.PasswordHash);
+            this.passwordWriter.Init(PasswordType.WorkbookProtection, passwordInstance.PasswordHash);
         }
 
         /// <summary>

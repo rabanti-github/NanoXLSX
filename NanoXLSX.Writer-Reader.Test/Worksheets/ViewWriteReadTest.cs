@@ -13,9 +13,9 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         [InlineData(27f, null, 0)]
         [InlineData(100f, null, 0)]
         [InlineData(0f, null, 0)]
-        [InlineData(27f, Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(100f, Worksheet.WorksheetPane.bottomLeft, 0)]
-        [InlineData(0f, Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(27f, Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(100f, Worksheet.WorksheetPane.BottomLeft, 0)]
+        [InlineData(0f, Worksheet.WorksheetPane.TopRight, 0)]
         public void PaneSplitTopHeightWriteReadTest(float height, Worksheet.WorksheetPane? activePane, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
@@ -35,15 +35,15 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         [InlineData(0, false, "A2", null, 0)]
         [InlineData(1, false, "A2", null, 0)]
         [InlineData(15, false, "A18", null, 0)]
-        [InlineData(0, false, "A2", Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(1, false, "A2", Worksheet.WorksheetPane.bottomLeft, 0)]
-        [InlineData(15, false, "A18", Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(0, false, "A2", Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(1, false, "A2", Worksheet.WorksheetPane.BottomLeft, 0)]
+        [InlineData(15, false, "A18", Worksheet.WorksheetPane.TopRight, 0)]
         [InlineData(0, true, "A2", null, 0)]
         [InlineData(1, true, "A2", null, 0)]
         [InlineData(15, true, "A18", null, 0)]
-        [InlineData(0, true, "A2", Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(1, true, "A2", Worksheet.WorksheetPane.bottomLeft, 0)]
-        [InlineData(15, true, "A18", Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(0, true, "A2", Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(1, true, "A2", Worksheet.WorksheetPane.BottomLeft, 0)]
+        [InlineData(15, true, "A18", Worksheet.WorksheetPane.TopRight, 0)]
         public void PaneSplitTopHeightWriteReadTest2(int rowNumber, bool freeze, string topLeftCellAddress, Worksheet.WorksheetPane? activePane, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
@@ -66,7 +66,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
             workbook.SetCurrentWorksheet(0);
             workbook.CurrentWorksheet.SetRowHeight(0, 18f);
             workbook.CurrentWorksheet.SetRowHeight(2, 22.5f);
-            workbook.CurrentWorksheet.SetHorizontalSplit(4, false, new Address("D1"), Worksheet.WorksheetPane.topLeft);
+            workbook.CurrentWorksheet.SetHorizontalSplit(4, false, new Address("D1"), Worksheet.WorksheetPane.TopLeft);
 
             float expectedHeight = 0f;
             for (int i = 0; i < 4; i++)
@@ -92,9 +92,9 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         [InlineData(27f, null, 0)]
         [InlineData(100f, null, 0)]
         [InlineData(10f, null, 0)]
-        [InlineData(27f, Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(100f, Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(0f, Worksheet.WorksheetPane.topLeft, 0)]
+        [InlineData(27f, Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(100f, Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(0f, Worksheet.WorksheetPane.TopLeft, 0)]
         public void PaneSplitLeftWidthWriteReadTest(float width, Worksheet.WorksheetPane? activePane, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
@@ -116,15 +116,15 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         [InlineData(0, false, "A2", null, 0)]
         [InlineData(1, false, "B2", null, 0)]
         [InlineData(5, false, "G2", null, 0)]
-        [InlineData(0, false, "A2", Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(1, false, "B2", Worksheet.WorksheetPane.bottomLeft, 0)]
-        [InlineData(5, false, "G2", Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(0, false, "A2", Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(1, false, "B2", Worksheet.WorksheetPane.BottomLeft, 0)]
+        [InlineData(5, false, "G2", Worksheet.WorksheetPane.TopRight, 0)]
         [InlineData(0, true, "A2", null, 0)]
         [InlineData(1, true, "B2", null, 0)]
         [InlineData(5, true, "G2", null, 0)]
-        [InlineData(0, true, "A2", Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(1, true, "B2", Worksheet.WorksheetPane.bottomLeft, 0)]
-        [InlineData(5, true, "G2", Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(0, true, "A2", Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(1, true, "B2", Worksheet.WorksheetPane.BottomLeft, 0)]
+        [InlineData(5, true, "G2", Worksheet.WorksheetPane.TopRight, 0)]
         public void PaneSplitLeftWidthWriteReadTest2(int columnNumber, bool freeze, string topLeftCellAddress, Worksheet.WorksheetPane? activePane, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
@@ -147,7 +147,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
             workbook.SetCurrentWorksheet(0);
             workbook.CurrentWorksheet.SetColumnWidth(0, 18f);
             workbook.CurrentWorksheet.SetColumnWidth(2, 22.5f);
-            workbook.CurrentWorksheet.SetVerticalSplit(4, false, new Address("D1"), Worksheet.WorksheetPane.topLeft);
+            workbook.CurrentWorksheet.SetVerticalSplit(4, false, new Address("D1"), Worksheet.WorksheetPane.TopLeft);
 
             float expectedWidth = 0f;
             for (int i = 0; i < 4; i++)
@@ -171,10 +171,10 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
 
         [Theory(DisplayName = "Test of the 'ActivePane' property when writing and reading a worksheet")]
         [InlineData(27f, null, 0)]
-        [InlineData(100f, Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(0f, Worksheet.WorksheetPane.bottomLeft, 0)]
-        [InlineData(27f, Worksheet.WorksheetPane.topRight, 0)]
-        [InlineData(100f, Worksheet.WorksheetPane.bottomRight, 0)]
+        [InlineData(100f, Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(0f, Worksheet.WorksheetPane.BottomLeft, 0)]
+        [InlineData(27f, Worksheet.WorksheetPane.TopRight, 0)]
+        [InlineData(100f, Worksheet.WorksheetPane.BottomRight, 0)]
         public void PaneSplitActivePaneWriteReadTest(float height, Worksheet.WorksheetPane? activePane, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
@@ -191,10 +191,10 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         }
         [Theory(DisplayName = "Test of the 'PaneSplitTopLeftCell' property when writing and reading a worksheet")]
         [InlineData(27f, null, "A1", 0)]
-        [InlineData(100f, Worksheet.WorksheetPane.topLeft, "B2", 0)]
-        [InlineData(0f, Worksheet.WorksheetPane.bottomLeft, "Z15", 0)]
-        [InlineData(27f, Worksheet.WorksheetPane.topRight, "$A1", 0)]
-        [InlineData(100f, Worksheet.WorksheetPane.bottomRight, "$D$4", 0)]
+        [InlineData(100f, Worksheet.WorksheetPane.TopLeft, "B2", 0)]
+        [InlineData(0f, Worksheet.WorksheetPane.BottomLeft, "Z15", 0)]
+        [InlineData(27f, Worksheet.WorksheetPane.TopRight, "$A1", 0)]
+        [InlineData(100f, Worksheet.WorksheetPane.BottomRight, "$D$4", 0)]
         public void PaneSplitTopLeftCellWriteReadTest(float height, Worksheet.WorksheetPane? activePane, string topLeftCellAddress, int sheetIndex)
         {
             Address topLeftCell = new Address(topLeftCellAddress);
@@ -217,19 +217,19 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         [InlineData(27f, 0f, null, 0)]
         [InlineData(100f, 0f, null, 0)]
         [InlineData(0f, 0f, null, 0)]
-        [InlineData(27f, 27f, Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(100f, 27f, Worksheet.WorksheetPane.bottomLeft, 0)]
-        [InlineData(0f, 27f, Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(27f, 27f, Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(100f, 27f, Worksheet.WorksheetPane.BottomLeft, 0)]
+        [InlineData(0f, 27f, Worksheet.WorksheetPane.TopRight, 0)]
         [InlineData(27f, 100f, null, 0)]
         [InlineData(100f, 100f, null, 0)]
         [InlineData(0f, 100f, null, 0)]
-        [InlineData(27f, null, Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(100f, null, Worksheet.WorksheetPane.bottomLeft, 0)]
-        [InlineData(0f, null, Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(27f, null, Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(100f, null, Worksheet.WorksheetPane.BottomLeft, 0)]
+        [InlineData(0f, null, Worksheet.WorksheetPane.TopRight, 0)]
         [InlineData(null, 100f, null, 0)]
         [InlineData(null, 27f, null, 0)]
         [InlineData(null, 0f, null, 0)]
-        [InlineData(null, null, Worksheet.WorksheetPane.topLeft, 0)]
+        [InlineData(null, null, Worksheet.WorksheetPane.TopLeft, 0)]
         public void PaneSplitWidthHeightWriteReadTest(float? width, float? height, Worksheet.WorksheetPane? activePane, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
@@ -261,21 +261,21 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         [InlineData(0, 0, false, "A2", null, 0)]
         [InlineData(1, 0, false, "B2", null, 0)]
         [InlineData(5, 0, false, "G2", null, 0)]
-        [InlineData(0, 0, false, "A2", Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(1, 0, false, "B2", Worksheet.WorksheetPane.bottomLeft, 0)]
-        [InlineData(5, 0, false, "G2", Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(0, 0, false, "A2", Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(1, 0, false, "B2", Worksheet.WorksheetPane.BottomLeft, 0)]
+        [InlineData(5, 0, false, "G2", Worksheet.WorksheetPane.TopRight, 0)]
         [InlineData(0, 1, true, "A2", null, 0)]
         [InlineData(1, 1, true, "B2", null, 0)]
         [InlineData(5, 1, true, "G2", null, 0)]
-        [InlineData(0, 1, true, "A2", Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(1, 1, true, "B2", Worksheet.WorksheetPane.bottomLeft, 0)]
-        [InlineData(5, 1, true, "G2", Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(0, 1, true, "A2", Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(1, 1, true, "B2", Worksheet.WorksheetPane.BottomLeft, 0)]
+        [InlineData(5, 1, true, "G2", Worksheet.WorksheetPane.TopRight, 0)]
         [InlineData(0, 15, true, "A20", null, 0)]
         [InlineData(1, 15, true, "B20", null, 0)]
         [InlineData(5, 15, true, "G20", null, 0)]
-        [InlineData(0, 15, true, "A20", Worksheet.WorksheetPane.topLeft, 0)]
-        [InlineData(1, 15, true, "B20", Worksheet.WorksheetPane.bottomLeft, 0)]
-        [InlineData(5, 15, true, "G20", Worksheet.WorksheetPane.topRight, 0)]
+        [InlineData(0, 15, true, "A20", Worksheet.WorksheetPane.TopLeft, 0)]
+        [InlineData(1, 15, true, "B20", Worksheet.WorksheetPane.BottomLeft, 0)]
+        [InlineData(5, 15, true, "G20", Worksheet.WorksheetPane.TopRight, 0)]
         public void PaneSplitWidthHeightWriteReadTest2(int columnNumber, int rowNumber, bool freeze, string topLeftCellAddress, Worksheet.WorksheetPane? activePane, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
@@ -321,12 +321,12 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the 'ShowRuler' property, when writing and reading a worksheet")]
-        [InlineData(true, true, Worksheet.SheetViewType.pageLayout, 0)]
-        [InlineData(false, true, Worksheet.SheetViewType.pageBreakPreview, 0)]
-        [InlineData(true, true, Worksheet.SheetViewType.normal, 2)]
-        [InlineData(false, false, Worksheet.SheetViewType.pageLayout, 2)]
-        [InlineData(true, true, Worksheet.SheetViewType.pageBreakPreview, 2)]
-        [InlineData(false, true, Worksheet.SheetViewType.normal, 1)]
+        [InlineData(true, true, Worksheet.SheetViewType.PageLayout, 0)]
+        [InlineData(false, true, Worksheet.SheetViewType.PageBreakPreview, 0)]
+        [InlineData(true, true, Worksheet.SheetViewType.Normal, 2)]
+        [InlineData(false, false, Worksheet.SheetViewType.PageLayout, 2)]
+        [InlineData(true, true, Worksheet.SheetViewType.PageBreakPreview, 2)]
+        [InlineData(false, true, Worksheet.SheetViewType.Normal, 1)]
         public void ShowRulerWriteReadTest(bool showRuler, bool expectedShowRuler, Worksheet.SheetViewType viewType, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
@@ -339,12 +339,12 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the 'ViewType' property, when writing and reading a worksheet")]
-        [InlineData(Worksheet.SheetViewType.pageLayout, 0)]
-        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 0)]
-        [InlineData(Worksheet.SheetViewType.normal, 0)]
-        [InlineData(Worksheet.SheetViewType.pageLayout, 2)]
-        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 2)]
-        [InlineData(Worksheet.SheetViewType.normal, 2)]
+        [InlineData(Worksheet.SheetViewType.PageLayout, 0)]
+        [InlineData(Worksheet.SheetViewType.PageBreakPreview, 0)]
+        [InlineData(Worksheet.SheetViewType.Normal, 0)]
+        [InlineData(Worksheet.SheetViewType.PageLayout, 2)]
+        [InlineData(Worksheet.SheetViewType.PageBreakPreview, 2)]
+        [InlineData(Worksheet.SheetViewType.Normal, 2)]
         public void ViewTypeWriteReadTest(Worksheet.SheetViewType viewType, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
@@ -355,21 +355,21 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the 'ZoomFactor' property, when writing and reading a worksheet")]
-        [InlineData(Worksheet.SheetViewType.normal, 0, 0)]
-        [InlineData(Worksheet.SheetViewType.normal, 10, 2)]
-        [InlineData(Worksheet.SheetViewType.normal, 100, 0)]
-        [InlineData(Worksheet.SheetViewType.normal, 250, 2)]
-        [InlineData(Worksheet.SheetViewType.normal, 400, 0)]
-        [InlineData(Worksheet.SheetViewType.pageLayout, 0, 2)]
-        [InlineData(Worksheet.SheetViewType.pageLayout, 10, 0)]
-        [InlineData(Worksheet.SheetViewType.pageLayout, 100, 2)]
-        [InlineData(Worksheet.SheetViewType.pageLayout, 250, 0)]
-        [InlineData(Worksheet.SheetViewType.pageLayout, 400, 2)]
-        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 0, 0)]
-        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 10, 2)]
-        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 100, 0)]
-        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 250, 2)]
-        [InlineData(Worksheet.SheetViewType.pageBreakPreview, 400, 0)]
+        [InlineData(Worksheet.SheetViewType.Normal, 0, 0)]
+        [InlineData(Worksheet.SheetViewType.Normal, 10, 2)]
+        [InlineData(Worksheet.SheetViewType.Normal, 100, 0)]
+        [InlineData(Worksheet.SheetViewType.Normal, 250, 2)]
+        [InlineData(Worksheet.SheetViewType.Normal, 400, 0)]
+        [InlineData(Worksheet.SheetViewType.PageLayout, 0, 2)]
+        [InlineData(Worksheet.SheetViewType.PageLayout, 10, 0)]
+        [InlineData(Worksheet.SheetViewType.PageLayout, 100, 2)]
+        [InlineData(Worksheet.SheetViewType.PageLayout, 250, 0)]
+        [InlineData(Worksheet.SheetViewType.PageLayout, 400, 2)]
+        [InlineData(Worksheet.SheetViewType.PageBreakPreview, 0, 0)]
+        [InlineData(Worksheet.SheetViewType.PageBreakPreview, 10, 2)]
+        [InlineData(Worksheet.SheetViewType.PageBreakPreview, 100, 0)]
+        [InlineData(Worksheet.SheetViewType.PageBreakPreview, 250, 2)]
+        [InlineData(Worksheet.SheetViewType.PageBreakPreview, 400, 0)]
         public void ZoomFactorWriteReadTest(Worksheet.SheetViewType viewType, int zoomFactor, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
@@ -382,21 +382,21 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
         }
 
         [Theory(DisplayName = "Test of the 'SetZoomFactor' function, when writing and reading a worksheet")]
-        [InlineData(Worksheet.SheetViewType.pageLayout, Worksheet.SheetViewType.normal, 0, 0)]
-        [InlineData(Worksheet.SheetViewType.pageBreakPreview, Worksheet.SheetViewType.normal, 10, 2)]
-        [InlineData(Worksheet.SheetViewType.pageLayout, Worksheet.SheetViewType.normal, 100, 0)]
-        [InlineData(Worksheet.SheetViewType.pageBreakPreview, Worksheet.SheetViewType.normal, 250, 2)]
-        [InlineData(Worksheet.SheetViewType.pageLayout, Worksheet.SheetViewType.normal, 400, 0)]
-        [InlineData(Worksheet.SheetViewType.normal, Worksheet.SheetViewType.pageLayout, 0, 2)]
-        [InlineData(Worksheet.SheetViewType.pageBreakPreview, Worksheet.SheetViewType.pageLayout, 10, 0)]
-        [InlineData(Worksheet.SheetViewType.normal, Worksheet.SheetViewType.pageLayout, 100, 2)]
-        [InlineData(Worksheet.SheetViewType.pageBreakPreview, Worksheet.SheetViewType.pageLayout, 250, 0)]
-        [InlineData(Worksheet.SheetViewType.normal, Worksheet.SheetViewType.pageLayout, 400, 2)]
-        [InlineData(Worksheet.SheetViewType.normal, Worksheet.SheetViewType.pageBreakPreview, 0, 0)]
-        [InlineData(Worksheet.SheetViewType.pageLayout, Worksheet.SheetViewType.pageBreakPreview, 10, 2)]
-        [InlineData(Worksheet.SheetViewType.normal, Worksheet.SheetViewType.pageBreakPreview, 100, 0)]
-        [InlineData(Worksheet.SheetViewType.pageLayout, Worksheet.SheetViewType.pageBreakPreview, 250, 2)]
-        [InlineData(Worksheet.SheetViewType.normal, Worksheet.SheetViewType.pageBreakPreview, 400, 0)]
+        [InlineData(Worksheet.SheetViewType.PageLayout, Worksheet.SheetViewType.Normal, 0, 0)]
+        [InlineData(Worksheet.SheetViewType.PageBreakPreview, Worksheet.SheetViewType.Normal, 10, 2)]
+        [InlineData(Worksheet.SheetViewType.PageLayout, Worksheet.SheetViewType.Normal, 100, 0)]
+        [InlineData(Worksheet.SheetViewType.PageBreakPreview, Worksheet.SheetViewType.Normal, 250, 2)]
+        [InlineData(Worksheet.SheetViewType.PageLayout, Worksheet.SheetViewType.Normal, 400, 0)]
+        [InlineData(Worksheet.SheetViewType.Normal, Worksheet.SheetViewType.PageLayout, 0, 2)]
+        [InlineData(Worksheet.SheetViewType.PageBreakPreview, Worksheet.SheetViewType.PageLayout, 10, 0)]
+        [InlineData(Worksheet.SheetViewType.Normal, Worksheet.SheetViewType.PageLayout, 100, 2)]
+        [InlineData(Worksheet.SheetViewType.PageBreakPreview, Worksheet.SheetViewType.PageLayout, 250, 0)]
+        [InlineData(Worksheet.SheetViewType.Normal, Worksheet.SheetViewType.PageLayout, 400, 2)]
+        [InlineData(Worksheet.SheetViewType.Normal, Worksheet.SheetViewType.PageBreakPreview, 0, 0)]
+        [InlineData(Worksheet.SheetViewType.PageLayout, Worksheet.SheetViewType.PageBreakPreview, 10, 2)]
+        [InlineData(Worksheet.SheetViewType.Normal, Worksheet.SheetViewType.PageBreakPreview, 100, 0)]
+        [InlineData(Worksheet.SheetViewType.PageLayout, Worksheet.SheetViewType.PageBreakPreview, 250, 2)]
+        [InlineData(Worksheet.SheetViewType.Normal, Worksheet.SheetViewType.PageBreakPreview, 400, 0)]
         public void SetZoomFactorWriteReadTest(Worksheet.SheetViewType initialViewType, Worksheet.SheetViewType additionalViewType, int zoomFactor, int sheetIndex)
         {
             Workbook workbook = PrepareWorkbook(4, "test");
@@ -405,10 +405,10 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
             workbook.CurrentWorksheet.SetZoomFactor(additionalViewType, zoomFactor);
             workbook.SaveAs("c:\\purge-temp\\testZoom.xlsx");
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
-            if (initialViewType != Worksheet.SheetViewType.normal && additionalViewType != Worksheet.SheetViewType.normal)
+            if (initialViewType != Worksheet.SheetViewType.Normal && additionalViewType != Worksheet.SheetViewType.Normal)
             {
                 Assert.Equal(3, givenWorksheet.ZoomFactors.Count);
-                Assert.Equal(100, givenWorksheet.ZoomFactors[Worksheet.SheetViewType.normal]);
+                Assert.Equal(100, givenWorksheet.ZoomFactors[Worksheet.SheetViewType.Normal]);
             }
             else
             {

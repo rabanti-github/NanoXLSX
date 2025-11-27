@@ -49,7 +49,7 @@ namespace NanoXLSX.Internal.Writers
                 currentWorksheet = value;
                 IPassword passwordInstance = ((Worksheet)CurrentWorksheet).SheetProtectionPassword;
                 //TODO add plug-in hook to overwrite password instance
-                this.passwordWriter = new LegacyPasswordWriter(PasswordType.WORKSHEET_PROTECTION, passwordInstance.PasswordHash);
+                this.passwordWriter = new LegacyPasswordWriter(PasswordType.WorksheetProtection, passwordInstance.PasswordHash);
             }
         }
 
@@ -99,7 +99,7 @@ namespace NanoXLSX.Internal.Writers
                 worksheet.AddChildElementWithAttribute("dimension", "ref", new Range(ws.GetFirstCellAddress().Value, ws.GetLastCellAddress().Value).ToString());
             }
             if (ws.SelectedCells.Count > 0 || ws.PaneSplitTopHeight != null || ws.PaneSplitLeftWidth != null || ws.PaneSplitAddress != null ||
-               ws.Hidden || ws.ZoomFactor != 100 || ws.ZoomFactors.Count > 1 || !ws.ShowGridLines || !ws.ShowRuler || !ws.ShowRowColumnHeaders || ws.ViewType != Worksheet.SheetViewType.normal)
+               ws.Hidden || ws.ZoomFactor != 100 || ws.ZoomFactors.Count > 1 || !ws.ShowGridLines || !ws.ShowRuler || !ws.ShowRowColumnHeaders || ws.ViewType != Worksheet.SheetViewType.Normal)
             {
                 worksheet.AddChildElement(CreateSheetViewElement(ws));
             }
@@ -160,9 +160,9 @@ namespace NanoXLSX.Internal.Writers
             {
                 sheetView.AddAttribute("tabSelected", "1");
             }
-            if (worksheet.ViewType != Worksheet.SheetViewType.normal)
+            if (worksheet.ViewType != Worksheet.SheetViewType.Normal)
             {
-                if (worksheet.ViewType == Worksheet.SheetViewType.pageLayout)
+                if (worksheet.ViewType == Worksheet.SheetViewType.PageLayout)
                 {
                     if (worksheet.ShowRuler)
                     {
@@ -174,7 +174,7 @@ namespace NanoXLSX.Internal.Writers
                     }
                     sheetView.AddAttribute("view", "pageLayout");
                 }
-                else if (worksheet.ViewType == Worksheet.SheetViewType.pageBreakPreview)
+                else if (worksheet.ViewType == Worksheet.SheetViewType.PageBreakPreview)
                 {
                     sheetView.AddAttribute("view", "pageBreakPreview");
                 }
@@ -194,15 +194,15 @@ namespace NanoXLSX.Internal.Writers
                 {
                     continue;
                 }
-                if (scaleFactor.Key == Worksheet.SheetViewType.normal)
+                if (scaleFactor.Key == Worksheet.SheetViewType.Normal)
                 {
                     sheetView.AddAttribute("zoomScaleNormal", ParserUtils.ToString(scaleFactor.Value));
                 }
-                else if (scaleFactor.Key == Worksheet.SheetViewType.pageBreakPreview)
+                else if (scaleFactor.Key == Worksheet.SheetViewType.PageBreakPreview)
                 {
                     sheetView.AddAttribute("zoomScaleSheetLayoutView", ParserUtils.ToString(scaleFactor.Value));
                 }
-                else if (scaleFactor.Key == Worksheet.SheetViewType.pageLayout)
+                else if (scaleFactor.Key == Worksheet.SheetViewType.PageLayout)
                 {
                     sheetView.AddAttribute("zoomScalePageLayoutView", ParserUtils.ToString(scaleFactor.Value));
                 }
@@ -252,16 +252,16 @@ namespace NanoXLSX.Internal.Writers
                 return null;
             }
             Dictionary<Worksheet.SheetProtectionValue, int> actualLockingValues = new Dictionary<Worksheet.SheetProtectionValue, int>();
-            if (!worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.objects))
+            if (!worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.Objects))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.objects, 1);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.Objects, 1);
             }
-            if (!worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.scenarios))
+            if (!worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.Scenarios))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.scenarios, 1);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.Scenarios, 1);
             }
-            bool allowSelectLocked = worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectLockedCells);
-            bool allowSelectUnlocked = worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.selectUnlockedCells);
+            bool allowSelectLocked = worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.SelectLockedCells);
+            bool allowSelectUnlocked = worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.SelectUnlockedCells);
             if (allowSelectLocked && !allowSelectUnlocked)
             {
                 // This shouldn't happen in Excel's UI, but handle it by allowing both
@@ -269,62 +269,63 @@ namespace NanoXLSX.Internal.Writers
             }
             if (!allowSelectLocked)
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.selectLockedCells, 1);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.SelectLockedCells, 1);
             }
             if (!allowSelectUnlocked)
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.selectUnlockedCells, 1);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.SelectUnlockedCells, 1);
             }
             // Explicit permissions (set to 0 when allowed)
-            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.formatCells))
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.FormatCells))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.formatCells, 0);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.FormatCells, 0);
             }
-            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.formatColumns))
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.FormatColumns))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.formatColumns, 0);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.FormatColumns, 0);
             }
-            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.formatRows))
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.FormatRows))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.formatRows, 0);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.FormatRows, 0);
             }
-            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.insertColumns))
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.InsertColumns))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.insertColumns, 0);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.InsertColumns, 0);
             }
-            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.insertRows))
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.InsertRows))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.insertRows, 0);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.InsertRows, 0);
             }
-            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.insertHyperlinks))
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.InsertHyperlinks))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.insertHyperlinks, 0);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.InsertHyperlinks, 0);
             }
-            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.deleteColumns))
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.DeleteColumns))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.deleteColumns, 0);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.DeleteColumns, 0);
             }
-            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.deleteRows))
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.DeleteRows))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.deleteRows, 0);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.DeleteRows, 0);
             }
-            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.sort))
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.Sort))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.sort, 0);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.Sort, 0);
             }
-            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.autoFilter))
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.AutoFilter))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.autoFilter, 0);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.AutoFilter, 0);
             }
-            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.pivotTables))
+            if (worksheet.SheetProtectionValues.Contains(Worksheet.SheetProtectionValue.PivotTables))
             {
-                actualLockingValues.Add(Worksheet.SheetProtectionValue.pivotTables, 0);
+                actualLockingValues.Add(Worksheet.SheetProtectionValue.PivotTables, 0);
             }
             XmlElement sheetProtection = XmlElement.CreateElement("sheetProtection");
             string temp;
             foreach (KeyValuePair<Worksheet.SheetProtectionValue, int> item in actualLockingValues)
             {
-                temp = Enum.GetName(typeof(Worksheet.SheetProtectionValue), item.Key); // Note! If the enum names differs from the OOXML definitions, this method will cause invalid OOXML entries
+                temp = Worksheet.GetSheetProtectionName(item.Key); // Note! If the enum names differs from the OOXML definitions, this method will cause invalid OOXML entries
+                //temp = Enum.GetName(typeof(Worksheet.SheetProtectionValue), item.Key); 
                 sheetProtection.AddAttribute(temp, ParserUtils.ToString(item.Value));
             }
             if (passwordWriter.PasswordIsSet())
@@ -464,16 +465,16 @@ namespace NanoXLSX.Internal.Writers
             {
                 switch (worksheet.ActivePane.Value)
                 {
-                    case Worksheet.WorksheetPane.bottomLeft:
+                    case Worksheet.WorksheetPane.BottomLeft:
                         pane.AddAttribute("activePane", "bottomLeft");
                         break;
-                    case Worksheet.WorksheetPane.bottomRight:
+                    case Worksheet.WorksheetPane.BottomRight:
                         pane.AddAttribute("activePane", "bottomRight");
                         break;
-                    case Worksheet.WorksheetPane.topLeft:
+                    case Worksheet.WorksheetPane.TopLeft:
                         pane.AddAttribute("activePane", "topLeft");
                         break;
-                    case Worksheet.WorksheetPane.topRight:
+                    case Worksheet.WorksheetPane.TopRight:
                         pane.AddAttribute("activePane", "topRight");
                         break;
                 }

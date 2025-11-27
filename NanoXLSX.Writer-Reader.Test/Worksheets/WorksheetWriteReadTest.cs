@@ -463,37 +463,38 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
 
         [Theory(DisplayName = "Test of the 'SheetProtectionValues'  and 'UseSheetProtection' property when writing and reading a worksheet")]
         [InlineData(false, "", "", 0)]
-        [InlineData(false, "autoFilter:0,sort:0", "", 0)]
-        [InlineData(true, "", "objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "selectLockedCells:1,selectUnlockedCells:0", "objects:1,scenarios:1", 0)] // Special case: only locked cells selectable is not possible, therefore none
-        [InlineData(true, "autoFilter:0", "autoFilter:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "pivotTables:0", "pivotTables:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "sort:0", "sort:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "deleteRows:0", "deleteRows:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "deleteColumns:0", "deleteColumns:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "insertHyperlinks:0", "insertHyperlinks:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "insertRows:0", "insertRows:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "insertColumns:0", "insertColumns:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "formatRows:0", "formatRows:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "formatColumns:0", "formatColumns:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "formatCells:0", "formatCells:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "objects:0", "scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "scenarios:0", "objects:1,selectLockedCells:1,selectUnlockedCells:1", 0)]
-        [InlineData(true, "selectLockedCells:0", "objects:1,scenarios:1", 0)]
-        [InlineData(true, "selectUnlockedCells:0", "objects:1,scenarios:1,selectLockedCells:1", 0)]
+        [InlineData(false, "AutoFilter:0,Sort:0", "", 0)]
+        [InlineData(true, "", "Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "SelectLockedCells:1,SelectUnlockedCells:0", "Objects:1,Scenarios:1", 0)] // Special case: only locked cells selectable is not possible, therefore none
+        [InlineData(true, "AutoFilter:0", "AutoFilter:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "PivotTables:0", "PivotTables:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "Sort:0", "Sort:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "DeleteRows:0", "DeleteRows:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "DeleteColumns:0", "DeleteColumns:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "InsertHyperlinks:0", "InsertHyperlinks:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "InsertRows:0", "InsertRows:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "InsertColumns:0", "InsertColumns:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "FormatRows:0", "FormatRows:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "FormatColumns:0", "FormatColumns:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "FormatCells:0", "FormatCells:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "Objects:0", "Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "Scenarios:0", "Objects:1,SelectLockedCells:1,SelectUnlockedCells:1", 0)]
+        [InlineData(true, "SelectLockedCells:0", "Objects:1,Scenarios:1", 0)]
+        [InlineData(true, "SelectUnlockedCells:0", "Objects:1,Scenarios:1,SelectLockedCells:1", 0)]
         [InlineData(false, "", "", 1)]
-        [InlineData(false, "autoFilter:0", "", 2)]
-        [InlineData(true, "", "objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 3)]
-        [InlineData(true, "autoFilter:0", "autoFilter:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 1)]
-        [InlineData(true, "pivotTables:0,sort:0", "pivotTables:0,sort:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 2)]
-        [InlineData(true, "sort:0,deleteColumns:0,formatCells:0", "sort:0,deleteColumns:0,formatCells:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 3)]
-        [InlineData(true, "deleteRows:0,formatCells:0", "deleteRows:0,formatCells:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 1)]
-        [InlineData(true, "deleteColumns:0,formatColumns:0,formatRows:0", "deleteColumns:0,formatColumns:0,formatRows:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 2)]
-        [InlineData(true, "insertHyperlinks:0,formatCells:0", "insertHyperlinks:0,formatCells:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 3)]
-        [InlineData(true, "insertRows:0,formatRows:0", "insertRows:0,formatRows:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 1)]
-        [InlineData(true, "insertColumns:0,formatColumns:0", "insertColumns:0,formatColumns:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 2)]
-        [InlineData(true, "formatRows:0,formatColumns:0", "formatRows:0,formatColumns:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 3)]
-        [InlineData(true, "formatColumns:0,formatCells:0", "formatColumns:0,formatCells:0,objects:1,scenarios:1,selectLockedCells:1,selectUnlockedCells:1", 1)]
+        [InlineData(false, "AutoFilter:0", "", 2)]
+        [InlineData(true, "", "Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 3)]
+        [InlineData(true, "AutoFilter:0", "AutoFilter:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 1)]
+        [InlineData(true, "PivotTables:0,Sort:0", "PivotTables:0,Sort:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 2)]
+        [InlineData(true, "Sort:0,DeleteColumns:0,FormatCells:0", "Sort:0,DeleteColumns:0,FormatCells:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 3)]
+        [InlineData(true, "DeleteRows:0,FormatCells:0", "DeleteRows:0,FormatCells:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 1)]
+        [InlineData(true, "DeleteColumns:0,FormatColumns:0,FormatRows:0", "DeleteColumns:0,FormatColumns:0,FormatRows:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 2)]
+        [InlineData(true, "InsertHyperlinks:0,FormatCells:0", "InsertHyperlinks:0,FormatCells:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 3)]
+        [InlineData(true, "InsertRows:0,FormatRows:0", "InsertRows:0,FormatRows:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 1)]
+        [InlineData(true, "InsertColumns:0,FormatColumns:0", "InsertColumns:0,FormatColumns:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 2)]
+        [InlineData(true, "FormatRows:0,FormatColumns:0", "FormatRows:0,FormatColumns:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 3)]
+        [InlineData(true, "FormatColumns:0,FormatCells:0", "FormatColumns:0,FormatCells:0,Objects:1,Scenarios:1,SelectLockedCells:1,SelectUnlockedCells:1", 1)]
+
         public void SheetProtectionWriteReadTest(bool useSheetProtection, string givenProtectionValues, string expectedProtectionValues, int sheetIndex)
         {
             Dictionary<Worksheet.SheetProtectionValue, bool> expectedProtection = PrepareSheetProtectionValues(expectedProtectionValues);
@@ -534,20 +535,20 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
                 if (sheetIndex == i)
                 {
                     workbook.SetCurrentWorksheet(i);
-                    workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.selectUnlockedCells);
-                    workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.selectLockedCells);
+                    workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.SelectUnlockedCells);
+                    workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.SelectLockedCells);
                     // Override default (technically invalid)
-                    workbook.CurrentWorksheet.RemoveAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.selectUnlockedCells);
+                    workbook.CurrentWorksheet.RemoveAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.SelectUnlockedCells);
                     workbook.CurrentWorksheet.UseSheetProtection = true;
                 }
             }
             Worksheet givenWorksheet = WriteAndReadWorksheet(workbook, sheetIndex);
             Assert.Equal(2, givenWorksheet.SheetProtectionValues.Count);
             Assert.True(givenWorksheet.UseSheetProtection);
-            Assert.Contains(Worksheet.SheetProtectionValue.objects, givenWorksheet.SheetProtectionValues);
-            Assert.Contains(Worksheet.SheetProtectionValue.scenarios, givenWorksheet.SheetProtectionValues);
-            Assert.DoesNotContain(Worksheet.SheetProtectionValue.selectLockedCells, givenWorksheet.SheetProtectionValues);
-            Assert.DoesNotContain(Worksheet.SheetProtectionValue.selectUnlockedCells, givenWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.Objects, givenWorksheet.SheetProtectionValues);
+            Assert.Contains(Worksheet.SheetProtectionValue.Scenarios, givenWorksheet.SheetProtectionValues);
+            Assert.DoesNotContain(Worksheet.SheetProtectionValue.SelectLockedCells, givenWorksheet.SheetProtectionValues);
+            Assert.DoesNotContain(Worksheet.SheetProtectionValue.SelectUnlockedCells, givenWorksheet.SheetProtectionValues);
         }
 
         [Theory(DisplayName = "Test of the 'SheetProtectionPasswordHash' property when writing and reading a worksheet")]
@@ -568,7 +569,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
                 if (sheetIndex == i)
                 {
                     workbook.SetCurrentWorksheet(i);
-                    workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.deleteRows);
+                    workbook.CurrentWorksheet.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.DeleteRows);
                     workbook.CurrentWorksheet.SetSheetProtectionPassword(givenPassword);
                     hash = workbook.CurrentWorksheet.SheetProtectionPassword.PasswordHash;
                 }

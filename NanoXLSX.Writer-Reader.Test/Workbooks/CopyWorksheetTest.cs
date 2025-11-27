@@ -37,8 +37,8 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             w.AddHiddenColumn(1);
             w.AddHiddenColumn(3);
             w.SetColumnDefaultStyle(1, BasicStyles.Font("Comic Sans", 42));
-            w.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.sort);
-            w.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.autoFilter);
+            w.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.Sort);
+            w.AddAllowedActionOnSheetProtection(Worksheet.SheetProtectionValue.AutoFilter);
             w.SetSheetProtectionPassword("pwd");
             w.AddHiddenRow(1);
             w.AddHiddenRow(3);
@@ -52,7 +52,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             w.SetCurrentCellAddress("D5");
             w.AddSelectedCells(new NanoXLSX.Range("C3:C3"));
             w.UseSheetProtection = true;
-            w.SetSplit(3, 2, true, new Address("F4"), Worksheet.WorksheetPane.bottomRight);
+            w.SetSplit(3, 2, true, new Address("F4"), Worksheet.WorksheetPane.BottomRight);
             return w;
         }
     }
