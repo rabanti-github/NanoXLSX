@@ -26,7 +26,7 @@ var NAVTREE =
 [
   [ "NanoXLSX.Core", "index.html", [
     [ "Change Log - NanoXLSX.Core", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html", [
-      [ "v3.0.0-rc.2", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1", null ],
+      [ "v3.0.0-rc.1", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1", null ],
       [ "v3.0.0-rc.2", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md3", null ]
     ] ],
     [ "Packages", "namespaces.html", [

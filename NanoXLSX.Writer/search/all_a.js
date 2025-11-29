@@ -1,7 +1,11 @@
 var searchData=
 [
-  ['passwordhash_0',['PasswordHash',['../classNanoXLSX_1_1Internal_1_1Writers_1_1LegacyPasswordWriter.html#a49864b18b39c604fa4ebfa495032d5a8',1,'NanoXLSX::Internal::Writers::LegacyPasswordWriter']]],
-  ['passwordisset_1',['PasswordIsSet',['../classNanoXLSX_1_1Internal_1_1Writers_1_1LegacyPasswordWriter.html#a0263cf01e0420638fbb93e81fca912d5',1,'NanoXLSX::Internal::Writers::LegacyPasswordWriter']]],
-  ['passwordtype_2',['PasswordType',['../classNanoXLSX_1_1Internal_1_1Enums_1_1WriterPassword.html#a457d74409a0c68599200357d615150d7',1,'NanoXLSX::Internal::Enums::WriterPassword']]],
-  ['plaintext_3',['PlainText',['../classNanoXLSX_1_1Internal_1_1Structures_1_1PlainText.html',1,'NanoXLSX.Internal.Structures.PlainText'],['../classNanoXLSX_1_1Internal_1_1Structures_1_1PlainText.html#a4e02ec4acb5dc709bfbf5dbebbd2a048',1,'NanoXLSX.Internal.Structures.PlainText.PlainText()']]]
+  ['nanoxlsx_0',['NanoXLSX',['../namespaceNanoXLSX.html',1,'']]],
+  ['nanoxlsx_20writer_1',['NanoXLSX Writer',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html',1,'Change Log - NanoXLSX.Writer'],['..//home/runner/work/NanoXLSX/NanoXLSX/NanoXLSX.Writer/README.md#autotoc_md5',1,'NanoXLSX.Writer']]],
+  ['nanoxlsx_3a_3ainterfaces_2',['Interfaces',['../namespaceNanoXLSX_1_1Interfaces.html',1,'NanoXLSX']]],
+  ['nanoxlsx_3a_3ainterfaces_3a_3awriter_3',['Writer',['../namespaceNanoXLSX_1_1Interfaces_1_1Writer.html',1,'NanoXLSX::Interfaces']]],
+  ['nanoxlsx_3a_3ainternal_4',['Internal',['../namespaceNanoXLSX_1_1Internal.html',1,'NanoXLSX']]],
+  ['nanoxlsx_3a_3ainternal_3a_3aenums_5',['Enums',['../namespaceNanoXLSX_1_1Internal_1_1Enums.html',1,'NanoXLSX::Internal']]],
+  ['nanoxlsx_3a_3ainternal_3a_3astructures_6',['Structures',['../namespaceNanoXLSX_1_1Internal_1_1Structures.html',1,'NanoXLSX::Internal']]],
+  ['nanoxlsx_3a_3ainternal_3a_3awriters_7',['Writers',['../namespaceNanoXLSX_1_1Internal_1_1Writers.html',1,'NanoXLSX::Internal']]]
 ];
