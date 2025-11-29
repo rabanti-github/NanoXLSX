@@ -649,82 +649,90 @@ $(function(){initNavTree('StyleReader_8cs_source.html','',''); });
 <div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>                        NumberFormat.TryParseFormatNumber(<span class="keywordtype">id</span>, out formatNumber); <span class="comment">// Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as &#39;none&#39;.</span></div>
 <div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>                                                                                 <span class="comment">// Invalid values should not occur at all (malformed Excel files). </span></div>
 <div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>                                                                                 <span class="comment">// Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) </span></div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>                        format = <span class="keyword">new</span> NumberFormat();</div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>                        format.Number = formatNumber;</div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>                        format.InternalID = id;</div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>                        this.styleReaderContainer.AddStyleComponent(format);</div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>                    }</div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>                    hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, <span class="stringliteral">&quot;borderId&quot;</span>), out <span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>                    Border border = this.styleReaderContainer.GetBorder(<span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>                    <span class="keywordflow">if</span> (!hasId || border == <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>                    {</div>
-<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>                        border = <span class="keyword">new</span> Border();</div>
-<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>                        border.InternalID = this.styleReaderContainer.GetNextBorderId();</div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>                    }</div>
-<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>                    hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, <span class="stringliteral">&quot;fillId&quot;</span>), out <span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>                    Fill fill = this.styleReaderContainer.GetFill(<span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>                    <span class="keywordflow">if</span> (!hasId || fill == <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>                    {</div>
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>                        fill = <span class="keyword">new</span> Fill();</div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>                        fill.InternalID = this.styleReaderContainer.GetNextFillId();</div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>                    }</div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>                    hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, <span class="stringliteral">&quot;fontId&quot;</span>), out <span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>                    Font font = this.styleReaderContainer.GetFont(<span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>                    <span class="keywordflow">if</span> (!hasId || font == <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>                    {</div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>                        font = <span class="keyword">new</span> Font();</div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>                        font.InternalID = this.styleReaderContainer.GetNextFontId();</div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>                    }</div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span> </div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>                    <span class="comment">// TODO: Implement other style information</span></div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>                    style.CurrentNumberFormat = format;</div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>                    style.CurrentBorder = border;</div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>                    style.CurrentFill = fill;</div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>                    style.CurrentFont = font;</div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>                    style.CurrentCellXf = cellXfStyle;</div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>                    style.InternalID = this.styleReaderContainer.GetNextStyleId();</div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>                        format = <span class="keyword">new</span> NumberFormat</div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>                        {</div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>                            Number = formatNumber,</div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>                            InternalID = <span class="keywordtype">id</span></div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>                        };</div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>                        this.styleReaderContainer.AddStyleComponent(format);</div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>                    }</div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>                    hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, <span class="stringliteral">&quot;borderId&quot;</span>), out <span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>                    Border border = this.styleReaderContainer.GetBorder(<span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>                    <span class="keywordflow">if</span> (!hasId || border == <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>                    {</div>
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>                        border = <span class="keyword">new</span> Border</div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>                        {</div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>                            InternalID = this.styleReaderContainer.GetNextBorderId()</div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>                        };</div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>                    }</div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>                    hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, <span class="stringliteral">&quot;fillId&quot;</span>), out <span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>                    Fill fill = this.styleReaderContainer.GetFill(<span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>                    <span class="keywordflow">if</span> (!hasId || fill == <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>                    {</div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>                        fill = <span class="keyword">new</span> Fill</div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>                        {</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>                            InternalID = this.styleReaderContainer.GetNextFillId()</div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>                        };</div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>                    }</div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>                    hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, <span class="stringliteral">&quot;fontId&quot;</span>), out <span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>                    Font font = this.styleReaderContainer.GetFont(<span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>                    <span class="keywordflow">if</span> (!hasId || font == <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>                    {</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>                        font = <span class="keyword">new</span> Font</div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>                        {</div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>                            InternalID = this.styleReaderContainer.GetNextFontId()</div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>                        };</div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>                    }</div>
 <div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span> </div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>                    this.styleReaderContainer.AddStyleComponent(style);</div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>                }</div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>            }</div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>        }</div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span></div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> GetColors(XmlNode node)</div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>        {</div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>            <span class="keywordflow">foreach</span> (XmlNode color <span class="keywordflow">in</span> node.ChildNodes)</div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>            {</div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>                XmlNode mruColor = ReaderUtils.GetChildNode(color, <span class="stringliteral">&quot;color&quot;</span>);</div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>                <span class="keywordflow">if</span> (color.Name.Equals(<span class="stringliteral">&quot;mruColors&quot;</span>, StringComparison.Ordinal) &amp;&amp; mruColor != <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>                {</div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>                    <span class="keywordflow">foreach</span> (XmlNode value <span class="keywordflow">in</span> color.ChildNodes)</div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>                    {</div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>                        <span class="keywordtype">string</span> attribute = ReaderUtils.GetAttribute(value, <span class="stringliteral">&quot;rgb&quot;</span>);</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>                        <span class="keywordflow">if</span> (attribute != <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>                        {</div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>                            this.styleReaderContainer.AddMruColor(attribute);</div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>                        }</div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>                    }</div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>                }</div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>            }</div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>        }</div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span></div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">string</span> GetColor(XmlNode node, <span class="keywordtype">string</span> fallback)</div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>        {</div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>            XmlNode childNode = ReaderUtils.GetChildNode(node, <span class="stringliteral">&quot;color&quot;</span>);</div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>            <span class="keywordflow">if</span> (childNode != <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>            {</div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>                <span class="keywordtype">string</span> color = ReaderUtils.GetAttribute(childNode, <span class="stringliteral">&quot;rgb&quot;</span>);</div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>                <span class="keywordflow">if</span> (color != <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>                {</div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>                    <span class="keywordflow">return</span> color;</div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>                }</div>
-<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>            }</div>
-<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>            <span class="keywordflow">return</span> fallback;</div>
-<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>        }</div>
-<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span><span class="preprocessor">        #endregion</span></div>
-<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>    }</div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>                    <span class="comment">// TODO: Implement other style information</span></div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>                    style.CurrentNumberFormat = format;</div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>                    style.CurrentBorder = border;</div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>                    style.CurrentFill = fill;</div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>                    style.CurrentFont = font;</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>                    style.CurrentCellXf = cellXfStyle;</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>                    style.InternalID = this.styleReaderContainer.GetNextStyleId();</div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span> </div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>                    this.styleReaderContainer.AddStyleComponent(style);</div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>                }</div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>            }</div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>        }</div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span></div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> GetColors(XmlNode node)</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>        {</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>            <span class="keywordflow">foreach</span> (XmlNode color <span class="keywordflow">in</span> node.ChildNodes)</div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>            {</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>                XmlNode mruColor = ReaderUtils.GetChildNode(color, <span class="stringliteral">&quot;color&quot;</span>);</div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>                <span class="keywordflow">if</span> (color.Name.Equals(<span class="stringliteral">&quot;mruColors&quot;</span>, StringComparison.Ordinal) &amp;&amp; mruColor != <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>                {</div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>                    <span class="keywordflow">foreach</span> (XmlNode value <span class="keywordflow">in</span> color.ChildNodes)</div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>                    {</div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>                        <span class="keywordtype">string</span> attribute = ReaderUtils.GetAttribute(value, <span class="stringliteral">&quot;rgb&quot;</span>);</div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>                        <span class="keywordflow">if</span> (attribute != <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>                        {</div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>                            this.styleReaderContainer.AddMruColor(attribute);</div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>                        }</div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>                    }</div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>                }</div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>            }</div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>        }</div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span></div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">string</span> GetColor(XmlNode node, <span class="keywordtype">string</span> fallback)</div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>        {</div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>            XmlNode childNode = ReaderUtils.GetChildNode(node, <span class="stringliteral">&quot;color&quot;</span>);</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>            <span class="keywordflow">if</span> (childNode != <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>            {</div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>                <span class="keywordtype">string</span> color = ReaderUtils.GetAttribute(childNode, <span class="stringliteral">&quot;rgb&quot;</span>);</div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>                <span class="keywordflow">if</span> (color != <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>                {</div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>                    <span class="keywordflow">return</span> color;</div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>                }</div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>            }</div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>            <span class="keywordflow">return</span> fallback;</div>
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>        }</div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span><span class="preprocessor">        #endregion</span></div>
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>    }</div>
 </div>
-<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>}</div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>}</div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1StyleReader_html_a448eb550d6dde3b4882006bf69408805"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1StyleReader.html#a448eb550d6dde3b4882006bf69408805">NanoXLSX.Internal.Readers.StyleReader.StyleReader</a></div><div class="ttdeci">StyleReader()</div><div class="ttdoc">Initializes a new instance of the StyleReader class.</div><div class="ttdef"><b>Definition</b> <a href="#l00047">StyleReader.cs:47</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1StyleReader_html_a9ba35b25724975601ba6ba1a4fea4b29"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1StyleReader.html#a9ba35b25724975601ba6ba1a4fea4b29">NanoXLSX.Internal.Readers.StyleReader.Workbook</a></div><div class="ttdeci">Workbook Workbook</div><div class="ttdoc">Workbook reference where read data is stored (should not be null).</div><div class="ttdef"><b>Definition</b> <a href="#l00040">StyleReader.cs:40</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1StyleReader_html_aae66ad02cff2e5184c2e310006e784dc"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1StyleReader.html#aae66ad02cff2e5184c2e310006e784dc">NanoXLSX.Internal.Readers.StyleReader.Execute</a></div><div class="ttdeci">void Execute()</div><div class="ttdoc">Method to execute the main logic of the plug-in (interface implementation).</div><div class="ttdef"><b>Definition</b> <a href="#l00066">StyleReader.cs:66</a></div></div>

@@ -186,7 +186,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            WriterPlugInHandler.HandleInlineQueuePlugins(ref styleSheet, Workbook, PlugInUUID.StyleInlineWriter);</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        }</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; GetBorderElements()</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keyword">private</span> List&lt;XmlElement&gt; GetBorderElements()</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        {</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>            Border[] borderStyles = styles.GetBorders();</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>            List&lt;XmlElement&gt; borders = <span class="keyword">new</span> List&lt;XmlElement&gt;(borderStyles.Length);</div>
@@ -255,7 +255,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>            <span class="keywordflow">return</span> borders;</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        }</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span></div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; GetFontElements()</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keyword">private</span> List&lt;XmlElement&gt; GetFontElements()</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        {</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>            Font[] fontStyles = styles.GetFonts();</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>            List&lt;XmlElement&gt; fonts = <span class="keyword">new</span> List&lt;XmlElement&gt;(fontStyles.Length);</div>
@@ -301,7 +301,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>            <span class="keywordflow">return</span> fonts;</div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        }</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span></div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; GetFillElements()</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="keyword">private</span> List&lt;XmlElement&gt; GetFillElements()</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        {</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            Fill[] fillStyles = styles.GetFills();</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>            List&lt;XmlElement&gt; fills = <span class="keyword">new</span> List&lt;XmlElement&gt;(fillStyles.Length);</div>
@@ -328,7 +328,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>            <span class="keywordflow">return</span> fills;</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        }</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span></div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; GetNumberFormatElements()</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        <span class="keyword">private</span> List&lt;XmlElement&gt; GetNumberFormatElements()</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        {</div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>            NumberFormat[] numberFormatStyles = styles.GetNumberFormats();</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>            List&lt;XmlElement&gt; elements = <span class="keyword">new</span> List&lt;XmlElement&gt;(numberFormatStyles.Length);</div>
@@ -350,7 +350,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>            <span class="keywordflow">return</span> elements;</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        }</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span></div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        <span class="keyword">private</span> IEnumerable&lt;XmlElement&gt; GetCellXfElements()</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        <span class="keyword">private</span> List&lt;XmlElement&gt; GetCellXfElements()</div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        {</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>            Style[] styleItems = this.styles.GetStyles();</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>            List&lt;XmlElement&gt; xfs = <span class="keyword">new</span> List&lt;XmlElement&gt;(styleItems.Length);</div>

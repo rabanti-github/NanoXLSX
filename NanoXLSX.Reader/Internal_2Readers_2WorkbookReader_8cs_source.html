@@ -249,21 +249,23 @@ $(function(){initNavTree('Internal_2Readers_2WorkbookReader_8cs_source.html','',
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                        {</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>                            hidden = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>                        }</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>                        WorksheetDefinition definition = <span class="keyword">new</span> WorksheetDefinition(<span class="keywordtype">id</span>, sheetName, relId);</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                        definition.Hidden = hidden;</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, <span class="keywordtype">id</span>, definition);</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                    }</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                    <span class="keywordflow">catch</span> (Exception e)</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                    {</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                        <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_typedef" href="namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72">IOException</a>(<span class="stringliteral">&quot;The workbook information could not be resolved. Please see the inner exception:&quot;</span>, e);</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                    }</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                }</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>            }</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>        }</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="preprocessor">        #endregion</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    }</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>                        WorksheetDefinition definition = <span class="keyword">new</span> WorksheetDefinition(<span class="keywordtype">id</span>, sheetName, relId)</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                        {</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                            Hidden = hidden</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                        };</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, <span class="keywordtype">id</span>, definition);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                    }</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                    <span class="keywordflow">catch</span> (Exception e)</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                    {</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                        <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_typedef" href="namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72">IOException</a>(<span class="stringliteral">&quot;The workbook information could not be resolved. Please see the inner exception:&quot;</span>, e);</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                    }</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                }</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>            }</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>        }</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="preprocessor">        #endregion</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    }</div>
 </div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>}</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>}</div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Enums_1_1ReaderPassword_html"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Enums_1_1ReaderPassword.html">NanoXLSX.Internal.Enums.ReaderPassword</a></div><div class="ttdoc">Static class that contains enums for password handling.</div><div class="ttdef"><b>Definition</b> <a href="ReaderPassword_8cs_source.html#l00013">ReaderPassword.cs:14</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1ReaderUtils_html"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html">NanoXLSX.Internal.ReaderUtils</a></div><div class="ttdoc">Static class with common util methods, used during reading XLSX files.</div><div class="ttdef"><b>Definition</b> <a href="ReaderUtils_8cs_source.html#l00017">ReaderUtils.cs:18</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1ReaderUtils_html_a7d407e6ee000c0593d4a78e786bb6d40"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html#a7d407e6ee000c0593d4a78e786bb6d40">NanoXLSX.Internal.ReaderUtils.GetAttribute</a></div><div class="ttdeci">static string GetAttribute(XmlNode node, string targetName, string fallbackValue=null)</div><div class="ttdoc">Gets the XML attribute of the passed XML node by its name.</div><div class="ttdef"><b>Definition</b> <a href="ReaderUtils_8cs_source.html#l00026">ReaderUtils.cs:26</a></div></div>

@@ -144,7 +144,7 @@ $(function(){initNavTree('ThemeWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            WriterPlugInHandler.HandleInlineQueuePlugins(ref themeElements, Workbook, PlugInUUID.ThemeInlineWriter);</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        }</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keyword">private</span> XmlElement GetColorSchemeElement(ColorScheme scheme)</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keyword">private</span> <span class="keyword">static</span> XmlElement GetColorSchemeElement(ColorScheme scheme)</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        {</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            XmlElement colorScheme = XmlElement.CreateElementWithAttribute(<span class="stringliteral">&quot;clrScheme&quot;</span>, <span class="stringliteral">&quot;name&quot;</span>, XmlUtils.SanitizeXmlValue(scheme.Name), <span class="stringliteral">&quot;a&quot;</span>);</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            colorScheme.AddChildElement(GetColor(<span class="stringliteral">&quot;dk1&quot;</span>, scheme.Dark1, <span class="stringliteral">&quot;a&quot;</span>));</div>
@@ -162,7 +162,7 @@ $(function(){initNavTree('ThemeWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            <span class="keywordflow">return</span> colorScheme;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        }</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keyword">private</span> XmlElement GetColor(<span class="keywordtype">string</span> name, IColor color, <span class="keywordtype">string</span> prefix)</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keyword">private</span> <span class="keyword">static</span> XmlElement GetColor(<span class="keywordtype">string</span> name, IColor color, <span class="keywordtype">string</span> prefix)</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        {</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            XmlElement colorElement = XmlElement.CreateElement(name, prefix);</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            <span class="keywordflow">if</span> (color is SystemColor)</div>
