@@ -292,8 +292,8 @@ namespace NanoXLSX.Utils.Xml
         /// <summary>
         /// Method to find XML child elements, based of its name. Name space and hierarchy is not considered as exclusion parameters
         /// </summary>
-        /// <param name="name">Name of the target elment or elements</param>
-        /// <returns>IEnumerable of XML element. Im no element was found, an empty IEnumerable will be returned</returns>
+        /// <param name="name">Name of the target element or elements</param>
+        /// <returns>IEnumerable of XML element. If no element was found, an empty IEnumerable will be returned</returns>
         public IEnumerable<XmlElement> FindChildElementsByName(string name)
         {
             if (!hasChildren)
@@ -315,9 +315,9 @@ namespace NanoXLSX.Utils.Xml
         /// <summary>
         /// Method to find XML child elements, based of its name, an attribute name. Name space and hierarchy is not considered as exclusion parameters
         /// </summary>
-        /// <param name="elementName">Name of the target elment or elements</param>
+        /// <param name="elementName">Name of the target element or elements</param>
         /// <param name="attributeName">Name of the target attribute, present in the XML element</param>
-        /// <returns>IEnumerable of XML element. Im no element was found, an empty IEnumerable will be returned</returns>
+        /// <returns>IEnumerable of XML element. If no element was found, an empty IEnumerable will be returned</returns>
         public IEnumerable<XmlElement> FindChildElementsByNameAndAttribute(string elementName, string attributeName)
         {
             return FindChildElementsByNameAndAttribute(elementName, attributeName, null, false);
@@ -326,10 +326,10 @@ namespace NanoXLSX.Utils.Xml
         /// <summary>
         /// Method to find XML child elements, based of its name, an attribute name and value. Name space and hierarchy is not considered as exclusion parameters
         /// </summary>
-        /// <param name="elementName">Name of the target elment or elements</param>
+        /// <param name="elementName">Name of the target element or elements</param>
         /// <param name="attributeName">Name of the target attribute, present in the XML element</param>
         /// <param name="attributeValue">Value of the XML attribute, present in the XML element</param>
-        /// <returns>IEnumerable of XML element. Im no element was found, an empty IEnumerable will be returned</returns>
+        /// <returns>IEnumerable of XML element. If no element was found, an empty IEnumerable will be returned</returns>
         public IEnumerable<XmlElement> FindChildElementsByNameAndAttribute(string elementName, string attributeName, string attributeValue)
         {
             return FindChildElementsByNameAndAttribute(elementName, attributeName, attributeValue, true);
@@ -338,11 +338,11 @@ namespace NanoXLSX.Utils.Xml
         /// <summary>
         /// Method to find XML child elements, based of its name, an attribute name and optional value. Name space and hierarchy is not considered as exclusion parameters
         /// </summary>
-        /// <param name="elementName">Name of the target elment or elements</param>
+        /// <param name="elementName">Name of the target element or elements</param>
         /// <param name="attributeName">Name of the target attribute, present in the XML element</param>
         /// <param name="attributeValue">Value of the XML attribute, present in the XML element</param>
-        /// <param name="useValue">If true, the attribute ame and value will be considered, otherwise only the attribute name</param>
-        /// <returns>IEnumerable of XML element. Im no element was found, an empty IEnumerable will be returned</returns>
+        /// <param name="useValue">If true, the attribute name and value will be considered, otherwise only the attribute name</param>
+        /// <returns>IEnumerable of XML element. If no element was found, an empty IEnumerable will be returned</returns>
         private IEnumerable<XmlElement> FindChildElementsByNameAndAttribute(string elementName, string attributeName, string attributeValue, bool useValue)
         {
             if (!hasChildren)

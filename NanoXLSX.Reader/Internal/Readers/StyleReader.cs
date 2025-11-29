@@ -591,31 +591,39 @@ namespace NanoXLSX.Internal.Readers
                         NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'.
                                                                                  // Invalid values should not occur at all (malformed Excel files). 
                                                                                  // Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 
-                        format = new NumberFormat();
-                        format.Number = formatNumber;
-                        format.InternalID = id;
+                        format = new NumberFormat
+                        {
+                            Number = formatNumber,
+                            InternalID = id
+                        };
                         this.styleReaderContainer.AddStyleComponent(format);
                     }
                     hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "borderId"), out id);
                     Border border = this.styleReaderContainer.GetBorder(id);
                     if (!hasId || border == null)
                     {
-                        border = new Border();
-                        border.InternalID = this.styleReaderContainer.GetNextBorderId();
+                        border = new Border
+                        {
+                            InternalID = this.styleReaderContainer.GetNextBorderId()
+                        };
                     }
                     hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fillId"), out id);
                     Fill fill = this.styleReaderContainer.GetFill(id);
                     if (!hasId || fill == null)
                     {
-                        fill = new Fill();
-                        fill.InternalID = this.styleReaderContainer.GetNextFillId();
+                        fill = new Fill
+                        {
+                            InternalID = this.styleReaderContainer.GetNextFillId()
+                        };
                     }
                     hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fontId"), out id);
                     Font font = this.styleReaderContainer.GetFont(id);
                     if (!hasId || font == null)
                     {
-                        font = new Font();
-                        font.InternalID = this.styleReaderContainer.GetNextFontId();
+                        font = new Font
+                        {
+                            InternalID = this.styleReaderContainer.GetNextFontId()
+                        };
                     }
 
                     // TODO: Implement other style information

@@ -17,33 +17,39 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [Fact(DisplayName = "Test of the reader functionality with the global import option to cast everything to string")]
         public void CastAllToStringTest()
         {
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", "test");
-            cells.Add("A2", true);
-            cells.Add("A3", false);
-            cells.Add("A4", 42);
-            cells.Add("A5", 0.55f);
-            cells.Add("A6", -0.111d);
-            cells.Add("A7", new DateTime(2020, 11, 10, 9, 8, 7, 0));
-            cells.Add("A8", new TimeSpan(18, 15, 12));
-            cells.Add("A9", null);
-            cells.Add("A10", new Cell("=A1", Cell.CellType.Formula, "A10"));
-            cells.Add("A11", 8294967296.25d); // high-range double
-            Dictionary<string, string> expectedCells = new Dictionary<string, string>();
-            expectedCells.Add("A1", "test");
-            expectedCells.Add("A2", "True");
-            expectedCells.Add("A3", "False");
-            expectedCells.Add("A4", "42");
-            expectedCells.Add("A5", "0.55");
-            expectedCells.Add("A6", "-0.111");
-            expectedCells.Add("A7", "2020-11-10 09:08:07");
-            expectedCells.Add("A8", "18:15:12");
-            expectedCells.Add("A9", null); // Empty remains empty
-            expectedCells.Add("A10", "=A1");
-            expectedCells.Add("A11", "8294967296.25");
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", true },
+                { "A3", false },
+                { "A4", 42 },
+                { "A5", 0.55f },
+                { "A6", -0.111d },
+                { "A7", new DateTime(2020, 11, 10, 9, 8, 7, 0) },
+                { "A8", new TimeSpan(18, 15, 12) },
+                { "A9", null },
+                { "A10", new Cell("=A1", Cell.CellType.Formula, "A10") },
+                { "A11", 8294967296.25d } // high-range double
+            };
+            Dictionary<string, string> expectedCells = new Dictionary<string, string>
+            {
+                { "A1", "test" },
+                { "A2", "True" },
+                { "A3", "False" },
+                { "A4", "42" },
+                { "A5", "0.55" },
+                { "A6", "-0.111" },
+                { "A7", "2020-11-10 09:08:07" },
+                { "A8", "18:15:12" },
+                { "A9", null }, // Empty remains empty
+                { "A10", "=A1" },
+                { "A11", "8294967296.25" }
+            };
 
-            ReaderOptions options = new ReaderOptions();
-            options.GlobalEnforcingType = ReaderOptions.GlobalType.EverythingToString;
+            ReaderOptions options = new ReaderOptions
+            {
+                GlobalEnforcingType = ReaderOptions.GlobalType.EverythingToString
+            };
             AssertValues<object, string>(cells, options, AssertEquals, expectedCells);
         }
 
@@ -51,32 +57,38 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [Fact(DisplayName = "Test of the reader functionality with the global import option to cast all number to decimal")]
         public void CastToDecimalTest()
         {
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", "test");
-            cells.Add("A2", true);
-            cells.Add("A3", false);
-            cells.Add("A4", 42);
-            cells.Add("A5", 0.55f);
-            cells.Add("A6", -0.111d);
-            cells.Add("A7", new DateTime(2020, 11, 10, 9, 8, 7, 0));
-            cells.Add("A8", new TimeSpan(18, 15, 12));
-            cells.Add("A9", null);
-            cells.Add("A10", "27");
-            cells.Add("A11", new Cell("=A1", Cell.CellType.Formula, "A11"));
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", "test");
-            expectedCells.Add("A2", decimal.One);
-            expectedCells.Add("A3", decimal.Zero);
-            expectedCells.Add("A4", 42m);
-            expectedCells.Add("A5", 0.55m);
-            expectedCells.Add("A6", -0.111m);
-            expectedCells.Add("A7", (decimal)DataUtils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)));
-            expectedCells.Add("A8", (decimal)DataUtils.GetOATime(new TimeSpan(18, 15, 12)));
-            expectedCells.Add("A9", null);
-            expectedCells.Add("A10", 27m);
-            expectedCells.Add("A11", new Cell("=A1", Cell.CellType.Formula, "A11"));
-            ReaderOptions options = new ReaderOptions();
-            options.GlobalEnforcingType = ReaderOptions.GlobalType.AllNumbersToDecimal;
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", true },
+                { "A3", false },
+                { "A4", 42 },
+                { "A5", 0.55f },
+                { "A6", -0.111d },
+                { "A7", new DateTime(2020, 11, 10, 9, 8, 7, 0) },
+                { "A8", new TimeSpan(18, 15, 12) },
+                { "A9", null },
+                { "A10", "27" },
+                { "A11", new Cell("=A1", Cell.CellType.Formula, "A11") }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", decimal.One },
+                { "A3", decimal.Zero },
+                { "A4", 42m },
+                { "A5", 0.55m },
+                { "A6", -0.111m },
+                { "A7", (decimal)DataUtils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)) },
+                { "A8", (decimal)DataUtils.GetOATime(new TimeSpan(18, 15, 12)) },
+                { "A9", null },
+                { "A10", 27m },
+                { "A11", new Cell("=A1", Cell.CellType.Formula, "A11") }
+            };
+            ReaderOptions options = new ReaderOptions
+            {
+                GlobalEnforcingType = ReaderOptions.GlobalType.AllNumbersToDecimal
+            };
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
@@ -84,123 +96,147 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [Fact(DisplayName = "Test of the reader functionality with the global import option to cast all number to double")]
         public void CastToDoubleTest()
         {
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", "test");
-            cells.Add("A2", true);
-            cells.Add("A3", false);
-            cells.Add("A4", 42);
-            cells.Add("A5", 0.55f);
-            cells.Add("A6", -0.111d);
-            cells.Add("A7", new DateTime(2020, 11, 10, 9, 8, 7, 0));
-            cells.Add("A8", new TimeSpan(18, 15, 12));
-            cells.Add("A9", null);
-            cells.Add("A10", "27");
-            cells.Add("A11", new Cell("=A1", Cell.CellType.Formula, "A11"));
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", "test");
-            expectedCells.Add("A2", 1d);
-            expectedCells.Add("A3", 0d);
-            expectedCells.Add("A4", 42d);
-            expectedCells.Add("A5", 0.55d);
-            expectedCells.Add("A6", -0.111d);
-            expectedCells.Add("A7", DataUtils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)));
-            expectedCells.Add("A8", DataUtils.GetOATime(new TimeSpan(18, 15, 12)));
-            expectedCells.Add("A9", null);
-            expectedCells.Add("A10", 27d);
-            expectedCells.Add("A11", new Cell("=A1", Cell.CellType.Formula, "A11"));
-            ReaderOptions options = new ReaderOptions();
-            options.GlobalEnforcingType = ReaderOptions.GlobalType.AllNumbersToDouble;
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", true },
+                { "A3", false },
+                { "A4", 42 },
+                { "A5", 0.55f },
+                { "A6", -0.111d },
+                { "A7", new DateTime(2020, 11, 10, 9, 8, 7, 0) },
+                { "A8", new TimeSpan(18, 15, 12) },
+                { "A9", null },
+                { "A10", "27" },
+                { "A11", new Cell("=A1", Cell.CellType.Formula, "A11") }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", 1d },
+                { "A3", 0d },
+                { "A4", 42d },
+                { "A5", 0.55d },
+                { "A6", -0.111d },
+                { "A7", DataUtils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)) },
+                { "A8", DataUtils.GetOATime(new TimeSpan(18, 15, 12)) },
+                { "A9", null },
+                { "A10", 27d },
+                { "A11", new Cell("=A1", Cell.CellType.Formula, "A11") }
+            };
+            ReaderOptions options = new ReaderOptions
+            {
+                GlobalEnforcingType = ReaderOptions.GlobalType.AllNumbersToDouble
+            };
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
         [Fact(DisplayName = "Test of the reader functionality with the global import option to cast all number to int")]
         public void CastToIntTest()
         {
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", "test");
-            cells.Add("A2", true);
-            cells.Add("A3", false);
-            cells.Add("A4", 42);
-            cells.Add("A5", 0.55f);
-            cells.Add("A6", -3.111d);
-            cells.Add("A7", new DateTime(2020, 11, 10, 9, 8, 7, 0));
-            cells.Add("A8", new TimeSpan(18, 15, 12));
-            cells.Add("A9", -4.9f);
-            cells.Add("A10", 0.49d);
-            cells.Add("A11", null);
-            cells.Add("A12", "28");
-            cells.Add("A13", new Cell("=A1", Cell.CellType.Formula, "A13"));
-            cells.Add("A14", 8589934592L);
-            cells.Add("A15", 2147483650.6d);
-            cells.Add("A16", 4294967294u);
-            cells.Add("A17", 18446744073709551614);
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", "test");
-            expectedCells.Add("A2", 1);
-            expectedCells.Add("A3", 0);
-            expectedCells.Add("A4", 42);
-            expectedCells.Add("A5", 1);
-            expectedCells.Add("A6", -3);
-            expectedCells.Add("A7", (int)Math.Round(DataUtils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)), 0));
-            expectedCells.Add("A8", (int)Math.Round(DataUtils.GetOATime(new TimeSpan(18, 15, 12)), 0));
-            expectedCells.Add("A9", -5);
-            expectedCells.Add("A10", 0);
-            expectedCells.Add("A11", null);
-            expectedCells.Add("A12", 28);
-            expectedCells.Add("A13", new Cell("=A1", Cell.CellType.Formula, "A13"));
-            expectedCells.Add("A14", 8589934592L);
-            expectedCells.Add("A15", 2147483650.6);
-            expectedCells.Add("A16", 4294967294u);
-            expectedCells.Add("A17", 18446744073709551614);
-            ReaderOptions options = new ReaderOptions();
-            options.GlobalEnforcingType = ReaderOptions.GlobalType.AllNumbersToInt;
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", true },
+                { "A3", false },
+                { "A4", 42 },
+                { "A5", 0.55f },
+                { "A6", -3.111d },
+                { "A7", new DateTime(2020, 11, 10, 9, 8, 7, 0) },
+                { "A8", new TimeSpan(18, 15, 12) },
+                { "A9", -4.9f },
+                { "A10", 0.49d },
+                { "A11", null },
+                { "A12", "28" },
+                { "A13", new Cell("=A1", Cell.CellType.Formula, "A13") },
+                { "A14", 8589934592L },
+                { "A15", 2147483650.6d },
+                { "A16", 4294967294u },
+                { "A17", 18446744073709551614 }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", 1 },
+                { "A3", 0 },
+                { "A4", 42 },
+                { "A5", 1 },
+                { "A6", -3 },
+                { "A7", (int)Math.Round(DataUtils.GetOADateTime(new DateTime(2020, 11, 10, 9, 8, 7, 0)), 0) },
+                { "A8", (int)Math.Round(DataUtils.GetOATime(new TimeSpan(18, 15, 12)), 0) },
+                { "A9", -5 },
+                { "A10", 0 },
+                { "A11", null },
+                { "A12", 28 },
+                { "A13", new Cell("=A1", Cell.CellType.Formula, "A13") },
+                { "A14", 8589934592L },
+                { "A15", 2147483650.6 },
+                { "A16", 4294967294u },
+                { "A17", 18446744073709551614 }
+            };
+            ReaderOptions options = new ReaderOptions
+            {
+                GlobalEnforcingType = ReaderOptions.GlobalType.AllNumbersToInt
+            };
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
         [Fact(DisplayName = "Test of the reader functionality with the import option EnforceEmptyValuesAsString")]
         public void EnforceEmptyValuesAsStringTest()
         {
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", "test");
-            cells.Add("A2", true);
-            cells.Add("A3", 22.2d);
-            cells.Add("A4", null);
-            cells.Add("A5", "");
-            cells.Add("A6", new Cell("=A1", Cell.CellType.Formula, "A6"));
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", "test");
-            expectedCells.Add("A2", true);
-            expectedCells.Add("A3", 22.2f); // Import will go to the smallest float unit (float 32 / single)
-            expectedCells.Add("A4", "");
-            expectedCells.Add("A5", "");
-            expectedCells.Add("A6", new Cell("=A1", Cell.CellType.Formula, "A6"));
-            ReaderOptions options = new ReaderOptions();
-            options.EnforceEmptyValuesAsString = true;
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", true },
+                { "A3", 22.2d },
+                { "A4", null },
+                { "A5", "" },
+                { "A6", new Cell("=A1", Cell.CellType.Formula, "A6") }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", true },
+                { "A3", 22.2f }, // Import will go to the smallest float unit (float 32 / single)
+                { "A4", "" },
+                { "A5", "" },
+                { "A6", new Cell("=A1", Cell.CellType.Formula, "A6") }
+            };
+            ReaderOptions options = new ReaderOptions
+            {
+                EnforceEmptyValuesAsString = true
+            };
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
         [Fact(DisplayName = "Test of the EnforcingStartRowNumber functionality on global enforcing rules")]
         public void EnforcingStartRowNumberTest()
         {
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", 22);
-            cells.Add("A2", true);
-            cells.Add("A3", new Cell("=A1", Cell.CellType.Formula, "A3"));
-            cells.Add("A4", 22);
-            cells.Add("A5", true);
-            cells.Add("A6", 22.5d);
-            cells.Add("A7", new Cell("=A1", Cell.CellType.Formula, "A7"));
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", 22);
-            expectedCells.Add("A2", true);
-            expectedCells.Add("A3", new Cell("=A1", Cell.CellType.Formula, "A3"));
-            expectedCells.Add("A4", "22");
-            expectedCells.Add("A5", "True");
-            expectedCells.Add("A6", "22.5");
-            expectedCells.Add("A7", "=A1");
-            ReaderOptions options = new ReaderOptions();
-            options.EnforcingStartRowNumber = 3;
-            options.GlobalEnforcingType = ReaderOptions.GlobalType.EverythingToString;
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", 22 },
+                { "A2", true },
+                { "A3", new Cell("=A1", Cell.CellType.Formula, "A3") },
+                { "A4", 22 },
+                { "A5", true },
+                { "A6", 22.5d },
+                { "A7", new Cell("=A1", Cell.CellType.Formula, "A7") }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", 22 },
+                { "A2", true },
+                { "A3", new Cell("=A1", Cell.CellType.Formula, "A3") },
+                { "A4", "22" },
+                { "A5", "True" },
+                { "A6", "22.5" },
+                { "A7", "=A1" }
+            };
+            ReaderOptions options = new ReaderOptions
+            {
+                EnforcingStartRowNumber = 3,
+                GlobalEnforcingType = ReaderOptions.GlobalType.EverythingToString
+            };
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
@@ -209,22 +245,28 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             DateTime date = new DateTime(2021, 8, 17, 11, 12, 13, 0);
             TimeSpan time = new TimeSpan(18, 14, 10);
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", 22);
-            cells.Add("A2", true);
-            cells.Add("A3", date);
-            cells.Add("A4", time);
-            cells.Add("A5", 22.5f);
-            cells.Add("A6", new Cell("=A1", Cell.CellType.Formula, "A6"));
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", 22);
-            expectedCells.Add("A2", true);
-            expectedCells.Add("A3", DataUtils.GetOADateTime(date));
-            expectedCells.Add("A4", DataUtils.GetOATime(time));
-            expectedCells.Add("A5", 22.5f);
-            expectedCells.Add("A6", new Cell("=A1", Cell.CellType.Formula, "A6"));
-            ReaderOptions options = new ReaderOptions();
-            options.EnforceDateTimesAsNumbers = true;
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", 22 },
+                { "A2", true },
+                { "A3", date },
+                { "A4", time },
+                { "A5", 22.5f },
+                { "A6", new Cell("=A1", Cell.CellType.Formula, "A6") }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", 22 },
+                { "A2", true },
+                { "A3", DataUtils.GetOADateTime(date) },
+                { "A4", DataUtils.GetOATime(time) },
+                { "A5", 22.5f },
+                { "A6", new Cell("=A1", Cell.CellType.Formula, "A6") }
+            };
+            ReaderOptions options = new ReaderOptions
+            {
+                EnforceDateTimesAsNumbers = true
+            };
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
@@ -235,26 +277,32 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             DateTime date = new DateTime(2021, 8, 17, 11, 12, 13, 0);
             TimeSpan time = new TimeSpan(18, 14, 10);
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", 22);
-            cells.Add("A2", true);
-            cells.Add("A3", date);
-            cells.Add("A4", time);
-            cells.Add("B1", date);
-            cells.Add("B2", time);
-            cells.Add("B3", givenLowNumber);
-            cells.Add("B4", new Cell("=A1", Cell.CellType.Formula, "B4"));
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", 22);
-            expectedCells.Add("A2", true);
-            expectedCells.Add("A3", DataUtils.GetOADateTime(date));
-            expectedCells.Add("A4", DataUtils.GetOATime(time));
-            expectedCells.Add("B1", DataUtils.GetOADateTime(date));
-            expectedCells.Add("B2", DataUtils.GetOATime(time));
-            expectedCells.Add("B3", expectedLowNumber);
-            expectedCells.Add("B4", new Cell("=A1", Cell.CellType.Formula, "B4"));
-            ReaderOptions options = new ReaderOptions();
-            options.EnforceDateTimesAsNumbers = true;
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", 22 },
+                { "A2", true },
+                { "A3", date },
+                { "A4", time },
+                { "B1", date },
+                { "B2", time },
+                { "B3", givenLowNumber },
+                { "B4", new Cell("=A1", Cell.CellType.Formula, "B4") }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", 22 },
+                { "A2", true },
+                { "A3", DataUtils.GetOADateTime(date) },
+                { "A4", DataUtils.GetOATime(time) },
+                { "B1", DataUtils.GetOADateTime(date) },
+                { "B2", DataUtils.GetOATime(time) },
+                { "B3", expectedLowNumber },
+                { "B4", new Cell("=A1", Cell.CellType.Formula, "B4") }
+            };
+            ReaderOptions options = new ReaderOptions
+            {
+                EnforceDateTimesAsNumbers = true
+            };
             options.AddEnforcedColumn(1, columnType);
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
@@ -266,34 +314,38 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             TimeSpan time = new TimeSpan(11, 12, 13);
             DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", 22);
-            cells.Add("A2", "21");
-            cells.Add("A3", true);
-            cells.Add("B1", 23);
-            cells.Add("B2", "20");
-            cells.Add("B3", true);
-            cells.Add("B4", time);
-            cells.Add("B5", date);
-            cells.Add("B6", null);
-            cells.Add("B7", new Cell("=A1", Cell.CellType.Formula, "B7"));
-            cells.Add("C1", "2");
-            cells.Add("C2", new TimeSpan(12, 14, 16));
-            cells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", 22);
-            expectedCells.Add("A2", "21");
-            expectedCells.Add("A3", true);
-            expectedCells.Add("B1", 23d);
-            expectedCells.Add("B2", 20d);
-            expectedCells.Add("B3", 1d);
-            expectedCells.Add("B4", DataUtils.GetOATime(time));
-            expectedCells.Add("B5", DataUtils.GetOADateTime(date));
-            expectedCells.Add("B6", null);
-            expectedCells.Add("B7", new Cell("=A1", Cell.CellType.Formula, "B7"));
-            expectedCells.Add("C1", "2");
-            expectedCells.Add("C2", new TimeSpan(12, 14, 16));
-            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", 22 },
+                { "A2", "21" },
+                { "A3", true },
+                { "B1", 23 },
+                { "B2", "20" },
+                { "B3", true },
+                { "B4", time },
+                { "B5", date },
+                { "B6", null },
+                { "B7", new Cell("=A1", Cell.CellType.Formula, "B7") },
+                { "C1", "2" },
+                { "C2", new TimeSpan(12, 14, 16) },
+                { "C3", new Cell("=A1", Cell.CellType.Formula, "C3") }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", 22 },
+                { "A2", "21" },
+                { "A3", true },
+                { "B1", 23d },
+                { "B2", 20d },
+                { "B3", 1d },
+                { "B4", DataUtils.GetOATime(time) },
+                { "B5", DataUtils.GetOADateTime(date) },
+                { "B6", null },
+                { "B7", new Cell("=A1", Cell.CellType.Formula, "B7") },
+                { "C1", "2" },
+                { "C2", new TimeSpan(12, 14, 16) },
+                { "C3", new Cell("=A1", Cell.CellType.Formula, "C3") }
+            };
             ReaderOptions options = new ReaderOptions();
             if (column is string)
             {
@@ -313,42 +365,46 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             TimeSpan time = new TimeSpan(11, 12, 13);
             DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", 22);
-            cells.Add("A2", "21");
-            cells.Add("A3", true);
-            cells.Add("B1", 23);
-            cells.Add("B2", "20.1");
-            cells.Add("B3", time);
-            cells.Add("B4", date);
-            cells.Add("B5", null);
-            cells.Add("B6", new Cell("=A1", Cell.CellType.Formula, "B6"));
-            cells.Add("B7", "true");
-            cells.Add("B8", "false");
-            cells.Add("B9", true);
-            cells.Add("B10", false);
-            cells.Add("B11", "XYZ");
-            cells.Add("C1", "2");
-            cells.Add("C2", new TimeSpan(12, 14, 16));
-            cells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", 22);
-            expectedCells.Add("A2", "21");
-            expectedCells.Add("A3", true);
-            expectedCells.Add("B1", 23);
-            expectedCells.Add("B2", 20.1f);
-            expectedCells.Add("B3", DataUtils.GetOATime(time));
-            expectedCells.Add("B4", DataUtils.GetOADateTime(date));
-            expectedCells.Add("B5", null);
-            expectedCells.Add("B6", new Cell("=A1", Cell.CellType.Formula, "B6"));
-            expectedCells.Add("B7", 1);
-            expectedCells.Add("B8", 0);
-            expectedCells.Add("B9", 1);
-            expectedCells.Add("B10", 0);
-            expectedCells.Add("B11", "XYZ");
-            expectedCells.Add("C1", "2");
-            expectedCells.Add("C2", new TimeSpan(12, 14, 16));
-            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", 22 },
+                { "A2", "21" },
+                { "A3", true },
+                { "B1", 23 },
+                { "B2", "20.1" },
+                { "B3", time },
+                { "B4", date },
+                { "B5", null },
+                { "B6", new Cell("=A1", Cell.CellType.Formula, "B6") },
+                { "B7", "true" },
+                { "B8", "false" },
+                { "B9", true },
+                { "B10", false },
+                { "B11", "XYZ" },
+                { "C1", "2" },
+                { "C2", new TimeSpan(12, 14, 16) },
+                { "C3", new Cell("=A1", Cell.CellType.Formula, "C3") }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", 22 },
+                { "A2", "21" },
+                { "A3", true },
+                { "B1", 23 },
+                { "B2", 20.1f },
+                { "B3", DataUtils.GetOATime(time) },
+                { "B4", DataUtils.GetOADateTime(date) },
+                { "B5", null },
+                { "B6", new Cell("=A1", Cell.CellType.Formula, "B6") },
+                { "B7", 1 },
+                { "B8", 0 },
+                { "B9", 1 },
+                { "B10", 0 },
+                { "B11", "XYZ" },
+                { "C1", "2" },
+                { "C2", new TimeSpan(12, 14, 16) },
+                { "C3", new Cell("=A1", Cell.CellType.Formula, "C3") }
+            };
             ReaderOptions options = new ReaderOptions();
             if (column is string)
             {
@@ -370,13 +426,17 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [InlineData(ReaderOptions.ColumnType.Numeric, "18:20:22", 0.764143518518519d)]
         public void EnforcingColumnAsNumberTest3(ReaderOptions.ColumnType columnType, string givenValue, object expectedValue)
         {
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", true);
-            cells.Add("B1", givenValue);
-            cells.Add("C1", "2");
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", true },
+                { "B1", givenValue },
+                { "C1", "2" }
+            };
 
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", true);
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", true }
+            };
             if (columnType == ReaderOptions.ColumnType.Decimal)
             {
                 // m-suffix is not working
@@ -387,8 +447,10 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 expectedCells.Add("B1", expectedValue);
             }
             expectedCells.Add("C1", "2");
-            ReaderOptions options = new ReaderOptions();
-            options.EnforceDateTimesAsNumbers = true;
+            ReaderOptions options = new ReaderOptions
+            {
+                EnforceDateTimesAsNumbers = true
+            };
             options.AddEnforcedColumn(1, columnType);
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
@@ -486,48 +548,52 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             TimeSpan time = new TimeSpan(11, 12, 13);
             DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", 1);
-            cells.Add("A2", "21");
-            cells.Add("A3", true);
-            cells.Add("B1", 1);
-            cells.Add("B2", "true");
-            cells.Add("B3", false);
-            cells.Add("B4", time);
-            cells.Add("B5", date);
-            cells.Add("B6", 0f);
-            cells.Add("B7", "1");
-            cells.Add("B8", "Test");
-            cells.Add("B9", 1.0d);
-            cells.Add("B10", null);
-            cells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
-            cells.Add("B12", 2);
-            cells.Add("B13", "0");
-            cells.Add("B14", "");
-            cells.Add("C1", "0");
-            cells.Add("C2", new TimeSpan(12, 14, 16));
-            cells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", 1);
-            expectedCells.Add("A2", "21");
-            expectedCells.Add("A3", true);
-            expectedCells.Add("B1", true);
-            expectedCells.Add("B2", true);
-            expectedCells.Add("B3", false);
-            expectedCells.Add("B4", time);
-            expectedCells.Add("B5", date);
-            expectedCells.Add("B6", false);
-            expectedCells.Add("B7", true);
-            expectedCells.Add("B8", "Test");
-            expectedCells.Add("B9", true);
-            expectedCells.Add("B10", null);
-            expectedCells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
-            expectedCells.Add("B12", 2);
-            expectedCells.Add("B13", false);
-            expectedCells.Add("B14", "");
-            expectedCells.Add("C1", "0");
-            expectedCells.Add("C2", new TimeSpan(12, 14, 16));
-            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", 1 },
+                { "A2", "21" },
+                { "A3", true },
+                { "B1", 1 },
+                { "B2", "true" },
+                { "B3", false },
+                { "B4", time },
+                { "B5", date },
+                { "B6", 0f },
+                { "B7", "1" },
+                { "B8", "Test" },
+                { "B9", 1.0d },
+                { "B10", null },
+                { "B11", new Cell("=A1", Cell.CellType.Formula, "B11") },
+                { "B12", 2 },
+                { "B13", "0" },
+                { "B14", "" },
+                { "C1", "0" },
+                { "C2", new TimeSpan(12, 14, 16) },
+                { "C3", new Cell("=A1", Cell.CellType.Formula, "C3") }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", 1 },
+                { "A2", "21" },
+                { "A3", true },
+                { "B1", true },
+                { "B2", true },
+                { "B3", false },
+                { "B4", time },
+                { "B5", date },
+                { "B6", false },
+                { "B7", true },
+                { "B8", "Test" },
+                { "B9", true },
+                { "B10", null },
+                { "B11", new Cell("=A1", Cell.CellType.Formula, "B11") },
+                { "B12", 2 },
+                { "B13", false },
+                { "B14", "" },
+                { "C1", "0" },
+                { "C2", new TimeSpan(12, 14, 16) },
+                { "C3", new Cell("=A1", Cell.CellType.Formula, "C3") }
+            };
             ReaderOptions options = new ReaderOptions();
             if (column is string)
             {
@@ -547,58 +613,62 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             TimeSpan time = new TimeSpan(11, 12, 13);
             DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", 1);
-            cells.Add("A2", "21");
-            cells.Add("A3", true);
-            cells.Add("B1", 1);
-            cells.Add("B2", "Test");
-            cells.Add("B3", false);
-            cells.Add("B4", time);
-            cells.Add("B5", date);
-            cells.Add("B6", 0f);
-            cells.Add("B7", true);
-            cells.Add("B8", -10);
-            cells.Add("B9", 1.111d);
-            cells.Add("B10", null);
-            cells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
-            cells.Add("B12", 2147483650);
-            cells.Add("B13", 9223372036854775806);
-            cells.Add("B14", 18446744073709551614);
-            cells.Add("B15", (short)32766);
-            cells.Add("B16", (ushort)65534);
-            cells.Add("B17", 0.000000001d);
-            cells.Add("B18", 0.123f);
-            cells.Add("B19", (byte)17);
-            cells.Add("C1", "0");
-            cells.Add("C2", new TimeSpan(12, 14, 16));
-            cells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", 1);
-            expectedCells.Add("A2", "21");
-            expectedCells.Add("A3", true);
-            expectedCells.Add("B1", "1");
-            expectedCells.Add("B2", "Test");
-            expectedCells.Add("B3", "False");
-            expectedCells.Add("B4", time.ToString(ReaderOptions.DefaultTimeSpanFormat));
-            expectedCells.Add("B5", date.ToString(ReaderOptions.DefaultDateTimeFormat));
-            expectedCells.Add("B6", "0");
-            expectedCells.Add("B7", "True");
-            expectedCells.Add("B8", "-10");
-            expectedCells.Add("B9", "1.111");
-            expectedCells.Add("B10", null);
-            expectedCells.Add("B11", "=A1");
-            expectedCells.Add("B12", "2147483650");
-            expectedCells.Add("B13", "9223372036854775806");
-            expectedCells.Add("B14", "18446744073709551614");
-            expectedCells.Add("B15", "32766");
-            expectedCells.Add("B16", "65534");
-            expectedCells.Add("B17", "1E-09"); // Currently handled without option to format the number
-            expectedCells.Add("B18", "0.123");
-            expectedCells.Add("B19", "17");
-            expectedCells.Add("C1", "0");
-            expectedCells.Add("C2", new TimeSpan(12, 14, 16));
-            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", 1 },
+                { "A2", "21" },
+                { "A3", true },
+                { "B1", 1 },
+                { "B2", "Test" },
+                { "B3", false },
+                { "B4", time },
+                { "B5", date },
+                { "B6", 0f },
+                { "B7", true },
+                { "B8", -10 },
+                { "B9", 1.111d },
+                { "B10", null },
+                { "B11", new Cell("=A1", Cell.CellType.Formula, "B11") },
+                { "B12", 2147483650 },
+                { "B13", 9223372036854775806 },
+                { "B14", 18446744073709551614 },
+                { "B15", (short)32766 },
+                { "B16", (ushort)65534 },
+                { "B17", 0.000000001d },
+                { "B18", 0.123f },
+                { "B19", (byte)17 },
+                { "C1", "0" },
+                { "C2", new TimeSpan(12, 14, 16) },
+                { "C3", new Cell("=A1", Cell.CellType.Formula, "C3") }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", 1 },
+                { "A2", "21" },
+                { "A3", true },
+                { "B1", "1" },
+                { "B2", "Test" },
+                { "B3", "False" },
+                { "B4", time.ToString(ReaderOptions.DefaultTimeSpanFormat) },
+                { "B5", date.ToString(ReaderOptions.DefaultDateTimeFormat) },
+                { "B6", "0" },
+                { "B7", "True" },
+                { "B8", "-10" },
+                { "B9", "1.111" },
+                { "B10", null },
+                { "B11", "=A1" },
+                { "B12", "2147483650" },
+                { "B13", "9223372036854775806" },
+                { "B14", "18446744073709551614" },
+                { "B15", "32766" },
+                { "B16", "65534" },
+                { "B17", "1E-09" }, // Currently handled without option to format the number
+                { "B18", "0.123" },
+                { "B19", "17" },
+                { "C1", "0" },
+                { "C2", new TimeSpan(12, 14, 16) },
+                { "C3", new Cell("=A1", Cell.CellType.Formula, "C3") }
+            };
             ReaderOptions options = new ReaderOptions();
             if (column is string)
             {
@@ -618,46 +688,50 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             TimeSpan time = new TimeSpan(11, 12, 13);
             DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", 1);
-            cells.Add("A2", "21");
-            cells.Add("A3", true);
-            cells.Add("B1", 1);
-            cells.Add("B2", "Test");
-            cells.Add("B3", false);
-            cells.Add("B4", time);
-            cells.Add("B5", date);
-            cells.Add("B6", 44494.5209490741d);
-            cells.Add("B7", "2021-10-25 12:30:10");
-            cells.Add("B8", -10);
-            cells.Add("B9", 44494.5f);
-            cells.Add("B10", null);
-            cells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
-            cells.Add("B12", 2147483650);
-            cells.Add("B13", 2958466);
-            cells.Add("C1", "0");
-            cells.Add("C2", new TimeSpan(12, 14, 16));
-            cells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", 1);
-            expectedCells.Add("A2", "21");
-            expectedCells.Add("A3", true);
-            expectedCells.Add("B1", new DateTime(1900, 1, 1, 0, 0, 0, 0));
-            expectedCells.Add("B2", "Test");
-            expectedCells.Add("B3", false);
-            expectedCells.Add("B4", new DateTime(1900, 1, 1, 11, 12, 13, 0));
-            expectedCells.Add("B5", new DateTime(2021, 8, 14, 18, 22, 13, 0));
-            expectedCells.Add("B6", new DateTime(2021, 10, 25, 12, 30, 10, 0));
-            expectedCells.Add("B7", new DateTime(2021, 10, 25, 12, 30, 10, 0));
-            expectedCells.Add("B8", -10);
-            expectedCells.Add("B9", new DateTime(2021, 10, 25, 12, 0, 0, 0));
-            expectedCells.Add("B10", null);
-            expectedCells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
-            expectedCells.Add("B12", 2147483650);
-            expectedCells.Add("B13", 2958466); // Exceeds year 9999
-            expectedCells.Add("C1", "0");
-            expectedCells.Add("C2", new TimeSpan(12, 14, 16));
-            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", 1 },
+                { "A2", "21" },
+                { "A3", true },
+                { "B1", 1 },
+                { "B2", "Test" },
+                { "B3", false },
+                { "B4", time },
+                { "B5", date },
+                { "B6", 44494.5209490741d },
+                { "B7", "2021-10-25 12:30:10" },
+                { "B8", -10 },
+                { "B9", 44494.5f },
+                { "B10", null },
+                { "B11", new Cell("=A1", Cell.CellType.Formula, "B11") },
+                { "B12", 2147483650 },
+                { "B13", 2958466 },
+                { "C1", "0" },
+                { "C2", new TimeSpan(12, 14, 16) },
+                { "C3", new Cell("=A1", Cell.CellType.Formula, "C3") }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", 1 },
+                { "A2", "21" },
+                { "A3", true },
+                { "B1", new DateTime(1900, 1, 1, 0, 0, 0, 0) },
+                { "B2", "Test" },
+                { "B3", false },
+                { "B4", new DateTime(1900, 1, 1, 11, 12, 13, 0) },
+                { "B5", new DateTime(2021, 8, 14, 18, 22, 13, 0) },
+                { "B6", new DateTime(2021, 10, 25, 12, 30, 10, 0) },
+                { "B7", new DateTime(2021, 10, 25, 12, 30, 10, 0) },
+                { "B8", -10 },
+                { "B9", new DateTime(2021, 10, 25, 12, 0, 0, 0) },
+                { "B10", null },
+                { "B11", new Cell("=A1", Cell.CellType.Formula, "B11") },
+                { "B12", 2147483650 },
+                { "B13", 2958466 }, // Exceeds year 9999
+                { "C1", "0" },
+                { "C2", new TimeSpan(12, 14, 16) },
+                { "C3", new Cell("=A1", Cell.CellType.Formula, "C3") }
+            };
             ReaderOptions options = new ReaderOptions();
             if (column is string)
             {
@@ -676,20 +750,26 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         void enforcingColumnAsDateTest2(object column1, object column2)
         {
 
-            Dictionary<string, object> cells = new Dictionary<string, object>();
-            cells.Add("A1", 1);
-            cells.Add("B1", "11:12:13");
-            cells.Add("C1", "2021-08-14 18:22:13");
-            cells.Add("D1", "0");
+            Dictionary<string, object> cells = new Dictionary<string, object>
+            {
+                { "A1", 1 },
+                { "B1", "11:12:13" },
+                { "C1", "2021-08-14 18:22:13" },
+                { "D1", "0" }
+            };
 
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", 1);
-            expectedCells.Add("B1", new TimeSpan(11, 12, 13));
-            expectedCells.Add("C1", new DateTime(2021, 8, 14, 18, 22, 13));
-            expectedCells.Add("D1", "0");
-            ReaderOptions options = new ReaderOptions();
-            options.DateTimeFormat = null;
-            options.TimeSpanFormat = null;
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", 1 },
+                { "B1", new TimeSpan(11, 12, 13) },
+                { "C1", new DateTime(2021, 8, 14, 18, 22, 13) },
+                { "D1", "0" }
+            };
+            ReaderOptions options = new ReaderOptions
+            {
+                DateTimeFormat = null,
+                TimeSpanFormat = null
+            };
             if (column1 is String)
             {
                 options.AddEnforcedColumn(column1 as string, ReaderOptions.ColumnType.Time);
@@ -764,42 +844,46 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             TimeSpan time = new TimeSpan(11, 12, 13);
             DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", 1);
-            cells.Add("A2", "21");
-            cells.Add("A3", true);
-            cells.Add("B1", 1);
-            cells.Add("B2", "Test");
-            cells.Add("B3", false);
-            cells.Add("B4", time);
-            cells.Add("B5", date);
-            cells.Add("B6", 44494.5209490741d);
-            cells.Add("B7", "2021-10-25 12:30:10");
-            cells.Add("B8", -10);
-            cells.Add("B9", 44494.5f);
-            cells.Add("B10", null);
-            cells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
-            cells.Add("C1", "0");
-            cells.Add("C2", new TimeSpan(12, 14, 16));
-            cells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", 1);
-            expectedCells.Add("A2", "21");
-            expectedCells.Add("A3", true);
-            expectedCells.Add("B1", new TimeSpan(1, 0, 0, 0));
-            expectedCells.Add("B2", "Test");
-            expectedCells.Add("B3", false);
-            expectedCells.Add("B4", time);
-            expectedCells.Add("B5", new TimeSpan(44422, 18, 22, 13));
-            expectedCells.Add("B6", new TimeSpan(44494, 12, 30, 10));
-            expectedCells.Add("B7", new TimeSpan(44494, 12, 30, 10));
-            expectedCells.Add("B8", -10);
-            expectedCells.Add("B9", new TimeSpan(44494, 12, 0, 0));
-            expectedCells.Add("B10", null);
-            expectedCells.Add("B11", new Cell("=A1", Cell.CellType.Formula, "B11"));
-            expectedCells.Add("C1", "0");
-            expectedCells.Add("C2", new TimeSpan(12, 14, 16));
-            expectedCells.Add("C3", new Cell("=A1", Cell.CellType.Formula, "C3"));
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", 1 },
+                { "A2", "21" },
+                { "A3", true },
+                { "B1", 1 },
+                { "B2", "Test" },
+                { "B3", false },
+                { "B4", time },
+                { "B5", date },
+                { "B6", 44494.5209490741d },
+                { "B7", "2021-10-25 12:30:10" },
+                { "B8", -10 },
+                { "B9", 44494.5f },
+                { "B10", null },
+                { "B11", new Cell("=A1", Cell.CellType.Formula, "B11") },
+                { "C1", "0" },
+                { "C2", new TimeSpan(12, 14, 16) },
+                { "C3", new Cell("=A1", Cell.CellType.Formula, "C3") }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", 1 },
+                { "A2", "21" },
+                { "A3", true },
+                { "B1", new TimeSpan(1, 0, 0, 0) },
+                { "B2", "Test" },
+                { "B3", false },
+                { "B4", time },
+                { "B5", new TimeSpan(44422, 18, 22, 13) },
+                { "B6", new TimeSpan(44494, 12, 30, 10) },
+                { "B7", new TimeSpan(44494, 12, 30, 10) },
+                { "B8", -10 },
+                { "B9", new TimeSpan(44494, 12, 0, 0) },
+                { "B10", null },
+                { "B11", new Cell("=A1", Cell.CellType.Formula, "B11") },
+                { "C1", "0" },
+                { "C2", new TimeSpan(12, 14, 16) },
+                { "C3", new Cell("=A1", Cell.CellType.Formula, "C3") }
+            };
             ReaderOptions options = new ReaderOptions();
             if (column is string)
             {
@@ -824,26 +908,30 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         public void EnforcingColumnStartRowTest(ReaderOptions.ColumnType columnType, object givenValue, object expectedValue)
         {
             TimeSpan time = new TimeSpan(11, 12, 13);
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", "test");
-            cells.Add("A2", 23);
-            cells.Add("A3", time);
-            cells.Add("B1", null);
-            cells.Add("B2", givenValue);
-            cells.Add("B3", givenValue);
-            cells.Add("C1", 28);
-            cells.Add("C2", false);
-            cells.Add("C3", "Test");
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", "test");
-            expectedCells.Add("A2", 23);
-            expectedCells.Add("A3", time);
-            expectedCells.Add("B1", null);
-            expectedCells.Add("B2", givenValue);
-            expectedCells.Add("B3", expectedValue);
-            expectedCells.Add("C1", 28);
-            expectedCells.Add("C2", false);
-            expectedCells.Add("C3", "Test");
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", 23 },
+                { "A3", time },
+                { "B1", null },
+                { "B2", givenValue },
+                { "B3", givenValue },
+                { "C1", 28 },
+                { "C2", false },
+                { "C3", "Test" }
+            };
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", 23 },
+                { "A3", time },
+                { "B1", null },
+                { "B2", givenValue },
+                { "B3", expectedValue },
+                { "C1", 28 },
+                { "C2", false },
+                { "C3", "Test" }
+            };
             ReaderOptions options = new ReaderOptions();
             options.AddEnforcedColumn(1, columnType);
             options.EnforcingStartRowNumber = 2;
@@ -863,11 +951,13 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             TimeSpan expectedTime = new TimeSpan(12, 13, 14);
             DateTime expectedDate = new DateTime(2021, 8, 14, 18, 22, 13, 0);
 
-            Dictionary<string, Object> cells = new Dictionary<string, object>();
-            cells.Add("A1", "test");
-            cells.Add("A2", 23);
-            cells.Add("A3", time);
-            cells.Add("B1", null);
+            Dictionary<string, Object> cells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", 23 },
+                { "A3", time },
+                { "B1", null }
+            };
             if (columnType == ReaderOptions.ColumnType.Time)
             {
                 cells.Add("B2", "12:13:14");
@@ -881,11 +971,13 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             cells.Add("C1", 28);
             cells.Add("C2", false);
             cells.Add("C3", "Test");
-            Dictionary<string, object> expectedCells = new Dictionary<string, object>();
-            expectedCells.Add("A1", "test");
-            expectedCells.Add("A2", 23);
-            expectedCells.Add("A3", time);
-            expectedCells.Add("B1", null);
+            Dictionary<string, object> expectedCells = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", 23 },
+                { "A3", time },
+                { "B1", null }
+            };
             if (columnType == ReaderOptions.ColumnType.Time)
             {
                 expectedCells.Add("B2", "12:13:14");
@@ -994,8 +1086,10 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [InlineData(ReaderOptions.ColumnType.Time, "-10:00:00")]
         void InvalidDateCastingTest(ReaderOptions.ColumnType columnType, string value)
         {
-            ReaderOptions options = new ReaderOptions();
-            options.EnforceDateTimesAsNumbers = true;
+            ReaderOptions options = new ReaderOptions
+            {
+                EnforceDateTimesAsNumbers = true
+            };
             options.AddEnforcedColumn("A", columnType);
             Dictionary<string, object> cells = new Dictionary<string, object>();
             Dictionary<string, object> expectedCells = new Dictionary<string, object>();
@@ -1007,8 +1101,10 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [Fact(DisplayName = "Test of the failing casting on an TimeSpan with an invalid (too high) number of days")]
         void InvalidDateCastingTest2()
         {
-            ReaderOptions options = new ReaderOptions();
-            options.EnforceDateTimesAsNumbers = true;
+            ReaderOptions options = new ReaderOptions
+            {
+                EnforceDateTimesAsNumbers = true
+            };
             options.AddEnforcedColumn("A", ReaderOptions.ColumnType.Time);
             options.TimeSpanFormat = "HH:mm:ss d";
             Dictionary<string, object> cells = new Dictionary<string, object>();
@@ -1028,8 +1124,10 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             // The cells in column C contains the values with the import option enabled.
             // The values starts at Row 2 (Index 1)
 
-            ReaderOptions options = new ReaderOptions();
-            options.EnforcePhoneticCharacterImport = importOptionValue;
+            ReaderOptions options = new ReaderOptions
+            {
+                EnforcePhoneticCharacterImport = importOptionValue
+            };
             Stream stream = TestUtils.GetResource("phonetics.xlsx");
             Workbook workbook = WorkbookReader.Load(stream, options);
 
@@ -1047,8 +1145,10 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [InlineData(true, false)]
         void IgnoreNotSupportedPasswordAlgorithmsTest(bool importOptionValue, bool expectedError)
         {
-            ReaderOptions options = new ReaderOptions();
-            options.IgnoreNotSupportedPasswordAlgorithms = importOptionValue;
+            ReaderOptions options = new ReaderOptions
+            {
+                IgnoreNotSupportedPasswordAlgorithms = importOptionValue
+            };
             Stream stream = TestUtils.GetResource("contemporary_password.xlsx");
             if (expectedError)
             {
@@ -1066,8 +1166,10 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [InlineData(true, false)]
         void IgnoreNotSupportedPasswordAlgorithmsTest2(bool importOptionValue, bool expectedError)
         {
-            ReaderOptions options = new ReaderOptions();
-            options.IgnoreNotSupportedPasswordAlgorithms = importOptionValue;
+            ReaderOptions options = new ReaderOptions
+            {
+                IgnoreNotSupportedPasswordAlgorithms = importOptionValue
+            };
             Stream stream = TestUtils.GetResource("contemporary_password2.xlsx");
             if (expectedError)
             {
@@ -1093,8 +1195,10 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [InlineData("invalid_column_width_max.xlsx", false, false, 1)]
         public void EnforceValidColumnDimensionsTest(string fileName, bool givenOptionValue, bool expectedThrow, int columnFlag)
         {
-            ReaderOptions options = new ReaderOptions();
-            options.EnforceStrictValidation = givenOptionValue;
+            ReaderOptions options = new ReaderOptions
+            {
+                EnforceStrictValidation = givenOptionValue
+            };
             using Stream stream = TestUtils.GetResource(fileName);
 
             if (expectedThrow)

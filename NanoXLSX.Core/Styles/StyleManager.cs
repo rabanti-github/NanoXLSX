@@ -267,9 +267,11 @@ namespace NanoXLSX.Styles
         {
             StyleManager styleManager = new StyleManager();
             styleManager.AddStyle(new Style("default", 0, true));
-            Style borderStyle = new Style("default_border_style", 1, true);
-            borderStyle.CurrentBorder = BasicStyles.DottedFill_0_125.CurrentBorder;
-            borderStyle.CurrentFill = BasicStyles.DottedFill_0_125.CurrentFill;
+            Style borderStyle = new Style("default_border_style", 1, true)
+            {
+                CurrentBorder = BasicStyles.DottedFill_0_125.CurrentBorder,
+                CurrentFill = BasicStyles.DottedFill_0_125.CurrentFill
+            };
             styleManager.AddStyle(borderStyle);
 
             for (int i = 0; i < workbook.Worksheets.Count; i++)

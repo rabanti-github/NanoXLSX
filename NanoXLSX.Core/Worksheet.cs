@@ -49,15 +49,21 @@ namespace NanoXLSX
         /// <summary>
         /// Minimum column number (zero-based) as constant
         /// </summary>
+#pragma warning disable CA1805 // Do not initialize unnecessarily
         public static readonly int MinColumnNumber = 0;
+#pragma warning restore CA1805
         /// <summary>
         /// Minimum column width as constant
         /// </summary>
+#pragma warning disable CA1805 // Do not initialize unnecessarily
         public static readonly float MinColumnWidth = 0f;
+#pragma warning restore CA1805
         /// <summary>
         /// Minimum row height as constant
         /// </summary>
+#pragma warning disable CA1805 // Do not initialize unnecessarily
         public static readonly float MinRowHeight = 0f;
+#pragma warning restore CA1805
         /// <summary>
         /// Maximum column width as constant
         /// </summary>
@@ -69,7 +75,9 @@ namespace NanoXLSX
         /// <summary>
         /// Minimum row number (zero-based) as constant
         /// </summary>
+#pragma warning disable CA1805 // Do not initialize unnecessarily
         public static readonly int MinRowNumber = 0;
+#pragma warning restore CA1805 
         /// <summary>
         /// Maximum row height as constant
         /// </summary>
@@ -77,7 +85,9 @@ namespace NanoXLSX
         /// <summary>
         /// Automatic zoom factor of a worksheet
         /// </summary>
+#pragma warning disable CA1805 // Do not initialize unnecessarily
         public const int AutoZoomFactor = 0;
+#pragma warning restore CA1805
         /// <summary>
         /// Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic
         /// </summary>
@@ -537,8 +547,10 @@ namespace NanoXLSX
             activeStyle = null;
             workbookReference = null;
             viewType = SheetViewType.Normal;
-            zoomFactor = new Dictionary<SheetViewType, int>();
-            zoomFactor.Add(viewType, 100);
+            zoomFactor = new Dictionary<SheetViewType, int>
+            {
+                { viewType, 100 }
+            };
             ShowGridLines = true;
             ShowRowColumnHeaders = true;
             ShowRuler = true;
@@ -688,7 +700,7 @@ namespace NanoXLSX
         /// <param name="column">Column index</param>
         /// <param name="row">Row index</param>
         /// <returns>Cell object</returns>
-        private Cell CastValue(object value, int column, int row)
+        private static Cell CastValue(object value, int column, int row)
         {
             Cell c;
             if (value != null && value.GetType() == typeof(Cell))
@@ -1352,7 +1364,7 @@ namespace NanoXLSX
         /// <param name="heightBoundary">Row number of max defined row height</param>
         /// <param name="hiddenBoundary">Row number of max defined hidden row</param>
         /// <returns>Max row number or -1 if nothing valid defined</returns>
-        private int GetMaxRow(int cellBoundary, int heightBoundary, int hiddenBoundary)
+        private static int GetMaxRow(int cellBoundary, int heightBoundary, int hiddenBoundary)
         {
             int highest = -1;
             if (cellBoundary >= 0)
@@ -1377,7 +1389,7 @@ namespace NanoXLSX
         /// <param name="heightBoundary">Row number of min defined row height</param>
         /// <param name="hiddenBoundary">Row number of min defined hidden row</param>
         /// <returns>Min row number or -1 if nothing valid defined</returns>
-        private int GetMinRow(int cellBoundary, int heightBoundary, int hiddenBoundary)
+        private static int GetMinRow(int cellBoundary, int heightBoundary, int hiddenBoundary)
         {
             int lowest = int.MaxValue;
             if (cellBoundary >= 0)
@@ -1881,8 +1893,10 @@ namespace NanoXLSX
             {
                 if (!columns.ContainsKey(i))
                 {
-                    c = new Column(i);
-                    c.HasAutoFilter = true;
+                    c = new Column(i)
+                    {
+                        HasAutoFilter = true
+                    };
                     columns.Add(i, c);
                 }
                 else
@@ -1929,10 +1943,12 @@ namespace NanoXLSX
                 {
                     if (!Cells.ContainsKey(address.GetAddress()))
                     {
-                        cell = new Cell();
-                        cell.DataType = Cell.CellType.Empty;
-                        cell.RowNumber = address.Row;
-                        cell.ColumnNumber = address.Column;
+                        cell = new Cell
+                        {
+                            DataType = Cell.CellType.Empty,
+                            RowNumber = address.Row,
+                            ColumnNumber = address.Column
+                        };
                         AddCell(cell, cell.ColumnNumber, cell.RowNumber);
                     }
                     else
@@ -2116,8 +2132,10 @@ namespace NanoXLSX
             }
             else if (state)
             {
-                Column c = new Column(columnNumber);
-                c.IsHidden = true;
+                Column c = new Column(columnNumber)
+                {
+                    IsHidden = true
+                };
                 columns.Add(columnNumber, c);
             }
             if (!columns[columnNumber].IsHidden && Comparators.CompareDimensions(columns[columnNumber].Width, DefaultWorksheetColumnWidth) == 0 && !columns[columnNumber].HasAutoFilter)
@@ -2157,8 +2175,10 @@ namespace NanoXLSX
             }
             else
             {
-                Column c = new Column(columnNumber);
-                c.Width = width;
+                Column c = new Column(columnNumber)
+                {
+                    Width = width
+                };
                 columns.Add(columnNumber, c);
             }
         }

@@ -20,8 +20,10 @@ namespace NanoXLSX.Test.Writer_Reader.Themes
             Theme theme = new Theme("test");
             SrgbColor color = new SrgbColor(givenColor);
             theme.Colors.Dark1 = color;
-            Workbook workbook = new Workbook();
-            workbook.WorkbookTheme = theme;
+            Workbook workbook = new Workbook
+            {
+                WorkbookTheme = theme
+            };
             Assert.Equal(expectedColor, ((SrgbColor)workbook.WorkbookTheme.Colors.Dark1).ColorValue); // already UC
             Assert.Equal(expectedColor, ((SrgbColor)workbook.WorkbookTheme.Colors.Dark1).StringValue); // already UC
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);

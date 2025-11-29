@@ -12,19 +12,21 @@ namespace NanoXLSX.Test.Core.StyleTest
 
         public BorderTest()
         {
-            exampleStyle = new Border();
-            exampleStyle.BottomColor = "11001100";
-            exampleStyle.BottomStyle = StyleValue.DashDot;
-            exampleStyle.DiagonalColor = "8877AA00";
-            exampleStyle.DiagonalDown = true;
-            exampleStyle.DiagonalStyle = StyleValue.Thick;
-            exampleStyle.DiagonalUp = true;
-            exampleStyle.LeftColor = "9911DD00";
-            exampleStyle.LeftStyle = StyleValue.MediumDashDotDot;
-            exampleStyle.RightColor = "FF00AA00";
-            exampleStyle.RightStyle = StyleValue.DashDotDot;
-            exampleStyle.TopColor = "22222200";
-            exampleStyle.TopStyle = StyleValue.Dashed;
+            exampleStyle = new Border
+            {
+                BottomColor = "11001100",
+                BottomStyle = StyleValue.DashDot,
+                DiagonalColor = "8877AA00",
+                DiagonalDown = true,
+                DiagonalStyle = StyleValue.Thick,
+                DiagonalUp = true,
+                LeftColor = "9911DD00",
+                LeftStyle = StyleValue.MediumDashDotDot,
+                RightColor = "FF00AA00",
+                RightStyle = StyleValue.DashDotDot,
+                TopColor = "22222200",
+                TopStyle = StyleValue.Dashed
+            };
         }
 
         [Theory(DisplayName = "Test of the get and set function of the BottomColor property")]

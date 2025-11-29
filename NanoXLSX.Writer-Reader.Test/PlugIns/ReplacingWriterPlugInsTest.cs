@@ -32,9 +32,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         [InlineData(typeof(ReplaceWorkbookWriter), "xl/workbook.xml", "replacing_workbook")]
         public void ReplacingWriterPluginTest(Type writerType, string expectedPath, string expectedReferenceValue)
         {
-            List<Type> plugins = new List<Type>();
-            // Note: These plug-ins may lead to an invalid XLSX file, depending on the RId and metadata of the packed file. It is just to test the plug-in functionality
-            plugins.Add(writerType);
+            List<Type> plugins = new List<Type>
+            {
+                // Note: These plug-ins may lead to an invalid XLSX file, depending on the RId and metadata of the packed file. It is just to test the plug-in functionality
+                writerType
+            };
             PlugInLoader.InjectPlugins(plugins);
             Workbook wb = new Workbook("sheet1");
 

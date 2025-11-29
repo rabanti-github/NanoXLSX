@@ -16,36 +16,28 @@ namespace NanoXLSX.Internal
     /// \remark <remarks>This class is only for internal use. Use the high level API (e.g. class Workbook) to manipulate data and create Excel files</remarks>
     internal class SortedMap : ISortedMap
     {
-        private int count;
-        private readonly List<IFormattableText> valueEntries;
         private readonly List<string> indexEntries;
         private readonly Dictionary<IFormattableText, int> index;
 
         /// <summary>
         /// Number of map entries
         /// </summary>
-        public int Count
-        {
-            get { return count; }
-        }
+        public int Count { get; private set; }
 
         /// <summary>
         /// Gets the keys of the map as list
         /// </summary>
-        public List<IFormattableText> Keys
-        {
-            get { return valueEntries; }
-        }
+        public List<IFormattableText> Keys { get; }
 
         /// <summary>
         /// Default constructor
         /// </summary>
         public SortedMap()
         {
-            valueEntries = new List<IFormattableText>();
+            Keys = new List<IFormattableText>();
             indexEntries = new List<string>();
             index = new Dictionary<IFormattableText, int>();
-            count = 0;
+            Count = 0;
         }
 
         /// <summary>
@@ -60,9 +52,9 @@ namespace NanoXLSX.Internal
             {
                 return indexEntries[index[text]];
             }
-            index.Add(text, count);
-            count++;
-            valueEntries.Add(text);
+            index.Add(text, Count);
+            Count++;
+            Keys.Add(text);
             indexEntries.Add(referenceIndex);
             return referenceIndex;
         }

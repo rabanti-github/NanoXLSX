@@ -113,8 +113,8 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Method to get all border elements of the style
         /// </summary>
-        /// <returns>IEnumerable of border elements</returns>
-        private IEnumerable<XmlElement> GetBorderElements()
+        /// <returns>List of border elements</returns>
+        private List<XmlElement> GetBorderElements()
         {
             Border[] borderStyles = styles.GetBorders();
             List<XmlElement> borders = new List<XmlElement>(borderStyles.Length);
@@ -186,8 +186,8 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Method to get all font elements of the style
         /// </summary>
-        /// <returns>IEnumerable of font elements</returns>
-        private IEnumerable<XmlElement> GetFontElements()
+        /// <returns>List of font elements</returns>
+        private List<XmlElement> GetFontElements()
         {
             Font[] fontStyles = styles.GetFonts();
             List<XmlElement> fonts = new List<XmlElement>(fontStyles.Length);
@@ -236,8 +236,8 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Method to get all fill elements of the style
         /// </summary>
-        /// <returns>IEnumerable of fill elements</returns>
-        private IEnumerable<XmlElement> GetFillElements()
+        /// <returns>List of fill elements</returns>
+        private List<XmlElement> GetFillElements()
         {
             Fill[] fillStyles = styles.GetFills();
             List<XmlElement> fills = new List<XmlElement>(fillStyles.Length);
@@ -267,8 +267,8 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Method to get all numberFormat elements of the style
         /// </summary>
-        /// <returns>IEnumerable of numberFormat elements</returns>
-        private IEnumerable<XmlElement> GetNumberFormatElements()
+        /// <returns>List of numberFormat elements</returns>
+        private List<XmlElement> GetNumberFormatElements()
         {
             NumberFormat[] numberFormatStyles = styles.GetNumberFormats();
             List<XmlElement> elements = new List<XmlElement>(numberFormatStyles.Length);
@@ -293,8 +293,8 @@ namespace NanoXLSX.Internal.Writers
         /// <summary>
         /// Method to get all cellXf elements of the style
         /// </summary>
-        /// <returns>IEnumerable of cellXf elements</returns>
-        private IEnumerable<XmlElement> GetCellXfElements()
+        /// <returns>List of cellXf elements</returns>
+        private List<XmlElement> GetCellXfElements()
         {
             Style[] styleItems = this.styles.GetStyles();
             List<XmlElement> xfs = new List<XmlElement>(styleItems.Length);

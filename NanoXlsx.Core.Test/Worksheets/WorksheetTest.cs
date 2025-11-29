@@ -134,8 +134,10 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData(Worksheet.CellDirection.Disabled, 2, 7, 2, 7)]
         public void CurrentCellDirectionTest(Worksheet.CellDirection direction, int givenInitialColumn, int givenInitialRow, int expectedColumn, int expectedRow)
         {
-            Worksheet worksheet = new Worksheet();
-            worksheet.CurrentCellDirection = direction;
+            Worksheet worksheet = new Worksheet
+            {
+                CurrentCellDirection = direction
+            };
             worksheet.SetCurrentCellAddress(givenInitialColumn, givenInitialRow);
             Assert.Equal(givenInitialRow, worksheet.GetCurrentRowNumber());
             Assert.Equal(givenInitialColumn, worksheet.GetCurrentColumnNumber());
@@ -397,8 +399,10 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Fact(DisplayName = "Test of the failing set function of the Hidden property when trying to hide all worksheets by adding hidden worksheets to a workbook")]
         public void HiddenFailTest3()
         {
-            Worksheet hidden = new Worksheet("test1");
-            hidden.Hidden = true;
+            Worksheet hidden = new Worksheet("test1")
+            {
+                Hidden = true
+            };
             Workbook workbook = new Workbook();
             Assert.Empty(workbook.Worksheets);
             Assert.Throws<WorksheetException>(() => workbook.AddWorksheet(hidden));

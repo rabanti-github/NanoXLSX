@@ -13,82 +13,92 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [Fact(DisplayName = "Test of the reader functionality for strings")]
         public void ReadStringTest()
         {
-            Dictionary<string, string> cells = new Dictionary<string, string>();
-            cells.Add("A1", "Test");
-            cells.Add("B2", "22");
-            cells.Add("C3", "");
-            cells.Add("D4", " ");
-            cells.Add("E4", "x ");
-            cells.Add("F4", " X");
-            cells.Add("G4", " x ");
-            cells.Add("H4", "x x");
-            cells.Add("E5", "#@+-\"'?!\\(){}[]<>/|.,;:");
-            cells.Add("L6", "\t");
-            cells.Add("M6", "\tx");
-            cells.Add("N6", "x\t");
-            cells.Add("E7", "日本語");
-            cells.Add("F7", "हिन्दी");
-            cells.Add("G7", "한국어");
-            cells.Add("H7", "官話");
-            cells.Add("I7", "ελληνική γλώσσα");
-            cells.Add("J7", "русский язык");
-            cells.Add("K7", "עברית");
-            cells.Add("L7", "اَلْعَرَبِيَّة");
+            Dictionary<string, string> cells = new Dictionary<string, string>
+            {
+                { "A1", "Test" },
+                { "B2", "22" },
+                { "C3", "" },
+                { "D4", " " },
+                { "E4", "x " },
+                { "F4", " X" },
+                { "G4", " x " },
+                { "H4", "x x" },
+                { "E5", "#@+-\"'?!\\(){}[]<>/|.,;:" },
+                { "L6", "\t" },
+                { "M6", "\tx" },
+                { "N6", "x\t" },
+                { "E7", "日本語" },
+                { "F7", "हिन्दी" },
+                { "G7", "한국어" },
+                { "H7", "官話" },
+                { "I7", "ελληνική γλώσσα" },
+                { "J7", "русский язык" },
+                { "K7", "עברית" },
+                { "L7", "اَلْعَرَبِيَّة" }
+            };
             AssertValues<string>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for new lines in strings")]
         public void ReadStringNewLineTest()
         {
-            Dictionary<string, string> given = new Dictionary<string, string>();
-            given.Add("A1", "\r");
-            given.Add("A2", "\n");
-            given.Add("A3", "\r\n");
-            given.Add("A4", "a\n");
-            given.Add("A5", "\nx");
-            given.Add("A6", "a\r");
-            given.Add("A7", "\rx");
-            given.Add("A8", "a\r\n");
-            given.Add("A9", "\r\nx");
-            given.Add("A10", "\n\n\n");
-            given.Add("A11", "\r\r\r");
-            given.Add("A12", "\n\r"); // irregular use
-            Dictionary<string, string> expected = new Dictionary<string, string>();
-            expected.Add("A1", "\n");
-            expected.Add("A2", "\n");
-            expected.Add("A3", "\n");
-            expected.Add("A4", "a\n");
-            expected.Add("A5", "\nx");
-            expected.Add("A6", "a\n");
-            expected.Add("A7", "\nx");
-            expected.Add("A8", "a\n");
-            expected.Add("A9", "\nx");
-            expected.Add("A10", "\n\n\n");
-            expected.Add("A11", "\n\n\n");
-            expected.Add("A12", "\n");
+            Dictionary<string, string> given = new Dictionary<string, string>
+            {
+                { "A1", "\r" },
+                { "A2", "\n" },
+                { "A3", "\r\n" },
+                { "A4", "a\n" },
+                { "A5", "\nx" },
+                { "A6", "a\r" },
+                { "A7", "\rx" },
+                { "A8", "a\r\n" },
+                { "A9", "\r\nx" },
+                { "A10", "\n\n\n" },
+                { "A11", "\r\r\r" },
+                { "A12", "\n\r" } // irregular use
+            };
+            Dictionary<string, string> expected = new Dictionary<string, string>
+            {
+                { "A1", "\n" },
+                { "A2", "\n" },
+                { "A3", "\n" },
+                { "A4", "a\n" },
+                { "A5", "\nx" },
+                { "A6", "a\n" },
+                { "A7", "\nx" },
+                { "A8", "a\n" },
+                { "A9", "\nx" },
+                { "A10", "\n\n\n" },
+                { "A11", "\n\n\n" },
+                { "A12", "\n" }
+            };
             AssertValues<string>(given, AssertEquals, expected);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for null / empty values")]
         public void ReadNullTest()
         {
-            Dictionary<string, object> cells = new Dictionary<string, object>();
-            cells.Add("A1", null);
-            cells.Add("A2", null);
-            cells.Add("A3", null);
+            Dictionary<string, object> cells = new Dictionary<string, object>
+            {
+                { "A1", null },
+                { "A2", null },
+                { "A3", null }
+            };
             AssertValues<object>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for long values (above int32 and uint32 range)")]
         public void ReadLongTest()
         {
-            Dictionary<string, long> cells = new Dictionary<string, long>();
-            cells.Add("A1", 4294967296);
-            cells.Add("A2", -2147483649);
-            cells.Add("A3", 21474836480);
-            cells.Add("A4", -21474836480);
-            cells.Add("A5", long.MinValue);
-            cells.Add("A6", long.MaxValue);
+            Dictionary<string, long> cells = new Dictionary<string, long>
+            {
+                { "A1", 4294967296 },
+                { "A2", -2147483649 },
+                { "A3", 21474836480 },
+                { "A4", -21474836480 },
+                { "A5", long.MinValue },
+                { "A6", long.MaxValue }
+            };
             AssertValues<long>(cells, AssertEquals);
         }
 
@@ -109,14 +119,16 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [Fact(DisplayName = "Test of the reader functionality for int values")]
         public void ReadIntTest()
         {
-            Dictionary<string, int> cells = new Dictionary<string, int>();
-            cells.Add("A1", 0);
-            cells.Add("A2", 10);
-            cells.Add("A3", -10);
-            cells.Add("A4", 999999);
-            cells.Add("A5", -999999);
-            cells.Add("A6", int.MinValue);
-            cells.Add("A7", int.MaxValue);
+            Dictionary<string, int> cells = new Dictionary<string, int>
+            {
+                { "A1", 0 },
+                { "A2", 10 },
+                { "A3", -10 },
+                { "A4", 999999 },
+                { "A5", -999999 },
+                { "A6", int.MinValue },
+                { "A7", int.MaxValue }
+            };
             AssertValues<int>(cells, AssertEquals);
         }
 
@@ -134,82 +146,98 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [Fact(DisplayName = "Test of the reader functionality for byte values (cast to int)")]
         public void ReadByteTest()
         {
-            Dictionary<string, byte> cells = new Dictionary<string, byte>();
-            cells.Add("A1", 0);
-            cells.Add("A2", 10);
-            cells.Add("A3", 255);
-            cells.Add("A4", byte.MinValue);
-            cells.Add("A5", byte.MaxValue);
+            Dictionary<string, byte> cells = new Dictionary<string, byte>
+            {
+                { "A1", 0 },
+                { "A2", 10 },
+                { "A3", 255 },
+                { "A4", byte.MinValue },
+                { "A5", byte.MaxValue }
+            };
 
-            Dictionary<string, int> expected = new Dictionary<string, int>();
-            expected.Add("A1", 0);
-            expected.Add("A2", 10);
-            expected.Add("A3", 255);
-            expected.Add("A4", byte.MinValue);
-            expected.Add("A5", byte.MaxValue);
+            Dictionary<string, int> expected = new Dictionary<string, int>
+            {
+                { "A1", 0 },
+                { "A2", 10 },
+                { "A3", 255 },
+                { "A4", byte.MinValue },
+                { "A5", byte.MaxValue }
+            };
             AssertValues<byte, int>(cells, AssertEquals, expected);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for sbyte values (cast to int)")]
         public void ReadSbyteTest()
         {
-            Dictionary<string, sbyte> cells = new Dictionary<string, sbyte>();
-            cells.Add("A1", 0);
-            cells.Add("A2", 10);
-            cells.Add("A3", -10);
-            cells.Add("A4", 127);
-            cells.Add("A5", -128);
-            cells.Add("A6", sbyte.MinValue);
-            cells.Add("A7", sbyte.MaxValue);
+            Dictionary<string, sbyte> cells = new Dictionary<string, sbyte>
+            {
+                { "A1", 0 },
+                { "A2", 10 },
+                { "A3", -10 },
+                { "A4", 127 },
+                { "A5", -128 },
+                { "A6", sbyte.MinValue },
+                { "A7", sbyte.MaxValue }
+            };
 
-            Dictionary<string, int> expected = new Dictionary<string, int>();
-            expected.Add("A1", 0);
-            expected.Add("A2", 10);
-            expected.Add("A3", -10);
-            expected.Add("A4", 127);
-            expected.Add("A5", -128);
-            expected.Add("A6", sbyte.MinValue);
-            expected.Add("A7", sbyte.MaxValue);
+            Dictionary<string, int> expected = new Dictionary<string, int>
+            {
+                { "A1", 0 },
+                { "A2", 10 },
+                { "A3", -10 },
+                { "A4", 127 },
+                { "A5", -128 },
+                { "A6", sbyte.MinValue },
+                { "A7", sbyte.MaxValue }
+            };
             AssertValues<sbyte, int>(cells, AssertEquals, expected);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for short values (cast to int)")]
         public void ReadShortTest()
         {
-            Dictionary<string, short> cells = new Dictionary<string, short>();
-            cells.Add("A1", 0);
-            cells.Add("A2", 10);
-            cells.Add("A3", 32767);
-            cells.Add("A4", -32767);
-            cells.Add("A5", short.MinValue);
-            cells.Add("A6", short.MaxValue);
+            Dictionary<string, short> cells = new Dictionary<string, short>
+            {
+                { "A1", 0 },
+                { "A2", 10 },
+                { "A3", 32767 },
+                { "A4", -32767 },
+                { "A5", short.MinValue },
+                { "A6", short.MaxValue }
+            };
 
-            Dictionary<string, int> expected = new Dictionary<string, int>();
-            expected.Add("A1", 0);
-            expected.Add("A2", 10);
-            expected.Add("A3", 32767);
-            expected.Add("A4", -32767);
-            expected.Add("A5", short.MinValue);
-            expected.Add("A6", short.MaxValue);
+            Dictionary<string, int> expected = new Dictionary<string, int>
+            {
+                { "A1", 0 },
+                { "A2", 10 },
+                { "A3", 32767 },
+                { "A4", -32767 },
+                { "A5", short.MinValue },
+                { "A6", short.MaxValue }
+            };
             AssertValues<short, int>(cells, AssertEquals, expected);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for ushort values (cast to int)")]
         public void ReadUshortTest()
         {
-            Dictionary<string, ushort> cells = new Dictionary<string, ushort>();
-            cells.Add("A1", 0);
-            cells.Add("A2", 10);
-            cells.Add("A3", 56353);
-            cells.Add("A4", ushort.MinValue);
-            cells.Add("A5", ushort.MaxValue);
+            Dictionary<string, ushort> cells = new Dictionary<string, ushort>
+            {
+                { "A1", 0 },
+                { "A2", 10 },
+                { "A3", 56353 },
+                { "A4", ushort.MinValue },
+                { "A5", ushort.MaxValue }
+            };
 
-            Dictionary<string, int> expected = new Dictionary<string, int>();
-            expected.Add("A1", 0);
-            expected.Add("A2", 10);
-            expected.Add("A3", 56353);
-            expected.Add("A4", ushort.MinValue);
-            expected.Add("A5", ushort.MaxValue);
+            Dictionary<string, int> expected = new Dictionary<string, int>
+            {
+                { "A1", 0 },
+                { "A2", 10 },
+                { "A3", 56353 },
+                { "A4", ushort.MinValue },
+                { "A5", ushort.MaxValue }
+            };
             AssertValues<ushort, int>(cells, AssertEquals, expected);
         }
 
@@ -217,88 +245,104 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         public void ReadFloatTest()
         {
             // Numbers without fraction elements are always interpreted as float
-            Dictionary<string, float> cells = new Dictionary<string, float>();
-            cells.Add("A1", 0.000001f);
-            cells.Add("A2", 10.1f);
-            cells.Add("A3", -10.22f);
-            cells.Add("A4", 999999.9f);
-            cells.Add("A5", -999999.9f);
-            cells.Add("A7", float.MinValue);
-            cells.Add("A8", float.MaxValue);
+            Dictionary<string, float> cells = new Dictionary<string, float>
+            {
+                { "A1", 0.000001f },
+                { "A2", 10.1f },
+                { "A3", -10.22f },
+                { "A4", 999999.9f },
+                { "A5", -999999.9f },
+                { "A7", float.MinValue },
+                { "A8", float.MaxValue }
+            };
             AssertValues<float>(cells, AssertApproximateFloat);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for decimal values")]
         public void ReadDecimalTest()
         {
-            Dictionary<string, double> cells = new Dictionary<string, double>();
-            cells.Add("A1", 4372449.78);      // 7 digits before decimal
-            cells.Add("A3", -10.2234567);     // 7+ decimal places
-            cells.Add("A4", 123456789.123456); // High precision
+            Dictionary<string, double> cells = new Dictionary<string, double>
+            {
+                { "A1", 4372449.78 },      // 7 digits before decimal
+                { "A3", -10.2234567 },     // 7+ decimal places
+                { "A4", 123456789.123456 } // High precision
+            };
             AssertValues<double>(cells, AssertApproximateDouble);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for high precision ¨decimal/single values")]
         public void ReadDecimalTest2()
         {
-            Dictionary<string, Single> cells = new Dictionary<string, Single>();
-            cells.Add("A1", (Single)0.00000001);
-            cells.Add("A2", -(Single)0.00000001);
+            Dictionary<string, Single> cells = new Dictionary<string, Single>
+            {
+                { "A1", (Single)0.00000001 },
+                { "A2", -(Single)0.00000001 }
+            };
             AssertValues<Single>(cells, AssertApproximateSingle);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for double values (above single32 range)")]
         public void ReadDoubleTest()
         {
-            Dictionary<string, double> cells = new Dictionary<string, double>();
-            cells.Add("A1", 440282346700000000000000000000000000009.1d);
-            cells.Add("A2", -440282347600000000000000000000000000009.1d);
-            cells.Add("A3", 21474836480648356436538453467583788456343865.227d);
-            cells.Add("A4", -21474836480648356436538453467583748856343865.9d);
-            cells.Add("A5", double.MinValue);
-            cells.Add("A6", double.MaxValue);
+            Dictionary<string, double> cells = new Dictionary<string, double>
+            {
+                { "A1", 440282346700000000000000000000000000009.1d },
+                { "A2", -440282347600000000000000000000000000009.1d },
+                { "A3", 21474836480648356436538453467583788456343865.227d },
+                { "A4", -21474836480648356436538453467583748856343865.9d },
+                { "A5", double.MinValue },
+                { "A6", double.MaxValue }
+            };
             AssertValues<double>(cells, AssertApproximateDouble);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for bool values")]
         public void ReadBoolTest()
         {
-            Dictionary<string, bool> cells = new Dictionary<string, bool>();
-            cells.Add("A1", true);
-            cells.Add("A2", false);
-            cells.Add("A3", true);
+            Dictionary<string, bool> cells = new Dictionary<string, bool>
+            {
+                { "A1", true },
+                { "A2", false },
+                { "A3", true }
+            };
             AssertValues<bool>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for DateTime values")]
         public void ReadDateTimeTest()
         {
-            Dictionary<string, DateTime> cells = new Dictionary<string, DateTime>();
-            cells.Add("A1", new DateTime(2021, 5, 11, 15, 7, 2));
-            cells.Add("A2", new DateTime(1900, 1, 1, 0, 0, 0));
-            cells.Add("A3", new DateTime(1960, 12, 12));
-            cells.Add("A4", new DateTime(9999, 12, 31, 23, 59, 59));
+            Dictionary<string, DateTime> cells = new Dictionary<string, DateTime>
+            {
+                { "A1", new DateTime(2021, 5, 11, 15, 7, 2) },
+                { "A2", new DateTime(1900, 1, 1, 0, 0, 0) },
+                { "A3", new DateTime(1960, 12, 12) },
+                { "A4", new DateTime(9999, 12, 31, 23, 59, 59) }
+            };
             AssertValues<DateTime>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for TimeSpan values")]
         public void ReadTimeSpanTest()
         {
-            Dictionary<string, TimeSpan> cells = new Dictionary<string, TimeSpan>();
-            cells.Add("A1", new TimeSpan(0, 0, 0));
-            cells.Add("A2", new TimeSpan(13, 18, 22));
-            cells.Add("A3", new TimeSpan(12, 0, 0));
-            cells.Add("A4", new TimeSpan(23, 59, 59));
+            Dictionary<string, TimeSpan> cells = new Dictionary<string, TimeSpan>
+            {
+                { "A1", new TimeSpan(0, 0, 0) },
+                { "A2", new TimeSpan(13, 18, 22) },
+                { "A3", new TimeSpan(12, 0, 0) },
+                { "A4", new TimeSpan(23, 59, 59) }
+            };
             AssertValues<TimeSpan>(cells, AssertEquals);
         }
 
         [Fact(DisplayName = "Test of the reader functionality for formulas (no formula parsing)")]
         public void ReadFormulaTest()
         {
-            Dictionary<string, string> cells = new Dictionary<string, string>();
-            cells.Add("A1", "=B2");
-            cells.Add("A2", "MIN(C2:D2)");
-            cells.Add("A3", "MAX(worksheet2!A1:worksheet2:A100");
+            Dictionary<string, string> cells = new Dictionary<string, string>
+            {
+                { "A1", "=B2" },
+                { "A2", "MIN(C2:D2)" },
+                { "A3", "MAX(worksheet2!A1:worksheet2:A100" }
+            };
 
             Workbook workbook = new Workbook("worksheet1");
             foreach (KeyValuePair<string, string> cell in cells)
@@ -327,7 +371,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [InlineData("C1", Cell.CellType.Number, -1.8538541667)]
         [InlineData("D1", Cell.CellType.Number, 2)]
         [InlineData("E1", Cell.CellType.String, "x")]
-        [InlineData("F1", Cell.CellType.String, "1")] // Reference 1 is casted to string '1'
+        [InlineData("F1", Cell.CellType.String, "1")] // Reference 1 is cast to string '1'
         [InlineData("G1", Cell.CellType.Number, -1.5f)]
         [InlineData("H1", Cell.CellType.String, "y")]
         [InlineData("I1", Cell.CellType.Bool, true)]

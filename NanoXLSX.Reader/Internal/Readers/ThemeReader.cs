@@ -150,8 +150,10 @@ namespace NanoXLSX.Internal.Readers
                 if (node.LocalName == "sysClr")
                 {
                     SystemColor.Value value = ParseSystemColor(node);
-                    SystemColor systemColor = new SystemColor();
-                    systemColor.ColorValue = value;
+                    SystemColor systemColor = new SystemColor
+                    {
+                        ColorValue = value
+                    };
                     string lastColor = ReaderUtils.GetAttribute(node, "lastClr");
                     if (lastColor != null)
                     {
@@ -161,8 +163,10 @@ namespace NanoXLSX.Internal.Readers
                 }
                 else if (node.LocalName == "srgbClr")
                 {
-                    SrgbColor srgbColor = new SrgbColor();
-                    srgbColor.ColorValue = ReaderUtils.GetAttribute(node, "val");
+                    SrgbColor srgbColor = new SrgbColor
+                    {
+                        ColorValue = ReaderUtils.GetAttribute(node, "val")
+                    };
                     return srgbColor;
                 }
             }

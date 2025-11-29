@@ -186,11 +186,15 @@ namespace NanoXLSX.Core.Test.Themes
         [Fact(DisplayName = "Test of the Equals method (multiple cases)")]
         public void EqualsTest()
         {
-            SystemColor color1 = new SystemColor(SystemColor.Value.ButtonHighlight);
-            color1.LastColor = "112233";
-            SystemColor color2 = new SystemColor();
-            color2.ColorValue = SystemColor.Value.ButtonHighlight;
-            color2.LastColor = "112233";
+            SystemColor color1 = new SystemColor(SystemColor.Value.ButtonHighlight)
+            {
+                LastColor = "112233"
+            };
+            SystemColor color2 = new SystemColor
+            {
+                ColorValue = SystemColor.Value.ButtonHighlight,
+                LastColor = "112233"
+            };
             Assert.True(color1.Equals(color2));
 
             SystemColor color3 = new SystemColor();
@@ -202,8 +206,10 @@ namespace NanoXLSX.Core.Test.Themes
         public void EqualsTest2()
         {
             SystemColor color1 = new SystemColor(SystemColor.Value.CaptionText);
-            SystemColor color2 = new SystemColor();
-            color2.ColorValue = SystemColor.Value.GradientActiveCaption;
+            SystemColor color2 = new SystemColor
+            {
+                ColorValue = SystemColor.Value.GradientActiveCaption
+            };
             Assert.False(color1.Equals(color2));
 
             SystemColor color3 = new SystemColor(SystemColor.Value.ActiveCaption);
@@ -223,8 +229,10 @@ namespace NanoXLSX.Core.Test.Themes
         public void GetHashCodeTest()
         {
             SystemColor color1 = new SystemColor(SystemColor.Value.AppWorkspace);
-            SystemColor color2 = new SystemColor();
-            color2.ColorValue = SystemColor.Value.AppWorkspace;
+            SystemColor color2 = new SystemColor
+            {
+                ColorValue = SystemColor.Value.AppWorkspace
+            };
             Assert.Equal(color1.GetHashCode(), color2.GetHashCode());
 
             SystemColor color3 = new SystemColor();
@@ -232,9 +240,11 @@ namespace NanoXLSX.Core.Test.Themes
             Assert.Equal(color3.GetHashCode(), color4.GetHashCode());
 
             SystemColor color5 = new SystemColor(SystemColor.Value.AppWorkspace, "CCDDEE");
-            SystemColor color6 = new SystemColor();
-            color6.ColorValue = SystemColor.Value.AppWorkspace;
-            color6.LastColor = "CCDDEE";
+            SystemColor color6 = new SystemColor
+            {
+                ColorValue = SystemColor.Value.AppWorkspace,
+                LastColor = "CCDDEE"
+            };
             Assert.Equal(color5.GetHashCode(), color6.GetHashCode());
         }
 
@@ -242,8 +252,10 @@ namespace NanoXLSX.Core.Test.Themes
         public void GetHashCodeTest2()
         {
             SystemColor color1 = new SystemColor(SystemColor.Value.Background);
-            SystemColor color2 = new SystemColor();
-            color2.ColorValue = SystemColor.Value.ButtonFace;
+            SystemColor color2 = new SystemColor
+            {
+                ColorValue = SystemColor.Value.ButtonFace
+            };
             Assert.NotEqual(color1.GetHashCode(), color2.GetHashCode());
 
             SystemColor color3 = new SystemColor(SystemColor.Value.AppWorkspace);
@@ -255,9 +267,11 @@ namespace NanoXLSX.Core.Test.Themes
             Assert.NotEqual(color5.GetHashCode(), color6.GetHashCode());
 
             SystemColor color7 = new SystemColor(SystemColor.Value.Background, "AACCDD");
-            SystemColor color8 = new SystemColor();
-            color8.ColorValue = SystemColor.Value.Background;
-            color8.LastColor = "002233";
+            SystemColor color8 = new SystemColor
+            {
+                ColorValue = SystemColor.Value.Background,
+                LastColor = "002233"
+            };
             Assert.NotEqual(color7.GetHashCode(), color8.GetHashCode());
         }
 

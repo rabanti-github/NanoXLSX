@@ -446,7 +446,7 @@ namespace NanoXLSX.Core.Test.UtilsTest
             Assert.Single(givenResult.Where(n => n.InnerValue == "inner-value3"));
         }
 
-        [Fact(DisplayName = "FindElementByNameAndAttribute should return an IEnumerable with multiple elements, if there is more than one matching child with attribute vakue")]
+        [Fact(DisplayName = "FindElementByNameAndAttribute should return an IEnumerable with multiple elements, if there is more than one matching child with attribute value")]
         public void FindElementByNameAndAttributeValueTest2()
         {
             XmlElement root = XmlElement.CreateElement("root");
@@ -488,7 +488,7 @@ namespace NanoXLSX.Core.Test.UtilsTest
             Assert.Single(givenResult.Where(n => n.InnerValue == "test4"));
         }
 
-        [Fact(DisplayName = "FindElementByName should return an IEnumerable with multiple element, if there more than one matching child in a complex structure, wuth attribute value")]
+        [Fact(DisplayName = "FindElementByName should return an IEnumerable with multiple element, if there more than one matching child in a complex structure, with attribute value")]
         public void FindElementByNameAndAttributeValueTest3()
         {
             XmlElement root = XmlElement.CreateElement("root");

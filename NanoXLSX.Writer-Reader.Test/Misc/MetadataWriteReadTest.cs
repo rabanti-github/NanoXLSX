@@ -118,8 +118,10 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
         [Fact(DisplayName = "Test of writing and reading a workbook with a null WorkbookMetadata object")]
         public void ReadNullTest()
         {
-            Workbook workbook = new Workbook();
-            workbook.WorkbookMetadata = null;
+            Workbook workbook = new Workbook
+            {
+                WorkbookMetadata = null
+            };
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             Assert.NotNull(givenWorkbook.WorkbookMetadata);
             Assert.Equal(Metadata.DefaultApplicationName, givenWorkbook.WorkbookMetadata.Application);

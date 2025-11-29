@@ -21,7 +21,7 @@ namespace NanoXLSX.Internal.Writers
     internal class SharedStringWriter : ISharedStringWriter
     {
         private XmlElement sst;
-        private ISortedMap sharedStrings;
+        private SortedMap sharedStrings;
 
         #region properties
         /// <summary>

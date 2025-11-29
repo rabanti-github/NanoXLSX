@@ -131,9 +131,9 @@ namespace NanoXLSX.Registry
         /// </summary>
         /// <param name="assembly">Assembly to analyze</param>
         /// <param name="attributeType">Plug-in attribute type, declared on classes of the assembly</param>
-        /// <returns>IEnumerable of class types, matching the criteria</returns>
+        /// <returns>List of class types, matching the criteria</returns>
         [ExcludeFromCodeCoverage] // Indirectly tested by InjectPlugins
-        private static IEnumerable<Type> GetAssemblyPlugInsByType(Assembly assembly, Type attributeType)
+        private static List<Type> GetAssemblyPlugInsByType(Assembly assembly, Type attributeType)
         {
             List<Type> plugInTypes = new List<Type>();
             Type plugInInterface = typeof(IPlugIn);

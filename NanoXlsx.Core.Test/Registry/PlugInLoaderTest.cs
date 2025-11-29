@@ -15,7 +15,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         }
 
 
-        [Fact(DisplayName = "Test of the plug-in handling initializer (dummy; should not crash or initialite twice)")]
+        [Fact(DisplayName = "Test of the plug-in handling initializer (dummy; should not crash or initialize twice)")]
         public void InitializeTest()
         {
             PlugInLoader.DisposePlugins(); // Test on a clean basis

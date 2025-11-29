@@ -15,11 +15,13 @@ namespace NanoXLSX.Test.Core.StyleTest
 
         public FillTest()
         {
-            exampleStyle = new Fill();
-            exampleStyle.BackgroundColor = "FFAABB00";
-            exampleStyle.ForegroundColor = "1188FF00";
-            exampleStyle.IndexedColor = 99;
-            exampleStyle.PatternFill = PatternValue.DarkGray;
+            exampleStyle = new Fill
+            {
+                BackgroundColor = "FFAABB00",
+                ForegroundColor = "1188FF00",
+                IndexedColor = 99,
+                PatternFill = PatternValue.DarkGray
+            };
 
             comparisonStyle = new Fill();
             exampleStyle.BackgroundColor = "77CCBB00";

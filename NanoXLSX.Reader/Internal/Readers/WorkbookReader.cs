@@ -180,8 +180,10 @@ namespace NanoXLSX.Internal.Readers
                         {
                             hidden = true;
                         }
-                        WorksheetDefinition definition = new WorksheetDefinition(id, sheetName, relId);
-                        definition.Hidden = hidden;
+                        WorksheetDefinition definition = new WorksheetDefinition(id, sheetName, relId)
+                        {
+                            Hidden = hidden
+                        };
                         Workbook.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, id, definition);
                     }
                     catch (Exception e)

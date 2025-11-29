@@ -141,13 +141,15 @@ namespace NanoXLSX
         /// <returns>Copy of this column</returns>
         internal Column Copy()
         {
-            Column copy = new Column();
-            copy.IsHidden = this.IsHidden;
-            copy.Width = this.width;
-            copy.HasAutoFilter = this.HasAutoFilter;
-            copy.columnAddress = this.columnAddress;
-            copy.number = this.number;
-            copy.defaultColumnStyle = this.defaultColumnStyle;
+            Column copy = new Column
+            {
+                IsHidden = this.IsHidden,
+                Width = this.width,
+                HasAutoFilter = this.HasAutoFilter,
+                columnAddress = this.columnAddress,
+                number = this.number,
+                defaultColumnStyle = this.defaultColumnStyle
+            };
             return copy;
         }
 

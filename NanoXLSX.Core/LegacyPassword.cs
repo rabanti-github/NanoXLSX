@@ -127,7 +127,7 @@ namespace NanoXLSX
         /// Method to generate a legacy (Excel internal) password hash, to protect workbooks or worksheets<br />This method is derived from the c++ implementation by Kohei Yoshida (<a href="http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/">http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/</a>)
         /// </summary>
         /// \remark <remarks>WARNING! Do not use this method to encrypt 'real' passwords or data outside from NanoXLSX. This is only a minor security feature. Use a proper cryptography method instead.</remarks>
-        /// <param name="password">Password string in UTF-8 to encrypt. Null or an empty string (even technical valid) are not allwd, since they cannot be inserted in a password field in Excel</param>
+        /// <param name="password">Password string in UTF-8 to encrypt. Null or an empty string (even technical valid) are not allowed, since they cannot be inserted in a password field in Excel</param>
         /// <returns>16 bit hash as hex string. If the passed plain text password is null or empty, the returned hash will be empty</returns>
         public static string GenerateLegacyPasswordHash(string password)
         {
@@ -157,7 +157,7 @@ namespace NanoXLSX
             char[] chars;
             if (string.IsNullOrEmpty(plaintextPassword))
             {
-#pragma warning disable CA1825 // Suppress: 0-length array allocation (sugeston is not .Net 5.0 compatible)
+#pragma warning disable CA1825 // Suppress: 0-length array allocation (suggestion is not .Net 5.0 compatible)
                 chars = new char[0];
 #pragma warning restore CA1825 // Suppress: 0-length array allocation
             }

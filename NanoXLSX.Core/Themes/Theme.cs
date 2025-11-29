@@ -92,8 +92,10 @@ namespace NanoXLSX.Themes
         /// <returns>Theme with default values according to the default theme of Office 2019 (may be deviating)</returns>
         internal static Theme GetDefaultTheme()
         {
-            Theme theme = new Theme("default");
-            theme.DefaultTheme = true;
+            Theme theme = new Theme("default")
+            {
+                DefaultTheme = true
+            };
             ColorScheme colors = GetDefaultColorScheme();
             theme.Colors = colors;
             return theme;
@@ -105,20 +107,22 @@ namespace NanoXLSX.Themes
         /// <returns>Color scheme with default values according to the default color scheme of Office 2019 (may be deviating)</returns>
         internal static ColorScheme GetDefaultColorScheme()
         {
-            ColorScheme colors = new ColorScheme();
-            colors.Name = "default";
-            colors.Dark1 = new SystemColor(SystemColor.Value.WindowText);
-            colors.Light1 = new SystemColor(SystemColor.Value.Window, "FFFFFF");
-            colors.Dark2 = new SrgbColor("44546A");
-            colors.Light2 = new SrgbColor("E7E6E6");
-            colors.Accent1 = new SrgbColor("4472C4");
-            colors.Accent2 = new SrgbColor("ED7D31");
-            colors.Accent3 = new SrgbColor("A5A5A5");
-            colors.Accent4 = new SrgbColor("FFC000");
-            colors.Accent5 = new SrgbColor("5B9BD5");
-            colors.Accent6 = new SrgbColor("70AD47");
-            colors.Hyperlink = new SrgbColor("0563C1");
-            colors.FollowedHyperlink = new SrgbColor("954F72");
+            ColorScheme colors = new ColorScheme
+            {
+                Name = "default",
+                Dark1 = new SystemColor(SystemColor.Value.WindowText),
+                Light1 = new SystemColor(SystemColor.Value.Window, "FFFFFF"),
+                Dark2 = new SrgbColor("44546A"),
+                Light2 = new SrgbColor("E7E6E6"),
+                Accent1 = new SrgbColor("4472C4"),
+                Accent2 = new SrgbColor("ED7D31"),
+                Accent3 = new SrgbColor("A5A5A5"),
+                Accent4 = new SrgbColor("FFC000"),
+                Accent5 = new SrgbColor("5B9BD5"),
+                Accent6 = new SrgbColor("70AD47"),
+                Hyperlink = new SrgbColor("0563C1"),
+                FollowedHyperlink = new SrgbColor("954F72")
+            };
             return colors;
         }
 

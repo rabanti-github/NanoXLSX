@@ -73,7 +73,7 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="scheme">Color scheme instance</param>
         /// <returns>XmlElement, holding color scheme information (XML)</returns>
-        private XmlElement GetColorSchemeElement(ColorScheme scheme)
+        private static XmlElement GetColorSchemeElement(ColorScheme scheme)
         {
             XmlElement colorScheme = XmlElement.CreateElementWithAttribute("clrScheme", "name", XmlUtils.SanitizeXmlValue(scheme.Name), "a");
             colorScheme.AddChildElement(GetColor("dk1", scheme.Dark1, "a"));
@@ -98,7 +98,7 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="color">Color instance</param>
         /// <param name="prefix">Element name prefix</param>
         /// <returns>XmlElement, holding color information</returns>
-        private XmlElement GetColor(string name, IColor color, string prefix)
+        private static XmlElement GetColor(string name, IColor color, string prefix)
         {
             XmlElement colorElement = XmlElement.CreateElement(name, prefix);
             if (color is SystemColor)

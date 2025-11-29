@@ -12,10 +12,12 @@ using System.Text.Json;
 
 namespace Docs.IndexGenerator
 {
-    internal record DocEntry(string id, string title, string path, string? description);
-    internal record RootConfig(string projectName, string baseDescription, string rootDescription);
-    internal record MetaPackageConfig(string packageName, string version, string? description);
-    internal record PluginConfig(DocEntry[] entries);
+#nullable enable
+    internal record DocEntry(string Id, string Title, string Path, string? Description);
+    internal record RootConfig(string ProjectName, string BaseDescription, string RootDescription);
+    internal record MetaPackageConfig(string PackageName, string Version, string? Desrciption);
+    internal record PluginConfig(DocEntry[] Entries);
+#nullable disable
 
     public class Program
     {
@@ -91,7 +93,7 @@ namespace Docs.IndexGenerator
     <head>
       <meta charset=""utf-8"">
       <meta name=""viewport"" content=""width=device-width,initial-scale=1"">
-      <title>{EscapeHtml(rootConfig.projectName)} — Documentation</title>
+      <title>{EscapeHtml(rootConfig.ProjectName)} — Documentation</title>
       <link rel=""stylesheet"" href=""style.css"">
     </head>
     <body>
@@ -101,7 +103,7 @@ namespace Docs.IndexGenerator
             <img src=""NanoXLSX.png""
                  alt=""NanoXLSX""
                  style=""height:48px; vertical-align:middle; margin-right:10px;"">
-            {EscapeHtml(rootConfig.projectName)} v2.x
+            {EscapeHtml(rootConfig.ProjectName)} v2.x
         </h1>
         
           <h2>API Documentation</h2>
@@ -121,23 +123,23 @@ namespace Docs.IndexGenerator
             <img src=""NanoXLSX.png""
                  alt=""NanoXLSX""
                  style=""height:48px; vertical-align:middle; margin-right:10px;"">
-            {EscapeHtml(rootConfig.projectName)} v3.x
+            {EscapeHtml(rootConfig.ProjectName)} v3.x
         </h1>
 
         <p>
-        {EscapeHtml(rootConfig.baseDescription)}<br>
-        {EscapeHtml(rootConfig.rootDescription)}
+        {EscapeHtml(rootConfig.BaseDescription)}<br>
+        {EscapeHtml(rootConfig.RootDescription)}
         <p>
 
         <hr>
 
-          <h2>Meta Package v{EscapeHtml(metaPackageConfig.version)}</h2>
+          <h2>Meta Package v{EscapeHtml(metaPackageConfig.Version)}</h2>
             <section>
             {GenerateMetaPackageItem(metaPackageConfig, rootConfig)}
             <p>There is no documentation for the meta package. Please see the section <b>Dependency Package Documentation</b> for the complete API documentation.</p>
             </section>
 
-          <p class=""version"">Version {EscapeHtml(metaPackageConfig.version)}</p>
+          <p class=""version"">Version {EscapeHtml(metaPackageConfig.Version)}</p>
         </header>
 
         <hr>
@@ -191,10 +193,10 @@ header h1 { margin: 0; }
         static string GenerateListItems(PluginConfig cfg)
         {
             var sb = new System.Text.StringBuilder();
-            foreach (var e in cfg.entries)
+            foreach (var e in cfg.Entries)
             {
-                string href = $"{Uri.EscapeUriString(e.path)}/index.html";
-                sb.AppendLine($"        <li><a href=\"{href}\"><strong>{EscapeHtml(e.title)}</strong></a> — {EscapeHtml(e.description ?? "")}</li>");
+                string href = $"{Uri.EscapeUriString(e.Path)}/index.html";
+                sb.AppendLine($"        <li><a href=\"{href}\"><strong>{EscapeHtml(e.Title)}</strong></a> — {EscapeHtml(e.Description ?? "")}</li>");
             }
             return sb.ToString();
         }
@@ -203,8 +205,8 @@ header h1 { margin: 0; }
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("<ul class=\"list\">");
-            string description = CreatePrefix(rootConfig, metaPackageConfig.description);
-            sb.AppendLine($"        <li><strong>{EscapeHtml(metaPackageConfig.packageName)}</strong> — {EscapeHtml(description ?? "")}</li>");
+            string description = CreatePrefix(rootConfig, metaPackageConfig.Desrciption);
+            sb.AppendLine($"        <li><strong>{EscapeHtml(metaPackageConfig.PackageName)}</strong> — {EscapeHtml(description ?? "")}</li>");
             sb.AppendLine("</ul>");
             return sb.ToString();
         }
@@ -215,9 +217,9 @@ header h1 { margin: 0; }
             {
                 return input;
             }
-            if (input.StartsWith(config.baseDescription))
+            if (input.StartsWith(config.BaseDescription))
             {
-                return input.Substring(config.baseDescription.Length);
+                return input[config.BaseDescription.Length..];
             }
             return input;
         }

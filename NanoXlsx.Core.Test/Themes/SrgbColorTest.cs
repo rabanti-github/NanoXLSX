@@ -107,8 +107,10 @@ namespace NanoXLSX.Core.Test.Themes
         public void EqualsTest()
         {
             SrgbColor color1 = new SrgbColor("ACADAF");
-            SrgbColor color2 = new SrgbColor();
-            color2.ColorValue = "ACADAF";
+            SrgbColor color2 = new SrgbColor
+            {
+                ColorValue = "ACADAF"
+            };
             Assert.True(color1.Equals(color2));
 
             SrgbColor color3 = new SrgbColor();
@@ -120,8 +122,10 @@ namespace NanoXLSX.Core.Test.Themes
         public void EqualsTest2()
         {
             SrgbColor color1 = new SrgbColor("ACADAF");
-            SrgbColor color2 = new SrgbColor();
-            color2.ColorValue = "ACADA0";
+            SrgbColor color2 = new SrgbColor
+            {
+                ColorValue = "ACADA0"
+            };
             Assert.False(color1.Equals(color2));
 
             SrgbColor color3 = new SrgbColor("ACADAF");
@@ -137,8 +141,10 @@ namespace NanoXLSX.Core.Test.Themes
         public void GetHashCodeTest()
         {
             SrgbColor color1 = new SrgbColor("ACADAF");
-            SrgbColor color2 = new SrgbColor();
-            color2.ColorValue = "ACADAF";
+            SrgbColor color2 = new SrgbColor
+            {
+                ColorValue = "ACADAF"
+            };
             Assert.Equal(color1.GetHashCode(), color2.GetHashCode());
 
             SrgbColor color3 = new SrgbColor();
@@ -150,8 +156,10 @@ namespace NanoXLSX.Core.Test.Themes
         public void GetHashCodeTest2()
         {
             SrgbColor color1 = new SrgbColor("ACADAF");
-            SrgbColor color2 = new SrgbColor();
-            color2.ColorValue = "ACADA0";
+            SrgbColor color2 = new SrgbColor
+            {
+                ColorValue = "ACADA0"
+            };
             Assert.NotEqual(color1.GetHashCode(), color2.GetHashCode());
 
             SrgbColor color3 = new SrgbColor("ACADAF");

@@ -19,8 +19,10 @@ namespace NanoXLSX.Test.Core.RegistryTest
         [InlineData("AnotherUniqueID")]
         public void PlugInUUIDGetSetTest(string expectedUUID)
         {
-            var attribute = new NanoXlsxQueuePlugInAttribute();
-            attribute.PlugInUUID = expectedUUID;
+            var attribute = new NanoXlsxQueuePlugInAttribute
+            {
+                PlugInUUID = expectedUUID
+            };
             Assert.Equal(expectedUUID, attribute.PlugInUUID);
         }
 
@@ -31,8 +33,10 @@ namespace NanoXLSX.Test.Core.RegistryTest
         [InlineData("AnotherQueue")]
         public void QueueUUIDGetSetTest(string expectedQueueUUID)
         {
-            var attribute = new NanoXlsxQueuePlugInAttribute();
-            attribute.QueueUUID = expectedQueueUUID;
+            var attribute = new NanoXlsxQueuePlugInAttribute
+            {
+                QueueUUID = expectedQueueUUID
+            };
             Assert.Equal(expectedQueueUUID, attribute.QueueUUID);
         }
 
@@ -50,8 +54,10 @@ namespace NanoXLSX.Test.Core.RegistryTest
         [InlineData(10)]
         public void PlugInOrderGetSetTest(int expectedOrder)
         {
-            var attribute = new NanoXlsxQueuePlugInAttribute();
-            attribute.PlugInOrder = expectedOrder;
+            var attribute = new NanoXlsxQueuePlugInAttribute
+            {
+                PlugInOrder = expectedOrder
+            };
             Assert.Equal(expectedOrder, attribute.PlugInOrder);
         }
     }

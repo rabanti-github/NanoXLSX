@@ -17,10 +17,12 @@ namespace NanoXLSX.Test.Core.StyleTest
 
         public NumberFormatTest()
         {
-            exampleStyle = new NumberFormat();
-            exampleStyle.CustomFormatCode = "#.###";
-            exampleStyle.Number = FormatNumber.Format10;
-            exampleStyle.CustomFormatID = 170;
+            exampleStyle = new NumberFormat
+            {
+                CustomFormatCode = "#.###",
+                Number = FormatNumber.Format10,
+                CustomFormatID = 170
+            };
         }
 
         [Theory(DisplayName = "Test of the get and set function of the FormatNumber property")]

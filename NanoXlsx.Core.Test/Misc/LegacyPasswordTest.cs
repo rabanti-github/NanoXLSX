@@ -103,8 +103,10 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("0000", true)]
         public void PasswordIsSetTest(string passwordHash, bool expectedPasswordSet)
         {
-            LegacyPassword password = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection);
-            password.PasswordHash = passwordHash;
+            LegacyPassword password = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection)
+            {
+                PasswordHash = passwordHash
+            };
             Assert.Equal(expectedPasswordSet, password.PasswordIsSet());
         }
 

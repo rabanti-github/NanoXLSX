@@ -17,19 +17,21 @@ namespace NanoXLSX.Test.Core.StyleTest
 
         public FontTest()
         {
-            exampleStyle = new Font();
-            exampleStyle.Bold = true;
-            exampleStyle.Italic = true;
-            exampleStyle.Underline = UnderlineValue.Double;
-            exampleStyle.Strike = true;
-            exampleStyle.Charset = CharsetValue.ANSI;
-            exampleStyle.Size = 15;
-            exampleStyle.Name = "Arial";
-            exampleStyle.Family = FontFamilyValue.Script;
-            exampleStyle.ColorTheme = ColorSchemeElement.Accent5;
-            exampleStyle.ColorValue = "FF22AACC";
-            exampleStyle.Scheme = SchemeValue.Minor;
-            exampleStyle.VerticalAlign = VerticalTextAlignValue.Subscript;
+            exampleStyle = new Font
+            {
+                Bold = true,
+                Italic = true,
+                Underline = UnderlineValue.Double,
+                Strike = true,
+                Charset = CharsetValue.ANSI,
+                Size = 15,
+                Name = "Arial",
+                Family = FontFamilyValue.Script,
+                ColorTheme = ColorSchemeElement.Accent5,
+                ColorValue = "FF22AACC",
+                Scheme = SchemeValue.Minor,
+                VerticalAlign = VerticalTextAlignValue.Subscript
+            };
         }
 
 
@@ -157,8 +159,10 @@ namespace NanoXLSX.Test.Core.StyleTest
         [InlineData(409.05f, 409f)]
         public void SizeFailTest(float givenValue, float expectedValue)
         {
-            Font font = new Font();
-            font.Size = givenValue;
+            Font font = new Font
+            {
+                Size = givenValue
+            };
             Assert.Equal(expectedValue, font.Size);
         }
 
@@ -289,8 +293,10 @@ namespace NanoXLSX.Test.Core.StyleTest
         [InlineData("---", SchemeValue.None)] // Not a font but a valid string
         public void ValidateFontSchemeTest(string fontName, SchemeValue scheme)
         {
-            Font font = new Font();
-            font.Name = fontName;
+            Font font = new Font
+            {
+                Name = fontName
+            };
             Assert.Equal(scheme, font.Scheme);
         }
 

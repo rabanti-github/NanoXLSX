@@ -184,7 +184,7 @@ namespace NanoXLSX.Test.Writer_Reader.Misc
             Assert.Equal(string.Empty, prefix);
         }
 
-        [Fact(DisplayName = "Test of the DiscoverPrefix Method when no no prefix was defined")]
+        [Fact(DisplayName = "Test of the DiscoverPrefix Method when no prefix was defined")]
         public void DiscoverPrefixMissingTest2()
         {
             // Arrange

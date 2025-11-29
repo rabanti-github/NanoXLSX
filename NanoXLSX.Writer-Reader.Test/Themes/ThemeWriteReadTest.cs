@@ -20,8 +20,10 @@ namespace NanoXLSX.Test.Writer_Reader.ThemesTest
         public void NameTest(string name, string expectedName)
         {
             Theme theme = new Theme(name);
-            Workbook workbook = new Workbook();
-            workbook.WorkbookTheme = theme;
+            Workbook workbook = new Workbook
+            {
+                WorkbookTheme = theme
+            };
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
 
             Assert.Equal(expectedName, givenWorkbook.WorkbookTheme.Name);
@@ -31,13 +33,17 @@ namespace NanoXLSX.Test.Writer_Reader.ThemesTest
         public void ColorsTest()
         {
             Theme theme = new Theme("test");
-            ColorScheme scheme = new ColorScheme();
-            scheme.Name = "scheme1";
-            scheme.Light2 = new SystemColor(SystemColor.Value.ButtonFace);
-            scheme.Dark1 = new SrgbColor("ABCD01");
+            ColorScheme scheme = new ColorScheme
+            {
+                Name = "scheme1",
+                Light2 = new SystemColor(SystemColor.Value.ButtonFace),
+                Dark1 = new SrgbColor("ABCD01")
+            };
             theme.Colors = scheme;
-            Workbook workbook = new Workbook();
-            workbook.WorkbookTheme = theme;
+            Workbook workbook = new Workbook
+            {
+                WorkbookTheme = theme
+            };
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
 
             Assert.Equal("scheme1", givenWorkbook.WorkbookTheme.Colors.Name);
@@ -53,8 +59,10 @@ namespace NanoXLSX.Test.Writer_Reader.ThemesTest
             Assert.Equal("default", theme.Colors.Name);
             theme.Colors.Name = "test1";
             Assert.Equal("test1", theme.Colors.Name);
-            Workbook workbook = new Workbook();
-            workbook.WorkbookTheme = theme;
+            Workbook workbook = new Workbook
+            {
+                WorkbookTheme = theme
+            };
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             Assert.Equal("test1", givenWorkbook.WorkbookTheme.Colors.Name);
         }
@@ -209,8 +217,10 @@ namespace NanoXLSX.Test.Writer_Reader.ThemesTest
             // Set the color using the passed lambda.
             setColor(theme, color);
 
-            Workbook workbook = new Workbook();
-            workbook.WorkbookTheme = theme;
+            Workbook workbook = new Workbook
+            {
+                WorkbookTheme = theme
+            };
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
 
             // Assert that the saved and reloaded property matches.

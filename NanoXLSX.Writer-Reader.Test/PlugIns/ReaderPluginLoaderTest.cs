@@ -30,8 +30,10 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         [InlineData(typeof(TestReaderPackageWithoutStream), "TEST_READER_PLUGIN_NO_STREAM")]
         public void ReaderPackageRegistrationTest(Type pluginType, string pluginUuid)
         {
-            List<Type> plugins = new List<Type>();
-            plugins.Add(pluginType);
+            List<Type> plugins = new List<Type>
+            {
+                pluginType
+            };
             PlugInLoader.InjectPlugins(plugins);
 
             Workbook wb = CreateTestWorkbook();
@@ -51,9 +53,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         [Fact(DisplayName = "Test of the plug-in handling for the registration of multiple reader packages in a queue")]
         public void ReaderPackageRegistrationTest2()
         {
-            List<Type> plugins = new List<Type>();
-            plugins.Add(typeof(TestReaderPackage));
-            plugins.Add(typeof(TestReaderPackage2));
+            List<Type> plugins = new List<Type>
+            {
+                typeof(TestReaderPackage),
+                typeof(TestReaderPackage2)
+            };
             PlugInLoader.InjectPlugins(plugins);
 
             Workbook wb = CreateTestWorkbook();
@@ -77,9 +81,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         [Fact(DisplayName = "Test of the plug-in handling for reader queue execution order")]
         public void ReaderQueueExecutionOrderTest()
         {
-            List<Type> plugins = new List<Type>();
-            plugins.Add(typeof(TestReaderPackageOrder2));
-            plugins.Add(typeof(TestReaderPackageOrder1));
+            List<Type> plugins = new List<Type>
+            {
+                typeof(TestReaderPackageOrder2),
+                typeof(TestReaderPackageOrder1)
+            };
             PlugInLoader.InjectPlugins(plugins);
 
             Workbook wb = CreateTestWorkbook();
@@ -100,8 +106,10 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         [Fact(DisplayName = "Test of reader plugin with non-existent stream entry")]
         public void ReaderPackageWithMissingStreamTest()
         {
-            List<Type> plugins = new List<Type>();
-            plugins.Add(typeof(TestReaderPackageNonExistentStream));
+            List<Type> plugins = new List<Type>
+            {
+                typeof(TestReaderPackageNonExistentStream)
+            };
             PlugInLoader.InjectPlugins(plugins);
 
             Workbook wb = CreateTestWorkbook();
@@ -121,8 +129,10 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         [Fact(DisplayName = "Test of reader plugin with existing stream entry")]
         public void ReaderPackageWithExistingStreamTest()
         {
-            List<Type> plugins = new List<Type>();
-            plugins.Add(typeof(TestReaderPackageExistingStream));
+            List<Type> plugins = new List<Type>
+            {
+                typeof(TestReaderPackageExistingStream)
+            };
             PlugInLoader.InjectPlugins(plugins);
 
             Workbook wb = CreateTestWorkbook();

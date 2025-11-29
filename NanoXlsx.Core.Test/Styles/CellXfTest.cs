@@ -12,16 +12,18 @@ namespace NanoXLSX.Test.Core.StyleTest
 
         public CellXfTest()
         {
-            exampleStyle = new CellXf();
-            exampleStyle.Hidden = true;
-            exampleStyle.Locked = true;
-            exampleStyle.ForceApplyAlignment = true;
-            exampleStyle.HorizontalAlign = HorizontalAlignValue.Left;
-            exampleStyle.VerticalAlign = VerticalAlignValue.Center;
-            exampleStyle.TextDirection = TextDirectionValue.Horizontal;
-            exampleStyle.Alignment = TextBreakValue.ShrinkToFit;
-            exampleStyle.TextRotation = 75;
-            exampleStyle.Indent = 3;
+            exampleStyle = new CellXf
+            {
+                Hidden = true,
+                Locked = true,
+                ForceApplyAlignment = true,
+                HorizontalAlign = HorizontalAlignValue.Left,
+                VerticalAlign = VerticalAlignValue.Center,
+                TextDirection = TextDirectionValue.Horizontal,
+                Alignment = TextBreakValue.ShrinkToFit,
+                TextRotation = 75,
+                Indent = 3
+            };
         }
 
         [Theory(DisplayName = "Test of the get and set function of the Hidden property")]

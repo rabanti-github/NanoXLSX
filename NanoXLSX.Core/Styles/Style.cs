@@ -209,12 +209,14 @@ namespace NanoXLSX.Styles
             {
                 throw new StyleException("The style could not be copied because one or more components are missing as references");
             }
-            Style copy = new Style();
-            copy.CurrentBorder = CurrentBorder.CopyBorder();
-            copy.CurrentCellXf = CurrentCellXf.CopyCellXf();
-            copy.CurrentFill = CurrentFill.CopyFill();
-            copy.CurrentFont = CurrentFont.CopyFont();
-            copy.CurrentNumberFormat = CurrentNumberFormat.CopyNumberFormat();
+            Style copy = new Style
+            {
+                CurrentBorder = CurrentBorder.CopyBorder(),
+                CurrentCellXf = CurrentCellXf.CopyCellXf(),
+                CurrentFill = CurrentFill.CopyFill(),
+                CurrentFont = CurrentFont.CopyFont(),
+                CurrentNumberFormat = CurrentNumberFormat.CopyNumberFormat()
+            };
             return copy;
         }
 

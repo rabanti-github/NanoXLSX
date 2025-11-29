@@ -75,7 +75,7 @@ namespace NanoXLSX.Utils.Xml
         /// </summary>
         /// <param name="name">Attribute name</param>
         /// <param name="attributes">List of attributes</param>
-        /// <returns>Attribute that matche sthe name, or null if no attribute was found</returns>
+        /// <returns>Attribute that matches the name, or null if no attribute was found</returns>
         public static XmlAttribute? FindAttribute(string name, HashSet<XmlAttribute> attributes)
         {
             if (attributes == null || attributes.Count == 0)

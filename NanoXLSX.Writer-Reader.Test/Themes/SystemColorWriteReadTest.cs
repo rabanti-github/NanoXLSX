@@ -40,11 +40,15 @@ namespace NanoXLSX.Test.Writer_Reader.Themes
         public void SystemColorReadWriteTest(SystemColor.Value colorValue, string lastColor)
         {
             Theme theme = new Theme("test");
-            SystemColor color = new SystemColor(colorValue);
-            color.LastColor = lastColor;
+            SystemColor color = new SystemColor(colorValue)
+            {
+                LastColor = lastColor
+            };
             theme.Colors.Dark1 = color;
-            Workbook workbook = new Workbook();
-            workbook.WorkbookTheme = theme;
+            Workbook workbook = new Workbook
+            {
+                WorkbookTheme = theme
+            };
             Assert.Equal(colorValue, ((SystemColor)workbook.WorkbookTheme.Colors.Dark1).ColorValue);
             Assert.Equal(lastColor, ((SystemColor)workbook.WorkbookTheme.Colors.Dark1).LastColor);
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);

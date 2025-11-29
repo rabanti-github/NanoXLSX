@@ -65,8 +65,10 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
         [InlineData(false)]
         public void ReadWorkbookHiddenTest(bool hidden)
         {
-            Workbook workbook = new Workbook();
-            workbook.Hidden = hidden;
+            Workbook workbook = new Workbook
+            {
+                Hidden = hidden
+            };
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
             Assert.Equal(hidden, givenWorkbook.Hidden);
         }

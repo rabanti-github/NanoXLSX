@@ -77,35 +77,39 @@ namespace NanoXLSX.Test.Core.ThemeTest
         [Fact(DisplayName = "Test of Equals() and HashCode() implementations for equality")]
         public void EqualsTest()
         {
-            ColorScheme scheme1 = new ColorScheme();
-            scheme1.Name = "scheme1"; // Should have an influence
-            scheme1.Dark1 = new SystemColor(SystemColor.Value.ActiveBorder);
-            scheme1.Light1 = new SystemColor(SystemColor.Value.Menu);
-            scheme1.Dark2 = new SystemColor(SystemColor.Value.Background);
-            scheme1.Light2 = new SystemColor(SystemColor.Value.Background);
-            scheme1.Accent1 = new SystemColor(SystemColor.Value.AppWorkspace);
-            scheme1.Accent2 = new SystemColor(SystemColor.Value.ButtonShadow);
-            scheme1.Accent3 = new SrgbColor("FFAABB");
-            scheme1.Accent4 = null;
-            scheme1.Accent5 = new SrgbColor("FFAABB");
-            scheme1.Accent6 = new SrgbColor("FFAABB");
-            scheme1.Hyperlink = new SrgbColor("FFAABB");
-            scheme1.FollowedHyperlink = new SrgbColor("FFAABB");
+            ColorScheme scheme1 = new ColorScheme
+            {
+                Name = "scheme1", // Should have an influence
+                Dark1 = new SystemColor(SystemColor.Value.ActiveBorder),
+                Light1 = new SystemColor(SystemColor.Value.Menu),
+                Dark2 = new SystemColor(SystemColor.Value.Background),
+                Light2 = new SystemColor(SystemColor.Value.Background),
+                Accent1 = new SystemColor(SystemColor.Value.AppWorkspace),
+                Accent2 = new SystemColor(SystemColor.Value.ButtonShadow),
+                Accent3 = new SrgbColor("FFAABB"),
+                Accent4 = null,
+                Accent5 = new SrgbColor("FFAABB"),
+                Accent6 = new SrgbColor("FFAABB"),
+                Hyperlink = new SrgbColor("FFAABB"),
+                FollowedHyperlink = new SrgbColor("FFAABB")
+            };
 
-            ColorScheme scheme2 = new ColorScheme();
-            scheme2.Name = "scheme1"; // Should have an influence
-            scheme2.Dark1 = new SystemColor(SystemColor.Value.ActiveBorder);
-            scheme2.Light1 = new SystemColor(SystemColor.Value.Menu);
-            scheme2.Dark2 = new SystemColor(SystemColor.Value.Background);
-            scheme2.Light2 = new SystemColor(SystemColor.Value.Background);
-            scheme2.Accent1 = new SystemColor(SystemColor.Value.AppWorkspace);
-            scheme2.Accent2 = new SystemColor(SystemColor.Value.ButtonShadow);
-            scheme2.Accent3 = new SrgbColor("FFAABB");
-            scheme2.Accent4 = null;
-            scheme2.Accent5 = new SrgbColor("FFAABB");
-            scheme2.Accent6 = new SrgbColor("FFAABB");
-            scheme2.Hyperlink = new SrgbColor("FFAABB");
-            scheme2.FollowedHyperlink = new SrgbColor("FFAABB");
+            ColorScheme scheme2 = new ColorScheme
+            {
+                Name = "scheme1", // Should have an influence
+                Dark1 = new SystemColor(SystemColor.Value.ActiveBorder),
+                Light1 = new SystemColor(SystemColor.Value.Menu),
+                Dark2 = new SystemColor(SystemColor.Value.Background),
+                Light2 = new SystemColor(SystemColor.Value.Background),
+                Accent1 = new SystemColor(SystemColor.Value.AppWorkspace),
+                Accent2 = new SystemColor(SystemColor.Value.ButtonShadow),
+                Accent3 = new SrgbColor("FFAABB"),
+                Accent4 = null,
+                Accent5 = new SrgbColor("FFAABB"),
+                Accent6 = new SrgbColor("FFAABB"),
+                Hyperlink = new SrgbColor("FFAABB"),
+                FollowedHyperlink = new SrgbColor("FFAABB")
+            };
 
             Assert.True(scheme1.Equals(scheme2));
             Assert.Equal(scheme1.GetHashCode(), scheme2.GetHashCode());

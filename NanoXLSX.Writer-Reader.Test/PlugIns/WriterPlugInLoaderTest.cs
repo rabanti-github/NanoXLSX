@@ -32,9 +32,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         [InlineData(typeof(TestRootPackage))]
         public void PackageRegistrationTest(Type pluginType)
         {
-            List<Type> plugins = new List<Type>();
-            // Note: These plug-ins may lead to an invalid XLSX file, depending on the RId and metadata of the packed file. It is just to test the plug-in functionality
-            plugins.Add(pluginType);
+            List<Type> plugins = new List<Type>
+            {
+                // Note: These plug-ins may lead to an invalid XLSX file, depending on the RId and metadata of the packed file. It is just to test the plug-in functionality
+                pluginType
+            };
             PlugInLoader.InjectPlugins(plugins);
             Workbook wb = new Workbook();
             using (MemoryStream ms = new MemoryStream())
@@ -56,10 +58,12 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         [Fact(DisplayName = "Test of the plug-in handling for the registration of multiple package parts in a queue")]
         public void PackageRegistrationTest2()
         {
-            List<Type> plugins = new List<Type>();
-            // Note: These plug-ins may lead to an invalid XLSX file, depending on the RId and metadata of the packed file. It is just to test the plug-in functionality
-            plugins.Add(typeof(TestPackage));
-            plugins.Add(typeof(TestPackage2));
+            List<Type> plugins = new List<Type>
+            {
+                // Note: These plug-ins may lead to an invalid XLSX file, depending on the RId and metadata of the packed file. It is just to test the plug-in functionality
+                typeof(TestPackage),
+                typeof(TestPackage2)
+            };
             PlugInLoader.InjectPlugins(plugins);
             Workbook wb = new Workbook();
             using (MemoryStream ms = new MemoryStream())

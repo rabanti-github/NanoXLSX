@@ -95,8 +95,10 @@ namespace NanoXLSX.Internal.Readers
             try
             {
                 WorksheetDefinition worksheetDefinition = Workbook.AuxiliaryData.GetData<WorksheetDefinition>(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, CurrentWorksheetID);
-                Worksheet worksheet = new Worksheet(worksheetDefinition.WorksheetName, CurrentWorksheetID, Workbook);
-                worksheet.Hidden = worksheetDefinition.Hidden;
+                Worksheet worksheet = new Worksheet(worksheetDefinition.WorksheetName, CurrentWorksheetID, Workbook)
+                {
+                    Hidden = worksheetDefinition.Hidden
+                };
                 using (stream) // Close after processing
                 {
                     XmlDocument document = new XmlDocument() { XmlResolver = null };
@@ -1143,7 +1145,7 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Tris to parse a DateTime instance from a string
+        /// Tries to parse a DateTime instance from a string
         /// </summary>
         /// <param name="raw">String to parse</param>
         /// <returns>DateTime instance or null if not possible to parse</returns>

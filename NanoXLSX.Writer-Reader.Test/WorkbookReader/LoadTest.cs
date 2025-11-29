@@ -82,10 +82,12 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookReaderTest
 
         private static Dictionary<string, object> CreateSampleData()
         {
-            Dictionary<string, object> data = new Dictionary<string, object>();
-            data.Add("A1", "test");
-            data.Add("A2", 22);
-            data.Add("A3", 11.1f);
+            Dictionary<string, object> data = new Dictionary<string, object>
+            {
+                { "A1", "test" },
+                { "A2", 22 },
+                { "A3", 11.1f }
+            };
             return data;
         }
 

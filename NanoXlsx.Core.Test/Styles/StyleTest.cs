@@ -146,9 +146,11 @@ namespace NanoXLSX.Test.Core.StyleTest
             Style style = new Style();
             Border border = new Border();
             Assert.Equal(border.GetHashCode(), style.CurrentBorder.GetHashCode());
-            Border modified = new Border();
-            modified.BottomColor = "FFAABBCC";
-            modified.BottomStyle = StyleValue.DashDotDot;
+            Border modified = new Border
+            {
+                BottomColor = "FFAABBCC",
+                BottomStyle = StyleValue.DashDotDot
+            };
             style.Append(modified);
             Assert.Equal(modified.GetHashCode(), style.CurrentBorder.GetHashCode());
         }
@@ -159,9 +161,11 @@ namespace NanoXLSX.Test.Core.StyleTest
             Style style = new Style();
             Font font = new Font();
             Assert.Equal(font.GetHashCode(), style.CurrentFont.GetHashCode());
-            Font modified = new Font();
-            modified.Bold = true;
-            modified.Family = FontFamilyValue.Modern;
+            Font modified = new Font
+            {
+                Bold = true,
+                Family = FontFamilyValue.Modern
+            };
             style.Append(modified);
             Assert.Equal(modified.GetHashCode(), style.CurrentFont.GetHashCode());
         }
@@ -172,9 +176,11 @@ namespace NanoXLSX.Test.Core.StyleTest
             Style style = new Style();
             Fill fill = new Fill();
             Assert.Equal(fill.GetHashCode(), style.CurrentFill.GetHashCode());
-            Fill modified = new Fill();
-            modified.BackgroundColor = "FFAABBCC";
-            modified.ForegroundColor = "FF112233";
+            Fill modified = new Fill
+            {
+                BackgroundColor = "FFAABBCC",
+                ForegroundColor = "FF112233"
+            };
             style.Append(modified);
             Assert.Equal(modified.GetHashCode(), style.CurrentFill.GetHashCode());
         }
@@ -185,9 +191,11 @@ namespace NanoXLSX.Test.Core.StyleTest
             Style style = new Style();
             CellXf cellXf = new CellXf();
             Assert.Equal(cellXf.GetHashCode(), style.CurrentCellXf.GetHashCode());
-            CellXf modified = new CellXf();
-            modified.HorizontalAlign = HorizontalAlignValue.Distributed;
-            modified.TextRotation = 35;
+            CellXf modified = new CellXf
+            {
+                HorizontalAlign = HorizontalAlignValue.Distributed,
+                TextRotation = 35
+            };
             style.Append(modified);
             Assert.Equal(modified.GetHashCode(), style.CurrentCellXf.GetHashCode());
         }
@@ -198,8 +206,10 @@ namespace NanoXLSX.Test.Core.StyleTest
             Style style = new Style();
             NumberFormat numberFormat = new NumberFormat();
             Assert.Equal(numberFormat.GetHashCode(), style.CurrentNumberFormat.GetHashCode());
-            NumberFormat modified = new NumberFormat();
-            modified.Number = FormatNumber.Format11;
+            NumberFormat modified = new NumberFormat
+            {
+                Number = FormatNumber.Format11
+            };
             style.Append(modified);
             Assert.Equal(modified.GetHashCode(), style.CurrentNumberFormat.GetHashCode());
         }
@@ -213,16 +223,26 @@ namespace NanoXLSX.Test.Core.StyleTest
             style.CurrentBorder.BottomColor = "FFAA3344";
             style.CurrentFill.BackgroundColor = "FF55AACC";
             style.CurrentNumberFormat.CustomFormatID = 190;
-            Font font = new Font();
-            font.Name = "Arial";
-            CellXf cellXf = new CellXf();
-            cellXf.HorizontalAlign = HorizontalAlignValue.Justify;
-            Border border = new Border();
-            border.TopColor = "FF55BB11";
-            Fill fill = new Fill();
-            fill.ForegroundColor = "FFDDDDDD";
-            NumberFormat numberFormat = new NumberFormat();
-            numberFormat.CustomFormatCode = "##--##";
+            Font font = new Font
+            {
+                Name = "Arial"
+            };
+            CellXf cellXf = new CellXf
+            {
+                HorizontalAlign = HorizontalAlignValue.Justify
+            };
+            Border border = new Border
+            {
+                TopColor = "FF55BB11"
+            };
+            Fill fill = new Fill
+            {
+                ForegroundColor = "FFDDDDDD"
+            };
+            NumberFormat numberFormat = new NumberFormat
+            {
+                CustomFormatCode = "##--##"
+            };
 
             style.Append(font);
             style.Append(cellXf);
@@ -306,40 +326,60 @@ namespace NanoXLSX.Test.Core.StyleTest
         [Fact(DisplayName = "Test of the failing GetHashCode function on a invalid style component (null instance)")]
         public void GetHashCodeFailTest()
         {
-            Style style = new Style();
-            style.CurrentBorder = null;
+            Style style = new Style
+            {
+                CurrentBorder = null
+            };
             Assert.Throws<StyleException>(() => style.GetHashCode());
-            style = new Style();
-            style.CurrentCellXf = null;
+            style = new Style
+            {
+                CurrentCellXf = null
+            };
             Assert.Throws<StyleException>(() => style.GetHashCode());
-            style = new Style();
-            style.CurrentFill = null;
+            style = new Style
+            {
+                CurrentFill = null
+            };
             Assert.Throws<StyleException>(() => style.GetHashCode());
-            style = new Style();
-            style.CurrentFont = null;
+            style = new Style
+            {
+                CurrentFont = null
+            };
             Assert.Throws<StyleException>(() => style.GetHashCode());
-            style = new Style();
-            style.CurrentNumberFormat = null;
+            style = new Style
+            {
+                CurrentNumberFormat = null
+            };
             Assert.Throws<StyleException>(() => style.GetHashCode());
         }
 
         [Fact(DisplayName = "Test of the failing Copy function on a invalid style component (null instance)")]
         public void CopyFailTest()
         {
-            Style style = new Style();
-            style.CurrentBorder = null;
+            Style style = new Style
+            {
+                CurrentBorder = null
+            };
             Assert.Throws<StyleException>(() => style.Copy());
-            style = new Style();
-            style.CurrentCellXf = null;
+            style = new Style
+            {
+                CurrentCellXf = null
+            };
             Assert.Throws<StyleException>(() => style.Copy());
-            style = new Style();
-            style.CurrentFill = null;
+            style = new Style
+            {
+                CurrentFill = null
+            };
             Assert.Throws<StyleException>(() => style.Copy());
-            style = new Style();
-            style.CurrentFont = null;
+            style = new Style
+            {
+                CurrentFont = null
+            };
             Assert.Throws<StyleException>(() => style.Copy());
-            style = new Style();
-            style.CurrentNumberFormat = null;
+            style = new Style
+            {
+                CurrentNumberFormat = null
+            };
             Assert.Throws<StyleException>(() => style.Copy());
         }
 

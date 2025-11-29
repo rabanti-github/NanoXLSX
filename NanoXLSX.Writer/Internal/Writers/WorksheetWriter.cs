@@ -133,7 +133,7 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="worksheet">Corresponding worksheet</param>
         /// <returns>XmlElement, holding information regarding merged cells</returns>
-        private XmlElement CreateMergedCellsElement(Worksheet worksheet)
+        private static XmlElement CreateMergedCellsElement(Worksheet worksheet)
         {
             if (worksheet.MergedCells.Count < 1)
             {
@@ -218,7 +218,7 @@ namespace NanoXLSX.Internal.Writers
                     sb.Append(worksheet.SelectedCells[i].ToString());
                     if (i < worksheet.SelectedCells.Count - 1)
                     {
-                        sb.Append(" ");
+                        sb.Append(' ');
                     }
                 }
                 selection.AddAttribute("sqref", sb.ToString());
@@ -231,7 +231,7 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="worksheet">Corresponding worksheet</param>
         /// <returns>True if applied, otherwise false</returns>
-        private bool HasPaneSplitting(Worksheet worksheet)
+        private static bool HasPaneSplitting(Worksheet worksheet)
         {
             if (worksheet.PaneSplitLeftWidth == null && worksheet.PaneSplitTopHeight == null && worksheet.PaneSplitAddress == null)
             {
@@ -341,7 +341,7 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="worksheet">Corresponding worksheet</param>
         /// <returns>Sorted list of dynamic rows that are either defined by cells or row widths / hidden states. The list is sorted by row numbers (zero-based)</returns>
-        private List<DynamicRow> GetSortedSheetData(Worksheet worksheet)
+        private static List<DynamicRow> GetSortedSheetData(Worksheet worksheet)
         {
             List<Cell> temp = new List<Cell>();
             foreach (KeyValuePair<string, Cell> item in worksheet.Cells)
@@ -361,8 +361,10 @@ namespace NanoXLSX.Internal.Writers
                     if (cell.RowNumber != rowNumber)
                     {
                         rows.Add(rowNumber, row);
-                        row = new DynamicRow();
-                        row.RowNumber = cell.RowNumber;
+                        row = new DynamicRow
+                        {
+                            RowNumber = cell.RowNumber
+                        };
                         rowNumber = cell.RowNumber;
                     }
                     row.CellDefinitions.Add(cell);
@@ -376,8 +378,10 @@ namespace NanoXLSX.Internal.Writers
             {
                 if (!rows.ContainsKey(rowHeight.Key))
                 {
-                    row = new DynamicRow();
-                    row.RowNumber = rowHeight.Key;
+                    row = new DynamicRow
+                    {
+                        RowNumber = rowHeight.Key
+                    };
                     rows.Add(rowHeight.Key, row);
                 }
             }
@@ -385,22 +389,24 @@ namespace NanoXLSX.Internal.Writers
             {
                 if (!rows.ContainsKey(hiddenRow.Key))
                 {
-                    row = new DynamicRow();
-                    row.RowNumber = hiddenRow.Key;
+                    row = new DynamicRow
+                    {
+                        RowNumber = hiddenRow.Key
+                    };
                     rows.Add(hiddenRow.Key, row);
                 }
             }
             List<DynamicRow> output = rows.Values.ToList();
-            output.Sort((r1, r2) => (r1.RowNumber.CompareTo(r2.RowNumber))); // Lambda sort
+            output.Sort((r1, r2) => r1.RowNumber.CompareTo(r2.RowNumber)); // Lambda sort
             return output;
         }
 
         /// <summary>
-        /// Method  to create a IEnumerable of pane elements as XmlElements
+        /// Method  to create a List of pane elements as XmlElements
         /// </summary>
         /// <param name="worksheet">Corresponding worksheet</param>
-        /// <returns>IEnumerable of Pane Element entries</returns>
-        private IEnumerable<XmlElement> CreatePaneElements(Worksheet worksheet)
+        /// <returns>List of Pane Element entries</returns>
+        private static List<XmlElement> CreatePaneElements(Worksheet worksheet)
         {
             if (!HasPaneSplitting(worksheet))
             {
@@ -514,7 +520,7 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="worksheet">worksheet object to get the row definitions from</param>
         /// <param name="numberOfRows">Number of rows from the top to the split position</param>
         /// <returns>Internal height from the top of the worksheet to the pane split position</returns>
-        private float CalculatePaneHeight(Worksheet worksheet, int numberOfRows)
+        private static float CalculatePaneHeight(Worksheet worksheet, int numberOfRows)
         {
             float height = 0;
             for (int i = 0; i < numberOfRows; i++)
@@ -537,7 +543,7 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="worksheet">worksheet object to get the column definitions from</param>
         /// <param name="numberOfColumns">Number of columns from the left to the split position</param>
         /// <returns>Internal width from the left of the worksheet to the pane split position</returns>
-        private float CalculatePaneWidth(Worksheet worksheet, int numberOfColumns)
+        private static float CalculatePaneWidth(Worksheet worksheet, int numberOfColumns)
         {
             float width = 0;
             for (int i = 0; i < numberOfColumns; i++)
@@ -560,7 +566,7 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="worksheet">Corresponding worksheet</param>
         /// <returns>XmlElement, holding cols information</returns>
-        private XmlElement CreateColsElement(Worksheet worksheet)
+        private static XmlElement CreateColsElement(Worksheet worksheet)
         {
             XmlElement cols = null;
             if (worksheet.Columns.Count == 0)
@@ -720,11 +726,11 @@ namespace NanoXLSX.Internal.Writers
         }
 
         /// <summary>
-        /// Method to create an IEnumerable of row elements (XmlElement)
+        /// Method to create an List of row elements (XmlElement)
         /// </summary>
         /// <param name="worksheet">Corresponding worksheet</param>
-        /// <returns>IEnumerable, holding row elements as XmlElement entries</returns>
-        private IEnumerable<XmlElement> CreateRowElements(Worksheet worksheet)
+        /// <returns>List, holding row elements as XmlElement entries</returns>
+        private List<XmlElement> CreateRowElements(Worksheet worksheet)
         {
             List<DynamicRow> cellData = GetSortedSheetData(worksheet);
             List<XmlElement> rows = new List<XmlElement>(cellData.Count);
