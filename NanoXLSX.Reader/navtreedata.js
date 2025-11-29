@@ -25,6 +25,12 @@
 var NAVTREE =
 [
   [ "NanoXLSX.Reader", "index.html", [
+    [ "NanoXLSX.Reader", "index.html#autotoc_md5", [
+      [ "Description", "index.html#autotoc_md7", null ],
+      [ "Dependencies", "index.html#autotoc_md8", null ],
+      [ "Further References", "index.html#autotoc_md9", null ],
+      [ "Changes", "index.html#autotoc_md10", null ]
+    ] ],
     [ "Change Log - NanoXLSX.Reader", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html", [
       [ "v3.0.0-rc.1", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md1", null ],
       [ "v3.0.0-rc.2", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md3", null ]
@@ -54,7 +60,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html"
+"index.html#autotoc_md5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

@@ -25,6 +25,12 @@
 var NAVTREE =
 [
   [ "NanoXLSX.Writer", "index.html", [
+    [ "NanoXLSX.Writer", "index.html#autotoc_md5", [
+      [ "Description", "index.html#autotoc_md7", null ],
+      [ "Dependencies", "index.html#autotoc_md8", null ],
+      [ "Further References", "index.html#autotoc_md9", null ],
+      [ "Changes", "index.html#autotoc_md10", null ]
+    ] ],
     [ "Change Log - NanoXLSX.Writer", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html", [
       [ "v3.0.0-rc.1", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html#autotoc_md1", null ],
       [ "v3.0.0-rc.2", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html#autotoc_md3", null ]

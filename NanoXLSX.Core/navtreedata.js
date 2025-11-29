@@ -25,6 +25,12 @@
 var NAVTREE =
 [
   [ "NanoXLSX.Core", "index.html", [
+    [ "NanoXLSX.Core", "index.html#autotoc_md5", [
+      [ "Description", "index.html#autotoc_md7", null ],
+      [ "Dependencies", "index.html#autotoc_md8", null ],
+      [ "Further References", "index.html#autotoc_md9", null ],
+      [ "Changes", "index.html#autotoc_md10", null ]
+    ] ],
     [ "Change Log - NanoXLSX.Core", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html", [
       [ "v3.0.0-rc.1", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1", null ],
       [ "v3.0.0-rc.2", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md3", null ]
@@ -57,7 +63,7 @@ var NAVTREEINDEX =
 "classNanoXLSX_1_1Utils_1_1DataUtils.html#aed02c37cec9c39db1ef00bd68dcdd1cc",
 "classNanoXLSX_1_1Worksheet.html#a1ea0190ddae08526aa492adf27fa3d9e",
 "classNanoXLSX_1_1Worksheet.html#ae53c8d06a9ce1ab80f01a7ab7abc98ec",
-"structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#a6e043efe8c9150781b606d014493d976"
+"structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#a69f3deb4b652198c89949397f909a0c0"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
