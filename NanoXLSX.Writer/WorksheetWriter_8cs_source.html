@@ -759,23 +759,19 @@ $(function(){initNavTree('WorksheetWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span><span class="preprocessor">        #region helperClasses</span></div>
 <div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span>        <span class="keyword">internal</span> <span class="keyword">class </span>DynamicRow</div>
 <div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>        {</div>
-<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span>            <span class="keyword">private</span> readonly List&lt;Cell&gt; cellDefinitions;</div>
-<div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span>            <span class="keyword">public</span> <span class="keywordtype">int</span> RowNumber { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
-<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span></div>
-<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span>            <span class="keyword">public</span> List&lt;Cell&gt; CellDefinitions</div>
-<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>            {</div>
-<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>                <span class="keyword">get</span> { <span class="keywordflow">return</span> cellDefinitions; }</div>
-<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>            }</div>
-<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span></div>
-<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>            <span class="keyword">public</span> DynamicRow()</div>
-<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>            {</div>
-<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>                this.cellDefinitions = <span class="keyword">new</span> List&lt;Cell&gt;();</div>
-<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>            }</div>
-<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>        }</div>
-<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span><span class="preprocessor">        #endregion</span></div>
-<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span> </div>
-<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>    }</div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>}</div>
+<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span>            <span class="keyword">public</span> <span class="keywordtype">int</span> RowNumber { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
+<div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span></div>
+<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>            <span class="keyword">public</span> List&lt;Cell&gt; CellDefinitions { <span class="keyword">get</span>; }</div>
+<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span></div>
+<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>            <span class="keyword">public</span> DynamicRow()</div>
+<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>            {</div>
+<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>                this.CellDefinitions = <span class="keyword">new</span> List&lt;Cell&gt;();</div>
+<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>            }</div>
+<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>        }</div>
+<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span><span class="preprocessor">        #endregion</span></div>
+<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span> </div>
+<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>    }</div>
+<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>}</div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Enums_1_1WriterPassword_html"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Enums_1_1WriterPassword.html">NanoXLSX.Internal.Enums.WriterPassword</a></div><div class="ttdoc">Static class that contains enums for password handling.</div><div class="ttdef"><b>Definition</b> <a href="WriterPassword_8cs_source.html#l00013">WriterPassword.cs:14</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_1_1Writer_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a></div><div class="ttdef"><b>Definition</b> <a href="IPasswordWriter_8cs_source.html#l00012">IPasswordWriter.cs:13</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces.html">NanoXLSX.Interfaces</a></div><div class="ttdef"><b>Definition</b> <a href="IPasswordWriter_8cs_source.html#l00012">IPasswordWriter.cs:13</a></div></div>
