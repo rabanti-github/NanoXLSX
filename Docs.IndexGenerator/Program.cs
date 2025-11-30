@@ -15,7 +15,7 @@ namespace Docs.IndexGenerator
 #nullable enable
     internal record DocEntry(string Id, string Title, string Path, string? Description);
     internal record RootConfig(string ProjectName, string BaseDescription, string RootDescription);
-    internal record MetaPackageConfig(string PackageName, string Version, string? Desrciption);
+    internal record MetaPackageConfig(string PackageName, string Version, string? Description);
     internal record PluginConfig(DocEntry[] Entries);
 #nullable disable
 
@@ -205,7 +205,7 @@ header h1 { margin: 0; }
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("<ul class=\"list\">");
-            string description = CreatePrefix(rootConfig, metaPackageConfig.Desrciption);
+            string description = CreatePrefix(rootConfig, metaPackageConfig.Description);
             sb.AppendLine($"        <li><strong>{EscapeHtml(metaPackageConfig.PackageName)}</strong> — {EscapeHtml(description ?? "")}</li>");
             sb.AppendLine("</ul>");
             return sb.ToString();

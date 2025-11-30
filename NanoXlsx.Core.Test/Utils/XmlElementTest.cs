@@ -552,12 +552,12 @@ namespace NanoXLSX.Core.Test.UtilsTest
         [InlineData("node", "att1", " ")]
         [InlineData("node", "att1", "TEST1")]
         [InlineData("node", "att1", "test2")]
-        public void FindElementByNameAndAttributeEmptyValueTest(string givenTagName, string givenAttributeName, string givenAttributevalue)
+        public void FindElementByNameAndAttributeEmptyValueTest(string givenTagName, string givenAttributeName, string givenAttributeValue)
         {
             XmlElement root = XmlElement.CreateElement("root");
             XmlElement child1 = root.AddChildElementWithValue("node", "test1");
             child1.AddAttribute("att", "test1");
-            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute(givenTagName, givenAttributeName, givenAttributevalue);
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute(givenTagName, givenAttributeName, givenAttributeValue);
             Assert.Empty(givenResult);
         }
 

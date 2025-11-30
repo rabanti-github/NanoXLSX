@@ -748,23 +748,19 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         internal class DynamicRow
         {
-            private readonly List<Cell> cellDefinitions;
             public int RowNumber { get; set; }
 
             /// <summary>
             /// Gets the List of cells if not empty
             /// </summary>
-            public List<Cell> CellDefinitions
-            {
-                get { return cellDefinitions; }
-            }
+            public List<Cell> CellDefinitions { get; }
 
             /// <summary>
             /// Default constructor. Defines an empty row if no additional operations are made on the object
             /// </summary>
             public DynamicRow()
             {
-                this.cellDefinitions = new List<Cell>();
+                this.CellDefinitions = new List<Cell>();
             }
         }
         #endregion
