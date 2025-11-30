@@ -29,7 +29,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         }
 
         [Fact(DisplayName = "Test of the ConvertArray method on decimal")]
-        public void ConvertDecimaleArrayTest()
+        public void ConvertDecimalArrayTest()
         {
             decimal[] array = new decimal[] { 0, 11.7m, 0.00001m, -22.5m, 100, -99, decimal.MinValue, decimal.MaxValue };
             AssertArray<decimal>(array, typeof(decimal));

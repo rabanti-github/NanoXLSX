@@ -256,7 +256,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         [InlineData(SchemeValue.Major)]
         [InlineData(SchemeValue.Minor)]
         [InlineData(SchemeValue.None)]
-        public void SchmeTest(SchemeValue value)
+        public void SchemeTest(SchemeValue value)
         {
             Font font = new Font();
             Assert.Equal(Font.DefaultFontScheme, font.Scheme); // default is minor

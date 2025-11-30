@@ -2771,7 +2771,7 @@ namespace NanoXLSX
             if (match.Groups.Count > 1)
             {
                 prefix = match.Groups[1].Value;
-                int.TryParse(match.Groups[2].Value, out number);
+                _ = int.TryParse(match.Groups[2].Value, out number);
                 // if this failed, the start number is 0 (parsed number was >max. int32)
             }
             while (true)

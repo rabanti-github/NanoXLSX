@@ -206,7 +206,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the GetFirstRowNumber function with defined rows on an empty worksheet")]
         [InlineData(RowProperty.Height)]
         [InlineData(RowProperty.Hidden)]
-        public void GetFisrtRowNumberTest2(RowProperty rowProperty)
+        public void GetFirstRowNumberTest2(RowProperty rowProperty)
         {
             Worksheet worksheet = new Worksheet();
             if (rowProperty == RowProperty.Hidden)
@@ -363,7 +363,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the GetFirstDataRowNumber function with defined rows where cells are defined above the last row")]
         [InlineData(RowProperty.Height)]
         [InlineData(RowProperty.Hidden)]
-        public void GetfirstDataRowNumberTest4(RowProperty rowProperty)
+        public void GetFirstDataRowNumberTest4(RowProperty rowProperty)
         {
             Worksheet worksheet = new Worksheet();
             if (rowProperty == RowProperty.Hidden)

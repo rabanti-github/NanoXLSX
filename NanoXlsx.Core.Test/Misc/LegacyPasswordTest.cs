@@ -57,12 +57,12 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData(" ", " ")]
         [InlineData(null, null)]
         [InlineData("", null)]
-        public void GetAndSetPasswordTest(string givenPassword, string expectedpassword)
+        public void GetAndSetPasswordTest(string givenPassword, string expectedPassword)
         {
             LegacyPassword password = new LegacyPassword(LegacyPassword.PasswordType.WorkbookProtection);
             Assert.Null(password.GetPassword());
             password.SetPassword(givenPassword);
-            Assert.Equal(expectedpassword, password.GetPassword());
+            Assert.Equal(expectedPassword, password.GetPassword());
         }
 
         [Theory(DisplayName = "Test of the UnsetPassword function (legacy)")]

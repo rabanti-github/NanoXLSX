@@ -136,10 +136,10 @@ namespace NanoXLSX.Test.Core.WorkbookTest
         [InlineData("F5", -3, true, "F2")]
         [InlineData("F5", -4, false, "A1")]
         [InlineData("F5", -4, true, "F1")]
-        public void DownTest3(string initialAddress, int number, bool keepColumn, string expectedAdrress)
+        public void DownTest3(string initialAddress, int number, bool keepColumn, string expectedAddress)
         {
             Workbook workbook = new Workbook("Sheet1");
-            AssertJumpKeep(workbook, workbook.WS.Down, initialAddress, number, keepColumn, expectedAdrress);
+            AssertJumpKeep(workbook, workbook.WS.Down, initialAddress, number, keepColumn, expectedAddress);
         }
 
         [Fact(DisplayName = "Test of the failing Down function with a negative row number")]
@@ -188,10 +188,10 @@ namespace NanoXLSX.Test.Core.WorkbookTest
         [InlineData("F5", -3, true, "F8")]
         [InlineData("F5", 4, false, "A1")]
         [InlineData("F5", 4, true, "F1")]
-        public void UpTest3(string initialAddress, int number, bool keepColumn, string expectedAdrress)
+        public void UpTest3(string initialAddress, int number, bool keepColumn, string expectedAddress)
         {
             Workbook workbook = new Workbook("Sheet1");
-            AssertJumpKeep(workbook, workbook.WS.Up, initialAddress, number, keepColumn, expectedAdrress);
+            AssertJumpKeep(workbook, workbook.WS.Up, initialAddress, number, keepColumn, expectedAddress);
         }
 
         [Fact(DisplayName = "Test of the failing Up function with a negative row number")]
@@ -239,10 +239,10 @@ namespace NanoXLSX.Test.Core.WorkbookTest
         [InlineData("F5", -3, true, "C5")]
         [InlineData("F5", -5, false, "A1")]
         [InlineData("F5", -5, true, "A5")]
-        public void RightTest3(string initialAddress, int number, bool keepColumn, string expectedAdrress)
+        public void RightTest3(string initialAddress, int number, bool keepColumn, string expectedAddress)
         {
             Workbook workbook = new Workbook("Sheet1");
-            AssertJumpKeep(workbook, workbook.WS.Right, initialAddress, number, keepColumn, expectedAdrress);
+            AssertJumpKeep(workbook, workbook.WS.Right, initialAddress, number, keepColumn, expectedAddress);
         }
 
         [Fact(DisplayName = "Test of the failing Right function with a negative row number")]
@@ -291,10 +291,10 @@ namespace NanoXLSX.Test.Core.WorkbookTest
         [InlineData("F5", -3, true, "I5")]
         [InlineData("F5", 5, false, "A1")]
         [InlineData("F5", 5, true, "A5")]
-        public void LeftTest3(string initialAddress, int number, bool keepColumn, string expectedAdrress)
+        public void LeftTest3(string initialAddress, int number, bool keepColumn, string expectedAddress)
         {
             Workbook workbook = new Workbook("Sheet1");
-            AssertJumpKeep(workbook, workbook.WS.Left, initialAddress, number, keepColumn, expectedAdrress);
+            AssertJumpKeep(workbook, workbook.WS.Left, initialAddress, number, keepColumn, expectedAddress);
         }
 
         [Fact(DisplayName = "Test of the failing Left function with a negative row number")]

@@ -346,11 +346,11 @@ namespace NanoXLSX.Test.Core.CellTest
         [InlineData("=A2", CellType.Default, CellType.String)]
         [InlineData("", CellType.Default, CellType.String)]
         [InlineData(null, CellType.Default, CellType.Empty)]
-        public void ResolveCellTypeTest(object givenValue, CellType givenCellType, CellType expectedCllType)
+        public void ResolveCellTypeTest(object givenValue, CellType givenCellType, CellType expectedCellType)
         {
             Cell cell = new Cell(givenValue, givenCellType, this.cellAddress);
             cell.ResolveCellType();
-            Assert.Equal(expectedCllType, cell.DataType);
+            Assert.Equal(expectedCellType, cell.DataType);
         }
 
         [Fact(DisplayName = "Test of the CompareTo method for dates and times")]

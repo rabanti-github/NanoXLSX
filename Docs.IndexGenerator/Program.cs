@@ -195,7 +195,7 @@ header h1 { margin: 0; }
             var sb = new System.Text.StringBuilder();
             foreach (var e in cfg.Entries)
             {
-                string href = $"{Uri.EscapeUriString(e.Path)}/index.html";
+                string href = $"{Uri.EscapeDataString(e.Path)}/index.html";
                 sb.AppendLine($"        <li><a href=\"{href}\"><strong>{EscapeHtml(e.Title)}</strong></a> — {EscapeHtml(e.Description ?? "")}</li>");
             }
             return sb.ToString();

@@ -141,12 +141,12 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(FontFamilyValue.Reserved7, uint.MaxValue, uint.MaxValue)]
         [InlineData(FontFamilyValue.Reserved8, ulong.MaxValue, ulong.MaxValue)]
         [InlineData(FontFamilyValue.Reserved9, SByte.MaxValue, 127)]
-        public void FamilyFontTest(FontFamilyValue styleValue, object givenValue, object expectdValue)
+        public void FamilyFontTest(FontFamilyValue styleValue, object givenValue, object expectedValue)
         {
             Style style = new Style();
 
             style.CurrentFont.Family = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(givenValue, expectdValue, style, "A1");
+            Cell cell = TestUtils.SaveAndReadStyledCell(givenValue, expectedValue, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Family);
         }
 

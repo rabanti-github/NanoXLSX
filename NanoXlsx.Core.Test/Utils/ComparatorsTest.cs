@@ -20,14 +20,14 @@ namespace NanoXLSX.Core.Test.Utils
         [InlineData(null, "", true)] // Exception
         [InlineData(null, " ", false)]
         [InlineData(null, "ABC", false)]
-        public void CompareSecureStringsTest(string plaintext1, string plaintext2, bool excpectedEqual)
+        public void CompareSecureStringsTest(string plainText1, string plainText2, bool expectedEqual)
         {
-            SecureString sstr1 = GetSecureString(plaintext1);
-            SecureString sstr2 = GetSecureString(plaintext2);
+            SecureString sstr1 = GetSecureString(plainText1);
+            SecureString sstr2 = GetSecureString(plainText2);
             bool isEqual = Comparators.CompareSecureStrings(sstr1, sstr2);
-            Assert.Equal(excpectedEqual, isEqual);
+            Assert.Equal(expectedEqual, isEqual);
             isEqual = Comparators.CompareSecureStrings(sstr2, sstr1); // reverse
-            Assert.Equal(excpectedEqual, isEqual);
+            Assert.Equal(expectedEqual, isEqual);
         }
 
         [Theory(DisplayName = "Test of the comparator function CompareDiomensions")]

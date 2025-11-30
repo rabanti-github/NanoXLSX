@@ -11,9 +11,10 @@ using NanoXLSX.Styles;
 namespace NanoXLSX
 {
     /// <summary>
-    /// Class to provide access to the current worksheet with a shortened syntax. Note: The WS object can be null if the workbook was created without a worksheet. 
-    /// The object will be available as soon as the current worksheet is defined
+    /// Class to provide access to the current worksheet with a shortened syntax.
     /// </summary>
+    /// \remark <remarks>Note: The WS object can be null if the workbook was created without a worksheet. 
+    /// The object will be available as soon as the current worksheet is defined.</remarks> 
     public class Shortener
     {
         private Worksheet currentWorksheet;
