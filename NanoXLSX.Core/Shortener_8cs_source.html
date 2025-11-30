@@ -103,156 +103,156 @@ $(function(){initNavTree('Shortener_8cs_source.html','',''); });
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceNanoXLSX.html">NanoXLSX</a></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>{</div>
-<div class="foldopen" id="foldopen00017" data-start="{" data-end="};">
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html">   17</a></span>    <span class="keyword">public</span> <span class="keyword">class </span><a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a9c68adabb9538993a0864fa9921db6b8">Shortener</a></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    {</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        <span class="keyword">private</span> <a class="code hl_class" href="classNanoXLSX_1_1Worksheet.html">Worksheet</a> currentWorksheet;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keyword">private</span> readonly <a class="code hl_class" href="classNanoXLSX_1_1Workbook.html">Workbook</a> workbookReference;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span></div>
-<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a9c68adabb9538993a0864fa9921db6b8">   26</a></span>        <span class="keyword">public</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a9c68adabb9538993a0864fa9921db6b8">Shortener</a>(<a class="code hl_class" href="classNanoXLSX_1_1Workbook.html">Workbook</a> reference)</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        {</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>            this.workbookReference = reference;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            this.currentWorksheet = reference.<a class="code hl_property" href="classNanoXLSX_1_1Workbook.html#a96b3e75427a26cbadf8dca9a887cd6de">CurrentWorksheet</a>;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        }</div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html">   18</a></span>    <span class="keyword">public</span> <span class="keyword">class </span><a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a9c68adabb9538993a0864fa9921db6b8">Shortener</a></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keyword">private</span> <a class="code hl_class" href="classNanoXLSX_1_1Worksheet.html">Worksheet</a> currentWorksheet;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keyword">private</span> readonly <a class="code hl_class" href="classNanoXLSX_1_1Workbook.html">Workbook</a> workbookReference;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span></div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a9c68adabb9538993a0864fa9921db6b8">   27</a></span>        <span class="keyword">public</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a9c68adabb9538993a0864fa9921db6b8">Shortener</a>(<a class="code hl_class" href="classNanoXLSX_1_1Workbook.html">Workbook</a> reference)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            this.workbookReference = reference;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            this.currentWorksheet = reference.<a class="code hl_property" href="classNanoXLSX_1_1Workbook.html#a96b3e75427a26cbadf8dca9a887cd6de">CurrentWorksheet</a>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        }</div>
 </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span></div>
-<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a31d5f2defc0015cdb7189aa07f8c076e">   36</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a31d5f2defc0015cdb7189aa07f8c076e">SetCurrentWorksheet</a>(<a class="code hl_class" href="classNanoXLSX_1_1Worksheet.html">Worksheet</a> worksheet)</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            workbookReference.SetCurrentWorksheet(worksheet);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            currentWorksheet = worksheet;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span></div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a31d5f2defc0015cdb7189aa07f8c076e">   37</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a31d5f2defc0015cdb7189aa07f8c076e">SetCurrentWorksheet</a>(<a class="code hl_class" href="classNanoXLSX_1_1Worksheet.html">Worksheet</a> worksheet)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            workbookReference.SetCurrentWorksheet(worksheet);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            currentWorksheet = worksheet;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        }</div>
 </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keyword">internal</span> <span class="keywordtype">void</span> SetCurrentWorksheetInternal(<a class="code hl_class" href="classNanoXLSX_1_1Worksheet.html">Worksheet</a> worksheet)</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        {</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            currentWorksheet = worksheet;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        }</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span></div>
-<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a05e034f7c8c215c08f978e42beaa4e3f">   56</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a05e034f7c8c215c08f978e42beaa4e3f">Value</a>(<span class="keywordtype">object</span> cellValue)</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        {</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            NullCheck();</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            currentWorksheet.AddNextCell(cellValue);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        }</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keyword">internal</span> <span class="keywordtype">void</span> SetCurrentWorksheetInternal(<a class="code hl_class" href="classNanoXLSX_1_1Worksheet.html">Worksheet</a> worksheet)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            currentWorksheet = worksheet;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span></div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a05e034f7c8c215c08f978e42beaa4e3f">   57</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a05e034f7c8c215c08f978e42beaa4e3f">Value</a>(<span class="keywordtype">object</span> cellValue)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            NullCheck();</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            currentWorksheet.AddNextCell(cellValue);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        }</div>
 </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span></div>
-<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#abbce5ade527bac26431cf70ced4c15e5">   68</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#abbce5ade527bac26431cf70ced4c15e5">Value</a>(<span class="keywordtype">object</span> cellValue, <a class="code hl_class" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a> style)</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            NullCheck();</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            currentWorksheet.AddNextCell(cellValue, style);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span></div>
+<div class="foldopen" id="foldopen00069" data-start="{" data-end="}">
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#abbce5ade527bac26431cf70ced4c15e5">   69</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#abbce5ade527bac26431cf70ced4c15e5">Value</a>(<span class="keywordtype">object</span> cellValue, <a class="code hl_class" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a> style)</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            NullCheck();</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>            currentWorksheet.AddNextCell(cellValue, style);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        }</div>
 </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span></div>
-<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a83a61ec5b41255df880bb5f39bab0e94">   79</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a83a61ec5b41255df880bb5f39bab0e94">Formula</a>(<span class="keywordtype">string</span> cellFormula)</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        {</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            NullCheck();</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            currentWorksheet.AddNextCellFormula(cellFormula);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span></div>
+<div class="foldopen" id="foldopen00080" data-start="{" data-end="}">
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a83a61ec5b41255df880bb5f39bab0e94">   80</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a83a61ec5b41255df880bb5f39bab0e94">Formula</a>(<span class="keywordtype">string</span> cellFormula)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            NullCheck();</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            currentWorksheet.AddNextCellFormula(cellFormula);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        }</div>
 </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span></div>
-<div class="foldopen" id="foldopen00091" data-start="{" data-end="}">
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a904393e2761e4e5fb0c04ab3bceae39c">   91</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a904393e2761e4e5fb0c04ab3bceae39c">Formula</a>(<span class="keywordtype">string</span> cellFormula, <a class="code hl_class" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a> style)</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        {</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            NullCheck();</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            currentWorksheet.AddNextCellFormula(cellFormula, style);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span></div>
+<div class="foldopen" id="foldopen00092" data-start="{" data-end="}">
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a904393e2761e4e5fb0c04ab3bceae39c">   92</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a904393e2761e4e5fb0c04ab3bceae39c">Formula</a>(<span class="keywordtype">string</span> cellFormula, <a class="code hl_class" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a> style)</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            NullCheck();</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            currentWorksheet.AddNextCellFormula(cellFormula, style);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        }</div>
 </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span></div>
-<div class="foldopen" id="foldopen00100" data-start="{" data-end="}">
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a9158d470f7775f6e6410f6e81766e90f">  100</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a9158d470f7775f6e6410f6e81766e90f">Down</a>()</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            NullCheck();</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            currentWorksheet.GoToNextRow();</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        }</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span></div>
+<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a9158d470f7775f6e6410f6e81766e90f">  101</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a9158d470f7775f6e6410f6e81766e90f">Down</a>()</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        {</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            NullCheck();</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            currentWorksheet.GoToNextRow();</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        }</div>
 </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span></div>
-<div class="foldopen" id="foldopen00112" data-start="{" data-end="}">
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a61b8099429ab23beaae73cb2af37bc9e">  112</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a61b8099429ab23beaae73cb2af37bc9e">Down</a>(<span class="keywordtype">int</span> numberOfRows, <span class="keywordtype">bool</span> keepColumnPosition = <span class="keyword">false</span>)</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        {</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>            NullCheck();</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            currentWorksheet.GoToNextRow(numberOfRows, keepColumnPosition);</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        }</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span></div>
+<div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a61b8099429ab23beaae73cb2af37bc9e">  113</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a61b8099429ab23beaae73cb2af37bc9e">Down</a>(<span class="keywordtype">int</span> numberOfRows, <span class="keywordtype">bool</span> keepColumnPosition = <span class="keyword">false</span>)</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        {</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            NullCheck();</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            currentWorksheet.GoToNextRow(numberOfRows, keepColumnPosition);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        }</div>
 </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span></div>
-<div class="foldopen" id="foldopen00122" data-start="{" data-end="}">
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a84e9264cf298b70943b43fa6d118679c">  122</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a84e9264cf298b70943b43fa6d118679c">Up</a>()</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        {</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            NullCheck();</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            currentWorksheet.GoToNextRow(-1);</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        }</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span></div>
+<div class="foldopen" id="foldopen00123" data-start="{" data-end="}">
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a84e9264cf298b70943b43fa6d118679c">  123</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a84e9264cf298b70943b43fa6d118679c">Up</a>()</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            NullCheck();</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>            currentWorksheet.GoToNextRow(-1);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        }</div>
 </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span></div>
-<div class="foldopen" id="foldopen00134" data-start="{" data-end="}">
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a56b65c51b74a58bf5e3f6f68807176be">  134</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a56b65c51b74a58bf5e3f6f68807176be">Up</a>(<span class="keywordtype">int</span> numberOfRows, <span class="keywordtype">bool</span> keepColumnPosition = <span class="keyword">false</span>)</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        {</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>            NullCheck();</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>            currentWorksheet.GoToNextRow(-1 * numberOfRows, keepColumnPosition);</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        }</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span></div>
+<div class="foldopen" id="foldopen00135" data-start="{" data-end="}">
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a56b65c51b74a58bf5e3f6f68807176be">  135</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a56b65c51b74a58bf5e3f6f68807176be">Up</a>(<span class="keywordtype">int</span> numberOfRows, <span class="keywordtype">bool</span> keepColumnPosition = <span class="keyword">false</span>)</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        {</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>            NullCheck();</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>            currentWorksheet.GoToNextRow(-1 * numberOfRows, keepColumnPosition);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        }</div>
 </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span></div>
-<div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a036e6d5b34fb4bc621eab681a4ea2b44">  143</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a036e6d5b34fb4bc621eab681a4ea2b44">Right</a>()</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        {</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            NullCheck();</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            currentWorksheet.GoToNextColumn();</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        }</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span></div>
+<div class="foldopen" id="foldopen00144" data-start="{" data-end="}">
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a036e6d5b34fb4bc621eab681a4ea2b44">  144</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a036e6d5b34fb4bc621eab681a4ea2b44">Right</a>()</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        {</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            NullCheck();</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>            currentWorksheet.GoToNextColumn();</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        }</div>
 </div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span></div>
-<div class="foldopen" id="foldopen00154" data-start="{" data-end="}">
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a871cb488d9c2bfb1a1f6bd9666e23cab">  154</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a871cb488d9c2bfb1a1f6bd9666e23cab">Right</a>(<span class="keywordtype">int</span> numberOfColumns, <span class="keywordtype">bool</span> keepRowPosition = <span class="keyword">false</span>)</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        {</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            NullCheck();</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>            currentWorksheet.GoToNextColumn(numberOfColumns, keepRowPosition);</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        }</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span></div>
+<div class="foldopen" id="foldopen00155" data-start="{" data-end="}">
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a871cb488d9c2bfb1a1f6bd9666e23cab">  155</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a871cb488d9c2bfb1a1f6bd9666e23cab">Right</a>(<span class="keywordtype">int</span> numberOfColumns, <span class="keywordtype">bool</span> keepRowPosition = <span class="keyword">false</span>)</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        {</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>            NullCheck();</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            currentWorksheet.GoToNextColumn(numberOfColumns, keepRowPosition);</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        }</div>
 </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span></div>
-<div class="foldopen" id="foldopen00164" data-start="{" data-end="}">
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a765929ca8a43211363b10222dac2dab1">  164</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a765929ca8a43211363b10222dac2dab1">Left</a>()</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        {</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>            NullCheck();</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>            currentWorksheet.GoToNextColumn(-1);</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        }</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span></div>
+<div class="foldopen" id="foldopen00165" data-start="{" data-end="}">
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#a765929ca8a43211363b10222dac2dab1">  165</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#a765929ca8a43211363b10222dac2dab1">Left</a>()</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        {</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>            NullCheck();</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>            currentWorksheet.GoToNextColumn(-1);</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        }</div>
 </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span></div>
-<div class="foldopen" id="foldopen00176" data-start="{" data-end="}">
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#adc68336782f9cee2f33927b9f899f984">  176</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#adc68336782f9cee2f33927b9f899f984">Left</a>(<span class="keywordtype">int</span> numberOfColumns, <span class="keywordtype">bool</span> keepRowRowPosition = <span class="keyword">false</span>)</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        {</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>            NullCheck();</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>            currentWorksheet.GoToNextColumn(-1 * numberOfColumns, keepRowRowPosition);</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        }</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span></div>
+<div class="foldopen" id="foldopen00177" data-start="{" data-end="}">
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Shortener.html#adc68336782f9cee2f33927b9f899f984">  177</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Shortener.html#adc68336782f9cee2f33927b9f899f984">Left</a>(<span class="keywordtype">int</span> numberOfColumns, <span class="keywordtype">bool</span> keepRowRowPosition = <span class="keyword">false</span>)</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        {</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>            NullCheck();</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>            currentWorksheet.GoToNextColumn(-1 * numberOfColumns, keepRowRowPosition);</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        }</div>
 </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span></div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> NullCheck()</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        {</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>            <span class="keywordflow">if</span> (currentWorksheet == <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            {</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_class" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html">WorksheetException</a>(<span class="stringliteral">&quot;No worksheet was defined&quot;</span>);</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>            }</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        }</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> NullCheck()</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        {</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            <span class="keywordflow">if</span> (currentWorksheet == <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>            {</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_class" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html">WorksheetException</a>(<span class="stringliteral">&quot;No worksheet was defined&quot;</span>);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>            }</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        }</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    }</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    }</div>
 </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>}</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>}</div>
 <div class="ttc" id="aclassNanoXLSX_1_1Exceptions_1_1WorksheetException_html"><div class="ttname"><a href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html">NanoXLSX.Exceptions.WorksheetException</a></div><div class="ttdoc">Class for exceptions regarding worksheet incidents.</div><div class="ttdef"><b>Definition</b> <a href="WorksheetException_8cs_source.html#l00017">WorksheetException.cs:18</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a036e6d5b34fb4bc621eab681a4ea2b44"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a036e6d5b34fb4bc621eab681a4ea2b44">NanoXLSX.Shortener.Right</a></div><div class="ttdeci">void Right()</div><div class="ttdoc">Moves the cursor one column to the right.</div><div class="ttdef"><b>Definition</b> <a href="#l00143">Shortener.cs:143</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a05e034f7c8c215c08f978e42beaa4e3f"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a05e034f7c8c215c08f978e42beaa4e3f">NanoXLSX.Shortener.Value</a></div><div class="ttdeci">void Value(object cellValue)</div><div class="ttdoc">Sets a value into the current cell and moves the cursor to the next cell (column or row depending on ...</div><div class="ttdef"><b>Definition</b> <a href="#l00056">Shortener.cs:56</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a31d5f2defc0015cdb7189aa07f8c076e"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a31d5f2defc0015cdb7189aa07f8c076e">NanoXLSX.Shortener.SetCurrentWorksheet</a></div><div class="ttdeci">void SetCurrentWorksheet(Worksheet worksheet)</div><div class="ttdoc">Sets the worksheet accessed by the shortener.</div><div class="ttdef"><b>Definition</b> <a href="#l00036">Shortener.cs:36</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a56b65c51b74a58bf5e3f6f68807176be"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a56b65c51b74a58bf5e3f6f68807176be">NanoXLSX.Shortener.Up</a></div><div class="ttdeci">void Up(int numberOfRows, bool keepColumnPosition=false)</div><div class="ttdoc">Moves the cursor the number of defined rows up.</div><div class="ttdef"><b>Definition</b> <a href="#l00134">Shortener.cs:134</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a61b8099429ab23beaae73cb2af37bc9e"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a61b8099429ab23beaae73cb2af37bc9e">NanoXLSX.Shortener.Down</a></div><div class="ttdeci">void Down(int numberOfRows, bool keepColumnPosition=false)</div><div class="ttdoc">Moves the cursor the number of defined rows down.</div><div class="ttdef"><b>Definition</b> <a href="#l00112">Shortener.cs:112</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a765929ca8a43211363b10222dac2dab1"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a765929ca8a43211363b10222dac2dab1">NanoXLSX.Shortener.Left</a></div><div class="ttdeci">void Left()</div><div class="ttdoc">Moves the cursor one column to the left.</div><div class="ttdef"><b>Definition</b> <a href="#l00164">Shortener.cs:164</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a83a61ec5b41255df880bb5f39bab0e94"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a83a61ec5b41255df880bb5f39bab0e94">NanoXLSX.Shortener.Formula</a></div><div class="ttdeci">void Formula(string cellFormula)</div><div class="ttdoc">Sets a formula into the current cell and moves the cursor to the next cell (column or row depending o...</div><div class="ttdef"><b>Definition</b> <a href="#l00079">Shortener.cs:79</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a84e9264cf298b70943b43fa6d118679c"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a84e9264cf298b70943b43fa6d118679c">NanoXLSX.Shortener.Up</a></div><div class="ttdeci">void Up()</div><div class="ttdoc">Moves the cursor one row up.</div><div class="ttdef"><b>Definition</b> <a href="#l00122">Shortener.cs:122</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a871cb488d9c2bfb1a1f6bd9666e23cab"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a871cb488d9c2bfb1a1f6bd9666e23cab">NanoXLSX.Shortener.Right</a></div><div class="ttdeci">void Right(int numberOfColumns, bool keepRowPosition=false)</div><div class="ttdoc">Moves the cursor the number of defined columns to the right.</div><div class="ttdef"><b>Definition</b> <a href="#l00154">Shortener.cs:154</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a904393e2761e4e5fb0c04ab3bceae39c"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a904393e2761e4e5fb0c04ab3bceae39c">NanoXLSX.Shortener.Formula</a></div><div class="ttdeci">void Formula(string cellFormula, Style style)</div><div class="ttdoc">Sets a formula with style into the current cell and moves the cursor to the next cell (column or row ...</div><div class="ttdef"><b>Definition</b> <a href="#l00091">Shortener.cs:91</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a9158d470f7775f6e6410f6e81766e90f"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a9158d470f7775f6e6410f6e81766e90f">NanoXLSX.Shortener.Down</a></div><div class="ttdeci">void Down()</div><div class="ttdoc">Moves the cursor one row down.</div><div class="ttdef"><b>Definition</b> <a href="#l00100">Shortener.cs:100</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a9c68adabb9538993a0864fa9921db6b8"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a9c68adabb9538993a0864fa9921db6b8">NanoXLSX.Shortener.Shortener</a></div><div class="ttdeci">Shortener(Workbook reference)</div><div class="ttdoc">Constructor with workbook reference.</div><div class="ttdef"><b>Definition</b> <a href="#l00026">Shortener.cs:26</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_abbce5ade527bac26431cf70ced4c15e5"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#abbce5ade527bac26431cf70ced4c15e5">NanoXLSX.Shortener.Value</a></div><div class="ttdeci">void Value(object cellValue, Style style)</div><div class="ttdoc">Sets a value with style into the current cell and moves the cursor to the next cell (column or row de...</div><div class="ttdef"><b>Definition</b> <a href="#l00068">Shortener.cs:68</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_adc68336782f9cee2f33927b9f899f984"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#adc68336782f9cee2f33927b9f899f984">NanoXLSX.Shortener.Left</a></div><div class="ttdeci">void Left(int numberOfColumns, bool keepRowRowPosition=false)</div><div class="ttdoc">Moves the cursor the number of defined columns to the left.</div><div class="ttdef"><b>Definition</b> <a href="#l00176">Shortener.cs:176</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a036e6d5b34fb4bc621eab681a4ea2b44"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a036e6d5b34fb4bc621eab681a4ea2b44">NanoXLSX.Shortener.Right</a></div><div class="ttdeci">void Right()</div><div class="ttdoc">Moves the cursor one column to the right.</div><div class="ttdef"><b>Definition</b> <a href="#l00144">Shortener.cs:144</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a05e034f7c8c215c08f978e42beaa4e3f"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a05e034f7c8c215c08f978e42beaa4e3f">NanoXLSX.Shortener.Value</a></div><div class="ttdeci">void Value(object cellValue)</div><div class="ttdoc">Sets a value into the current cell and moves the cursor to the next cell (column or row depending on ...</div><div class="ttdef"><b>Definition</b> <a href="#l00057">Shortener.cs:57</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a31d5f2defc0015cdb7189aa07f8c076e"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a31d5f2defc0015cdb7189aa07f8c076e">NanoXLSX.Shortener.SetCurrentWorksheet</a></div><div class="ttdeci">void SetCurrentWorksheet(Worksheet worksheet)</div><div class="ttdoc">Sets the worksheet accessed by the shortener.</div><div class="ttdef"><b>Definition</b> <a href="#l00037">Shortener.cs:37</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a56b65c51b74a58bf5e3f6f68807176be"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a56b65c51b74a58bf5e3f6f68807176be">NanoXLSX.Shortener.Up</a></div><div class="ttdeci">void Up(int numberOfRows, bool keepColumnPosition=false)</div><div class="ttdoc">Moves the cursor the number of defined rows up.</div><div class="ttdef"><b>Definition</b> <a href="#l00135">Shortener.cs:135</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a61b8099429ab23beaae73cb2af37bc9e"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a61b8099429ab23beaae73cb2af37bc9e">NanoXLSX.Shortener.Down</a></div><div class="ttdeci">void Down(int numberOfRows, bool keepColumnPosition=false)</div><div class="ttdoc">Moves the cursor the number of defined rows down.</div><div class="ttdef"><b>Definition</b> <a href="#l00113">Shortener.cs:113</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a765929ca8a43211363b10222dac2dab1"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a765929ca8a43211363b10222dac2dab1">NanoXLSX.Shortener.Left</a></div><div class="ttdeci">void Left()</div><div class="ttdoc">Moves the cursor one column to the left.</div><div class="ttdef"><b>Definition</b> <a href="#l00165">Shortener.cs:165</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a83a61ec5b41255df880bb5f39bab0e94"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a83a61ec5b41255df880bb5f39bab0e94">NanoXLSX.Shortener.Formula</a></div><div class="ttdeci">void Formula(string cellFormula)</div><div class="ttdoc">Sets a formula into the current cell and moves the cursor to the next cell (column or row depending o...</div><div class="ttdef"><b>Definition</b> <a href="#l00080">Shortener.cs:80</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a84e9264cf298b70943b43fa6d118679c"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a84e9264cf298b70943b43fa6d118679c">NanoXLSX.Shortener.Up</a></div><div class="ttdeci">void Up()</div><div class="ttdoc">Moves the cursor one row up.</div><div class="ttdef"><b>Definition</b> <a href="#l00123">Shortener.cs:123</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a871cb488d9c2bfb1a1f6bd9666e23cab"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a871cb488d9c2bfb1a1f6bd9666e23cab">NanoXLSX.Shortener.Right</a></div><div class="ttdeci">void Right(int numberOfColumns, bool keepRowPosition=false)</div><div class="ttdoc">Moves the cursor the number of defined columns to the right.</div><div class="ttdef"><b>Definition</b> <a href="#l00155">Shortener.cs:155</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a904393e2761e4e5fb0c04ab3bceae39c"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a904393e2761e4e5fb0c04ab3bceae39c">NanoXLSX.Shortener.Formula</a></div><div class="ttdeci">void Formula(string cellFormula, Style style)</div><div class="ttdoc">Sets a formula with style into the current cell and moves the cursor to the next cell (column or row ...</div><div class="ttdef"><b>Definition</b> <a href="#l00092">Shortener.cs:92</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a9158d470f7775f6e6410f6e81766e90f"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a9158d470f7775f6e6410f6e81766e90f">NanoXLSX.Shortener.Down</a></div><div class="ttdeci">void Down()</div><div class="ttdoc">Moves the cursor one row down.</div><div class="ttdef"><b>Definition</b> <a href="#l00101">Shortener.cs:101</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_a9c68adabb9538993a0864fa9921db6b8"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#a9c68adabb9538993a0864fa9921db6b8">NanoXLSX.Shortener.Shortener</a></div><div class="ttdeci">Shortener(Workbook reference)</div><div class="ttdoc">Constructor with workbook reference.</div><div class="ttdef"><b>Definition</b> <a href="#l00027">Shortener.cs:27</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_abbce5ade527bac26431cf70ced4c15e5"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#abbce5ade527bac26431cf70ced4c15e5">NanoXLSX.Shortener.Value</a></div><div class="ttdeci">void Value(object cellValue, Style style)</div><div class="ttdoc">Sets a value with style into the current cell and moves the cursor to the next cell (column or row de...</div><div class="ttdef"><b>Definition</b> <a href="#l00069">Shortener.cs:69</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Shortener_html_adc68336782f9cee2f33927b9f899f984"><div class="ttname"><a href="classNanoXLSX_1_1Shortener.html#adc68336782f9cee2f33927b9f899f984">NanoXLSX.Shortener.Left</a></div><div class="ttdeci">void Left(int numberOfColumns, bool keepRowRowPosition=false)</div><div class="ttdoc">Moves the cursor the number of defined columns to the left.</div><div class="ttdef"><b>Definition</b> <a href="#l00177">Shortener.cs:177</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Styles_1_1Style_html"><div class="ttname"><a href="classNanoXLSX_1_1Styles_1_1Style.html">NanoXLSX.Styles.Style</a></div><div class="ttdoc">Class representing a Style with sub classes within a style sheet. An instance of this class is only a...</div><div class="ttdef"><b>Definition</b> <a href="Style_8cs_source.html#l00017">Style.cs:18</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Workbook_html"><div class="ttname"><a href="classNanoXLSX_1_1Workbook.html">NanoXLSX.Workbook</a></div><div class="ttdoc">Class representing a workbook.</div><div class="ttdef"><b>Definition</b> <a href="Workbook_8cs_source.html#l00022">Workbook.cs:23</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Workbook_html_a96b3e75427a26cbadf8dca9a887cd6de"><div class="ttname"><a href="classNanoXLSX_1_1Workbook.html#a96b3e75427a26cbadf8dca9a887cd6de">NanoXLSX.Workbook.CurrentWorksheet</a></div><div class="ttdeci">Worksheet CurrentWorksheet</div><div class="ttdoc">Gets the current worksheet.</div><div class="ttdef"><b>Definition</b> <a href="Workbook_8cs_source.html#l00063">Workbook.cs:64</a></div></div>

@@ -2181,7 +2181,7 @@ $(function(){initNavTree('Worksheet_8cs_source.html','',''); });
 <div class="line"><a id="l02771" name="l02771"></a><span class="lineno"> 2771</span>            <span class="keywordflow">if</span> (match.Groups.Count &gt; 1)</div>
 <div class="line"><a id="l02772" name="l02772"></a><span class="lineno"> 2772</span>            {</div>
 <div class="line"><a id="l02773" name="l02773"></a><span class="lineno"> 2773</span>                prefix = match.Groups[1].Value;</div>
-<div class="line"><a id="l02774" name="l02774"></a><span class="lineno"> 2774</span>                <span class="keywordtype">int</span>.TryParse(match.Groups[2].Value, out number);</div>
+<div class="line"><a id="l02774" name="l02774"></a><span class="lineno"> 2774</span>                _ = <span class="keywordtype">int</span>.TryParse(match.Groups[2].Value, out number);</div>
 <div class="line"><a id="l02775" name="l02775"></a><span class="lineno"> 2775</span>                <span class="comment">// if this failed, the start number is 0 (parsed number was &gt;max. int32)</span></div>
 <div class="line"><a id="l02776" name="l02776"></a><span class="lineno"> 2776</span>            }</div>
 <div class="line"><a id="l02777" name="l02777"></a><span class="lineno"> 2777</span>            <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
