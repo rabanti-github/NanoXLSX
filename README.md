@@ -47,7 +47,7 @@ One of the main aspects of this upcoming version is a better modularization, as 
 
 ## Reader Support
 
-The reader of NanoXLS follows the principle of "What You Can Write Is What You Can Read". Therefore, all information about workbooks, worksheets, cells and styles that can be written into an XLSX file by NanoXLSX, can also be read by it.
+The reader of NanoXLSX follows the principle of "What You Can Write Is What You Can Read". Therefore, all information about workbooks, worksheets, cells and styles that can be written into an XLSX file by NanoXLSX, can also be read by it.
 There are some limitations:
 
 * A workbook or worksheet password cannot be recovered, only its hash
