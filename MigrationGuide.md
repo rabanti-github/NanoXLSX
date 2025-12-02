@@ -369,10 +369,13 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 ---
 
 ### Theme
+
 The `Theme` class was introduced with NanoXLSX v3.0.0 It represents the theme of a workbook, which contains several color schemes and font schemes.
 The class can mostly be ignored unless specific stylings are required.
 Theme may be references ind Styles, especially in Fonts.
+
 - The enum `Theme.ColorSchemeElement` was introduced to represent the color scheme elements of a theme. The available values are:
+
 ```cs
  dark1, light1, dark2, light2, accent1, accent2, accent3, accent4, accent5, accent6, hyperlink, followedHyperlink
 ```

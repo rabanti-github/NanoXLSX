@@ -1,14 +1,79 @@
 # Change Log
 
-## v2.6.3 
+## v3.0.0-rc.3
 
 ---
-Release Date: **XX.YY.2025**
+Release Date: **02.12.2025**
 
+- Formal changes to enforce displaying target frameworks in NuGet meta package
+
+Note: The version numbers of the dependencies `NanoXLSX.Core`, `NanoXLSX.Reader` and `NanoXLSX.Writer` have not changed with this release. There are also no functional changes
+
+
+
+## v3.0.0-rc.2
+
+---
+Release Date: **27.11.2025**
+
+- Refactoring of several enums in `NanoXLSX.Core`, `NanoXLSX.Reader` and `NanoXLSX.Writer` from lowercase start to uppercase start for better consistency
+
+
+# v3.0.0-rc.1
+
+---
+Release Date: **25.11.2025**
+
+- Initial release candidate of the NanoXLSX library split into three separate libraries:
+  - NanoXLSX.Core
+  - NanoXLSX.Reader
+  - NanoXLSX.Writer
+
+## v2.6.7
+
+---
+Release Date: **01.10.2025**
+
+- Fixed handling of worksheet protection (regression bug)
+- Code cleanup
+
+## v2.6.6
+
+---
+Release Date: **29.09.2025**
+
+- Fixed handling of worksheet protection (selecting locked or unlocked cells)
+- Added test case
+
+Note: The default value of `Style.CurrentCellXf.Locked` is now true, to be consistent with Excel behavior. This change only affects worksheets with protection enabled and may require
+  explicit unlocking of cells that should remain editable
+
+## v2.6.5
+
+---
+Release Date: **13.09.2025**
+
+- Added import option to ignore invalid column widths or row heights. Concept provided by pokorny
+- Added test case
+
+## v2.6.4
+
+---
+Release Date: **19.07.2025**
+
+- Added support for in-line string values (non-formatted). Change provided by Misir
+- Added test case
+
+## v2.6.3
+
+---
+Release Date: **26.04.2025**
+
+- Fixed a bug that prevented adding new worksheets when a pane split was defined
 - Changed handling of reading workbooks, when docProps are missing (formal change)
 - Added test case
 
-## v2.6.2 
+## v2.6.2
 
 ---
 Release Date: **24.01.2025**
@@ -16,28 +81,28 @@ Release Date: **24.01.2025**
 - Fixed a regression bug in the Cell function ConvertArray
 - Added test cases
 
-## v2.6.1 
+## v2.6.1
 
 ---
 Release Date: **19.01.2025**
 
 - Fixed a bug on writing default column styles (not persisted in some cases)
-- Adapted style reader: When a workbook is loaded, not defined color values of Border styles are now empty strings (were null), as if a new style is created 
+- Adapted style reader: When a workbook is loaded, not defined color values of Border styles are now empty strings (were null), as if a new style is created
 - Code maintenance
 
 Note: The color values of Border styles are handled identical on writing XLSX files, either if null or empty. The change of the reader behavior was to enforce the "What You Can Write Is What You Can Read" policy of the library (writing an empty string as color value should lead to an empty string on read).
 
-## v2.6.0 
+## v2.6.0
 
 ---
 Release Date: **12.01.2025**
 
 - Added InsertRow and InsertColumn functions. Functionality provided by Alexander Schlecht
-- Added FirstCewllByValue, FirstOrDefaultCell, CellsByValue functions. Functionality provided by Alexander Schlecht
+- Added FirstCellByValue, FirstOrDefaultCell, CellsByValue functions. Functionality provided by Alexander Schlecht
 - Added ReplaceCellValue function. Functionality provided by Alexander Schlecht
 - Code maintenance
 
-## v2.5.2 
+## v2.5.2
 
 ---
 Release Date: **24.11.2024**
@@ -48,13 +113,17 @@ Release Date: **24.11.2024**
 - Added tests for column address resolution
 
 ## v2.5.1
+
 ---
 Release Date: **26.10.2024**
+
 - Fixed a bug regarding the determination of the first data cell in an empty worksheet. Bug fix provided by Martin Stránský
 
 ## v2.5.0
+
 ---
 Release Date: **22.07.2024**
+
 - Adapted handling of the font scheme in styles. The scheme is now determined automatically
 - Added column option to define a default column style
 - Added tests
@@ -66,7 +135,7 @@ Release Date: **21.04.2024**
 
 - Added handling to load workbooks from files asynchronously. Concept provided by John Leyva
 - Fixed a bug when loading a workbook asynchronously from a stream. Bug fix provided by John Leyva
-- Fixed a bug when the column auto-filter is a single cell address. Bug fix provided by Lukáš Pokorný
+- Fixed a bug when the column auto-filter is a single cell address. Bug fix provided by pokorny
 - Fixed a bug regarding style enumeration when reading a workbook. Bug fix provided by Martin Stránský
 - Added new  and adapted existing test cases
 
@@ -83,7 +152,7 @@ Release Date: **24.02.2024**
 ---
 Release Date: **24.02.2024**
 
-- Fixed a bug when reading min and max values in the GetLastDataColumnNumber function. Bug fix provided by Lukáš Pokorný
+- Fixed a bug when reading min and max values in the GetLastDataColumnNumber function. Bug fix provided by pokorny
 - Code maintenance
 
 ## v2.3.1
@@ -172,7 +241,7 @@ Release Date: **29.09.2022**
 
 Note:
 
-- When defining a custom number format, now the CustomFormatCode property must always be defined as well, since an empty value leads to an invalid Workbook
+- When defining a custom number format, now the CustomFormatCode property must always be defined as well, since an empty value leads to an invalid Workbook 
 - When a cell is now created (by constructor) with the type EMPTY, any passed value will be discarded in this cell
 
 ## v2.0.1
@@ -250,7 +319,7 @@ Release Date: **03.09.2022 - Major Release**
 - Added global casting import options: AllNumbersToDouble, AllNumbersToDecimal, AllNumbersToInt, EverythingToString
 - Added column casting import options: Double, Decimal
 - Added global import options: EnforcePhoneticCharacterImport, EnforceEmptyValuesAsString, DateTimeFormat, TemporalCultureInfo
-- Added a metadata reader for workbook metadata
+- Added a meta data reader for workbook meta data
 - All style elements that can be written can also be read
 - All workbook elements that can be written can also be read (exception: passwords cannot be recovered)
 - All worksheet elements that can be written can also be read (exception: passwords cannot be recovered)
@@ -339,7 +408,7 @@ Release Date: **10.07.2021**
 - Fixed the internal representation of column widths and row heights
 - Minor code maintenance
 
-Note: The column widths and row heights may change slightly with this release, since now the actual (internal) width and height is applied when setting a non-standard column width or row height
+Note: The column widths and row heights may change slightly with this release, since the actual (internal) width and height is now applied when setting a non-standard column width or row height
 
 ## v1.7.0
 
@@ -433,6 +502,7 @@ Release Date: **01.12.2019**
 
 - Fixed a bug of reorganized worksheets (when deleted in Excel)
 - Fixed a bug in the handling of shared strings
+- Minor code maintenance
 
 ## v1.3.3
 

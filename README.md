@@ -2,10 +2,19 @@
 
 # NanoXLSX
 
-
-![nuget](https://img.shields.io/nuget/v/NanoXLSX.svg?maxAge=86400)
-![license](https://img.shields.io/github/license/rabanti-github/NanoXlsx.svg)
+![NuGet Version](https://img.shields.io/nuget/v/NanoXLSX)
+![NuGet Downloads](https://img.shields.io/nuget/dt/NanoXLSX)
+![GitHub License](https://img.shields.io/github/license/rabanti-github/NanoXLSX)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_shield)
+
+## Pre-Release v3.x
+
+The pre-release of NanoXLSX is now available as [Nuget Package](https://www.nuget.org/packages/NanoXLSX/3.0.0-rc.2), version **3.0.0-rc.3**.
+Since there are breaking changes between NanoXLSX v2.x and v3.0.0-rc3, please see the **[Migration guide](MigrationGuide.md)**, to migrate applications from v2 to v3. Please feel free to open issues, in case of problems with the pre-release.
+
+There will be possibly further adaptions and additional pre-releases before the final release.
+
+---
 
 NanoXLSX is a small .NET library written in C#, to create and read Microsoft Excel files in the XLSX format (Microsoft Excel 2007 or newer) in an easy and native way
 
@@ -34,7 +43,7 @@ The biggest change is the full capable reader support for workbook, worksheet an
 Version 2.x of NanoXLSX was completely overhauled and a high number of (partially parametrized) unit tests with a code coverage of >99% were written to improve the quality of the library.
 However, it is not planned as a LTS version. The upcoming v3.x is supposed to introduce some important functions, like in-line cell formatting, better formula handling and additional worksheet features.
 Furthermore, it is planned to introduce more modern OOXML features like the SHA256 implementation of worksheet passwords.
-One of the main aspects of this upcoming version is a better modularization, as well as the consolidation with PicoXLS to one single code base.
+One of the main aspects of this upcoming version is a better modularization, as well as the consolidation with PicoXLSX to one single code base.
 
 ## Reader Support
 
@@ -46,6 +55,7 @@ There are some limitations:
 * There are some approximations for floating point numbers. These values (e.g. pane split widths) may deviate from the originally written values
 * Numeric values are cast to the appropriate .NET types with best effort. There are import options available to enforce specific types
 * No support of other objects than spreadsheet data at the moment
+* Due to the potential high complexity, custom number format codes are currently not automatically escaped on writing or un-escaped on reading
 
 ## Requirements
 
@@ -68,6 +78,10 @@ Please note that the demo project of the .NET Standard version will not work in 
 If you want to compile the documentation project (folder: Documentation; project file: shfbproj), you need also the **[Sandcastle Help File Builder (SHFB)](https://github.com/EWSoftware/SHFB)**. It is also freely available. But you don't need the documentation project to build the NanoXLSX library.
 
 The .NET version of the documentation may vary, based on the installation. If v4.5 is not available, upgrade to target to a newer version, like v4.6
+
+### Utility dependencies
+
+The Test project and GitHub Actions may also require dependencies like unit testing frameworks or workflow steps. However, **none of these dependencies are essential to build the library**. They are just utilities. The test dependencies ensure efficient unit testing and code coverage. The GitHub Actions dependencies are used for the automatization of releases and API documentation
 
 ## Installation
 
@@ -140,7 +154,6 @@ See also: [Getting started in the Wiki](https://github.com/rabanti-github/NanoXL
 
 Hint: You will find most certainly any function, and the way how to use it, in the [Unit Test Project](https://github.com/rabanti-github/NanoXLSX/tree/master/NanoXlsx%20Test)
 
-
-
 ## License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_large)

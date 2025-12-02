@@ -8,7 +8,7 @@
 
     <!-- NuGet metadata -->
     <PackageId>NanoXLSX</PackageId>
-    <Version>3.0.0-rc.2</Version>
+    <Version>3.0.0-rc.3</Version>
     <Authors>Raphael Stoeckli</Authors>
     <Description>NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way. This package is the meta package of NanoXLSX and should be used in most cases as dependency in your project.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -26,7 +26,7 @@
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <FileVersion>3.0.0.0</FileVersion>
-	<Version>3.0.0-rc.2</Version>
+	<Version>3.0.0-rc.3</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -57,7 +57,23 @@
   <PropertyGroup>
     <DocsProjectName>$(PackageId)</DocsProjectName>
     <DocsVersion>$(Version)</DocsVersion>
-</PropertyGroup>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Placeholder files for lib folders -->
+		<None Include="_._">
+			<Pack>true</Pack>
+			<PackagePath>lib/net45/</PackagePath>
+		</None>
+		<None Include="_._">
+			<Pack>true</Pack>
+			<PackagePath>lib/netstandard2.0/</PackagePath>
+		</None>
+
+		<!-- Your build props files -->
+		<None Include="build/net45/NanoXLSX.props" Pack="true" />
+		<None Include="build/netstandard2.0/NanoXLSX.props" Pack="true" />
+	</ItemGroup>
 	
 	
 	<Target Name="GenerateDocsIndex" AfterTargets="Build">
