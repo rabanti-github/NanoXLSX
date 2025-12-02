@@ -1,6 +1,6 @@
 ![NanoXLSX](https://raw.githubusercontent.com/rabanti-github/NanoXLSX/refs/heads/master/Documentation/icons/NanoXLSX.png)
 
-# NanoXLSX 
+# NanoXLSX
 
 ![NuGet Version](https://img.shields.io/nuget/v/NanoXLSX)
 ![NuGet Downloads](https://img.shields.io/nuget/dt/NanoXLSX)
@@ -9,8 +9,8 @@
 
 ## Pre-Release v3.x
 
-The pre-release of NanoXLSX is now available as [Nuget Package](https://www.nuget.org/packages/NanoXLSX/3.0.0-rc.2), version **3.0.0-rc.2**.
-Since there are breaking changes between NanoXLSX v2.x and v3.0.0-rc2, please see the **[Migration guide](MigrationGuide.md)**, to migrate applications from v2 to v3. Please feel free to open issues, in case of problems with the pre-release.
+The pre-release of NanoXLSX is now available as [Nuget Package](https://www.nuget.org/packages/NanoXLSX/3.0.0-rc.3), version **3.0.0-rc.3**.
+Since there are breaking changes between NanoXLSX v2.x and v3.0.0-rc3, please see the **[Migration guide](MigrationGuide.md)**, to migrate applications from v2 to v3. Please feel free to open issues, in case of problems with the pre-release.
 
 There will be possibly further adaptions and additional pre-releases before the final release.
 
@@ -43,11 +43,11 @@ The biggest change is the full capable reader support for workbook, worksheet an
 Version 2.x of NanoXLSX was completely overhauled and a high number of (partially parametrized) unit tests with a code coverage of >99% were written to improve the quality of the library.
 However, it is not planned as a LTS version. The upcoming v3.x is supposed to introduce some important functions, like in-line cell formatting, better formula handling and additional worksheet features.
 Furthermore, it is planned to introduce more modern OOXML features like the SHA256 implementation of worksheet passwords.
-One of the main aspects of this upcoming version is a better modularization, as well as the consolidation with PicoXLS to one single code base.
+One of the main aspects of this upcoming version is a better modularization, as well as the consolidation with PicoXLSX to one single code base.
 
 ## Reader Support
 
-The reader of NanoXLS follows the principle of "What You Can Write Is What You Can Read". Therefore, all information about workbooks, worksheets, cells and styles that can be written into an XLSX file by NanoXLSX, can also be read by it.
+The reader of NanoXLSX follows the principle of "What You Can Write Is What You Can Read". Therefore, all information about workbooks, worksheets, cells and styles that can be written into an XLSX file by NanoXLSX, can also be read by it.
 There are some limitations:
 
 * A workbook or worksheet password cannot be recovered, only its hash
@@ -154,7 +154,6 @@ See also: [Getting started in the Wiki](https://github.com/rabanti-github/NanoXL
 
 Hint: You will find most certainly any function, and the way how to use it, in the [Unit Test Project](https://github.com/rabanti-github/NanoXLSX/tree/master/NanoXlsx%20Test)
 
-
-
 ## License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_large)

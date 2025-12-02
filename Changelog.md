@@ -1,6 +1,6 @@
 # Change Log
 
-## v2.6.7 
+## v2.6.7
 
 ---
 Release Date: **01.10.2025**
@@ -8,8 +8,7 @@ Release Date: **01.10.2025**
 - Fixed handling of worksheet protection (regression bug)
 - Code cleanup
 
-
-## v2.6.6 
+## v2.6.6
 
 ---
 Release Date: **29.09.2025**
@@ -17,10 +16,10 @@ Release Date: **29.09.2025**
 - Fixed handling of worksheet protection (selecting locked or unlocked cells)
 - Added test case
 
-Note: The default value of `Style.CurrentCellXf.Locked` is now true, to be consistent with Excel behavior. This change only affects worksheets with protection enabled and may require 
+Note: The default value of `Style.CurrentCellXf.Locked` is now true, to be consistent with Excel behavior. This change only affects worksheets with protection enabled and may require
   explicit unlocking of cells that should remain editable
 
-## v2.6.5 
+## v2.6.5
 
 ---
 Release Date: **13.09.2025**
@@ -28,7 +27,7 @@ Release Date: **13.09.2025**
 - Added import option to ignore invalid column widths or row heights. Concept provided by pokorny
 - Added test case
 
-## v2.6.4 
+## v2.6.4
 
 ---
 Release Date: **19.07.2025**
@@ -36,8 +35,7 @@ Release Date: **19.07.2025**
 - Added support for in-line string values (non-formatted). Change provided by Misir
 - Added test case
 
-
-## v2.6.3 
+## v2.6.3
 
 ---
 Release Date: **26.04.2025**
@@ -46,8 +44,7 @@ Release Date: **26.04.2025**
 - Changed handling of reading workbooks, when docProps are missing (formal change)
 - Added test case
 
-
-## v2.6.2 
+## v2.6.2
 
 ---
 Release Date: **24.01.2025**
@@ -55,29 +52,28 @@ Release Date: **24.01.2025**
 - Fixed a regression bug in the Cell function ConvertArray
 - Added test cases
 
-
-## v2.6.1 
+## v2.6.1
 
 ---
 Release Date: **19.01.2025**
 
 - Fixed a bug on writing default column styles (not persisted in some cases)
-- Adapted style reader: When a workbook is loaded, not defined color values of Border styles are now empty strings (were null), as if a new style is created 
+- Adapted style reader: When a workbook is loaded, not defined color values of Border styles are now empty strings (were null), as if a new style is created
 - Code maintenance
 
 Note: The color values of Border styles are handled identical on writing XLSX files, either if null or empty. The change of the reader behavior was to enforce the "What You Can Write Is What You Can Read" policy of the library (writing an empty string as color value should lead to an empty string on read).
 
-## v2.6.0 
+## v2.6.0
 
 ---
 Release Date: **12.01.2025**
 
 - Added InsertRow and InsertColumn functions. Functionality provided by Alexander Schlecht
-- Added FirstCewllByValue, FirstOrDefaultCell, CellsByValue functions. Functionality provided by Alexander Schlecht
+- Added FirstCellByValue, FirstOrDefaultCell, CellsByValue functions. Functionality provided by Alexander Schlecht
 - Added ReplaceCellValue function. Functionality provided by Alexander Schlecht
 - Code maintenance
 
-## v2.5.2 
+## v2.5.2
 
 ---
 Release Date: **24.11.2024**
@@ -91,6 +87,7 @@ Release Date: **24.11.2024**
 
 ---
 Release Date: **26.10.2024**
+
 - Fixed a bug regarding the determination of the first data cell in an empty worksheet. Bug fix provided by Martin Stránský
 
 ## v2.5.0
@@ -111,7 +108,7 @@ Release Date: **21.04.2024**
 - Fixed a bug when loading a workbook asynchronously from a stream. Bug fix provided by John Leyva
 - Fixed a bug when the column auto-filter is a single cell address. Bug fix provided by pokorny
 - Fixed a bug regarding style enumeration when reading a workbook. Bug fix provided by Martin Stránský
-- Added new  and adapted existing test cases 
+- Added new  and adapted existing test cases
 
 ## v2.3.3
 
@@ -119,8 +116,7 @@ Release Date: **21.04.2024**
 Release Date: **24.02.2024**
 
 - Fixed a bug in the GetFirstDataCellAddress function
-- Fixed test cases 
-
+- Fixed test cases
 
 ## v2.3.2
 
@@ -128,17 +124,17 @@ Release Date: **24.02.2024**
 Release Date: **24.02.2024**
 
 - Fixed a bug when reading min and max values in the GetLastDataColumnNumber function. Bug fix provided by pokorny
-- Code maintenance 
+- Code maintenance
 
 ## v2.3.1
 
 ---
 Release Date: **22.01.2024**
 
-- Fixed a bug when reading fill styles. Bug fix provided by Marq Watkin 
+- Fixed a bug when reading fill styles. Bug fix provided by Marq Watkin
 - Fixed a bug regarding casting floats to integers, in the worksheet reader. Bug fix provided by wappenull
 - Removed broken debug code in tests
-- Code maintenance 
+- Code maintenance
 
 ## v2.3.0
 
@@ -149,7 +145,7 @@ Release Date: **07.09.2023**
 - Added worksheet option for view types (e.g. page break preview)
 - Added worksheet option to show or hide grid lines
 - Added worksheet option to show or hide columns and row headers
-- Added worksheet option to show or hide rulers in page layout view type 
+- Added worksheet option to show or hide rulers in page layout view type
 
 ## v2.2.0
 
@@ -182,8 +178,8 @@ Release Date: **08.11.2022**
 Note: It seems that newer versions of Excel may store boolean attributes internally now as texts (true/false) and not anymore as numbers (1/0).
       This release adds compatibility to read this newer format but will currently store files still in the old format
 
-Note 2: The incomplete internal escaping of custom number format codes was removed due to the potential high complexity. 
-        Escaping must be performed currently by hand, according to OOXML specs: Part 1 - Fundamentals And Markup Language Reference, Chapter 18.8.31 
+Note 2: The incomplete internal escaping of custom number format codes was removed due to the potential high complexity.
+        Escaping must be performed currently by hand, according to OOXML specs: Part 1 - Fundamentals And Markup Language Reference, Chapter 18.8.31
 
 ## v2.0.4
 
@@ -214,7 +210,8 @@ Release Date: **29.09.2022**
 - Adapted and added further tests
 - Removed several obsolete files and fixed project links
 
-Note: 
+Note:
+
 - When defining a custom number format, now the CustomFormatCode property must always be defined as well, since an empty value leads to an invalid Workbook 
 - When a cell is now created (by constructor) with the type EMPTY, any passed value will be discarded in this cell
 
@@ -300,6 +297,7 @@ Release Date: **03.09.2022 - Major Release**
 - Better handling of dates and times, especially with invalid (too low and too high numbers) values
 
 ### Misc
+
 - Added a unit test project with several thousand, partially parametrized test cases
 - Added several constants for boundary dates in the Utils class
 - Added several methods for pane splitting in the Utils class
@@ -308,7 +306,6 @@ Release Date: **03.09.2022 - Major Release**
 - Exceptions have no sub titles anymore
 - Overhauled the whole writer
 - Removed lot of dead code for better maintenance
-
 
 ## v1.8.7
 
@@ -341,7 +338,6 @@ Release Date: **20.03.2022**
 
 - Fixed a regression bug, caused by changes of v1.8.3
 
-
 ## v1.8.3
 
 ---
@@ -352,7 +348,6 @@ Release Date: **10.03.2022**
 - Adapted the internal building of XML documents
 - Fixed a bug in the handling of border colors
 
-
 ## v1.8.2
 
 ---
@@ -361,7 +356,6 @@ Release Date: **20.12.2021**
 - Added hidden property for worksheets when loading a workbook
 
 Note: The reader functionality on worksheets is not feature complete yet. Additional information like panes, splitting, column and row sizes are currently in development
-
 
 ## v1.8.1
 
