@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['v3_200_200_20rc_201_0',['v3.0.0-rc.1',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1',1,'']]],
-  ['v3_200_200_20rc_202_1',['v3.0.0-rc.2',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md3',1,'']]],
+  ['v3_200_200_20rc_201_0',['v3.0.0-rc.1',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md3',1,'']]],
+  ['v3_200_200_20rc_202_1',['v3.0.0-rc.2',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1',1,'']]],
   ['validatecolor_2',['ValidateColor',['../classNanoXLSX_1_1Utils_1_1Validators.html#ab4ac5c167db407716f7475c70312ddd1',1,'NanoXLSX::Utils::Validators']]],
   ['validatecolumnnumber_3',['ValidateColumnNumber',['../classNanoXLSX_1_1Cell.html#a8be7ff0772e02e59a49b728b04e48b02',1,'NanoXLSX::Cell']]],
   ['validaterownumber_4',['ValidateRowNumber',['../classNanoXLSX_1_1Cell.html#a45ae13aca7309f01dece50eeb6a5eb97',1,'NanoXLSX::Cell']]],

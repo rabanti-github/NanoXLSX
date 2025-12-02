@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['rc_201_0',['v3.0.0-rc.1',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md1',1,'']]],
-  ['rc_202_1',['v3.0.0-rc.2',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md3',1,'']]],
+  ['rc_201_0',['v3.0.0-rc.1',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md3',1,'']]],
+  ['rc_202_1',['v3.0.0-rc.2',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md1',1,'']]],
   ['read_2',['Read',['../classNanoXLSX_1_1Internal_1_1Readers_1_1XlsxReader.html#ae332c791f49521b3dfa4b07e81d4338d',1,'NanoXLSX::Internal::Readers::XlsxReader']]],
   ['readasync_3',['ReadAsync',['../classNanoXLSX_1_1Internal_1_1Readers_1_1XlsxReader.html#a1aff497e9af9854fee8cd98629b79ff0',1,'NanoXLSX::Internal::Readers::XlsxReader']]],
   ['reader_4',['Reader',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html',1,'Change Log - NanoXLSX.Reader'],['../index.html',1,'NanoXLSX.Reader'],['../index.html#autotoc_md5',1,'NanoXLSX.Reader']]],
