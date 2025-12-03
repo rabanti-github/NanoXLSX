@@ -1,9 +1,9 @@
 # Change Log
 
-## v3.0.0-rc.3
+## v3.0.0-rc.3 + v3.0.0-rc.4
 
 ---
-Release Date: **02.12.2025**
+Release Date(s): **02.12.2025** / **03.12.2025** 
 
 - Formal changes to enforce displaying target frameworks in NuGet meta package
 
