@@ -14,6 +14,8 @@ Since there are breaking changes between NanoXLSX v2.x and v3.0.0-rc4, please se
 
 There will be possibly further adaptions and additional pre-releases before the final release.
 
+See also the wiki entry for some thoughts: [From Monolith to Modules: Why NanoXLSX Finally Broke Its Own Traditions](https://github.com/rabanti-github/NanoXLSX/wiki/From-Monolith-to-Modules:-Why-NanoXLSX-Finally-Broke-Its-Own-Traditions)
+
 ---
 
 NanoXLSX is a small .NET library written in C#, to create and read Microsoft Excel files in the XLSX format (Microsoft Excel 2007 or newer) in an easy and native way
@@ -155,5 +157,6 @@ See also: [Getting started in the Wiki](https://github.com/rabanti-github/NanoXL
 Hint: You will find most certainly any function, and the way how to use it, in the [Unit Test Project](https://github.com/rabanti-github/NanoXLSX/tree/master/NanoXlsx%20Test)
 
 ## License
+
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_large)
