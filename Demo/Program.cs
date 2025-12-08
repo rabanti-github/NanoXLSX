@@ -52,6 +52,7 @@ namespace Demo
             Demo11();
             Demo12();
             Demo13();
+            Demo14();
 
             /* ### PERFORMANCE TESTS ### */
             // # Use tests in this section to test the performance of NanoXLSX
@@ -578,6 +579,13 @@ namespace Demo
             wb2.CurrentWorksheet.AddNextCell("Hidden Worksheet");
             wb2.CurrentWorksheet.Hidden = true;                                             // Set the current worksheet hidden
             wb2.Save();                                                                     // Save the workbook
+        }
+
+        private static void Demo14()
+        {
+            Workbook wb = new Workbook("demo14fix.xlsx", "semicolon test");         // Create a new workbook
+            wb.CurrentWorksheet.AddCellFormula("IF(1=1;42;0)", "A1");
+            wb.Save();
         }
 
         #region Utils
