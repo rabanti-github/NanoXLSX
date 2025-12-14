@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['init_0',['Init',['../interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#a9890beb6a7d8215f270a71f47bdcc8d8',1,'NanoXLSX.Interfaces.Writer.IPasswordWriter.Init()'],['../classNanoXLSX_1_1Internal_1_1Writers_1_1LegacyPasswordWriter.html#a7ffcb8d74e3ca12bb4f25eaccb4750d7',1,'NanoXLSX.Internal.Writers.LegacyPasswordWriter.Init()']]]
+  ['legacypasswordwriter_0',['LegacyPasswordWriter',['../classNanoXLSX_1_1Internal_1_1Writers_1_1LegacyPasswordWriter.html#aa0d51ee6abfcf7c5b5091ecf260f9082',1,'NanoXLSX.Internal.Writers.LegacyPasswordWriter.LegacyPasswordWriter(PasswordType type, string hash)'],['../classNanoXLSX_1_1Internal_1_1Writers_1_1LegacyPasswordWriter.html#a96b0f12dbdfbed8bc770f101609ad0e0',1,'NanoXLSX.Internal.Writers.LegacyPasswordWriter.LegacyPasswordWriter()']]]
 ];

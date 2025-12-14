@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="NanoXLSXlib.png"/></td>
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Writer<span id="projectnumber">&#160;3.0.0-rc.2</span>
+   <div id="projectname">NanoXLSX.Writer<span id="projectnumber">&#160;3.0.0-rc.3</span>
    </div>
   </td>
  </tr>
@@ -109,33 +109,41 @@ $(function(){initNavTree('SortedMap_8cs_source.html','',''); });
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    {</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        <span class="keyword">private</span> readonly List&lt;string&gt; indexEntries;</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keyword">private</span> readonly Dictionary&lt;IFormattableText, int&gt; index;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keyword">public</span> <span class="keywordtype">int</span> Count { <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; }</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="keyword">public</span> List&lt;IFormattableText&gt; Keys { <span class="keyword">get</span>; }</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keyword">public</span> SortedMap()</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            Keys = <span class="keyword">new</span> List&lt;IFormattableText&gt;();</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            indexEntries = <span class="keyword">new</span> List&lt;string&gt;();</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            index = <span class="keyword">new</span> Dictionary&lt;IFormattableText, int&gt;();</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            Count = 0;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        }</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keyword">public</span> <span class="keywordtype">string</span> Add(IFormattableText text, <span class="keywordtype">string</span> referenceIndex)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            <span class="keywordflow">if</span> (index.ContainsKey(text))</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                <span class="keywordflow">return</span> indexEntries[index[text]];</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            }</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            index.Add(text, Count);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            Count++;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            Keys.Add(text);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            indexEntries.Add(referenceIndex);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            <span class="keywordflow">return</span> referenceIndex;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    }</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keyword">private</span> List&lt;IFormattableText&gt; keys;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keyword">public</span> <span class="keywordtype">int</span> Count { <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; }</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keyword">public</span> IEnumerable&lt;IFormattableText&gt; Keys =&gt; keys;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="keywordtype">int</span> ISortedMap.Count =&gt; keys.Count;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keyword">public</span> SortedMap()</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            keys = <span class="keyword">new</span> List&lt;IFormattableText&gt;();</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>            indexEntries = <span class="keyword">new</span> List&lt;string&gt;();</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            index = <span class="keyword">new</span> Dictionary&lt;IFormattableText, int&gt;();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            Count = 0;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        }</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keyword">public</span> <span class="keywordtype">string</span> Add(IFormattableText text, <span class="keywordtype">string</span> referenceIndex)</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="keywordflow">if</span> (index.ContainsKey(text))</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                <span class="keywordflow">return</span> indexEntries[index[text]];</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            index.Add(text, Count);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            Count++;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            keys.Add(text);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            indexEntries.Add(referenceIndex);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            <span class="keywordflow">return</span> referenceIndex;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordtype">string</span> ISortedMap.Add(IFormattableText text, <span class="keywordtype">string</span> referenceIndex)</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            <span class="keywordflow">return</span> Add(text, referenceIndex);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>}</div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces.html">NanoXLSX.Interfaces</a></div><div class="ttdef"><b>Definition</b> <a href="IPasswordWriter_8cs_source.html#l00012">IPasswordWriter.cs:13</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Internal_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal.html">NanoXLSX.Internal</a></div><div class="ttdef"><b>Definition</b> <a href="WriterPassword_8cs_source.html#l00008">WriterPassword.cs:9</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

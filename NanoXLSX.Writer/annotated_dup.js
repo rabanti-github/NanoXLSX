@@ -10,9 +10,6 @@ var annotated_dup =
         [ "Enums", "namespaceNanoXLSX_1_1Internal_1_1Enums.html", [
           [ "WriterPassword", "classNanoXLSX_1_1Internal_1_1Enums_1_1WriterPassword.html", "classNanoXLSX_1_1Internal_1_1Enums_1_1WriterPassword" ]
         ] ],
-        [ "Structures", "namespaceNanoXLSX_1_1Internal_1_1Structures.html", [
-          [ "PlainText", "classNanoXLSX_1_1Internal_1_1Structures_1_1PlainText.html", "classNanoXLSX_1_1Internal_1_1Structures_1_1PlainText" ]
-        ] ],
         [ "Writers", "namespaceNanoXLSX_1_1Internal_1_1Writers.html", [
           [ "LegacyPasswordWriter", "classNanoXLSX_1_1Internal_1_1Writers_1_1LegacyPasswordWriter.html", "classNanoXLSX_1_1Internal_1_1Writers_1_1LegacyPasswordWriter" ]
         ] ]

@@ -43,12 +43,10 @@ var hierarchy =
     [ "IEquatable", null, [
       [ "NanoXLSX.Address", "structNanoXLSX_1_1Address.html", null ]
     ] ],
-    [ "NanoXLSX.Interfaces.IFormattableText", "interfaceNanoXLSX_1_1Interfaces_1_1IFormattableText.html", null ],
     [ "NanoXLSX.Interfaces.Plugin.IOptions", "interfaceNanoXLSX_1_1Interfaces_1_1Plugin_1_1IOptions.html", null ],
     [ "NanoXLSX.Interfaces.IPassword", "interfaceNanoXLSX_1_1Interfaces_1_1IPassword.html", [
       [ "NanoXLSX.LegacyPassword", "classNanoXLSX_1_1LegacyPassword.html", null ]
     ] ],
-    [ "NanoXLSX.Interfaces.ISortedMap", "interfaceNanoXLSX_1_1Interfaces_1_1ISortedMap.html", null ],
     [ "NanoXLSX.Metadata", "classNanoXLSX_1_1Metadata.html", null ],
     [ "NanoXLSX.Utils.ParserUtils", "classNanoXLSX_1_1Utils_1_1ParserUtils.html", null ],
     [ "NanoXLSX.Registry.PlugInLoader", "classNanoXLSX_1_1Registry_1_1PlugInLoader.html", null ],
