@@ -5,24 +5,17 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System.Collections.Generic;
-
 namespace NanoXLSX.Interfaces
 {
     /// <summary>
     /// Interface to represent a sorted map with IFormattableText as key and string as value
     /// </summary>
-    public interface ISortedMap
+    internal interface ISortedMap
     {
         /// <summary>
         /// Number of map entries
         /// </summary>
         int Count { get; }
-
-        /// <summary>
-        /// Gets the keys of the map as list
-        /// </summary>
-        List<IFormattableText> Keys { get; }
 
         /// <summary>
         /// Method to add a key value pair (IFormattableText as key and its index in the worksheet as value)

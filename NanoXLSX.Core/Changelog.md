@@ -1,5 +1,13 @@
 # Change Log - NanoXLSX.Core
 
+## v3.0.0-rc.3
+
+---
+Release Date: **11.12.2025**
+
+- Internal change of structured text handling
+
+
 ## v3.0.0-rc.2
 
 ---

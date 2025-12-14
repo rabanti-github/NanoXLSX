@@ -12,7 +12,7 @@ namespace NanoXLSX.Interfaces
     /// <summary>
     /// Interface to represent complex text data that can be formatted somehow
     /// </summary>
-    public interface IFormattableText
+    internal interface IFormattableText
     {
         /// <summary>
         /// Gets the main XML element of the formattable text

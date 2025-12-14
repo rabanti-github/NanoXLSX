@@ -20,9 +20,9 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageTags>Excel Office XLSX Writer</PackageTags>
-		<Version>3.0.0-rc.2</Version>
-		<AssemblyVersion>3.0.0-rc.2</AssemblyVersion>
-		<FileVersion>3.0.0-rc.2</FileVersion>
+		<Version>3.0.0-rc.3</Version>
+		<AssemblyVersion>3.0.0-rc.3</AssemblyVersion>
+		<FileVersion>3.0.0-rc.3</FileVersion>
 		<RepositoryType>git</RepositoryType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<PackageIcon>NanoXLSXlib.png</PackageIcon>
@@ -58,7 +58,7 @@
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
 		<!--<PackageReference Include="NanoXLSX.Core" Version="3.0.*" /> -->
-		<PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.2" />
+		<PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.3" />
 	</ItemGroup>
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 	  <Exec Command="@echo off&#xD;&#xA;echo PROJECT_NUMBER = $(Version) &gt; &quot;$(ProjectDir)Documentation\projectNumber.doxygen&quot;&#xD;&#xA;echo PROJECT_NAME = $(ProjectName) &gt; &quot;$(ProjectDir)Documentation\projectName.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = ../../docs/$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\outputDirectory.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = ../../docs/$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\htmlOutput.doxygen&quot;" />

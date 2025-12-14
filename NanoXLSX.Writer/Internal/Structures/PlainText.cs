@@ -4,6 +4,7 @@
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
+
 using NanoXLSX.Interfaces;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
@@ -15,7 +16,7 @@ namespace NanoXLSX.Internal.Structures
     /// Class to wrap unformatted strings as formattable text for the shared string table 
     /// </summary>
     /// \remark <remarks>This class is only for internal use. Use the high level API (e.g. class Workbook) to manipulate data and create Excel files</remarks>
-    public class PlainText : IFormattableText
+    internal class PlainText : IFormattableText
     {
         private const string TAG_NAME = "t";
         private const string PRESERVE_ATTRIBUTE_NAME = "space";

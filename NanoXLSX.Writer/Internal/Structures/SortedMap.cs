@@ -18,6 +18,7 @@ namespace NanoXLSX.Internal
     {
         private readonly List<string> indexEntries;
         private readonly Dictionary<IFormattableText, int> index;
+        private List<IFormattableText> keys;
 
         /// <summary>
         /// Number of map entries
@@ -27,21 +28,26 @@ namespace NanoXLSX.Internal
         /// <summary>
         /// Gets the keys of the map as list
         /// </summary>
-        public List<IFormattableText> Keys { get; }
+        public IEnumerable<IFormattableText> Keys => keys;
+
+        /// <summary>
+        /// Gets the number of map entries (interface implementation)
+        /// </summary>
+        int ISortedMap.Count => keys.Count;
 
         /// <summary>
         /// Default constructor
         /// </summary>
         public SortedMap()
         {
-            Keys = new List<IFormattableText>();
+            keys = new List<IFormattableText>();
             indexEntries = new List<string>();
             index = new Dictionary<IFormattableText, int>();
             Count = 0;
         }
 
         /// <summary>
-        /// Method to add a key value pair (IFormattableText as key and its index in the worksheet as value)
+        /// Method to add a key value pair (IXmlFormattableText as key and its index in the worksheet as value)
         /// </summary>
         /// <param name="text">Text (Key) as string</param>
         /// <param name="referenceIndex">Reference index as string</param>
@@ -54,9 +60,20 @@ namespace NanoXLSX.Internal
             }
             index.Add(text, Count);
             Count++;
-            Keys.Add(text);
+            keys.Add(text);
             indexEntries.Add(referenceIndex);
             return referenceIndex;
+        }
+
+        /// <summary>
+        /// Method to add a key value pair (IFormattableText as key and its index in the worksheet as value)
+        /// </summary>
+        /// <param name="text">Text (Key) as string</param>
+        /// <param name="referenceIndex">Reference index as string</param>
+        /// <returns>Returns the resolved string (either added or returned from an existing entry) of the reference index</returns>
+        string ISortedMap.Add(IFormattableText text, string referenceIndex)
+        {
+            return Add(text, referenceIndex);
         }
     }
 }

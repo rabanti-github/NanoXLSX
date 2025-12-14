@@ -8,7 +8,7 @@
 
     <!-- NuGet metadata -->
     <PackageId>NanoXLSX</PackageId>
-    <Version>3.0.0-rc.4</Version>
+    <Version>3.0.0-rc.5</Version>
     <Authors>Raphael Stoeckli</Authors>
     <Description>NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way. This package is the meta package of NanoXLSX and should be used in most cases as dependency in your project.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -26,7 +26,7 @@
     <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <FileVersion>3.0.0.0</FileVersion>
-	<Version>3.0.0-rc.4</Version>
+	<Version>3.0.0-rc.5</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -41,16 +41,10 @@
 		<None Include="../README.md" Pack="true" PackagePath="." />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-		<PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.2" />
+	<ItemGroup>
+		<PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc3" />
 		<PackageReference Include="NanoXLSX.Reader" Version="3.0.0-rc.2" />
-		<PackageReference Include="NanoXLSX.Writer" Version="3.0.0-rc.2" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-		<PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.2" />
-		<PackageReference Include="NanoXLSX.Reader" Version="3.0.0-rc.2" />
-		<PackageReference Include="NanoXLSX.Writer" Version="3.0.0-rc.2" />
+		<PackageReference Include="NanoXLSX.Writer" Version="3.0.0-rc.3" />
 	</ItemGroup>
 
   <PropertyGroup>
@@ -72,8 +66,7 @@
 		<!-- Your build props files -->
 		<None Include="build/net45/NanoXLSX.props" Pack="true" />
 		<None Include="build/netstandard2.0/NanoXLSX.props" Pack="true" />
-	</ItemGroup>
-	
+	</ItemGroup>	
 	
 	<Target Name="GenerateDocsIndex" AfterTargets="Build">
 		<Exec Command="dotnet run --project ../Docs.IndexGenerator" />

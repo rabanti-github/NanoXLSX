@@ -191,9 +191,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 }
             }
 
-            public ISortedMap SharedStrings => testSortedMap;
+            ISortedMap SharedStrings => testSortedMap;
 
             public int SharedStringsTotalCount { get => testSortedMap.Count; set => _ = value; }
+
+            ISortedMap ISharedStringWriter.SharedStrings => SharedStrings;
 
             public void Execute()
             {
@@ -281,13 +283,20 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
             public int Count => list.Count;
 
             [ExcludeFromCodeCoverage]
-            public List<IFormattableText> Keys => list;
+            List<IFormattableText> Keys => list;
 
-            public string Add(IFormattableText text, string referenceIndex)
+            int ISortedMap.Count => Count;
+
+            string Add(IFormattableText text, string referenceIndex)
             {
                 // Note: Not yet cleanly implemented
                 list.Add(text);
                 return text.ToString();
+            }
+
+            string ISortedMap.Add(IFormattableText text, string referenceIndex)
+            {
+                return Add(text, referenceIndex);
             }
         }
 
