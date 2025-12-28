@@ -2,7 +2,7 @@
 using NanoXLSX.Exceptions;
 using Xunit;
 
-namespace NanoXLSX.Core.Test.Themes
+namespace NanoXLSX.Core.Test.Colors
 {
     public class IndexedColorTest
     {
@@ -75,7 +75,7 @@ namespace NanoXLSX.Core.Test.Themes
         [InlineData(IndexedColor.Value.SystemBackground)]
         public void ColorValueTest(IndexedColor.Value value)
         {
-            IndexedColor color = new IndexedColor();
+            var color = new IndexedColor();
             Assert.Equal(IndexedColor.DefaultIndexedColor, color.ColorValue); // Default is 64 (SystemForeground)
             color.ColorValue = value;
             Assert.Equal(value, color.ColorValue);
@@ -150,7 +150,7 @@ namespace NanoXLSX.Core.Test.Themes
         [InlineData(IndexedColor.Value.SystemBackground, "65")]
         public void StringValueTest(IndexedColor.Value givenValue, string expectedValue)
         {
-            IndexedColor color = new IndexedColor();
+            var color = new IndexedColor();
             Assert.Equal(IndexedColor.DefaultIndexedColor, color.ColorValue); // Default
             color.ColorValue = givenValue;
             Assert.Equal(expectedValue, color.StringValue);
@@ -159,7 +159,7 @@ namespace NanoXLSX.Core.Test.Themes
         [Fact(DisplayName = "Test of the default Constructor")]
         public void ConstructorTest()
         {
-            IndexedColor color = new IndexedColor();
+            var color = new IndexedColor();
             Assert.Equal(IndexedColor.DefaultIndexedColor, color.ColorValue); // Default
         }
 
@@ -172,7 +172,7 @@ namespace NanoXLSX.Core.Test.Themes
         [InlineData(IndexedColor.Value.SystemForeground)]
         public void ConstructorTest2(IndexedColor.Value value)
         {
-            IndexedColor color = new IndexedColor(value);
+            var color = new IndexedColor(value);
             Assert.Equal(value, color.ColorValue);
         }
 
@@ -245,7 +245,7 @@ namespace NanoXLSX.Core.Test.Themes
         [InlineData(65, IndexedColor.Value.SystemBackground)]
         public void ConstructorTest3(int index, IndexedColor.Value expectedValue)
         {
-            IndexedColor color = new IndexedColor(index);
+            var color = new IndexedColor(index);
             Assert.Equal(expectedValue, color.ColorValue);
         }
 
@@ -256,78 +256,152 @@ namespace NanoXLSX.Core.Test.Themes
         [InlineData(-100)]
         public void ConstructorFailTest(int value)
         {
-            Assert.Throws<StyleException>(() => { IndexedColor color = new IndexedColor(value); });
+            Assert.Throws<StyleException>(() => { var color = new IndexedColor(value); });
+        }
+
+        [Theory(DisplayName = "Test of the GetSrgbColor method")]
+        [InlineData(IndexedColor.Value.Black0, "FF000000")]
+        [InlineData(IndexedColor.Value.White1, "FFFFFFFF")]
+        [InlineData(IndexedColor.Value.Red2, "FFFF0000")]
+        [InlineData(IndexedColor.Value.BrightGreen3, "FF00FF00")]
+        [InlineData(IndexedColor.Value.Blue4, "FF0000FF")]
+        [InlineData(IndexedColor.Value.Yellow5, "FFFFFF00")]
+        [InlineData(IndexedColor.Value.Magenta6, "FFFF00FF")]
+        [InlineData(IndexedColor.Value.Cyan7, "FF00FFFF")]
+        [InlineData(IndexedColor.Value.Black, "FF000000")]
+        [InlineData(IndexedColor.Value.White, "FFFFFFFF")]
+        [InlineData(IndexedColor.Value.Red, "FFFF0000")]
+        [InlineData(IndexedColor.Value.BrightGreen, "FF00FF00")]
+        [InlineData(IndexedColor.Value.Blue, "FF0000FF")]
+        [InlineData(IndexedColor.Value.PureBlue, "FF0000FF")]
+        [InlineData(IndexedColor.Value.Yellow, "FFFFFF00")]
+        [InlineData(IndexedColor.Value.StrongYellow, "FFFFFF00")]
+        [InlineData(IndexedColor.Value.Magenta, "FFFF00FF")]
+        [InlineData(IndexedColor.Value.StrongMagenta, "FFFF00FF")]
+        [InlineData(IndexedColor.Value.Cyan, "FF00FFFF")]
+        [InlineData(IndexedColor.Value.StrongCyan, "FF00FFFF")]
+        [InlineData(IndexedColor.Value.DarkRed, "FF800000")]
+        [InlineData(IndexedColor.Value.DarkMaroon, "FF800000")]
+        [InlineData(IndexedColor.Value.DarkGreen, "FF008000")]
+        [InlineData(IndexedColor.Value.DarkBlue, "FF000080")]
+        [InlineData(IndexedColor.Value.Navy, "FF000080")]
+        [InlineData(IndexedColor.Value.Olive, "FF808000")]
+        [InlineData(IndexedColor.Value.Purple, "FF800080")]
+        [InlineData(IndexedColor.Value.DarkViolet, "FF800080")]
+        [InlineData(IndexedColor.Value.Teal, "FF008080")]
+        [InlineData(IndexedColor.Value.DarkTeal, "FF008080")]
+        [InlineData(IndexedColor.Value.LightGray, "FFC0C0C0")]
+        [InlineData(IndexedColor.Value.Gray, "FF808080")]
+        [InlineData(IndexedColor.Value.LightCornflowerBlue, "FF9999FF")]
+        [InlineData(IndexedColor.Value.DarkRose, "FF993366")]
+        [InlineData(IndexedColor.Value.DarkRoseDuplicate, "FF993366")]
+        [InlineData(IndexedColor.Value.LightYellow, "FFFFFFCC")]
+        [InlineData(IndexedColor.Value.LightCyan, "FFCCFFFF")]
+        [InlineData(IndexedColor.Value.PaleCyan, "FFCCFFFF")]
+        [InlineData(IndexedColor.Value.DarkPurple, "FF660066")]
+        [InlineData(IndexedColor.Value.Salmon, "FFFF8080")]
+        [InlineData(IndexedColor.Value.MediumBlue, "FF0066CC")]
+        [InlineData(IndexedColor.Value.LightLavender, "FFCCCCFF")]
+        [InlineData(IndexedColor.Value.SkyBlue, "FF00CCFF")]
+        [InlineData(IndexedColor.Value.LightMint, "FFCCFFCC")]
+        [InlineData(IndexedColor.Value.PastelYellow, "FFFFFF99")]
+        [InlineData(IndexedColor.Value.LightSkyBlue, "FF99CCFF")]
+        [InlineData(IndexedColor.Value.Rose, "FFFF99CC")]
+        [InlineData(IndexedColor.Value.Lavender, "FFCC99FF")]
+        [InlineData(IndexedColor.Value.Peach, "FFFFCC99")]
+        [InlineData(IndexedColor.Value.RoyalBlue, "FF3366FF")]
+        [InlineData(IndexedColor.Value.Turquoise, "FF33CCCC")]
+        [InlineData(IndexedColor.Value.LightOlive, "FF99CC00")]
+        [InlineData(IndexedColor.Value.Gold, "FFFFCC00")]
+        [InlineData(IndexedColor.Value.Orange, "FFFF9900")]
+        [InlineData(IndexedColor.Value.DarkOrange, "FFFF6600")]
+        [InlineData(IndexedColor.Value.BlueGray, "FF666699")]
+        [InlineData(IndexedColor.Value.MediumGray, "FF969696")]
+        [InlineData(IndexedColor.Value.DarkSlateBlue, "FF003366")]
+        [InlineData(IndexedColor.Value.SeaGreen, "FF339966")]
+        [InlineData(IndexedColor.Value.VeryDarkGreen, "FF003300")]
+        [InlineData(IndexedColor.Value.DarkOlive, "FF333300")]
+        [InlineData(IndexedColor.Value.Brown, "FF993300")]
+        [InlineData(IndexedColor.Value.Indigo, "FF333399")]
+        [InlineData(IndexedColor.Value.VeryDarkGray, "FF333333")]
+        [InlineData(IndexedColor.Value.SystemBackground, IndexedColor.DefaultSystemBackgroundColorArgb)]
+        [InlineData(IndexedColor.Value.SystemForeground, IndexedColor.DefaultSystemForegroundColorArgb)]
+        public void GetSrgbTest(IndexedColor.Value givenValue, string expectedArgbValue)
+        {
+            var color = new IndexedColor(givenValue);
+            var rgb = color.GetSrgbColor();
+            Assert.Equal(expectedArgbValue, rgb.ColorValue);
         }
 
         [Fact(DisplayName = "Test of the Equals method (multiple cases)")]
         public void EqualsTest()
         {
-            IndexedColor color1 = new IndexedColor(IndexedColor.Value.Red);
-            IndexedColor color2 = new IndexedColor(IndexedColor.Value.Red);
+            var color1 = new IndexedColor(IndexedColor.Value.Red);
+            var color2 = new IndexedColor(IndexedColor.Value.Red);
             Assert.True(color1.Equals(color2)); // Same value
 
 
-            IndexedColor color3 = new IndexedColor();
-            IndexedColor color4 = new IndexedColor();
+            var color3 = new IndexedColor();
+            var color4 = new IndexedColor();
             Assert.True(color3.Equals(color4)); // Default value
 
-            IndexedColor color5 = new IndexedColor(23);
-            IndexedColor color6 = new IndexedColor(23);
+            var color5 = new IndexedColor(23);
+            var color6 = new IndexedColor(23);
             Assert.True(color5.Equals(color6)); // Same index value
 
-            IndexedColor color1b = new IndexedColor(10); // equivalent to Red
+            var color1b = new IndexedColor(10); // equivalent to Red
             Assert.True(color1.Equals(color1b)); // Different construction, same value
 
-            IndexedColor colorDefault1 = new IndexedColor(IndexedColor.Value.SystemForeground);
+            var colorDefault1 = new IndexedColor(IndexedColor.Value.SystemForeground);
             Assert.True(color3.Equals(colorDefault1)); // Default value by property or constructor
         }
 
         [Fact(DisplayName = "Test of the Equals method on inequality (multiple cases)")]
         public void EqualsTest2()
         {
-            IndexedColor color1 = new IndexedColor(IndexedColor.Value.BrightGreen);
-            IndexedColor color2 = new IndexedColor(IndexedColor.Value.Blue);
+            var color1 = new IndexedColor(IndexedColor.Value.BrightGreen);
+            var color2 = new IndexedColor(IndexedColor.Value.Blue);
             Assert.False(color1.Equals(color2));
 
-            object obj = new object();
+            var obj = new object();
             Assert.False(color1.Equals(obj));
 
             IndexedColor color3 = null;
             Assert.False(color1.Equals(color3));
 
-            IndexedColor color4 = new IndexedColor(55);
+            var color4 = new IndexedColor(55);
             Assert.False(color1.Equals(color4));
         }
 
         [Fact(DisplayName = "Test of the GetHashCode method (multiple cases)")]
         public void GetHashCodeTest()
         {
-            IndexedColor color1 = new IndexedColor(IndexedColor.Value.Yellow);
-            IndexedColor color2 = new IndexedColor(IndexedColor.Value.Yellow);
+            var color1 = new IndexedColor(IndexedColor.Value.Yellow);
+            var color2 = new IndexedColor(IndexedColor.Value.Yellow);
             Assert.Equal(color1.GetHashCode(), color2.GetHashCode());
 
-            IndexedColor color3 = new IndexedColor();
-            IndexedColor color4 = new IndexedColor();
+            var color3 = new IndexedColor();
+            var color4 = new IndexedColor();
             Assert.Equal(color3.GetHashCode(), color4.GetHashCode());
 
-            IndexedColor color5 = new IndexedColor(30);
-            IndexedColor color6 = new IndexedColor(30);
+            var color5 = new IndexedColor(30);
+            var color6 = new IndexedColor(30);
             Assert.Equal(color5.GetHashCode(), color6.GetHashCode());
         }
 
         [Fact(DisplayName = "Test of the GetHashCode method on inequality (multiple cases)")]
         public void GetHashCodeTest2()
         {
-            IndexedColor color1 = new IndexedColor(IndexedColor.Value.Magenta);
-            IndexedColor color2 = new IndexedColor(IndexedColor.Value.Cyan);
+            var color1 = new IndexedColor(IndexedColor.Value.Magenta);
+            var color2 = new IndexedColor(IndexedColor.Value.Cyan);
             Assert.NotEqual(color1.GetHashCode(), color2.GetHashCode());
 
-            IndexedColor color3 = new IndexedColor(12);
-            IndexedColor color4 = new IndexedColor(45);
+            var color3 = new IndexedColor(12);
+            var color4 = new IndexedColor(45);
             Assert.NotEqual(color3.GetHashCode(), color4.GetHashCode());
 
-            IndexedColor color5 = new IndexedColor();
-            IndexedColor color6 = new IndexedColor(IndexedColor.Value.SystemBackground);
+            var color5 = new IndexedColor();
+            var color6 = new IndexedColor(IndexedColor.Value.SystemBackground);
             Assert.NotEqual(color5.GetHashCode(), color6.GetHashCode());
         }
 

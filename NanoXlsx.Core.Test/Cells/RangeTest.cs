@@ -130,6 +130,22 @@ namespace NanoXLSX.Test.Core.CellTest
             Assert.Equal(contains, expectedResult);
         }
 
+        [Theory(DisplayName = "Test of the implicit operator (create range by string)")]
+        [InlineData("A1:A1", "A1:A1")]
+        [InlineData("$A1:$A1", "A1:A1")]
+        [InlineData("$A$1:$A$1", "A1:A1")]
+        [InlineData("B4:C8", "B4:C8")]
+        [InlineData("B$222:C$987", "B222:C987")]
+        public void ImplicitOperatorTest(string givenValue, string expectedValue)
+        {
+            Range range = givenValue;
+            Range expectedRange = new Range(expectedValue);
+            Assert.Equal(range.StartAddress.Column, expectedRange.StartAddress.Column);
+            Assert.Equal(range.StartAddress.Row, expectedRange.StartAddress.Row);
+            Assert.Equal(range.EndAddress.Column, expectedRange.EndAddress.Column);
+            Assert.Equal(range.EndAddress.Row, expectedRange.EndAddress.Row);
+        }
+
         [Theory(DisplayName = "Test of the Equals method")]
         [InlineData("A1:A1", "A1:A1", true)]
         [InlineData("A1:A4", "A$1:A$4", false)]

@@ -4,7 +4,7 @@ using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
 using Xunit;
 
-namespace NanoXLSX.Core.Test.Themes
+namespace NanoXLSX.Core.Test.Colors
 {
     public class SystemColorTest
     {
@@ -42,7 +42,7 @@ namespace NanoXLSX.Core.Test.Themes
         [InlineData(SystemColor.Value.WindowText)]
         public void ColorValueTest(SystemColor.Value value)
         {
-            SystemColor color = new SystemColor();
+            var color = new SystemColor();
             Assert.Equal(SystemColor.Value.WindowText, color.ColorValue); // Default
             color.ColorValue = value;
             Assert.Equal(value, color.ColorValue);
@@ -81,7 +81,7 @@ namespace NanoXLSX.Core.Test.Themes
         [InlineData(SystemColor.Value.WindowText, "windowText")]
         public void StringValueTest(SystemColor.Value givenValue, string expectedValue)
         {
-            SystemColor color = new SystemColor();
+            var color = new SystemColor();
             Assert.Equal(SystemColor.Value.WindowText, color.ColorValue); // Default
             color.ColorValue = givenValue;
             Assert.Equal(expectedValue, color.StringValue);
@@ -90,7 +90,7 @@ namespace NanoXLSX.Core.Test.Themes
         [Fact(DisplayName = "Test of the failing StringValue property on invalid values")]
         public void StringValueFailTest()
         {
-            SystemColor color = new SystemColor((SystemColor.Value)99);
+            var color = new SystemColor((SystemColor.Value)99);
             Assert.Throws<StyleException>(() => color.StringValue);
         }
 
@@ -103,7 +103,7 @@ namespace NanoXLSX.Core.Test.Themes
         [InlineData("ffaabb")]
         public void LastColorTest(string srgbValue)
         {
-            SystemColor color = new SystemColor();
+            var color = new SystemColor();
             Assert.Equal("000000", color.LastColor); // Default black
             color.LastColor = srgbValue;
             Assert.Equal(srgbValue, color.LastColor);
@@ -123,7 +123,7 @@ namespace NanoXLSX.Core.Test.Themes
         [InlineData("-aabbcc")]
         public void LastColorFailTest(string srgbValue)
         {
-            SystemColor color = new SystemColor();
+            var color = new SystemColor();
             Assert.Equal("000000", color.LastColor); // Default black
             Assert.Throws<StyleException>(() => color.LastColor = srgbValue);
         }
@@ -161,7 +161,7 @@ namespace NanoXLSX.Core.Test.Themes
         [InlineData(SystemColor.Value.WindowText, "AD44FF")]
         public void ConstructorTest2(SystemColor.Value value, string lastColor)
         {
-            SystemColor color = new SystemColor(value, lastColor);
+            var color = new SystemColor(value, lastColor);
             Assert.Equal(value, color.ColorValue);
             Assert.Equal(lastColor, color.LastColor);
         }
@@ -186,61 +186,61 @@ namespace NanoXLSX.Core.Test.Themes
         [Fact(DisplayName = "Test of the Equals method (multiple cases)")]
         public void EqualsTest()
         {
-            SystemColor color1 = new SystemColor(SystemColor.Value.ButtonHighlight)
+            var color1 = new SystemColor(SystemColor.Value.ButtonHighlight)
             {
                 LastColor = "112233"
             };
-            SystemColor color2 = new SystemColor
+            var color2 = new SystemColor
             {
                 ColorValue = SystemColor.Value.ButtonHighlight,
                 LastColor = "112233"
             };
             Assert.True(color1.Equals(color2));
 
-            SystemColor color3 = new SystemColor();
-            SystemColor color4 = new SystemColor();
+            var color3 = new SystemColor();
+            var color4 = new SystemColor();
             Assert.True(color3.Equals(color4));
         }
 
         [Fact(DisplayName = "Test of the Equals method on inequality (multiple cases)")]
         public void EqualsTest2()
         {
-            SystemColor color1 = new SystemColor(SystemColor.Value.CaptionText);
-            SystemColor color2 = new SystemColor
+            var color1 = new SystemColor(SystemColor.Value.CaptionText);
+            var color2 = new SystemColor
             {
                 ColorValue = SystemColor.Value.GradientActiveCaption
             };
             Assert.False(color1.Equals(color2));
 
-            SystemColor color3 = new SystemColor(SystemColor.Value.ActiveCaption);
-            SystemColor color4 = new SystemColor();
+            var color3 = new SystemColor(SystemColor.Value.ActiveCaption);
+            var color4 = new SystemColor();
             Assert.False(color3.Equals(color4));
 
-            SystemColor color5 = new SystemColor();
-            DummyColor color6 = new DummyColor();
+            var color5 = new SystemColor();
+            var color6 = new DummyColor();
             Assert.False(color5.Equals(color6));
 
-            SystemColor color7 = new SystemColor(SystemColor.Value.CaptionText, "AABBCC");
-            SystemColor color8 = new SystemColor(SystemColor.Value.CaptionText, "001122");
+            var color7 = new SystemColor(SystemColor.Value.CaptionText, "AABBCC");
+            var color8 = new SystemColor(SystemColor.Value.CaptionText, "001122");
             Assert.False(color7.Equals(color8));
         }
 
         [Fact(DisplayName = "Test of the GetHashCode method (multiple cases)")]
         public void GetHashCodeTest()
         {
-            SystemColor color1 = new SystemColor(SystemColor.Value.AppWorkspace);
-            SystemColor color2 = new SystemColor
+            var color1 = new SystemColor(SystemColor.Value.AppWorkspace);
+            var color2 = new SystemColor
             {
                 ColorValue = SystemColor.Value.AppWorkspace
             };
             Assert.Equal(color1.GetHashCode(), color2.GetHashCode());
 
-            SystemColor color3 = new SystemColor();
-            SystemColor color4 = new SystemColor();
+            var color3 = new SystemColor();
+            var color4 = new SystemColor();
             Assert.Equal(color3.GetHashCode(), color4.GetHashCode());
 
-            SystemColor color5 = new SystemColor(SystemColor.Value.AppWorkspace, "CCDDEE");
-            SystemColor color6 = new SystemColor
+            var color5 = new SystemColor(SystemColor.Value.AppWorkspace, "CCDDEE");
+            var color6 = new SystemColor
             {
                 ColorValue = SystemColor.Value.AppWorkspace,
                 LastColor = "CCDDEE"
@@ -251,23 +251,23 @@ namespace NanoXLSX.Core.Test.Themes
         [Fact(DisplayName = "Test of the GetHashCode method on inequality (multiple cases)")]
         public void GetHashCodeTest2()
         {
-            SystemColor color1 = new SystemColor(SystemColor.Value.Background);
-            SystemColor color2 = new SystemColor
+            var color1 = new SystemColor(SystemColor.Value.Background);
+            var color2 = new SystemColor
             {
                 ColorValue = SystemColor.Value.ButtonFace
             };
             Assert.NotEqual(color1.GetHashCode(), color2.GetHashCode());
 
-            SystemColor color3 = new SystemColor(SystemColor.Value.AppWorkspace);
-            SystemColor color4 = new SystemColor();
+            var color3 = new SystemColor(SystemColor.Value.AppWorkspace);
+            var color4 = new SystemColor();
             Assert.NotEqual(color3.GetHashCode(), color4.GetHashCode());
 
-            SystemColor color5 = new SystemColor();
-            DummyColor color6 = new DummyColor();
+            var color5 = new SystemColor();
+            var color6 = new DummyColor();
             Assert.NotEqual(color5.GetHashCode(), color6.GetHashCode());
 
-            SystemColor color7 = new SystemColor(SystemColor.Value.Background, "AACCDD");
-            SystemColor color8 = new SystemColor
+            var color7 = new SystemColor(SystemColor.Value.Background, "AACCDD");
+            var color8 = new SystemColor
             {
                 ColorValue = SystemColor.Value.Background,
                 LastColor = "002233"
