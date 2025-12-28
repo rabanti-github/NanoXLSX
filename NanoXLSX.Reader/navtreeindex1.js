@@ -1,9 +1,9 @@
 var NAVTREEINDEX1 =
 {
-"index.html#autotoc_md5":[0],
-"index.html#autotoc_md7":[0,0],
-"index.html#autotoc_md8":[0,1],
-"index.html#autotoc_md9":[0,2],
+"index.html#autotoc_md11":[0,2],
+"index.html#autotoc_md12":[0,3],
+"index.html#autotoc_md7":[0],
+"index.html#autotoc_md9":[0,0],
 "interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html":[2,0,0,1,0,0],
 "interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html":[3,0,0,1,0,0],
 "interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html#a5312dfd92cc3dcd99b9cfd74568deea6":[2,0,0,1,0,0,1],
@@ -13,6 +13,7 @@ var NAVTREEINDEX1 =
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html":[1],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md1":[1,0],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md3":[1,1],
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md5":[1,2],
 "namespaceNanoXLSX.html":[2,0,0],
 "namespaceNanoXLSX_1_1Extensions.html":[2,0,0,0],
 "namespaceNanoXLSX_1_1Interfaces.html":[2,0,0,1],

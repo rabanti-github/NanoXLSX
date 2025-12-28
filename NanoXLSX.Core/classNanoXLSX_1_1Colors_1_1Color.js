@@ -1,0 +1,34 @@
+var classNanoXLSX_1_1Colors_1_1Color =
+[
+    [ "ColorType", "classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb", [
+      [ "None", "classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bba6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "Auto", "classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bba06b9281e396db002010bde1de57262eb", null ],
+      [ "Rgb", "classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bbaabe0e112dd5f40f1de00eccbf99798a3", null ],
+      [ "Indexed", "classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bbacccd5fd8c8f59fe9373c56b1b951780c", null ],
+      [ "Theme", "classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bbad721757161f7f70c5b0949fdb6ec2c30", null ],
+      [ "System", "classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bbaa45da96d0bf6575970f2d27af22be28a", null ]
+    ] ],
+    [ "CompareTo", "classNanoXLSX_1_1Colors_1_1Color.html#ac0ea6e4a56f5ade53163a37a45c30179", null ],
+    [ "CreateAuto", "classNanoXLSX_1_1Colors_1_1Color.html#a1be2e76c61a03eb14866f616ddd90ff5", null ],
+    [ "CreateIndexed", "classNanoXLSX_1_1Colors_1_1Color.html#a06b5f7b5f7e415360ee66e41dde4545e", null ],
+    [ "CreateIndexed", "classNanoXLSX_1_1Colors_1_1Color.html#a71bf1fb17b4465f32bca2b8f6e82041b", null ],
+    [ "CreateIndexed", "classNanoXLSX_1_1Colors_1_1Color.html#a40235b1c123c2333789f7c7075cd951e", null ],
+    [ "CreateNone", "classNanoXLSX_1_1Colors_1_1Color.html#a97d9a4a8d8bda6a17ce119aef47879db", null ],
+    [ "CreateRgb", "classNanoXLSX_1_1Colors_1_1Color.html#a9eebe486378307539a4931069c01057f", null ],
+    [ "CreateRgb", "classNanoXLSX_1_1Colors_1_1Color.html#a8d802d685c37204f1c8eb6905282a1ed", null ],
+    [ "CreateSystem", "classNanoXLSX_1_1Colors_1_1Color.html#ad15e933e3dd7bea7e41248562ab4f9df", null ],
+    [ "CreateTheme", "classNanoXLSX_1_1Colors_1_1Color.html#af7020b6aaf76b3c4b166ae75628bbc6d", null ],
+    [ "Equals", "classNanoXLSX_1_1Colors_1_1Color.html#a67ebcaa53eea840e82f4fe118faa75df", null ],
+    [ "GetArgbValue", "classNanoXLSX_1_1Colors_1_1Color.html#a8d8e26c5a3331ddb096b36b2d96312d9", null ],
+    [ "GetHashCode", "classNanoXLSX_1_1Colors_1_1Color.html#a56743ec95a5cc3caff18f59cfd0aaeaf", null ],
+    [ "operator Color", "classNanoXLSX_1_1Colors_1_1Color.html#a878074ae6243352f07894c83444e0aca", null ],
+    [ "Auto", "classNanoXLSX_1_1Colors_1_1Color.html#ae02fcfa153107097aa33cb60fb419ecb", null ],
+    [ "IndexedColor", "classNanoXLSX_1_1Colors_1_1Color.html#af8072330dff99dd5897ec21e00f892cb", null ],
+    [ "IsDefined", "classNanoXLSX_1_1Colors_1_1Color.html#a71d41d3ec1adca4aee630ec9f1d200df", null ],
+    [ "RgbColor", "classNanoXLSX_1_1Colors_1_1Color.html#a3ad73f17e5543f597bca3673c0b35d22", null ],
+    [ "SystemColor", "classNanoXLSX_1_1Colors_1_1Color.html#ac1feeaeeb458b26f40deecc74ab0ff3d", null ],
+    [ "ThemeColor", "classNanoXLSX_1_1Colors_1_1Color.html#a0b30808576099eb5c57cc31704aef209", null ],
+    [ "Tint", "classNanoXLSX_1_1Colors_1_1Color.html#a3c72c7c09901438e291f8729c0f88ebf", null ],
+    [ "Type", "classNanoXLSX_1_1Colors_1_1Color.html#add2089e3ad6208ddf60b692134f3c205", null ],
+    [ "Value", "classNanoXLSX_1_1Colors_1_1Color.html#a8151dfa3bf0472e4fe6742cd82926f24", null ]
+];

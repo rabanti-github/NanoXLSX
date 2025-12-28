@@ -97,8 +97,10 @@ $(function(){initNavTree('classNanoXLSX_1_1Utils_1_1Validators.html','','classNa
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a941733ab2095d2d48816ab332001f708" id="r_a941733ab2095d2d48816ab332001f708"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a941733ab2095d2d48816ab332001f708">ValidateGenericColor</a> (string hexCode, bool allowEmpty=false)</td></tr>
+<tr class="memdesc:a941733ab2095d2d48816ab332001f708"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates the passed string, whether it is a valid RGB or ARGB value that can be used for Fills, Fonts or other styling components. The method automatically tries to validate for ARGB (8 characters) first, then for RGB (6 characters).  <br /></td></tr>
 <tr class="memitem:ab4ac5c167db407716f7475c70312ddd1" id="r_ab4ac5c167db407716f7475c70312ddd1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4ac5c167db407716f7475c70312ddd1">ValidateColor</a> (string hexCode, bool useAlpha, bool allowEmpty=false)</td></tr>
-<tr class="memdesc:ab4ac5c167db407716f7475c70312ddd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates the passed string, whether it is a valid RGB or ARGB value that can be used for Fills or Fonts.  <br /></td></tr>
+<tr class="memdesc:ab4ac5c167db407716f7475c70312ddd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates the passed string, whether it is a valid RGB or ARGB value that can be used for Fills, Fonts or other styling components.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class providing general validator methods. </p>
@@ -137,7 +139,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Validates the passed string, whether it is a valid RGB or ARGB value that can be used for Fills or Fonts. </p>
+<p>Validates the passed string, whether it is a valid RGB or ARGB value that can be used for Fills, Fonts or other styling components. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1StyleException.html" title="Class for exceptions regarding Style incidents.">StyleException</a></td><td>A <a class="el" href="classNanoXLSX_1_1Exceptions_1_1StyleException.html" title="Class for exceptions regarding Style incidents.">StyleException</a> is thrown if an invalid hex value is passed</td></tr>
@@ -153,7 +155,47 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00025">25</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00040">40</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
+
+</div>
+</div>
+<a id="a941733ab2095d2d48816ab332001f708" name="a941733ab2095d2d48816ab332001f708"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a941733ab2095d2d48816ab332001f708">&#9670;&#160;</a></span>ValidateGenericColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NanoXLSX.Utils.Validators.ValidateGenericColor </td>
+          <td>(</td>
+          <td class="paramtype">string</td>          <td class="paramname"><span class="paramname"><em>hexCode</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>allowEmpty</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Validates the passed string, whether it is a valid RGB or ARGB value that can be used for Fills, Fonts or other styling components. The method automatically tries to validate for ARGB (8 characters) first, then for RGB (6 characters). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hexCode</td><td>Hex string to check</td></tr>
+    <tr><td class="paramname">allowEmpty</td><td>Optional parameter that allows null or empty as valid values</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00019">19</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
 
 </div>
 </div>

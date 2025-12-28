@@ -1,14 +1,22 @@
 var searchData=
 [
-  ['background_0',['Background',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03aa9ded1e5ce5d75814730bb4caaf49419',1,'NanoXLSX::Themes::SystemColor']]],
+  ['background_0',['Background',['../classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4aa9ded1e5ce5d75814730bb4caaf49419',1,'NanoXLSX::Colors::SystemColor']]],
   ['baltic_1',['Baltic',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001acae94ad2a63805bd9086605894461fe1b2',1,'NanoXLSX::Styles::Font']]],
   ['big5_2',['Big5',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001aca21582eb7d47212957220531b276fabcf',1,'NanoXLSX::Styles::Font']]],
-  ['bool_3',['Bool',['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aac26f15e86e3de4c398a8273272aba034',1,'NanoXLSX::Cell']]],
-  ['bottom_4',['Bottom',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a63e51aa1f960e6073ed767321967d1c4a2ad9d63b69c4a10a5cc9cad923133bc4',1,'NanoXLSX::Styles::CellXf']]],
-  ['bottomleft_5',['BottomLeft',['../classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a98e5a1c44509157ebcaf46c515c78875',1,'NanoXLSX::Worksheet']]],
-  ['bottomright_6',['BottomRight',['../classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a9146bfc669fddc88db2c4d89297d0e9a',1,'NanoXLSX::Worksheet']]],
-  ['buttonface_7',['ButtonFace',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03ac6aea4426794a471bbd122c68be204f5',1,'NanoXLSX::Themes::SystemColor']]],
-  ['buttonhighlight_8',['ButtonHighlight',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03ab5f03654c2c5a40b2784071ed2162b33',1,'NanoXLSX::Themes::SystemColor']]],
-  ['buttonshadow_9',['ButtonShadow',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03a3354ddb078243c2cdbbf6d823895a8b7',1,'NanoXLSX::Themes::SystemColor']]],
-  ['buttontext_10',['ButtonText',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#a0e68fe434392ef2108745bc492fc4a03a332985df69ddb2491fcf1da0cc94a900',1,'NanoXLSX::Themes::SystemColor']]]
+  ['black_3',['Black',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8ae90dfb84e30edf611e326eeb04d680de',1,'NanoXLSX::Colors::IndexedColor']]],
+  ['black0_4',['Black0',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a3a4c395f2c90c74273b31fe68e317a8d',1,'NanoXLSX::Colors::IndexedColor']]],
+  ['blue_5',['Blue',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a9594eec95be70e7b1710f730fdda33d9',1,'NanoXLSX::Colors::IndexedColor']]],
+  ['blue4_6',['Blue4',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a272a01dc50842772a915fee0da683458',1,'NanoXLSX::Colors::IndexedColor']]],
+  ['bluegray_7',['BlueGray',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8ad1f4efa7fa8d2d13f902dcb4ce1b6a75',1,'NanoXLSX::Colors::IndexedColor']]],
+  ['bool_8',['Bool',['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aac26f15e86e3de4c398a8273272aba034',1,'NanoXLSX::Cell']]],
+  ['bottom_9',['Bottom',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a63e51aa1f960e6073ed767321967d1c4a2ad9d63b69c4a10a5cc9cad923133bc4',1,'NanoXLSX::Styles::CellXf']]],
+  ['bottomleft_10',['BottomLeft',['../classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a98e5a1c44509157ebcaf46c515c78875',1,'NanoXLSX::Worksheet']]],
+  ['bottomright_11',['BottomRight',['../classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a9146bfc669fddc88db2c4d89297d0e9a',1,'NanoXLSX::Worksheet']]],
+  ['brightgreen_12',['BrightGreen',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8ab249e671af05e6d993727a3d4e65a431',1,'NanoXLSX::Colors::IndexedColor']]],
+  ['brightgreen3_13',['BrightGreen3',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a9b8a4912ee24ba7a39b64eb460db6ec9',1,'NanoXLSX::Colors::IndexedColor']]],
+  ['brown_14',['Brown',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8aed63fc91500594c3086714f86b3001e4',1,'NanoXLSX::Colors::IndexedColor']]],
+  ['buttonface_15',['ButtonFace',['../classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4ac6aea4426794a471bbd122c68be204f5',1,'NanoXLSX::Colors::SystemColor']]],
+  ['buttonhighlight_16',['ButtonHighlight',['../classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4ab5f03654c2c5a40b2784071ed2162b33',1,'NanoXLSX::Colors::SystemColor']]],
+  ['buttonshadow_17',['ButtonShadow',['../classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4a3354ddb078243c2cdbbf6d823895a8b7',1,'NanoXLSX::Colors::SystemColor']]],
+  ['buttontext_18',['ButtonText',['../classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4a332985df69ddb2491fcf1da0cc94a900',1,'NanoXLSX::Colors::SystemColor']]]
 ];

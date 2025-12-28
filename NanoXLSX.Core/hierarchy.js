@@ -20,13 +20,19 @@ var hierarchy =
       [ "NanoXLSX.Exceptions.WorksheetException", "classNanoXLSX_1_1Exceptions_1_1WorksheetException.html", null ]
     ] ],
     [ "NanoXLSX.Interfaces.IColor", "interfaceNanoXLSX_1_1Interfaces_1_1IColor.html", [
+      [ "NanoXLSX.Colors.AutoColor", "classNanoXLSX_1_1Colors_1_1AutoColor.html", null ],
       [ "NanoXLSX.Interfaces.ITypedColor< T >", "interfaceNanoXLSX_1_1Interfaces_1_1ITypedColor-1-g.html", [
-        [ "NanoXLSX.Themes.SrgbColor", "classNanoXLSX_1_1Themes_1_1SrgbColor.html", null ],
-        [ "NanoXLSX.Themes.SystemColor", "classNanoXLSX_1_1Themes_1_1SystemColor.html", null ]
+        [ "NanoXLSX.Colors.IndexedColor", "classNanoXLSX_1_1Colors_1_1IndexedColor.html", null ],
+        [ "NanoXLSX.Colors.SrgbColor", "classNanoXLSX_1_1Colors_1_1SrgbColor.html", null ],
+        [ "NanoXLSX.Colors.SystemColor", "classNanoXLSX_1_1Colors_1_1SystemColor.html", null ],
+        [ "NanoXLSX.Colors.ThemeColor", "classNanoXLSX_1_1Colors_1_1ThemeColor.html", null ]
       ] ]
     ] ],
     [ "NanoXLSX.Interfaces.IColorScheme", "interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html", [
       [ "NanoXLSX.Themes.ColorScheme", "classNanoXLSX_1_1Themes_1_1ColorScheme.html", null ]
+    ] ],
+    [ "IComparable", null, [
+      [ "NanoXLSX.Colors.Color", "classNanoXLSX_1_1Colors_1_1Color.html", null ]
     ] ],
     [ "IComparable", null, [
       [ "NanoXLSX.Address", "structNanoXLSX_1_1Address.html", null ],

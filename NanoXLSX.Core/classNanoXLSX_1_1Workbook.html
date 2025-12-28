@@ -109,8 +109,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0c6c6098bdf0053a49eeb7ff9eb8598a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with filename ant the name of the first worksheet.  <br /></td></tr>
 <tr class="memitem:a16678910be755b22f8cf686ada7fc186" id="r_a16678910be755b22f8cf686ada7fc186"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a16678910be755b22f8cf686ada7fc186">AddMruColor</a> (string color)</td></tr>
 <tr class="memdesc:a16678910be755b22f8cf686ada7fc186"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a color value (HEX; 6-digit RGB or 8-digit ARGB) to the MRU list.  <br /></td></tr>
-<tr class="memitem:a235778716e13c5409d4b48f2de9c796c" id="r_a235778716e13c5409d4b48f2de9c796c"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a235778716e13c5409d4b48f2de9c796c">GetMruColors</a> ()</td></tr>
-<tr class="memdesc:a235778716e13c5409d4b48f2de9c796c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the MRU color list.  <br /></td></tr>
+<tr class="memitem:a8cc0bbe48f15e604012e3bbb9c4ea96b" id="r_a8cc0bbe48f15e604012e3bbb9c4ea96b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8cc0bbe48f15e604012e3bbb9c4ea96b">AddMruColor</a> (<a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html">Color</a> color)</td></tr>
+<tr class="memdesc:a8cc0bbe48f15e604012e3bbb9c4ea96b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a generic color value. This can be an RGB/ARGB color, Auto, <a class="el" href="classNanoXLSX_1_1Themes_1_1Theme.html" title="Class representing an Office theme.">Theme</a>, Indexed or System color.  <br /></td></tr>
+<tr class="memitem:a59dd1a84ccc2162a5ba09e0a91dd964a" id="r_a59dd1a84ccc2162a5ba09e0a91dd964a"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html">Color</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59dd1a84ccc2162a5ba09e0a91dd964a">GetMruColors</a> ()</td></tr>
+<tr class="memdesc:a59dd1a84ccc2162a5ba09e0a91dd964a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the MRU color list.  <br /></td></tr>
 <tr class="memitem:a1e86a14cc79040acafdb97b7ab30a67a" id="r_a1e86a14cc79040acafdb97b7ab30a67a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e86a14cc79040acafdb97b7ab30a67a">ClearMruColors</a> ()</td></tr>
 <tr class="memdesc:a1e86a14cc79040acafdb97b7ab30a67a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the MRU color list.  <br /></td></tr>
 <tr class="memitem:aa231603d9db85ebe78efae350758120f" id="r_aa231603d9db85ebe78efae350758120f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa231603d9db85ebe78efae350758120f">AddWorksheet</a> (string name)</td></tr>
@@ -189,7 +191,7 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a workbook. </p>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00022">22</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00023">23</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a18aec47acdfb53cb0bf760844addd1d5" name="a18aec47acdfb53cb0bf760844addd1d5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a18aec47acdfb53cb0bf760844addd1d5">&#9670;&#160;</a></span>Workbook() <span class="overload">[1/5]</span></h2>
@@ -208,7 +210,7 @@ Properties</h2></td></tr>
 
 <p>Default constructor. No initial worksheet is created. Use <a class="el" href="#aa231603d9db85ebe78efae350758120f" title="Adding a new Worksheet. The new worksheet will be defined as current worksheet.">AddWorksheet(string)</a> (or overloads) to add one. </p>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00152">152</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00153">153</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -235,7 +237,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00161">161</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00162">162</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -262,7 +264,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00174">174</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00175">175</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -294,7 +296,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00185">185</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00186">186</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -332,13 +334,40 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00198">198</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00199">199</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a8cc0bbe48f15e604012e3bbb9c4ea96b" name="a8cc0bbe48f15e604012e3bbb9c4ea96b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cc0bbe48f15e604012e3bbb9c4ea96b">&#9670;&#160;</a></span>AddMruColor() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NanoXLSX.Workbook.AddMruColor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html">Color</a></td>          <td class="paramname"><span class="paramname"><em>color</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a generic color value. This can be an RGB/ARGB color, Auto, <a class="el" href="classNanoXLSX_1_1Themes_1_1Theme.html" title="Class representing an Office theme.">Theme</a>, Indexed or System color. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">color</td><td><a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> instance</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00231">231</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+
+</div>
+</div>
 <a id="a16678910be755b22f8cf686ada7fc186" name="a16678910be755b22f8cf686ada7fc186"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16678910be755b22f8cf686ada7fc186">&#9670;&#160;</a></span>AddMruColor()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a16678910be755b22f8cf686ada7fc186">&#9670;&#160;</a></span>AddMruColor() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -360,7 +389,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00220">220</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00221">221</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -394,7 +423,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00253">253</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00259">259</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -433,7 +462,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00276">276</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00282">282</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -467,7 +496,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00295">295</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00301">301</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -507,7 +536,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00307">307</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00313">313</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -528,7 +557,7 @@ Properties</h2></td></tr>
 
 <p>Clears the MRU color list. </p>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00242">242</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00248">248</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -568,7 +597,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>The copy is not set as current worksheet. The existing one is kept</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Copied worksheet</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00547">547</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00553">553</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -608,7 +637,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>The copy is not set as current worksheet. The existing one is kept</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Copied worksheet</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00533">533</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00539">539</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -648,7 +677,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>The copy is not set as current worksheet. The existing one is kept. The source worksheet can originate from any workbook</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Copied worksheet</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00561">561</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00567">567</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -694,7 +723,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>The copy is not set as current worksheet. The existing one is kept</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Copied worksheet</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00590">590</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00596">596</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -740,7 +769,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>The copy is not set as current worksheet. The existing one is kept</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Copied worksheet</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00575">575</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00581">581</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -794,18 +823,18 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>The copy is not set as current worksheet. The existing one is kept</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Copied worksheet</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00606">606</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00612">612</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
-<a id="a235778716e13c5409d4b48f2de9c796c" name="a235778716e13c5409d4b48f2de9c796c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a235778716e13c5409d4b48f2de9c796c">&#9670;&#160;</a></span>GetMruColors()</h2>
+<a id="a59dd1a84ccc2162a5ba09e0a91dd964a" name="a59dd1a84ccc2162a5ba09e0a91dd964a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59dd1a84ccc2162a5ba09e0a91dd964a">&#9670;&#160;</a></span>GetMruColors()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">IReadOnlyList&lt; string &gt; NanoXLSX.Workbook.GetMruColors </td>
+          <td class="memname">IReadOnlyList&lt; <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html">Color</a> &gt; NanoXLSX.Workbook.GetMruColors </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -814,9 +843,9 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the MRU color list. </p>
-<dl class="section return"><dt>Returns</dt><dd>Immutable list of color values</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Immutable list of color instances</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00234">234</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00240">240</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -850,7 +879,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00494">494</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00500">500</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -884,7 +913,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00478">478</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00484">484</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -917,7 +946,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00359">359</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00365">365</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -950,7 +979,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00340">340</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00346">346</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -984,7 +1013,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00401">401</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00407">407</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1018,7 +1047,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00388">388</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00394">394</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1051,7 +1080,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00413">413</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00419">419</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1086,7 +1115,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00446">446</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00452">452</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1119,7 +1148,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00429">429</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00435">435</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1153,7 +1182,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00462">462</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00468">468</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1197,7 +1226,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00510">510</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00516">516</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1224,7 +1253,7 @@ Properties</h2></td></tr>
 
 <p>Gets the current worksheet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00063">63</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00064">64</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1251,7 +1280,7 @@ Properties</h2></td></tr>
 <p>Gets or sets the filename of the workbook. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that the file name is not sanitized. If a filename is set that is not compliant to the file system, saving of the workbook may fail </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00074">74</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00075">75</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1278,7 +1307,7 @@ Properties</h2></td></tr>
 <p>Gets or sets whether the whole workbook is hidden. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>A hidden workbook can only be made visible, using another, already visible Excel window</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00138">138</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00139">139</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1304,7 +1333,7 @@ Properties</h2></td></tr>
 
 <p>Gets whether the structure are locked if workbook is protected. See also <a class="el" href="#a3ef2f410b83f578e2581ab23754a159b" title="Sets or removes the workbook protection. If protectWindows and protectStructure are both false,...">SetWorkbookProtection</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00083">83</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00084">84</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1330,7 +1359,7 @@ Properties</h2></td></tr>
 
 <p>Gets whether the windows are locked if workbook is protected. See also <a class="el" href="#a3ef2f410b83f578e2581ab23754a159b" title="Sets or removes the workbook protection. If protectWindows and protectStructure are both false,...">SetWorkbookProtection</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00091">91</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00092">92</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1356,7 +1385,7 @@ Properties</h2></td></tr>
 
 <p>Gets the selected worksheet. The selected worksheet is not the current worksheet while design time but the selected sheet in the output file. </p>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00108">108</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00109">109</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1382,7 +1411,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets whether the workbook is protected. </p>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00116">116</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00117">117</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1408,7 +1437,7 @@ Properties</h2></td></tr>
 
 <p>Meta data object of the workbook. </p>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00099">99</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00100">100</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1435,7 +1464,7 @@ Properties</h2></td></tr>
 <p>Password instance of the protected workbook. If a password was set, the pain text representation and the hash can be read from the instance. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>The password of this property is stored in plain text at runtime but not stored to a workbook. The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused, if no changes are made in the area of workbook protection (<a class="el" href="#a3ef2f410b83f578e2581ab23754a159b" title="Sets or removes the workbook protection. If protectWindows and protectStructure are both false,...">SetWorkbookProtection(bool, bool, bool, string)</a>)</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00123">123</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00124">124</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1461,7 +1490,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets the theme of the workbook. The default is defined by Theme.GetDefaultTheme. However, the theme can be nullified. </p>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00143">143</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00144">144</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1487,7 +1516,7 @@ Properties</h2></td></tr>
 
 <p>Gets the list of worksheets in the workbook. </p>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00128">128</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00129">129</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>
@@ -1513,7 +1542,7 @@ Properties</h2></td></tr>
 
 <p>Gets the shortener object for the current worksheet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00054">54</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Workbook_8cs_source.html#l00055">55</a> of file <a class="el" href="Workbook_8cs_source.html">Workbook.cs</a>.</p>
 
 </div>
 </div>

@@ -21,7 +21,7 @@ var searchData=
   ['font_18',['Font',['../classNanoXLSX_1_1Styles_1_1Font.html',1,'NanoXLSX.Styles.Font'],['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#a9cd2bc7d3d0117b65ede7cd9c1fb4d65',1,'NanoXLSX.Styles.BasicStyles.Font()'],['../classNanoXLSX_1_1Styles_1_1Font.html#ac1d995d0f8c6250f1bac25434caa180b',1,'NanoXLSX.Styles.Font.Font()']]],
   ['fontfamilyvalue_19',['FontFamilyValue',['../classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dc',1,'NanoXLSX::Styles::Font']]],
   ['forceapplyalignment_20',['ForceApplyAlignment',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a4fb57d9d290801097e0542195f668a05',1,'NanoXLSX::Styles::CellXf']]],
-  ['foregroundcolor_21',['ForegroundColor',['../classNanoXLSX_1_1Styles_1_1Fill.html#ad4efa3ac833ead78eebe5ac5c0001d67',1,'NanoXLSX::Styles::Fill']]],
+  ['foregroundcolor_21',['ForegroundColor',['../classNanoXLSX_1_1Styles_1_1Fill.html#acc0463f7109bf396d370218605af887d',1,'NanoXLSX::Styles::Fill']]],
   ['format1_22',['Format1',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a285fa8fb8bfa38dee54ea197a54dd2df',1,'NanoXLSX::Styles::NumberFormat']]],
   ['format10_23',['Format10',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a43583c7ea832e49528126f9db0f474a8',1,'NanoXLSX::Styles::NumberFormat']]],
   ['format11_24',['Format11',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3af864247256177d495cc1d8e236b40279',1,'NanoXLSX::Styles::NumberFormat']]],

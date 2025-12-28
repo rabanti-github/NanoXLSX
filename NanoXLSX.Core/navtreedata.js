@@ -48,7 +48,7 @@ var NAVTREE =
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
         [ "Enumerations", "functions_enum.html", null ],
-        [ "Properties", "functions_prop.html", null ]
+        [ "Properties", "functions_prop.html", "functions_prop" ]
       ] ]
     ] ]
   ] ]
@@ -57,14 +57,15 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classNanoXLSX_1_1LegacyPassword.html",
-"classNanoXLSX_1_1Styles_1_1Border.html",
-"classNanoXLSX_1_1Styles_1_1Font.html#a3dd8af1c30acf6852de4b1ab03c06ea8",
-"classNanoXLSX_1_1Styles_1_1Style.html#a5c67b704325bd1f46f2007b43b75b289",
-"classNanoXLSX_1_1Utils_1_1DataUtils.html#aed02c37cec9c39db1ef00bd68dcdd1cc",
-"classNanoXLSX_1_1Worksheet.html#a1ea0190ddae08526aa492adf27fa3d9e",
-"classNanoXLSX_1_1Worksheet.html#ae53c8d06a9ce1ab80f01a7ab7abc98ec",
-"structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#aed9a9229066f00a23193e52d9a4f7ced"
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8",
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a9536d671f9f60cc4c1a6e2338064f70b",
+"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ae80faba5a067f74833f36006dcc985f6",
+"classNanoXLSX_1_1Styles_1_1CellXf.html#ae418fcdc99f4c12b9aedc384b6adc632",
+"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a57da6b10f203e0ac1a2a5fffd5915e2d",
+"classNanoXLSX_1_1Utils_1_1DataUtils.html#abb590d436e3bb00a98abcc34a89f8161",
+"classNanoXLSX_1_1Worksheet.html#a15e8c34d6554db096d58a5e483cc04d1",
+"classNanoXLSX_1_1Worksheet.html#ae177222a119c746ca23d038d3dffb142",
+"structNanoXLSX_1_1Range.html#a93b270fa797b983dcb2c097c34b52393"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

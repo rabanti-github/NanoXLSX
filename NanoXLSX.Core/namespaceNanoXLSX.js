@@ -1,5 +1,6 @@
 var namespaceNanoXLSX =
 [
+    [ "Colors", "namespaceNanoXLSX_1_1Colors.html", "namespaceNanoXLSX_1_1Colors" ],
     [ "Exceptions", "namespaceNanoXLSX_1_1Exceptions.html", "namespaceNanoXLSX_1_1Exceptions" ],
     [ "Interfaces", "namespaceNanoXLSX_1_1Interfaces.html", "namespaceNanoXLSX_1_1Interfaces" ],
     [ "Registry", "namespaceNanoXLSX_1_1Registry.html", "namespaceNanoXLSX_1_1Registry" ],

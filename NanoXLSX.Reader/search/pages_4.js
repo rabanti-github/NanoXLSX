@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['dependencies_0',['Dependencies',['../index.html#autotoc_md8',1,'']]],
-  ['description_1',['Description',['../index.html#autotoc_md7',1,'']]]
+  ['change_20log_20nanoxlsx_20reader_0',['Change Log - NanoXLSX.Reader',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html',1,'']]],
+  ['changes_1',['Changes',['../index.html#autotoc_md12',1,'']]]
 ];

@@ -150,20 +150,17 @@ $(function(){initNavTree('SharedStringWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            sst.AddAttribute(<span class="stringliteral">&quot;uniqueCount&quot;</span>, ParserUtils.ToString(sharedStrings.Count));</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            <span class="keywordflow">foreach</span> (IFormattableText text <span class="keywordflow">in</span> sharedStrings.Keys)</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            {</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                XmlElement child = XmlElement.CreateElement(<span class="stringliteral">&quot;si&quot;</span>);</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                child.AddChildElement(text.GetXmlElement());</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                sst.AddChildElement(child);</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            }</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            WriterPlugInHandler.HandleInlineQueuePlugins(ref sst, Workbook, PlugInUUID.SharedStringsInlineWriter);</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        }</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">        #endregion</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>}</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                sst.AddChildElement(text.GetXmlElement());</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            WriterPlugInHandler.HandleInlineQueuePlugins(ref sst, Workbook, PlugInUUID.SharedStringsInlineWriter);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        }</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">        #endregion</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>}</div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_1_1Writer_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a></div><div class="ttdef"><b>Definition</b> <a href="IPasswordWriter_8cs_source.html#l00012">IPasswordWriter.cs:13</a></div></div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces.html">NanoXLSX.Interfaces</a></div><div class="ttdef"><b>Definition</b> <a href="IPasswordWriter_8cs_source.html#l00012">IPasswordWriter.cs:13</a></div></div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Writers_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Writers.html">NanoXLSX.Internal.Writers</a></div><div class="ttdef"><b>Definition</b> <a href="LegacyPasswordWriter_8cs_source.html#l00017">LegacyPasswordWriter.cs:18</a></div></div>
+<div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces.html">NanoXLSX.Interfaces</a></div><div class="ttdef"><b>Definition</b> <a href="IColorWriter_8cs_source.html#l00007">IColorWriter.cs:8</a></div></div>
+<div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Writers_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Writers.html">NanoXLSX.Internal.Writers</a></div><div class="ttdef"><b>Definition</b> <a href="ColorWriter_8cs_source.html#l00016">ColorWriter.cs:17</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

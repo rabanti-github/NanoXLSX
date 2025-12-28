@@ -1,5 +1,6 @@
 var classNanoXLSX_1_1Registry_1_1PlugInUUID =
 [
+    [ "ColorWriter", "classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a815066974526b874b2749a9773defae2", null ],
     [ "MetadataAppInlineReader", "classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a355037c173e7ca7ecaf15694c51eb72f", null ],
     [ "MetadataAppInlineWriter", "classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a03d717251e99ddb26946c7e82cc98458", null ],
     [ "MetadataAppReader", "classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ae80faba5a067f74833f36006dcc985f6", null ],

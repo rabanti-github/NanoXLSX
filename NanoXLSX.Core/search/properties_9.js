@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['lastcolor_0',['LastColor',['../classNanoXLSX_1_1Themes_1_1SystemColor.html#af91b2672def3d8dcd910c647106265e1',1,'NanoXLSX::Themes::SystemColor']]],
+  ['lastcolor_0',['LastColor',['../classNanoXLSX_1_1Colors_1_1SystemColor.html#a3d35b693b31ecbe6da52f493bf30a567',1,'NanoXLSX::Colors::SystemColor']]],
   ['leftcolor_1',['LeftColor',['../classNanoXLSX_1_1Styles_1_1Border.html#a8df40cd870dc69744e51711c531c51cc',1,'NanoXLSX::Styles::Border']]],
   ['leftstyle_2',['LeftStyle',['../classNanoXLSX_1_1Styles_1_1Border.html#a3198b065dc20f238d39fb8202eb01855',1,'NanoXLSX::Styles::Border']]],
   ['light1_3',['Light1',['../interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a277888d262c74f0f41dd1e721062b0fe',1,'NanoXLSX.Interfaces.IColorScheme.Light1'],['../classNanoXLSX_1_1Themes_1_1ColorScheme.html#a91af94a295c8ca6a3ee57b231131217c',1,'NanoXLSX.Themes.ColorScheme.Light1']]],

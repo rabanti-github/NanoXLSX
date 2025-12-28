@@ -4,7 +4,8 @@ var annotated_dup =
       [ "Interfaces", "namespaceNanoXLSX_1_1Interfaces.html", [
         [ "Writer", "namespaceNanoXLSX_1_1Interfaces_1_1Writer.html", [
           [ "IPasswordWriter", "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html", "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter" ]
-        ] ]
+        ] ],
+        [ "IColorWriter", "interfaceNanoXLSX_1_1Interfaces_1_1IColorWriter.html", "interfaceNanoXLSX_1_1Interfaces_1_1IColorWriter" ]
       ] ],
       [ "Internal", "namespaceNanoXLSX_1_1Internal.html", [
         [ "Enums", "namespaceNanoXLSX_1_1Internal_1_1Enums.html", [

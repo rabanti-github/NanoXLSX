@@ -124,6 +124,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a93b270fa797b983dcb2c097c34b52393"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares two objects whether they are ranges and equal. The cell types (possible $ prefix) are considered. This method reflects <a class="el" href="#ad0ddbd05f1405ea3c04654b2f677ec55" title="Compares two objects whether they are ranges and equal. The cell types (possible $ prefix) are consid...">Equals(object)</a>.  <br /></td></tr>
 <tr class="memitem:aa560962678b8a5af6dfdf6d378e25428" id="r_aa560962678b8a5af6dfdf6d378e25428"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa560962678b8a5af6dfdf6d378e25428">operator!=</a> (<a class="el" href="#a90a65d6e22862ada571033d508f386ac">Range</a> range1, <a class="el" href="#a90a65d6e22862ada571033d508f386ac">Range</a> range2)</td></tr>
 <tr class="memdesc:aa560962678b8a5af6dfdf6d378e25428"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares two objects whether they not equal. This method reflects the inverted method of <a class="el" href="#ad0ddbd05f1405ea3c04654b2f677ec55" title="Compares two objects whether they are ranges and equal. The cell types (possible $ prefix) are consid...">Equals(object)</a>.  <br /></td></tr>
+<tr class="memitem:ae2bb4568ee283683b0971f9337ffb36e" id="r_ae2bb4568ee283683b0971f9337ffb36e"><td class="memItemLeft" align="right" valign="top">static implicit&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2bb4568ee283683b0971f9337ffb36e">operator Range</a> (string range)</td></tr>
+<tr class="memdesc:ae2bb4568ee283683b0971f9337ffb36e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit conversion from string to <a class="el" href="structNanoXLSX_1_1Range.html" title="Struct representing a cell range with a start and end address.">Range</a>.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -344,6 +346,41 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Hash code of the range</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="Range_8cs_source.html#l00160">160</a> of file <a class="el" href="Range_8cs_source.html">Range.cs</a>.</p>
+
+</div>
+</div>
+<a id="ae2bb4568ee283683b0971f9337ffb36e" name="ae2bb4568ee283683b0971f9337ffb36e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2bb4568ee283683b0971f9337ffb36e">&#9670;&#160;</a></span>operator Range()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">implicit NanoXLSX.Range.operator <a class="el" href="#a90a65d6e22862ada571033d508f386ac">Range</a> </td>
+          <td>(</td>
+          <td class="paramtype">string</td>          <td class="paramname"><span class="paramname"><em>range</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implicit conversion from string to <a class="el" href="structNanoXLSX_1_1Range.html" title="Struct representing a cell range with a start and end address.">Range</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">range</td><td><a class="el" href="structNanoXLSX_1_1Range.html" title="Struct representing a cell range with a start and end address.">Range</a> expression</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="Range_8cs_source.html#l00194">194</a> of file <a class="el" href="Range_8cs_source.html">Range.cs</a>.</p>
 
 </div>
 </div>

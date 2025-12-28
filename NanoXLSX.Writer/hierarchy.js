@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "NanoXLSX.Interfaces.IColorWriter", "interfaceNanoXLSX_1_1Interfaces_1_1IColorWriter.html", null ],
     [ "IPassword", null, [
       [ "NanoXLSX.Interfaces.Writer.IPasswordWriter", "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html", [
         [ "NanoXLSX.Internal.Writers.LegacyPasswordWriter", "classNanoXLSX_1_1Internal_1_1Writers_1_1LegacyPasswordWriter.html", null ]

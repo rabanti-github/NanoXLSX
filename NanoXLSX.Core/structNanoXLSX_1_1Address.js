@@ -10,6 +10,7 @@ var structNanoXLSX_1_1Address =
     [ "GetAddress", "structNanoXLSX_1_1Address.html#ad71959cf449bdf71ec1c76bfbf8a4b20", null ],
     [ "GetColumn", "structNanoXLSX_1_1Address.html#ad1ceb412b7cabf9ec7cbe06379d1d02e", null ],
     [ "GetHashCode", "structNanoXLSX_1_1Address.html#a72cfd6d2f622f6489efef23bdca61aac", null ],
+    [ "operator Address", "structNanoXLSX_1_1Address.html#a1e37c569dd67ea53afe88e8898f1c2d3", null ],
     [ "operator!=", "structNanoXLSX_1_1Address.html#a5b45000808063f9cedcc494031b4ca8d", null ],
     [ "operator<", "structNanoXLSX_1_1Address.html#a12714e176cee7fab67ab0dcdd487460e", null ],
     [ "operator<=", "structNanoXLSX_1_1Address.html#abdb70bf1acbb3841bc763dbad8fdc79c", null ],

@@ -133,6 +133,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a87e267b1349777bba129111661c0738b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a float independent from the culture info of the host.  <br /></td></tr>
 <tr class="memitem:a9f13c1f7d02dea3b2361aa3c9b508603" id="r_a9f13c1f7d02dea3b2361aa3c9b508603"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f13c1f7d02dea3b2361aa3c9b508603">ParseInt</a> (string rawValue)</td></tr>
 <tr class="memdesc:a9f13c1f7d02dea3b2361aa3c9b508603"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an int independent from the culture info of the host.  <br /></td></tr>
+<tr class="memitem:a2e106a85c48cd27db8fecc614f490213" id="r_a2e106a85c48cd27db8fecc614f490213"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e106a85c48cd27db8fecc614f490213">ParseDouble</a> (string rawValue)</td></tr>
+<tr class="memdesc:a2e106a85c48cd27db8fecc614f490213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a double independent from the culture info of the host.  <br /></td></tr>
 <tr class="memitem:adc06e6be4a046f259bb4e8db690ab8e3" id="r_adc06e6be4a046f259bb4e8db690ab8e3"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc06e6be4a046f259bb4e8db690ab8e3">ParseBinaryBool</a> (String rawValue)</td></tr>
 <tr class="memdesc:adc06e6be4a046f259bb4e8db690ab8e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a bool as a binary number either based on an int (0/1) or a string expression (true/ false), independent of the culture info of the host.  <br /></td></tr>
 <tr class="memitem:a56c0b46e587e6acdbffc3b3f29dd10cc" id="r_a56c0b46e587e6acdbffc3b3f29dd10cc"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a56c0b46e587e6acdbffc3b3f29dd10cc">TryParseInt</a> (string rawValue, out int parsedValue)</td></tr>
@@ -272,7 +274,44 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Parsed bool as number (0 = false, 1 = true)</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00240">240</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00253">253</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
+
+</div>
+</div>
+<a id="a2e106a85c48cd27db8fecc614f490213" name="a2e106a85c48cd27db8fecc614f490213"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e106a85c48cd27db8fecc614f490213">&#9670;&#160;</a></span>ParseDouble()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double NanoXLSX.Utils.ParserUtils.ParseDouble </td>
+          <td>(</td>
+          <td class="paramtype">string</td>          <td class="paramname"><span class="paramname"><em>rawValue</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parses a double independent from the culture info of the host. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rawValue</td><td>Raw number as string</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Parsed int</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>The method does not check the validity and will cause an error if an invalid value is passed</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00243">243</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
 
 </div>
 </div>
@@ -307,8 +346,9 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Parsed float</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>The method does not check the validity and will cause an error if an invalid value is passed</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00220">220</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00221">221</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
 
 </div>
 </div>
@@ -343,8 +383,9 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Parsed int</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>The method does not check the validity and will cause an error if an invalid value is passed</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00230">230</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00232">232</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
 
 </div>
 </div>
@@ -894,7 +935,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the parsing was successful</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00330">330</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00343">343</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
 
 </div>
 </div>
@@ -935,7 +976,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the parsing was successful</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00341">341</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00354">354</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
 
 </div>
 </div>
@@ -976,7 +1017,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the parsing was successful</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00319">319</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00332">332</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
 
 </div>
 </div>
@@ -1017,7 +1058,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the parsing was successful</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00275">275</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00288">288</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
 
 </div>
 </div>
@@ -1058,7 +1099,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the parsing was successful</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00297">297</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00310">310</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
 
 </div>
 </div>
@@ -1099,7 +1140,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the parsing was successful</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00286">286</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00299">299</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
 
 </div>
 </div>
@@ -1140,7 +1181,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the parsing was successful</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00308">308</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ParserUtils_8cs_source.html#l00321">321</a> of file <a class="el" href="ParserUtils_8cs_source.html">ParserUtils.cs</a>.</p>
 
 </div>
 </div>

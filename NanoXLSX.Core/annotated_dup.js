@@ -1,6 +1,14 @@
 var annotated_dup =
 [
     [ "NanoXLSX", "namespaceNanoXLSX.html", [
+      [ "Colors", "namespaceNanoXLSX_1_1Colors.html", [
+        [ "AutoColor", "classNanoXLSX_1_1Colors_1_1AutoColor.html", "classNanoXLSX_1_1Colors_1_1AutoColor" ],
+        [ "Color", "classNanoXLSX_1_1Colors_1_1Color.html", "classNanoXLSX_1_1Colors_1_1Color" ],
+        [ "IndexedColor", "classNanoXLSX_1_1Colors_1_1IndexedColor.html", "classNanoXLSX_1_1Colors_1_1IndexedColor" ],
+        [ "SrgbColor", "classNanoXLSX_1_1Colors_1_1SrgbColor.html", "classNanoXLSX_1_1Colors_1_1SrgbColor" ],
+        [ "SystemColor", "classNanoXLSX_1_1Colors_1_1SystemColor.html", "classNanoXLSX_1_1Colors_1_1SystemColor" ],
+        [ "ThemeColor", "classNanoXLSX_1_1Colors_1_1ThemeColor.html", "classNanoXLSX_1_1Colors_1_1ThemeColor" ]
+      ] ],
       [ "Exceptions", "namespaceNanoXLSX_1_1Exceptions.html", [
         [ "FormatException", "classNanoXLSX_1_1Exceptions_1_1FormatException.html", "classNanoXLSX_1_1Exceptions_1_1FormatException" ],
         [ "IOException", "classNanoXLSX_1_1Exceptions_1_1IOException.html", "classNanoXLSX_1_1Exceptions_1_1IOException" ],
@@ -41,8 +49,6 @@ var annotated_dup =
       ] ],
       [ "Themes", "namespaceNanoXLSX_1_1Themes.html", [
         [ "ColorScheme", "classNanoXLSX_1_1Themes_1_1ColorScheme.html", "classNanoXLSX_1_1Themes_1_1ColorScheme" ],
-        [ "SrgbColor", "classNanoXLSX_1_1Themes_1_1SrgbColor.html", "classNanoXLSX_1_1Themes_1_1SrgbColor" ],
-        [ "SystemColor", "classNanoXLSX_1_1Themes_1_1SystemColor.html", "classNanoXLSX_1_1Themes_1_1SystemColor" ],
         [ "Theme", "classNanoXLSX_1_1Themes_1_1Theme.html", "classNanoXLSX_1_1Themes_1_1Theme" ]
       ] ],
       [ "Utils", "namespaceNanoXLSX_1_1Utils.html", [
