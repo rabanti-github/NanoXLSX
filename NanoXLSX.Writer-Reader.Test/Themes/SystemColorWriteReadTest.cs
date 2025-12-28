@@ -1,4 +1,5 @@
-﻿using NanoXLSX.Test.Writer_Reader.Utils;
+﻿using NanoXLSX.Colors;
+using NanoXLSX.Test.Writer_Reader.Utils;
 using NanoXLSX.Themes;
 using Xunit;
 

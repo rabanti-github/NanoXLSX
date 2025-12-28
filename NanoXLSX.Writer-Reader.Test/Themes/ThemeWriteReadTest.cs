@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using NanoXLSX.Colors;
 using NanoXLSX.Extensions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Test.Writer_Reader.Utils;

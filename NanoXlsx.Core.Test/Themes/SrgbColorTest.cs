@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using NanoXLSX.Colors;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
-using NanoXLSX.Themes;
 using Xunit;
 
 namespace NanoXLSX.Core.Test.Themes
@@ -10,12 +10,12 @@ namespace NanoXLSX.Core.Test.Themes
     {
 
         [Theory(DisplayName = "Test of the getter and setter of the ColorValue property on valid values")]
-        [InlineData("FFFFFF", "FFFFFF")]
-        [InlineData("000000", "000000")]
-        [InlineData("ABCDEF", "ABCDEF")]
-        [InlineData("123456", "123456")]
-        [InlineData("abcdef", "ABCDEF")]
-        [InlineData("ffaabb", "FFAABB")]
+        [InlineData("FFFFFF", "FFFFFFFF")]
+        [InlineData("000000", "FF000000")]
+        [InlineData("ABCDEF", "FFABCDEF")]
+        [InlineData("123456", "FF123456")]
+        [InlineData("abcdef", "FFABCDEF")]
+        [InlineData("ffaabb", "FFFFAABB")]
         public void ColorValueTest(string givenSrgbValue, string expectedSrgbValue)
         {
             SrgbColor color = new SrgbColor();
@@ -32,7 +32,8 @@ namespace NanoXLSX.Core.Test.Themes
         [InlineData("XABBCC")]
         [InlineData("AAAAA")]
         [InlineData("AAAAAAA")]
-        [InlineData("AAAAAAAA")]
+        [InlineData("AAAAAAAAA")]
+        [InlineData("#AAAAAAAA")]
         [InlineData("01234")]
         [InlineData("#001122")]
         [InlineData("-aabbcc")]
@@ -45,12 +46,12 @@ namespace NanoXLSX.Core.Test.Themes
 
 
         [Theory(DisplayName = "Test of the getter of the StringValue property on valid values")]
-        [InlineData("FFFFFF", "FFFFFF")]
-        [InlineData("000000", "000000")]
-        [InlineData("ABCDEF", "ABCDEF")]
-        [InlineData("123456", "123456")]
-        [InlineData("abcdef", "ABCDEF")]
-        [InlineData("ffaabb", "FFAABB")]
+        [InlineData("FFFFFF", "FFFFFFFF")]
+        [InlineData("000000", "FF000000")]
+        [InlineData("ABCDEF", "FFABCDEF")]
+        [InlineData("123456", "FF123456")]
+        [InlineData("abcdef", "FFABCDEF")]
+        [InlineData("ffaabb", "FFFFAABB")]
         public void StringValueTest(string givenSrgbValue, string expectedSrgbValue)
         {
             SrgbColor color = new SrgbColor();
@@ -61,12 +62,12 @@ namespace NanoXLSX.Core.Test.Themes
 
 
         [Theory(DisplayName = "Test of Constructor with arguments (ColorValue) on valid values")]
-        [InlineData("FFFFFF", "FFFFFF")]
-        [InlineData("000000", "000000")]
-        [InlineData("ABCDEF", "ABCDEF")]
-        [InlineData("123456", "123456")]
-        [InlineData("abcdef", "ABCDEF")]
-        [InlineData("ffaabb", "FFAABB")]
+        [InlineData("FFFFFF", "FFFFFFFF")]
+        [InlineData("000000", "FF000000")]
+        [InlineData("ABCDEF", "FFABCDEF")]
+        [InlineData("123456", "FF123456")]
+        [InlineData("abcdef", "FFABCDEF")]
+        [InlineData("ffaabb", "FFFFAABB")]
         public void ConstructorTest(string givenSrgbValue, string expectedSrgbValue)
         {
             SrgbColor color = new SrgbColor(givenSrgbValue);
@@ -81,7 +82,8 @@ namespace NanoXLSX.Core.Test.Themes
         [InlineData("XABBCC")]
         [InlineData("AAAAA")]
         [InlineData("AAAAAAA")]
-        [InlineData("AAAAAAAA")]
+        [InlineData("AAAAAAAAA")]
+        [InlineData("#AAAAAAAA")]
         [InlineData("01234")]
         [InlineData("#001122")]
         [InlineData("-aabbcc")]
@@ -100,7 +102,7 @@ namespace NanoXLSX.Core.Test.Themes
         public void ToArgbColorTest(string srgbValue, string expectedArgbColor)
         {
             SrgbColor color = new SrgbColor(srgbValue);
-            Assert.Equal(expectedArgbColor, color.ToArgbColor());
+            Assert.Equal(expectedArgbColor, color.ColorValue);
         }
 
         [Fact(DisplayName = "Test of the Equals method (multiple cases)")]

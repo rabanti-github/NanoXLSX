@@ -217,6 +217,7 @@ namespace NanoXLSX.Utils
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <returns>Parsed float</returns>
+        /// \remark <remarks>The method does not check the validity and will cause an error if an invalid value is passed</remarks>
         public static float ParseFloat(string rawValue)
         {
             return float.Parse(rawValue, InvariantCulture);
@@ -227,9 +228,21 @@ namespace NanoXLSX.Utils
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <returns>Parsed int</returns>
+        /// \remark <remarks>The method does not check the validity and will cause an error if an invalid value is passed</remarks>
         public static int ParseInt(string rawValue)
         {
             return int.Parse(rawValue, NumberStyles.Any, InvariantCulture);
+        }
+
+        /// <summary>
+        /// Parses a double independent from the culture info of the host
+        /// </summary>
+        /// <param name="rawValue">Raw number as string</param>
+        /// <returns>Parsed int</returns>
+        /// \remark <remarks>The method does not check the validity and will cause an error if an invalid value is passed</remarks>
+        public static double ParseDouble(string rawValue)
+        {
+            return double.Parse(rawValue, InvariantCulture);
         }
 
         /// <summary>

@@ -10,11 +10,13 @@ namespace NanoXLSX.Internal.Readers
     using System;
     using System.IO;
     using System.Xml;
+    using NanoXLSX.Colors;
     using NanoXLSX.Interfaces.Plugin;
     using NanoXLSX.Interfaces.Reader;
     using NanoXLSX.Registry;
     using NanoXLSX.Registry.Attributes;
     using NanoXLSX.Styles;
+    using NanoXLSX.Themes;
     using NanoXLSX.Utils;
     using static NanoXLSX.Styles.Border;
     using static NanoXLSX.Styles.CellXf;
@@ -236,7 +238,6 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="node">Fill root node.</param>
         private void GetFills(XmlNode node)
         {
-            string attribute;
             foreach (XmlNode fill in node.ChildNodes)
             {
                 Fill fillStyle = new Fill();
@@ -245,32 +246,79 @@ namespace NanoXLSX.Internal.Readers
                 {
                     string pattern = ReaderUtils.GetAttribute(innerNode, "patternType", string.Empty);
                     fillStyle.PatternFill = Fill.GetPatternEnum(pattern);
-                    if (ReaderUtils.GetAttributeOfChild(innerNode, "fgColor", "rgb", out attribute))
+
+                    // Read fgColor
+                    XmlNode fgColorNode = ReaderUtils.GetChildNode(innerNode, "fgColor");
+                    if (fgColorNode != null)
                     {
-                        if (!string.IsNullOrEmpty(attribute))
-                        {
-                            fillStyle.ForegroundColor = attribute;
-                        }
+                        fillStyle.ForegroundColor = ReadColorFromNode(fgColorNode);
                     }
-                    XmlNode backgroundNode = ReaderUtils.GetChildNode(innerNode, "bgColor");
-                    if (backgroundNode != null)
+
+                    // Read bgColor
+                    XmlNode bgColorNode = ReaderUtils.GetChildNode(innerNode, "bgColor");
+                    if (bgColorNode != null)
                     {
-                        string backgroundArgb = ReaderUtils.GetAttribute(backgroundNode, "rgb");
-                        if (!string.IsNullOrEmpty(backgroundArgb))
-                        {
-                            fillStyle.BackgroundColor = backgroundArgb;
-                        }
-                        string backgroundIndex = ReaderUtils.GetAttribute(backgroundNode, "indexed");
-                        if (!string.IsNullOrEmpty(backgroundIndex))
-                        {
-                            fillStyle.IndexedColor = ParserUtils.ParseInt(backgroundIndex);
-                        }
+                        fillStyle.BackgroundColor = ReadColorFromNode(bgColorNode);
                     }
                 }
-
                 fillStyle.InternalID = this.styleReaderContainer.GetNextFillId();
                 this.styleReaderContainer.AddStyleComponent(fillStyle);
             }
+        }
+
+        /// <summary>
+        /// Reads a CT_Color from an XML node (fgColor or bgColor element)
+        /// </summary>
+        /// <param name="colorNode">The color XML node</param>
+        /// <returns>Color object representing the CT_Color</returns>
+        private Color ReadColorFromNode(XmlNode colorNode)
+        {
+            // Check for auto attribute
+            string autoAttr = ReaderUtils.GetAttribute(colorNode, "auto");
+            if (!string.IsNullOrEmpty(autoAttr) && ParserUtils.ParseBinaryBool(autoAttr) == 1)
+            {
+                    return Color.CreateAuto();
+            }
+
+            // Check for rgb attribute
+            string rgbAttr = ReaderUtils.GetAttribute(colorNode, "rgb");
+            if (!string.IsNullOrEmpty(rgbAttr))
+            {
+                return Color.CreateRgb(rgbAttr);
+            }
+
+            // Check for indexed attribute
+            string indexedAttr = ReaderUtils.GetAttribute(colorNode, "indexed");
+            if (!string.IsNullOrEmpty(indexedAttr))
+            {
+                return Color.CreateIndexed(ParserUtils.ParseInt(indexedAttr));
+            }
+
+            // Check for theme attribute
+            string themeAttr = ReaderUtils.GetAttribute(colorNode, "theme");
+            if (!string.IsNullOrEmpty(themeAttr))
+            {
+                int themeIndex = ParserUtils.ParseInt(themeAttr);
+                // Check for optional tint attribute
+                string tintAttr = ReaderUtils.GetAttribute(colorNode, "tint");
+                double? tint = null;
+                if (!string.IsNullOrEmpty(tintAttr))
+                {
+                    tint = ParserUtils.ParseDouble(tintAttr); // Or Convert.ToDouble with InvariantCulture
+                }
+                return Color.CreateTheme((Theme.ColorSchemeElement)themeIndex, tint);
+            }
+
+            // Check for system attribute (if supported)
+            string systemAttr = ReaderUtils.GetAttribute(colorNode, "system");
+            if (!string.IsNullOrEmpty(systemAttr))
+            {
+                SystemColor sysColor = new SystemColor(SystemColor.MapStringToValue(systemAttr));
+                return Color.CreateSystem(sysColor);
+            }
+
+            // No color defined
+            return Color.CreateNone();
         }
 
         /// <summary>

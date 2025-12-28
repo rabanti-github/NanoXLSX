@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Colors;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
@@ -20,6 +21,8 @@ namespace NanoXLSX.Internal.Writers
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.ThemeWriter)]
     internal class ThemeWriter : IPlugInWriter
     {
+
+        private IColorWriter colorWriter;
 
         #region properties
         /// <summary>
@@ -50,6 +53,7 @@ namespace NanoXLSX.Internal.Writers
         public void Init(IBaseWriter baseWriter)
         {
             this.Workbook = baseWriter.Workbook;
+            this.colorWriter = PlugInLoader.GetPlugIn<IColorWriter>(PlugInUUID.ColorWriter, new ColorWriter());
         }
 
         /// <summary>

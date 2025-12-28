@@ -6,29 +6,45 @@
  */
 
 using System.Collections.Generic;
+using System.Drawing;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Utils;
 
-namespace NanoXLSX.Themes
+namespace NanoXLSX.Colors
 {
 
     /// <summary>
-    /// Class representing a generic sRGB color without an alpha value
+    /// Class representing a generic sRGB color (with or without alpha channel)
     /// </summary>
     public class SrgbColor : ITypedColor<string>
     {
+        #region constants
+        /// <summary>
+        /// Default color value (opaque black: #000000)
+        /// </summary>
+        public const string DefaultSrgbColor = "FF000000";
+        #endregion
+
         private string colorValue;
 
         /// <summary>
-        /// Gets or sets the sRGB value (Hex code of RGB). If set, the value will be cast to upper case
+        /// Gets or sets the sRGB value (Hex code of RGB/ARGB). If set, the value will be cast to upper case.
+        /// If a 6-character RGB value is provided, 'FF' is automatically prepended as alpha channel.
         /// </summary>
         public string ColorValue
         {
             get => colorValue;
             set
             {
-                Validators.ValidateColor(value, false);
-                colorValue = ParserUtils.ToUpper(value);
+                Validators.ValidateGenericColor(value, false);
+                if (value.Length == 6)
+                {
+                   colorValue = "FF" + ParserUtils.ToUpper(value);
+                }
+                else
+                {
+                    colorValue = ParserUtils.ToUpper(value);
+                }
             }
         }
 
@@ -47,20 +63,10 @@ namespace NanoXLSX.Themes
         /// <summary>
         /// Constructor with parameters
         /// </summary>
-        /// <param name="rgb">RGB value</param>
+        /// <param name="rgb">RGB/ARGB value</param>
         public SrgbColor(string rgb) : this()
         {
-            this.ColorValue = rgb;
-        }
-
-        /// <summary>
-        /// Converts the sRGB value to an ARGB value
-        /// </summary>
-        /// <returns>ARGB value with 'FF' as alpha component</returns>
-        public string ToArgbColor()
-        {
-            // Is already validated
-            return "FF" + colorValue;
+            ColorValue = rgb;
         }
 
         /// <summary>

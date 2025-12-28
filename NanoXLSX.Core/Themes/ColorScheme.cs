@@ -21,19 +21,19 @@ namespace NanoXLSX.Themes
         public string Name { get; set; }
 
         /// <summary>
-        /// Theme color that defines the dark1 (t1) attribute of a theme 
+        /// Theme color that defines the dark1 (dk1) attribute of a theme 
         /// </summary>
         public IColor Dark1 { get; set; }
         /// <summary>
-        /// Theme color that defines the light1 (bg1) attribute of a theme 
+        /// Theme color that defines the light1 (lt1) attribute of a theme 
         /// </summary>
         public IColor Light1 { get; set; }
         /// <summary>
-        /// Theme color that defines the dark2 (t2) attribute of a theme 
+        /// Theme color that defines the dark2 (dk2) attribute of a theme 
         /// </summary>
         public IColor Dark2 { get; set; }
         /// <summary>
-        /// Theme color that defines the light2 (bg2) attribute of a theme 
+        /// Theme color that defines the light2 (lt2) attribute of a theme 
         /// </summary>
         public IColor Light2 { get; set; }
         /// <summary>
@@ -61,11 +61,11 @@ namespace NanoXLSX.Themes
         /// </summary>
         public IColor Accent6 { get; set; }
         /// <summary>
-        /// Theme color that defines the hyperlink attribute of a theme 
+        /// Theme color that defines the hyperlink (hlink) attribute of a theme 
         /// </summary>
         public IColor Hyperlink { get; set; }
         /// <summary>
-        /// Theme color that defines the followedHyperlink attribute of a theme 
+        /// Theme color that defines the followedHyperlink (folHlink) attribute of a theme 
         /// </summary>
         public IColor FollowedHyperlink { get; set; }
 

@@ -5,7 +5,9 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Colors;
 using NanoXLSX.Exceptions;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
@@ -13,6 +15,7 @@ using NanoXLSX.Styles;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
 using System.Collections.Generic;
+using System.Linq;
 using static NanoXLSX.Styles.Border;
 using static NanoXLSX.Styles.CellXf;
 using static NanoXLSX.Styles.Fill;
@@ -30,6 +33,7 @@ namespace NanoXLSX.Internal.Writers
 
         private StyleManager styles;
         private XmlElement styleSheet;
+        private IColorWriter colorWriter;
 
         #region properties
         /// <summary>
@@ -61,6 +65,7 @@ namespace NanoXLSX.Internal.Writers
         {
             this.styles = baseWriter.Styles;
             this.Workbook = baseWriter.Workbook;
+            this.colorWriter = PlugInLoader.GetPlugIn<IColorWriter>(PlugInUUID.ColorWriter, new ColorWriter());
         }
 
         /// <summary>
@@ -241,25 +246,46 @@ namespace NanoXLSX.Internal.Writers
         {
             Fill[] fillStyles = styles.GetFills();
             List<XmlElement> fills = new List<XmlElement>(fillStyles.Length);
-            foreach (Fill item in fillStyles)
+            foreach (Fill fill in fillStyles)
             {
-                XmlElement fill = XmlElement.CreateElement("fill");
-                XmlElement patternFill = fill.AddChildElement("patternFill");
-                patternFill.AddAttribute("patternType", Fill.GetPatternName(item.PatternFill));
-                if (item.PatternFill == PatternValue.Solid)
+                XmlElement fillElement = XmlElement.CreateElement("fill");
+                XmlElement patternFillElement = fillElement.AddChildElement("patternFill");
+                patternFillElement.AddAttribute("patternType", Fill.GetPatternName(fill.PatternFill));
+                if (fill.PatternFill == PatternValue.Solid)
                 {
-                    patternFill.AddChildElementWithAttribute("fgColor", "rgb", item.ForegroundColor);
-                    patternFill.AddChildElementWithAttribute("bgColor", "indexed", ParserUtils.ToString(item.IndexedColor));
-                }
-                else if (item.PatternFill == PatternValue.MediumGray || item.PatternFill == PatternValue.LightGray || item.PatternFill == PatternValue.Gray0625 || item.PatternFill == PatternValue.DarkGray)
-                {
-                    patternFill.AddChildElementWithAttribute("fgColor", "rgb", item.ForegroundColor);
-                    if (!string.IsNullOrEmpty(item.BackgroundColor))
+                    // For solid fills: fgColor contains the actual fill color
+                    XmlElement foregroundColor = XmlElement.CreateElement("fgColor");
+                    foregroundColor.AddAttributes(colorWriter.GetAttributes(fill.ForegroundColor));
+
+                    // bgColor with indexed="64" is standard for solid fills when using RGB/theme colors
+                    if (fill.BackgroundColor.IsDefined)
                     {
-                        patternFill.AddChildElementWithAttribute("bgColor", "rgb", item.BackgroundColor);
+                        XmlElement backgroundColor = XmlElement.CreateElement("bgColor");
+                        backgroundColor.AddAttributes(colorWriter.GetAttributes(fill.BackgroundColor));
+                        patternFillElement.AddChildElement(backgroundColor);
                     }
+                    else if (fill.ForegroundColor.Type == Color.ColorType.Rgb ||
+                             fill.ForegroundColor.Type == Color.ColorType.Theme)
+                    {
+                        // Add default indexed="64" for solid fills with RGB or theme colors
+                        XmlElement backgroundColor = XmlElement.CreateElement("bgColor");
+                        Color indexedColor = Color.CreateIndexed(IndexedColor.DefaultIndexedColor);
+                        backgroundColor.AddAttributes(colorWriter.GetAttributes(indexedColor));
+                        patternFillElement.AddChildElement(backgroundColor);
+
+                    }
+                    patternFillElement.AddChildElement(foregroundColor);
                 }
-                fills.Add(fill);
+                else if (fill.PatternFill != PatternValue.None)
+                {
+                    XmlElement fgColor = XmlElement.CreateElement("fgColor");
+                    fgColor.AddAttributes(colorWriter.GetAttributes(fill.ForegroundColor));
+                    patternFillElement.AddChildElement(fgColor);
+                    XmlElement bgColor = XmlElement.CreateElement("bgColor");
+                    bgColor.AddAttributes(colorWriter.GetAttributes(fill.BackgroundColor));
+                    patternFillElement.AddChildElement(bgColor);
+                }
+                fills.Add(fillElement);
             }
             return fills;
         }
@@ -409,21 +435,37 @@ namespace NanoXLSX.Internal.Writers
         private XmlElement GetMruElement()
         {
             XmlElement mruColors = null;
-            List<string> tempColors = new List<string>();
-            foreach (string item in ((Workbook)this.Workbook).GetMruColors())
+            List<SrgbColor> tempColors = new List<SrgbColor>();
+            foreach (Color color in Workbook.GetMruColors())
             {
-                if (item == Fill.DefaultColor)
+                if (!color.IsDefined || (color.Type != Color.ColorType.Rgb && color.Type != Color.ColorType.Indexed))
                 {
                     continue;
                 }
-                if (!tempColors.Contains(item)) { tempColors.Add(item); }
+                SrgbColor tempColor = null;
+                if (color.Type == Color.ColorType.Rgb)
+                {
+                    tempColor = color.RgbColor;
+                }
+                else // Indexed
+                {
+                    tempColor = color.IndexedColor.GetSrgbColor();
+                }
+                if (tempColor.StringValue == SrgbColor.DefaultSrgbColor)
+                {
+                    continue;
+                }
+                if (!tempColors.Any(c => c.StringValue == tempColor.StringValue))
+                {
+                    tempColors.Add(tempColor);
+                }
             }
             if (tempColors.Count > 0)
             {
                 mruColors = XmlElement.CreateElement("mruColors");
-                foreach (string item in tempColors)
+                foreach (SrgbColor item in tempColors)
                 {
-                    mruColors.AddChildElementWithAttribute("color", "rgb", item);
+                    mruColors.AddChildElementWithAttribute("color", "rgb", item.ColorValue);
                 }
             }
             return mruColors;

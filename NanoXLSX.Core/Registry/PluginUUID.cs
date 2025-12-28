@@ -47,6 +47,10 @@ namespace NanoXLSX.Registry
         /// UUID for the theme writer, when a workbook is saved
         /// </summary>
         public const string ThemeWriter = "62E3A926-08F3-4343-ACCE-2A42096C3235";
+        /// <summary>
+        /// UUID for the color writer, providing general method to write color definitions
+        /// </summary>
+        public const string ColorWriter = "7276A073-55D2-482A-B5CD-AB752A70EA9D";
         #endregion
 
         #region generalWriterQueueUUIDs

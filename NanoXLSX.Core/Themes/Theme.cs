@@ -6,6 +6,7 @@
  */
 
 using System.Collections.Generic;
+using NanoXLSX.Colors;
 
 namespace NanoXLSX.Themes
 {

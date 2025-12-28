@@ -13,7 +13,11 @@ namespace NanoXLSX.Utils
         /// <summary>
         /// Threshold, using when floats are compared
         /// </summary>
-        private const float FLOAT_THRESHOLD = 0.0001f;
+        private const float FLOAT_THRESHOLD = 0.00001f;
+        /// <summary>
+        /// Threshold, using when doubles are compared
+        /// </summary>
+        private const double DOUBLE_THRESHOLD = 1e-12;
 
         /// <summary>
         /// Compares whether the content of two  <see cref="SecureString">SecureString</see> instances are equal. The comparison method tries to handle the operation as secure as possible
@@ -101,6 +105,26 @@ namespace NanoXLSX.Utils
             {
                 return -1;
             }
+        }
+
+        /// <summary>
+        /// Checks whether the passed double value is considered as zero using a defined threshold
+        /// </summary>
+        /// <param name="value">Value to check</param>
+        /// <returns>True, if zero, otherwise false</returns>
+        public static bool IsZero(double value)
+        {
+            return Math.Abs(value) < DOUBLE_THRESHOLD;
+        }
+
+        /// <summary>
+        /// Checks whether the passed float value is considered as zero using a defined threshold
+        /// </summary>
+        /// <param name="value">Value to check</param>
+        /// <returns>True, if zero, otherwise false</returns>
+        public static bool IsZero(float value)
+        {
+            return Math.Abs(value) < FLOAT_THRESHOLD;
         }
     }
 }

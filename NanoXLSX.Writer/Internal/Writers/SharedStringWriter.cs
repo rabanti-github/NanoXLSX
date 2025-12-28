@@ -80,10 +80,7 @@ namespace NanoXLSX.Internal.Writers
             sst.AddAttribute("uniqueCount", ParserUtils.ToString(sharedStrings.Count));
             foreach (IFormattableText text in sharedStrings.Keys)
             {
-                XmlElement child = XmlElement.CreateElement("si");
-
-                child.AddChildElement(text.GetXmlElement());
-                sst.AddChildElement(child);
+                sst.AddChildElement(text.GetXmlElement());
             }
 
             WriterPlugInHandler.HandleInlineQueuePlugins(ref sst, Workbook, PlugInUUID.SharedStringsInlineWriter);

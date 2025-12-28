@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Utils;
-using static NanoXLSX.Themes.SystemColor;
+using static NanoXLSX.Colors.SystemColor;
 
-namespace NanoXLSX.Themes
+namespace NanoXLSX.Colors
 {
     /// <summary>
     /// Class representing a predefined system color for certain purposes or target areas in the UI
@@ -96,7 +96,7 @@ namespace NanoXLSX.Themes
         /// <summary>
         /// Gets the internal OOXML string value of the enum, defined in <see cref="ColorValue"/>
         /// </summary>
-        public string StringValue { get { return MapValueToString(this.ColorValue); } }
+        public string StringValue { get { return MapValueToString(ColorValue); } }
 
         /// <summary>
         /// Color value that was last computed by the generating application
@@ -124,7 +124,7 @@ namespace NanoXLSX.Themes
         /// <param name="value">Color value of the system color</param>
         public SystemColor(Value value) : this()
         {
-            this.ColorValue = value;
+            ColorValue = value;
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace NanoXLSX.Themes
         /// <param name="lastColor">Last computed value</param>
         public SystemColor(Value value, string lastColor) : this(value)
         {
-            this.LastColor = lastColor;
+            LastColor = lastColor;
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace NanoXLSX.Themes
         {
             unchecked
             {
-                int hashCode = 1425985453;
+                var hashCode = 1425985453;
                 hashCode = hashCode * -1521134295 + ColorValue.GetHashCode();
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LastColor);
                 return hashCode;

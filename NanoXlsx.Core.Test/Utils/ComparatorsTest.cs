@@ -50,6 +50,46 @@ namespace NanoXLSX.Core.Test.Utils
             Assert.Equal(expectedResult, Comparators.CompareDimensions(dimension1, dimension2));
         }
 
+        [Theory(DisplayName = "Test of IsZero comparator (double)")]
+        [InlineData(0.0, true)]
+        [InlineData(-0.0, true)]
+        [InlineData(1e-15, true)]
+        [InlineData(-1e-15, true)]
+        [InlineData(1e-13, true)]
+        [InlineData(-1e-13, true)]
+        [InlineData(1e-11, false)]
+        [InlineData(-1e-11, false)]
+        [InlineData(1.0, false)]
+        [InlineData(-1.0, false)]
+        [InlineData(double.Epsilon, true)]
+        [InlineData(double.NaN, false)]
+        [InlineData(double.PositiveInfinity, false)]
+        [InlineData(double.NegativeInfinity, false)]
+        public void IsZero_Double_Test(double value, bool expected)
+        {
+            Assert.Equal(expected, Comparators.IsZero(value));
+        }
+
+        [Theory(DisplayName = "Test of IsZero comparator (float)")]
+        [InlineData(0.0f, true)]
+        [InlineData(-0.0f, true)]
+        [InlineData(1e-8f, true)]
+        [InlineData(-1e-8f, true)]
+        [InlineData(1e-6f, true)]
+        [InlineData(-1e-6f, true)]
+        [InlineData(1e-5f, false)]
+        [InlineData(-1e-5f, false)]
+        [InlineData(1.0f, false)]
+        [InlineData(-1.0f, false)]
+        [InlineData(float.Epsilon, true)]
+        [InlineData(float.NaN, false)]
+        [InlineData(float.PositiveInfinity, false)]
+        [InlineData(float.NegativeInfinity, false)]
+        public void IsZero_Float_Test(float value, bool expected)
+        {
+            Assert.Equal(expected, Comparators.IsZero(value));
+        }
+
 
         private static SecureString GetSecureString(string plainText)
         {

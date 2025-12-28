@@ -147,6 +147,25 @@ namespace NanoXLSX.Test.Core.UtilsTest
             Assert.Equal(expectedValue, value);
         }
 
+        [Theory(DisplayName = "Test of the ParserUtils ParseDouble function (no error handling)")]
+        [InlineData("0", 0d)]
+        [InlineData("1", 1d)]
+        [InlineData("1.0", 1d)]
+        [InlineData("-2.0", -2d)]
+        [InlineData("0.0", 0d)]
+        [InlineData("-1", -1d)]
+        [InlineData("42", 42d)]
+        [InlineData("-42", -42d)]
+        [InlineData("-0.0001", -0.0001d)]
+        [InlineData("15.258789", 15.258789d)]
+        [InlineData("1.7976931348623157E+308", double.MaxValue)]
+        [InlineData("-1.7976931348623157E+308", double.MinValue)]
+        public void ParseDoubleTest(String givenValue, double expectedValue)
+        {
+            double value = ParserUtils.ParseDouble(givenValue);
+            Assert.Equal(expectedValue, value);
+        }
+
         [Theory(DisplayName = "Test of the ParserUtils ParseBinaryBool function (no error handling)")]
         [InlineData("0", 0)]
         [InlineData("1", 1)]

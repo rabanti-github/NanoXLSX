@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using NanoXLSX.Colors;
 using NanoXLSX.Exceptions;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
@@ -611,7 +612,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             Workbook workbook = new Workbook();
             workbook.AddMruColor("00AAFF");
             workbook.AddMruColor("AABBCC");
-            List<string> list = (List<string>)workbook.GetMruColors();
+            List<Color> list = (List<Color>)workbook.GetMruColors();
             Assert.Equal(2, workbook.GetMruColors().Count);
             Assert.Equal("FF00AAFF", workbook.GetMruColors()[0]);
             Assert.Equal("FFAABBCC", workbook.GetMruColors()[1]);

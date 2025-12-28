@@ -18,7 +18,8 @@ namespace NanoXLSX.Internal.Structures
     /// \remark <remarks>This class is only for internal use. Use the high level API (e.g. class Workbook) to manipulate data and create Excel files</remarks>
     internal class PlainText : IFormattableText
     {
-        private const string TAG_NAME = "t";
+        private const string ITEM_TAG_NAME = "si";
+        private const string TEXT_TAG_NAME = "t";
         private const string PRESERVE_ATTRIBUTE_NAME = "space";
         private const string PRESERVE_ATTRIBUTE_PREFIX_NAME = "xml";
         private const string PRESERVE_ATTRIBUTE_VALUE = "preserve";
@@ -34,23 +35,26 @@ namespace NanoXLSX.Internal.Structures
         /// <returns>XmlElement instance</returns>
         public XmlElement GetXmlElement()
         {
+            XmlElement siElement = XmlElement.CreateElement(ITEM_TAG_NAME);
             if (string.IsNullOrEmpty(Value))
             {
-                return XmlElement.CreateElement(TAG_NAME);
+                siElement.AddChildElement(TEXT_TAG_NAME);
+                return siElement;
             }
             string value = XmlUtils.SanitizeXmlValue(Value);
             value = ParserUtils.NormalizeNewLines(value);
             XmlElement element = null;
             if (Char.IsWhiteSpace(value, 0) || Char.IsWhiteSpace(value, value.Length - 1))
             {
-                element = XmlElement.CreateElementWithAttribute(TAG_NAME, PRESERVE_ATTRIBUTE_NAME, PRESERVE_ATTRIBUTE_VALUE, "", PRESERVE_ATTRIBUTE_PREFIX_NAME);
+                element = XmlElement.CreateElementWithAttribute(TEXT_TAG_NAME, PRESERVE_ATTRIBUTE_NAME, PRESERVE_ATTRIBUTE_VALUE, "", PRESERVE_ATTRIBUTE_PREFIX_NAME);
             }
             else
             {
-                element = XmlElement.CreateElement(TAG_NAME);
+                element = XmlElement.CreateElement(TEXT_TAG_NAME);
             }
             element.InnerValue = value;
-            return element;
+            siElement.AddChildElement(element);
+            return siElement;
         }
 
         /// <summary>

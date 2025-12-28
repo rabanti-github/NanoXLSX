@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NanoXLSX.Colors;
 using NanoXLSX.Styles;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
@@ -38,11 +39,11 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             workbook.AddMruColor(color1);
             workbook.AddMruColor(color2);
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
-            List<string> mruColors = ((List<string>)givenWorkbook.GetMruColors());
+            List<Color> mruColors = ((List<Color>)givenWorkbook.GetMruColors());
             mruColors.Sort();
             Assert.Equal(2, mruColors.Count);
-            Assert.Equal("FF" + color1, mruColors[0]);
-            Assert.Equal("FF" + color2, mruColors[1]);
+            Assert.Equal("FF" + color1, mruColors[0].GetArgbValue());
+            Assert.Equal("FF" + color2, mruColors[1].GetArgbValue());
         }
 
         [Fact(DisplayName = "Test of the (virtual) 'MruColors' property when writing and reading a workbook, neglecting the default color")]
@@ -50,14 +51,14 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
         {
             Workbook workbook = new Workbook();
             string color1 = "AACC00";
-            string color2 = Fill.DefaultColor; // Should not be added (black)
+            string color2 = Fill.DefaultColor.RgbColor.ColorValue; // Should not be added (black / default color)
             workbook.AddMruColor(color1);
             workbook.AddMruColor(color2);
             Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
-            List<string> mruColors = ((List<string>)givenWorkbook.GetMruColors());
+            List<Color> mruColors = ((List<Color>)givenWorkbook.GetMruColors());
             mruColors.Sort();
             Assert.Single(mruColors);
-            Assert.Equal("FF" + color1, mruColors[0]);
+            Assert.Equal("FF" + color1, mruColors[0].GetArgbValue());
         }
 
         [Theory(DisplayName = "Test of the 'Hidden' property when writing and reading a workbook")]

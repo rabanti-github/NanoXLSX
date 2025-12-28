@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using NanoXLSX.Colors;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
-using NanoXLSX.Themes;
 using Xunit;
 
 namespace NanoXLSX.Core.Test.Themes

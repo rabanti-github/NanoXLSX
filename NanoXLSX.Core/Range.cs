@@ -187,6 +187,15 @@ namespace NanoXLSX
             return !range1.Equals(range2);
         }
 
+        /// <summary>
+        /// Implicit conversion from string to Range
+        /// </summary>
+        /// <param name="range">Range expression</param>
+        public static implicit operator Range(string range)
+        {
+            return new Range(range);
+        }
+
 
         /// <summary>
         /// Creates a (dereferenced, if applicable) deep copy of this range

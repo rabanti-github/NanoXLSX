@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using System.Text;
-using NanoXLSX.Utils;
+using NanoXLSX.Colors;
 
 namespace NanoXLSX.Styles
 {
@@ -20,11 +20,11 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default Color (foreground or background)
         /// </summary>
-        public static readonly string DefaultColor = "FF000000";
+        public static readonly Color DefaultColor = Color.CreateRgb(SrgbColor.DefaultSrgbColor);
         /// <summary>
         /// Default index color
         /// </summary>
-        public static readonly int DefaultIndexedColor = 64;
+        public static readonly Color DefaultIndexedColor = Color.CreateIndexed(IndexedColor.DefaultIndexedColor);
         /// <summary>
         /// Default pattern
         /// </summary>
@@ -43,6 +43,7 @@ namespace NanoXLSX.Styles
             /// <summary>Color defines a solid fill color </summary>
             FillColor,
         }
+
         /// <summary>
         /// Enum for the pattern values, used by the <see cref="Fill"/> class
         /// </summary>
@@ -69,8 +70,8 @@ namespace NanoXLSX.Styles
         #endregion
 
         #region privateFields
-        private string backgroundColor = DefaultColor;
-        private string foregroundColor = DefaultColor;
+        private Color backgroundColor = DefaultColor;
+        private Color foregroundColor = DefaultColor;
         #endregion
 
         #region properties
@@ -80,13 +81,12 @@ namespace NanoXLSX.Styles
         /// \remark <remarks>If a background color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.None">PatternValue.none</see>, 
         /// the PatternFill property will be automatically set to <see cref="PatternValue.Solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
         [Append]
-        public string BackgroundColor
+        public Color BackgroundColor
         {
             get => backgroundColor;
             set
             {
-                Validators.ValidateColor(value, true);
-                backgroundColor = ParserUtils.ToUpper(value);
+                backgroundColor = value;
                 if (PatternFill == PatternValue.None)
                 {
                     PatternFill = PatternValue.Solid;
@@ -99,24 +99,18 @@ namespace NanoXLSX.Styles
         /// \remark <remarks>If a foreground color is set and the <see cref="PatternFill">PatternFill</see> Property is currently set to <see cref="PatternValue.None">PatternValue.none</see>, 
         /// the PatternFill property will be automatically set to <see cref="PatternValue.Solid">PatternValue.solid</see>, since none invalidates the color values of the foreground or background</remarks>
         [Append]
-        public string ForegroundColor
+        public Color ForegroundColor
         {
             get => foregroundColor;
             set
             {
-                Validators.ValidateColor(value, true);
-                foregroundColor = ParserUtils.ToUpper(value);
+                foregroundColor = value;
                 if (PatternFill == PatternValue.None)
                 {
                     PatternFill = PatternValue.Solid;
                 }
             }
         }
-        /// <summary>
-        /// Gets or sets the indexed color (Default is 64)
-        /// </summary>
-        [Append]
-        public int IndexedColor { get; set; }
         /// <summary>
         /// Gets or sets the pattern type of the fill (Default is none)
         /// </summary>
@@ -130,26 +124,25 @@ namespace NanoXLSX.Styles
         /// </summary>
         public Fill()
         {
-            IndexedColor = DefaultIndexedColor;
             PatternFill = DefaultPatternFill;
             foregroundColor = DefaultColor;
             backgroundColor = DefaultColor;
         }
         /// <summary>
-        /// Constructor with foreground and background color
+        /// Constructor with foreground and background color as sRGB values (without alpha)
         /// </summary>
         /// <param name="foreground">Foreground color of the fill</param>
         /// <param name="background">Background color of the fill</param>
         public Fill(string foreground, string background)
         {
-            BackgroundColor = background;
-            ForegroundColor = foreground;
-            IndexedColor = DefaultIndexedColor;
+            BackgroundColor = Color.CreateRgb(background);
+            ForegroundColor = Color.CreateRgb(foreground);
+           // IndexedColor = DefaultIndexedColor;
             PatternFill = PatternValue.Solid;
         }
 
         /// <summary>
-        /// Constructor with color value and fill type
+        /// Constructor with color value as sRGB  and fill type
         /// </summary>
         /// <param name="value">Color value</param>
         /// <param name="fillType">Fill type (fill or pattern)</param>
@@ -158,14 +151,13 @@ namespace NanoXLSX.Styles
             if (fillType == FillType.FillColor)
             {
                 backgroundColor = DefaultColor;
-                ForegroundColor = value;
+                ForegroundColor = Color.CreateRgb(value);
             }
             else
             {
-                BackgroundColor = value;
+                BackgroundColor = Color.CreateRgb(value);
                 foregroundColor = DefaultColor;
             }
-            IndexedColor = DefaultIndexedColor;
             PatternFill = PatternValue.Solid;
         }
         #endregion
@@ -182,7 +174,6 @@ namespace NanoXLSX.Styles
             sb.Append("\"Fill\": {\n");
             AddPropertyAsJson(sb, "BackgroundColor", BackgroundColor);
             AddPropertyAsJson(sb, "ForegroundColor", ForegroundColor);
-            AddPropertyAsJson(sb, "IndexedColor", IndexedColor);
             AddPropertyAsJson(sb, "PatternFill", PatternFill);
             AddPropertyAsJson(sb, "HashCode", this.GetHashCode(), true);
             sb.Append("\n}");
@@ -199,7 +190,6 @@ namespace NanoXLSX.Styles
             {
                 BackgroundColor = BackgroundColor,
                 ForegroundColor = ForegroundColor,
-                IndexedColor = IndexedColor,
                 PatternFill = PatternFill
             };
             return copy;
@@ -216,9 +206,8 @@ namespace NanoXLSX.Styles
             unchecked
             {
                 int hashCode = -1564173520;
-                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BackgroundColor);
-                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ForegroundColor);
-                hashCode = hashCode * -1521134295 + IndexedColor.GetHashCode();
+                hashCode = hashCode * -1521134295 + EqualityComparer<Color>.Default.GetHashCode(BackgroundColor);
+                hashCode = hashCode * -1521134295 + EqualityComparer<Color>.Default.GetHashCode(ForegroundColor);
                 hashCode = hashCode * -1521134295 + PatternFill.GetHashCode();
                 return hashCode;
             }
@@ -234,7 +223,6 @@ namespace NanoXLSX.Styles
             return obj is Fill fill &&
                    BackgroundColor == fill.BackgroundColor &&
                    ForegroundColor == fill.ForegroundColor &&
-                   IndexedColor == fill.IndexedColor &&
                    PatternFill == fill.PatternFill;
         }
 
@@ -248,7 +236,7 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Sets the color and the depending on fill type
+        /// Sets the color and the depending on fill type, using a sRGB value (without alpha)
         /// </summary>
         /// <param name="value">color value</param>
         /// <param name="fillType">fill type (fill or pattern)</param>
@@ -257,11 +245,11 @@ namespace NanoXLSX.Styles
             if (fillType == FillType.FillColor)
             {
                 backgroundColor = DefaultColor;
-                ForegroundColor = value;
+                ForegroundColor = Color.CreateRgb(value);
             }
             else
             {
-                BackgroundColor = value;
+                BackgroundColor = Color.CreateRgb(value);
                 foregroundColor = DefaultColor;
             }
             PatternFill = PatternValue.Solid;
@@ -269,6 +257,28 @@ namespace NanoXLSX.Styles
         #endregion
 
         #region staticMethods
+        /// <summary>
+        /// Implicit operator to create a Fill object from a string (RGB or ARGB) with <see cref="FillType.FillColor"/> 
+        /// </summary>
+        /// <param name="value">RGB/ARGB value</param>
+        public static implicit operator Fill(string value)
+        {
+            return new Fill(value, FillType.FillColor);
+        }
+
+        /// <summary>
+        /// Implicit operator to create a Fill object from an indexed color value
+        /// </summary>
+        /// <param name="index">Color index (0 to 65)</param>
+        public static implicit operator Fill(int index)
+        {
+            Fill fill = new Fill();
+            fill.PatternFill = PatternValue.Solid;
+            fill.ForegroundColor = Color.CreateIndexed(index);
+            return fill;
+        }
+
+
         /// <summary>
         /// Gets the pattern name from the enum
         /// </summary>

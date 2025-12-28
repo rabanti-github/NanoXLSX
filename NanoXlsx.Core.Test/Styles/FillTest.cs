@@ -1,4 +1,5 @@
 ﻿using System;
+using NanoXLSX.Colors;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
@@ -18,15 +19,13 @@ namespace NanoXLSX.Test.Core.StyleTest
             exampleStyle = new Fill
             {
                 BackgroundColor = "FFAABB00",
-                ForegroundColor = "1188FF00",
-                IndexedColor = 99,
+                ForegroundColor = Color.CreateIndexed(IndexedColor.Value.BrightGreen),
                 PatternFill = PatternValue.DarkGray
             };
 
             comparisonStyle = new Fill();
             exampleStyle.BackgroundColor = "77CCBB00";
-            exampleStyle.ForegroundColor = "DD33CC00";
-            exampleStyle.IndexedColor = 32;
+            exampleStyle.ForegroundColor = Color.CreateIndexed(IndexedColor.Value.Blue4);
             exampleStyle.PatternFill = PatternValue.LightGray;
         }
 
@@ -35,7 +34,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void DefaultValuesTest()
         {
             Assert.Equal("FF000000", Fill.DefaultColor);
-            Assert.Equal(64, Fill.DefaultIndexedColor);
+            Assert.Equal(IndexedColor.DefaultIndexedColor, Fill.DefaultIndexedColor.IndexedColor);
             Assert.Equal(PatternValue.None, Fill.DefaultPatternFill);
         }
 
@@ -44,7 +43,6 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void ConstructorTest()
         {
             Fill fill = new Fill();
-            Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor);
             Assert.Equal(Fill.DefaultPatternFill, fill.PatternFill);
             Assert.Equal(Fill.DefaultColor, fill.ForegroundColor);
             Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
@@ -54,7 +52,6 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void ConstructorTest2()
         {
             Fill fill = new Fill("FFAABBCC", "FF001122");
-            Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor);
             Assert.Equal(PatternValue.Solid, fill.PatternFill);
             Assert.Equal("FFAABBCC", fill.ForegroundColor);
             Assert.Equal("FF001122", fill.BackgroundColor);
@@ -67,7 +64,6 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void ConstructorTest3(string color, FillType fillType, string expectedForeground, string expectedBackground)
         {
             Fill fill = new Fill(color, fillType);
-            Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor);
             Assert.Equal(PatternValue.Solid, fill.PatternFill);
             Assert.Equal(expectedForeground, fill.ForegroundColor);
             Assert.Equal(expectedBackground, fill.BackgroundColor);
@@ -82,8 +78,10 @@ namespace NanoXLSX.Test.Core.StyleTest
         [InlineData(null, null)]
         [InlineData("FF00000000", "FFAABBCC")]
         [InlineData("FF000000", "FFAABBCCCC")]
-        [InlineData("FF0000", "FFAABBCC")]
-        [InlineData("FF000000", "FFAABB")]
+        [InlineData("FF0000", "FAABBCC")]
+        [InlineData("FF0000", "#FFAABBCC")]
+        [InlineData("F000000", "FFAABB")]
+        [InlineData("#FF000000", "FFAABB")]
         [InlineData("x", "FFAABBCC")]
         [InlineData("FF000000", "x")]
         [InlineData("x", "y")]
@@ -98,12 +96,14 @@ namespace NanoXLSX.Test.Core.StyleTest
         [InlineData(null, FillType.FillColor)]
         [InlineData("x", FillType.FillColor)]
         [InlineData("FFAABBCCDD", FillType.FillColor)]
-        [InlineData("FFAABB", FillType.FillColor)]
+        [InlineData("FAABB", FillType.FillColor)]
+        [InlineData("#FFAABB", FillType.FillColor)]
         [InlineData("", FillType.PatternColor)]
         [InlineData(null, FillType.PatternColor)]
         [InlineData("x", FillType.PatternColor)]
         [InlineData("FFAABBCCDD", FillType.PatternColor)]
-        [InlineData("FFAABB", FillType.PatternColor)]
+        [InlineData("FAABB", FillType.PatternColor)]
+        [InlineData("#FFAABB", FillType.PatternColor)]
         public void ConstructorFailTest2(string color, FillType fillType)
         {
             Assert.Throws<StyleException>(() => new Fill(color, fillType));
@@ -123,7 +123,8 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the failing set function of the BackgroundColor property with invalid values")]
-        [InlineData("77BB00")]
+        [InlineData("7BB00")]
+        [InlineData("#77BB00")]
         [InlineData("0002200000")]
         [InlineData("")]
         [InlineData(null)]
@@ -147,7 +148,8 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the failing set function of the ForegroundColor property with invalid values")]
-        [InlineData("77BB00")]
+        [InlineData("7BB00")]
+        [InlineData("#77BB00")]
         [InlineData("0002200000")]
         [InlineData("")]
         [InlineData(null)]
@@ -160,15 +162,86 @@ namespace NanoXLSX.Test.Core.StyleTest
         }
 
         [Theory(DisplayName = "Test of the get and set function of the IndexedColor property")]
-        [InlineData(0)]
-        [InlineData(256)]
-        [InlineData(-10)]
-        public void IndexedColorTest(int value)
+        [InlineData(IndexedColor.Value.Black0)]
+        [InlineData(IndexedColor.Value.White1)]
+        [InlineData(IndexedColor.Value.Red2)]
+        [InlineData(IndexedColor.Value.BrightGreen3)]
+        [InlineData(IndexedColor.Value.Blue4)]
+        [InlineData(IndexedColor.Value.Yellow5)]
+        [InlineData(IndexedColor.Value.Magenta6)]
+        [InlineData(IndexedColor.Value.Cyan7)]
+        [InlineData(IndexedColor.Value.Black)]
+        [InlineData(IndexedColor.Value.White)]
+        [InlineData(IndexedColor.Value.Red)]
+        [InlineData(IndexedColor.Value.BrightGreen)]
+        [InlineData(IndexedColor.Value.Blue)]
+        [InlineData(IndexedColor.Value.Yellow)]
+        [InlineData(IndexedColor.Value.Magenta)]
+        [InlineData(IndexedColor.Value.Cyan)]
+        [InlineData(IndexedColor.Value.DarkRed)]
+        [InlineData(IndexedColor.Value.DarkGreen)]
+        [InlineData(IndexedColor.Value.DarkBlue)]
+        [InlineData(IndexedColor.Value.Olive)]
+        [InlineData(IndexedColor.Value.Purple)]
+        [InlineData(IndexedColor.Value.Teal)]
+        [InlineData(IndexedColor.Value.LightGray)]
+        [InlineData(IndexedColor.Value.Gray)]
+        [InlineData(IndexedColor.Value.LightCornflowerBlue)]
+        [InlineData(IndexedColor.Value.DarkRose)]
+        [InlineData(IndexedColor.Value.LightYellow)]
+        [InlineData(IndexedColor.Value.LightCyan)]
+        [InlineData(IndexedColor.Value.DarkPurple)]
+        [InlineData(IndexedColor.Value.Salmon)]
+        [InlineData(IndexedColor.Value.MediumBlue)]
+        [InlineData(IndexedColor.Value.LightLavender)]
+        [InlineData(IndexedColor.Value.Navy)]
+        [InlineData(IndexedColor.Value.StrongMagenta)]
+        [InlineData(IndexedColor.Value.StrongYellow)]
+        [InlineData(IndexedColor.Value.StrongCyan)]
+        [InlineData(IndexedColor.Value.DarkViolet)]
+        [InlineData(IndexedColor.Value.DarkMaroon)]
+        [InlineData(IndexedColor.Value.DarkTeal)]
+        [InlineData(IndexedColor.Value.PureBlue)]
+        [InlineData(IndexedColor.Value.SkyBlue)]
+        [InlineData(IndexedColor.Value.PaleCyan)]
+        [InlineData(IndexedColor.Value.LightMint)]
+        [InlineData(IndexedColor.Value.PastelYellow)]
+        [InlineData(IndexedColor.Value.LightSkyBlue)]
+        [InlineData(IndexedColor.Value.Rose)]
+        [InlineData(IndexedColor.Value.Lavender)]
+        [InlineData(IndexedColor.Value.Peach)]
+        [InlineData(IndexedColor.Value.RoyalBlue)]
+        [InlineData(IndexedColor.Value.Turquoise)]
+        [InlineData(IndexedColor.Value.LightOlive)]
+        [InlineData(IndexedColor.Value.Gold)]
+        [InlineData(IndexedColor.Value.Orange)]
+        [InlineData(IndexedColor.Value.DarkOrange)]
+        [InlineData(IndexedColor.Value.BlueGray)]
+        [InlineData(IndexedColor.Value.MediumGray)]
+        [InlineData(IndexedColor.Value.DarkSlateBlue)]
+        [InlineData(IndexedColor.Value.SeaGreen)]
+        [InlineData(IndexedColor.Value.VeryDarkGreen)]
+        [InlineData(IndexedColor.Value.DarkOlive)]
+        [InlineData(IndexedColor.Value.Brown)]
+        [InlineData(IndexedColor.Value.DarkRoseDuplicate)]
+        [InlineData(IndexedColor.Value.Indigo)]
+        [InlineData(IndexedColor.Value.VeryDarkGray)]
+        [InlineData(IndexedColor.Value.SystemForeground)]
+        [InlineData(IndexedColor.Value.SystemBackground)]
+        public void IndexedColorTest(IndexedColor.Value value)
         {
             Fill fill = new Fill();
-            Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor); // 64 is default
-            fill.IndexedColor = value;
-            Assert.Equal(value, fill.IndexedColor);
+            Assert.Null(fill.ForegroundColor.IndexedColor);
+            Assert.Equal(Color.ColorType.Rgb, fill.ForegroundColor.Type); // RGB is default
+            fill.ForegroundColor = Color.CreateIndexed(value);
+            Assert.Equal(value, fill.ForegroundColor.IndexedColor);
+            Assert.Equal(Color.ColorType.Indexed, fill.ForegroundColor.Type);
+
+            fill = new Fill();
+            Assert.Null(fill.BackgroundColor.IndexedColor);
+            fill.BackgroundColor = Color.CreateIndexed(value);
+            Assert.Equal(value, fill.BackgroundColor.IndexedColor);
+            Assert.Equal(Color.ColorType.Indexed, fill.BackgroundColor.Type);
         }
 
         [Theory(DisplayName = "Test of the get and set function of the PatternFill property")]
@@ -197,7 +270,8 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
             Assert.Equal(PatternValue.None, fill.PatternFill);
             fill.SetColor(color, fillType);
-            Assert.Equal(Fill.DefaultIndexedColor, fill.IndexedColor);
+           Assert.Equal(Color.ColorType.Rgb, fill.ForegroundColor.Type);
+            Assert.Equal(Color.ColorType.Rgb, fill.BackgroundColor.Type);
             Assert.Equal(PatternValue.Solid, fill.PatternFill);
             Assert.Equal(expectedForeground, fill.ForegroundColor);
             Assert.Equal(expectedBackground, fill.BackgroundColor);
@@ -272,7 +346,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         public void EqualsTest2c()
         {
             Fill style2 = (Fill)exampleStyle.Copy();
-            style2.IndexedColor = 78;
+            style2.ForegroundColor = Color.CreateIndexed(IndexedColor.Value.Olive);
             Assert.False(exampleStyle.Equals(style2));
         }
 

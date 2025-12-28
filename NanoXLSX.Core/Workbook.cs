@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using NanoXLSX.Colors;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Registry;
@@ -36,7 +37,7 @@ namespace NanoXLSX
         private bool lockStructureIfProtected;
         private int selectedWorksheet;
         private Shortener shortener;
-        private readonly List<string> mruColors = new List<string>();
+        private readonly List<Color> mruColors = new List<Color>();
         internal bool importInProgress; // Used by NanoXLSX.Reader
         #endregion
 
@@ -219,19 +220,24 @@ namespace NanoXLSX
         /// <param name="color">RGB code in hex format (either 6 characters, e.g. FF00AC or 8 characters with leading alpha value). Alpha will be set to full opacity (FF) in case of 6 characters</param>
         public void AddMruColor(string color)
         {
-            if (color != null && color.Length == 6)
-            {
-                color = "FF" + color;
-            }
-            Validators.ValidateColor(color, true);
-            mruColors.Add(ParserUtils.ToUpper(color));
+            Validators.ValidateGenericColor(color);
+            mruColors.Add(Color.CreateRgb(color));
+        }
+
+        /// <summary>
+        /// Adds a generic color value. This can be an RGB/ARGB color, Auto, Theme, Indexed or System color
+        /// </summary>
+        /// <param name="color">Color instance</param>
+        public void AddMruColor(Color color)
+        {
+            mruColors.Add(color);
         }
 
         /// <summary>
         /// Gets the MRU color list
         /// </summary>
-        /// <returns>Immutable list of color values</returns>
-        public IReadOnlyList<string> GetMruColors()
+        /// <returns>Immutable list of color instances</returns>
+        public IReadOnlyList<Color> GetMruColors()
         {
             return mruColors;
         }

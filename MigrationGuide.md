@@ -22,7 +22,7 @@ The following guide lists all necessary changes, as well as changed behaviors of
   - The method `Workbook.AddStyle(Style)` was completely removed, after marked as obsolete in version 2.x. Styles should be added directly to cells or ranges. 
   - The method `Workbook.AddStyleComponent(Style, AbstractStyle)` was completely removed, after marked as obsolete in version 2.x. Styles should be modified directly on cells, e.g. `workbook.CurrentWorksheet.Cells["A1"].CellStyle.CurrentFont.Bold = true;` or `workbook.CurrentWorksheet.Cells["A1"].CellStyle.Append(fontStyle)`. 
   - The methods `Workbook.RemoveStyle(Style)`, `Workbook.RemoveStyle(Style, bool)`, `Workbook.RemoveStyle(string)` and `Workbook.RemoveStyle(string, bool)` were completely removed, after marked as obsolete in version 2.x. Styles should be removed directly from cells (e.g. `workbook.CurrentWorksheet.Cells["A1"].RemoveStyle()`.
-
+  - The method `Workbook.GetMruColors()` returns now a `IReadOnlyList<Color>` (was string). The new Color class (namespace `NanoXLSX.Colors`) can represent an RGB, ARGB, system, theme or indexed color. See the Color class documentation for more details. 
 ---
 
 ### Worksheet
@@ -230,12 +230,14 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 
 #### Fill
 
+Fill was completely overhauled in version 3.0.0, to support more flexible color definitions, like (A)RGB, indexed colors, theme or system colors, as well as tint.
+
 - The public constant values of the `Fill` class were renamed, according to the following overview:
 
 | Old Constant             | New Constant           | Remarks  |
 |--------------------------|------------------------|----------|
-| `DEFAULT_COLOR`          | `DefaultColor`         |          |
-| `DEFAULT_INDEXED_COLOR`  | `DefaultIndexedColor`  |          |
+| `DEFAULT_COLOR`          | `DefaultColor`         | The type was changed from `string` to an instance of `SrgbColor` with `FF000000` as ARGB value |
+| `DEFAULT_INDEXED_COLOR`  | `DefaultIndexedColor`  | The type was changed from `int` to an instance of `IndexedColor` with the `64` as index value |
 | `DEFAULT_PATTERN_FILL`   | `DefaultPatternFill`   |          |
 
 - The enum values of `Fill.FillType` were renamed, according to the following overview:
@@ -258,6 +260,23 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 | `PatternValue.none`      | `PatternValue.None`        |         |
 
 - The static method `Fill.ValidateColr(string,bool, bool)` was moved to the utils class `Validators.ValidateColr(string,bool, bool)` in namespace `NanoXLSX.Utils`. The class has to be changed in the code, but the method signature remains unchanged.
+- The property `Fill.BackgroundColor` was changed from type `string` to the new `Color` class (namespace `NanoXLSX.Colors`). The new Color class can represent an RGB, ARGB, system, theme or indexed color. See the Color class documentation for more details.
+- The property `Fill.ForegroundColor` was changed from type `string` to the new `Color` class (namespace `NanoXLSX.Colors`). The new Color class can represent an RGB, ARGB, system, theme or indexed color. See the Color class documentation for more details.
+- The property `IndexedColor` was removed and is now part of the new `Color` class, applied to `BackgroundColor` and `ForegroundColor`. In the `Color` class, there is a property `IndexedColor` that holds an object of the type `IndexedColor` (namespace `NanoXLSX.Themes`). The original `int` value has to be replaced by one of the available enum values in the class `IndexedColor`. Usage example:
+
+```csharp
+Fill fill = new Fill();
+fill.ForegroundColor = Color.CreateIndexed(IndexedColor.Value.Yellow);
+
+// Different examples with other color types:
+Fill fill2 = new Fill();
+fill2.BackgroundColor = Color.CreateRgb("FF00FF00"); // ARGB
+
+Fill fill3 = new Fill();
+fill3.ForegroundColor = Color.CreateTheme(Theme.ColorSchemeElement.Accent1, 0.5f); // Theme color with tint
+
+```
+
 
 #### CellXf
 

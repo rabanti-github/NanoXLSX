@@ -1,4 +1,5 @@
-﻿using NanoXLSX.Styles;
+﻿using NanoXLSX.Colors;
+using NanoXLSX.Styles;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
 using static NanoXLSX.Styles.Fill;
@@ -53,6 +54,24 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
             Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(pattern, cell.CellStyle.CurrentFill.PatternFill);
+        }
+
+        [Theory(DisplayName = "Test of the 'IndexedColor' value when writing and reading a Fill style")]
+        [InlineData(IndexedColor.Value.Red2, "test")]
+        public void IndexedColorTest(IndexedColor.Value indexedColor, object value)
+        {
+            Style style = new Style();
+            style.CurrentFill.ForegroundColor = Color.CreateIndexed(indexedColor);
+            style.CurrentFill.PatternFill = PatternValue.DarkGray; // IndexedColor requires a pattern different from 'None'
+            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            Assert.Equal(new IndexedColor(indexedColor), cell.CellStyle.CurrentFill.ForegroundColor.IndexedColor);
+
+            style = new Style();
+            style.CurrentFill.BackgroundColor = Color.CreateIndexed(indexedColor);
+            style.CurrentFill.PatternFill = PatternValue.DarkGray; // IndexedColor requires a pattern different from 'None'
+            cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+
+            Assert.Equal(new IndexedColor(indexedColor), cell.CellStyle.CurrentFill.BackgroundColor.IndexedColor);
         }
 
     }

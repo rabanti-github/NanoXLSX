@@ -223,6 +223,15 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Explicit conversion from string to Address
+        /// </summary>
+        /// <param name="address">Address expression</param>
+        public static explicit operator Address(string address)
+        {
+            return new Address(address);
+        }
+
+        /// <summary>
         /// Creates a (dereferenced, if applicable) deep copy of this address
         /// </summary>
         /// <returns>Copy of this range</returns>

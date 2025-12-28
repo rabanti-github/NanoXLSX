@@ -48,8 +48,8 @@ namespace NanoXLSX.Internal.Writers
             {
                 currentWorksheet = value;
                 IPassword passwordInstance = ((Worksheet)CurrentWorksheet).SheetProtectionPassword;
-                //TODO add plug-in hook to overwrite password instance
-                this.passwordWriter = new LegacyPasswordWriter(PasswordType.WorksheetProtection, passwordInstance.PasswordHash);
+                this.passwordWriter = PlugInLoader.GetPlugIn<IPasswordWriter>(PlugInUUID.PasswordWriter, new LegacyPasswordWriter());
+                this.passwordWriter.Init(PasswordType.WorksheetProtection, passwordInstance.PasswordHash);
             }
         }
 

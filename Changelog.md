@@ -1,5 +1,29 @@
 # Change Log
 
+## v3.0.0-rc.5
+
+---
+Release Date: **22.12.2025**
+
+- Added explicit operator for Address to convert from string to Address (string can be cast to address explicitly)
+- Added implicit operator for Range to convert from string to Range (string can be cast to range implicitly)
+- Introduced new class Color to handle colors in the Fill class. This class contains several color representations (implementations of the IColor interface):
+  - IndexedColor (representing indexed colors form index 0 to 65)
+  - SrgbColor (RGB or ARGB value)
+  - ThemeColor (Color, defined by theme elements)
+  - SystemColor (Color, defined by system colors)
+  - AutoColor (automatic color, no value / dummy class)
+- Re-implementation of the Fill class to use the new Color class for color representation of the foreground and background colors (indexed property removed)
+- Added implicit operator for Fill to create a fill color by a string (RGB or ARGB value)
+- Added implicit operator for Fill to create a fill color by an integer (indexed color value)
+- Changed internal handling of text cell values
+- Added static methods `bool Comparators.IsZero(double)` and `bool Comparators.IsZero(float)
+- Added `double ParserUtils.ParseDouble(string)` to parse doubles with invariant culture
+- Added `void Validators.ValidateGenericColor(string, bool = false)` to check generic color strings (RGB or ARGB)
+- Added test cases
+
+Note: Implicit address conversion from string to Address was not implemented, to avoid potential problems when comparing addresses (invalid strings could raise exceptions instead of returning false in  the equals method). This does not apply to the Range struct
+
 ## v3.0.0-rc.3 + v3.0.0-rc.4
 
 ---
