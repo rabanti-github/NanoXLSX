@@ -57,7 +57,7 @@ namespace NanoXLSX.Colors
         public SrgbColor RgbColor { get; private set; }
 
         /// <summary>
-        /// Indexed color when Type is Indexed
+        /// Indexed color when Type is Indexed (See <see cref="IndexedColor.Value"/>)
         /// </summary>
         public IndexedColor IndexedColor { get; private set; }
 
@@ -67,12 +67,12 @@ namespace NanoXLSX.Colors
         public ThemeColor ThemeColor { get; private set; }
 
         /// <summary>
-        /// System color when Type is System
+        /// System color when Type is System (See <see cref="SystemColor.Value"/>)
         /// </summary>
         public SystemColor SystemColor { get; private set; }
 
         /// <summary>
-        /// Tint value for theme colors (-1.0 to 1.0)
+        /// Optional tint value for colors (-1.0 to 1.0)
         /// Positive values lighten, negative values darken
         /// </summary>
         public double? Tint { get; set; }
@@ -143,6 +143,7 @@ namespace NanoXLSX.Colors
         /// <summary>
         /// Creates an Color with no color (empty element)
         /// </summary>
+        /// <return>Returns a dummy instance of the Color class, where <see cref="ColorType"/> is set to None</return>
         public static Color CreateNone()
         {
             return new Color { Type = ColorType.None };
@@ -151,6 +152,7 @@ namespace NanoXLSX.Colors
         /// <summary>
         /// Creates an Color with auto=true
         /// </summary>
+        /// <returns>Returns a dummy instance of the Color class, where <see cref="ColorType"/> is set to Auto</returns>
         public static Color CreateAuto()
         {
             return new Color
@@ -163,13 +165,11 @@ namespace NanoXLSX.Colors
         /// <summary>
         /// Creates an Color from an RGB/ARGB color
         /// </summary>
+        /// <param name="color">Instance of the type <see cref="SrgbColor"/></param>
+        /// <returns>Color instance with the value type <see cref="SrgbColor"></see>/></returns>
         public static Color CreateRgb(SrgbColor color)
         {
-            if (color == null)
-            {
-                throw new StyleException("sRGB value cannot be null");
-            }
-
+            // If null is passed, error handling is already covered by the string method
             return new Color
             {
                 Type = ColorType.Rgb,
@@ -180,13 +180,12 @@ namespace NanoXLSX.Colors
         /// <summary>
         /// Creates an Color from an RGB string (e.g., "FFAABBCC")
         /// </summary>
+        /// <param name="rgbValue">RGB or ARGB value as string</param>
+        /// <returns>Color instance with the value type <see cref="SrgbColor"></see>/></returns>
+        /// <exception cref="StyleException">Throws a StyleException if the passed RGB/ARGB value is invalid</exception>
         public static Color CreateRgb(string rgbValue)
         {
-            if (string.IsNullOrEmpty(rgbValue))
-            {
-                throw new StyleException("RGB value cannot be null or empty");
-            }
-
+            // Validation is done in SrgbColor class
             return new Color
             {
                 Type = ColorType.Rgb,
@@ -197,8 +196,14 @@ namespace NanoXLSX.Colors
         /// <summary>
         /// Creates an Color from an indexed color
         /// </summary>
+        /// <param name="color">Instance of the type <see cref="IndexedColor"/></param>
+        /// <returns>Color instance with the value type <see cref="IndexedColor"></see>/></returns>
         public static Color CreateIndexed(IndexedColor color)
         {
+            if (color == null)
+            {
+                throw new StyleException("An indexed color cannot be null");
+            }
             return new Color
             {
                 Type = ColorType.Indexed,
@@ -209,18 +214,23 @@ namespace NanoXLSX.Colors
         /// <summary>
         /// Creates an Color from an indexed color value (see <see cref="IndexedColor.Value"/>)
         /// </summary>
-        public static Color CreateIndexed(IndexedColor.Value enumValue)
+        /// <param name="indexValue">Color index enum value</param>
+        /// <returns>Color instance with the value type <see cref="IndexedColor"></see>/></returns>
+        public static Color CreateIndexed(IndexedColor.Value indexValue)
         {
             return new Color
             {
                 Type = ColorType.Indexed,
-                IndexedColor = new IndexedColor(enumValue)
+                IndexedColor = new IndexedColor(indexValue)
             };
         }
 
         /// <summary>
         /// Creates an Color from a color index (0 to 65)
         /// </summary>
+        /// <param name="index">Color index (0 to 65)</param>
+        /// <returns>Color instance with the value type <see cref="IndexedColor"></see>/></returns>
+        /// <exception cref="StyleException">Throws a StyleException if the passed index is invalid</exception>
         public static Color CreateIndexed(int index)
         {
             return new Color
@@ -230,10 +240,32 @@ namespace NanoXLSX.Colors
             };
         }
 
+        /// <summary>
+        /// Creates an Color from a theme color instance
+        /// </summary>
+        /// <param name="color">Instance of the type <see cref="ThemeColor"></see></param>
+        /// <param name="tint">Optional tint value (from -1 to 1)</param>
+        /// <returns>Color instance with the value type <see cref="ThemeColor"></see>/></returns>
+        public static Color CreateTheme(ThemeColor color, double? tint = null)
+        {
+            if (color == null)
+            {
+                throw new StyleException("A theme color cannot be null");
+            }
+            return new Color
+            {
+                Type = ColorType.Theme,
+                ThemeColor = color,
+                Tint = tint
+            };
+        }
 
         /// <summary>
         /// Creates an Color from a theme color scheme element
         /// </summary>
+        /// <param name="themeColor">Color scheme element</param>
+        /// <param name="tint">Optional tint value (from -1 to 1)</param>
+        /// <returns>Color instance with the value type <see cref="ThemeColor"></see>/></returns>
         public static Color CreateTheme(Theme.ColorSchemeElement themeColor, double? tint = null)
         {
             return new Color
@@ -247,6 +279,8 @@ namespace NanoXLSX.Colors
         /// <summary>
         /// Creates an Color from a system color
         /// </summary>
+        /// <param name="color">Instance of the type  <see cref="SystemColor"></see></param>
+        /// <returns>Color instance with the value type <see cref="SystemColor"></see></returns>
         public static Color CreateSystem(SystemColor color)
         {
             if (color == null)
@@ -260,17 +294,48 @@ namespace NanoXLSX.Colors
             };
         }
 
+        /// <summary>
+        /// Creates an Color from a system color instance
+        /// </summary>
+        /// <param name="systemColorValue">System color value</param>
+        /// <returns>Color instance with the value type <see cref="SystemColor"></see></returns>
+        public static Color CreateSystem(SystemColor.Value systemColorValue)
+        {
+            return new Color
+            {
+                Type = ColorType.System,
+                SystemColor = new SystemColor(systemColorValue)
+            };
+        }
+
         #endregion
 
         /// <summary>
         /// Implicit conversion from (RGB or ARGB) string to Color. This is the most common use case.
         /// </summary>
         /// <param name="rgbValue">RGB or ARGB value</param>
+        /// \remark <remarks>The resulting color value will be of the type <see cref="SrgbColor"/>, if valid</remarks>
         public static implicit operator Color(string rgbValue)
         {
             return CreateRgb(rgbValue);
         }
 
+        /// <summary>
+        /// Implicit conversion from index number to Color.
+        /// </summary>
+        /// <param name="colorIndex">Index (<see cref="IndexedColor.ColorValue"/>)</param>
+        /// \remark <remarks>The resulting color value will be of the type <see cref="IndexedColor"/>, if valid</remarks>
+        public static implicit operator Color(int colorIndex)
+        {
+            return CreateIndexed(colorIndex);
+        }
+
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
+        /// <param name="obj">Other object to compare</param>
+        /// <returns>True if both objects are equal</returns>
         public override bool Equals(object obj)
         {
             return obj is Color color &&
@@ -284,6 +349,10 @@ namespace NanoXLSX.Colors
                    IsDefined == color.IsDefined;
         }
 
+        /// <summary>
+        /// Gets the hash code of the instance
+        /// </summary>
+        /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
             var hashCode = -1729664991;
@@ -299,6 +368,12 @@ namespace NanoXLSX.Colors
             return hashCode;
         }
 
+        /// <summary>
+        /// Compares two instances for sorting purpose
+        /// </summary>
+        /// <param name="obj">Object to compare</param>
+        /// <returns></returns>
+        /// <exception cref="StyleException">Throws a StyleException if the compared object is not from the type Color</exception>
         public int CompareTo(object obj)
         {
             if (obj == null)

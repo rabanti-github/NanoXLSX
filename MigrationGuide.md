@@ -275,6 +275,19 @@ fill2.BackgroundColor = Color.CreateRgb("FF00FF00"); // ARGB
 Fill fill3 = new Fill();
 fill3.ForegroundColor = Color.CreateTheme(Theme.ColorSchemeElement.Accent1, 0.5f); // Theme color with tint
 
+// Implicit creation of fill from a string (ARGB):
+Fill fill4 = "FF00FF00"; // Implicit conversion to SrgbColor as foreground
+
+// Implicit creation of fill from a int (indexed color):
+Fill fill5 = 64; // Implicit conversion to IndexedColor as foreground
+
+// Implicit creation of specific color from a string (ARGB):
+Fill fill6 = new Fill();
+fill6.ForegroundColor = "FF00FF00"; // Implicit conversion to SrgbColor
+
+// Implicit creation of specific color from a int (color index):
+Fill fill7 = new Fill();
+fill7.BackgroundColor = 63; // Implicit conversion to IndexedColor
 ```
 
 

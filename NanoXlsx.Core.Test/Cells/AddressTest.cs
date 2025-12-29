@@ -11,8 +11,6 @@ namespace NanoXLSX.Test.Core.CellTest
     public class AddressTest
     {
 
-        #region passingTests
-
         [Theory(DisplayName = "Constructor call with string as parameter")]
         [InlineData("A1", 0, 0, AddressType.Default)]
         [InlineData("b10", 1, 9, AddressType.Default)]
@@ -169,12 +167,6 @@ namespace NanoXLSX.Test.Core.CellTest
             }
         }
 
-        #endregion
-
-        #region failingTest
-
-        // Tests which expects an exception
-
         [Theory(DisplayName = "Fail on invalid constructor calls with an address string")]
         [InlineData(null, typeof(NanoXLSX.Exceptions.FormatException))]
         [InlineData("", typeof(NanoXLSX.Exceptions.FormatException))]
@@ -287,7 +279,22 @@ namespace NanoXLSX.Test.Core.CellTest
             Assert.Equal(expectedResult, result);
         }
 
-        #endregion
+
+        [Theory(DisplayName = "Test of the explicit casting operator")]
+        [InlineData("A1")]
+        [InlineData("$A1")]
+        [InlineData("A$1")]
+        [InlineData("$A$1")]
+        [InlineData("R100")]
+        [InlineData("$F17")]
+        [InlineData("AB$10")]
+        [InlineData("$ACX$100020")]
+        public void ExplicitOperatorTest(string address)
+        {
+            Address address1 = (Address)address;
+            Assert.Equal(address, address1.GetAddress());
+        }
+
 
     }
 }

@@ -258,7 +258,7 @@ namespace NanoXLSX.Styles
 
         #region staticMethods
         /// <summary>
-        /// Implicit operator to create a Fill object from a string (RGB or ARGB) with <see cref="FillType.FillColor"/> 
+        /// Implicit operator to create a Fill object from a string (RGB or ARGB) as foreground color with <see cref="FillType.FillColor"/> 
         /// </summary>
         /// <param name="value">RGB/ARGB value</param>
         public static implicit operator Fill(string value)
@@ -267,7 +267,7 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Implicit operator to create a Fill object from an indexed color value
+        /// Implicit operator to create a Fill object from an indexed color value as foreground color with <see cref="FillType.FillColor"/> 
         /// </summary>
         /// <param name="index">Color index (0 to 65)</param>
         public static implicit operator Fill(int index)

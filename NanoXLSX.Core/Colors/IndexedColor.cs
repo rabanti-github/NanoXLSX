@@ -249,7 +249,7 @@ namespace NanoXLSX.Colors
         /// Determines whether the specified object is equal to the current object
         /// </summary>
         /// <param name="obj">Other object to compare</param>
-        /// <returns></returns>
+        /// <returns>True if both objects are equal</returns>
         public override bool Equals(object obj)
         {
             return obj is IndexedColor color &&

@@ -583,6 +583,18 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             Assert.Equal("FFAABBCC", workbook.GetMruColors()[0]);
         }
 
+        [Fact(DisplayName = "Test of the AddMruColor function for color objects")]
+        public void AddMruColorTest2()
+        {
+            Workbook workbook = new Workbook();
+            Assert.Empty(workbook.GetMruColors());
+            Color color = "AABBCC"; // implicit conversion
+            workbook.AddMruColor(color);
+            Assert.Equal(1, workbook.GetMruColors().Count);
+            Assert.Equal("FFAABBCC", workbook.GetMruColors()[0]);
+        }
+
+
         [Theory(DisplayName = "Test of the failing AddMruColor function when adding an invalid color value")]
         [InlineData(null)]
         [InlineData("")]

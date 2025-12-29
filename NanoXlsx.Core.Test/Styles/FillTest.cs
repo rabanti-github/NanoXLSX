@@ -319,6 +319,36 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(exampleStyle.GetHashCode(), copy.GetHashCode());
         }
 
+        [Theory(DisplayName = "Test of the implicit operator (create ARGB color by string)")]
+        [InlineData("FF000000")]
+        [InlineData("AC000000")]
+        [InlineData("FF0000FF")]
+        [InlineData("FFFFFFFF")]
+        [InlineData("FF123456")]
+        public void ImplicitOperatorTest(string value)
+        {
+            Fill fill = value;
+            Fill expectedFill = new Fill(value, FillType.FillColor);
+            Assert.Equal(fill.ForegroundColor, expectedFill.ForegroundColor);
+            Assert.Equal(fill.BackgroundColor, expectedFill.BackgroundColor);
+        }
+
+        [Theory(DisplayName = "Test of the implicit operator (create indexed color by int)")]
+        [InlineData(10, IndexedColor.Value.Red)]
+        [InlineData(0, IndexedColor.Value.Black0)]
+        [InlineData(8, IndexedColor.Value.Black)]
+        [InlineData(64, IndexedColor.Value.SystemForeground)]
+        [InlineData(65, IndexedColor.Value.SystemBackground)]
+        public void ImplicitOperatorTest3(int givenValue, IndexedColor.Value expectedValue)
+        {
+            Fill fill = givenValue;
+            Fill expectedFill = new Fill();
+            expectedFill.ForegroundColor = Color.CreateIndexed(expectedValue);
+            expectedFill.PatternFill = PatternValue.Solid;
+            Assert.Equal(fill.ForegroundColor, expectedFill.ForegroundColor);
+            Assert.Equal(fill.BackgroundColor, expectedFill.BackgroundColor);
+        }
+
         [Fact(DisplayName = "Test of the Equals method")]
         public void EqualsTest()
         {
