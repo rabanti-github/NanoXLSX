@@ -392,12 +392,13 @@ namespace NanoXLSX.Colors
             {
                 return typeCompare;
             }
+
             // 2) Same type -> compare internal representation
             switch (Type)
             {
                 case ColorType.None:
                     return 0;
-                case ColorType.Auto: // Auto has no value
+                case ColorType.Auto:
                     return 0;
                 case ColorType.Rgb:
                     return string.Compare(
@@ -405,30 +406,24 @@ namespace NanoXLSX.Colors
                         other.RgbColor?.StringValue,
                         StringComparison.OrdinalIgnoreCase);
                 case ColorType.Indexed:
-                    return string.Compare(
-                        IndexedColor?.StringValue,
-                        other.IndexedColor?.StringValue,
-                        StringComparison.Ordinal);
+                    // Numeric comparison of palette index
+                    return IndexedColor.ColorValue.CompareTo(other.IndexedColor.ColorValue);
                 case ColorType.Theme:
                     {
-                        int themeCompare = string.Compare(
-                            ThemeColor?.StringValue,
-                            other.ThemeColor?.StringValue,
-                            StringComparison.Ordinal);
-
+                        // Numeric comparison of theme slot
+                        int themeCompare = ThemeColor.ColorValue.CompareTo(other.ThemeColor.ColorValue);
                         if (themeCompare != 0)
                         {
                             return themeCompare;
                         }
-                        // Same theme index -> compare tint
+                        // Same theme slot -> compare tint
                         return Nullable.Compare(Tint, other.Tint);
                     }
                 case ColorType.System:
-                    return string.Compare(
-                        SystemColor?.StringValue,
-                        other.SystemColor?.StringValue,
-                        StringComparison.OrdinalIgnoreCase);
-                default: // Defensive fallback
+                    // Enum-based comparison -> not string-based
+                    return SystemColor.ColorValue.CompareTo(other.SystemColor.ColorValue);
+                default:
+                    // Defensive fallback —> should normally never happen
                     return string.Compare(
                         Value?.StringValue,
                         other.Value?.StringValue,

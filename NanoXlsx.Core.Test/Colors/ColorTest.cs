@@ -279,7 +279,7 @@ namespace NanoXLSX.Core.Test.Colors
         {
             Color color = Color.CreateRgb(givenRgbValue);
             Assert.True(color.Value is SrgbColor);
-            Assert.Equal(expectedRgbValue, color.GetArgbValue());
+            Assert.Equal(expectedRgbValue, color.RgbColor.ColorValue);
         }
 
         [Theory(DisplayName = "Test of the Value property on indexed colors")]
@@ -291,7 +291,7 @@ namespace NanoXLSX.Core.Test.Colors
         {
             Color color = Color.CreateIndexed(indexedValue);
             Assert.True(color.Value is IndexedColor);
-            Assert.Equal(indexedValue, ((IndexedColor)color.Value).ColorValue);
+            Assert.Equal(indexedValue, color.IndexedColor.ColorValue);
         }
 
         [Theory(DisplayName = "Test of the Value property on system colors")]
@@ -303,7 +303,7 @@ namespace NanoXLSX.Core.Test.Colors
         {
             Color color = Color.CreateSystem(systemColor);
             Assert.True(color.Value is SystemColor);
-            Assert.Equal(systemColor, ((SystemColor)color.Value).ColorValue);
+            Assert.Equal(systemColor, color.SystemColor.ColorValue);
         }
 
         [Theory(DisplayName = "Test of the Value property on theme colors")]
@@ -318,9 +318,34 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.Equal(themeElement, ((ThemeColor)color.Value).ColorValue);
         }
 
-        // ---------- GetArgbValue Tests ----------
+        [Theory(DisplayName = "Test of the GetArgbValue function on a sRGB color")]
+        [InlineData("000000", "FF000000")]
+        [InlineData("FFFFFF", "FFFFFFFF")]
+        [InlineData("123456", "FF123456")]
+        [InlineData("FF000000", "FF000000")]
+        [InlineData("FFFFFFFF", "FFFFFFFF")]
+        [InlineData("FF234567", "FF234567")]
+        public void GetArgbValueSRgbTest(string givenRgb, string expectedRgb)
+        {
+            var c = Color.CreateRgb(givenRgb);
+            Assert.Equal(expectedRgb, c.GetArgbValue());
+        }
 
-        [Fact(DisplayName = "GetArgbValueReturnsNullForThemeTest")]
+        [Theory(DisplayName = "Test of the GetArgbValue function on a sRGB color")]
+        [InlineData(IndexedColor.Value.Black0, "FF000000")]
+        [InlineData(IndexedColor.Value.Black, "FF000000")]
+        [InlineData(IndexedColor.Value.White, "FFFFFFFF")]
+        [InlineData(IndexedColor.Value.StrongCyan, "FF00FFFF")]
+        [InlineData(IndexedColor.Value.DarkMaroon, "FF800000")]
+        [InlineData(IndexedColor.Value.Lavender, "FFCC99FF")]
+        public void GetArgbValueIndexedTest(IndexedColor.Value givenIndex, string expectedRgb)
+        {
+            var c = Color.CreateIndexed(givenIndex);
+            Assert.Equal(expectedRgb, c.GetArgbValue());
+        }
+
+
+        [Fact(DisplayName = "Test of the GetArgbValue function on a theme color")]
         public void GetArgbValueReturnsNullForThemeTest()
         {
             var c = Color.CreateTheme(Theme.ColorSchemeElement.Dark1);
@@ -328,7 +353,15 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.Null(c.GetArgbValue());
         }
 
-        [Fact(DisplayName = "GetArgbValueReturnsNullForAutoTest")]
+        [Fact(DisplayName = "Test of the GetArgbValue function on a system color")]
+        public void GetArgbValueReturnsNullForSystemTest()
+        {
+            var c = Color.CreateSystem(SystemColor.Value.ActiveBorder);
+
+            Assert.Null(c.GetArgbValue());
+        }
+
+        [Fact(DisplayName = "Test of the GetArgbValue function on a auto color")]
         public void GetArgbValueReturnsNullForAutoTest()
         {
             var c = Color.CreateAuto();
@@ -336,9 +369,8 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.Null(c.GetArgbValue());
         }
 
-        // ---------- Equals Tests ----------
 
-        [Fact(DisplayName = "EqualsSameRgbValueTest")]
+        [Fact(DisplayName = "Test of the Equals method on equality")]
         public void EqualsSameRgbValueTest()
         {
             var a = Color.CreateRgb("FFABCDEF");
@@ -348,7 +380,7 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.True(a.Equals(b));
         }
 
-        [Fact(DisplayName = "EqualsDifferentRgbValueTest")]
+        [Fact(DisplayName = "Test of the Equals method on inequality")]
         public void EqualsDifferentRgbValueTest()
         {
             var a = Color.CreateRgb("FFABCDEF");
@@ -357,7 +389,7 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.NotEqual(a, b);
         }
 
-        [Fact(DisplayName = "EqualsDifferentTypeTest")]
+        [Fact(DisplayName = "Test of the Equals method on inequality on different types")]
         public void EqualsDifferentTypeTest()
         {
             var a = Color.CreateRgb("FF000000");
@@ -366,9 +398,7 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.NotEqual(a, b);
         }
 
-        // ---------- HashCode Tests ----------
-
-        [Fact(DisplayName = "GetHashCodeEqualObjectsTest")]
+        [Fact(DisplayName = "Test of the GetHasCode method on equality")]
         public void GetHashCodeEqualObjectsTest()
         {
             var a = Color.CreateRgb("FF112233");
@@ -377,7 +407,7 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.Equal(a.GetHashCode(), b.GetHashCode());
         }
 
-        [Fact(DisplayName = "GetHashCodeDifferentObjectsTest")]
+        [Fact(DisplayName = "Test of the GetHasCode method on inequality")]
         public void GetHashCodeDifferentObjectsTest()
         {
             var a = Color.CreateRgb("FF112233");
@@ -386,9 +416,8 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.NotEqual(a.GetHashCode(), b.GetHashCode());
         }
 
-        // ---------- CompareTo Tests ----------
 
-        [Fact(DisplayName = "CompareToNullTest")]
+        [Fact(DisplayName = "Test of the CompareTo method on null values")]
         public void CompareToNullTest()
         {
             var c = Color.CreateRgb("FF000000");
@@ -396,7 +425,7 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.True(c.CompareTo(null) > 0);
         }
 
-        [Fact(DisplayName = "CompareToWrongTypeTest")]
+        [Fact(DisplayName = "Test of the CompareTo method on different types")]
         public void CompareToWrongTypeTest()
         {
             var c = Color.CreateRgb("FF000000");
@@ -404,16 +433,38 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.Throws<StyleException>(() => c.CompareTo("not a color"));
         }
 
-        [Fact(DisplayName = "CompareToSameRgbTest")]
-        public void CompareToSameRgbTest()
+        [Fact(DisplayName = "Test of the CompareTo method on two none color types")]
+        public void CompareNoneColorTypeTest()
         {
-            var a = Color.CreateRgb("FF000000");
-            var b = Color.CreateRgb("FF000000");
+            var a = Color.CreateNone();
+            var b = Color.CreateNone();
+            Assert.Equal(0, a.CompareTo(b));
+        }
+
+        [Fact(DisplayName = "Test of the CompareTo method on two auto color types")]
+        public void CompareAutoColorTypeTest()
+        {
+            var a = Color.CreateAuto();
+            var b = Color.CreateAuto();
+            Assert.Equal(0, a.CompareTo(b));
+        }
+
+        [Theory(DisplayName = "Test of the CompareTo method on identical RGB/ARGB values")]
+        [InlineData("000000")]
+        [InlineData("FFFFFF")]
+        [InlineData("AABBCC")]
+        [InlineData("FF000000")]
+        [InlineData("FFFFFFFF")]
+        [InlineData("FFAABBCC")]
+        public void CompareToSameRgbTest(string rgbValue)
+        {
+            var a = Color.CreateRgb(rgbValue);
+            var b = Color.CreateRgb(rgbValue);
 
             Assert.Equal(0, a.CompareTo(b));
         }
 
-        [Fact(DisplayName = "CompareToRgbOrderingTest")]
+        [Fact(DisplayName = "Test of the CompareTo method on different sRGB values")]
         public void CompareToRgbOrderingTest()
         {
             var a = Color.CreateRgb("FF000000");
@@ -422,7 +473,7 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.True(a.CompareTo(b) < 0);
         }
 
-        [Fact(DisplayName = "CompareToDifferentTypeOrderingTest")]
+        [Fact(DisplayName = "Test of the CompareTo method on different color values if sRGB and indexes are compared")]
         public void CompareToDifferentTypeOrderingTest()
         {
             var rgb = Color.CreateRgb("FF000000");
@@ -431,7 +482,7 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.NotEqual(0, rgb.CompareTo(indexed));
         }
 
-        [Fact(DisplayName = "CompareToThemeTintTest")]
+        [Fact(DisplayName = "Test of the CompareTo method on different tint values")]
         public void CompareToThemeTintTest()
         {
             var a = Color.CreateTheme(Theme.ColorSchemeElement.Accent1, 0.1);
@@ -439,5 +490,69 @@ namespace NanoXLSX.Core.Test.Colors
 
             Assert.True(a.CompareTo(b) < 0);
         }
+
+        [Fact(DisplayName = "Test of the CompareTo method on colors with different theme slots")]
+        public void CompareToThemeDifferentThemeSlots()
+        {
+            var c1 = Color.CreateTheme(Theme.ColorSchemeElement.Dark1);
+            var c2 = Color.CreateTheme(Theme.ColorSchemeElement.Accent1);
+
+            int result = c1.CompareTo(c2);
+
+            Assert.True(result < 0);
+        }
+
+        [Fact(DisplayName = "Test of the CompareTo method on colors with same slot but different tint")]
+        public void CompareToThemeSameSlotDifferentTint()
+        {
+            var c1 = Color.CreateTheme(Theme.ColorSchemeElement.Accent1, tint: -0.2);
+            var c2 = Color.CreateTheme(Theme.ColorSchemeElement.Accent1, tint: 0.2);
+
+            int result = c1.CompareTo(c2);
+
+            Assert.True(result < 0);
+        }
+
+        [Fact(DisplayName = "Test of the CompareTo method on System colors")]
+        public void CompareToSystemColors()
+        {
+            var c1 = Color.CreateSystem(new SystemColor(SystemColor.Value.AppWorkspace));
+            var c2 = Color.CreateSystem(new SystemColor(SystemColor.Value.Menu));
+
+            int result = c1.CompareTo(c2);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact(DisplayName = "Test of the CompareTo method on a defensive fallback path")]
+        public void CompareToDefensiveFallback()
+        {
+            var c1 = Color.CreateRgb("FF0000");
+            var c2 = Color.CreateRgb("00FF00");
+
+            typeof(Color)
+                .GetProperty(nameof(Color.Type))
+                .SetValue(c1, (Color.ColorType)999);
+
+            typeof(Color)
+                .GetProperty(nameof(Color.Type))
+                .SetValue(c2, (Color.ColorType)999);
+
+            int result = c1.CompareTo(c2);
+
+            Assert.Equal(0, result);
+        }
+
+        [Fact(DisplayName = "Test of the CompareTo method on indexed colors uses numeric index")]
+        public void CompareToIndexedNumericComparison()
+        {
+            var c1 = Color.CreateIndexed(IndexedColor.Value.Black); // e.g. 8
+            var c2 = Color.CreateIndexed(IndexedColor.Value.White); // e.g. 9
+
+            int result = c1.CompareTo(c2);
+
+            Assert.True(result < 0); // Both are invalid types - corner case
+        }
+
     }
 }
