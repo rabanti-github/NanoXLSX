@@ -393,54 +393,49 @@ $(function(){initNavTree('Color_8cs_source.html','',''); });
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>            {</div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>                <span class="keywordflow">return</span> typeCompare;</div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>            }</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>            <span class="comment">// 2) Same type -&gt; compare internal representation</span></div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>            <span class="keywordflow">switch</span> (<a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#add2089e3ad6208ddf60b692134f3c205">Type</a>)</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>            {</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>                <span class="keywordflow">case</span> <a class="code hl_enumeration" href="classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb">ColorType</a>.None:</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>                    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>                <span class="keywordflow">case</span> <a class="code hl_enumeration" href="classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb">ColorType</a>.Auto: <span class="comment">// Auto has no value</span></div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>                    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>                <span class="keywordflow">case</span> <a class="code hl_enumeration" href="classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb">ColorType</a>.Rgb:</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>                    <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Compare(</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#a3ad73f17e5543f597bca3673c0b35d22">RgbColor</a>?.StringValue,</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>                        other.RgbColor?.StringValue,</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>                        StringComparison.OrdinalIgnoreCase);</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>                <span class="keywordflow">case</span> <a class="code hl_enumeration" href="classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb">ColorType</a>.Indexed:</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>                    <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Compare(</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#af8072330dff99dd5897ec21e00f892cb">IndexedColor</a>?.StringValue,</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>                        other.IndexedColor?.StringValue,</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>                        StringComparison.Ordinal);</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>                <span class="keywordflow">case</span> <a class="code hl_enumeration" href="classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb">ColorType</a>.Theme:</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>                    {</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>                        <span class="keywordtype">int</span> themeCompare = <span class="keywordtype">string</span>.Compare(</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>                            <a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#a0b30808576099eb5c57cc31704aef209">ThemeColor</a>?.StringValue,</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>                            other.ThemeColor?.StringValue,</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>                            StringComparison.Ordinal);</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span> </div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>                        <span class="keywordflow">if</span> (themeCompare != 0)</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>                        {</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>                            <span class="keywordflow">return</span> themeCompare;</div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>                        }</div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>                        <span class="comment">// Same theme index -&gt; compare tint</span></div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>                        <span class="keywordflow">return</span> Nullable.Compare(<a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#a3c72c7c09901438e291f8729c0f88ebf">Tint</a>, other.Tint);</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>                    }</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>                <span class="keywordflow">case</span> <a class="code hl_enumeration" href="classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb">ColorType</a>.System:</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span> </div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>            <span class="comment">// 2) Same type -&gt; compare internal representation</span></div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>            <span class="keywordflow">switch</span> (<a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#add2089e3ad6208ddf60b692134f3c205">Type</a>)</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>            {</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>                <span class="keywordflow">case</span> <a class="code hl_enumeration" href="classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb">ColorType</a>.None:</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>                    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>                <span class="keywordflow">case</span> <a class="code hl_enumeration" href="classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb">ColorType</a>.Auto:</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>                    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>                <span class="keywordflow">case</span> <a class="code hl_enumeration" href="classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb">ColorType</a>.Rgb:</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>                    <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Compare(</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#a3ad73f17e5543f597bca3673c0b35d22">RgbColor</a>?.StringValue,</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>                        other.RgbColor?.StringValue,</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>                        StringComparison.OrdinalIgnoreCase);</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>                <span class="keywordflow">case</span> <a class="code hl_enumeration" href="classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb">ColorType</a>.Indexed:</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>                    <span class="comment">// Numeric comparison of palette index</span></div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>                    <span class="keywordflow">return</span> <a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#af8072330dff99dd5897ec21e00f892cb">IndexedColor</a>.ColorValue.CompareTo(other.IndexedColor.ColorValue);</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>                <span class="keywordflow">case</span> <a class="code hl_enumeration" href="classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb">ColorType</a>.Theme:</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>                    {</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>                        <span class="comment">// Numeric comparison of theme slot</span></div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>                        <span class="keywordtype">int</span> themeCompare = <a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#a0b30808576099eb5c57cc31704aef209">ThemeColor</a>.ColorValue.CompareTo(other.ThemeColor.ColorValue);</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>                        <span class="keywordflow">if</span> (themeCompare != 0)</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>                        {</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>                            <span class="keywordflow">return</span> themeCompare;</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>                        }</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>                        <span class="comment">// Same theme slot -&gt; compare tint</span></div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>                        <span class="keywordflow">return</span> Nullable.Compare(<a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#a3c72c7c09901438e291f8729c0f88ebf">Tint</a>, other.Tint);</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>                    }</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>                <span class="keywordflow">case</span> <a class="code hl_enumeration" href="classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bb">ColorType</a>.System:</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>                    <span class="comment">// Enum-based comparison -&gt; not string-based</span></div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>                    <span class="keywordflow">return</span> <a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#ac1feeaeeb458b26f40deecc74ab0ff3d">SystemColor</a>.ColorValue.CompareTo(other.SystemColor.ColorValue);</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>                <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>                    <span class="comment">// Defensive fallback —&gt; should normally never happen</span></div>
 <div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>                    <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Compare(</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#ac1feeaeeb458b26f40deecc74ab0ff3d">SystemColor</a>?.StringValue,</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>                        other.SystemColor?.StringValue,</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#a8151dfa3bf0472e4fe6742cd82926f24">Value</a>?.StringValue,</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>                        other.Value?.StringValue,</div>
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>                        StringComparison.OrdinalIgnoreCase);</div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>                <span class="keywordflow">default</span>: <span class="comment">// Defensive fallback</span></div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>                    <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Compare(</div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Colors_1_1Color.html#a8151dfa3bf0472e4fe6742cd82926f24">Value</a>?.StringValue,</div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>                        other.Value?.StringValue,</div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>                        StringComparison.OrdinalIgnoreCase);</div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>            }</div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>        }</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>            }</div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>        }</div>
 </div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span> </div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>    }</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span> </div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>    }</div>
 </div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>}</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>}</div>
 <div class="ttc" id="aclassNanoXLSX_1_1Colors_1_1AutoColor_html"><div class="ttname"><a href="classNanoXLSX_1_1Colors_1_1AutoColor.html">NanoXLSX.Colors.AutoColor</a></div><div class="ttdoc">Class representing an automatic color.</div><div class="ttdef"><b>Definition</b> <a href="AutoColor_8cs_source.html#l00016">AutoColor.cs:17</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Colors_1_1AutoColor_html_a991b1534f78e9ee6bb45e800191df22a"><div class="ttname"><a href="classNanoXLSX_1_1Colors_1_1AutoColor.html#a991b1534f78e9ee6bb45e800191df22a">NanoXLSX.Colors.AutoColor.Instance</a></div><div class="ttdeci">static readonly AutoColor Instance</div><div class="ttdoc">Static instance of the AutoColor class to avoid multiple instances (instances does not deviate).</div><div class="ttdef"><b>Definition</b> <a href="AutoColor_8cs_source.html#l00021">AutoColor.cs:21</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Colors_1_1Color_html"><div class="ttname"><a href="classNanoXLSX_1_1Colors_1_1Color.html">NanoXLSX.Colors.Color</a></div><div class="ttdoc">Compound class representing a color in various representations (RGB, indexed, theme,...</div><div class="ttdef"><b>Definition</b> <a href="#l00019">Color.cs:20</a></div></div>
