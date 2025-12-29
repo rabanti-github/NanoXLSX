@@ -1,5 +1,11 @@
 var NAVTREEINDEX1 =
 {
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#a7f57f8f5100053790627aef50e38b7e0":[3,0,0,0,2,11],
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#abe6a9cda9312bc80df93d7326f53d329":[2,0,0,0,2,6],
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#abe6a9cda9312bc80df93d7326f53d329":[3,0,0,0,2,6],
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad13509178d1f14d39a58c40a32a41769":[2,0,0,0,2,7],
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad13509178d1f14d39a58c40a32a41769":[3,0,0,0,2,7],
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8":[2,0,0,0,2,0],
 "classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8":[3,0,0,0,2,0],
 "classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a0100221d45556317b9c33595f78e6e3e":[2,0,0,0,2,0,6],
 "classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a0100221d45556317b9c33595f78e6e3e":[3,0,0,0,2,0,6],
@@ -243,11 +249,5 @@ var NAVTREEINDEX1 =
 "classNanoXLSX_1_1Colors_1_1SystemColor.html#ae7289b697c69af5f41c4c12407ccc87d":[3,0,0,0,4,3],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html":[2,0,0,0,5],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html":[3,0,0,0,5],
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1140b8c6a4cfc3912452ef9e1123326e":[2,0,0,0,5,0],
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1140b8c6a4cfc3912452ef9e1123326e":[3,0,0,0,5,0],
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1fbfd2fad3f7deef2efe3014aa053492":[2,0,0,0,5,1],
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1fbfd2fad3f7deef2efe3014aa053492":[3,0,0,0,5,1],
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a6a1dc6f1be745bad493291fec977aa7e":[2,0,0,0,5,2],
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a6a1dc6f1be745bad493291fec977aa7e":[3,0,0,0,5,2],
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a9536d671f9f60cc4c1a6e2338064f70b":[2,0,0,0,5,3]
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1140b8c6a4cfc3912452ef9e1123326e":[2,0,0,0,5,0]
 };

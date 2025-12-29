@@ -1,5 +1,11 @@
 var NAVTREEINDEX2 =
 {
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1140b8c6a4cfc3912452ef9e1123326e":[3,0,0,0,5,0],
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1fbfd2fad3f7deef2efe3014aa053492":[2,0,0,0,5,1],
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1fbfd2fad3f7deef2efe3014aa053492":[3,0,0,0,5,1],
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a6a1dc6f1be745bad493291fec977aa7e":[2,0,0,0,5,2],
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a6a1dc6f1be745bad493291fec977aa7e":[3,0,0,0,5,2],
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a9536d671f9f60cc4c1a6e2338064f70b":[2,0,0,0,5,3],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#a9536d671f9f60cc4c1a6e2338064f70b":[3,0,0,0,5,3],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#aa500a1c26abf94b021efad317c6478c9":[2,0,0,0,5,4],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#aa500a1c26abf94b021efad317c6478c9":[3,0,0,0,5,4],
@@ -243,11 +249,5 @@ var NAVTREEINDEX2 =
 "classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ac58f9d659024730a51c7ed232a57b70a":[3,0,0,3,2,23],
 "classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad4cbb582cb8dccaa4d459a745c035a3d":[2,0,0,3,2,4],
 "classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad4cbb582cb8dccaa4d459a745c035a3d":[3,0,0,3,2,4],
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad89af6da078d865df3c49f24a64f1c44":[2,0,0,3,2,18],
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad89af6da078d865df3c49f24a64f1c44":[3,0,0,3,2,18],
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad98a4575bd4992b2d297acdbadbef1ba":[2,0,0,3,2,28],
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad98a4575bd4992b2d297acdbadbef1ba":[3,0,0,3,2,28],
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad98fc6c9132c6194eb2b803442b70807":[2,0,0,3,2,30],
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad98fc6c9132c6194eb2b803442b70807":[3,0,0,3,2,30],
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ae80faba5a067f74833f36006dcc985f6":[2,0,0,3,2,3]
+"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad89af6da078d865df3c49f24a64f1c44":[2,0,0,3,2,18]
 };

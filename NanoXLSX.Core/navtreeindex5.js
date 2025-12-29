@@ -1,5 +1,11 @@
 var NAVTREEINDEX5 =
 {
+"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a3774b780410115723ba7c3db587fbb0f":[3,0,0,4,7,0,17],
+"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a43583c7ea832e49528126f9db0f474a8":[2,0,0,4,7,0,10],
+"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a43583c7ea832e49528126f9db0f474a8":[3,0,0,4,7,0,10],
+"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a48ac272ef5c522f6a09e8452e3157946":[2,0,0,4,7,0,4],
+"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a48ac272ef5c522f6a09e8452e3157946":[3,0,0,4,7,0,4],
+"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a57da6b10f203e0ac1a2a5fffd5915e2d":[2,0,0,4,7,0,18],
 "classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a57da6b10f203e0ac1a2a5fffd5915e2d":[3,0,0,4,7,0,18],
 "classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a6adf97f83acf6453d4a6a4b1070f3754":[2,0,0,4,7,0,0],
 "classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a6adf97f83acf6453d4a6a4b1070f3754":[3,0,0,4,7,0,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX5 =
 "classNanoXLSX_1_1Utils_1_1DataUtils.html#a6c70f1e4f4ef354ceb70dcfd67f24bc5":[3,0,0,6,2,15],
 "classNanoXLSX_1_1Utils_1_1DataUtils.html#a7e50121702f525f8818c46dd287e8161":[2,0,0,6,2,7],
 "classNanoXLSX_1_1Utils_1_1DataUtils.html#a7e50121702f525f8818c46dd287e8161":[3,0,0,6,2,7],
-"classNanoXLSX_1_1Utils_1_1DataUtils.html#a861b85a8535d65bf4619a086f977b69f":[2,0,0,6,2,13],
-"classNanoXLSX_1_1Utils_1_1DataUtils.html#a861b85a8535d65bf4619a086f977b69f":[3,0,0,6,2,13],
-"classNanoXLSX_1_1Utils_1_1DataUtils.html#a936072e9ef2694a2c4995086426c36bd":[2,0,0,6,2,3],
-"classNanoXLSX_1_1Utils_1_1DataUtils.html#a936072e9ef2694a2c4995086426c36bd":[3,0,0,6,2,3],
-"classNanoXLSX_1_1Utils_1_1DataUtils.html#aa63631310e54c632dc3a9b636801ae1d":[2,0,0,6,2,19],
-"classNanoXLSX_1_1Utils_1_1DataUtils.html#aa63631310e54c632dc3a9b636801ae1d":[3,0,0,6,2,19],
-"classNanoXLSX_1_1Utils_1_1DataUtils.html#abb590d436e3bb00a98abcc34a89f8161":[2,0,0,6,2,2]
+"classNanoXLSX_1_1Utils_1_1DataUtils.html#a861b85a8535d65bf4619a086f977b69f":[2,0,0,6,2,13]
 };

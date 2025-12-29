@@ -4,7 +4,7 @@ var searchData=
   ['oem_1',['OEM',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001aca4dbd00e25b3cdb095ded24a65cc7b94c',1,'NanoXLSX::Styles::Font']]],
   ['olive_2',['Olive',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a2b8b384cdd92d3e81c43b2d43de8c247',1,'NanoXLSX::Colors::IndexedColor']]],
   ['operator_20address_3',['operator Address',['../structNanoXLSX_1_1Address.html#a1e37c569dd67ea53afe88e8898f1c2d3',1,'NanoXLSX::Address']]],
-  ['operator_20color_4',['operator Color',['../classNanoXLSX_1_1Colors_1_1Color.html#a878074ae6243352f07894c83444e0aca',1,'NanoXLSX::Colors::Color']]],
+  ['operator_20color_4',['operator Color',['../classNanoXLSX_1_1Colors_1_1Color.html#a878074ae6243352f07894c83444e0aca',1,'NanoXLSX.Colors.Color.operator Color(string rgbValue)'],['../classNanoXLSX_1_1Colors_1_1Color.html#a9cafdd48431a235b9e4c978572e79558',1,'NanoXLSX.Colors.Color.operator Color(int colorIndex)']]],
   ['operator_20fill_5',['operator Fill',['../classNanoXLSX_1_1Styles_1_1Fill.html#a9e2656a7e7e246e3c870aac7b805d75a',1,'NanoXLSX.Styles.Fill.operator Fill(string value)'],['../classNanoXLSX_1_1Styles_1_1Fill.html#abf529c0c9474b8c62505ff3f9959c852',1,'NanoXLSX.Styles.Fill.operator Fill(int index)']]],
   ['operator_20indexedcolor_6',['operator IndexedColor',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad66ca6c6bb65bbe123ab07195ead89ce',1,'NanoXLSX::Colors::IndexedColor']]],
   ['operator_20range_7',['operator Range',['../structNanoXLSX_1_1Range.html#ae2bb4568ee283683b0971f9337ffb36e',1,'NanoXLSX::Range']]],

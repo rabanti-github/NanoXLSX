@@ -1,5 +1,11 @@
 var NAVTREEINDEX4 =
 {
+"classNanoXLSX_1_1Styles_1_1CellXf.html#aae523094d813ad591dad021f9b3eab36":[3,0,0,4,4,9],
+"classNanoXLSX_1_1Styles_1_1CellXf.html#ab90536ebed09bf18e8c1a5d3c701f920":[2,0,0,4,4,7],
+"classNanoXLSX_1_1Styles_1_1CellXf.html#ab90536ebed09bf18e8c1a5d3c701f920":[3,0,0,4,4,7],
+"classNanoXLSX_1_1Styles_1_1CellXf.html#adab84732347380def632eba696ec3543":[2,0,0,4,4,6],
+"classNanoXLSX_1_1Styles_1_1CellXf.html#adab84732347380def632eba696ec3543":[3,0,0,4,4,6],
+"classNanoXLSX_1_1Styles_1_1CellXf.html#ae418fcdc99f4c12b9aedc384b6adc632":[2,0,0,4,4,5],
 "classNanoXLSX_1_1Styles_1_1CellXf.html#ae418fcdc99f4c12b9aedc384b6adc632":[3,0,0,4,4,5],
 "classNanoXLSX_1_1Styles_1_1CellXf.html#af3e2a4d4346b78a7d9368881f0b3062f":[2,0,0,4,4,17],
 "classNanoXLSX_1_1Styles_1_1CellXf.html#af3e2a4d4346b78a7d9368881f0b3062f":[3,0,0,4,4,17],
@@ -243,11 +249,5 @@ var NAVTREEINDEX4 =
 "classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a285fa8fb8bfa38dee54ea197a54dd2df":[3,0,0,4,7,0,1],
 "classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a29e9b67c5295f37427f954e6e7d96030":[2,0,0,4,7,0,14],
 "classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a29e9b67c5295f37427f954e6e7d96030":[3,0,0,4,7,0,14],
-"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a3774b780410115723ba7c3db587fbb0f":[2,0,0,4,7,0,17],
-"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a3774b780410115723ba7c3db587fbb0f":[3,0,0,4,7,0,17],
-"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a43583c7ea832e49528126f9db0f474a8":[2,0,0,4,7,0,10],
-"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a43583c7ea832e49528126f9db0f474a8":[3,0,0,4,7,0,10],
-"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a48ac272ef5c522f6a09e8452e3157946":[2,0,0,4,7,0,4],
-"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a48ac272ef5c522f6a09e8452e3157946":[3,0,0,4,7,0,4],
-"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a57da6b10f203e0ac1a2a5fffd5915e2d":[2,0,0,4,7,0,18]
+"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a3774b780410115723ba7c3db587fbb0f":[2,0,0,4,7,0,17]
 };

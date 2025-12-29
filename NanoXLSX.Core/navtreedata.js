@@ -57,15 +57,15 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8",
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a9536d671f9f60cc4c1a6e2338064f70b",
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ae80faba5a067f74833f36006dcc985f6",
-"classNanoXLSX_1_1Styles_1_1CellXf.html#ae418fcdc99f4c12b9aedc384b6adc632",
-"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a57da6b10f203e0ac1a2a5fffd5915e2d",
-"classNanoXLSX_1_1Utils_1_1DataUtils.html#abb590d436e3bb00a98abcc34a89f8161",
-"classNanoXLSX_1_1Worksheet.html#a15e8c34d6554db096d58a5e483cc04d1",
-"classNanoXLSX_1_1Worksheet.html#ae177222a119c746ca23d038d3dffb142",
-"structNanoXLSX_1_1Range.html#a93b270fa797b983dcb2c097c34b52393"
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#a7f57f8f5100053790627aef50e38b7e0",
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1140b8c6a4cfc3912452ef9e1123326e",
+"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad89af6da078d865df3c49f24a64f1c44",
+"classNanoXLSX_1_1Styles_1_1CellXf.html#aae523094d813ad591dad021f9b3eab36",
+"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a3774b780410115723ba7c3db587fbb0f",
+"classNanoXLSX_1_1Utils_1_1DataUtils.html#a861b85a8535d65bf4619a086f977b69f",
+"classNanoXLSX_1_1Worksheet.html#a1280f1d915c6e50d938607e435e03096",
+"classNanoXLSX_1_1Worksheet.html#aded40086c2459bd48dd84fb6b7f7b21a",
+"structNanoXLSX_1_1Range.html#a751406e5b1646b244099c6fcfe8f2de5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
