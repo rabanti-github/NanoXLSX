@@ -101,7 +101,7 @@ $(function(){initNavTree('ColorWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">using </span>NanoXLSX.Colors;</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">using </span><a class="code hl_namespace" href="namespaceNanoXLSX_1_1Interfaces.html">NanoXLSX.Interfaces</a>;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">using </span><a class="code hl_namespace" href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a>;</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">using </span>NanoXLSX.Registry;</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">using </span>NanoXLSX.Registry.Attributes;</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">using </span>NanoXLSX.Utils;</div>
@@ -112,7 +112,7 @@ $(function(){initNavTree('ColorWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="namespaceNanoXLSX_1_1Internal_1_1Writers.html">   16</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceNanoXLSX_1_1Internal_1_1Writers.html">NanoXLSX.Internal.Writers</a></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.ColorWriter)]</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">internal</span> <span class="keyword">class </span>ColorWriter : <a class="code hl_interface" href="interfaceNanoXLSX_1_1Interfaces_1_1IColorWriter.html">IColorWriter</a></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">internal</span> <span class="keyword">class </span>ColorWriter : <a class="code hl_interface" href="interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html">IColorWriter</a></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    {</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        <span class="keyword">public</span> IEnumerable&lt;XmlAttribute&gt; GetAttributes(Color color)</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        {</div>
@@ -182,18 +182,23 @@ $(function(){initNavTree('ColorWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span></div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keyword">public</span> <span class="keywordtype">string</span> GetTintAttributeValue(Color color)</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        {</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            <span class="keywordflow">return</span> color == <span class="keyword">null</span> ? null : ParserUtils.ToString(color.Tint.Value);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        }</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keyword">public</span> <span class="keywordtype">bool</span> UseTintAttribute(Color color)</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        {</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>            <span class="keywordflow">return</span> color != <span class="keyword">null</span> &amp;&amp; color.Type == Color.ColorType.Theme &amp;&amp; (!color.Tint.HasValue || !Comparators.IsZero(color.Tint.Value));</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        }</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    }</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            <span class="keywordflow">if</span> (!color.Tint.HasValue)</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>            {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                <span class="keywordflow">return</span> <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            }</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            <span class="keywordtype">double</span> tint = color.Tint.Value;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            <span class="keywordflow">return</span> tint == 0.0 ? null : ParserUtils.ToString(tint);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        }</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <span class="keyword">public</span> <span class="keywordtype">bool</span> UseTintAttribute(Color color)</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        {</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>            <span class="keywordflow">return</span> color != <span class="keyword">null</span> &amp;&amp; color.Type == Color.ColorType.Theme &amp;&amp; (!color.Tint.HasValue || !Comparators.IsZero(color.Tint.Value));</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        }</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    }</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>}</div>
 </div>
-<div class="ttc" id="ainterfaceNanoXLSX_1_1Interfaces_1_1IColorWriter_html"><div class="ttname"><a href="interfaceNanoXLSX_1_1Interfaces_1_1IColorWriter.html">NanoXLSX.Interfaces.IColorWriter</a></div><div class="ttdef"><b>Definition</b> <a href="IColorWriter_8cs_source.html#l00009">IColorWriter.cs:10</a></div></div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces.html">NanoXLSX.Interfaces</a></div><div class="ttdef"><b>Definition</b> <a href="IColorWriter_8cs_source.html#l00007">IColorWriter.cs:8</a></div></div>
+<div class="ttc" id="ainterfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter_html"><div class="ttname"><a href="interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html">NanoXLSX.Interfaces.Writer.IColorWriter</a></div><div class="ttdoc">Interface, used by specific writers that provides color handling.</div><div class="ttdef"><b>Definition</b> <a href="IColorWriter_8cs_source.html#l00017">IColorWriter.cs:18</a></div></div>
+<div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_1_1Writer_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a></div><div class="ttdef"><b>Definition</b> <a href="IColorWriter_8cs_source.html#l00012">IColorWriter.cs:13</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Writers_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Writers.html">NanoXLSX.Internal.Writers</a></div><div class="ttdef"><b>Definition</b> <a href="#l00016">ColorWriter.cs:17</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

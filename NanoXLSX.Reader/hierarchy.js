@@ -11,7 +11,7 @@ var hierarchy =
         [ "NanoXLSX.Internal.Readers.LegacyPasswordReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html", null ]
       ] ]
     ] ],
-    [ "IPlugInReader", null, [
+    [ "IPluginReader", null, [
       [ "NanoXLSX.Internal.Readers.MetadataAppReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataAppReader.html", null ],
       [ "NanoXLSX.Internal.Readers.MetadataCoreReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataCoreReader.html", null ],
       [ "NanoXLSX.Internal.Readers.RelationshipReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1RelationshipReader.html", null ],

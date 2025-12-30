@@ -110,12 +110,12 @@ $(function(){initNavTree('WriterPlugInHandler_8cs_source.html','',''); });
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    {</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> HandleInlineQueuePlugins(ref XmlElement rootElement, Workbook workbook, <span class="keywordtype">string</span> queueUuid, <span class="keywordtype">int</span>? index = <span class="keyword">null</span>)</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        {</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            IInlinePlugInWriter queueWriter = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            IInlinePluginWriter queueWriter = <span class="keyword">null</span>;</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            <span class="keywordtype">string</span> lastUuid = <span class="keyword">null</span>;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>            <span class="keywordflow">do</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            {</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                <span class="keywordtype">string</span> currentUuid;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                queueWriter = PlugInLoader.GetNextQueuePlugIn&lt;IInlinePlugInWriter&gt;(queueUuid, lastUuid, out currentUuid);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                queueWriter = PlugInLoader.GetNextQueuePlugIn&lt;IInlinePluginWriter&gt;(queueUuid, lastUuid, out currentUuid);</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                <span class="keywordflow">if</span> (queueWriter != <span class="keyword">null</span>)</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                {</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                    queueWriter.Init(ref rootElement, workbook, index);</div>
@@ -131,7 +131,7 @@ $(function(){initNavTree('WriterPlugInHandler_8cs_source.html','',''); });
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        }</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    }</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_1_1Writer_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a></div><div class="ttdef"><b>Definition</b> <a href="IPasswordWriter_8cs_source.html#l00012">IPasswordWriter.cs:13</a></div></div>
+<div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_1_1Writer_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a></div><div class="ttdef"><b>Definition</b> <a href="IColorWriter_8cs_source.html#l00012">IColorWriter.cs:13</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Writers_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Writers.html">NanoXLSX.Internal.Writers</a></div><div class="ttdef"><b>Definition</b> <a href="ColorWriter_8cs_source.html#l00016">ColorWriter.cs:17</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

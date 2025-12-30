@@ -297,14 +297,14 @@ $(function(){initNavTree('XlsxWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                    PackagePart part;</div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>                    <span class="comment">// Workbook</span></div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                    IPlugInWriter workbookWriter = PlugInLoader.GetPlugIn&lt;IPlugInWriter&gt;(PlugInUUID.WorkbookWriter, <span class="keyword">new</span> WorkbookWriter());</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                    IPluginWriter workbookWriter = PlugInLoader.GetPlugIn&lt;IPluginWriter&gt;(PlugInUUID.WorkbookWriter, <span class="keyword">new</span> WorkbookWriter());</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                    workbookWriter.Init(<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>                    workbookWriter.Execute();</div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>                    part = packageParts[WORKBOOK.Path][WORKBOOK.Filename];</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                    AppendXmlToPackagePart(workbookWriter.XmlElement, part);</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                    <span class="comment">// Style</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                    IPlugInWriter styleWriter = PlugInLoader.GetPlugIn&lt;IPlugInWriter&gt;(PlugInUUID.StyleWriter, <span class="keyword">new</span> StyleWriter());</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                    IPluginWriter styleWriter = PlugInLoader.GetPlugIn&lt;IPluginWriter&gt;(PlugInUUID.StyleWriter, <span class="keyword">new</span> StyleWriter());</div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                    styleWriter.Init(<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                    styleWriter.Execute();</div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                    part = packageParts[STYLES.Path][STYLES.Filename];</div>
@@ -343,12 +343,12 @@ $(function(){initNavTree('XlsxWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>                    <span class="comment">// Metadata</span></div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>                    <span class="keywordflow">if</span> (this.Workbook.WorkbookMetadata != <span class="keyword">null</span>)</div>
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>                    {</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>                        IPlugInWriter metadataAppWriter = PlugInLoader.GetPlugIn&lt;IPlugInWriter&gt;(PlugInUUID.MetadataAppWriter, <span class="keyword">new</span> MetadataAppWriter());</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>                        IPluginWriter metadataAppWriter = PlugInLoader.GetPlugIn&lt;IPluginWriter&gt;(PlugInUUID.MetadataAppWriter, <span class="keyword">new</span> MetadataAppWriter());</div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>                        metadataAppWriter.Init(<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>                        metadataAppWriter.Execute();</div>
 <div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>                        part = packageParts[APP_PROPERTIES.Path][APP_PROPERTIES.Filename];</div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>                        AppendXmlToPackagePart(metadataAppWriter.XmlElement, part);</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>                        IPlugInWriter metadataCoreWriter = PlugInLoader.GetPlugIn&lt;IPlugInWriter&gt;(PlugInUUID.MetadataCoreWriter, <span class="keyword">new</span> MetadataCoreWriter());</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>                        IPluginWriter metadataCoreWriter = PlugInLoader.GetPlugIn&lt;IPluginWriter&gt;(PlugInUUID.MetadataCoreWriter, <span class="keyword">new</span> MetadataCoreWriter());</div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>                        metadataCoreWriter.Init(<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>                        metadataCoreWriter.Execute();</div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>                        part = packageParts[CORE_PROPERTIES.Path][CORE_PROPERTIES.Filename];</div>
@@ -358,7 +358,7 @@ $(function(){initNavTree('XlsxWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>                    <span class="comment">// Theme</span></div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>                    <span class="keywordflow">if</span> (Workbook.WorkbookTheme != <span class="keyword">null</span>)</div>
 <div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>                    {</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>                        IPlugInWriter themeWriter = PlugInLoader.GetPlugIn&lt;IPlugInWriter&gt;(PlugInUUID.ThemeWriter, <span class="keyword">new</span> ThemeWriter());</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>                        IPluginWriter themeWriter = PlugInLoader.GetPlugIn&lt;IPluginWriter&gt;(PlugInUUID.ThemeWriter, <span class="keyword">new</span> ThemeWriter());</div>
 <div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>                        themeWriter.Init(<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>                        themeWriter.Execute();</div>
 <div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>                        part = packageParts[THEME.Path][THEME.Filename];</div>
@@ -390,16 +390,16 @@ $(function(){initNavTree('XlsxWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span></div>
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> HandleQueuePlugIns(<span class="keywordtype">string</span> queueUuid)</div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>        {</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>            IPlugInWriter queueWriter;</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>            IPluginWriter queueWriter;</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>            <span class="keywordtype">string</span> lastUuid = <span class="keyword">null</span>;</div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>            <span class="keywordflow">do</span></div>
 <div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>            {</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>                queueWriter = PlugInLoader.GetNextQueuePlugIn&lt;IPlugInWriter&gt;(queueUuid, lastUuid, out <span class="keywordtype">string</span> currentUuid);</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>                queueWriter = PlugInLoader.GetNextQueuePlugIn&lt;IPluginWriter&gt;(queueUuid, lastUuid, out <span class="keywordtype">string</span> currentUuid);</div>
 <div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>                <span class="keywordflow">if</span> (queueWriter != <span class="keyword">null</span>)</div>
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>                {</div>
 <div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>                    queueWriter.Init(<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>                    queueWriter.Execute();</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>                    <span class="keywordflow">if</span> (queueWriter is IPlugInPackageWriter packageWriter)</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>                    <span class="keywordflow">if</span> (queueWriter is IPluginPackageWriter packageWriter)</div>
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>                    {</div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>                        <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(packageWriter.PackagePartPath) &amp;&amp; !<span class="keywordtype">string</span>.IsNullOrEmpty(packageWriter.PackagePartFileName))</div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>                        {</div>
@@ -422,11 +422,11 @@ $(function(){initNavTree('XlsxWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span></div>
 <div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> HandlePackageRegistryQueuePlugIns()</div>
 <div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>        {</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>            IPlugInPackageWriter queueWriter;</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>            IPluginPackageWriter queueWriter;</div>
 <div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>            <span class="keywordtype">string</span> lastUuid = <span class="keyword">null</span>;</div>
 <div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>            <span class="keywordflow">do</span></div>
 <div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>            {</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>                queueWriter = PlugInLoader.GetNextQueuePlugIn&lt;IPlugInPackageWriter&gt;(PlugInUUID.WriterPackageRegistryQueue, lastUuid, out <span class="keywordtype">string</span> currentUuid);</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>                queueWriter = PlugInLoader.GetNextQueuePlugIn&lt;IPluginPackageWriter&gt;(PlugInUUID.WriterPackageRegistryQueue, lastUuid, out <span class="keywordtype">string</span> currentUuid);</div>
 <div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>                <span class="keywordflow">if</span> (queueWriter != <span class="keyword">null</span>)</div>
 <div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>                {</div>
 <div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>                    queueWriter.Execute(); <span class="comment">// Execute anything that could be defined</span></div>
@@ -483,7 +483,7 @@ $(function(){initNavTree('XlsxWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00485" name="l00485"></a><span class="lineno">  485</span>    }</div>
 <div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span>}</div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Structures_1_1PackagePartDefinition_html"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Structures_1_1PackagePartDefinition.html">NanoXLSX.Internal.Structures.PackagePartDefinition</a></div><div class="ttdef"><b>Definition</b> <a href="PackagePartDefinition_8cs_source.html#l00017">PackagePartDefinition.cs:18</a></div></div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_1_1Writer_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a></div><div class="ttdef"><b>Definition</b> <a href="IPasswordWriter_8cs_source.html#l00012">IPasswordWriter.cs:13</a></div></div>
+<div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_1_1Writer_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a></div><div class="ttdef"><b>Definition</b> <a href="IColorWriter_8cs_source.html#l00012">IColorWriter.cs:13</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Structures_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Structures.html">NanoXLSX.Internal.Structures</a></div><div class="ttdef"><b>Definition</b> <a href="DocumentPath_8cs_source.html#l00008">DocumentPath.cs:9</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Writers_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Writers.html">NanoXLSX.Internal.Writers</a></div><div class="ttdef"><b>Definition</b> <a href="ColorWriter_8cs_source.html#l00016">ColorWriter.cs:17</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Internal_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal.html">NanoXLSX.Internal</a></div><div class="ttdef"><b>Definition</b> <a href="WriterPassword_8cs_source.html#l00008">WriterPassword.cs:9</a></div></div>
