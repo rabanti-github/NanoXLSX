@@ -11,7 +11,7 @@ namespace NanoXLSX.Interfaces.Writer
     /// <summary>
     /// Interface, used by worksheet writers
     /// </summary>
-    internal interface IWorksheetWriter : IPlugInWriter
+    internal interface IWorksheetWriter : IPluginWriter
     {
         /// <summary>
         /// Gets the currently active worksheet

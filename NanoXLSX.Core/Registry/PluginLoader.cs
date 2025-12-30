@@ -136,7 +136,7 @@ namespace NanoXLSX.Registry
         private static List<Type> GetAssemblyPlugInsByType(Assembly assembly, Type attributeType)
         {
             List<Type> plugInTypes = new List<Type>();
-            Type plugInInterface = typeof(IPlugIn);
+            Type plugInInterface = typeof(IPlugin);
             Type[] allTypes = assembly.GetTypes();
 
             for (int i = 0; i < allTypes.Length; i++)

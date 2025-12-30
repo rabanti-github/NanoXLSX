@@ -2,7 +2,7 @@
 
 namespace NanoXLSX.Interfaces.Plugin
 {
-    internal interface IPlugInPackageReader : IPlugInReader
+    internal interface IPluginPackageReader : IPluginReader
     {
         /// <summary>
         /// Relative path of the stream entry in the Zip archive

@@ -29,7 +29,7 @@ namespace NanoXLSX.Internal.Readers
     /// Class representing a reader for style definitions of XLSX files.
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.StyleReader)]
-    public class StyleReader : IPlugInReader
+    public class StyleReader : IPluginReader
     {
 
         private MemoryStream stream;

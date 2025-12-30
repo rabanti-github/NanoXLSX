@@ -19,7 +19,7 @@ namespace NanoXLSX.Internal.Readers
     /// Class representing a reader for the Core metadata file (docProps) embedded in XLSX files
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataCoreReader)]
-    public class MetadataCoreReader : IPlugInReader
+    public class MetadataCoreReader : IPluginReader
     {
         private MemoryStream stream;
 

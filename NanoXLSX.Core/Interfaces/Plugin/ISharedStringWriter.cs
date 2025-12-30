@@ -10,7 +10,7 @@ namespace NanoXLSX.Interfaces.Writer
     /// <summary>
     /// Interface, used by shared string writers
     /// </summary>
-    internal interface ISharedStringWriter : IPlugInWriter
+    internal interface ISharedStringWriter : IPluginWriter
     {
         /// <summary>
         /// Sorted map that contains the shared strings

@@ -51,7 +51,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataAppWriter)]
-        public class ReplaceAppMetadataWriter : IPlugInWriter
+        public class ReplaceAppMetadataWriter : IPluginWriter
         {
             private string testValue = "test";
             public Workbook Workbook { get; set; }
@@ -71,7 +71,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 // NoOp
             }
 
-            void IPlugInWriter.Init(IBaseWriter baseWriter)
+            void IPluginWriter.Init(IBaseWriter baseWriter)
             {
                 this.Workbook = baseWriter.Workbook;
                 if (Workbook.Worksheets[0].HasCell(0, 0))
@@ -82,7 +82,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataCoreWriter)]
-        public class ReplaceCoreMetadataWriter : IPlugInWriter
+        public class ReplaceCoreMetadataWriter : IPluginWriter
         {
             private string testValue = "test";
             public Workbook Workbook { get; set; }
@@ -102,7 +102,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 // NoOp
             }
 
-            void IPlugInWriter.Init(IBaseWriter baseWriter)
+            void IPluginWriter.Init(IBaseWriter baseWriter)
             {
                 this.Workbook = baseWriter.Workbook;
                 if (Workbook.Worksheets[0].HasCell(0, 0))
@@ -113,7 +113,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.StyleWriter)]
-        public class ReplaceStyleWriter : IPlugInWriter
+        public class ReplaceStyleWriter : IPluginWriter
         {
             private string testValue = "test";
             public Workbook Workbook { get; set; }
@@ -133,7 +133,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 // NoOp
             }
 
-            void IPlugInWriter.Init(IBaseWriter baseWriter)
+            void IPluginWriter.Init(IBaseWriter baseWriter)
             {
                 this.Workbook = baseWriter.Workbook;
                 if (Workbook.Worksheets[0].HasCell(0, 0))
@@ -144,7 +144,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.ThemeWriter)]
-        public class ReplaceThemeWriter : IPlugInWriter
+        public class ReplaceThemeWriter : IPluginWriter
         {
             private string testValue = "test";
             public Workbook Workbook { get; set; }
@@ -164,7 +164,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 // NoOp
             }
 
-            void IPlugInWriter.Init(IBaseWriter baseWriter)
+            void IPluginWriter.Init(IBaseWriter baseWriter)
             {
                 this.Workbook = baseWriter.Workbook;
                 if (Workbook.Worksheets[0].HasCell(0, 0))
@@ -202,7 +202,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 // NoOp
             }
 
-            void IPlugInWriter.Init(IBaseWriter baseWriter)
+            void IPluginWriter.Init(IBaseWriter baseWriter)
             {
                 this.Workbook = baseWriter.Workbook;
                 if (Workbook.Worksheets[0].HasCell(0, 0))
@@ -236,7 +236,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 // NoOp
             }
 
-            void IPlugInWriter.Init(IBaseWriter baseWriter)
+            void IPluginWriter.Init(IBaseWriter baseWriter)
             {
                 this.Workbook = baseWriter.Workbook;
                 if (Workbook.Worksheets[0].HasCell(0, 0))
@@ -247,7 +247,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorkbookWriter)]
-        public class ReplaceWorkbookWriter : IPlugInWriter
+        public class ReplaceWorkbookWriter : IPluginWriter
         {
             private string testValue = "test";
             public Workbook Workbook { get; set; }
@@ -267,7 +267,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 // NoOp
             }
 
-            void IPlugInWriter.Init(IBaseWriter baseWriter)
+            void IPluginWriter.Init(IBaseWriter baseWriter)
             {
                 this.Workbook = baseWriter.Workbook;
                 if (Workbook.Worksheets[0].HasCell(0, 0))

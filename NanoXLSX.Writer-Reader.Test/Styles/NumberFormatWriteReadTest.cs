@@ -4,7 +4,7 @@ using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
 using static NanoXLSX.Styles.NumberFormat;
 
-namespace NanoXLSX.Test.Writer_Reader.StyleTest
+namespace NanoXLSX.Test.Writer_Reader.Styles
 {
     public class NumberFormatWriteReadTest
     {
@@ -16,11 +16,11 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(2000, true)]
         public void CustomFormatIDFormatTest(int styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentNumberFormat.CustomFormatID = styleValue;
             style.CurrentNumberFormat.Number = FormatNumber.Custom; // Mandatory
             style.CurrentNumberFormat.CustomFormatCode = "#.##"; // Mandatory
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentNumberFormat.CustomFormatID);
         }
 
@@ -31,7 +31,7 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(2000, true)]
         public void CustomFormatIDFormatFailTest(int styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentNumberFormat.CustomFormatID = styleValue;
             style.CurrentNumberFormat.Number = FormatNumber.Custom; // Mandatory
             Assert.ThrowsAny<Exception>(() => TestUtils.SaveAndReadStyledCell(value, style, "A1"));
@@ -46,10 +46,10 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData("ABCDE", true)]
         public void CustomFormatCodeNumberFormatTest(string styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentNumberFormat.CustomFormatCode = styleValue;
             style.CurrentNumberFormat.Number = FormatNumber.Custom; // Mandatory
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentNumberFormat.CustomFormatCode);
             Assert.Equal(FormatNumber.Custom, cell.CellStyle.CurrentNumberFormat.Number);
             Assert.True(cell.CellStyle.CurrentNumberFormat.IsCustomFormat);
@@ -89,19 +89,19 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(FormatNumber.Format49, "test")]
         public void NumberFormatTest(FormatNumber styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentNumberFormat.Number = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentNumberFormat.Number);
         }
 
         [Fact(DisplayName = "Test of the 'formatNumber' value when writing and reading a custom NumberFormat style")]
         public void NumberFormatTest1b()
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentNumberFormat.Number = FormatNumber.Custom;
             style.CurrentNumberFormat.CustomFormatCode = "#.##";
-            Cell cell = TestUtils.SaveAndReadStyledCell(0.5f, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(0.5f, style, "A1");
             Assert.Equal(FormatNumber.Custom, cell.CellStyle.CurrentNumberFormat.Number);
         }
 
@@ -113,10 +113,10 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(FormatNumber.Format22, 1000, "26.09.1902")]
         public void NumberNumberFormatTest2(FormatNumber styleValue, int value, string expected)
         {
-            DateTime expectedValue = DateTime.ParseExact(expected, "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
-            Style style = new Style();
+            var expectedValue = DateTime.ParseExact(expected, "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            var style = new Style();
             style.CurrentNumberFormat.Number = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, expectedValue, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, expectedValue, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentNumberFormat.Number);
             Assert.Equal(expectedValue, cell.Value);
         }
@@ -130,10 +130,10 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(FormatNumber.Format47, 0.5, "12:00:00")]
         public void NumberNumberFormatTest3(FormatNumber styleValue, float value, string expected)
         {
-            TimeSpan expectedValue = TimeSpan.ParseExact(expected, "hh\\:mm\\:ss", System.Globalization.CultureInfo.InvariantCulture);
-            Style style = new Style();
+            var expectedValue = TimeSpan.ParseExact(expected, "hh\\:mm\\:ss", System.Globalization.CultureInfo.InvariantCulture);
+            var style = new Style();
             style.CurrentNumberFormat.Number = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, expectedValue, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, expectedValue, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentNumberFormat.Number);
             Assert.Equal(expectedValue, cell.Value);
         }

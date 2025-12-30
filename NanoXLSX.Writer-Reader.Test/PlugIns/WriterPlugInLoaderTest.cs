@@ -41,7 +41,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             Workbook wb = new Workbook();
             using (MemoryStream ms = new MemoryStream())
             {
-                IPlugInPackageWriter dummy = (IPlugInPackageWriter)Activator.CreateInstance(pluginType);
+                IPluginPackageWriter dummy = (IPluginPackageWriter)Activator.CreateInstance(pluginType);
                 string expectedPath = dummy.PackagePartPath;
                 string expectedFileName = dummy.PackagePartFileName;
                 wb.SaveAsStream(ms, true);
@@ -68,8 +68,8 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             Workbook wb = new Workbook();
             using (MemoryStream ms = new MemoryStream())
             {
-                IPlugInPackageWriter dummy1 = new TestPackage();
-                IPlugInPackageWriter dummy2 = new TestPackage2();
+                IPluginPackageWriter dummy1 = new TestPackage();
+                IPluginPackageWriter dummy2 = new TestPackage2();
                 string expectedPath1 = dummy1.PackagePartPath;
                 string expectedFileName1 = dummy1.PackagePartFileName;
                 string expectedPath2 = dummy2.PackagePartPath;
@@ -90,7 +90,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_1", QueueUUID = PlugInUUID.WriterPackageRegistryQueue)]
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_2", QueueUUID = PlugInUUID.WriterAppendingQueue)]
-        internal class TestPackage : IPlugInPackageWriter
+        internal class TestPackage : IPluginPackageWriter
         {
             private Workbook workbook;
 
@@ -124,7 +124,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 //NoOp
             }
 
-            void IPlugInWriter.Init(IBaseWriter baseWriter)
+            void IPluginWriter.Init(IBaseWriter baseWriter)
             {
                 this.workbook = baseWriter.Workbook;
             }
@@ -132,7 +132,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_3", QueueUUID = PlugInUUID.WriterPackageRegistryQueue)]
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_4", QueueUUID = PlugInUUID.WriterAppendingQueue)]
-        internal class TestPackage2 : IPlugInPackageWriter
+        internal class TestPackage2 : IPluginPackageWriter
         {
             private Workbook workbook;
 
@@ -166,7 +166,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 //NoOp
             }
 
-            void IPlugInWriter.Init(IBaseWriter baseWriter)
+            void IPluginWriter.Init(IBaseWriter baseWriter)
             {
                 this.workbook = baseWriter.Workbook;
             }
@@ -174,7 +174,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_5", QueueUUID = PlugInUUID.WriterPackageRegistryQueue)]
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_PLUGIN_6", QueueUUID = PlugInUUID.WriterAppendingQueue)]
-        public class TestRootPackage : IPlugInPackageWriter
+        public class TestRootPackage : IPluginPackageWriter
         {
             private Workbook workbook;
 
@@ -208,7 +208,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 //NoOp
             }
 
-            void IPlugInWriter.Init(IBaseWriter baseWriter)
+            void IPluginWriter.Init(IBaseWriter baseWriter)
             {
                 this.workbook = baseWriter.Workbook;
             }

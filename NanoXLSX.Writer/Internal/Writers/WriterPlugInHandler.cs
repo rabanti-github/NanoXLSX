@@ -26,12 +26,12 @@ namespace NanoXLSX.Internal.Writers
         /// <returns>XML element instance. If no plug-ins were processes, the root element is passed back unaltered</returns>
         internal static void HandleInlineQueuePlugins(ref XmlElement rootElement, Workbook workbook, string queueUuid, int? index = null)
         {
-            IInlinePlugInWriter queueWriter = null;
+            IInlinePluginWriter queueWriter = null;
             string lastUuid = null;
             do
             {
                 string currentUuid;
-                queueWriter = PlugInLoader.GetNextQueuePlugIn<IInlinePlugInWriter>(queueUuid, lastUuid, out currentUuid);
+                queueWriter = PlugInLoader.GetNextQueuePlugIn<IInlinePluginWriter>(queueUuid, lastUuid, out currentUuid);
                 if (queueWriter != null)
                 {
                     queueWriter.Init(ref rootElement, workbook, index);

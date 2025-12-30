@@ -108,7 +108,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
 
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatAppReaderPlugIn1", QueueUUID = PlugInUUID.MetadataAppInlineReader)]
-        public class InlineAppMetadataReader : IInlinePlugInReader
+        public class InlineAppMetadataReader : IInlinePluginReader
         {
             private const string TEST_NODE = "Application";
             private MemoryStream stream;
@@ -130,7 +130,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatCoreReaderPlugIn1", QueueUUID = PlugInUUID.MetadataCoreInlineReader)]
-        public class InlineCoreMetadataReader : IInlinePlugInReader
+        public class InlineCoreMetadataReader : IInlinePluginReader
         {
             private const string TEST_NODE = "category";
             private MemoryStream stream;
@@ -152,7 +152,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "SharedStringReaderPlugIn1", QueueUUID = PlugInUUID.SharedStringsInlineReader)]
-        public class InlineSharedStringReader : IInlinePlugInReader
+        public class InlineSharedStringReader : IInlinePluginReader
         {
             private const string TEST_NODE = "t";
             private MemoryStream stream;
@@ -174,7 +174,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "ThemeReaderPlugIn1", QueueUUID = PlugInUUID.ThemeInlineReader)]
-        public class InlineThemeReader : IInlinePlugInReader
+        public class InlineThemeReader : IInlinePluginReader
         {
             private const string TEST_NODE = "theme";
             private const string TEST_ATTRIBUTE = "name";
@@ -197,7 +197,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "StyleReaderPlugIn1", QueueUUID = PlugInUUID.StyleInlineReader)]
-        public class InlineStyleReader : IInlinePlugInReader
+        public class InlineStyleReader : IInlinePluginReader
         {
             private const string TEST_NODE = "name";
             private const string TEST_ATTRIBUTE = "val";
@@ -220,7 +220,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "RelationshipReaderPlugIn1", QueueUUID = PlugInUUID.RelationshipInlineReader)]
-        public class RelationshipReader : IInlinePlugInReader
+        public class RelationshipReader : IInlinePluginReader
         {
             private const string TEST_NODE = "Relationship";
             private const string TEST_ATTRIBUTE = "Target";
@@ -243,7 +243,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "SharedStringsReaderPlugIn1", QueueUUID = PlugInUUID.SharedStringsInlineReader)]
-        public class SharedStringsReader : IInlinePlugInReader
+        public class SharedStringsReader : IInlinePluginReader
         {
             private const string TEST_NODE = "t";
             private MemoryStream stream;
@@ -265,7 +265,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "WorkbookReaderPlugIn1", QueueUUID = PlugInUUID.WorkbookInlineReader)]
-        public class WorkbookTestReader : IInlinePlugInReader
+        public class WorkbookTestReader : IInlinePluginReader
         {
             private const string TEST_NODE = "sheet";
             private const string TEST_ATTRIBUTE = "name";
@@ -288,7 +288,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "WorksheetReaderPlugIn1", QueueUUID = PlugInUUID.WorksheetInlineReader)]
-        public class WorksheetReader : IInlinePlugInReader
+        public class WorksheetReader : IInlinePluginReader
         {
             private const string TEST_NODE = "sheetFormatPr";
             private const string TEST_ATTRIBUTE = "defaultRowHeight";

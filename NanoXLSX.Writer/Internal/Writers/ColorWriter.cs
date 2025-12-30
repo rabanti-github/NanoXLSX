@@ -6,7 +6,7 @@
  */
 
 using NanoXLSX.Colors;
-using NanoXLSX.Interfaces;
+using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils;
@@ -109,7 +109,12 @@ namespace NanoXLSX.Internal.Writers
         /// <returns>String representation of the tint value, or null if not specified</returns>
         public string GetTintAttributeValue(Color color)
         {
-            return color == null ? null : ParserUtils.ToString(color.Tint.Value);
+            if (!color.Tint.HasValue)
+            {
+                return null;
+            }
+            double tint = color.Tint.Value;
+            return tint == 0.0 ? null : ParserUtils.ToString(tint);
         }
 
         /// <summary>

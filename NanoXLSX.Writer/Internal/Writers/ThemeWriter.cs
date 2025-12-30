@@ -19,7 +19,7 @@ namespace NanoXLSX.Internal.Writers
     /// Class to generate the theme XML file in a XLSX file.
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.ThemeWriter)]
-    internal class ThemeWriter : IPlugInWriter
+    internal class ThemeWriter : IPluginWriter
     {
 
         private IColorWriter colorWriter;

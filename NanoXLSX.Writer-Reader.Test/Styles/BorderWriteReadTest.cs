@@ -3,7 +3,7 @@ using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
 using static NanoXLSX.Styles.Border;
 
-namespace NanoXLSX.Test.Writer_Reader.StyleTest
+namespace NanoXLSX.Test.Writer_Reader.Styles
 {
     public class BorderWriteReadTest
     {
@@ -25,13 +25,13 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData("", 22, true, true)]
         public void DiagonalColorTest(string color, object value, bool diagonalUp, bool diagonalDown)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentBorder.DiagonalColor = color;
             style.CurrentBorder.DiagonalStyle = StyleValue.DashDot;
             style.CurrentBorder.DiagonalUp = diagonalUp;
             style.CurrentBorder.DiagonalDown = diagonalDown;
 
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.DiagonalColor);
             Assert.Equal(StyleValue.DashDot, cell.CellStyle.CurrentBorder.DiagonalStyle);
@@ -47,11 +47,11 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData("", 22)]
         public void TopColorTest(string color, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentBorder.TopColor = color;
             style.CurrentBorder.TopStyle = StyleValue.Double;
 
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.TopColor);
             Assert.Equal(StyleValue.Double, cell.CellStyle.CurrentBorder.TopStyle);
@@ -66,11 +66,11 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData("", 22)]
         public void BottomColorTest(string color, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentBorder.BottomColor = color;
             style.CurrentBorder.BottomStyle = StyleValue.Thin;
 
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.BottomColor);
             Assert.Equal(StyleValue.Thin, cell.CellStyle.CurrentBorder.BottomStyle);
@@ -84,11 +84,11 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData("", 22)]
         public void LeftColorTest(string color, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentBorder.LeftColor = color;
             style.CurrentBorder.LeftStyle = StyleValue.DashDotDot;
 
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.LeftColor);
             Assert.Equal(StyleValue.DashDotDot, cell.CellStyle.CurrentBorder.LeftStyle);
@@ -102,11 +102,11 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData("", 22)]
         public void RightColorTest(string color, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentBorder.RightColor = color;
             style.CurrentBorder.RightStyle = StyleValue.Dashed;
 
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
 
             Assert.Equal(color, cell.CellStyle.CurrentBorder.RightColor);
             Assert.Equal(StyleValue.Dashed, cell.CellStyle.CurrentBorder.RightStyle);
@@ -129,7 +129,7 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(StyleValue.None, BorderDirection.Right)]
         public void BorderStyleTest(StyleValue styleValue, BorderDirection direction)
         {
-            Style style = new Style();
+            var style = new Style();
             switch (direction)
             {
                 case BorderDirection.Diagonal:
@@ -148,7 +148,7 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
                     style.CurrentBorder.BottomStyle = styleValue;
                     break;
             }
-            Cell cell = TestUtils.SaveAndReadStyledCell("test", style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell("test", style, "A1");
             switch (direction)
             {
                 case BorderDirection.Diagonal:

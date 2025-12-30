@@ -13,7 +13,7 @@ namespace NanoXLSX.Interfaces.Reader
     /// <summary>
     /// Interface, used by XML reader classes 
     /// </summary>
-    internal interface IPlugInReader : IPlugIn
+    internal interface IPluginReader : IPlugin
     {
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor

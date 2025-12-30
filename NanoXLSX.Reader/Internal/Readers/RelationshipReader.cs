@@ -22,7 +22,7 @@ namespace NanoXLSX.Internal.Readers
     /// Class representing a reader for relationship of XLSX files
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.RelationshipReader)]
-    public partial class RelationshipReader : IPlugInReader
+    public partial class RelationshipReader : IPluginReader
     {
         private Workbook workbook;
         private MemoryStream stream;

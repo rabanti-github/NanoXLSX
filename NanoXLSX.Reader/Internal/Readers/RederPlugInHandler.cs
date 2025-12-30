@@ -25,12 +25,12 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="index">Optional index, e.g. for worksheet identification</param>
         internal static void HandleInlineQueuePlugins(ref MemoryStream stream, Workbook workbook, string queueUuid, int? index = 0)
         {
-            IInlinePlugInReader queueReader = null;
+            IInlinePluginReader queueReader = null;
             string lastUuid = null;
             do
             {
                 string currentUuid;
-                queueReader = PlugInLoader.GetNextQueuePlugIn<IInlinePlugInReader>(queueUuid, lastUuid, out currentUuid);
+                queueReader = PlugInLoader.GetNextQueuePlugIn<IInlinePluginReader>(queueUuid, lastUuid, out currentUuid);
                 if (queueReader != null)
                 {
                     stream.Position = 0;

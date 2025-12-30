@@ -3,7 +3,7 @@ using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
 using static NanoXLSX.Styles.CellXf;
 
-namespace NanoXLSX.Test.Writer_Reader.StyleTest
+namespace NanoXLSX.Test.Writer_Reader.Styles
 {
     public class CellXfWiteReadTest
     {
@@ -12,9 +12,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(false, 0.5f)]
         public void ForceApplyAlignmentCellXfTest(bool styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentCellXf.ForceApplyAlignment = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentCellXf.ForceApplyAlignment);
         }
 
@@ -25,10 +25,10 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(true, true, true)]
         public void HiddenCellXfTest(bool hiddenStyleValue, bool lockedStyleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentCellXf.Hidden = hiddenStyleValue;
             style.CurrentCellXf.Locked = lockedStyleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(hiddenStyleValue, cell.CellStyle.CurrentCellXf.Hidden);
             Assert.Equal(lockedStyleValue, cell.CellStyle.CurrentCellXf.Locked);
         }
@@ -39,9 +39,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(TextBreakValue.None, true)]
         public void AlignmentCellXfTest(TextBreakValue styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentCellXf.Alignment = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentCellXf.Alignment);
         }
 
@@ -57,9 +57,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(HorizontalAlignValue.None, " ")]
         public void HorizontalAlignCellXfTest(HorizontalAlignValue styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentCellXf.HorizontalAlign = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentCellXf.HorizontalAlign);
         }
 
@@ -72,9 +72,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(VerticalAlignValue.None, " ")]
         public void VerticalAlignCellXfTest(VerticalAlignValue styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentCellXf.VerticalAlign = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentCellXf.VerticalAlign);
         }
 
@@ -97,10 +97,10 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(64, HorizontalAlignValue.Center, 0, 22)]
         public void IndentCellXfTest(int styleValue, HorizontalAlignValue alignValue, int expectedIndent, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentCellXf.HorizontalAlign = alignValue;
             style.CurrentCellXf.Indent = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(expectedIndent, cell.CellStyle.CurrentCellXf.Indent);
             Assert.Equal(alignValue, cell.CellStyle.CurrentCellXf.HorizontalAlign);
         }
@@ -115,9 +115,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(-90, " ")]
         public void TextRotationCellXfTest(int styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentCellXf.TextRotation = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentCellXf.TextRotation);
         }
 

@@ -23,7 +23,7 @@ namespace NanoXLSX.Internal.Readers
     /// Class representing a reader to decompile a workbook in an XLSX files
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorkbookReader)]
-    public partial class WorkbookReader : IPlugInReader
+    public partial class WorkbookReader : IPluginReader
     {
         private MemoryStream stream;
         private IPasswordReader passwordReader;

@@ -7,7 +7,6 @@
 
 using NanoXLSX.Colors;
 using NanoXLSX.Exceptions;
-using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
@@ -28,7 +27,7 @@ namespace NanoXLSX.Internal.Writers
     /// Class to generate the style XML file in a XLSX file.
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.StyleWriter)]
-    internal class StyleWriter : IPlugInWriter
+    internal class StyleWriter : IPluginWriter
     {
 
         private StyleManager styles;
@@ -253,28 +252,28 @@ namespace NanoXLSX.Internal.Writers
                 patternFillElement.AddAttribute("patternType", Fill.GetPatternName(fill.PatternFill));
                 if (fill.PatternFill == PatternValue.Solid)
                 {
-                    // For solid fills: fgColor contains the actual fill color
-                    XmlElement foregroundColor = XmlElement.CreateElement("fgColor");
-                    foregroundColor.AddAttributes(colorWriter.GetAttributes(fill.ForegroundColor));
+                    XmlElement fgColor = XmlElement.CreateElement("fgColor");
+                    fgColor.AddAttributes(colorWriter.GetAttributes(fill.ForegroundColor));
+                    patternFillElement.AddChildElement(fgColor);
 
-                    // bgColor with indexed="64" is standard for solid fills when using RGB/theme colors
+                    // Only add bgColor if explicitly defined OR required by Excel
                     if (fill.BackgroundColor.IsDefined)
                     {
-                        XmlElement backgroundColor = XmlElement.CreateElement("bgColor");
-                        backgroundColor.AddAttributes(colorWriter.GetAttributes(fill.BackgroundColor));
-                        patternFillElement.AddChildElement(backgroundColor);
+                        XmlElement bgColor = XmlElement.CreateElement("bgColor");
+                        bgColor.AddAttributes(colorWriter.GetAttributes(fill.BackgroundColor));
+                        patternFillElement.AddChildElement(bgColor);
                     }
-                    else if (fill.ForegroundColor.Type == Color.ColorType.Rgb ||
-                             fill.ForegroundColor.Type == Color.ColorType.Theme)
+                    else if (fill.ForegroundColor.Type == Color.ColorType.Rgb
+                          || fill.ForegroundColor.Type == Color.ColorType.Theme)
                     {
-                        // Add default indexed="64" for solid fills with RGB or theme colors
-                        XmlElement backgroundColor = XmlElement.CreateElement("bgColor");
-                        Color indexedColor = Color.CreateIndexed(IndexedColor.DefaultIndexedColor);
-                        backgroundColor.AddAttributes(colorWriter.GetAttributes(indexedColor));
-                        patternFillElement.AddChildElement(backgroundColor);
-
+                        // Excel compatibility bgColor
+                        XmlElement bgColor = XmlElement.CreateElement("bgColor");
+                        bgColor.AddAttributes(
+                            colorWriter.GetAttributes(
+                                Color.CreateIndexed(IndexedColor.DefaultIndexedColor)
+                            ));
+                        patternFillElement.AddChildElement(bgColor);
                     }
-                    patternFillElement.AddChildElement(foregroundColor);
                 }
                 else if (fill.PatternFill != PatternValue.None)
                 {

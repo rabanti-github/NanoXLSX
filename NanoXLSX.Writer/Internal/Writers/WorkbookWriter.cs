@@ -20,7 +20,7 @@ namespace NanoXLSX.Internal.Writers
     /// Class to generate the workbook XML file in a XLSX file.
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorkbookWriter)]
-    internal class WorkbookWriter : IPlugInWriter
+    internal class WorkbookWriter : IPluginWriter
     {
         private XmlElement workbook;
         private IPasswordWriter passwordWriter;

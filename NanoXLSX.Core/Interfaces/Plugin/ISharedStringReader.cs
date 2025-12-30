@@ -13,7 +13,7 @@ namespace NanoXLSX.Interfaces.Plugin
     /// <summary>
     /// Interface, used by shared string readers
     /// </summary>
-    internal interface ISharedStringReader : IPlugInReader
+    internal interface ISharedStringReader : IPluginReader
     {
         /// <summary>
         /// Resolved list of shared strings.

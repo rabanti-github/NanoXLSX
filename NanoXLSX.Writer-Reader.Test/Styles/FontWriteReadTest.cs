@@ -1,11 +1,10 @@
-﻿using System;
-using NanoXLSX.Styles;
+﻿using NanoXLSX.Styles;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
 using static NanoXLSX.Styles.Font;
 using static NanoXLSX.Themes.Theme;
 
-namespace NanoXLSX.Test.Writer_Reader.StyleTest
+namespace NanoXLSX.Test.Writer_Reader.Styles
 {
     public class FontWriteReadTest
     {
@@ -15,9 +14,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(false, 0.5f)]
         public void BoldFontTest(bool styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentFont.Bold = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Bold);
         }
 
@@ -26,9 +25,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(false, 0.5f)]
         public void ItalicFontTest(bool styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentFont.Italic = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Italic);
         }
 
@@ -37,9 +36,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(false, 0.5f)]
         public void StrikeFontTest(bool styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentFont.Strike = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Strike);
         }
 
@@ -51,9 +50,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(UnderlineValue.None, "")]
         public void UnderlineFontTest(UnderlineValue styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentFont.Underline = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Underline);
         }
 
@@ -63,9 +62,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(VerticalTextAlignValue.None, true)]
         public void VerticalAlignFontTest(VerticalTextAlignValue styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentFont.VerticalAlign = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.VerticalAlign);
         }
 
@@ -75,9 +74,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(50.55f, true)]
         public void SizeFontTest(float styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentFont.Size = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Size);
         }
 
@@ -97,9 +96,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
 
         public void ThemeFontTest(ColorSchemeElement element, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentFont.ColorTheme = element;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(element, cell.CellStyle.CurrentFont.ColorTheme);
         }
 
@@ -108,9 +107,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData("", 0.5f)]
         public void ColorValueFontTest(string styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentFont.ColorValue = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.ColorValue);
         }
 
@@ -119,9 +118,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData("test", 0.5f)]
         public void NameFontTest(string styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentFont.Name = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Name);
         }
 
@@ -140,13 +139,13 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(FontFamilyValue.Reserved6, float.MinValue, float.MinValue)]
         [InlineData(FontFamilyValue.Reserved7, uint.MaxValue, uint.MaxValue)]
         [InlineData(FontFamilyValue.Reserved8, ulong.MaxValue, ulong.MaxValue)]
-        [InlineData(FontFamilyValue.Reserved9, SByte.MaxValue, 127)]
+        [InlineData(FontFamilyValue.Reserved9, sbyte.MaxValue, 127)]
         public void FamilyFontTest(FontFamilyValue styleValue, object givenValue, object expectedValue)
         {
-            Style style = new Style();
+            var style = new Style();
 
             style.CurrentFont.Family = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(givenValue, expectedValue, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(givenValue, expectedValue, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Family);
         }
 
@@ -156,9 +155,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(SchemeValue.Major, 0.5f)]
         public void SchemeFontTest(SchemeValue styleValue, object value)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentFont.Scheme = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Scheme);
         }
 
@@ -174,7 +173,7 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(CharsetValue.Greek, int.MaxValue, int.MaxValue)]
         [InlineData(CharsetValue.Hangul, double.MaxValue, double.MaxValue)]
         [InlineData(CharsetValue.Hebrew, float.MinValue, float.MinValue)]
-        [InlineData(CharsetValue.JIS, SByte.MaxValue, 127)]
+        [InlineData(CharsetValue.JIS, sbyte.MaxValue, 127)]
         [InlineData(CharsetValue.Johab, uint.MaxValue, uint.MaxValue)]
         [InlineData(CharsetValue.Macintosh, long.MaxValue, long.MaxValue)]
         [InlineData(CharsetValue.OEM, ulong.MaxValue, ulong.MaxValue)]
@@ -185,9 +184,9 @@ namespace NanoXLSX.Test.Writer_Reader.StyleTest
         [InlineData(CharsetValue.Vietnamese, 0x0, 0)]
         public void CharsetFontTest(CharsetValue styleValue, object givenValue, object expectedValue)
         {
-            Style style = new Style();
+            var style = new Style();
             style.CurrentFont.Charset = styleValue;
-            Cell cell = TestUtils.SaveAndReadStyledCell(givenValue, expectedValue, style, "A1");
+            var cell = TestUtils.SaveAndReadStyledCell(givenValue, expectedValue, style, "A1");
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Charset);
         }
 

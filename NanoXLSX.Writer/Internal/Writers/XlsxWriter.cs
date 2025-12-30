@@ -275,14 +275,14 @@ namespace NanoXLSX.Internal.Writers
                     PackagePart part;
 
                     // Workbook
-                    IPlugInWriter workbookWriter = PlugInLoader.GetPlugIn<IPlugInWriter>(PlugInUUID.WorkbookWriter, new WorkbookWriter());
+                    IPluginWriter workbookWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.WorkbookWriter, new WorkbookWriter());
                     workbookWriter.Init(this);
                     workbookWriter.Execute();
                     part = packageParts[WORKBOOK.Path][WORKBOOK.Filename];
                     AppendXmlToPackagePart(workbookWriter.XmlElement, part);
 
                     // Style
-                    IPlugInWriter styleWriter = PlugInLoader.GetPlugIn<IPlugInWriter>(PlugInUUID.StyleWriter, new StyleWriter());
+                    IPluginWriter styleWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.StyleWriter, new StyleWriter());
                     styleWriter.Init(this);
                     styleWriter.Execute();
                     part = packageParts[STYLES.Path][STYLES.Filename];
@@ -321,12 +321,12 @@ namespace NanoXLSX.Internal.Writers
                     // Metadata
                     if (this.Workbook.WorkbookMetadata != null)
                     {
-                        IPlugInWriter metadataAppWriter = PlugInLoader.GetPlugIn<IPlugInWriter>(PlugInUUID.MetadataAppWriter, new MetadataAppWriter());
+                        IPluginWriter metadataAppWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.MetadataAppWriter, new MetadataAppWriter());
                         metadataAppWriter.Init(this);
                         metadataAppWriter.Execute();
                         part = packageParts[APP_PROPERTIES.Path][APP_PROPERTIES.Filename];
                         AppendXmlToPackagePart(metadataAppWriter.XmlElement, part);
-                        IPlugInWriter metadataCoreWriter = PlugInLoader.GetPlugIn<IPlugInWriter>(PlugInUUID.MetadataCoreWriter, new MetadataCoreWriter());
+                        IPluginWriter metadataCoreWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.MetadataCoreWriter, new MetadataCoreWriter());
                         metadataCoreWriter.Init(this);
                         metadataCoreWriter.Execute();
                         part = packageParts[CORE_PROPERTIES.Path][CORE_PROPERTIES.Filename];
@@ -336,7 +336,7 @@ namespace NanoXLSX.Internal.Writers
                     // Theme
                     if (Workbook.WorkbookTheme != null)
                     {
-                        IPlugInWriter themeWriter = PlugInLoader.GetPlugIn<IPlugInWriter>(PlugInUUID.ThemeWriter, new ThemeWriter());
+                        IPluginWriter themeWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.ThemeWriter, new ThemeWriter());
                         themeWriter.Init(this);
                         themeWriter.Execute();
                         part = packageParts[THEME.Path][THEME.Filename];
@@ -379,16 +379,16 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="queueUuid">Queue UUID</param>
         private void HandleQueuePlugIns(string queueUuid)
         {
-            IPlugInWriter queueWriter;
+            IPluginWriter queueWriter;
             string lastUuid = null;
             do
             {
-                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPlugInWriter>(queueUuid, lastUuid, out string currentUuid);
+                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPluginWriter>(queueUuid, lastUuid, out string currentUuid);
                 if (queueWriter != null)
                 {
                     queueWriter.Init(this);
                     queueWriter.Execute();
-                    if (queueWriter is IPlugInPackageWriter packageWriter)
+                    if (queueWriter is IPluginPackageWriter packageWriter)
                     {
                         if (!string.IsNullOrEmpty(packageWriter.PackagePartPath) && !string.IsNullOrEmpty(packageWriter.PackagePartFileName))
                         {
@@ -414,11 +414,11 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         private void HandlePackageRegistryQueuePlugIns()
         {
-            IPlugInPackageWriter queueWriter;
+            IPluginPackageWriter queueWriter;
             string lastUuid = null;
             do
             {
-                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPlugInPackageWriter>(PlugInUUID.WriterPackageRegistryQueue, lastUuid, out string currentUuid);
+                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPluginPackageWriter>(PlugInUUID.WriterPackageRegistryQueue, lastUuid, out string currentUuid);
                 if (queueWriter != null)
                 {
                     queueWriter.Execute(); // Execute anything that could be defined

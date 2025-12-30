@@ -20,6 +20,7 @@ Release Date: **22.12.2025**
 - Added static methods `bool Comparators.IsZero(double)` and `bool Comparators.IsZero(float)
 - Added `double ParserUtils.ParseDouble(string)` to parse doubles with invariant culture
 - Added `void Validators.ValidateGenericColor(string, bool = false)` to check generic color strings (RGB or ARGB)
+- Normalized interface named, containing 'PlugIn' to 'Plugin'
 - Added test cases
 
 Note: Implicit address conversion from string to Address was not implemented, to avoid potential problems when comparing addresses (invalid strings could raise exceptions instead of returning false in  the equals method). This does not apply to the Range struct

@@ -14,7 +14,7 @@ namespace NanoXLSX.Interfaces.Plugin
     /// <summary>
     /// Interface, used by worksheet readers
     /// </summary>
-    internal interface IWorksheetReader : IPlugInReader
+    internal interface IWorksheetReader : IPluginReader
     {
         /// <summary>
         /// Gets or sets the (r)ID (1-based) of the currently processed worksheet.

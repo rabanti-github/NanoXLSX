@@ -184,7 +184,7 @@ namespace NanoXLSX.Internal.Readers
                 // (currently) only the first occurring theme will be read  
                 foreach (KeyValuePair<int, string> streamName in themeStreamNames)
                 {
-                    IPlugInReader themeReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.ThemeReader, new ThemeReader());
+                    IPluginReader themeReader = PlugInLoader.GetPlugIn<IPluginReader>(PlugInUUID.ThemeReader, new ThemeReader());
                     ms = GetEntryStream(streamName.Value, zf);
                     themeReader.Init(ms, wb, readerOptions);
                     themeReader.Execute();
@@ -192,33 +192,33 @@ namespace NanoXLSX.Internal.Readers
                 }
             }
             StyleRepository.Instance.ImportInProgress = true; // TODO: To be checked
-            IPlugInReader styleReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.StyleReader, new StyleReader());
+            IPluginReader styleReader = PlugInLoader.GetPlugIn<IPluginReader>(PlugInUUID.StyleReader, new StyleReader());
             ms = GetEntryStream("xl/styles.xml", zf);
             styleReader.Init(ms, wb, readerOptions);
             styleReader.Execute();
             StyleRepository.Instance.ImportInProgress = false;
 
             ms = GetEntryStream("xl/workbook.xml", zf);
-            IPlugInReader workbookReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.WorkbookReader, new WorkbookReader());
+            IPluginReader workbookReader = PlugInLoader.GetPlugIn<IPluginReader>(PlugInUUID.WorkbookReader, new WorkbookReader());
             workbookReader.Init(ms, wb, readerOptions);
             workbookReader.Execute();
 
             ms = GetEntryStream("docProps/app.xml", zf);
             if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/app.xml seems to be defined 
             {
-                IPlugInReader metadataAppReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.MetadataAppReader, new MetadataAppReader());
+                IPluginReader metadataAppReader = PlugInLoader.GetPlugIn<IPluginReader>(PlugInUUID.MetadataAppReader, new MetadataAppReader());
                 metadataAppReader.Init(ms, wb, readerOptions);
                 metadataAppReader.Execute();
             }
             ms = GetEntryStream("docProps/core.xml", zf);
             if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/core.xml seems to be defined 
             {
-                IPlugInReader metadataCoreReader = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.MetadataCoreReader, new MetadataCoreReader());
+                IPluginReader metadataCoreReader = PlugInLoader.GetPlugIn<IPluginReader>(PlugInUUID.MetadataCoreReader, new MetadataCoreReader());
                 metadataCoreReader.Init(ms, wb, readerOptions);
                 metadataCoreReader.Execute();
             }
 
-            IPlugInReader relationships = PlugInLoader.GetPlugIn<IPlugInReader>(PlugInUUID.RelationshipReader, new RelationshipReader());
+            IPluginReader relationships = PlugInLoader.GetPlugIn<IPluginReader>(PlugInUUID.RelationshipReader, new RelationshipReader());
             ms = GetEntryStream("xl/_rels/workbook.xml.rels", zf);
             relationships.Init(ms, wb, readerOptions);
             relationships.Execute();
@@ -308,17 +308,17 @@ namespace NanoXLSX.Internal.Readers
         private void HandleQueuePlugIns(string queueUuid, ZipArchive zf, ref Workbook workbook)
         {
             string lastUuid = null;
-            IPlugInReader queueReader;
+            IPluginReader queueReader;
             do
             {
                 string currentUuid;
-                queueReader = PlugInLoader.GetNextQueuePlugIn<IPlugInReader>(queueUuid, lastUuid, out currentUuid);
+                queueReader = PlugInLoader.GetNextQueuePlugIn<IPluginReader>(queueUuid, lastUuid, out currentUuid);
                 MemoryStream ms = null;
                 if (queueReader != null)
                 {
-                    if (queueReader is IPlugInPackageReader)
+                    if (queueReader is IPluginPackageReader)
                     {
-                        string streamPartName = (queueReader as IPlugInPackageReader).StreamEntryName;
+                        string streamPartName = (queueReader as IPluginPackageReader).StreamEntryName;
                         if (!string.IsNullOrEmpty(streamPartName))
                         {
                             ms = GetEntryStream(streamPartName, zf);
