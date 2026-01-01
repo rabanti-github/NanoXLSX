@@ -206,12 +206,27 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.Equal(expectedRgb, color.GetArgbValue(), ignoreCase: true);
         }
 
+        [Theory(DisplayName = "Test of the implicit operator function, when using a value of IndexedColor.Value")]
+        [InlineData(IndexedColor.Value.Black)]
+        [InlineData(IndexedColor.Value.Black0)]
+        [InlineData(IndexedColor.Value.Cyan)]
+        [InlineData(IndexedColor.Value.SystemBackground)]
+        [InlineData(IndexedColor.Value.SystemForeground)]
+        public void ImplicitIndexedConversionTest(IndexedColor.Value index)
+        {
+            Color color = index;
+            Assert.Equal(Color.ColorType.Indexed, color.Type);
+            Assert.NotNull(color.GetArgbValue());
+            Assert.Equal(index, color.IndexedColor.ColorValue);
+        }
+
+
         [Theory(DisplayName = "Test of the implicit operator function, when using an int")]
         [InlineData(5)]
         [InlineData(0)]
         [InlineData(22)]
         [InlineData(65)]
-        public void ImplicitIndexedConversionTest(int index)
+        public void ImplicitIndexedConversionTest2(int index)
         {
             Color color = index;
             Assert.Equal(Color.ColorType.Indexed, color.Type);

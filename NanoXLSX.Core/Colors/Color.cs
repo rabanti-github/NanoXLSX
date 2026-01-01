@@ -323,9 +323,19 @@ namespace NanoXLSX.Colors
         /// <summary>
         /// Implicit conversion from index number to Color.
         /// </summary>
-        /// <param name="colorIndex">Index (<see cref="IndexedColor.ColorValue"/>)</param>
+        /// <param name="colorIndex">Numeric value of the color index (<see cref="IndexedColor.ColorValue"/>)</param>
         /// \remark <remarks>The resulting color value will be of the type <see cref="IndexedColor"/>, if valid</remarks>
         public static implicit operator Color(int colorIndex)
+        {
+            return CreateIndexed(colorIndex);
+        }
+
+        /// <summary>
+        /// Implicit conversion from index number to Color.
+        /// </summary>
+        /// <param name="colorIndex">Index (<see cref="IndexedColor.ColorValue"/>)</param>
+        /// \remark <remarks>The resulting color value will be of the type <see cref="IndexedColor"/>, if valid</remarks>
+        public static implicit operator Color(IndexedColor.Value colorIndex)
         {
             return CreateIndexed(colorIndex);
         }

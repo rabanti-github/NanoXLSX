@@ -333,13 +333,30 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(fill.BackgroundColor, expectedFill.BackgroundColor);
         }
 
+
+        [Theory(DisplayName = "Test of the implicit operator (create indexed color by enum value)")]
+        [InlineData(IndexedColor.Value.Red)]
+        [InlineData(IndexedColor.Value.Black0)]
+        [InlineData(IndexedColor.Value.Black)]
+        [InlineData(IndexedColor.Value.SystemForeground)]
+        [InlineData(IndexedColor.Value.SystemBackground)]
+        public void ImplicitOperatorTest3(IndexedColor.Value value)
+        {
+            Fill fill = value;
+            Fill expectedFill = new Fill();
+            expectedFill.ForegroundColor = Color.CreateIndexed(value);
+            expectedFill.PatternFill = PatternValue.Solid;
+            Assert.Equal(fill.ForegroundColor, expectedFill.ForegroundColor);
+            Assert.Equal(fill.BackgroundColor, expectedFill.BackgroundColor);
+        }
+
         [Theory(DisplayName = "Test of the implicit operator (create indexed color by int)")]
         [InlineData(10, IndexedColor.Value.Red)]
         [InlineData(0, IndexedColor.Value.Black0)]
         [InlineData(8, IndexedColor.Value.Black)]
         [InlineData(64, IndexedColor.Value.SystemForeground)]
         [InlineData(65, IndexedColor.Value.SystemBackground)]
-        public void ImplicitOperatorTest3(int givenValue, IndexedColor.Value expectedValue)
+        public void ImplicitOperatorTest4(int givenValue, IndexedColor.Value expectedValue)
         {
             Fill fill = givenValue;
             Fill expectedFill = new Fill();

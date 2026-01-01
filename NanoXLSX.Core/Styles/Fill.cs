@@ -137,7 +137,6 @@ namespace NanoXLSX.Styles
         {
             BackgroundColor = Color.CreateRgb(background);
             ForegroundColor = Color.CreateRgb(foreground);
-           // IndexedColor = DefaultIndexedColor;
             PatternFill = PatternValue.Solid;
         }
 
@@ -267,7 +266,19 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Implicit operator to create a Fill object from an indexed color value as foreground color with <see cref="FillType.FillColor"/> 
+        /// Implicit operator to create a Fill object from an indexed color value (<see cref="IndexedColor.Value"/>) as foreground color with <see cref="FillType.FillColor"/> 
+        /// </summary>
+        /// <param name="index">Color index (0 to 65)</param>
+        public static implicit operator Fill(IndexedColor.Value index)
+        {
+            Fill fill = new Fill();
+            fill.PatternFill = PatternValue.Solid;
+            fill.ForegroundColor = Color.CreateIndexed(index);
+            return fill;
+        }
+
+        /// <summary>
+        /// Implicit operator to create a Fill object from an indexed color index (numeric) as foreground color with <see cref="FillType.FillColor"/> 
         /// </summary>
         /// <param name="index">Color index (0 to 65)</param>
         public static implicit operator Fill(int index)

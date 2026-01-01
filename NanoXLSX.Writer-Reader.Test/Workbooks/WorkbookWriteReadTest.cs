@@ -30,7 +30,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             Assert.Equal("Text1", givenWorkbook.CurrentWorksheet.Cells["A5"].Value.ToString());
         }
 
-        [Fact(DisplayName = "Test of the (virtual) 'MruColors' property when writing and reading a workbook")]
+        [Fact(DisplayName = "Test of the (virtual) 'MruColors' property on a ARGB value, when writing and reading a workbook")]
         public void ReadMruColorsTest()
         {
             Workbook workbook = new Workbook();
@@ -46,8 +46,24 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             Assert.Equal("FF" + color2, mruColors[1].GetArgbValue());
         }
 
-        [Fact(DisplayName = "Test of the (virtual) 'MruColors' property when writing and reading a workbook, neglecting the default color")]
+
+        [Fact(DisplayName = "Test of the (virtual) 'MruColors' property on a indexed color, when writing and reading a workbook")]
         public void ReadMruColorsTest2()
+        {
+            Workbook workbook = new Workbook();
+            workbook.AddMruColor(IndexedColor.Value.Blue4);
+            workbook.AddMruColor(IndexedColor.Value.StrongYellow);
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
+            List<Color> mruColors = ((List<Color>)givenWorkbook.GetMruColors());
+            mruColors.Sort();
+            Assert.Equal(2, mruColors.Count);
+            Assert.Equal(IndexedColor.GetArgbValue(IndexedColor.Value.Blue4), mruColors[0].GetArgbValue());
+            Assert.Equal(IndexedColor.GetArgbValue(IndexedColor.Value.StrongYellow), mruColors[1].GetArgbValue());
+        }
+
+
+        [Fact(DisplayName = "Test of the (virtual) 'MruColors' property when writing and reading a workbook, neglecting the default color")]
+        public void ReadMruColorsTest3()
         {
             Workbook workbook = new Workbook();
             string color1 = "AACC00";
@@ -59,6 +75,17 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             mruColors.Sort();
             Assert.Single(mruColors);
             Assert.Equal("FF" + color1, mruColors[0].GetArgbValue());
+        }
+
+        [Fact(DisplayName = "Test of the (virtual) 'MruColors' property when writing and reading a workbook, neglecting an undefined color")]
+        public void ReadMruColorsTest4()
+        {
+            Workbook workbook = new Workbook();
+            Color color = Color.CreateNone();
+            workbook.AddMruColor(color);
+            Workbook givenWorkbook = TestUtils.WriteAndReadWorkbook(workbook);
+            List<Color> mruColors = ((List<Color>)givenWorkbook.GetMruColors());
+            Assert.Empty(mruColors);
         }
 
         [Theory(DisplayName = "Test of the 'Hidden' property when writing and reading a workbook")]

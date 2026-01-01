@@ -26,13 +26,10 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="color">Color instance</param>
         /// <returns>Enumeration of the attributes, describing the color instance</returns>
+        /// \remark <remarks>The passed color instance may never be null. Such cases have to be handled earlier</remarks>
         public IEnumerable<XmlAttribute> GetAttributes(Color color)
         {
             List<XmlAttribute> attributes = new List<XmlAttribute>();
-            if (color == null)
-            {
-                return attributes;
-            }
             string name = GetAttributeName(color);
             if (name != null)
             {
@@ -51,12 +48,9 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="color">Color instance</param>
         /// <returns>Attribute name</returns>
+        /// \remark <remarks>The passed color instance may never be null. Such cases have to be handled earlier</remarks>
         public string GetAttributeName(Color color)
         {
-            if (color == null)
-            {
-                return null;
-            }
             switch (color.Type)
             {
                 case Color.ColorType.Auto:
@@ -79,27 +73,29 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="color">Color instance</param>
         /// <returns>Attribute value</returns>
+        /// \remark <remarks>The passed color instance may never be null. Such cases have to be handled earlier</remarks>
         public string GetAttributeValue(Color color)
         {
-            if (color == null)
-            {
-                return null;
-            }
+            string value = null;
             switch (color.Type)
             {
                 case Color.ColorType.Auto:
-                    return "1";
+                    value = "1";
+                    break;
                 case Color.ColorType.Rgb:
-                    return color.RgbColor.StringValue;
+                    value = color.RgbColor.StringValue;
+                    break;
                 case Color.ColorType.Indexed:
-                    return color.IndexedColor.StringValue;
+                    value = color.IndexedColor.StringValue;
+                    break;
                 case Color.ColorType.Theme:
-                    return color.ThemeColor.StringValue;
+                    value = color.ThemeColor.StringValue;
+                    break;
                 case Color.ColorType.System:
-                    return color.SystemColor.StringValue;
-                default:
-                    return null;
+                    value = color.SystemColor.StringValue;
+                    break;
             }
+            return value;
         }
 
         /// <summary>
