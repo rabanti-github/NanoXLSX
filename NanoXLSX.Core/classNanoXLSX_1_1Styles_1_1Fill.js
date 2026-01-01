@@ -20,6 +20,7 @@ var classNanoXLSX_1_1Styles_1_1Fill =
     [ "CopyFill", "classNanoXLSX_1_1Styles_1_1Fill.html#a074b5bce49756d51dcf5c0e6890e2f33", null ],
     [ "Equals", "classNanoXLSX_1_1Styles_1_1Fill.html#a155443788927110880e651ae1be79afe", null ],
     [ "GetHashCode", "classNanoXLSX_1_1Styles_1_1Fill.html#a41fd5e8854d670921931ff4605320f3d", null ],
+    [ "operator Fill", "classNanoXLSX_1_1Styles_1_1Fill.html#a65940e9b05b5c469fcb9b8993f511a4b", null ],
     [ "operator Fill", "classNanoXLSX_1_1Styles_1_1Fill.html#abf529c0c9474b8c62505ff3f9959c852", null ],
     [ "operator Fill", "classNanoXLSX_1_1Styles_1_1Fill.html#a9e2656a7e7e246e3c870aac7b805d75a", null ],
     [ "SetColor", "classNanoXLSX_1_1Styles_1_1Fill.html#a4eb811c4b3624dde4e1a5c28f801e87a", null ],

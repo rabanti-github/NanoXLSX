@@ -155,6 +155,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a878074ae6243352f07894c83444e0aca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit conversion from (RGB or ARGB) string to <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a>. This is the most common use case.  <br /></td></tr>
 <tr class="memitem:a9cafdd48431a235b9e4c978572e79558" id="r_a9cafdd48431a235b9e4c978572e79558"><td class="memItemLeft" align="right" valign="top">static implicit&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9cafdd48431a235b9e4c978572e79558">operator Color</a> (int colorIndex)</td></tr>
 <tr class="memdesc:a9cafdd48431a235b9e4c978572e79558"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit conversion from index number to <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a>.  <br /></td></tr>
+<tr class="memitem:a9b76ce3335731f0ad56a13af016fd0bf" id="r_a9b76ce3335731f0ad56a13af016fd0bf"><td class="memItemLeft" align="right" valign="top">static implicit&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b76ce3335731f0ad56a13af016fd0bf">operator Color</a> (<a class="el" href="classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8">IndexedColor.Value</a> colorIndex)</td></tr>
+<tr class="memdesc:a9b76ce3335731f0ad56a13af016fd0bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit conversion from index number to <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a>.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -245,7 +247,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00377">377</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00387">387</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -679,7 +681,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if both objects are equal</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00339">339</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00349">349</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -724,12 +726,48 @@ Properties</h2></td></tr>
 <p>Gets the hash code of the instance. </p>
 <dl class="section return"><dt>Returns</dt><dd>Hash code</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00356">356</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00366">366</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+
+</div>
+</div>
+<a id="a9b76ce3335731f0ad56a13af016fd0bf" name="a9b76ce3335731f0ad56a13af016fd0bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b76ce3335731f0ad56a13af016fd0bf">&#9670;&#160;</a></span>operator Color() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">implicit NanoXLSX.Colors.Color.operator Color </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8">IndexedColor.Value</a></td>          <td class="paramname"><span class="paramname"><em>colorIndex</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implicit conversion from index number to <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">colorIndex</td><td>Index (<a class="el" href="classNanoXLSX_1_1Colors_1_1IndexedColor.html#a21af10778032ab44e588bcacd482c59a" title="Value of the indexed color.">IndexedColor.ColorValue</a>)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section remark"><dt>Remarks</dt><dd>The resulting color value will be of the type <a class="el" href="classNanoXLSX_1_1Colors_1_1IndexedColor.html" title="Class representing an indexed color from the legacy OOXML / Excel indexed color palette.">IndexedColor</a>, if valid</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00338">338</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
 <a id="a9cafdd48431a235b9e4c978572e79558" name="a9cafdd48431a235b9e4c978572e79558"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9cafdd48431a235b9e4c978572e79558">&#9670;&#160;</a></span>operator Color() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cafdd48431a235b9e4c978572e79558">&#9670;&#160;</a></span>operator Color() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -754,7 +792,7 @@ Properties</h2></td></tr>
 <p>Implicit conversion from index number to <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">colorIndex</td><td>Index (<a class="el" href="classNanoXLSX_1_1Colors_1_1IndexedColor.html#a21af10778032ab44e588bcacd482c59a" title="Value of the indexed color.">IndexedColor.ColorValue</a>)</td></tr>
+    <tr><td class="paramname">colorIndex</td><td>Numeric value of the color index (<a class="el" href="classNanoXLSX_1_1Colors_1_1IndexedColor.html#a21af10778032ab44e588bcacd482c59a" title="Value of the indexed color.">IndexedColor.ColorValue</a>)</td></tr>
   </table>
   </dd>
 </dl>
@@ -765,7 +803,7 @@ Properties</h2></td></tr>
 </div>
 </div>
 <a id="a878074ae6243352f07894c83444e0aca" name="a878074ae6243352f07894c83444e0aca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a878074ae6243352f07894c83444e0aca">&#9670;&#160;</a></span>operator Color() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a878074ae6243352f07894c83444e0aca">&#9670;&#160;</a></span>operator Color() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

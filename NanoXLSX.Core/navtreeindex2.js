@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html":[3,0,0,0,5],
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1140b8c6a4cfc3912452ef9e1123326e":[2,0,0,0,5,0],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1140b8c6a4cfc3912452ef9e1123326e":[3,0,0,0,5,0],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1fbfd2fad3f7deef2efe3014aa053492":[2,0,0,0,5,1],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1fbfd2fad3f7deef2efe3014aa053492":[3,0,0,0,5,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ac48280cf2625374e6db0f2d9fc96bc92":[3,0,0,3,2,26],
 "classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ac58f9d659024730a51c7ed232a57b70a":[2,0,0,3,2,23],
 "classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ac58f9d659024730a51c7ed232a57b70a":[3,0,0,3,2,23],
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad4cbb582cb8dccaa4d459a745c035a3d":[2,0,0,3,2,4],
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad4cbb582cb8dccaa4d459a745c035a3d":[3,0,0,3,2,4],
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad89af6da078d865df3c49f24a64f1c44":[2,0,0,3,2,18]
+"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad4cbb582cb8dccaa4d459a745c035a3d":[2,0,0,3,2,4]
 };
