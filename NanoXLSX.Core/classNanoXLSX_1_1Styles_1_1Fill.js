@@ -23,6 +23,8 @@ var classNanoXLSX_1_1Styles_1_1Fill =
     [ "operator Fill", "classNanoXLSX_1_1Styles_1_1Fill.html#a65940e9b05b5c469fcb9b8993f511a4b", null ],
     [ "operator Fill", "classNanoXLSX_1_1Styles_1_1Fill.html#abf529c0c9474b8c62505ff3f9959c852", null ],
     [ "operator Fill", "classNanoXLSX_1_1Styles_1_1Fill.html#a9e2656a7e7e246e3c870aac7b805d75a", null ],
+    [ "SetColor", "classNanoXLSX_1_1Styles_1_1Fill.html#a61698e8839b455d09a2cb3b9c3618f8e", null ],
+    [ "SetColor", "classNanoXLSX_1_1Styles_1_1Fill.html#aa787af85ab076b7648c603a515da3829", null ],
     [ "SetColor", "classNanoXLSX_1_1Styles_1_1Fill.html#a4eb811c4b3624dde4e1a5c28f801e87a", null ],
     [ "ToString", "classNanoXLSX_1_1Styles_1_1Fill.html#a78312889de0f0ad3165b6859d5551d99", null ],
     [ "DefaultColor", "classNanoXLSX_1_1Styles_1_1Fill.html#a3498698e66154562be89bdcac10edc4b", null ],

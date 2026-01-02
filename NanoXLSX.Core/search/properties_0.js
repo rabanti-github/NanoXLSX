@@ -12,6 +12,6 @@ var searchData=
   ['application_9',['Application',['../classNanoXLSX_1_1Metadata.html#ac97b551ebd33aa1303cbd2aee9fa73d8',1,'NanoXLSX::Metadata']]],
   ['applicationversion_10',['ApplicationVersion',['../classNanoXLSX_1_1Metadata.html#a1b68176ee7ef08476d3f56ad09a450f0',1,'NanoXLSX::Metadata']]],
   ['attributes_11',['Attributes',['../classNanoXLSX_1_1Utils_1_1Xml_1_1XmlElement.html#a58397529acd47aaa18dbe23220208928',1,'NanoXLSX::Utils::Xml::XmlElement']]],
-  ['auto_12',['Auto',['../classNanoXLSX_1_1Colors_1_1Color.html#ae02fcfa153107097aa33cb60fb419ecb',1,'NanoXLSX::Colors::Color']]],
+  ['auto_12',['Auto',['../classNanoXLSX_1_1Colors_1_1Color.html#af7ca76125cb44a740e2c2ffefb38f89f',1,'NanoXLSX::Colors::Color']]],
   ['autofilterrange_13',['AutoFilterRange',['../classNanoXLSX_1_1Worksheet.html#ae0352eae9de2f30c1612ed72e29489d7',1,'NanoXLSX::Worksheet']]]
 ];

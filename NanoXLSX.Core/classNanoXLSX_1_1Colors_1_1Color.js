@@ -26,7 +26,7 @@ var classNanoXLSX_1_1Colors_1_1Color =
     [ "operator Color", "classNanoXLSX_1_1Colors_1_1Color.html#a9b76ce3335731f0ad56a13af016fd0bf", null ],
     [ "operator Color", "classNanoXLSX_1_1Colors_1_1Color.html#a9cafdd48431a235b9e4c978572e79558", null ],
     [ "operator Color", "classNanoXLSX_1_1Colors_1_1Color.html#a878074ae6243352f07894c83444e0aca", null ],
-    [ "Auto", "classNanoXLSX_1_1Colors_1_1Color.html#ae02fcfa153107097aa33cb60fb419ecb", null ],
+    [ "Auto", "classNanoXLSX_1_1Colors_1_1Color.html#af7ca76125cb44a740e2c2ffefb38f89f", null ],
     [ "IndexedColor", "classNanoXLSX_1_1Colors_1_1Color.html#af8072330dff99dd5897ec21e00f892cb", null ],
     [ "IsDefined", "classNanoXLSX_1_1Colors_1_1Color.html#a71d41d3ec1adca4aee630ec9f1d200df", null ],
     [ "RgbColor", "classNanoXLSX_1_1Colors_1_1Color.html#a3ad73f17e5543f597bca3673c0b35d22", null ],

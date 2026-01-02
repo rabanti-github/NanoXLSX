@@ -36,7 +36,7 @@ var searchData=
   ['appworkspace_33',['AppWorkspace',['../classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4a1f9ec33fd22b2dab91bd7d64e433a474',1,'NanoXLSX::Colors::SystemColor']]],
   ['arabic_34',['Arabic',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001aca272ccb8592bafde0baf1dedce0fd3ac2',1,'NanoXLSX::Styles::Font']]],
   ['attributes_35',['Attributes',['../classNanoXLSX_1_1Utils_1_1Xml_1_1XmlElement.html#a58397529acd47aaa18dbe23220208928',1,'NanoXLSX::Utils::Xml::XmlElement']]],
-  ['auto_36',['Auto',['../classNanoXLSX_1_1Colors_1_1Color.html#ae02fcfa153107097aa33cb60fb419ecb',1,'NanoXLSX.Colors.Color.Auto'],['../classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bba06b9281e396db002010bde1de57262eb',1,'NanoXLSX.Colors.Color.Auto']]],
+  ['auto_36',['Auto',['../classNanoXLSX_1_1Colors_1_1Color.html#af7ca76125cb44a740e2c2ffefb38f89f',1,'NanoXLSX.Colors.Color.Auto'],['../classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bba06b9281e396db002010bde1de57262eb',1,'NanoXLSX.Colors.Color.Auto']]],
   ['autocolor_37',['AutoColor',['../classNanoXLSX_1_1Colors_1_1AutoColor.html',1,'NanoXLSX::Colors']]],
   ['autofilter_38',['AutoFilter',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acab1b70ac3876a7311d95e1b50100aaa97',1,'NanoXLSX::Worksheet']]],
   ['autofilterrange_39',['AutoFilterRange',['../classNanoXLSX_1_1Worksheet.html#ae0352eae9de2f30c1612ed72e29489d7',1,'NanoXLSX::Worksheet']]],
