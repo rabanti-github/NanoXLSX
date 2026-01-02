@@ -49,7 +49,7 @@ namespace NanoXLSX.Colors
         /// <summary>
         /// Auto attribute - if true, color is automatically determined
         /// </summary>
-        public bool? Auto { get; private set; }
+        public bool Auto { get; private set; }
 
         /// <summary>
         /// RGB/ARGB value when Type is Rgb

@@ -6,8 +6,10 @@
  */
 
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using NanoXLSX.Colors;
+using NanoXLSX.Interfaces;
 
 namespace NanoXLSX.Styles
 {
@@ -235,7 +237,7 @@ namespace NanoXLSX.Styles
         }
 
         /// <summary>
-        /// Sets the color and the depending on fill type, using a sRGB value (without alpha)
+        /// Sets the color depending on fill type, using a sRGB value (without alpha)
         /// </summary>
         /// <param name="value">color value</param>
         /// <param name="fillType">fill type (fill or pattern)</param>
@@ -252,6 +254,36 @@ namespace NanoXLSX.Styles
                 foregroundColor = DefaultColor;
             }
             PatternFill = PatternValue.Solid;
+        }
+
+        /// <summary>
+        /// Sets the color depending on fill type, using a color object of the type <see cref="Color"/>
+        /// </summary>
+        /// <param name="value">color value (compound object)</param>
+        /// <param name="fillType">fill type (fill or pattern)</param>
+        public void SetColor(Color value, FillType fillType)
+        {
+            if (fillType == FillType.FillColor)
+            {
+                backgroundColor = DefaultColor;
+                ForegroundColor = value;
+            }
+            else
+            {
+                BackgroundColor = value;
+                foregroundColor = DefaultColor;
+            }
+            PatternFill = PatternValue.Solid;
+        }
+
+        /// <summary>
+        /// Sets the color depending on fill type, using a color object, deriving from <see cref="IColor"/>
+        /// </summary>
+        /// <param name="value">color value (component)</param>
+        /// <param name="fillType">fill type (fill or pattern)</param>
+        public void SetColor(IColor value, FillType fillType)
+        {
+            SetColor(GetColorByComponent(value), fillType);
         }
         #endregion
 
@@ -344,6 +376,34 @@ namespace NanoXLSX.Styles
             }
         }
 
+        /// <summary>
+        /// Gets a Color object based on the passed component
+        /// </summary>
+        /// <param name="component">Color component</param>
+        /// <returns>Color instance</returns>
+        private static Color GetColorByComponent(IColor component)
+        {
+            if (component is SrgbColor)
+            {
+                return Color.CreateRgb((SrgbColor)component);
+            }
+            else if (component is IndexedColor)
+            {
+                return Color.CreateIndexed((IndexedColor)component);
+            }
+            else if (component is ThemeColor)
+            {
+                return Color.CreateTheme((ThemeColor)component);
+            }
+            else if (component is SystemColor)
+            {
+                return Color.CreateSystem((SystemColor)component);
+            }
+            else // AutoColor
+            {
+                return Color.CreateAuto();
+            }
+        }
         #endregion
 
     }

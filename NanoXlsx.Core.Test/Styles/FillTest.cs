@@ -2,6 +2,7 @@
 using NanoXLSX.Colors;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
+using NanoXLSX.Themes;
 using NanoXLSX.Utils;
 using Xunit;
 using static NanoXLSX.Styles.Fill;
@@ -260,7 +261,7 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(value, fill.PatternFill);
         }
 
-        [Theory(DisplayName = "Test of the SetColor function")]
+        [Theory(DisplayName = "Test of the SetColor function, when using a ARGB value")]
         [InlineData("FFAABBCC", FillType.FillColor, "FFAABBCC", "FF000000")]
         [InlineData("FF112233", FillType.PatternColor, "FF000000", "FF112233")]
         public void SetColorTest(string color, FillType fillType, string expectedForeground, string expectedBackground)
@@ -276,6 +277,179 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(expectedForeground, fill.ForegroundColor);
             Assert.Equal(expectedBackground, fill.BackgroundColor);
         }
+
+        [Theory(DisplayName = "Test of the SetColor function, when using a sRGB color object")]
+        [InlineData("FFAABBCC", FillType.FillColor, "FFAABBCC", "FF000000")]
+        [InlineData("FF112233", FillType.PatternColor, "FF000000", "FF112233")]
+        public void SetColorTest2(string colorValue, FillType fillType, string expectedForeground, string expectedBackground)
+        {
+            Fill fill = new Fill();
+            SrgbColor color = new SrgbColor(colorValue);
+            Assert.Equal(Fill.DefaultColor, fill.ForegroundColor);
+            Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
+            Assert.Equal(PatternValue.None, fill.PatternFill);
+            fill.SetColor(color, fillType);
+            Assert.Equal(Color.ColorType.Rgb, fill.ForegroundColor.Type);
+            Assert.Equal(Color.ColorType.Rgb, fill.BackgroundColor.Type);
+            Assert.Equal(PatternValue.Solid, fill.PatternFill);
+            Assert.Equal(expectedForeground, fill.ForegroundColor);
+            Assert.Equal(expectedBackground, fill.BackgroundColor);
+        }
+
+        [Theory(DisplayName = "Test of the SetColor function, when using an indexed color object")]
+        [InlineData(IndexedColor.Value.Black, FillType.FillColor, true, "FF000000")]
+        [InlineData(IndexedColor.Value.Black, FillType.PatternColor, false, "FF000000")]
+        [InlineData(IndexedColor.Value.Blue4, FillType.FillColor, true, "FF000000")]
+        [InlineData(IndexedColor.Value.Indigo, FillType.PatternColor, false, "FF000000")]
+        [InlineData(IndexedColor.Value.SystemBackground, FillType.FillColor, true, "FF000000")]
+        [InlineData(IndexedColor.Value.SystemForeground, FillType.PatternColor, false, "FF000000")]
+        public void SetColorTest3(IndexedColor.Value indexedValue, FillType fillType, bool expectedForegroundHasColor, string expectedOppositeColor)
+        {
+            Fill fill = new Fill();
+            IndexedColor color = new IndexedColor(indexedValue);
+            Assert.Equal(Fill.DefaultColor, fill.ForegroundColor);
+            Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
+            Assert.Equal(PatternValue.None, fill.PatternFill);
+            fill.SetColor(color, fillType);
+            if (expectedForegroundHasColor)
+            {
+                Assert.Equal(Color.ColorType.Indexed, fill.ForegroundColor.Type);
+                Assert.Equal(Color.ColorType.Rgb, fill.BackgroundColor.Type);
+                Assert.Equal(color.GetArgbValue(), fill.ForegroundColor.GetArgbValue());
+                Assert.Equal(expectedOppositeColor, fill.BackgroundColor);
+            }
+            else
+            {
+                Assert.Equal(Color.ColorType.Rgb, fill.ForegroundColor.Type);
+                Assert.Equal(Color.ColorType.Indexed, fill.BackgroundColor.Type);
+                Assert.Equal(expectedOppositeColor, fill.ForegroundColor);
+                Assert.Equal(color.GetArgbValue(), fill.BackgroundColor.GetArgbValue());
+            }
+            Assert.Equal(PatternValue.Solid, fill.PatternFill);
+        }
+
+        [Theory(DisplayName = "Test of the SetColor function, when using a theme color object")]
+        [InlineData(Theme.ColorSchemeElement.Accent1, FillType.FillColor, true, "FF000000")]
+        [InlineData(Theme.ColorSchemeElement.Accent1, FillType.PatternColor, false, "FF000000")]
+        [InlineData(Theme.ColorSchemeElement.Dark1, FillType.FillColor, true, "FF000000")]
+        [InlineData(Theme.ColorSchemeElement.Light1, FillType.PatternColor, false, "FF000000")]
+        [InlineData(Theme.ColorSchemeElement.Hyperlink, FillType.FillColor, true, "FF000000")]
+        [InlineData(Theme.ColorSchemeElement.FollowedHyperlink, FillType.PatternColor, false, "FF000000")]
+        public void SetColorTest4(Theme.ColorSchemeElement themeValue, FillType fillType, bool expectedForegroundHasColor, string expectedOppositeColor)
+        {
+            Fill fill = new Fill();
+            ThemeColor color = new ThemeColor(themeValue);
+            Assert.Equal(Fill.DefaultColor, fill.ForegroundColor);
+            Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
+            Assert.Equal(PatternValue.None, fill.PatternFill);
+            fill.SetColor(color, fillType);
+            if (expectedForegroundHasColor)
+            {
+                Assert.Equal(Color.ColorType.Theme, fill.ForegroundColor.Type);
+                Assert.Equal(Color.ColorType.Rgb, fill.BackgroundColor.Type);
+                Assert.Equal(color.StringValue, fill.ForegroundColor.ThemeColor.StringValue);
+                Assert.Equal(expectedOppositeColor, fill.BackgroundColor);
+            }
+            else
+            {
+                Assert.Equal(Color.ColorType.Rgb, fill.ForegroundColor.Type);
+                Assert.Equal(Color.ColorType.Theme, fill.BackgroundColor.Type);
+                Assert.Equal(expectedOppositeColor, fill.ForegroundColor);
+                Assert.Equal(color.StringValue, fill.BackgroundColor.ThemeColor.StringValue);
+            }
+            Assert.Equal(PatternValue.Solid, fill.PatternFill);
+        }
+
+        [Theory(DisplayName = "Test of the SetColor function, when using a system color object")]
+        [InlineData(SystemColor.Value.ActiveBorder, FillType.FillColor, true, "FF000000")]
+        [InlineData(SystemColor.Value.Background, FillType.PatternColor, false, "FF000000")]
+        [InlineData(SystemColor.Value.ButtonFace, FillType.FillColor, true, "FF000000")]
+        [InlineData(SystemColor.Value.Menu, FillType.PatternColor, false, "FF000000")]
+        [InlineData(SystemColor.Value.Window, FillType.FillColor, true, "FF000000")]
+        [InlineData(SystemColor.Value.CaptionText, FillType.PatternColor, false, "FF000000")]
+        public void SetColorTest5(SystemColor.Value systemValue, FillType fillType, bool expectedForegroundHasColor, string expectedOppositeColor)
+        {
+            Fill fill = new Fill();
+            SystemColor color = new SystemColor(systemValue);
+            Assert.Equal(Fill.DefaultColor, fill.ForegroundColor);
+            Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
+            Assert.Equal(PatternValue.None, fill.PatternFill);
+            fill.SetColor(color, fillType);
+            if (expectedForegroundHasColor)
+            {
+                Assert.Equal(Color.ColorType.System, fill.ForegroundColor.Type);
+                Assert.Equal(Color.ColorType.Rgb, fill.BackgroundColor.Type);
+                Assert.Equal(color.StringValue, fill.ForegroundColor.SystemColor.StringValue);
+                Assert.Equal(expectedOppositeColor, fill.BackgroundColor);
+            }
+            else
+            {
+                Assert.Equal(Color.ColorType.Rgb, fill.ForegroundColor.Type);
+                Assert.Equal(Color.ColorType.System, fill.BackgroundColor.Type);
+                Assert.Equal(expectedOppositeColor, fill.ForegroundColor);
+                Assert.Equal(color.StringValue, fill.BackgroundColor.SystemColor.StringValue);
+            }
+            Assert.Equal(PatternValue.Solid, fill.PatternFill);
+        }
+
+        [Theory(DisplayName = "Test of the SetColor function, when using an auto color object")]
+        [InlineData(FillType.FillColor, true, "FF000000")]
+        [InlineData(FillType.PatternColor, false, "FF000000")]
+        public void SetColorTest6(FillType fillType, bool expectedForegroundHasColor, string expectedOppositeColor)
+        {
+            Fill fill = new Fill();
+            AutoColor color = new AutoColor();
+            Assert.Equal(Fill.DefaultColor, fill.ForegroundColor);
+            Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
+            Assert.Equal(PatternValue.None, fill.PatternFill);
+            fill.SetColor(color, fillType);
+            if (expectedForegroundHasColor)
+            {
+                Assert.Equal(Color.ColorType.Auto, fill.ForegroundColor.Type);
+                Assert.Equal(Color.ColorType.Rgb, fill.BackgroundColor.Type);
+                Assert.True(fill.ForegroundColor.Auto);
+                Assert.False(fill.BackgroundColor.Auto);
+                Assert.Equal(expectedOppositeColor, fill.BackgroundColor);
+            }
+            else
+            {
+                Assert.Equal(Color.ColorType.Rgb, fill.ForegroundColor.Type);
+                Assert.Equal(Color.ColorType.Auto, fill.BackgroundColor.Type);
+                Assert.False(fill.ForegroundColor.Auto);
+                Assert.True(fill.BackgroundColor.Auto);
+                Assert.Equal(expectedOppositeColor, fill.ForegroundColor);
+            }
+            Assert.Equal(PatternValue.Solid, fill.PatternFill);
+        }
+
+        [Theory(DisplayName = "Test of the SetColor function, when a compound color object was passed")]
+        [InlineData(FillType.FillColor, true, "FF000000")]
+        [InlineData(FillType.PatternColor, false, "FF000000")]
+        public void SetColorTest7(FillType fillType, bool expectedForegroundHasColor, string expectedOppositeColor)
+        {
+            Fill fill = new Fill();
+            Color color = Color.CreateRgb("FF112233");
+            Assert.Equal(Fill.DefaultColor, fill.ForegroundColor);
+            Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
+            Assert.Equal(PatternValue.None, fill.PatternFill);
+            fill.SetColor(color, fillType);
+            if (expectedForegroundHasColor)
+            {
+                Assert.Equal(Color.ColorType.Rgb, fill.ForegroundColor.Type);
+                Assert.Equal(Color.ColorType.Rgb, fill.BackgroundColor.Type);
+                Assert.Equal(color.GetArgbValue(), fill.ForegroundColor.GetArgbValue());
+                Assert.Equal(expectedOppositeColor, fill.BackgroundColor);
+            }
+            else
+            {
+                Assert.Equal(Color.ColorType.Rgb, fill.ForegroundColor.Type);
+                Assert.Equal(Color.ColorType.Rgb, fill.BackgroundColor.Type);
+                Assert.Equal(expectedOppositeColor, fill.ForegroundColor);
+                Assert.Equal(color.GetArgbValue(), fill.BackgroundColor.GetArgbValue());
+            }
+            Assert.Equal(PatternValue.Solid, fill.PatternFill);
+        }
+
 
         [Theory(DisplayName = "Test of the ValidateColor function")]
         [InlineData("", false, false, false)]
