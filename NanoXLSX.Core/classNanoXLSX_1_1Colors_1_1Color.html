@@ -120,6 +120,8 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8d8e26c5a3331ddb096b36b2d96312d9" id="r_a8d8e26c5a3331ddb096b36b2d96312d9"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d8e26c5a3331ddb096b36b2d96312d9">GetArgbValue</a> ()</td></tr>
 <tr class="memdesc:a8d8e26c5a3331ddb096b36b2d96312d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the ARGB string value of the color, if applicable.  <br /></td></tr>
+<tr class="memitem:afa2a277f265126db5855b80c7b7ab3a8" id="r_afa2a277f265126db5855b80c7b7ab3a8"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa2a277f265126db5855b80c7b7ab3a8">ToString</a> ()</td></tr>
+<tr class="memdesc:afa2a277f265126db5855b80c7b7ab3a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">String representation od a <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> instance.  <br /></td></tr>
 <tr class="memitem:a67ebcaa53eea840e82f4fe118faa75df" id="r_a67ebcaa53eea840e82f4fe118faa75df"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67ebcaa53eea840e82f4fe118faa75df">Equals</a> (object obj)</td></tr>
 <tr class="memdesc:a67ebcaa53eea840e82f4fe118faa75df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the specified object is equal to the current object.  <br /></td></tr>
 <tr class="memitem:a56743ec95a5cc3caff18f59cfd0aaeaf" id="r_a56743ec95a5cc3caff18f59cfd0aaeaf"><td class="memItemLeft" align="right" valign="top">override int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a56743ec95a5cc3caff18f59cfd0aaeaf">GetHashCode</a> ()</td></tr>
@@ -173,7 +175,7 @@ Properties</h2></td></tr>
 <tr class="memitem:ac1feeaeeb458b26f40deecc74ab0ff3d" id="r_ac1feeaeeb458b26f40deecc74ab0ff3d"><td class="memItemLeft" align="right" valign="top">SystemColor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac1feeaeeb458b26f40deecc74ab0ff3d">SystemColor</a><code> [get]</code></td></tr>
 <tr class="memdesc:ac1feeaeeb458b26f40deecc74ab0ff3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">System color when Type is System (See <a class="el" href="classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4" title="Enum defining the available system colors.">SystemColor.Value</a>).  <br /></td></tr>
 <tr class="memitem:a3c72c7c09901438e291f8729c0f88ebf" id="r_a3c72c7c09901438e291f8729c0f88ebf"><td class="memItemLeft" align="right" valign="top">double?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c72c7c09901438e291f8729c0f88ebf">Tint</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a3c72c7c09901438e291f8729c0f88ebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional tint value for colors (-1.0 to 1.0) Positive values lighten, negative values darken.  <br /></td></tr>
+<tr class="memdesc:a3c72c7c09901438e291f8729c0f88ebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional tint value for colors (-1.0 to 1.0), mainly for theme colors Positive values lighten, negative values darken.  <br /></td></tr>
 <tr class="memitem:a71d41d3ec1adca4aee630ec9f1d200df" id="r_a71d41d3ec1adca4aee630ec9f1d200df"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71d41d3ec1adca4aee630ec9f1d200df">IsDefined</a><code> [get]</code></td></tr>
 <tr class="memdesc:a71d41d3ec1adca4aee630ec9f1d200df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> is defined (not None).  <br /></td></tr>
 <tr class="memitem:a8151dfa3bf0472e4fe6742cd82926f24" id="r_a8151dfa3bf0472e4fe6742cd82926f24"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceNanoXLSX_1_1Interfaces_1_1IColor.html">IColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8151dfa3bf0472e4fe6742cd82926f24">Value</a><code> [get]</code></td></tr>
@@ -247,7 +249,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00387">387</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00411">411</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -277,7 +279,7 @@ Properties</h2></td></tr>
 <p>Creates an <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> with auto=true. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns a dummy instance of the <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> class, where <a class="el" href="#adfdf342a6810d49dfebb9ae4f05ea8bb" title="Enum defining the type of color representation.">ColorType</a> is set to Auto</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00156">156</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00157">157</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -313,7 +315,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> instance with the value type <a class="el" href="classNanoXLSX_1_1Colors_1_1IndexedColor.html">IndexedColor</a>/&gt;</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00201">201</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00202">202</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -349,7 +351,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> instance with the value type <a class="el" href="classNanoXLSX_1_1Colors_1_1IndexedColor.html">IndexedColor</a>/&gt;</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00219">219</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00220">220</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -391,7 +393,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00234">234</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00235">235</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -421,7 +423,7 @@ Properties</h2></td></tr>
 <p>Creates an <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> with no color (empty element). </p>
 <p>&lt;return&gt;Returns a dummy instance of the <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> class, where <a class="el" href="#adfdf342a6810d49dfebb9ae4f05ea8bb" title="Enum defining the type of color representation.">ColorType</a> is set to None&lt;/return&gt; </p>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00147">147</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00148">148</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -457,7 +459,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> instance with the value type <a class="el" href="classNanoXLSX_1_1Colors_1_1SrgbColor.html">SrgbColor</a>/&gt;</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00170">170</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00171">171</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -499,7 +501,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00186">186</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00187">187</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -535,7 +537,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> instance with the value type <a class="el" href="classNanoXLSX_1_1Colors_1_1SystemColor.html">SystemColor</a></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00284">284</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00285">285</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -571,7 +573,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> instance with the value type <a class="el" href="classNanoXLSX_1_1Colors_1_1SystemColor.html">SystemColor</a></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00302">302</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00303">303</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -612,7 +614,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> instance with the value type <a class="el" href="classNanoXLSX_1_1Colors_1_1ThemeColor.html">ThemeColor</a>/&gt;</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00269">269</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00270">270</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -653,7 +655,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> instance with the value type <a class="el" href="classNanoXLSX_1_1Colors_1_1ThemeColor.html">ThemeColor</a>/&gt;</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00249">249</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00250">250</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -681,7 +683,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if both objects are equal</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00349">349</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00373">373</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -704,7 +706,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>ARGB value or null, if not applicable</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd>This method only works for colors of Type Rgb or Indexed. For <a class="el" href="classNanoXLSX_1_1Themes_1_1Theme.html" title="Class representing an Office theme.">Theme</a>, System or auto colors, the RGB value depends on the actual theme or system settings and cannot be determined here.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00125">125</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00126">126</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -726,7 +728,7 @@ Properties</h2></td></tr>
 <p>Gets the hash code of the instance. </p>
 <dl class="section return"><dt>Returns</dt><dd>Hash code</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00366">366</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00390">390</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -762,7 +764,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>The resulting color value will be of the type <a class="el" href="classNanoXLSX_1_1Colors_1_1IndexedColor.html" title="Class representing an indexed color from the legacy OOXML / Excel indexed color palette.">IndexedColor</a>, if valid</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00338">338</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00339">339</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -798,7 +800,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>The resulting color value will be of the type <a class="el" href="classNanoXLSX_1_1Colors_1_1IndexedColor.html" title="Class representing an indexed color from the legacy OOXML / Excel indexed color palette.">IndexedColor</a>, if valid</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00328">328</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00329">329</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -834,7 +836,29 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>The resulting color value will be of the type <a class="el" href="classNanoXLSX_1_1Colors_1_1SrgbColor.html" title="Class representing a generic sRGB color (with or without alpha channel).">SrgbColor</a>, if valid</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00318">318</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00319">319</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+
+</div>
+</div>
+<a id="afa2a277f265126db5855b80c7b7ab3a8" name="afa2a277f265126db5855b80c7b7ab3a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa2a277f265126db5855b80c7b7ab3a8">&#9670;&#160;</a></span>ToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">override string NanoXLSX.Colors.Color.ToString </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>String representation od a <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> instance. </p>
+<dl class="section return"><dt>Returns</dt><dd>String value</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00348">348</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -913,7 +937,7 @@ Properties</h2></td></tr>
 
 <p>Checks if this <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> is defined (not None). </p>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00083">83</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00084">84</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -1015,9 +1039,10 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Optional tint value for colors (-1.0 to 1.0) Positive values lighten, negative values darken. </p>
+<p>Optional tint value for colors (-1.0 to 1.0), mainly for theme colors Positive values lighten, negative values darken. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Although tint is generally specified for all color types, according to the OOXML specifications, it seems only to have an effect on colors of the type <a class="el" href="classNanoXLSX_1_1Colors_1_1ThemeColor.html" title="Class representing a color defined by a theme color scheme element (see Theme.ColorSchemeElement).">ThemeColor</a>. Therefore, the value is also not written on any color except <a class="el" href="classNanoXLSX_1_1Colors_1_1ThemeColor.html" title="Class representing a color defined by a theme color scheme element (see Theme.ColorSchemeElement).">ThemeColor</a></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00078">78</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00079">79</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>
@@ -1069,7 +1094,7 @@ Properties</h2></td></tr>
 
 <p>Gets the color value as <a class="el" href="interfaceNanoXLSX_1_1Interfaces_1_1IColor.html" title="Interface to represent non typed color, either defined by the system or the user.">IColor</a> interface. If no color was defined (<a class="el" href="#adfdf342a6810d49dfebb9ae4f05ea8bba6adf97f83acf6453d4a6a4b1070f3754" title="No color defined.">ColorType.None</a> or property <a class="el" href="#a71d41d3ec1adca4aee630ec9f1d200df" title="Checks if this Color is defined (not None).">IsDefined</a> is false), null is returned."/&gt;. </p>
 
-<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00088">88</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Color_8cs_source.html#l00089">89</a> of file <a class="el" href="Color_8cs_source.html">Color.cs</a>.</p>
 
 </div>
 </div>

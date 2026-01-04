@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['dependencies_0',['Dependencies',['../index.html#autotoc_md12',1,'']]],
-  ['description_1',['Description',['../index.html#autotoc_md11',1,'']]]
+  ['further_20references_0',['Further References',['../index.html#autotoc_md11',1,'']]]
 ];

@@ -57,10 +57,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classNanoXLSX_1_1Colors_1_1IndexedColor.html#a7a1fc039f8269fc571148b329b0dd9c9",
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html",
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ad4cbb582cb8dccaa4d459a745c035a3d",
-"classNanoXLSX_1_1Styles_1_1CellXf.html#aa54dad8abb79ea794ef6c3f7e3c91697",
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#a64cb415e50ab8afef8e13ea6956cca67",
+"classNanoXLSX_1_1Colors_1_1SystemColor.html#ae7289b697c69af5f41c4c12407ccc87d",
+"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ac58f9d659024730a51c7ed232a57b70a",
+"classNanoXLSX_1_1Styles_1_1CellXf.html#a7d09ded31940b943aed381e646f3ddf9",
 "classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a259882e052e93f22732c4a15535f829d",
 "classNanoXLSX_1_1Utils_1_1DataUtils.html#a6519c1679e9faf40e962f0717b533da4",
 "classNanoXLSX_1_1Worksheet.html#a0f229c5502e5cfdf480af3eb8439b9db",
