@@ -125,6 +125,11 @@ The following guide lists all necessary changes, as well as changed behaviors of
 - The property `Row` is now read-only (immutable). To change the property, a new Address object has to be created
 - The property `Column` is now read-only (immutable). To change the property, a new Address object has to be created
 - The property `Type` is now read-only (immutable). To change the property, a new Address object has to be created
+- An Address object can now be de defined by an explicit cast (implicit casting was not realized due to potential issues with object comparison). Example:
+```cs
+sting addressString = "A15";
+Address address = (Address)addressString;
+```
 
 ---
 
@@ -132,7 +137,11 @@ The following guide lists all necessary changes, as well as changed behaviors of
 
 - The property `StartAddress` is now read-only (immutable). To change the property, a new Range object has to be created
 - The property `EndAddress` is now read-only (immutable). To change the property, a new Range object has to be created
- 
+- A Range object can now be de defined by an implicit cast using a string. Example:
+```cs
+Range range = "A2:D15";
+```
+
 ---
 
 ### Styles 
@@ -197,7 +206,37 @@ ApplicationDefined, ANSI, Default, Symbols, Mac, ShiftJIS, Hangul, Johab, GBK, B
 // ApplicableDefined is usually ignored, and Default may be used instead
 ```
 
-- The property `Font.ColorScheme` was changed from type `int` to the enum `Theme.ColorSchemeElement`. The value has to be replaced by one of the available values (See **Theme section** ). The initialization default value is `Theme.ColorSchemeElement.light1`.
+- The property `Font.ColorValue` was changed from type `string ` to the new `Color` class (namespace `NanoXLSX.Colors`). The new Color class can represent an RGB, ARGB, system, theme or indexed color. However, there are also implicit conversions. See the Color class documentation for more details. Usage examples:
+```cs
+Font font = new Font();
+font.ColorValue = Color.CreateIndexed(IndexedColor.Value.Yellow);
+
+// Different examples with other color types
+
+Font font2 = new Font();
+font.ColorValue = Color.CreateRgb("FF00FF00"); // ARGB
+
+Font font3 = new Font();
+font3.ColorValue = Color.CreateTheme(Theme.ColorSchemeElement.Accent1, 0.5f); // Theme color with tint
+
+// Implicit creation of specific color from a string (ARGB):
+Font font4 = new Font();
+font4.ColorValue = "FF00FF00"; // Implicit conversion to SrgbColor
+
+// Implicit creation of font from an int (indexed color):
+Font font5 = new Font();
+Font font5.ColorValue = IndexedColor.Value.Black; // Implicit conversion to IndexedColor as background
+
+// Implicit creation of specific color from an int (color index):
+Font font6 = new Font();
+font6.ColorValue = 63; // Implicit conversion to IndexedColor
+
+// Implicit creation of specific color from an enum value (color index):
+Font font7 = new Font();
+font7.ColorValue = IndexedColor.Value.Magenta; // Implicit conversion to IndexedColor enum value
+```
+
+- The property `Font.ColorTheme` was completely removed. This value is only relevant, if the property `Font.ColorValue` is of the type `ThemeColor`. All references are to be removed.
 - The property `Font.VerticalAlign` was changed from type `Font.VerticalAlignValue` to the enum `Font.VerticalTextAlignValue`. Only the enum name has to be changed (see below):
 - The enum `Font.VerticalAlignValue` was renamed to `Font.VerticalTextAlignValue`. The available values remain unchanged
 
@@ -262,7 +301,7 @@ Fill was completely overhauled in version 3.0.0, to support more flexible color 
 - The static method `Fill.ValidateColr(string,bool, bool)` was moved to the utils class `Validators.ValidateColr(string,bool, bool)` in namespace `NanoXLSX.Utils`. The class has to be changed in the code, but the method signature remains unchanged.
 - The property `Fill.BackgroundColor` was changed from type `string` to the new `Color` class (namespace `NanoXLSX.Colors`). The new Color class can represent an RGB, ARGB, system, theme or indexed color. See the Color class documentation for more details.
 - The property `Fill.ForegroundColor` was changed from type `string` to the new `Color` class (namespace `NanoXLSX.Colors`). The new Color class can represent an RGB, ARGB, system, theme or indexed color. See the Color class documentation for more details.
-- The property `IndexedColor` was removed and is now part of the new `Color` class, applied to `BackgroundColor` and `ForegroundColor`. In the `Color` class, there is a property `IndexedColor` that holds an object of the type `IndexedColor` (namespace `NanoXLSX.Themes`). The original `int` value has to be replaced by one of the available enum values in the class `IndexedColor`. Usage example:
+- The property `IndexedColor` was removed and is now part of the new `Color` class, applied to `BackgroundColor` and `ForegroundColor`. In the `Color` class, there is a property `IndexedColor` that holds an object of the type `IndexedColor` (namespace `NanoXLSX.Themes`). The original `int` value has to be replaced by one of the available enum values in the class `IndexedColor`. However, there are also implicit conversions. See the Color class documentation for more details. Usage examples:
 
 ```csharp
 Fill fill = new Fill();
@@ -278,21 +317,21 @@ fill3.ForegroundColor = Color.CreateTheme(Theme.ColorSchemeElement.Accent1, 0.5f
 // Implicit creation of fill from a string (ARGB):
 Fill fill4 = "FF00FF00"; // Implicit conversion to SrgbColor as foreground
 
-// Implicit creation of fill from a int (indexed color):
+// Implicit creation of fill from an int (indexed color):
 Fill fill5 = IndexedColor.Value.Red2; // Implicit conversion to IndexedColor as foreground
 
-// Implicit creation of fill from a int (indexed color):
-Fill fill6 = 64; // Implicit conversion to IndexedColor as foreground, ising the index number
+// Implicit creation of fill from an int (indexed color):
+Fill fill6 = 64; // Implicit conversion to IndexedColor as foreground, using the index number
 
 // Implicit creation of specific color from a string (ARGB):
 Fill fill7 = new Fill();
 fill7.ForegroundColor = "FF00FF00"; // Implicit conversion to SrgbColor
 
-// Implicit creation of fill from a int (indexed color):
+// Implicit creation of fill from an int (indexed color):
 Fill fill8 = new Fill();
 Fill fill8.BackgroundColor = IndexedColor.Value.Black; // Implicit conversion to IndexedColor as background
 
-// Implicit creation of specific color from a int (color index):
+// Implicit creation of specific color from an int (color index):
 Fill fill9 = new Fill();
 fill9.BackgroundColor = 63; // Implicit conversion to IndexedColor
 ```

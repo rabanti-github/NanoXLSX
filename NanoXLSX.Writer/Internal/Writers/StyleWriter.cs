@@ -214,13 +214,11 @@ namespace NanoXLSX.Internal.Writers
                     font.AddChildElementWithAttribute("vertAlign", "val", Font.GetVerticalTextAlignName(item.VerticalAlign));
                 }
                 font.AddChildElementWithAttribute("sz", "val", ParserUtils.ToString(item.Size));
-                if (string.IsNullOrEmpty(item.ColorValue))
+                if (item.ColorValue != null && item.ColorValue.IsDefined)
                 {
-                    font.AddChildElementWithAttribute("color", "theme", ParserUtils.ToString((int)item.ColorTheme));
-                }
-                else
-                {
-                    font.AddChildElementWithAttribute("color", "rgb", item.ColorValue);
+                    XmlElement color = XmlElement.CreateElement("color");
+                    color.AddAttributes(colorWriter.GetAttributes(item.ColorValue));
+                    font.AddChildElement(color);
                 }
                 font.AddChildElementWithAttribute("name", "val", item.Name);
                 font.AddChildElementWithAttribute("family", "val", ParserUtils.ToString((int)item.Family));

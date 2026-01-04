@@ -61,7 +61,7 @@ namespace NanoXLSX.Utils
                 {
                     return null;
                 }
-                return "The color expression was null or empty";
+                return "The color expression cannot be null or empty";
             }
 
             int length = useAlpha ? 8 : 6;

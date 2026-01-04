@@ -72,9 +72,10 @@ namespace NanoXLSX.Colors
         public SystemColor SystemColor { get; private set; }
 
         /// <summary>
-        /// Optional tint value for colors (-1.0 to 1.0)
+        /// Optional tint value for colors (-1.0 to 1.0), mainly for theme colors
         /// Positive values lighten, negative values darken
         /// </summary>
+        /// \remark <remarks>Although tint is generally specified for all color types, according to the OOXML specifications, it seems only to have an effect on colors of the type <see cref="ThemeColor"/>. Therefore, the value is also not written on any color except ThemeColor</remarks>
         public double? Tint { get; set; }
 
         /// <summary>
@@ -338,6 +339,29 @@ namespace NanoXLSX.Colors
         public static implicit operator Color(IndexedColor.Value colorIndex)
         {
             return CreateIndexed(colorIndex);
+        }
+
+        /// <summary>
+        /// String representation od a Color instance
+        /// </summary>
+        /// <returns>String value</returns>
+        public override string ToString()
+        {
+            switch (Type)
+            {
+                case ColorType.Rgb:
+                    return "RGBColor:" + RgbColor.StringValue;
+                case ColorType.Indexed:
+                    return "IndexedColor:" + IndexedColor.StringValue;
+                case ColorType.Theme:
+                    return "ThemeColor:" + ThemeColor.StringValue;
+                case ColorType.System:
+                    return "SystemColor:" + SystemColor.StringValue;
+                case ColorType.Auto:
+                    return "Auto-Color";
+                default:
+                    return "Undefined Color";
+            }
         }
 
 

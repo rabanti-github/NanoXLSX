@@ -1,9 +1,9 @@
 # Change Log - NanoXLSX.Writer
 
-## v3.0.0-rc.4
+## v3.0.0-rc.3
 
 ---
-Release Date: **21.12.2025**
+Release Date: **04.01.2026**
 
 - Changed handling of colors in the style writer (Fills) to consider:
   - sRGB colors (RGB / ARGB)
@@ -12,16 +12,7 @@ Release Date: **21.12.2025**
   - System colors
   - Auto colors
   - Tint values
-
-
-
-## v3.0.0-rc.3
-
----
-Release Date: **11.12.2025**
-
 - Internal change of structured text handling
-
 
 ## v3.0.0-rc.2
 

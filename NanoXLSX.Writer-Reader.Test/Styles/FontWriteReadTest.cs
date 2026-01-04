@@ -1,4 +1,5 @@
-﻿using NanoXLSX.Styles;
+﻿using NanoXLSX.Colors;
+using NanoXLSX.Styles;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
 using static NanoXLSX.Styles.Font;
@@ -97,14 +98,14 @@ namespace NanoXLSX.Test.Writer_Reader.Styles
         public void ThemeFontTest(ColorSchemeElement element, object value)
         {
             var style = new Style();
-            style.CurrentFont.ColorTheme = element;
+            style.CurrentFont.ColorValue = Color.CreateTheme(element);
             var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
-            Assert.Equal(element, cell.CellStyle.CurrentFont.ColorTheme);
+            Assert.Equal(element, cell.CellStyle.CurrentFont.ColorValue.ThemeColor.ColorValue);
         }
 
         [Theory(DisplayName = "Test of the 'colorValue' value when writing and reading a Font style")]
         [InlineData("FFAABBCC", "test")]
-        [InlineData("", 0.5f)]
+        [InlineData("CC33AA", 0.5f)]
         public void ColorValueFontTest(string styleValue, object value)
         {
             var style = new Style();

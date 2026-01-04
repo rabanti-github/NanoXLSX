@@ -1,10 +1,10 @@
 ﻿using System;
+using NanoXLSX.Colors;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using NanoXLSX.Test.Core.Utils;
 using Xunit;
 using static NanoXLSX.Styles.Font;
-using static NanoXLSX.Themes.Theme;
 
 namespace NanoXLSX.Test.Core.StyleTest
 {
@@ -27,7 +27,6 @@ namespace NanoXLSX.Test.Core.StyleTest
                 Size = 15,
                 Name = "Arial",
                 Family = FontFamilyValue.Script,
-                ColorTheme = ColorSchemeElement.Accent5,
                 ColorValue = "FF22AACC",
                 Scheme = SchemeValue.Minor,
                 VerticalAlign = VerticalTextAlignValue.Subscript
@@ -55,9 +54,9 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(Font.DefaultFontFamily, font.Family);
             Assert.Equal(Font.DefaultFontScheme, font.Scheme);
             Assert.Equal(Font.DefaultVerticalAlign, font.VerticalAlign);
-            Assert.Equal("", font.ColorValue);
+            Assert.False(font.ColorValue.IsDefined);
+            Assert.Null(font.ColorValue.Value);
             Assert.Equal(CharsetValue.Default, font.Charset);
-            Assert.Equal(ColorSchemeElement.Light1, font.ColorTheme);
         }
 
 
@@ -208,47 +207,57 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(value, font.Family);
         }
 
-        [Theory(DisplayName = "Test of the get and set function of the ColorTheme property")]
-        [InlineData(ColorSchemeElement.Dark1)]
-        [InlineData(ColorSchemeElement.Light1)]
-        [InlineData(ColorSchemeElement.Dark2)]
-        [InlineData(ColorSchemeElement.Light2)]
-        [InlineData(ColorSchemeElement.Accent1)]
-        [InlineData(ColorSchemeElement.Accent2)]
-        [InlineData(ColorSchemeElement.Accent3)]
-        [InlineData(ColorSchemeElement.Accent4)]
-        [InlineData(ColorSchemeElement.Accent5)]
-        [InlineData(ColorSchemeElement.Accent6)]
-        [InlineData(ColorSchemeElement.Hyperlink)]
-        [InlineData(ColorSchemeElement.FollowedHyperlink)]
-        public void ColorThemeTest(ColorSchemeElement element)
+        [Fact(DisplayName = "Test of the get and set function of the ColorValue property on sRGB (ARGB)")]
+        public void ColorValueTest()
         {
             Font font = new Font();
-            Assert.Equal(ColorSchemeElement.Light1, font.ColorTheme); // light1 is default
-            font.ColorTheme = element;
-            Assert.Equal(element, font.ColorTheme);
+            Assert.Equal(Color.ColorType.None, font.ColorValue.Type); // default is none
+            font.ColorValue = "FFAA3322"; // implicit
+            Assert.Equal(Color.ColorType.Rgb, font.ColorValue.Type);
+            Assert.Equal("FFAA3322", font.ColorValue.RgbColor.ColorValue);
+
+            Font font2 = new Font();
+            Assert.Equal(Color.ColorType.None, font2.ColorValue.Type); // default is none
+            font2.ColorValue = Color.CreateRgb("FFAA33AA");
+            Assert.Equal(Color.ColorType.Rgb, font2.ColorValue.Type);
+            Assert.Equal("FFAA33AA", font2.ColorValue.RgbColor.ColorValue);
         }
 
-        [Theory(DisplayName = "Test of the get and set function of the ColorValue property")]
-        [InlineData("")]
-        [InlineData(null)]
-        [InlineData("FFAA22CC")]
-        public void ColorValueTest(string value)
+        [Fact(DisplayName = "Test of the get and set function of the ColorValue property on Indexed colors")]
+        public void ColorValueTest2()
         {
             Font font = new Font();
-            Assert.Equal(string.Empty, font.ColorValue); // default is empty
-            font.ColorValue = value;
-            Assert.Equal(value, font.ColorValue);
+            Assert.Equal(Color.ColorType.None, font.ColorValue.Type); // default is none
+            font.ColorValue = 32; // implicit
+            Assert.Equal(Color.ColorType.Indexed, font.ColorValue.Type);
+            Assert.Equal(IndexedColor.Value.Navy, font.ColorValue.IndexedColor.ColorValue);
+
+            Font font2 = new Font();
+            Assert.Equal(Color.ColorType.None, font2.ColorValue.Type); // default is none
+            font2.ColorValue = Color.CreateIndexed(IndexedColor.Value.Navy);
+            Assert.Equal(Color.ColorType.Indexed, font.ColorValue.Type);
+            Assert.Equal(IndexedColor.Value.Navy, font.ColorValue.IndexedColor.ColorValue);
         }
 
-        [Theory(DisplayName = "Test of the failing set function of the ColorValue property (invalid values)")]
-        [InlineData("77BB00")]
+        [Theory(DisplayName = "Test of the failing implicit set function of the ColorValue property (invalid string values)")]
+        [InlineData("77BB0")]
         [InlineData("0002200000")]
         [InlineData("XXXXXXXX")]
         public void ColorValueFailTest(string value)
         {
             Font font = new Font();
             Exception ex = Assert.Throws<StyleException>(() => font.ColorValue = value);
+            Assert.Equal(typeof(StyleException), ex.GetType());
+        }
+
+        [Theory(DisplayName = "Test of the failing implicit set function of the ColorValue property (invalid int values)")]
+        [InlineData(-10)]
+        [InlineData(66)]
+        [InlineData(999)]
+        public void ColorValueFailTest2(int index)
+        {
+            Font font = new Font();
+            Exception ex = Assert.Throws<StyleException>(() => font.ColorValue = index);
             Assert.Equal(typeof(StyleException), ex.GetType());
         }
 
@@ -375,14 +384,6 @@ namespace NanoXLSX.Test.Core.StyleTest
         {
             Font style2 = (Font)exampleStyle.Copy();
             style2.Family = FontFamilyValue.Reserved5;
-            Assert.False(exampleStyle.Equals(style2));
-        }
-
-        [Fact(DisplayName = "Test of the Equals method (inequality of ColorTheme)")]
-        public void EqualsTest2j()
-        {
-            Font style2 = (Font)exampleStyle.Copy();
-            style2.ColorTheme = ColorSchemeElement.Light2;
             Assert.False(exampleStyle.Equals(style2));
         }
 

@@ -271,7 +271,7 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
             Assert.Equal(PatternValue.None, fill.PatternFill);
             fill.SetColor(color, fillType);
-           Assert.Equal(Color.ColorType.Rgb, fill.ForegroundColor.Type);
+            Assert.Equal(Color.ColorType.Rgb, fill.ForegroundColor.Type);
             Assert.Equal(Color.ColorType.Rgb, fill.BackgroundColor.Type);
             Assert.Equal(PatternValue.Solid, fill.PatternFill);
             Assert.Equal(expectedForeground, fill.ForegroundColor);

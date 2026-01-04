@@ -10,6 +10,7 @@ namespace NanoXLSX.Internal.Readers
     using System;
     using System.IO;
     using System.Xml;
+    using System.Xml.Linq;
     using NanoXLSX.Colors;
     using NanoXLSX.Interfaces.Plugin;
     using NanoXLSX.Interfaces.Reader;
@@ -372,50 +373,53 @@ namespace NanoXLSX.Internal.Readers
                     attribute = ReaderUtils.GetAttribute(colorNode, "theme");
                     if (attribute != null)
                     {
+                        ColorSchemeElement element = ColorSchemeElement.Dark1;
                         switch (attribute)
                         {
                             case "0":
-                                fontStyle.ColorTheme = ColorSchemeElement.Dark1;
+                                element = ColorSchemeElement.Dark1;
                                 break;
                             case "1":
-                                fontStyle.ColorTheme = ColorSchemeElement.Light1;
+                                element = ColorSchemeElement.Light1;
                                 break;
                             case "2":
-                                fontStyle.ColorTheme = ColorSchemeElement.Dark2;
+                                element = ColorSchemeElement.Dark2;
                                 break;
                             case "3":
-                                fontStyle.ColorTheme = ColorSchemeElement.Light2;
+                                element = ColorSchemeElement.Light2;
                                 break;
                             case "4":
-                                fontStyle.ColorTheme = ColorSchemeElement.Accent1;
+                                element = ColorSchemeElement.Accent1;
                                 break;
                             case "5":
-                                fontStyle.ColorTheme = ColorSchemeElement.Accent2;
+                                element = ColorSchemeElement.Accent2;
                                 break;
                             case "6":
-                                fontStyle.ColorTheme = ColorSchemeElement.Accent3;
+                                element = ColorSchemeElement.Accent3;
                                 break;
                             case "7":
-                                fontStyle.ColorTheme = ColorSchemeElement.Accent4;
+                                element = ColorSchemeElement.Accent4;
                                 break;
                             case "8":
-                                fontStyle.ColorTheme = ColorSchemeElement.Accent5;
+                                element = ColorSchemeElement.Accent5;
                                 break;
                             case "9":
-                                fontStyle.ColorTheme = ColorSchemeElement.Accent6;
+                                element = ColorSchemeElement.Accent6;
                                 break;
                             case "10":
-                                fontStyle.ColorTheme = ColorSchemeElement.Hyperlink;
+                                element = ColorSchemeElement.Hyperlink;
                                 break;
                             case "11":
-                                fontStyle.ColorTheme = ColorSchemeElement.FollowedHyperlink;
+                                element = ColorSchemeElement.FollowedHyperlink;
                                 break;
                         }
+                        fontStyle.ColorValue = Color.CreateTheme(element);
+                       
                     }
                     attribute = ReaderUtils.GetAttribute(colorNode, "rgb");
                     if (attribute != null)
                     {
-                        fontStyle.ColorValue = attribute;
+                        fontStyle.ColorValue = Color.CreateRgb(attribute);
                     }
                 }
                 if (ReaderUtils.GetAttributeOfChild(font, "name", "val", out attribute))

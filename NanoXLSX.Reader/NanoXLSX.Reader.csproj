@@ -20,9 +20,9 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageTags>Excel Office XLSX Reader</PackageTags>
-		<Version>3.0.0-rc.2</Version>
-		<AssemblyVersion>3.0.0-rc.2</AssemblyVersion>
-		<FileVersion>3.0.0-rc.2</FileVersion>
+		<Version>3.0.0-rc.3</Version>
+		<AssemblyVersion>3.0.0-rc.3</AssemblyVersion>
+		<FileVersion>3.0.0-rc.3</FileVersion>
 		<RepositoryType>git</RepositoryType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<PackageIcon>NanoXLSXlib.png</PackageIcon>

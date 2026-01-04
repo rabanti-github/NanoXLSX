@@ -22,7 +22,7 @@ namespace NanoXLSX.Colors
         public Theme.ColorSchemeElement ColorValue { get; set; }
 
         /// <summary>
-        /// Gets the internal OOXML string value of the enum, defined in <see cref="ColorValue"/>
+        /// Gets the internal, numeric OOXML string value of the enum, defined in <see cref="ColorValue"/>
         /// </summary>
         public string StringValue
         {

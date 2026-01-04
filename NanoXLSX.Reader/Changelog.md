@@ -3,7 +3,7 @@
 ## v3.0.0-rc.3
 
 ---
-Release Date: **21.12.2025**
+Release Date: **04.01.2026**
 
 - Changed handling of colors in the style reader (Fills) to consider:
   - sRGB colors (RGB / ARGB)

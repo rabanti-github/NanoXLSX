@@ -527,5 +527,47 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.True(result < 0); // Both are invalid types - corner case
         }
 
+        [Theory(DisplayName = "Test of the ToStringFunction (for code coverage)")]
+        [InlineData(Color.ColorType.Rgb)]
+        [InlineData(Color.ColorType.Indexed)]
+        [InlineData(Color.ColorType.Theme)]
+        [InlineData(Color.ColorType.System)]
+        [InlineData(Color.ColorType.Auto)]
+        [InlineData(Color.ColorType.None)]
+        public void ToStringTest(Color.ColorType type)
+        {
+            Color color;
+            string expectedToken;
+            switch (type)
+            {
+                case Color.ColorType.Rgb:
+                    color = Color.CreateRgb("FFAABB");
+                    expectedToken = "FFAABB";
+                    break;
+                case Color.ColorType.Indexed:
+                    color = Color.CreateIndexed(IndexedColor.Value.Rose);
+                    expectedToken = ((int)IndexedColor.Value.Rose).ToString();
+                    break;
+                case Color.ColorType.Theme:
+                    color = Color.CreateTheme(Theme.ColorSchemeElement.Accent5);
+                    expectedToken = ((int)Theme.ColorSchemeElement.Accent5).ToString();
+                    break;
+                case Color.ColorType.System:
+                    color = Color.CreateSystem(SystemColor.Value.Background);
+                    expectedToken = "Background";
+                    break;
+                case Color.ColorType.Auto:
+                    color = Color.CreateAuto();
+                    expectedToken = "Auto";
+                    break;
+                default:
+                    color = Color.CreateNone();
+                    expectedToken = "Undefined";
+                    break;
+            }
+            string given = color.ToString().ToLower();
+            Assert.Contains(expectedToken.ToLower(), given);
+        }
+
     }
 }

@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Text;
+using NanoXLSX.Colors;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Utils;
 using static NanoXLSX.Themes.Theme;
@@ -303,56 +304,21 @@ namespace NanoXLSX.Styles
         /// Gets or sets the char set of the Font
         /// </summary>
         [Append]
-        //TODO: v3> Refactor to enum according to specs
-        // OOXML: Chp.19.2.1.13
         public CharsetValue Charset { get; set; } = CharsetValue.Default;
 
         /// <summary>
-        /// Gets or sets the font color theme, represented by a color scheme
-        /// </summary>
-        [Append]
-        //TODO: v3> Reference to Theming
-        //OOXML: Chp.18.8.3 and 20.1.6.2
-        public ColorSchemeElement ColorTheme
-        {
-            get => colorTheme;
-            set
-            {
-                if (value == null)
-                {
-                    throw new StyleException("A color theme cannot be null");
-                }
-                colorTheme = value;
-            }
-        }
-        /// <summary>
-        /// Gets or sets the color code of the font color. The value is expressed as hex string with the format AARRGGBB. AA (Alpha) is usually FF. If set, the value will be cast to upper case
+        /// Gets or sets the color code of the font color. The value is an instance of <see cref="Color"/>
         /// To omit the color, an empty string can be set. Empty is also default.
         /// </summary>
-        /// <exception cref="StyleException">Throws a StyleException if the passed ARGB value is not valid</exception>
         [Append]
-        public string ColorValue
+        public Color ColorValue
         {
-            get => colorValue;
-            set
-            {
-                Validators.ValidateColor(value, true, true);
-                if (value != null)
-                {
-                    colorValue = ParserUtils.ToUpper(value);
-                }
-                else
-                {
-                    colorValue = value;
-                }
-            }
+            get; set;
         }
         /// <summary>
         ///  Gets or sets the font family (Default is 2 = Swiss)
         /// </summary>
         [Append]
-        //TODO: v3> Refactor to enum according to specs (18.18.94)
-        //OOXML: Chp.18.8.18 and 18.18.94
         public FontFamilyValue Family { get; set; }
         /// <summary>
         /// Gets whether the font is equal to the default font
@@ -366,7 +332,6 @@ namespace NanoXLSX.Styles
                 return Equals(temp);
             }
         }
-
 
         /// <summary>
         /// Gets or sets the font name (Default is Calibri)
@@ -417,13 +382,13 @@ namespace NanoXLSX.Styles
         /// <summary>
         /// Default constructor
         /// </summary>
+        /// \remark <remarks>When using the default constructor, an object of type <see cref="Color"/> with the type <see cref="Color.ColorType.None"/> will be created for the property <see cref="Font.ColorValue"/>. To set a font color, the property has to be updated with a new value</remarks>
         public Font()
         {
             size = DefaultFontSize;
             Name = DefaultFontName;
             Family = DefaultFontFamily;
-            ColorTheme = ColorSchemeElement.Light1;
-            ColorValue = string.Empty;
+            ColorValue = Color.CreateNone();// Default is none
             Scheme = DefaultFontScheme;
             VerticalAlign = DefaultVerticalAlign;
         }
@@ -464,7 +429,6 @@ namespace NanoXLSX.Styles
             sb.Append("\"Font\": {\n");
             AddPropertyAsJson(sb, "Bold", Bold);
             AddPropertyAsJson(sb, "Charset", Charset);
-            AddPropertyAsJson(sb, "ColorTheme", ColorTheme);
             AddPropertyAsJson(sb, "ColorValue", ColorValue);
             AddPropertyAsJson(sb, "VerticalAlign", VerticalAlign);
             AddPropertyAsJson(sb, "Family", Family);
@@ -489,7 +453,6 @@ namespace NanoXLSX.Styles
             {
                 Bold = Bold,
                 Charset = Charset,
-                ColorTheme = ColorTheme,
                 ColorValue = ColorValue,
                 VerticalAlign = VerticalAlign,
                 Family = Family,
@@ -517,8 +480,7 @@ namespace NanoXLSX.Styles
                 hashCode = hashCode * -1521134295 + size.GetHashCode();
                 hashCode = hashCode * -1521134295 + Bold.GetHashCode();
                 hashCode = hashCode * -1521134295 + Charset.GetHashCode();
-                hashCode = hashCode * -1521134295 + ColorTheme.GetHashCode();
-                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ColorValue);
+                hashCode = hashCode * -1521134295 + EqualityComparer<Color>.Default.GetHashCode(ColorValue);
                 hashCode = hashCode * -1521134295 + Family.GetHashCode();
                 hashCode = hashCode * -1521134295 + Italic.GetHashCode();
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
@@ -544,7 +506,6 @@ namespace NanoXLSX.Styles
                    Strike == font.Strike &&
                    Underline == font.Underline &&
                    Charset == font.Charset &&
-                   ColorTheme == font.ColorTheme &&
                    ColorValue == font.ColorValue &&
                    Family == font.Family &&
                    Name == font.Name &&

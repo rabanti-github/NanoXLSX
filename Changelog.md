@@ -3,7 +3,7 @@
 ## v3.0.0-rc.5
 
 ---
-Release Date: **22.12.2025**
+Release Date: **04.01.2026**
 
 - Added explicit operator for Address to convert from string to Address (string can be cast to address explicitly)
 - Added implicit operator for Range to convert from string to Range (string can be cast to range implicitly)
@@ -13,7 +13,10 @@ Release Date: **22.12.2025**
   - ThemeColor (Color, defined by theme elements)
   - SystemColor (Color, defined by system colors)
   - AutoColor (automatic color, no value / dummy class)
+- Changed the type of `Font.ColorValue` from string to Color (can be sRGB/ARGB, Indexed, Theme, System or Auto)
+- Removed the property `Font.ColorTheme`, since only relevant for theme colors. The value is now handled by `Font.ColorValue`, in case of a ThemeColor
 - Re-implementation of the Fill class to use the new Color class for color representation of the foreground and background colors (indexed property removed)
+- Removed the property `Fill.IndexedColor`, since only relevant for Indexed colors. The value is now handled by `Fill.ForegroundColor` or `Fill.BackgroundColor`, in case of a IndexedColor
 - Added implicit operator for Fill to create a fill color by a string (RGB or ARGB value)
 - Added implicit operator for Fill to create a fill color by an integer (indexed color value)
 - Changed internal handling of text cell values
