@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['yellow_0',['Yellow',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a51e6cd92b6c45f9affdc158ecca2b8b8',1,'NanoXLSX::Colors::IndexedColor']]],
-  ['yellow5_1',['Yellow5',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a082f5e0312675b6601f592b2a679a87e',1,'NanoXLSX::Colors::IndexedColor']]]
+  ['xmlattribute_0',['XmlAttribute',['../structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html',1,'NanoXLSX::Utils::Xml']]],
+  ['xmlelement_1',['XmlElement',['../classNanoXLSX_1_1Utils_1_1Xml_1_1XmlElement.html',1,'NanoXLSX::Utils::Xml']]],
+  ['xmlutils_2',['XmlUtils',['../classNanoXLSX_1_1Utils_1_1Xml_1_1XmlUtils.html',1,'NanoXLSX::Utils::Xml']]]
 ];

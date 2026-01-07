@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['dependencies_0',['Dependencies',['../index.html#autotoc_md10',1,'']]],
-  ['description_1',['Description',['../index.html#autotoc_md9',1,'']]]
+  ['change_20log_20nanoxlsx_20core_0',['Change Log - NanoXLSX.Core',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html',1,'']]],
+  ['changes_1',['Changes',['../index.html#autotoc_md14',1,'']]],
+  ['core_2',['Core',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html',1,'Change Log - NanoXLSX.Core'],['../index.html',1,'NanoXLSX.Core'],['../index.html#autotoc_md9',1,'NanoXLSX.Core']]]
 ];

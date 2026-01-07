@@ -1,5 +1,15 @@
 var NAVTREEINDEX9 =
 {
+"structNanoXLSX_1_1Address.html#ad3e5a2f37ebff84a225ab0cf0ed6e393":[3,0,0,7,20],
+"structNanoXLSX_1_1Address.html#ad71959cf449bdf71ec1c76bfbf8a4b20":[2,0,0,7,7],
+"structNanoXLSX_1_1Address.html#ad71959cf449bdf71ec1c76bfbf8a4b20":[3,0,0,7,7],
+"structNanoXLSX_1_1Address.html#ae8cecb38a9cd5ee1565deffaae3cf680":[2,0,0,7,5],
+"structNanoXLSX_1_1Address.html#ae8cecb38a9cd5ee1565deffaae3cf680":[3,0,0,7,5],
+"structNanoXLSX_1_1Address.html#aec11d1f23b4e2dc4a462592989ffda79":[2,0,0,7,15],
+"structNanoXLSX_1_1Address.html#aec11d1f23b4e2dc4a462592989ffda79":[3,0,0,7,15],
+"structNanoXLSX_1_1Address.html#afaf9f67a3b9817f50dc403b69b9e25d0":[2,0,0,7,18],
+"structNanoXLSX_1_1Address.html#afaf9f67a3b9817f50dc403b69b9e25d0":[3,0,0,7,18],
+"structNanoXLSX_1_1Range.html":[2,0,0,13],
 "structNanoXLSX_1_1Range.html":[3,0,0,13],
 "structNanoXLSX_1_1Range.html#a312384654d7a2000db687486545e820c":[2,0,0,13,2],
 "structNanoXLSX_1_1Range.html#a312384654d7a2000db687486545e820c":[3,0,0,13,2],
