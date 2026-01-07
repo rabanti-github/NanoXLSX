@@ -347,6 +347,26 @@ namespace NanoXLSX.Internal.Readers
                 {
                     fontStyle.Strike = true;
                 }
+                XmlNode outlineNode = ReaderUtils.GetChildNode(font, "outline");
+                if (outlineNode != null)
+                {
+                    fontStyle.Outline = true;
+                }
+                XmlNode shadowNode = ReaderUtils.GetChildNode(font, "shadow");
+                if (shadowNode != null)
+                {
+                    fontStyle.Shadow = true;
+                }
+                XmlNode condenseNode = ReaderUtils.GetChildNode(font, "condense");
+                if (condenseNode != null)
+                {
+                    fontStyle.Condense = true;
+                }
+                XmlNode extendNode = ReaderUtils.GetChildNode(font, "extend");
+                if (extendNode != null)
+                {
+                    fontStyle.Extend = true;
+                }
                 if (ReaderUtils.GetAttributeOfChild(font, "u", "val", out attribute))
                 {
                     if (attribute == null)

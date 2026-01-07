@@ -43,6 +43,50 @@ namespace NanoXLSX.Test.Writer_Reader.Styles
             Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Strike);
         }
 
+        [Theory(DisplayName = "Test of the 'outline' value when writing and reading a Font style")]
+        [InlineData(true, "test")]
+        [InlineData(false, 0.5f)]
+        public void OutlineFontTest(bool styleValue, object value)
+        {
+            var style = new Style();
+            style.CurrentFont.Outline = styleValue;
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Outline);
+        }
+
+        [Theory(DisplayName = "Test of the 'shadow' value when writing and reading a Font style")]
+        [InlineData(true, "test")]
+        [InlineData(false, 0.5f)]
+        public void ShadowFontTest(bool styleValue, object value)
+        {
+            var style = new Style();
+            style.CurrentFont.Shadow = styleValue;
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Shadow);
+        }
+
+        [Theory(DisplayName = "Test of the 'condense' value when writing and reading a Font style")]
+        [InlineData(true, "test")]
+        [InlineData(false, 0.5f)]
+        public void CondenseFontTest(bool styleValue, object value)
+        {
+            var style = new Style();
+            style.CurrentFont.Condense = styleValue;
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Condense);
+        }
+
+        [Theory(DisplayName = "Test of the 'extend' value when writing and reading a Font style")]
+        [InlineData(true, "test")]
+        [InlineData(false, 0.5f)]
+        public void ExtendFontTest(bool styleValue, object value)
+        {
+            var style = new Style();
+            style.CurrentFont.Extend = styleValue;
+            var cell = TestUtils.SaveAndReadStyledCell(value, style, "A1");
+            Assert.Equal(styleValue, cell.CellStyle.CurrentFont.Extend);
+        }
+
         [Theory(DisplayName = "Test of the 'underline' value when writing and reading a Font style")]
         [InlineData(UnderlineValue.Single, "test")]
         [InlineData(UnderlineValue.Double, 0.5f)]

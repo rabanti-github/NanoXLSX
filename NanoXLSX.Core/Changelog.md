@@ -1,5 +1,12 @@
 # Change Log - NanoXLSX.Core
 
+## v3.0.0-rc.4
+
+---
+Release Date: **07.01.2026**
+
+- Added Font properties: `Font.Outline`, `Font.Shadow`, `Font.Condense` and `Font.Extend` (optional font properties)
+
 ## v3.0.0-rc.3
 
 ---

@@ -201,6 +201,10 @@ namespace NanoXLSX.Internal.Writers
                 if (item.Bold) { font.AddChildElement("b"); }
                 if (item.Italic) { font.AddChildElement("i"); }
                 if (item.Strike) { font.AddChildElement("strike"); }
+                if (item.Outline) { font.AddChildElement("outline"); }
+                if (item.Shadow) { font.AddChildElement("shadow"); }
+                if (item.Condense) { font.AddChildElement("condense"); }
+                if (item.Extend) { font.AddChildElement("extend"); }
                 if (item.Underline != UnderlineValue.None && item.Underline != UnderlineValue.Single)
                 {
                     font.AddChildElementWithAttribute("u", "val", Font.GetUnderlineName(item.Underline));

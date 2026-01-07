@@ -23,6 +23,8 @@ namespace NanoXLSX.Test.Core.StyleTest
                 Italic = true,
                 Underline = UnderlineValue.Double,
                 Strike = true,
+                Shadow = true,
+                Extend = true,
                 Charset = CharsetValue.ANSI,
                 Size = 15,
                 Name = "Arial",
@@ -106,6 +108,55 @@ namespace NanoXLSX.Test.Core.StyleTest
             font.Strike = value;
             Assert.Equal(value, font.Strike);
         }
+
+
+
+        [Theory(DisplayName = "Test of the get and set function of the Outline property")]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void OutlineTest(bool value)
+        {
+            Font font = new Font();
+            Assert.False(font.Outline);
+            font.Outline = value;
+            Assert.Equal(value, font.Outline);
+        }
+
+        [Theory(DisplayName = "Test of the get and set function of the Shadow property")]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ShadowTest(bool value)
+        {
+            Font font = new Font();
+            Assert.False(font.Shadow);
+            font.Shadow = value;
+            Assert.Equal(value, font.Shadow);
+        }
+
+        [Theory(DisplayName = "Test of the get and set function of the Condense property")]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void CondenseTest(bool value)
+        {
+            Font font = new Font();
+            Assert.False(font.Condense);
+            font.Condense = value;
+            Assert.Equal(value, font.Condense);
+        }
+
+        [Theory(DisplayName = "Test of the get and set function of the Extend property")]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ExtendTest(bool value)
+        {
+            Font font = new Font();
+            Assert.False(font.Extend);
+            font.Extend = value;
+            Assert.Equal(value, font.Extend);
+        }
+
+
+
 
         [Theory(DisplayName = "Test of the get and set function of the Charset property")]
         [InlineData(CharsetValue.ANSI)]

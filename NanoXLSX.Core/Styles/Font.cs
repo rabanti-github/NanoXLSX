@@ -9,8 +9,6 @@ using System.Collections.Generic;
 using System.Text;
 using NanoXLSX.Colors;
 using NanoXLSX.Exceptions;
-using NanoXLSX.Utils;
-using static NanoXLSX.Themes.Theme;
 
 namespace NanoXLSX.Styles
 {
@@ -269,10 +267,6 @@ namespace NanoXLSX.Styles
         #region privateFields
         private float size;
         private string name = DefaultFontName;
-        //TODO: V3> Refactor to enum according to specs
-        //OOXML: Chp.20.1.6.2(p2839ff)
-        private string colorValue = "";
-        private ColorSchemeElement colorTheme;
         #endregion
 
         #region properties
@@ -299,6 +293,30 @@ namespace NanoXLSX.Styles
         /// </summary>
         [Append]
         public UnderlineValue Underline { get; set; } = UnderlineValue.None;
+        /// <summary>
+        /// Gets or sets whether the font has an outline defined. If true, an outline is rendered around the text
+        /// </summary>
+        [Append]
+        public bool Outline { get; set; }
+        /// <summary>
+        /// Gets or sets whether the font has a drop shadow. If true, a shadow is rendered on the text
+        /// </summary>
+        /// \remark <remarks>Applications are not required to render according to this flag. Therefore, shadow may have no effect</remarks>
+        [Append]
+        public bool Shadow { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the font is rendered condenses. If true, characters are placed closer to each other 
+        /// </summary>
+        /// \remark <remarks>Applications are not required to render according to this flag. Therefore, condense may have no effect</remarks>
+        [Append]
+        public bool Condense { get; set; }
+        /// <summary>
+        /// Gets or sets whether the font is rendered extended. If true, characters are placed more distant to each other 
+        /// </summary>
+        /// \remark <remarks>Applications are not required to render according to this flag. Therefore, extend may have no effect</remarks>
+        [Append]
+        public bool Extend { get; set; }
 
         /// <summary>
         /// Gets or sets the char set of the Font
@@ -438,6 +456,10 @@ namespace NanoXLSX.Styles
             AddPropertyAsJson(sb, "Size", Size);
             AddPropertyAsJson(sb, "Strike", Strike);
             AddPropertyAsJson(sb, "Underline", Underline);
+            AddPropertyAsJson(sb, "Outline", Outline);
+            AddPropertyAsJson(sb, "Shadow", Shadow);
+            AddPropertyAsJson(sb, "Condense", Condense);
+            AddPropertyAsJson(sb, "Extend", Extend);
             AddPropertyAsJson(sb, "HashCode", this.GetHashCode(), true);
             sb.Append("\n}");
             return sb.ToString();
@@ -461,7 +483,11 @@ namespace NanoXLSX.Styles
                 Scheme = Scheme,
                 Size = Size,
                 Strike = Strike,
-                Underline = Underline
+                Underline = Underline,
+                Outline = Outline,
+                Shadow = Shadow,
+                Condense = Condense,
+                Extend = Extend,
             };
             return copy;
         }
@@ -487,6 +513,10 @@ namespace NanoXLSX.Styles
                 hashCode = hashCode * -1521134295 + Scheme.GetHashCode();
                 hashCode = hashCode * -1521134295 + Strike.GetHashCode();
                 hashCode = hashCode * -1521134295 + Underline.GetHashCode();
+                hashCode = hashCode * -1521134295 + Outline.GetHashCode();
+                hashCode = hashCode * -1521134295 + Shadow.GetHashCode();
+                hashCode = hashCode * -1521134295 + Condense.GetHashCode();
+                hashCode = hashCode * -1521134295 + Extend.GetHashCode();
                 hashCode = hashCode * -1521134295 + VerticalAlign.GetHashCode();
                 return hashCode;
             }
@@ -505,6 +535,10 @@ namespace NanoXLSX.Styles
                    Italic == font.Italic &&
                    Strike == font.Strike &&
                    Underline == font.Underline &&
+                   Outline == font.Outline &&
+                   Shadow == font.Shadow &&
+                   Condense == font.Condense &&
+                   Extend == font.Extend &&
                    Charset == font.Charset &&
                    ColorValue == font.ColorValue &&
                    Family == font.Family &&

@@ -1,5 +1,12 @@
 # Change Log - NanoXLSX.Writer
 
+## v3.0.0-rc.4
+
+---
+Release Date: **07.01.2026**
+
+- Added writer handling for the Font properties: `Font.Outline`, `Font.Shadow`, `Font.Condense` and `Font.Extend`
+
 ## v3.0.0-rc.3
 
 ---

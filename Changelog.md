@@ -1,5 +1,13 @@
 # Change Log
 
+## v3.0.0-rc.6
+
+---
+Release Date: **07.01.2026**
+
+- Added Font properties: `Font.Outline`, `Font.Shadow`, `Font.Condense` and `Font.Extend` (optional font properties)
+- Added test cases
+
 ## v3.0.0-rc.5
 
 ---
