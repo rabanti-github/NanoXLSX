@@ -65,8 +65,8 @@ var NAVTREEINDEX =
 "classNanoXLSX_1_1Styles_1_1NumberFormat.html#a12639550ed5bd9112e545ca86ca45d60",
 "classNanoXLSX_1_1Utils_1_1DataUtils.html#a432eaf5b4d5ff31dbf9d5ee9ffa94dfda65bbd1af5337a912ab95a53e369d005a",
 "classNanoXLSX_1_1Worksheet.html#a0c87fae9697afda2644bfbb89a684c3baacc0c4e4f36a6e07f50397967f122e75",
-"classNanoXLSX_1_1Worksheet.html#acefe14f0b7485a7810716f70ab54477b",
-"structNanoXLSX_1_1Address.html#ad3e5a2f37ebff84a225ab0cf0ed6e393"
+"classNanoXLSX_1_1Worksheet.html#acd2c83ef6e953992ed4285b6293e8f12",
+"structNanoXLSX_1_1Address.html#abdb70bf1acbb3841bc763dbad8fdc79c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

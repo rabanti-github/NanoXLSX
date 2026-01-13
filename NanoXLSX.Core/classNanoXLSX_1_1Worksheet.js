@@ -47,6 +47,8 @@ var classNanoXLSX_1_1Worksheet =
     [ "AddCellFormula", "classNanoXLSX_1_1Worksheet.html#a05209bc9025773fb0b4aedcb0b43ec74", null ],
     [ "AddCellRange", "classNanoXLSX_1_1Worksheet.html#ac44bf3a54ca5523e3ab8922557cb325e", null ],
     [ "AddCellRange", "classNanoXLSX_1_1Worksheet.html#aa71e74c4903bbe20d7d28b03e5e2ee91", null ],
+    [ "AddCellRange", "classNanoXLSX_1_1Worksheet.html#a76421e389b5929ff4412adf964e7755c", null ],
+    [ "AddCellRange", "classNanoXLSX_1_1Worksheet.html#a4f9b747b2f69f9fd6b7abc6f89fb3b05", null ],
     [ "AddCellRange", "classNanoXLSX_1_1Worksheet.html#adc9ff17011e8169d076da8c7b03ba359", null ],
     [ "AddCellRange", "classNanoXLSX_1_1Worksheet.html#adbb44618e90ee60db248e14434d858a6", null ],
     [ "AddHiddenColumn", "classNanoXLSX_1_1Worksheet.html#a24db26694f54e2c690f147e88ea04755", null ],

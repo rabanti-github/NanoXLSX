@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.0.0-rc.4</span>
+   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.0.0-rc.5</span>
    </div>
   </td>
  </tr>
@@ -106,7 +106,7 @@ $(function(){initNavTree('Validators_8cs_source.html','',''); });
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        {</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>            <span class="keywordtype">string</span> argbMessage = ValidateColorInternal(hexCode, <span class="keyword">true</span>, allowEmpty);</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>            <span class="keywordtype">string</span> rgbMessage = <span class="keyword">null</span>;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            <span class="keywordflow">if</span> ( argbMessage != <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            <span class="keywordflow">if</span> (argbMessage != <span class="keyword">null</span>)</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            {</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                rgbMessage = ValidateColorInternal(hexCode, <span class="keyword">false</span>, allowEmpty);</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                <span class="keywordflow">if</span> (rgbMessage != <span class="keyword">null</span>)</div>
@@ -146,7 +146,7 @@ $(function(){initNavTree('Validators_8cs_source.html','',''); });
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            }</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>            <span class="keywordflow">if</span> (!Regex.IsMatch(hexCode, <span class="stringliteral">&quot;[a-fA-F0-9]{6,8}&quot;</span>))</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            {</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>               <span class="keywordflow">return</span> <span class="stringliteral">&quot;The expression &#39;&quot;</span> + hexCode + <span class="stringliteral">&quot;&#39; is not a valid hex value&quot;</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                <span class="keywordflow">return</span> <span class="stringliteral">&quot;The expression &#39;&quot;</span> + hexCode + <span class="stringliteral">&quot;&#39; is not a valid hex value&quot;</span>;</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            }</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            <span class="keywordflow">return</span> <span class="keyword">null</span>;</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        }</div>
