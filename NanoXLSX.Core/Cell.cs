@@ -545,6 +545,7 @@ namespace NanoXLSX
         #endregion
 
         #region staticMethods
+        #region staticMethods
         /// <summary>
         /// Converts a List of supported objects into a list of cells
         /// </summary>

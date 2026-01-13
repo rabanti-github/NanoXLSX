@@ -20,7 +20,7 @@ namespace NanoXLSX.Utils
         {
             string argbMessage = ValidateColorInternal(hexCode, true, allowEmpty);
             string rgbMessage = null;
-            if ( argbMessage != null)
+            if (argbMessage != null)
             {
                 rgbMessage = ValidateColorInternal(hexCode, false, allowEmpty);
                 if (rgbMessage != null)
@@ -71,7 +71,7 @@ namespace NanoXLSX.Utils
             }
             if (!Regex.IsMatch(hexCode, "[a-fA-F0-9]{6,8}"))
             {
-               return "The expression '" + hexCode + "' is not a valid hex value";
+                return "The expression '" + hexCode + "' is not a valid hex value";
             }
             return null;
         }

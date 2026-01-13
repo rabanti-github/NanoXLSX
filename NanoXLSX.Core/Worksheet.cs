@@ -587,7 +587,7 @@ namespace NanoXLSX
 
         /// <summary>
         /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be cast to a String. 
-        /// A prepared object of the type Cell will not be cast but adjusted
+        /// A prepared object of the type Cell will not be cast but adjusted. The direction of the next cell depends on the current cell direction (default is <see cref="Worksheet.CellDirection.ColumnToColumn"/>).
         /// </summary>
         /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
@@ -601,7 +601,7 @@ namespace NanoXLSX
 
         /// <summary>
         /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be cast to a String. 
-        /// A prepared object of the type Cell will not be cast but adjusted
+        /// A prepared object of the type Cell will not be cast but adjusted. The direction of the next cell depends on the current cell direction (default is <see cref="Worksheet.CellDirection.ColumnToColumn"/>).
         /// </summary>
         /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
@@ -616,7 +616,7 @@ namespace NanoXLSX
 
 
         /// <summary>
-        /// Method to insert a generic cell to the next cell position
+        /// Method to insert a generic cell to the next cell position. The direction of the next cell depends on the current cell direction (default is <see cref="Worksheet.CellDirection.ColumnToColumn"/>).
         /// </summary>
         /// <param name="cell">Cell object to insert</param>
         /// <param name="incremental">If true, the address value (row or column) will be incremented, otherwise not</param>
@@ -947,6 +947,36 @@ namespace NanoXLSX
         {
             Range range = Cell.ResolveCellRange(cellRange);
             AddCellRangeInternal(values, range.StartAddress, range.EndAddress, style);
+        }
+
+        /// <summary>
+        /// Adds a list of object values to a defined cell range. If the type of the particular value does not match with one of the supported data types, it will be cast to a String. 
+        /// Prepared objects of the type Cell will not be cast but adjusted
+        /// </summary>
+        /// <param name="values">List of unspecified objects to insert</param>
+        /// <param name="cellRange">Cell range object</param>
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be cast into a string using the default ToString() method</remarks>
+        /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
+        public void AddCellRange(IReadOnlyList<object> values, Range cellRange)
+        {
+            AddCellRangeInternal(values, cellRange.StartAddress, cellRange.EndAddress, null);
+        }
+
+        /// <summary>
+        /// Adds a list of object values to a defined cell range. If the type of the particular value does not match with one of the supported data types, it will be cast to a String. 
+        /// Prepared objects of the type Cell will not be cast but adjusted
+        /// </summary>
+        /// <param name="values">List of unspecified objects to insert</param>
+        /// <param name="cellRange">Cell range object</param>
+        /// <param name="style">Style to apply on the all cells of the range</param>
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// All other types will be cast into a string using the default ToString() method</remarks>
+        /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
+        /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
+        public void AddCellRange(IReadOnlyList<object> values, Range cellRange, Style style)
+        {
+            AddCellRangeInternal(values, cellRange.StartAddress, cellRange.EndAddress, style);
         }
 
         /// <summary>
@@ -1693,14 +1723,14 @@ namespace NanoXLSX
         /// <param name="columnNumber">Column number to reset (zero-based)</param>
         public void ResetColumn(int columnNumber)
         {
-            if (columns.ContainsKey(columnNumber) && !columns[columnNumber].HasAutoFilter) // AutoFilters cannot have gaps 
+            if (columns.TryGetValue(columnNumber, out var value) && !value.HasAutoFilter) // AutoFilters cannot have gaps 
             {
                 columns.Remove(columnNumber);
             }
-            else if (columns.ContainsKey(columnNumber))
+            else if (columns.TryGetValue(columnNumber, out var value2))
             {
-                columns[columnNumber].IsHidden = false;
-                columns[columnNumber].Width = DefaultWorksheetColumnWidth;
+                value2.IsHidden = false;
+                value2.Width = DefaultWorksheetColumnWidth;
             }
         }
 
@@ -1891,7 +1921,7 @@ namespace NanoXLSX
             Column c;
             for (int i = start; i <= end; i++)
             {
-                if (!columns.ContainsKey(i))
+                if (!columns.TryGetValue(i, out var value))
                 {
                     c = new Column(i)
                     {
@@ -1901,7 +1931,7 @@ namespace NanoXLSX
                 }
                 else
                 {
-                    columns[i].HasAutoFilter = true;
+                    value.HasAutoFilter = true;
                 }
             }
             autoFilterRange = new Range(start, 0, end, endRow);
@@ -2126,9 +2156,9 @@ namespace NanoXLSX
         private void SetColumnHiddenState(int columnNumber, bool state)
         {
             Cell.ValidateColumnNumber(columnNumber);
-            if (columns.ContainsKey(columnNumber))
+            if (columns.TryGetValue(columnNumber, out var value))
             {
-                columns[columnNumber].IsHidden = state;
+                value.IsHidden = state;
             }
             else if (state)
             {
@@ -2169,9 +2199,9 @@ namespace NanoXLSX
             {
                 throw new RangeException("The column width (" + width + ") is out of range. Range is from " + MinColumnWidth + " to " + MaxColumnWidth + " (chars).");
             }
-            if (columns.ContainsKey(columnNumber))
+            if (columns.TryGetValue(columnNumber, out var value))
             {
-                columns[columnNumber].Width = width;
+                value.Width = width;
             }
             else
             {
@@ -2205,9 +2235,9 @@ namespace NanoXLSX
         public Style SetColumnDefaultStyle(int columnNumber, Style style)
         {
             Cell.ValidateColumnNumber(columnNumber);
-            if (this.columns.ContainsKey(columnNumber))
+            if (this.columns.TryGetValue(columnNumber, out var value))
             {
-                return this.columns[columnNumber].SetDefaultColumnStyle(style);
+                return value.SetDefaultColumnStyle(style);
             }
             else
             {

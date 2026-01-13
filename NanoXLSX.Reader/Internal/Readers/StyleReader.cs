@@ -10,7 +10,6 @@ namespace NanoXLSX.Internal.Readers
     using System;
     using System.IO;
     using System.Xml;
-    using System.Xml.Linq;
     using NanoXLSX.Colors;
     using NanoXLSX.Interfaces.Plugin;
     using NanoXLSX.Interfaces.Reader;
@@ -278,7 +277,7 @@ namespace NanoXLSX.Internal.Readers
             string autoAttr = ReaderUtils.GetAttribute(colorNode, "auto");
             if (!string.IsNullOrEmpty(autoAttr) && ParserUtils.ParseBinaryBool(autoAttr) == 1)
             {
-                    return Color.CreateAuto();
+                return Color.CreateAuto();
             }
 
             // Check for rgb attribute
@@ -434,7 +433,7 @@ namespace NanoXLSX.Internal.Readers
                                 break;
                         }
                         fontStyle.ColorValue = Color.CreateTheme(element);
-                       
+
                     }
                     attribute = ReaderUtils.GetAttribute(colorNode, "rgb");
                     if (attribute != null)

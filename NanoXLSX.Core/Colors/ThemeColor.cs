@@ -26,7 +26,7 @@ namespace NanoXLSX.Colors
         /// </summary>
         public string StringValue
         {
-            get 
+            get
             {
                 return ParserUtils.ToString((int)ColorValue);
             }

@@ -6,7 +6,6 @@
  */
 
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text;
 using NanoXLSX.Colors;
 using NanoXLSX.Interfaces;

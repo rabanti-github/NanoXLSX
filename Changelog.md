@@ -1,5 +1,14 @@
 # Change Log
 
+## v3.0.0-rc.7
+
+---
+Release Date: **11.01.2026**
+
+- Added overloads in the Cell class, to call `AddCellRange` with a `Range` object
+- Added test cases
+- Optimizing code
+
 ## v3.0.0-rc.6
 
 ---

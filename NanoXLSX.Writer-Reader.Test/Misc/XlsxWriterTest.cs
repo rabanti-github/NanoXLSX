@@ -148,7 +148,7 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
             wb.CurrentWorksheet.AddCell("Indexed(Salmon) - Font", "B2", s10);
 
             Style s11 = new Style();
-            ThemeColor c11= new ThemeColor(Theme.ColorSchemeElement.Hyperlink);
+            ThemeColor c11 = new ThemeColor(Theme.ColorSchemeElement.Hyperlink);
             s11.CurrentFont.ColorValue = Color.CreateTheme(c11);
             wb.CurrentWorksheet.AddCell("Theme(Hyperlink) - Font", "B3", s11);
 
@@ -160,7 +160,7 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
             Style s13 = new Style();
             s13.CurrentFont.ColorValue = 63;// Color.CreateAuto();
             wb.CurrentWorksheet.AddCell("Auto - Font", "B5", s13);
-            
+
             // ---
 
             Style s100 = new Style();

@@ -111,7 +111,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             AssertRange(worksheet, data);
         }
 
-        [Theory(DisplayName = "Test of the AddCellRange function for a random list or list of nested cells with a range as string and a style")]
+        [Theory(DisplayName = "Test of the AddCellRange function for a random list or list of nested cells with a range as range object")]
         [InlineData("A1:A12", RangeType.OneColumn, TestType.RandomList)]
         [InlineData("H28:S28", RangeType.OneRow, TestType.RandomList)]
         [InlineData("F14:I16", RangeType.FourColumnsThreeRows, TestType.RandomList)]
@@ -121,6 +121,27 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("F14:I16", RangeType.FourColumnsThreeRows, TestType.CellList)]
         [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.CellList)]
         public void AddCellRangeTest5(string range, RangeType type, TestType testType)
+        {
+            NanoXLSX.Range cellRange = Cell.ResolveCellRange(range);
+            ListTuple data = GetList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type, testType);
+            Worksheet worksheet = new Worksheet();
+
+            Assert.Empty(worksheet.Cells);
+            worksheet.AddCellRange(data.Values, cellRange);
+            AssertRange(worksheet, data);
+        }
+
+
+        [Theory(DisplayName = "Test of the AddCellRange function for a random list or list of nested cells with a range as string and a style")]
+        [InlineData("A1:A12", RangeType.OneColumn, TestType.RandomList)]
+        [InlineData("H28:S28", RangeType.OneRow, TestType.RandomList)]
+        [InlineData("F14:I16", RangeType.FourColumnsThreeRows, TestType.RandomList)]
+        [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.RandomList)]
+        [InlineData("A1:A12", RangeType.OneColumn, TestType.CellList)]
+        [InlineData("H28:S28", RangeType.OneRow, TestType.CellList)]
+        [InlineData("F14:I16", RangeType.FourColumnsThreeRows, TestType.CellList)]
+        [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.CellList)]
+        public void AddCellRangeTest6(string range, RangeType type, TestType testType)
         {
             NanoXLSX.Range cellRange = Cell.ResolveCellRange(range);
             ListTuple data = GetList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type, testType);
@@ -141,7 +162,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("H28:S28", RangeType.OneRow, TestType.CellList)]
         [InlineData("F14:I16", RangeType.FourColumnsThreeRows, TestType.CellList)]
         [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.CellList)]
-        public void AddCellRangeTest6(string range, RangeType type, TestType testType)
+        public void AddCellRangeTest7(string range, RangeType type, TestType testType)
         {
             NanoXLSX.Range cellRange = Cell.ResolveCellRange(range);
             ListTuple data = GetList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type, testType);
@@ -150,6 +171,29 @@ namespace NanoXLSX.Test.Core.WorksheetTest
 
             Assert.Empty(worksheet.Cells);
             worksheet.AddCellRange(data.Values, range, BasicStyles.BoldItalic);
+            AssertRange(worksheet, data);
+            AssertRangeStyle(worksheet, data, BasicStyles.BorderFrameHeader);
+        }
+
+
+        [Theory(DisplayName = "Test of the AddCellRange function for a random list  or list of nested cells with a range as range object and an active style on the worksheet")]
+        [InlineData("A1:A12", RangeType.OneColumn, TestType.RandomList)]
+        [InlineData("H28:S28", RangeType.OneRow, TestType.RandomList)]
+        [InlineData("F14:I16", RangeType.FourColumnsThreeRows, TestType.RandomList)]
+        [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.RandomList)]
+        [InlineData("A1:A12", RangeType.OneColumn, TestType.CellList)]
+        [InlineData("H28:S28", RangeType.OneRow, TestType.CellList)]
+        [InlineData("F14:I16", RangeType.FourColumnsThreeRows, TestType.CellList)]
+        [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.CellList)]
+        public void AddCellRangeTest8(string range, RangeType type, TestType testType)
+        {
+            NanoXLSX.Range cellRange = Cell.ResolveCellRange(range);
+            ListTuple data = GetList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type, testType);
+            Worksheet worksheet = new Worksheet();
+            worksheet.SetActiveStyle(BasicStyles.BorderFrameHeader);
+
+            Assert.Empty(worksheet.Cells);
+            worksheet.AddCellRange(data.Values, cellRange, BasicStyles.BoldItalic);
             AssertRange(worksheet, data);
             AssertRangeStyle(worksheet, data, BasicStyles.BorderFrameHeader);
         }

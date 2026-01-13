@@ -6,7 +6,6 @@
  */
 
 using System.Collections.Generic;
-using System.Drawing;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Utils;
 
@@ -39,7 +38,7 @@ namespace NanoXLSX.Colors
                 Validators.ValidateGenericColor(value, false);
                 if (value.Length == 6)
                 {
-                   colorValue = "FF" + ParserUtils.ToUpper(value);
+                    colorValue = "FF" + ParserUtils.ToUpper(value);
                 }
                 else
                 {

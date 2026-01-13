@@ -206,6 +206,5 @@ namespace NanoXLSX.Test.Core.Cells.Types
             }
 
         }
-
     }
 }
