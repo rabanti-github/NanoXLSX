@@ -52,24 +52,44 @@ namespace NanoXLSX.Registry
         [ExcludeFromCodeCoverage] // Indirectly tested by InjectPlugins
         private static void LoadReferencedAssemblies()
         {
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var loadedPaths = loadedAssemblies
-                .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location)) // Exclude dynamic assemblies
-                .Select(a => a.Location)
-                .ToArray();
-            var referencedPaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
-                .Where(path => !loadedPaths.Contains(path, StringComparer.InvariantCultureIgnoreCase));
+            Assembly[] loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-            foreach (var path in referencedPaths)
+            // 1. Register plugins from already-loaded assemblies
+            foreach (Assembly assembly in loadedAssemblies)
+            {
+                if (!assembly.IsDynamic && !string.IsNullOrEmpty(assembly.Location))
+                {
+                    try
+                    {
+                        RegisterPlugIns(assembly);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Failed to register plugins from {assembly.Location}: {ex.Message}");
+                    }
+                }
+            }
+
+            // 2. Load any remaining DLLs that haven't been loaded yet
+            IEnumerable<string> allLoadedPaths = loadedAssemblies
+                .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
+                .Select(a => a.Location);
+            HashSet<string> loadedPaths = new HashSet<string>(allLoadedPaths, StringComparer.InvariantCultureIgnoreCase);
+
+            List<string> referencedPaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
+                .Where(path => !loadedPaths.Contains(path))
+                .ToList();
+
+            foreach (string path in referencedPaths)
             {
                 try
                 {
-                    Assembly assembly = Assembly.Load(path);
-                    RegisterPlugIns(assembly); // Here, several classes are determined that has Attributes, describing them as plug-ins
+                    Assembly assembly = Assembly.LoadFrom(path);
+                    RegisterPlugIns(assembly);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Log or handle exceptions if necessary
+                    System.Diagnostics.Debug.WriteLine($"Failed to load assembly: {path} - {ex.Message}");
                 }
             }
         }
@@ -220,7 +240,7 @@ namespace NanoXLSX.Registry
         {
             if (plugInClasses.TryGetValue(plugInUUID, out var plugIn))
             {
-                return (T)Activator.CreateInstance(plugIn.Type);
+                return (T)Activator.CreateInstance(plugIn.Type, true);
             }
             else
             {
@@ -262,7 +282,7 @@ namespace NanoXLSX.Registry
                     return default;
                 }
                 currentPlugInUUID = plugIn.UUID;
-                return (T)Activator.CreateInstance(plugIn.Type);
+                return (T)Activator.CreateInstance(plugIn.Type, true);
             }
             else
             {

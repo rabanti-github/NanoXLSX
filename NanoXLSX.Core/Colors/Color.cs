@@ -264,15 +264,31 @@ namespace NanoXLSX.Colors
         /// <summary>
         /// Creates an Color from a theme color scheme element
         /// </summary>
-        /// <param name="themeColor">Color scheme element</param>
+        /// <param name="index">Color scheme element</param>
         /// <param name="tint">Optional tint value (from -1 to 1)</param>
         /// <returns>Color instance with the value type <see cref="ThemeColor"></see>/></returns>
-        public static Color CreateTheme(Theme.ColorSchemeElement themeColor, double? tint = null)
+        public static Color CreateTheme(Theme.ColorSchemeElement index, double? tint = null)
         {
             return new Color
             {
                 Type = ColorType.Theme,
-                ThemeColor = new ThemeColor(themeColor),
+                ThemeColor = new ThemeColor(index),
+                Tint = tint
+            };
+        }
+
+        /// <summary>
+        /// Creates an Color from the index of a theme color scheme element
+        /// </summary>
+        /// <param name="index">Color scheme element index</param>
+        /// <param name="tint">Optional tint value (from -1 to 1)</param>
+        /// <returns>Color instance with the value type <see cref="ThemeColor"></see>/></returns>
+        public static Color CreateTheme(int index, double? tint = null)
+        {
+            return new Color
+            {
+                Type = ColorType.Theme,
+                ThemeColor = new ThemeColor(index),
                 Tint = tint
             };
         }

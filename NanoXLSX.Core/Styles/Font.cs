@@ -81,10 +81,11 @@ namespace NanoXLSX.Styles
         /// </summary>
         public enum VerticalTextAlignValue
         {
-            // baseline, // Maybe not used in Excel
-            /// <summary>Text will be rendered as subscript</summary>
+            /// <summary>Text will be rendered at the baseline and presented in the same size as surrounding text</summary>
+            Baseline,
+            /// <summary>Text will be rendered as subscript. The text size will be reduced</summary>
             Subscript,
-            /// <summary>Text will be rendered as superscript</summary>
+            /// <summary>Text will be rendered as superscript. The text size will be reduced</summary>
             Superscript,
             /// <summary>Text will be rendered normal</summary>
             None,
@@ -568,6 +569,7 @@ namespace NanoXLSX.Styles
             string output = "";
             switch (align)
             {
+                case VerticalTextAlignValue.Baseline: output = "baseline"; break;
                 case VerticalTextAlignValue.Subscript: output = "subscript"; break;
                 case VerticalTextAlignValue.Superscript: output = "superscript"; break;
             }
@@ -581,6 +583,7 @@ namespace NanoXLSX.Styles
         {
             switch (name)
             {
+                case "baseline": return VerticalTextAlignValue.Baseline;
                 case "subscript": return VerticalTextAlignValue.Subscript;
                 case "superscript": return VerticalTextAlignValue.Superscript;
                 default:

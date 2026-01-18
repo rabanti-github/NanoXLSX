@@ -328,6 +328,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         [InlineData(VerticalTextAlignValue.None)]
         [InlineData(VerticalTextAlignValue.Subscript)]
         [InlineData(VerticalTextAlignValue.Superscript)]
+        [InlineData(VerticalTextAlignValue.Baseline)]
         public void VerticalAlignTest(VerticalTextAlignValue value)
         {
             Font font = new Font();

@@ -102,6 +102,7 @@ namespace NanoXLSX.Test.Writer_Reader.Styles
         }
 
         [Theory(DisplayName = "Test of the 'vertical alignment' value when writing and reading a Font style")]
+        [InlineData(VerticalTextAlignValue.Baseline, -22.3378925d)]
         [InlineData(VerticalTextAlignValue.Subscript, "test")]
         [InlineData(VerticalTextAlignValue.Superscript, 0.5f)]
         [InlineData(VerticalTextAlignValue.None, true)]

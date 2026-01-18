@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Themes;
 using NanoXLSX.Utils;
@@ -40,13 +41,29 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Constructor with parameters
+        /// Constructor with color scheme element as parameter
         /// </summary>
         /// <param name="color">Color value</param>
         public ThemeColor(Theme.ColorSchemeElement color)
         {
+
             ColorValue = color;
         }
+
+        /// <summary>
+        /// Constructor with index as parameter
+        /// </summary>
+        /// <param name="index">Theme color index</param>
+        /// <exception cref="StyleException">Throws a StyleException if the color scheme element index is out of range</exception>
+        public ThemeColor(int index)
+        {
+            if (index < 0 || index > 11)
+            {
+                throw new StyleException("Indexed color value must be between 0 and 65.");
+            }
+            ColorValue = (Theme.ColorSchemeElement)index;
+        }
+
 
         /// <summary>
         /// Determines whether the specified object is equal to the current system color instance

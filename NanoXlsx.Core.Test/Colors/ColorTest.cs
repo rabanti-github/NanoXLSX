@@ -151,6 +151,20 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.Equal(value, color2.ThemeColor.ColorValue);
         }
 
+        [Theory(DisplayName = "Test of the CreateTheme function, using an index")]
+        [InlineData(4, Theme.ColorSchemeElement.Accent1)]
+        [InlineData(0, Theme.ColorSchemeElement.Dark1)]
+        [InlineData(11, Theme.ColorSchemeElement.FollowedHyperlink)]
+        [InlineData(1, Theme.ColorSchemeElement.Light1)]
+        public void CreateThemeTest3(int givenIndex, Theme.ColorSchemeElement expectedValue)
+        {
+            Color color = Color.CreateTheme(givenIndex, -0.25);
+            Assert.Equal(Color.ColorType.Theme, color.Type);
+            Assert.Equal(-0.25, color.Tint);
+            Assert.Null(color.GetArgbValue());
+            Assert.Equal(expectedValue, color.ThemeColor.ColorValue);
+        }
+
         [Fact(DisplayName = "Test of the failing CreateTheme function")]
         public void CreateThemeFailureTest()
         {

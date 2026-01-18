@@ -180,6 +180,7 @@ Furthermore, a lot of constants were renamed to follow the C# naming conventions
 
 | Old Enum Value                      | New Enum Value              | Remarks |
 | ----------------------------------- | --------------------------- | ------- |
+|                                     | `VerticalTextAlignValue.Baseline`     | New introduced |
 | `VerticalTextAlignValue.subscript`  | `VerticalTextAlignValue.Subscript`    |         |
 | `VerticalTextAlignValue.superscript`| `VerticalTextAlignValue.Superscript`  |         |
 | `VerticalTextAlignValue.none`       | `VerticalTextAlignValue.None`         |         |

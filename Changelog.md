@@ -6,6 +6,9 @@
 Release Date: **11.01.2026**
 
 - Added overloads in the Cell class, to call `AddCellRange` with a `Range` object
+- Added Constructor to create a ThemeColor by index
+- Added Baseline as Value for vertical alignments
+- Fixed plug-in handling
 - Added test cases
 - Optimizing code
 

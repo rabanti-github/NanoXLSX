@@ -1,5 +1,15 @@
 # Change Log - NanoXLSX.Core
 
+## v3.0.0-rc.5
+
+---
+Release Date: **17.01.2026**
+
+- Fixed plug-in handling when loading plug-ins from NuGet packages
+- Added Constructor to create a ThemeColor by index
+- Added Baseline as Value for vertical alignments
+
+
 ## v3.0.0-rc.4
 
 ---
