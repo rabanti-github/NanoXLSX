@@ -112,7 +112,8 @@ Public Types</h2></td></tr>
 , <a class="el" href="#a0a8e67775810f81cdac28e2cba1c3ceaa6adf97f83acf6453d4a6a4b1070f3754">None</a>
  }</td></tr>
 <tr class="memdesc:a0a8e67775810f81cdac28e2cba1c3cea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum for the font scheme, used by the <a class="el" href="classNanoXLSX_1_1Styles_1_1Font.html" title="Class representing a Font entry. The Font entry is used to define text formatting.">Font</a> class.  <a href="#a0a8e67775810f81cdac28e2cba1c3cea">More...</a><br /></td></tr>
-<tr class="memitem:a083ddab7b6c5f11a4fef9221e2ff013d" id="r_a083ddab7b6c5f11a4fef9221e2ff013d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a083ddab7b6c5f11a4fef9221e2ff013d">VerticalTextAlignValue</a> { <a class="el" href="#a083ddab7b6c5f11a4fef9221e2ff013da928558e2f9712e38d447d674f2672200">Subscript</a>
+<tr class="memitem:a083ddab7b6c5f11a4fef9221e2ff013d" id="r_a083ddab7b6c5f11a4fef9221e2ff013d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a083ddab7b6c5f11a4fef9221e2ff013d">VerticalTextAlignValue</a> { <a class="el" href="#a083ddab7b6c5f11a4fef9221e2ff013daa4a32c4764653e50488bff6ce2eb815b">Baseline</a>
+, <a class="el" href="#a083ddab7b6c5f11a4fef9221e2ff013da928558e2f9712e38d447d674f2672200">Subscript</a>
 , <a class="el" href="#a083ddab7b6c5f11a4fef9221e2ff013da6316f99acec341fbdd5cc006dc5a7ba7">Superscript</a>
 , <a class="el" href="#a083ddab7b6c5f11a4fef9221e2ff013da6adf97f83acf6453d4a6a4b1070f3754">None</a>
  }</td></tr>
@@ -320,7 +321,7 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00115">115</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00116">116</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -370,7 +371,7 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00202">202</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00203">203</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -426,7 +427,7 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00096">96</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00097">97</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -444,9 +445,11 @@ Properties</h2></td></tr>
 
 <p>Enum for the vertical alignment of the text from baseline, used by the <a class="el" href="classNanoXLSX_1_1Styles_1_1Font.html" title="Class representing a Font entry. The Font entry is used to define text formatting.">Font</a> class. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a083ddab7b6c5f11a4fef9221e2ff013da928558e2f9712e38d447d674f2672200" name="a083ddab7b6c5f11a4fef9221e2ff013da928558e2f9712e38d447d674f2672200"></a>Subscript&#160;</td><td class="fielddoc"><p>Text will be rendered as subscript. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a083ddab7b6c5f11a4fef9221e2ff013daa4a32c4764653e50488bff6ce2eb815b" name="a083ddab7b6c5f11a4fef9221e2ff013daa4a32c4764653e50488bff6ce2eb815b"></a>Baseline&#160;</td><td class="fielddoc"><p>Text will be rendered at the baseline and presented in the same size as surrounding text. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a083ddab7b6c5f11a4fef9221e2ff013da6316f99acec341fbdd5cc006dc5a7ba7" name="a083ddab7b6c5f11a4fef9221e2ff013da6316f99acec341fbdd5cc006dc5a7ba7"></a>Superscript&#160;</td><td class="fielddoc"><p>Text will be rendered as superscript. </p>
+<tr><td class="fieldname"><a id="a083ddab7b6c5f11a4fef9221e2ff013da928558e2f9712e38d447d674f2672200" name="a083ddab7b6c5f11a4fef9221e2ff013da928558e2f9712e38d447d674f2672200"></a>Subscript&#160;</td><td class="fielddoc"><p>Text will be rendered as subscript. The text size will be reduced. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a083ddab7b6c5f11a4fef9221e2ff013da6316f99acec341fbdd5cc006dc5a7ba7" name="a083ddab7b6c5f11a4fef9221e2ff013da6316f99acec341fbdd5cc006dc5a7ba7"></a>Superscript&#160;</td><td class="fielddoc"><p>Text will be rendered as superscript. The text size will be reduced. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a083ddab7b6c5f11a4fef9221e2ff013da6adf97f83acf6453d4a6a4b1070f3754" name="a083ddab7b6c5f11a4fef9221e2ff013da6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>Text will be rendered normal. </p>
 </td></tr>
@@ -475,7 +478,7 @@ Properties</h2></td></tr>
 <p>Default constructor. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>When using the default constructor, an object of type <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> with the type Color.ColorType.None will be created for the property <a class="el" href="#a69b1eef8c2e6e36a9fa38c0672bba9e0" title="Gets or sets the color code of the font color. The value is an instance of Color To omit the color,...">Font.ColorValue</a>. To set a font color, the property has to be updated with a new value</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00404">404</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00405">405</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -498,7 +501,7 @@ Properties</h2></td></tr>
 <p>Method to copy the current object to a new one without casting. </p>
 <dl class="section return"><dt>Returns</dt><dd>Copy of the current object without the internal ID</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00472">472</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00473">473</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -520,7 +523,7 @@ Properties</h2></td></tr>
 <p>Method to copy the current object to a new one with casting. </p>
 <dl class="section return"><dt>Returns</dt><dd>Copy of the current object without the internal ID</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00554">554</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00555">555</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -548,7 +551,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if this instance and the other are the same</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00530">530</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00531">531</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -570,7 +573,7 @@ Properties</h2></td></tr>
 <p>Returns a hash code for this instance. </p>
 <dl class="section return"><dt>Returns</dt><dd>A hash code for this instance, suitable to be used in hashing algorithms and data structures like a hash table. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00501">501</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00502">502</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -592,7 +595,7 @@ Properties</h2></td></tr>
 <p>Override toString method. </p>
 <dl class="section return"><dt>Returns</dt><dd>String of a class</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00444">444</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00445">445</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -854,7 +857,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets whether the font is bold. If true, the font is declared as bold. </p>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00280">280</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00281">281</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -880,7 +883,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets the char set of the <a class="el" href="classNanoXLSX_1_1Styles_1_1Font.html" title="Class representing a Font entry. The Font entry is used to define text formatting.">Font</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00325">325</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00326">326</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -906,7 +909,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets the color code of the font color. The value is an instance of <a class="el" href="classNanoXLSX_1_1Colors_1_1Color.html" title="Compound class representing a color in various representations (RGB, indexed, theme,...">Color</a> To omit the color, an empty string can be set. Empty is also default. </p>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00332">332</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00333">333</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -933,7 +936,7 @@ Properties</h2></td></tr>
 <p>Gets or sets whether the font is rendered condenses. If true, characters are placed closer to each other. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Applications are not required to render according to this flag. Therefore, condense may have no effect</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00313">313</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00314">314</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -960,7 +963,7 @@ Properties</h2></td></tr>
 <p>Gets or sets whether the font is rendered extended. If true, characters are placed more distant to each other. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Applications are not required to render according to this flag. Therefore, extend may have no effect</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00319">319</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00320">320</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -986,7 +989,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets the font family (Default is 2 = Swiss). </p>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00340">340</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00341">341</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -1012,7 +1015,7 @@ Properties</h2></td></tr>
 
 <p>Gets whether the font is equal to the default font. </p>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00345">345</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00346">346</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -1038,7 +1041,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets whether the font is italic. If true, the font is declared as italic. </p>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00285">285</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00286">286</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -1071,7 +1074,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that the font name is not validated whether it is a valid or existing font. The font name may not exceed more than 31 characters</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00360">360</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00361">361</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -1097,7 +1100,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets whether the font has an outline defined. If true, an outline is rendered around the text. </p>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00300">300</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00301">301</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -1123,7 +1126,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets the font scheme (Default is minor). </p>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00373">373</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00374">374</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -1150,7 +1153,7 @@ Properties</h2></td></tr>
 <p>Gets or sets whether the font has a drop shadow. If true, a shadow is rendered on the text. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Applications are not required to render according to this flag. Therefore, shadow may have no effect</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00306">306</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00307">307</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -1176,7 +1179,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets the font size. Valid range is from 1 to 409. </p>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00378">378</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00379">379</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -1202,7 +1205,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets whether the font is struck through. If true, the font is declared as strike-through. </p>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00290">290</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00291">291</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -1228,7 +1231,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets the underline style of the font. If set to <a class="el" href="#add6ba3a6696a9c2291a2cda4d1f97525a6adf97f83acf6453d4a6a4b1070f3754">none</a> no underline will be applied (default). </p>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00295">295</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00296">296</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>
@@ -1254,7 +1257,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets the alignment of the font (Default is none). </p>
 
-<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00395">395</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Font_8cs_source.html#l00396">396</a> of file <a class="el" href="Font_8cs_source.html">Font.cs</a>.</p>
 
 </div>
 </div>

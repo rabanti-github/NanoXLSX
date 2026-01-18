@@ -1,5 +1,11 @@
 var NAVTREEINDEX6 =
 {
+"classNanoXLSX_1_1Utils_1_1DataUtils.html#a4265158bcb8f492c3b02dcb3d2d551c7":[3,0,0,6,2,12],
+"classNanoXLSX_1_1Utils_1_1DataUtils.html#a432eaf5b4d5ff31dbf9d5ee9ffa94dfd":[2,0,0,6,2,0],
+"classNanoXLSX_1_1Utils_1_1DataUtils.html#a432eaf5b4d5ff31dbf9d5ee9ffa94dfd":[3,0,0,6,2,0],
+"classNanoXLSX_1_1Utils_1_1DataUtils.html#a432eaf5b4d5ff31dbf9d5ee9ffa94dfda65aea3d038d1482eced140fb5565b02a":[2,0,0,6,2,0,0],
+"classNanoXLSX_1_1Utils_1_1DataUtils.html#a432eaf5b4d5ff31dbf9d5ee9ffa94dfda65aea3d038d1482eced140fb5565b02a":[3,0,0,6,2,0,0],
+"classNanoXLSX_1_1Utils_1_1DataUtils.html#a432eaf5b4d5ff31dbf9d5ee9ffa94dfda65bbd1af5337a912ab95a53e369d005a":[2,0,0,6,2,0,1],
 "classNanoXLSX_1_1Utils_1_1DataUtils.html#a432eaf5b4d5ff31dbf9d5ee9ffa94dfda65bbd1af5337a912ab95a53e369d005a":[3,0,0,6,2,0,1],
 "classNanoXLSX_1_1Utils_1_1DataUtils.html#a432eaf5b4d5ff31dbf9d5ee9ffa94dfdabf499483847d4c528c2bfa1de2e036d6":[2,0,0,6,2,0,2],
 "classNanoXLSX_1_1Utils_1_1DataUtils.html#a432eaf5b4d5ff31dbf9d5ee9ffa94dfdabf499483847d4c528c2bfa1de2e036d6":[3,0,0,6,2,0,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX6 =
 "classNanoXLSX_1_1Worksheet.html#a080793fb2d43f1db8e5006acdfff5157":[3,0,0,16,60],
 "classNanoXLSX_1_1Worksheet.html#a08d32d0cc7dff7c7c9ff9e67d8e5e53e":[2,0,0,16,144],
 "classNanoXLSX_1_1Worksheet.html#a08d32d0cc7dff7c7c9ff9e67d8e5e53e":[3,0,0,16,144],
-"classNanoXLSX_1_1Worksheet.html#a09611418dca4b5ff7505eb6948a15c62":[2,0,0,16,75],
-"classNanoXLSX_1_1Worksheet.html#a09611418dca4b5ff7505eb6948a15c62":[3,0,0,16,75],
-"classNanoXLSX_1_1Worksheet.html#a0c87fae9697afda2644bfbb89a684c3b":[2,0,0,16,0],
-"classNanoXLSX_1_1Worksheet.html#a0c87fae9697afda2644bfbb89a684c3b":[3,0,0,16,0],
-"classNanoXLSX_1_1Worksheet.html#a0c87fae9697afda2644bfbb89a684c3ba03201ebf57ae247ec2060e089c231134":[2,0,0,16,0,1],
-"classNanoXLSX_1_1Worksheet.html#a0c87fae9697afda2644bfbb89a684c3ba03201ebf57ae247ec2060e089c231134":[3,0,0,16,0,1],
-"classNanoXLSX_1_1Worksheet.html#a0c87fae9697afda2644bfbb89a684c3baacc0c4e4f36a6e07f50397967f122e75":[2,0,0,16,0,0]
+"classNanoXLSX_1_1Worksheet.html#a09611418dca4b5ff7505eb6948a15c62":[2,0,0,16,75]
 };

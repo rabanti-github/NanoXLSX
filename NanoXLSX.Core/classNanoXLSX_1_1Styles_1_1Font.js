@@ -52,6 +52,7 @@ var classNanoXLSX_1_1Styles_1_1Font =
       [ "None", "classNanoXLSX_1_1Styles_1_1Font.html#add6ba3a6696a9c2291a2cda4d1f97525a6adf97f83acf6453d4a6a4b1070f3754", null ]
     ] ],
     [ "VerticalTextAlignValue", "classNanoXLSX_1_1Styles_1_1Font.html#a083ddab7b6c5f11a4fef9221e2ff013d", [
+      [ "Baseline", "classNanoXLSX_1_1Styles_1_1Font.html#a083ddab7b6c5f11a4fef9221e2ff013daa4a32c4764653e50488bff6ce2eb815b", null ],
       [ "Subscript", "classNanoXLSX_1_1Styles_1_1Font.html#a083ddab7b6c5f11a4fef9221e2ff013da928558e2f9712e38d447d674f2672200", null ],
       [ "Superscript", "classNanoXLSX_1_1Styles_1_1Font.html#a083ddab7b6c5f11a4fef9221e2ff013da6316f99acec341fbdd5cc006dc5a7ba7", null ],
       [ "None", "classNanoXLSX_1_1Styles_1_1Font.html#a083ddab7b6c5f11a4fef9221e2ff013da6adf97f83acf6453d4a6a4b1070f3754", null ]

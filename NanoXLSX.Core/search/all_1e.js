@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['zoomfactor_0',['ZoomFactor',['../classNanoXLSX_1_1Worksheet.html#a06c3d58921bcd633c0583d5a96f5ab1d',1,'NanoXLSX::Worksheet']]],
-  ['zoomfactors_1',['ZoomFactors',['../classNanoXLSX_1_1Worksheet.html#a15e8c34d6554db096d58a5e483cc04d1',1,'NanoXLSX::Worksheet']]]
+  ['yellow_0',['Yellow',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a51e6cd92b6c45f9affdc158ecca2b8b8',1,'NanoXLSX::Colors::IndexedColor']]],
+  ['yellow5_1',['Yellow5',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a082f5e0312675b6601f592b2a679a87e',1,'NanoXLSX::Colors::IndexedColor']]]
 ];
