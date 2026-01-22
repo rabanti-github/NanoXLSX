@@ -9,7 +9,7 @@ var searchData=
   ['blue_6',['Blue',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a9594eec95be70e7b1710f730fdda33d9',1,'NanoXLSX::Colors::IndexedColor']]],
   ['blue4_7',['Blue4',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a272a01dc50842772a915fee0da683458',1,'NanoXLSX::Colors::IndexedColor']]],
   ['bluegray_8',['BlueGray',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8ad1f4efa7fa8d2d13f902dcb4ce1b6a75',1,'NanoXLSX::Colors::IndexedColor']]],
-  ['bool_9',['Bool',['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aac26f15e86e3de4c398a8273272aba034',1,'NanoXLSX::Cell']]],
+  ['bool_9',['Bool',['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aac26f15e86e3de4c398a8273272aba034',1,'NanoXLSX.Cell.Bool'],['../classNanoXLSX_1_1ReaderOptions.html#a1a81aa0a84ee1ed6c02936b57bd618e3ac26f15e86e3de4c398a8273272aba034',1,'NanoXLSX.ReaderOptions.Bool']]],
   ['bottom_10',['Bottom',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a63e51aa1f960e6073ed767321967d1c4a2ad9d63b69c4a10a5cc9cad923133bc4',1,'NanoXLSX::Styles::CellXf']]],
   ['bottomleft_11',['BottomLeft',['../classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a98e5a1c44509157ebcaf46c515c78875',1,'NanoXLSX::Worksheet']]],
   ['bottomright_12',['BottomRight',['../classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a9146bfc669fddc88db2c4d89297d0e9a',1,'NanoXLSX::Worksheet']]],

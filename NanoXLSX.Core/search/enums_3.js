@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['horizontalalignvalue_0',['HorizontalAlignValue',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a269c0dcaae26cf108d1c140fe18d91e7',1,'NanoXLSX::Styles::CellXf']]]
+  ['globaltype_0',['GlobalType',['../classNanoXLSX_1_1ReaderOptions.html#ab3aaa157ca8c26a81fa853d683da90c1',1,'NanoXLSX::ReaderOptions']]]
 ];

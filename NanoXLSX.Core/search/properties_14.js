@@ -1,10 +1,6 @@
 var searchData=
 [
-  ['width_0',['Width',['../classNanoXLSX_1_1Column.html#a0f962762db38d5bb4051c1dee0c2a089',1,'NanoXLSX::Column']]],
-  ['workbookmetadata_1',['WorkbookMetadata',['../classNanoXLSX_1_1Workbook.html#aabb5e4b72bb4bc7b1662bb6ee1d85fc9',1,'NanoXLSX::Workbook']]],
-  ['workbookprotectionpassword_2',['WorkbookProtectionPassword',['../classNanoXLSX_1_1Workbook.html#abc326ece424df214e0eb7471d827fb50',1,'NanoXLSX::Workbook']]],
-  ['workbookreference_3',['WorkbookReference',['../classNanoXLSX_1_1Worksheet.html#a929fdbe07532bf20338caf44d21d8248',1,'NanoXLSX::Worksheet']]],
-  ['workbooktheme_4',['WorkbookTheme',['../classNanoXLSX_1_1Workbook.html#a448a8dfe396c561b6e516bac4bbe1d0d',1,'NanoXLSX::Workbook']]],
-  ['worksheets_5',['Worksheets',['../classNanoXLSX_1_1Workbook.html#a9a17c70ffeca8d99e7993697008669cc',1,'NanoXLSX::Workbook']]],
-  ['ws_6',['WS',['../classNanoXLSX_1_1Workbook.html#a31109e5c42c9f8bfd27b03021b7dd6da',1,'NanoXLSX::Workbook']]]
+  ['value_0',['Value',['../classNanoXLSX_1_1Cell.html#ae3b98944385576f4af31f73211a99233',1,'NanoXLSX.Cell.Value'],['../classNanoXLSX_1_1Colors_1_1Color.html#a8151dfa3bf0472e4fe6742cd82926f24',1,'NanoXLSX.Colors.Color.Value'],['../structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html#aed9a9229066f00a23193e52d9a4f7ced',1,'NanoXLSX.Utils.Xml.XmlAttribute.Value']]],
+  ['verticalalign_1',['VerticalAlign',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a7d09ded31940b943aed381e646f3ddf9',1,'NanoXLSX.Styles.CellXf.VerticalAlign'],['../classNanoXLSX_1_1Styles_1_1Font.html#a6c932e4d317b8479d4462da313f56083',1,'NanoXLSX.Styles.Font.VerticalAlign']]],
+  ['viewtype_2',['ViewType',['../classNanoXLSX_1_1Worksheet.html#a8b657335b5f76385124e2678a61118e6',1,'NanoXLSX::Worksheet']]]
 ];

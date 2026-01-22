@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['passwordtype_0',['PasswordType',['../classNanoXLSX_1_1LegacyPassword.html#ad8b6afb43b2f117065e28a6c11dedf32',1,'NanoXLSX::LegacyPassword']]],
-  ['patternvalue_1',['PatternValue',['../classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437',1,'NanoXLSX::Styles::Fill']]]
+  ['horizontalalignvalue_0',['HorizontalAlignValue',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a269c0dcaae26cf108d1c140fe18d91e7',1,'NanoXLSX::Styles::CellXf']]]
 ];

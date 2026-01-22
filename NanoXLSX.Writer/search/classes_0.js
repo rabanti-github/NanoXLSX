@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['icolorwriter_0',['IColorWriter',['../interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html',1,'NanoXLSX::Interfaces::Writer']]],
-  ['ipasswordwriter_1',['IPasswordWriter',['../interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html',1,'NanoXLSX::Interfaces::Writer']]]
+  ['legacypasswordwriter_0',['LegacyPasswordWriter',['../classNanoXLSX_1_1Internal_1_1Writers_1_1LegacyPasswordWriter.html',1,'NanoXLSX::Internal::Writers']]]
 ];

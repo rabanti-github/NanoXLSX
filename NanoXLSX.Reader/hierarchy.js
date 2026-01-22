@@ -3,15 +3,10 @@ var hierarchy =
     [ "IDisposable", null, [
       [ "NanoXLSX.Internal.Readers.XlsxReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1XlsxReader.html", null ]
     ] ],
-    [ "IOptions", null, [
-      [ "NanoXLSX.ReaderOptions", "classNanoXLSX_1_1ReaderOptions.html", null ]
+    [ "IPasswordReader", null, [
+      [ "NanoXLSX.Internal.Readers.LegacyPasswordReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html", null ]
     ] ],
-    [ "IPassword", null, [
-      [ "NanoXLSX.Interfaces.Reader.IPasswordReader", "interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html", [
-        [ "NanoXLSX.Internal.Readers.LegacyPasswordReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html", null ]
-      ] ]
-    ] ],
-    [ "IPluginReader", null, [
+    [ "IPluginBaseReader", null, [
       [ "NanoXLSX.Internal.Readers.MetadataAppReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataAppReader.html", null ],
       [ "NanoXLSX.Internal.Readers.MetadataCoreReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataCoreReader.html", null ],
       [ "NanoXLSX.Internal.Readers.RelationshipReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1RelationshipReader.html", null ],
@@ -25,7 +20,6 @@ var hierarchy =
     [ "IWorksheetReader", null, [
       [ "NanoXLSX.Internal.Readers.WorksheetReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html", null ]
     ] ],
-    [ "NanoXLSX.Internal.Enums.ReaderPassword", "classNanoXLSX_1_1Internal_1_1Enums_1_1ReaderPassword.html", null ],
     [ "NanoXLSX.Internal.ReaderUtils", "classNanoXLSX_1_1Internal_1_1ReaderUtils.html", null ],
     [ "NanoXLSX.Internal.Readers.Relationship", "classNanoXLSX_1_1Internal_1_1Readers_1_1Relationship.html", null ],
     [ "NanoXLSX.Internal.StyleReaderContainer", "classNanoXLSX_1_1Internal_1_1StyleReaderContainer.html", null ],

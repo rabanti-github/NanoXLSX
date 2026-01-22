@@ -15,7 +15,7 @@ var searchData=
   ['slantdashdot_12',['SlantDashDot',['../classNanoXLSX_1_1Styles_1_1Border.html#ad14a31ed0b823e2cd91972105ad6a598adb38534fa5743a0dd461814622babfa6',1,'NanoXLSX::Styles::Border']]],
   ['solid_13',['Solid',['../classNanoXLSX_1_1Styles_1_1Fill.html#acb72ce44f1a54c07355c72b405465437ae41480b6bbfbf7407974a88d3d34f4fa',1,'NanoXLSX::Styles::Fill']]],
   ['sort_14',['Sort',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca6b46ae48421828d9973deec5fa9aa0c3',1,'NanoXLSX::Worksheet']]],
-  ['string_15',['String',['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa27118326006d3829667a400ad23d5d98',1,'NanoXLSX::Cell']]],
+  ['string_15',['String',['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa27118326006d3829667a400ad23d5d98',1,'NanoXLSX.Cell.String'],['../classNanoXLSX_1_1ReaderOptions.html#a1a81aa0a84ee1ed6c02936b57bd618e3a27118326006d3829667a400ad23d5d98',1,'NanoXLSX.ReaderOptions.String']]],
   ['strongcyan_16',['StrongCyan',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8a871138d96bdd4d291139d88201530b5c',1,'NanoXLSX::Colors::IndexedColor']]],
   ['strongmagenta_17',['StrongMagenta',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8af1cbfc4438f9b15d90ef813dff62c532',1,'NanoXLSX::Colors::IndexedColor']]],
   ['strongyellow_18',['StrongYellow',['../classNanoXLSX_1_1Colors_1_1IndexedColor.html#ad6600f00308131c91605a22e403730a8af08356744a2827dae85d6f08f3cc4ba8',1,'NanoXLSX::Colors::IndexedColor']]],

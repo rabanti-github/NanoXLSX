@@ -1,18 +1,9 @@
 var searchData=
 [
-  ['rc_201_0',['v3.0.0-rc.1',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md7',1,'']]],
-  ['rc_202_1',['v3.0.0-rc.2',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md5',1,'']]],
-  ['rc_203_2',['v3.0.0-rc.3',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md3',1,'']]],
-  ['rc_204_3',['v3.0.0-rc.4',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md1',1,'']]],
-  ['read_4',['Read',['../classNanoXLSX_1_1Internal_1_1Readers_1_1XlsxReader.html#ae332c791f49521b3dfa4b07e81d4338d',1,'NanoXLSX::Internal::Readers::XlsxReader']]],
-  ['readasync_5',['ReadAsync',['../classNanoXLSX_1_1Internal_1_1Readers_1_1XlsxReader.html#a1aff497e9af9854fee8cd98629b79ff0',1,'NanoXLSX::Internal::Readers::XlsxReader']]],
-  ['reader_6',['Reader',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html',1,'Change Log - NanoXLSX.Reader'],['../index.html',1,'NanoXLSX.Reader'],['../index.html#autotoc_md9',1,'NanoXLSX.Reader']]],
-  ['readeroptions_7',['ReaderOptions',['../classNanoXLSX_1_1ReaderOptions.html',1,'NanoXLSX']]],
-  ['readerpassword_8',['ReaderPassword',['../classNanoXLSX_1_1Internal_1_1Enums_1_1ReaderPassword.html',1,'NanoXLSX::Internal::Enums']]],
-  ['readerutils_9',['ReaderUtils',['../classNanoXLSX_1_1Internal_1_1ReaderUtils.html',1,'NanoXLSX::Internal']]],
-  ['readxmlattributes_10',['ReadXmlAttributes',['../interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html#a5312dfd92cc3dcd99b9cfd74568deea6',1,'NanoXLSX.Interfaces.Reader.IPasswordReader.ReadXmlAttributes()'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html#a99fcbf36b1f3c2e8f1c5f74e08cc79bf',1,'NanoXLSX.Internal.Readers.LegacyPasswordReader.ReadXmlAttributes()']]],
-  ['references_11',['Further References',['../index.html#autotoc_md13',1,'']]],
-  ['relationship_12',['Relationship',['../classNanoXLSX_1_1Internal_1_1Readers_1_1Relationship.html',1,'NanoXLSX::Internal::Readers']]],
-  ['relationshipreader_13',['RelationshipReader',['../classNanoXLSX_1_1Internal_1_1Readers_1_1RelationshipReader.html',1,'NanoXLSX.Internal.Readers.RelationshipReader'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1RelationshipReader.html#a1e2f65f637d20444328b9cab8a2cdb43',1,'NanoXLSX.Internal.Readers.RelationshipReader.RelationshipReader()']]],
-  ['rid_14',['RID',['../classNanoXLSX_1_1Internal_1_1Readers_1_1Relationship.html#aad2b7dc2531e1f395e1c511dd5e72f80',1,'NanoXLSX::Internal::Readers::Relationship']]]
+  ['setpassword_0',['SetPassword',['../classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html#a1e82e393a6498a64e4dfec20ddfdf659',1,'NanoXLSX::Internal::Readers::LegacyPasswordReader']]],
+  ['sharedstrings_1',['SharedStrings',['../classNanoXLSX_1_1Internal_1_1Readers_1_1SharedStringsReader.html#a8bdf200f82e94007707c15beac0a4a23',1,'NanoXLSX.Internal.Readers.SharedStringsReader.SharedStrings'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#a1fd8ce0c4f066098091b9f8eb1b7b561',1,'NanoXLSX.Internal.Readers.WorksheetReader.SharedStrings']]],
+  ['sharedstringsreader_2',['SharedStringsReader',['../classNanoXLSX_1_1Internal_1_1Readers_1_1SharedStringsReader.html',1,'NanoXLSX.Internal.Readers.SharedStringsReader'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1SharedStringsReader.html#ae5ae5e4a93f04be06652158bb130f5ac',1,'NanoXLSX.Internal.Readers.SharedStringsReader.SharedStringsReader()']]],
+  ['stylecount_3',['StyleCount',['../classNanoXLSX_1_1Internal_1_1StyleReaderContainer.html#a4f26d09d9fcea4670ca58d1eb907f3ee',1,'NanoXLSX::Internal::StyleReaderContainer']]],
+  ['stylereader_4',['StyleReader',['../classNanoXLSX_1_1Internal_1_1Readers_1_1StyleReader.html',1,'NanoXLSX.Internal.Readers.StyleReader'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1StyleReader.html#a448eb550d6dde3b4882006bf69408805',1,'NanoXLSX.Internal.Readers.StyleReader.StyleReader()']]],
+  ['stylereadercontainer_5',['StyleReaderContainer',['../classNanoXLSX_1_1Internal_1_1StyleReaderContainer.html',1,'NanoXLSX::Internal']]]
 ];

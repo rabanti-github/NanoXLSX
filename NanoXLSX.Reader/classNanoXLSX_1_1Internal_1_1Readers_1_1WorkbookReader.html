@@ -106,8 +106,8 @@ $(function(){initNavTree('classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5a273ffa21def3c664d30257ece7e7ba" id="r_a5a273ffa21def3c664d30257ece7e7ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a273ffa21def3c664d30257ece7e7ba">Init</a> (MemoryStream stream, <a class="el" href="#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a> workbook, IOptions readerOptions)</td></tr>
-<tr class="memdesc:a5a273ffa21def3c664d30257ece7e7ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method (interface implementation).  <br /></td></tr>
+<tr class="memitem:aa05b06b8272a57469a94ec9477c24465" id="r_aa05b06b8272a57469a94ec9477c24465"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa05b06b8272a57469a94ec9477c24465">Init</a> (MemoryStream stream, <a class="el" href="#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a> workbook, IOptions readerOptions, Action&lt; MemoryStream, <a class="el" href="#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>, string, IOptions, int?&gt; inlinePluginHandler)</td></tr>
+<tr class="memdesc:aa05b06b8272a57469a94ec9477c24465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method (interface implementation).  <br /></td></tr>
 <tr class="memitem:a3ccbd1209762bd68ddc1d6c1cc88ef2a" id="r_a3ccbd1209762bd68ddc1d6c1cc88ef2a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ccbd1209762bd68ddc1d6c1cc88ef2a">Execute</a> ()</td></tr>
 <tr class="memdesc:a3ccbd1209762bd68ddc1d6c1cc88ef2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to execute the main logic of the plug-in (interface implementation).  <br /></td></tr>
 </table><table class="memberdecls">
@@ -115,6 +115,10 @@ Public Member Functions</h2></td></tr>
 Properties</h2></td></tr>
 <tr class="memitem:a2131f0ce7740d8e2f511bbe87d9587bf" id="r_a2131f0ce7740d8e2f511bbe87d9587bf"><td class="memItemLeft" align="right" valign="top">Workbook&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a2131f0ce7740d8e2f511bbe87d9587bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Workbook reference where read data is stored (should not be null).  <br /></td></tr>
+<tr class="memitem:a1e0b61d1b83ea1a69d901ad10a6e000b" id="r_a1e0b61d1b83ea1a69d901ad10a6e000b"><td class="memItemLeft" align="right" valign="top">IOptions&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e0b61d1b83ea1a69d901ad10a6e000b">Options</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a1e0b61d1b83ea1a69d901ad10a6e000b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reader options.  <br /></td></tr>
+<tr class="memitem:a870949cb9ed63e578cbd332297d5e84f" id="r_a870949cb9ed63e578cbd332297d5e84f"><td class="memItemLeft" align="right" valign="top">Action&lt; MemoryStream, <a class="el" href="#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>, string, IOptions, int?&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a870949cb9ed63e578cbd332297d5e84f">InlinePluginHandler</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a870949cb9ed63e578cbd332297d5e84f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the ReaderPlugInHandler, to be used for post operations in the <a class="el" href="#a3ccbd1209762bd68ddc1d6c1cc88ef2a" title="Method to execute the main logic of the plug-in (interface implementation).">Execute</a> method.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a reader to decompile a workbook in an XLSX files. </p>
@@ -144,12 +148,12 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Internal_2Readers_2WorkbookReader_8cs_source.html#l00068">68</a> of file <a class="el" href="Internal_2Readers_2WorkbookReader_8cs_source.html">Internal/Readers/WorkbookReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Internal_2Readers_2WorkbookReader_8cs_source.html#l00078">78</a> of file <a class="el" href="Internal_2Readers_2WorkbookReader_8cs_source.html">Internal/Readers/WorkbookReader.cs</a>.</p>
 
 </div>
 </div>
-<a id="a5a273ffa21def3c664d30257ece7e7ba" name="a5a273ffa21def3c664d30257ece7e7ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a273ffa21def3c664d30257ece7e7ba">&#9670;&#160;</a></span>Init()</h2>
+<a id="aa05b06b8272a57469a94ec9477c24465" name="aa05b06b8272a57469a94ec9477c24465"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa05b06b8272a57469a94ec9477c24465">&#9670;&#160;</a></span>Init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -167,7 +171,12 @@ Properties</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">IOptions</td>          <td class="paramname"><span class="paramname"><em>readerOptions</em></span>&#160;)</td>
+          <td class="paramtype">IOptions</td>          <td class="paramname"><span class="paramname"><em>readerOptions</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&lt; MemoryStream, <a class="el" href="#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>, string, IOptions, int?&gt;</td>          <td class="paramname"><span class="paramname"><em>inlinePluginHandler</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -177,16 +186,69 @@ Properties</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">stream</td><td>MemoryStream to be read</td></tr>
     <tr><td class="paramname">workbook</td><td>Workbook reference</td></tr>
-    <tr><td class="paramname">readerOptions</td><td><a class="el" href="namespaceNanoXLSX_1_1Interfaces_1_1Reader.html">Reader</a> options</td></tr>
+    <tr><td class="paramname">readerOptions</td><td>Reader options</td></tr>
+    <tr><td class="paramname">inlinePluginHandler</td><td>Reference to the a handler action, to be used for post operations in reader methods</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Internal_2Readers_2WorkbookReader_8cs_source.html#l00055">55</a> of file <a class="el" href="Internal_2Readers_2WorkbookReader_8cs_source.html">Internal/Readers/WorkbookReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Internal_2Readers_2WorkbookReader_8cs_source.html#l00064">64</a> of file <a class="el" href="Internal_2Readers_2WorkbookReader_8cs_source.html">Internal/Readers/WorkbookReader.cs</a>.</p>
 
 </div>
 </div>
 <a name="doc-property-members" id="doc-property-members"></a><h2 id="header-doc-property-members" class="groupheader">Property Documentation</h2>
+<a id="a870949cb9ed63e578cbd332297d5e84f" name="a870949cb9ed63e578cbd332297d5e84f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a870949cb9ed63e578cbd332297d5e84f">&#9670;&#160;</a></span>InlinePluginHandler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action&lt;MemoryStream, <a class="el" href="#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>, string, IOptions, int?&gt; NanoXLSX.Internal.Readers.WorkbookReader.InlinePluginHandler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel get">get</span><span class="mlabel set">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reference to the ReaderPlugInHandler, to be used for post operations in the <a class="el" href="#a3ccbd1209762bd68ddc1d6c1cc88ef2a" title="Method to execute the main logic of the plug-in (interface implementation).">Execute</a> method. </p>
+
+<p class="definition">Definition at line <a class="el" href="Internal_2Readers_2WorkbookReader_8cs_source.html#l00044">44</a> of file <a class="el" href="Internal_2Readers_2WorkbookReader_8cs_source.html">Internal/Readers/WorkbookReader.cs</a>.</p>
+
+</div>
+</div>
+<a id="a1e0b61d1b83ea1a69d901ad10a6e000b" name="a1e0b61d1b83ea1a69d901ad10a6e000b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e0b61d1b83ea1a69d901ad10a6e000b">&#9670;&#160;</a></span>Options</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IOptions NanoXLSX.Internal.Readers.WorkbookReader.Options</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel get">get</span><span class="mlabel set">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reader options. </p>
+
+<p class="definition">Definition at line <a class="el" href="Internal_2Readers_2WorkbookReader_8cs_source.html#l00040">40</a> of file <a class="el" href="Internal_2Readers_2WorkbookReader_8cs_source.html">Internal/Readers/WorkbookReader.cs</a>.</p>
+
+</div>
+</div>
 <a id="a2131f0ce7740d8e2f511bbe87d9587bf" name="a2131f0ce7740d8e2f511bbe87d9587bf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2131f0ce7740d8e2f511bbe87d9587bf">&#9670;&#160;</a></span>Workbook</h2>
 

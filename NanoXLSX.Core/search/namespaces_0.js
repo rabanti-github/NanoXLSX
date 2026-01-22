@@ -2,9 +2,9 @@ var searchData=
 [
   ['nanoxlsx_0',['NanoXLSX',['../namespaceNanoXLSX.html',1,'']]],
   ['nanoxlsx_3a_3acolors_1',['Colors',['../namespaceNanoXLSX_1_1Colors.html',1,'NanoXLSX']]],
-  ['nanoxlsx_3a_3aexceptions_2',['Exceptions',['../namespaceNanoXLSX_1_1Exceptions.html',1,'NanoXLSX']]],
-  ['nanoxlsx_3a_3ainterfaces_3',['Interfaces',['../namespaceNanoXLSX_1_1Interfaces.html',1,'NanoXLSX']]],
-  ['nanoxlsx_3a_3ainterfaces_3a_3aplugin_4',['Plugin',['../namespaceNanoXLSX_1_1Interfaces_1_1Plugin.html',1,'NanoXLSX::Interfaces']]],
+  ['nanoxlsx_3a_3aenums_2',['Enums',['../namespaceNanoXLSX_1_1Enums.html',1,'NanoXLSX']]],
+  ['nanoxlsx_3a_3aexceptions_3',['Exceptions',['../namespaceNanoXLSX_1_1Exceptions.html',1,'NanoXLSX']]],
+  ['nanoxlsx_3a_3ainterfaces_4',['Interfaces',['../namespaceNanoXLSX_1_1Interfaces.html',1,'NanoXLSX']]],
   ['nanoxlsx_3a_3ainterfaces_3a_3areader_5',['Reader',['../namespaceNanoXLSX_1_1Interfaces_1_1Reader.html',1,'NanoXLSX::Interfaces']]],
   ['nanoxlsx_3a_3ainterfaces_3a_3awriter_6',['Writer',['../namespaceNanoXLSX_1_1Interfaces_1_1Writer.html',1,'NanoXLSX::Interfaces']]],
   ['nanoxlsx_3a_3aregistry_7',['Registry',['../namespaceNanoXLSX_1_1Registry.html',1,'NanoXLSX']]],

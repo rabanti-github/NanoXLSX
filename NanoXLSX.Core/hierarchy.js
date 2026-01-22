@@ -31,6 +31,7 @@ var hierarchy =
     [ "NanoXLSX.Interfaces.IColorScheme", "interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html", [
       [ "NanoXLSX.Themes.ColorScheme", "classNanoXLSX_1_1Themes_1_1ColorScheme.html", null ]
     ] ],
+    [ "NanoXLSX.Interfaces.Writer.IColorWriter", "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html", null ],
     [ "IComparable", null, [
       [ "NanoXLSX.Colors.Color", "classNanoXLSX_1_1Colors_1_1Color.html", null ]
     ] ],
@@ -49,12 +50,20 @@ var hierarchy =
     [ "IEquatable", null, [
       [ "NanoXLSX.Address", "structNanoXLSX_1_1Address.html", null ]
     ] ],
-    [ "NanoXLSX.Interfaces.Plugin.IOptions", "interfaceNanoXLSX_1_1Interfaces_1_1Plugin_1_1IOptions.html", null ],
+    [ "NanoXLSX.Interfaces.IOptions", "interfaceNanoXLSX_1_1Interfaces_1_1IOptions.html", [
+      [ "NanoXLSX.ReaderOptions", "classNanoXLSX_1_1ReaderOptions.html", null ]
+    ] ],
     [ "NanoXLSX.Interfaces.IPassword", "interfaceNanoXLSX_1_1Interfaces_1_1IPassword.html", [
+      [ "NanoXLSX.Interfaces.Reader.IPasswordReader", "interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html", null ],
+      [ "NanoXLSX.Interfaces.Writer.IPasswordWriter", "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html", null ],
       [ "NanoXLSX.LegacyPassword", "classNanoXLSX_1_1LegacyPassword.html", null ]
+    ] ],
+    [ "NanoXLSX.Interfaces.ITextOptions", "interfaceNanoXLSX_1_1Interfaces_1_1ITextOptions.html", [
+      [ "NanoXLSX.ReaderOptions", "classNanoXLSX_1_1ReaderOptions.html", null ]
     ] ],
     [ "NanoXLSX.Metadata", "classNanoXLSX_1_1Metadata.html", null ],
     [ "NanoXLSX.Utils.ParserUtils", "classNanoXLSX_1_1Utils_1_1ParserUtils.html", null ],
+    [ "NanoXLSX.Enums.Password", "classNanoXLSX_1_1Enums_1_1Password.html", null ],
     [ "NanoXLSX.Registry.PlugInLoader", "classNanoXLSX_1_1Registry_1_1PlugInLoader.html", null ],
     [ "NanoXLSX.Registry.PlugInUUID", "classNanoXLSX_1_1Registry_1_1PlugInUUID.html", null ],
     [ "NanoXLSX.Range", "structNanoXLSX_1_1Range.html", null ],

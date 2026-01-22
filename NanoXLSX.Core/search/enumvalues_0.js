@@ -8,10 +8,13 @@ var searchData=
   ['accent6_5',['Accent6',['../classNanoXLSX_1_1Themes_1_1Theme.html#a0e467ba338f678508adf89a56ad3e966ada06350bb8cc80603d73f1e0055961bd',1,'NanoXLSX::Themes::Theme']]],
   ['activeborder_6',['ActiveBorder',['../classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4ae7d013f3e19ed99a0259febfa3934f2d',1,'NanoXLSX::Colors::SystemColor']]],
   ['activecaption_7',['ActiveCaption',['../classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4a221d14a015a1ff28480ae48a2908bf06',1,'NanoXLSX::Colors::SystemColor']]],
-  ['ansi_8',['ANSI',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001acad403321c965e6b83c88e6d3b1eca5270',1,'NanoXLSX::Styles::Font']]],
-  ['applicationdefined_9',['ApplicationDefined',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001acaf0ada33b3939e3a87b24a7ed8a2292e0',1,'NanoXLSX::Styles::Font']]],
-  ['appworkspace_10',['AppWorkspace',['../classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4a1f9ec33fd22b2dab91bd7d64e433a474',1,'NanoXLSX::Colors::SystemColor']]],
-  ['arabic_11',['Arabic',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001aca272ccb8592bafde0baf1dedce0fd3ac2',1,'NanoXLSX::Styles::Font']]],
-  ['auto_12',['Auto',['../classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bba06b9281e396db002010bde1de57262eb',1,'NanoXLSX::Colors::Color']]],
-  ['autofilter_13',['AutoFilter',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acab1b70ac3876a7311d95e1b50100aaa97',1,'NanoXLSX::Worksheet']]]
+  ['allnumberstodecimal_8',['AllNumbersToDecimal',['../classNanoXLSX_1_1ReaderOptions.html#ab3aaa157ca8c26a81fa853d683da90c1a750b73a36695518c1615fae087b3af95',1,'NanoXLSX::ReaderOptions']]],
+  ['allnumberstodouble_9',['AllNumbersToDouble',['../classNanoXLSX_1_1ReaderOptions.html#ab3aaa157ca8c26a81fa853d683da90c1a16cefc8595af9540fdeeb9b136d75524',1,'NanoXLSX::ReaderOptions']]],
+  ['allnumberstoint_10',['AllNumbersToInt',['../classNanoXLSX_1_1ReaderOptions.html#ab3aaa157ca8c26a81fa853d683da90c1ab2cf61b743ee8f4a07deed72ff80d9c6',1,'NanoXLSX::ReaderOptions']]],
+  ['ansi_11',['ANSI',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001acad403321c965e6b83c88e6d3b1eca5270',1,'NanoXLSX::Styles::Font']]],
+  ['applicationdefined_12',['ApplicationDefined',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001acaf0ada33b3939e3a87b24a7ed8a2292e0',1,'NanoXLSX::Styles::Font']]],
+  ['appworkspace_13',['AppWorkspace',['../classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4a1f9ec33fd22b2dab91bd7d64e433a474',1,'NanoXLSX::Colors::SystemColor']]],
+  ['arabic_14',['Arabic',['../classNanoXLSX_1_1Styles_1_1Font.html#afdce3a46abac4bf89936630d30a001aca272ccb8592bafde0baf1dedce0fd3ac2',1,'NanoXLSX::Styles::Font']]],
+  ['auto_15',['Auto',['../classNanoXLSX_1_1Colors_1_1Color.html#adfdf342a6810d49dfebb9ae4f05ea8bba06b9281e396db002010bde1de57262eb',1,'NanoXLSX::Colors::Color']]],
+  ['autofilter_16',['AutoFilter',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acab1b70ac3876a7311d95e1b50100aaa97',1,'NanoXLSX::Worksheet']]]
 ];

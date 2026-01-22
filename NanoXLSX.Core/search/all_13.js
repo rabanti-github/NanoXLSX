@@ -4,9 +4,9 @@ var searchData=
   ['nanoxlsx_1',['NanoXLSX',['../namespaceNanoXLSX.html',1,'']]],
   ['nanoxlsx_20core_2',['NanoXLSX Core',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html',1,'Change Log - NanoXLSX.Core'],['../index.html',1,'NanoXLSX.Core'],['../index.html#autotoc_md11',1,'NanoXLSX.Core']]],
   ['nanoxlsx_3a_3acolors_3',['Colors',['../namespaceNanoXLSX_1_1Colors.html',1,'NanoXLSX']]],
-  ['nanoxlsx_3a_3aexceptions_4',['Exceptions',['../namespaceNanoXLSX_1_1Exceptions.html',1,'NanoXLSX']]],
-  ['nanoxlsx_3a_3ainterfaces_5',['Interfaces',['../namespaceNanoXLSX_1_1Interfaces.html',1,'NanoXLSX']]],
-  ['nanoxlsx_3a_3ainterfaces_3a_3aplugin_6',['Plugin',['../namespaceNanoXLSX_1_1Interfaces_1_1Plugin.html',1,'NanoXLSX::Interfaces']]],
+  ['nanoxlsx_3a_3aenums_4',['Enums',['../namespaceNanoXLSX_1_1Enums.html',1,'NanoXLSX']]],
+  ['nanoxlsx_3a_3aexceptions_5',['Exceptions',['../namespaceNanoXLSX_1_1Exceptions.html',1,'NanoXLSX']]],
+  ['nanoxlsx_3a_3ainterfaces_6',['Interfaces',['../namespaceNanoXLSX_1_1Interfaces.html',1,'NanoXLSX']]],
   ['nanoxlsx_3a_3ainterfaces_3a_3areader_7',['Reader',['../namespaceNanoXLSX_1_1Interfaces_1_1Reader.html',1,'NanoXLSX::Interfaces']]],
   ['nanoxlsx_3a_3ainterfaces_3a_3awriter_8',['Writer',['../namespaceNanoXLSX_1_1Interfaces_1_1Writer.html',1,'NanoXLSX::Interfaces']]],
   ['nanoxlsx_3a_3aregistry_9',['Registry',['../namespaceNanoXLSX_1_1Registry.html',1,'NanoXLSX']]],
@@ -28,5 +28,6 @@ var searchData=
   ['notsupportedcontentexception_25',['NotSupportedContentException',['../classNanoXLSX_1_1Exceptions_1_1NotSupportedContentException.html',1,'NanoXLSX.Exceptions.NotSupportedContentException'],['../classNanoXLSX_1_1Exceptions_1_1NotSupportedContentException.html#a4554c819a51021fb65a88c7f27839778',1,'NanoXLSX.Exceptions.NotSupportedContentException.NotSupportedContentException()'],['../classNanoXLSX_1_1Exceptions_1_1NotSupportedContentException.html#ad4c8076ab72660ed30a52a3dfc0fcb07',1,'NanoXLSX.Exceptions.NotSupportedContentException.NotSupportedContentException(string message)'],['../classNanoXLSX_1_1Exceptions_1_1NotSupportedContentException.html#a9ccbf9dfb92561da31a473d8582025b6',1,'NanoXLSX.Exceptions.NotSupportedContentException.NotSupportedContentException(string message, Exception inner)'],['../classNanoXLSX_1_1Exceptions_1_1NotSupportedContentException.html#ab9b7629af94fe84b1b4d79cf929e5dc2',1,'NanoXLSX.Exceptions.NotSupportedContentException.NotSupportedContentException(SerializationInfo info, StreamingContext context)']]],
   ['number_26',['Number',['../classNanoXLSX_1_1Column.html#a12701304f09bcc25727d00df57a362c5',1,'NanoXLSX.Column.Number'],['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#a9ce25e4c334ab54d4e96f3a508e96448',1,'NanoXLSX.Styles.NumberFormat.Number'],['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aab2ee912b91d69b435159c7c3f6df7f5f',1,'NanoXLSX.Cell.Number']]],
   ['numberformat_27',['NumberFormat',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html',1,'NanoXLSX.Styles.NumberFormat'],['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#ac6a54b34492e6ac2338bbf465a2ecb83',1,'NanoXLSX.Styles.NumberFormat.NumberFormat()']]],
-  ['numericformat_28',['NumericFormat',['../classNanoXLSX_1_1Utils_1_1ParserUtils.html#a024930575d5b9384a64f9900482bbab9',1,'NanoXLSX::Utils::ParserUtils']]]
+  ['numeric_28',['Numeric',['../classNanoXLSX_1_1ReaderOptions.html#a1a81aa0a84ee1ed6c02936b57bd618e3a87322391cc6e8948ce9fd5d6cb84fced',1,'NanoXLSX::ReaderOptions']]],
+  ['numericformat_29',['NumericFormat',['../classNanoXLSX_1_1Utils_1_1ParserUtils.html#a024930575d5b9384a64f9900482bbab9',1,'NanoXLSX::Utils::ParserUtils']]]
 ];

@@ -9,6 +9,9 @@ var annotated_dup =
         [ "SystemColor", "classNanoXLSX_1_1Colors_1_1SystemColor.html", "classNanoXLSX_1_1Colors_1_1SystemColor" ],
         [ "ThemeColor", "classNanoXLSX_1_1Colors_1_1ThemeColor.html", "classNanoXLSX_1_1Colors_1_1ThemeColor" ]
       ] ],
+      [ "Enums", "namespaceNanoXLSX_1_1Enums.html", [
+        [ "Password", "classNanoXLSX_1_1Enums_1_1Password.html", "classNanoXLSX_1_1Enums_1_1Password" ]
+      ] ],
       [ "Exceptions", "namespaceNanoXLSX_1_1Exceptions.html", [
         [ "FormatException", "classNanoXLSX_1_1Exceptions_1_1FormatException.html", "classNanoXLSX_1_1Exceptions_1_1FormatException" ],
         [ "IOException", "classNanoXLSX_1_1Exceptions_1_1IOException.html", "classNanoXLSX_1_1Exceptions_1_1IOException" ],
@@ -19,12 +22,18 @@ var annotated_dup =
         [ "WorksheetException", "classNanoXLSX_1_1Exceptions_1_1WorksheetException.html", "classNanoXLSX_1_1Exceptions_1_1WorksheetException" ]
       ] ],
       [ "Interfaces", "namespaceNanoXLSX_1_1Interfaces.html", [
-        [ "Plugin", "namespaceNanoXLSX_1_1Interfaces_1_1Plugin.html", [
-          [ "IOptions", "interfaceNanoXLSX_1_1Interfaces_1_1Plugin_1_1IOptions.html", null ]
+        [ "Reader", "namespaceNanoXLSX_1_1Interfaces_1_1Reader.html", [
+          [ "IPasswordReader", "interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html", "interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader" ]
+        ] ],
+        [ "Writer", "namespaceNanoXLSX_1_1Interfaces_1_1Writer.html", [
+          [ "IColorWriter", "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html", "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter" ],
+          [ "IPasswordWriter", "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html", "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter" ]
         ] ],
         [ "IColor", "interfaceNanoXLSX_1_1Interfaces_1_1IColor.html", "interfaceNanoXLSX_1_1Interfaces_1_1IColor" ],
         [ "IColorScheme", "interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html", "interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme" ],
+        [ "IOptions", "interfaceNanoXLSX_1_1Interfaces_1_1IOptions.html", null ],
         [ "IPassword", "interfaceNanoXLSX_1_1Interfaces_1_1IPassword.html", "interfaceNanoXLSX_1_1Interfaces_1_1IPassword" ],
+        [ "ITextOptions", "interfaceNanoXLSX_1_1Interfaces_1_1ITextOptions.html", "interfaceNanoXLSX_1_1Interfaces_1_1ITextOptions" ],
         [ "ITypedColor&lt; T &gt;", "interfaceNanoXLSX_1_1Interfaces_1_1ITypedColor-1-g.html", "interfaceNanoXLSX_1_1Interfaces_1_1ITypedColor-1-g" ]
       ] ],
       [ "Registry", "namespaceNanoXLSX_1_1Registry.html", [
@@ -68,6 +77,7 @@ var annotated_dup =
       [ "Column", "classNanoXLSX_1_1Column.html", "classNanoXLSX_1_1Column" ],
       [ "LegacyPassword", "classNanoXLSX_1_1LegacyPassword.html", "classNanoXLSX_1_1LegacyPassword" ],
       [ "Metadata", "classNanoXLSX_1_1Metadata.html", "classNanoXLSX_1_1Metadata" ],
+      [ "ReaderOptions", "classNanoXLSX_1_1ReaderOptions.html", "classNanoXLSX_1_1ReaderOptions" ],
       [ "Range", "structNanoXLSX_1_1Range.html", "structNanoXLSX_1_1Range" ],
       [ "Shortener", "classNanoXLSX_1_1Shortener.html", "classNanoXLSX_1_1Shortener" ],
       [ "Workbook", "classNanoXLSX_1_1Workbook.html", "classNanoXLSX_1_1Workbook" ],

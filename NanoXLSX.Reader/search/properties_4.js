@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ignorenotsupportedpasswordalgorithms_0',['IgnoreNotSupportedPasswordAlgorithms',['../classNanoXLSX_1_1ReaderOptions.html#a7d1703cb3de5215fa1b532dd383a7f17',1,'NanoXLSX::ReaderOptions']]]
+  ['rid_0',['RID',['../classNanoXLSX_1_1Internal_1_1Readers_1_1Relationship.html#aad2b7dc2531e1f395e1c511dd5e72f80',1,'NanoXLSX::Internal::Readers::Relationship']]]
 ];

@@ -1,6 +1,7 @@
 var namespaceNanoXLSX =
 [
     [ "Colors", "namespaceNanoXLSX_1_1Colors.html", "namespaceNanoXLSX_1_1Colors" ],
+    [ "Enums", "namespaceNanoXLSX_1_1Enums.html", "namespaceNanoXLSX_1_1Enums" ],
     [ "Exceptions", "namespaceNanoXLSX_1_1Exceptions.html", "namespaceNanoXLSX_1_1Exceptions" ],
     [ "Interfaces", "namespaceNanoXLSX_1_1Interfaces.html", "namespaceNanoXLSX_1_1Interfaces" ],
     [ "Registry", "namespaceNanoXLSX_1_1Registry.html", "namespaceNanoXLSX_1_1Registry" ],
@@ -13,6 +14,7 @@ var namespaceNanoXLSX =
     [ "Column", "classNanoXLSX_1_1Column.html", "classNanoXLSX_1_1Column" ],
     [ "LegacyPassword", "classNanoXLSX_1_1LegacyPassword.html", "classNanoXLSX_1_1LegacyPassword" ],
     [ "Metadata", "classNanoXLSX_1_1Metadata.html", "classNanoXLSX_1_1Metadata" ],
+    [ "ReaderOptions", "classNanoXLSX_1_1ReaderOptions.html", "classNanoXLSX_1_1ReaderOptions" ],
     [ "Range", "structNanoXLSX_1_1Range.html", "structNanoXLSX_1_1Range" ],
     [ "Shortener", "classNanoXLSX_1_1Shortener.html", "classNanoXLSX_1_1Shortener" ],
     [ "Workbook", "classNanoXLSX_1_1Workbook.html", "classNanoXLSX_1_1Workbook" ],

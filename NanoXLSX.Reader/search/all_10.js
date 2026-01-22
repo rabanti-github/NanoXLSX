@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['options_0',['Options',['../classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html#ad90b923c01d2d16e274927361f82259c',1,'NanoXLSX::Internal::Readers::LegacyPasswordReader']]]
+  ['passwordhash_0',['PasswordHash',['../classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html#a1596b2966a0c348838c58202189de0db',1,'NanoXLSX::Internal::Readers::LegacyPasswordReader']]],
+  ['passwordisset_1',['PasswordIsSet',['../classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html#a3b17d601f94a8a6ef95fd7de318cfd98',1,'NanoXLSX::Internal::Readers::LegacyPasswordReader']]]
 ];

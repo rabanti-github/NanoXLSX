@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['globalenforcingtype_0',['GlobalEnforcingType',['../classNanoXLSX_1_1ReaderOptions.html#ab669b48da3c9a85d1bf9696c66096558',1,'NanoXLSX::ReaderOptions']]]
+  ['passwordhash_0',['PasswordHash',['../classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html#a1596b2966a0c348838c58202189de0db',1,'NanoXLSX::Internal::Readers::LegacyPasswordReader']]]
 ];

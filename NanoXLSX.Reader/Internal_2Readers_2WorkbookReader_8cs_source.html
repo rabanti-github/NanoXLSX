@@ -104,185 +104,182 @@ $(function(){initNavTree('Internal_2Readers_2WorkbookReader_8cs_source.html','',
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">using </span>System.IO;</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">using </span>System.Xml;</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">using </span>NanoXLSX.Exceptions;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">using </span>NanoXLSX.Interfaces.Plugin;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">using </span><a class="code hl_namespace" href="namespaceNanoXLSX_1_1Interfaces_1_1Reader.html">NanoXLSX.Interfaces.Reader</a>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">using </span>NanoXLSX.Interfaces;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">using </span>NanoXLSX.Interfaces.Reader;</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">using </span>NanoXLSX.Registry;</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">using </span>NanoXLSX.Registry.Attributes;</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">using </span>NanoXLSX.Utils;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">using </span>static <a class="code hl_namespace" href="namespaceNanoXLSX.html">NanoXLSX</a>.<a class="code hl_namespace" href="namespaceNanoXLSX_1_1Internal.html">Internal</a>.<a class="code hl_namespace" href="namespaceNanoXLSX_1_1Internal_1_1Enums.html">Enums</a>.<a class="code hl_class" href="classNanoXLSX_1_1Internal_1_1Enums_1_1ReaderPassword.html">ReaderPassword</a>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">using </span>static <a class="code hl_namespace" href="namespaceNanoXLSX.html">NanoXLSX</a>.Enums.Password;</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">using </span>IOException = <a class="code hl_namespace" href="namespaceNanoXLSX.html">NanoXLSX</a>.Exceptions.IOException;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceNanoXLSX_1_1Internal_1_1Readers.html">NanoXLSX.Internal.Readers</a></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>{</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorkbookReader)]</div>
 <div class="foldopen" id="foldopen00026" data-start="{" data-end="};">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html">   26</a></span>    <span class="keyword">public</span> <span class="keyword">partial class </span>WorkbookReader : IPluginReader</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html">   26</a></span>    <span class="keyword">public</span> <span class="keyword">partial class </span>WorkbookReader : IPluginBaseReader</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    {</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="keyword">private</span> MemoryStream stream;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        <span class="keyword">private</span> <a class="code hl_interface" href="interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html">IPasswordReader</a> passwordReader;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="keyword">private</span> <a class="code hl_class" href="classNanoXLSX_1_1ReaderOptions.html">ReaderOptions</a> readerOptions;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        <span class="keyword">private</span> IPasswordReader passwordReader;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>       <span class="comment">// private ReaderOptions readerOptions;</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">        #region properties</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">   36</a></span>        <span class="keyword">public</span> <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a> <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a> { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">        #endregion</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">        #region constructors</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keyword">internal</span> <a class="code hl_class" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html">WorkbookReader</a>()</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        }</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">        #endregion</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">        #region methods</span></div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a5a273ffa21def3c664d30257ece7e7ba">   55</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a5a273ffa21def3c664d30257ece7e7ba">Init</a>(MemoryStream stream, <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a> workbook, IOptions readerOptions)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            this.stream = stream;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            this.Workbook = workbook;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            this.readerOptions = (<a class="code hl_class" href="classNanoXLSX_1_1ReaderOptions.html">ReaderOptions</a>)readerOptions;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            this.passwordReader = PlugInLoader.GetPlugIn&lt;<a class="code hl_interface" href="interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html">IPasswordReader</a>&gt;(PlugInUUID.PasswordReader, <span class="keyword">new</span> <a class="code hl_class" href="classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html">LegacyPasswordReader</a>());</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            this.passwordReader.<a class="code hl_function" href="interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html#afc414eefea336b14a6e2d28c332c9034">Init</a>(PasswordType.WorkbookProtection, <span class="keyword">this</span>.readerOptions);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a1e0b61d1b83ea1a69d901ad10a6e000b">   40</a></span>        <span class="keyword">public</span> IOptions <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a1e0b61d1b83ea1a69d901ad10a6e000b">Options</a> { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a870949cb9ed63e578cbd332297d5e84f">   44</a></span>        <span class="keyword">public</span> Action&lt;MemoryStream, Workbook, string, IOptions, int?&gt; <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a870949cb9ed63e578cbd332297d5e84f">InlinePluginHandler</a> { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">        #endregion</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">        #region constructors</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keyword">internal</span> <a class="code hl_class" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html">WorkbookReader</a>()</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">        #endregion</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">        #region methods</span></div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#aa05b06b8272a57469a94ec9477c24465">   64</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#aa05b06b8272a57469a94ec9477c24465">Init</a>(MemoryStream stream, <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a> workbook, IOptions readerOptions, Action&lt;MemoryStream, Workbook, string, IOptions, int?&gt; inlinePluginHandler)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            this.stream = stream;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            this.Workbook = workbook;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            this.Options = readerOptions;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            this.InlinePluginHandler = inlinePluginHandler;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            this.passwordReader = PlugInLoader.GetPlugIn&lt;IPasswordReader&gt;(PlugInUUID.PasswordReader, <span class="keyword">new</span> <a class="code hl_class" href="classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html">LegacyPasswordReader</a>());</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            this.passwordReader.Init(PasswordType.WorkbookProtection, (ReaderOptions)readerOptions);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        }</div>
 </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span></div>
-<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a3ccbd1209762bd68ddc1d6c1cc88ef2a">   68</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a3ccbd1209762bd68ddc1d6c1cc88ef2a">Execute</a>()</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            <span class="keywordflow">try</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            {</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                <span class="keyword">using</span> (stream) <span class="comment">// Close after processing</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                {</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                    XmlDocument xr = <span class="keyword">new</span> XmlDocument() { XmlResolver = <span class="keyword">null</span> };</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                    <span class="keyword">using</span> (XmlReader reader = XmlReader.Create(stream, <span class="keyword">new</span> XmlReaderSettings() { XmlResolver = <span class="keyword">null</span> }))</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                    {</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                        xr.Load(reader);</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                        <span class="keywordflow">foreach</span> (XmlNode node <span class="keywordflow">in</span> xr.DocumentElement.ChildNodes)</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                        {</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                            <span class="keywordflow">if</span> (node.LocalName.Equals(<span class="stringliteral">&quot;sheets&quot;</span>, StringComparison.OrdinalIgnoreCase) &amp;&amp; node.HasChildNodes)</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                            {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                                GetWorksheetInformation(node.ChildNodes);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                            }</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (node.LocalName.Equals(<span class="stringliteral">&quot;bookViews&quot;</span>, StringComparison.OrdinalIgnoreCase) &amp;&amp; node.HasChildNodes)</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                            {</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                                GetViewInformation(node.ChildNodes);</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                            }</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (node.LocalName.Equals(<span class="stringliteral">&quot;workbookProtection&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                            {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                                GetProtectionInformation(node);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                            }</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                        }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>, PlugInUUID.WorkbookInlineReader);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                    }</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                }</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            }</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            <span class="keywordflow">catch</span> (NotSupportedContentException)</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            {</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                <span class="keywordflow">throw</span>; <span class="comment">// rethrow</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            }</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            <span class="keywordflow">catch</span> (Exception ex)</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            {</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_typedef" href="namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72">IOException</a>(<span class="stringliteral">&quot;The XML entry could not be read from the input stream. Please see the inner exception:&quot;</span>, ex);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            }</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        }</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span></div>
+<div class="foldopen" id="foldopen00078" data-start="{" data-end="}">
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a3ccbd1209762bd68ddc1d6c1cc88ef2a">   78</a></span>        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a3ccbd1209762bd68ddc1d6c1cc88ef2a">Execute</a>()</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                <span class="keyword">using</span> (stream) <span class="comment">// Close after processing</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                    XmlDocument xr = <span class="keyword">new</span> XmlDocument() { XmlResolver = <span class="keyword">null</span> };</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                    <span class="keyword">using</span> (XmlReader reader = XmlReader.Create(stream, <span class="keyword">new</span> XmlReaderSettings() { XmlResolver = <span class="keyword">null</span> }))</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                    {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                        xr.Load(reader);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                        <span class="keywordflow">foreach</span> (XmlNode node <span class="keywordflow">in</span> xr.DocumentElement.ChildNodes)</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                        {</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                            <span class="keywordflow">if</span> (node.LocalName.Equals(<span class="stringliteral">&quot;sheets&quot;</span>, StringComparison.OrdinalIgnoreCase) &amp;&amp; node.HasChildNodes)</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                            {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                                GetWorksheetInformation(node.ChildNodes);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                            }</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (node.LocalName.Equals(<span class="stringliteral">&quot;bookViews&quot;</span>, StringComparison.OrdinalIgnoreCase) &amp;&amp; node.HasChildNodes)</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                            {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                                GetViewInformation(node.ChildNodes);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                            }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (node.LocalName.Equals(<span class="stringliteral">&quot;workbookProtection&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                            {</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                                GetProtectionInformation(node);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                            }</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                        }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a870949cb9ed63e578cbd332297d5e84f">InlinePluginHandler</a>?.Invoke(stream, <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>, PlugInUUID.WorkbookInlineReader, <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a1e0b61d1b83ea1a69d901ad10a6e000b">Options</a>, <span class="keyword">null</span>);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                    }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                }</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            }</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            <span class="keywordflow">catch</span> (NotSupportedContentException)</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>            {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                <span class="keywordflow">throw</span>; <span class="comment">// rethrow</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            }</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            <span class="keywordflow">catch</span> (Exception ex)</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_typedef" href="namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72">IOException</a>(<span class="stringliteral">&quot;The XML entry could not be read from the input stream. Please see the inner exception:&quot;</span>, ex);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>            }</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        }</div>
 </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> GetProtectionInformation(XmlNode node)</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        {</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>            <span class="keywordtype">bool</span> lockStructure = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>            <span class="keywordtype">bool</span> lockWindows = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            <span class="comment">//this.Protected = true;</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            <span class="keywordtype">string</span> attribute = <a class="code hl_class" href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html">ReaderUtils</a>.<a class="code hl_function" href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html#a7d407e6ee000c0593d4a78e786bb6d40">GetAttribute</a>(node, <span class="stringliteral">&quot;lockWindows&quot;</span>);</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            <span class="keywordflow">if</span> (attribute != <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>            {</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                <span class="keywordtype">int</span> value = ParserUtils.ParseBinaryBool(attribute);</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                <span class="comment">//this.LockWindows = value == 1;</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                lockWindows = value == 1;</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>            }</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>            attribute = <a class="code hl_class" href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html">ReaderUtils</a>.<a class="code hl_function" href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html#a7d407e6ee000c0593d4a78e786bb6d40">GetAttribute</a>(node, <span class="stringliteral">&quot;lockStructure&quot;</span>);</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            <span class="keywordflow">if</span> (attribute != <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            {</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                <span class="keywordtype">int</span> value = ParserUtils.ParseBinaryBool(attribute);</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                <span class="comment">//this.LockStructure = value == 1;</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                lockStructure = value == 1;</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            }</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>            <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>.SetWorkbookProtection(<span class="keyword">true</span>, lockWindows, lockStructure, <span class="keyword">null</span>);</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>            passwordReader.<a class="code hl_function" href="interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html#a5312dfd92cc3dcd99b9cfd74568deea6">ReadXmlAttributes</a>(node);</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>            <span class="keywordflow">if</span> (passwordReader.PasswordIsSet())</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>            {</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>.WorkbookProtectionPassword.CopyFrom(passwordReader);</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>            }</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        }</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span></div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> GetViewInformation(XmlNodeList nodes)</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        {</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>            <span class="keywordflow">foreach</span> (XmlNode node <span class="keywordflow">in</span> nodes)</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            {</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                <span class="keywordflow">if</span> (node.LocalName.Equals(<span class="stringliteral">&quot;workbookView&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                {</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                    <span class="keywordtype">string</span> attribute = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;visibility&quot;</span>);</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                    <span class="keywordflow">if</span> (attribute != <span class="keyword">null</span> &amp;&amp; ParserUtils.ToLower(attribute) == <span class="stringliteral">&quot;hidden&quot;</span>)</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                    {</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>                        this.Workbook.Hidden = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>                    }</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                    attribute = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;activeTab&quot;</span>);</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                    <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(attribute))</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                    {</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.SelectedWorksheetEntity, ParserUtils.ParseInt(attribute));</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>                    }</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>                }</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>            }</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        }</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> GetWorksheetInformation(XmlNodeList nodes)</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        {</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>            <span class="keywordflow">foreach</span> (XmlNode node <span class="keywordflow">in</span> nodes)</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>            {</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                <span class="keywordflow">if</span> (node.LocalName.Equals(<span class="stringliteral">&quot;sheet&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                {</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                    <span class="keywordflow">try</span></div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                    {</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                        <span class="keywordtype">string</span> sheetName = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;worksheet1&quot;</span>);</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                        <span class="keywordtype">int</span> <span class="keywordtype">id</span> = ParserUtils.ParseInt(ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;sheetId&quot;</span>)); <span class="comment">// Default will rightly throw an exception</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                        <span class="keywordtype">string</span> relId = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;r:id&quot;</span>);</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>                        <span class="keywordtype">string</span> state = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;state&quot;</span>);</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>                        <span class="keywordtype">bool</span> hidden = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                        <span class="keywordflow">if</span> (state != <span class="keyword">null</span> &amp;&amp; ParserUtils.ToLower(state) == <span class="stringliteral">&quot;hidden&quot;</span>)</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                        {</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>                            hidden = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>                        }</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>                        WorksheetDefinition definition = <span class="keyword">new</span> WorksheetDefinition(<span class="keywordtype">id</span>, sheetName, relId)</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                        {</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                            Hidden = hidden</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                        };</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, <span class="keywordtype">id</span>, definition);</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                    }</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                    <span class="keywordflow">catch</span> (Exception e)</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                    {</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                        <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_typedef" href="namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72">IOException</a>(<span class="stringliteral">&quot;The workbook information could not be resolved. Please see the inner exception:&quot;</span>, e);</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                    }</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                }</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>            }</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>        }</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="preprocessor">        #endregion</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    }</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> GetProtectionInformation(XmlNode node)</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        {</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>            <span class="keywordtype">bool</span> lockStructure = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            <span class="keywordtype">bool</span> lockWindows = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            <span class="comment">//this.Protected = true;</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>            <span class="keywordtype">string</span> attribute = <a class="code hl_class" href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html">ReaderUtils</a>.<a class="code hl_function" href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html#a7d407e6ee000c0593d4a78e786bb6d40">GetAttribute</a>(node, <span class="stringliteral">&quot;lockWindows&quot;</span>);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>            <span class="keywordflow">if</span> (attribute != <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>                <span class="keywordtype">int</span> value = ParserUtils.ParseBinaryBool(attribute);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                <span class="comment">//this.LockWindows = value == 1;</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                lockWindows = value == 1;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>            }</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>            attribute = <a class="code hl_class" href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html">ReaderUtils</a>.<a class="code hl_function" href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html#a7d407e6ee000c0593d4a78e786bb6d40">GetAttribute</a>(node, <span class="stringliteral">&quot;lockStructure&quot;</span>);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>            <span class="keywordflow">if</span> (attribute != <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>            {</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>                <span class="keywordtype">int</span> value = ParserUtils.ParseBinaryBool(attribute);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>                <span class="comment">//this.LockStructure = value == 1;</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                lockStructure = value == 1;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>            }</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>            <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>.SetWorkbookProtection(<span class="keyword">true</span>, lockWindows, lockStructure, <span class="keyword">null</span>);</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>            passwordReader.ReadXmlAttributes(node);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>            <span class="keywordflow">if</span> (passwordReader.PasswordIsSet())</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>            {</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>.WorkbookProtectionPassword.CopyFrom(passwordReader);</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            }</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        }</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> GetViewInformation(XmlNodeList nodes)</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>            <span class="keywordflow">foreach</span> (XmlNode node <span class="keywordflow">in</span> nodes)</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>            {</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                <span class="keywordflow">if</span> (node.LocalName.Equals(<span class="stringliteral">&quot;workbookView&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>                {</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>                    <span class="keywordtype">string</span> attribute = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;visibility&quot;</span>);</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                    <span class="keywordflow">if</span> (attribute != <span class="keyword">null</span> &amp;&amp; ParserUtils.ToLower(attribute) == <span class="stringliteral">&quot;hidden&quot;</span>)</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                    {</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                        this.Workbook.Hidden = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>                    }</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                    attribute = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;activeTab&quot;</span>);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>                    <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(attribute))</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                    {</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.SelectedWorksheetEntity, ParserUtils.ParseInt(attribute));</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                    }</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>                }</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>            }</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        }</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> GetWorksheetInformation(XmlNodeList nodes)</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        {</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>            <span class="keywordflow">foreach</span> (XmlNode node <span class="keywordflow">in</span> nodes)</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>            {</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                <span class="keywordflow">if</span> (node.LocalName.Equals(<span class="stringliteral">&quot;sheet&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>                {</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>                    <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>                    {</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                        <span class="keywordtype">string</span> sheetName = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;worksheet1&quot;</span>);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                        <span class="keywordtype">int</span> <span class="keywordtype">id</span> = ParserUtils.ParseInt(ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;sheetId&quot;</span>)); <span class="comment">// Default will rightly throw an exception</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                        <span class="keywordtype">string</span> relId = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;r:id&quot;</span>);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                        <span class="keywordtype">string</span> state = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;state&quot;</span>);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                        <span class="keywordtype">bool</span> hidden = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                        <span class="keywordflow">if</span> (state != <span class="keyword">null</span> &amp;&amp; ParserUtils.ToLower(state) == <span class="stringliteral">&quot;hidden&quot;</span>)</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                        {</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                            hidden = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                        }</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                        WorksheetDefinition definition = <span class="keyword">new</span> WorksheetDefinition(<span class="keywordtype">id</span>, sheetName, relId)</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>                        {</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                            Hidden = hidden</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                        };</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, <span class="keywordtype">id</span>, definition);</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                    }</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>                    <span class="keywordflow">catch</span> (Exception e)</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>                    {</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>                        <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_typedef" href="namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72">IOException</a>(<span class="stringliteral">&quot;The workbook information could not be resolved. Please see the inner exception:&quot;</span>, e);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>                    }</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>                }</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>            }</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        }</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="preprocessor">        #endregion</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    }</div>
 </div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>}</div>
-<div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Enums_1_1ReaderPassword_html"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Enums_1_1ReaderPassword.html">NanoXLSX.Internal.Enums.ReaderPassword</a></div><div class="ttdoc">Static class that contains enums for password handling.</div><div class="ttdef"><b>Definition</b> <a href="ReaderPassword_8cs_source.html#l00013">ReaderPassword.cs:14</a></div></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>}</div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1ReaderUtils_html"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html">NanoXLSX.Internal.ReaderUtils</a></div><div class="ttdoc">Static class with common util methods, used during reading XLSX files.</div><div class="ttdef"><b>Definition</b> <a href="ReaderUtils_8cs_source.html#l00017">ReaderUtils.cs:18</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1ReaderUtils_html_a7d407e6ee000c0593d4a78e786bb6d40"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html#a7d407e6ee000c0593d4a78e786bb6d40">NanoXLSX.Internal.ReaderUtils.GetAttribute</a></div><div class="ttdeci">static string GetAttribute(XmlNode node, string targetName, string fallbackValue=null)</div><div class="ttdoc">Gets the XML attribute of the passed XML node by its name.</div><div class="ttdef"><b>Definition</b> <a href="ReaderUtils_8cs_source.html#l00026">ReaderUtils.cs:26</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader_html"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html">NanoXLSX.Internal.Readers.LegacyPasswordReader</a></div><div class="ttdoc">Class representing a reader for legacy passwords.</div><div class="ttdef"><b>Definition</b> <a href="LegacyPasswordReader_8cs_source.html#l00023">LegacyPasswordReader.cs:24</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader_html"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html">NanoXLSX.Internal.Readers.WorkbookReader</a></div><div class="ttdoc">Class representing a reader to decompile a workbook in an XLSX files.</div><div class="ttdef"><b>Definition</b> <a href="#l00026">Internal/Readers/WorkbookReader.cs:27</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader_html_a1e0b61d1b83ea1a69d901ad10a6e000b"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a1e0b61d1b83ea1a69d901ad10a6e000b">NanoXLSX.Internal.Readers.WorkbookReader.Options</a></div><div class="ttdeci">IOptions Options</div><div class="ttdoc">Reader options.</div><div class="ttdef"><b>Definition</b> <a href="#l00040">Internal/Readers/WorkbookReader.cs:40</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader_html_a2131f0ce7740d8e2f511bbe87d9587bf"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">NanoXLSX.Internal.Readers.WorkbookReader.Workbook</a></div><div class="ttdeci">Workbook Workbook</div><div class="ttdoc">Workbook reference where read data is stored (should not be null).</div><div class="ttdef"><b>Definition</b> <a href="#l00036">Internal/Readers/WorkbookReader.cs:36</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader_html_a3ccbd1209762bd68ddc1d6c1cc88ef2a"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a3ccbd1209762bd68ddc1d6c1cc88ef2a">NanoXLSX.Internal.Readers.WorkbookReader.Execute</a></div><div class="ttdeci">void Execute()</div><div class="ttdoc">Method to execute the main logic of the plug-in (interface implementation).</div><div class="ttdef"><b>Definition</b> <a href="#l00068">Internal/Readers/WorkbookReader.cs:68</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader_html_a5a273ffa21def3c664d30257ece7e7ba"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a5a273ffa21def3c664d30257ece7e7ba">NanoXLSX.Internal.Readers.WorkbookReader.Init</a></div><div class="ttdeci">void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)</div><div class="ttdoc">Initialization method (interface implementation).</div><div class="ttdef"><b>Definition</b> <a href="#l00055">Internal/Readers/WorkbookReader.cs:55</a></div></div>
-<div class="ttc" id="aclassNanoXLSX_1_1ReaderOptions_html"><div class="ttname"><a href="classNanoXLSX_1_1ReaderOptions.html">NanoXLSX.ReaderOptions</a></div><div class="ttdoc">The reader options define global rules, applied when loading a worksheet. The options are mainly to o...</div><div class="ttdef"><b>Definition</b> <a href="ReaderOptions_8cs_source.html#l00018">ReaderOptions.cs:19</a></div></div>
-<div class="ttc" id="ainterfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader_html"><div class="ttname"><a href="interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html">NanoXLSX.Interfaces.Reader.IPasswordReader</a></div><div class="ttdoc">Interface, used by password readers.</div><div class="ttdef"><b>Definition</b> <a href="IPasswordReader_8cs_source.html#l00016">IPasswordReader.cs:17</a></div></div>
-<div class="ttc" id="ainterfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader_html_a5312dfd92cc3dcd99b9cfd74568deea6"><div class="ttname"><a href="interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html#a5312dfd92cc3dcd99b9cfd74568deea6">NanoXLSX.Interfaces.Reader.IPasswordReader.ReadXmlAttributes</a></div><div class="ttdeci">void ReadXmlAttributes(XmlNode node)</div><div class="ttdoc">Reads the attributes of the passed XML node that contains password information.</div></div>
-<div class="ttc" id="ainterfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader_html_afc414eefea336b14a6e2d28c332c9034"><div class="ttname"><a href="interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html#afc414eefea336b14a6e2d28c332c9034">NanoXLSX.Interfaces.Reader.IPasswordReader.Init</a></div><div class="ttdeci">void Init(PasswordType type, ReaderOptions readerOptions)</div><div class="ttdoc">Method to initialize the password reader.</div></div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_1_1Reader_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces_1_1Reader.html">NanoXLSX.Interfaces.Reader</a></div><div class="ttdef"><b>Definition</b> <a href="IPasswordReader_8cs_source.html#l00011">IPasswordReader.cs:12</a></div></div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Enums_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Enums.html">NanoXLSX.Internal.Enums</a></div><div class="ttdef"><b>Definition</b> <a href="ReaderPassword_8cs_source.html#l00008">ReaderPassword.cs:9</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader_html_a3ccbd1209762bd68ddc1d6c1cc88ef2a"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a3ccbd1209762bd68ddc1d6c1cc88ef2a">NanoXLSX.Internal.Readers.WorkbookReader.Execute</a></div><div class="ttdeci">void Execute()</div><div class="ttdoc">Method to execute the main logic of the plug-in (interface implementation).</div><div class="ttdef"><b>Definition</b> <a href="#l00078">Internal/Readers/WorkbookReader.cs:78</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader_html_a870949cb9ed63e578cbd332297d5e84f"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a870949cb9ed63e578cbd332297d5e84f">NanoXLSX.Internal.Readers.WorkbookReader.InlinePluginHandler</a></div><div class="ttdeci">Action&lt; MemoryStream, Workbook, string, IOptions, int?&gt; InlinePluginHandler</div><div class="ttdoc">Reference to the ReaderPlugInHandler, to be used for post operations in the Execute method.</div><div class="ttdef"><b>Definition</b> <a href="#l00044">Internal/Readers/WorkbookReader.cs:44</a></div></div>
+<div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader_html_aa05b06b8272a57469a94ec9477c24465"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#aa05b06b8272a57469a94ec9477c24465">NanoXLSX.Internal.Readers.WorkbookReader.Init</a></div><div class="ttdeci">void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action&lt; MemoryStream, Workbook, string, IOptions, int?&gt; inlinePluginHandler)</div><div class="ttdoc">Initialization method (interface implementation).</div><div class="ttdef"><b>Definition</b> <a href="#l00064">Internal/Readers/WorkbookReader.cs:64</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Readers_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Readers.html">NanoXLSX.Internal.Readers</a></div><div class="ttdef"><b>Definition</b> <a href="LegacyPasswordReader_8cs_source.html#l00017">LegacyPasswordReader.cs:18</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Readers_html_a1e95196e5ad470954e386d4b11b48a72"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72">NanoXLSX.Internal.Readers.IOException</a></div><div class="ttdeci">Exceptions.IOException IOException</div><div class="ttdef"><b>Definition</b> <a href="StyleReader_8cs_source.html#l00026">StyleReader.cs:26</a></div></div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Internal_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal.html">NanoXLSX.Internal</a></div><div class="ttdef"><b>Definition</b> <a href="ReaderPassword_8cs_source.html#l00008">ReaderPassword.cs:9</a></div></div>
 <div class="ttc" id="anamespaceNanoXLSX_html"><div class="ttname"><a href="namespaceNanoXLSX.html">NanoXLSX</a></div><div class="ttdef"><b>Definition</b> <a href="Extensions_2WorkbookReader_8cs_source.html#l00013">Extensions/WorkbookReader.cs:14</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

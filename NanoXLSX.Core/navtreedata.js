@@ -61,13 +61,13 @@ var NAVTREEINDEX =
 "annotated.html",
 "classNanoXLSX_1_1Colors_1_1IndexedColor.html#a30332e6491170978cef01f50b794ca2a",
 "classNanoXLSX_1_1Colors_1_1SystemColor.html#adf5c479761dfc2f470e6983a9d43bd27",
-"classNanoXLSX_1_1Registry_1_1PlugInUUID.html#ab3c6459c7e553e5489f039f3600f15ce",
-"classNanoXLSX_1_1Styles_1_1CellXf.html#a7b81d2db6ded2ef30173a3befa20b1c4a25e07011bed6c5bf3048faf05147c7b6",
-"classNanoXLSX_1_1Styles_1_1NumberFormat.html",
-"classNanoXLSX_1_1Utils_1_1DataUtils.html#a4265158bcb8f492c3b02dcb3d2d551c7",
-"classNanoXLSX_1_1Worksheet.html#a09611418dca4b5ff7505eb6948a15c62",
-"classNanoXLSX_1_1Worksheet.html#ac44bf3a54ca5523e3ab8922557cb325e",
-"structNanoXLSX_1_1Address.html#a9a1a747d4674ed58555899b8c578c185"
+"classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxQueuePlugInAttribute.html#a4f561c68c23a10abe358cbd577a74c3f",
+"classNanoXLSX_1_1Styles_1_1CellXf.html",
+"classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dcab5df36ac79aa6391ffb432b9e5ad7880",
+"classNanoXLSX_1_1Themes_1_1ColorScheme.html#aece2b1472912955811ff4c64c2fe4c61",
+"classNanoXLSX_1_1Workbook.html#a6e43593e6648cd0a9651d628bd55a355",
+"classNanoXLSX_1_1Worksheet.html#a881b27045a37c867d2859f784f3c5130",
+"interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#ad5f0e3287c051b94c2d31d9247f632cf"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

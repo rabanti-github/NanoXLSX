@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['metadataappreader_0',['MetadataAppReader',['../classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataAppReader.html',1,'NanoXLSX::Internal::Readers']]],
-  ['metadatacorereader_1',['MetadataCoreReader',['../classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataCoreReader.html',1,'NanoXLSX::Internal::Readers']]]
+  ['readerutils_0',['ReaderUtils',['../classNanoXLSX_1_1Internal_1_1ReaderUtils.html',1,'NanoXLSX::Internal']]],
+  ['relationship_1',['Relationship',['../classNanoXLSX_1_1Internal_1_1Readers_1_1Relationship.html',1,'NanoXLSX::Internal::Readers']]],
+  ['relationshipreader_2',['RelationshipReader',['../classNanoXLSX_1_1Internal_1_1Readers_1_1RelationshipReader.html',1,'NanoXLSX::Internal::Readers']]]
 ];
