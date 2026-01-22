@@ -24,6 +24,7 @@
 		<AssemblyVersion>3.0.0-rc.5</AssemblyVersion>
 		<FileVersion>3.0.0-rc.5</FileVersion>
 		<RepositoryType>git</RepositoryType>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<PackageIcon>NanoXLSXlib.png</PackageIcon>
 		<PackageIconUrl />
@@ -48,10 +49,13 @@
 		<Reference Include="WindowsBase" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="Documentation\NanoXLSXlib.png">
-		  <Pack>True</Pack>
-		  <PackagePath></PackagePath>
-		</None>
+	  <Compile Remove="Internal\Enums\**" />
+	  <EmbeddedResource Remove="Internal\Enums\**" />
+	  <None Remove="Internal\Enums\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Documentation\NanoXLSXlib.png" Pack="true" PackagePath="\" />
+		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
 		<ProjectReference Include="..\NanoXLSX.Core\NanoXLSX.Core.csproj" />
@@ -59,9 +63,6 @@
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
 		<!--<PackageReference Include="NanoXLSX.Core" Version="3.0.*" /> -->
 		<PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.5" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Internal\Enums\" />
 	</ItemGroup>
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 	  <Exec Command="@echo off&#xD;&#xA;echo PROJECT_NUMBER = $(Version) &gt; &quot;$(ProjectDir)Documentation\projectNumber.doxygen&quot;&#xD;&#xA;echo PROJECT_NAME = $(ProjectName) &gt; &quot;$(ProjectDir)Documentation\projectName.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = ../../docs/$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\outputDirectory.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = ../../docs/$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\htmlOutput.doxygen&quot;" />
