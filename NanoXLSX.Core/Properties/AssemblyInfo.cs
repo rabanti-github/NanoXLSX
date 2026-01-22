@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Raphael Stoeckli")]
 [assembly: AssemblyProduct("NanoXLSX")]
-[assembly: AssemblyCopyright("Copyright Raphael Stoeckli © 2025")]
+[assembly: AssemblyCopyright("Copyright Raphael Stoeckli © 2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 // Setting ComVisible to false makes the types in this assembly not visible 

@@ -16,7 +16,7 @@
     <!-- Optional -->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>NanoXLSX (Meta-Package)</Title>
-    <Copyright>Copyright Raphael Stoeckli © 2025</Copyright>
+    <Copyright>Copyright Raphael Stoeckli © 2026</Copyright>
     <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX</PackageProjectUrl>
     <PackageIcon>NanoXLSX.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
