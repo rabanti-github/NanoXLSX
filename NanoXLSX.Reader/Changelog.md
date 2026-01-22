@@ -1,6 +1,6 @@
 # Change Log - NanoXLSX.Reader
 
-## v3.0.0-rc.4
+## v3.0.0-rc.4 + v3.0.0-rc.5
 
 ---
 Release Date: **22.01.2026**
@@ -8,6 +8,7 @@ Release Date: **22.01.2026**
 - Added reader handling for the Font properties: `Font.Outline`, `Font.Shadow`, `Font.Condense` and `Font.Extend`
 - Moved internal interfaces to NanoXLSX.Core (namespace `NanoXLSX.Interfaces.Reader`)
 - Changed plug-in handling
+- Version bump rc.4 to rc.5
 
 ## v3.0.0-rc.3
 

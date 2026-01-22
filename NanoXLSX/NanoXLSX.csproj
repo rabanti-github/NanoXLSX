@@ -64,8 +64,8 @@
 
 	<ItemGroup>
 	  <PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.5" />
-	  <PackageReference Include="NanoXLSX.Reader" Version="3.0.0-rc.4" />
-	  <PackageReference Include="NanoXLSX.Writer" Version="3.0.0-rc.4" />
+	  <PackageReference Include="NanoXLSX.Reader" Version="3.0.0-rc.5" />
+	  <PackageReference Include="NanoXLSX.Writer" Version="3.0.0-rc.5" />
 	</ItemGroup>	
 	
 	<Target Name="GenerateDocsIndex" AfterTargets="Build">
