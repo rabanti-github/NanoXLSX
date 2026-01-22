@@ -10,7 +10,6 @@ using System.IO;
 using System.Xml;
 using NanoXLSX.Colors;
 using NanoXLSX.Interfaces;
-using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
@@ -23,7 +22,7 @@ namespace NanoXLSX.Internal.Readers
     /// Class representing a reader for theme definitions of XLSX files.
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.ThemeReader)]
-    public class ThemeReader : IPluginReader
+    public class ThemeReader : IPluginBaseReader
     {
 
         private MemoryStream stream;
@@ -33,6 +32,14 @@ namespace NanoXLSX.Internal.Readers
         /// Workbook reference where read data is stored (should not be null)
         /// </summary>
         public Workbook Workbook { get; set; }
+        /// <summary>
+        /// Reader options
+        /// </summary>
+        public IOptions Options { get; set; }
+        /// <summary>
+        /// Reference to the <see cref="ReaderPlugInHandler"/>, to be used for post operations in the <see cref="Execute"/> method
+        /// </summary>
+        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         #endregion
 
         #region constructors
@@ -51,10 +58,13 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="stream">MemoryStream to be read</param>
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+        /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
+        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;
             this.Workbook = workbook;
+            this.Options = readerOptions;
+            this.InlinePluginHandler = inlinePluginHandler;
         }
 
         /// <summary>
@@ -129,7 +139,7 @@ namespace NanoXLSX.Internal.Readers
 
                             }
                         }
-                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.ThemeInlineReader);
+                        InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.ThemeInlineReader, Options, null);
                     }
                 }
             }

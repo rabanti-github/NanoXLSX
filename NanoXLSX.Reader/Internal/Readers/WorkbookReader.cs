@@ -9,12 +9,12 @@ using System;
 using System.IO;
 using System.Xml;
 using NanoXLSX.Exceptions;
-using NanoXLSX.Interfaces.Plugin;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils;
-using static NanoXLSX.Internal.Enums.ReaderPassword;
+using static NanoXLSX.Enums.Password;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
@@ -23,17 +23,25 @@ namespace NanoXLSX.Internal.Readers
     /// Class representing a reader to decompile a workbook in an XLSX files
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorkbookReader)]
-    public partial class WorkbookReader : IPluginReader
+    public partial class WorkbookReader : IPluginBaseReader
     {
         private MemoryStream stream;
         private IPasswordReader passwordReader;
-        private ReaderOptions readerOptions;
+       // private ReaderOptions readerOptions;
 
         #region properties
         /// <summary>
         /// Workbook reference where read data is stored (should not be null)
         /// </summary>
         public Workbook Workbook { get; set; }
+        /// <summary>
+        /// Reader options
+        /// </summary>
+        public IOptions Options { get; set; }
+        /// <summary>
+        /// Reference to the <see cref="ReaderPlugInHandler"/>, to be used for post operations in the <see cref="Execute"/> method
+        /// </summary>
+        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         #endregion
 
         #region constructors
@@ -52,13 +60,15 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="stream">MemoryStream to be read</param>
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+        /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
+        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;
             this.Workbook = workbook;
-            this.readerOptions = (ReaderOptions)readerOptions;
+            this.Options = readerOptions;
+            this.InlinePluginHandler = inlinePluginHandler;
             this.passwordReader = PlugInLoader.GetPlugIn<IPasswordReader>(PlugInUUID.PasswordReader, new LegacyPasswordReader());
-            this.passwordReader.Init(PasswordType.WorkbookProtection, this.readerOptions);
+            this.passwordReader.Init(PasswordType.WorkbookProtection, (ReaderOptions)readerOptions);
         }
 
         /// <summary>
@@ -90,7 +100,7 @@ namespace NanoXLSX.Internal.Readers
                                 GetProtectionInformation(node);
                             }
                         }
-                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WorkbookInlineReader);
+                        InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.WorkbookInlineReader, Options, null);
                     }
                 }
             }

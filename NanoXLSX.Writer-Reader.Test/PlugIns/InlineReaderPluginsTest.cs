@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using NanoXLSX.Extensions;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
@@ -108,11 +109,13 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
 
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatAppReaderPlugIn1", QueueUUID = PlugInUUID.MetadataAppInlineReader)]
-        public class InlineAppMetadataReader : IInlinePluginReader
+        public class InlineAppMetadataReader : IPluginInlineReader
         {
             private const string TEST_NODE = "Application";
             private MemoryStream stream;
             public Workbook Workbook { get; set; }
+            public IOptions Options { get; set; }
+            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -121,20 +124,23 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 this.stream.Position = 0;
             }
 
-            public void Init(ref MemoryStream stream, Workbook workbook, int? index = null)
+            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, int? index = null)
             {
                 this.stream = stream;
                 this.stream.Position = 0;
                 this.Workbook = workbook;
+                this.Options = readerOptions;
             }
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatCoreReaderPlugIn1", QueueUUID = PlugInUUID.MetadataCoreInlineReader)]
-        public class InlineCoreMetadataReader : IInlinePluginReader
+        public class InlineCoreMetadataReader : IPluginInlineReader
         {
             private const string TEST_NODE = "category";
             private MemoryStream stream;
             public Workbook Workbook { get; set; }
+            public IOptions Options { get; set; }
+            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -143,20 +149,23 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 this.stream.Position = 0;
             }
 
-            public void Init(ref MemoryStream stream, Workbook workbook, int? index = null)
+            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, int? index = null)
             {
                 this.stream = stream;
                 this.stream.Position = 0;
                 this.Workbook = workbook;
+                this.Options = readerOptions;
             }
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "SharedStringReaderPlugIn1", QueueUUID = PlugInUUID.SharedStringsInlineReader)]
-        public class InlineSharedStringReader : IInlinePluginReader
+        public class InlineSharedStringReader : IPluginInlineReader
         {
             private const string TEST_NODE = "t";
             private MemoryStream stream;
             public Workbook Workbook { get; set; }
+            public IOptions Options { get; set; }
+            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -165,21 +174,24 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 this.stream.Position = 0;
             }
 
-            public void Init(ref MemoryStream stream, Workbook workbook, int? index = null)
+            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, int? index = null)
             {
                 this.stream = stream;
                 this.stream.Position = 0;
                 this.Workbook = workbook;
+                this.Options = readerOptions;
             }
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "ThemeReaderPlugIn1", QueueUUID = PlugInUUID.ThemeInlineReader)]
-        public class InlineThemeReader : IInlinePluginReader
+        public class InlineThemeReader : IPluginInlineReader
         {
             private const string TEST_NODE = "theme";
             private const string TEST_ATTRIBUTE = "name";
             private MemoryStream stream;
             public Workbook Workbook { get; set; }
+            public IOptions Options { get; set; }
+            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -188,21 +200,24 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 this.stream.Position = 0;
             }
 
-            public void Init(ref MemoryStream stream, Workbook workbook, int? index = null)
+            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, int? index = null)
             {
                 this.stream = stream;
                 this.stream.Position = 0;
                 this.Workbook = workbook;
+                this.Options = readerOptions;
             }
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "StyleReaderPlugIn1", QueueUUID = PlugInUUID.StyleInlineReader)]
-        public class InlineStyleReader : IInlinePluginReader
+        public class InlineStyleReader : IPluginInlineReader
         {
             private const string TEST_NODE = "name";
             private const string TEST_ATTRIBUTE = "val";
             private MemoryStream stream;
             public Workbook Workbook { get; set; }
+            public IOptions Options { get; set; }
+            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get ; set; }
 
             public void Execute()
             {
@@ -211,21 +226,24 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 this.stream.Position = 0;
             }
 
-            public void Init(ref MemoryStream stream, Workbook workbook, int? index = null)
+            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, int? index = null)
             {
                 this.stream = stream;
                 this.stream.Position = 0;
                 this.Workbook = workbook;
+                this.Options = readerOptions;
             }
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "RelationshipReaderPlugIn1", QueueUUID = PlugInUUID.RelationshipInlineReader)]
-        public class RelationshipReader : IInlinePluginReader
+        public class RelationshipReader : IPluginInlineReader
         {
             private const string TEST_NODE = "Relationship";
             private const string TEST_ATTRIBUTE = "Target";
             private MemoryStream stream;
             public Workbook Workbook { get; set; }
+            public IOptions Options { get; set; }
+            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -234,20 +252,23 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 this.stream.Position = 0;
             }
 
-            public void Init(ref MemoryStream stream, Workbook workbook, int? index = null)
+            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, int? index = null)
             {
                 this.stream = stream;
                 this.stream.Position = 0;
                 this.Workbook = workbook;
+                this.Options = readerOptions;
             }
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "SharedStringsReaderPlugIn1", QueueUUID = PlugInUUID.SharedStringsInlineReader)]
-        public class SharedStringsReader : IInlinePluginReader
+        public class SharedStringsReader : IPluginInlineReader
         {
             private const string TEST_NODE = "t";
             private MemoryStream stream;
             public Workbook Workbook { get; set; }
+            public IOptions Options { get; set; }
+            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -256,21 +277,24 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 this.stream.Position = 0;
             }
 
-            public void Init(ref MemoryStream stream, Workbook workbook, int? index = null)
+            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, int? index = null)
             {
                 this.stream = stream;
                 this.stream.Position = 0;
                 this.Workbook = workbook;
+                this.Options = readerOptions;
             }
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "WorkbookReaderPlugIn1", QueueUUID = PlugInUUID.WorkbookInlineReader)]
-        public class WorkbookTestReader : IInlinePluginReader
+        public class WorkbookTestReader : IPluginInlineReader
         {
             private const string TEST_NODE = "sheet";
             private const string TEST_ATTRIBUTE = "name";
             private MemoryStream stream;
             public Workbook Workbook { get; set; }
+            public IOptions Options { get; set; }
+            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -279,21 +303,24 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 this.stream.Position = 0;
             }
 
-            public void Init(ref MemoryStream stream, Workbook workbook, int? index = null)
+            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, int? index = null)
             {
                 this.stream = stream;
                 this.stream.Position = 0;
                 this.Workbook = workbook;
+                this.Options = readerOptions;
             }
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "WorksheetReaderPlugIn1", QueueUUID = PlugInUUID.WorksheetInlineReader)]
-        public class WorksheetReader : IInlinePluginReader
+        public class WorksheetReader : IPluginInlineReader
         {
             private const string TEST_NODE = "sheetFormatPr";
             private const string TEST_ATTRIBUTE = "defaultRowHeight";
             private MemoryStream stream;
             public Workbook Workbook { get; set; }
+            public IOptions Options { get; set; }
+            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -302,11 +329,12 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 this.stream.Position = 0;
             }
 
-            public void Init(ref MemoryStream stream, Workbook workbook, int? index = null)
+            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, int? index = null)
             {
                 this.stream = stream;
                 this.stream.Position = 0;
                 this.Workbook = workbook;
+                this.Options = readerOptions;
             }
         }
 

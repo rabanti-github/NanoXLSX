@@ -4,14 +4,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
-using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Internal;
 using NanoXLSX.Internal.Readers;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using Xunit;
-using static NanoXLSX.Internal.Enums.ReaderPassword;
+using static NanoXLSX.Enums.Password;
 
 namespace NanoXLSX.Test.Writer_Reader.PlugIns
 {
@@ -88,7 +87,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
 
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataAppReader)]
-        public class ReplaceMetadataAppReader : MetadataAppReader, IPluginReader
+        public class ReplaceMetadataAppReader : MetadataAppReader, IPluginBaseReader
         {
             private MemoryStream stream;
             private Workbook workbook;
@@ -103,9 +102,9 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions);
+                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
                 this.stream = stream;
                 this.workbook = workbook;
                 this.options = readerOptions;
@@ -113,7 +112,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataCoreReader)]
-        public class ReplaceMetadataCoreReader : MetadataCoreReader, IPluginReader
+        public class ReplaceMetadataCoreReader : MetadataCoreReader, IPluginBaseReader
         {
             private MemoryStream stream;
             private Workbook workbook;
@@ -128,9 +127,9 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions);
+                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
                 this.stream = stream;
                 this.workbook = workbook;
                 this.options = readerOptions;
@@ -138,7 +137,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.ThemeReader)]
-        public class ReplaceThemeReader : ThemeReader, IPluginReader
+        public class ReplaceThemeReader : ThemeReader, IPluginBaseReader
         {
             private MemoryStream stream;
             private Workbook workbook;
@@ -153,9 +152,9 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions);
+                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
                 this.stream = stream;
                 this.workbook = workbook;
                 this.options = readerOptions;
@@ -163,7 +162,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.StyleReader)]
-        public class ReplaceStyleReader : StyleReader, IPluginReader
+        public class ReplaceStyleReader : StyleReader, IPluginBaseReader
         {
             private MemoryStream stream;
             private Workbook workbook;
@@ -178,9 +177,9 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions);
+                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
                 this.stream = stream;
                 this.workbook = workbook;
                 this.options = readerOptions;
@@ -188,7 +187,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.SharedStringsReader)]
-        public class ReplaceSharedStringsReader : SharedStringsReader, IPluginReader
+        public class ReplaceSharedStringsReader : SharedStringsReader, IPluginBaseReader
         {
             private MemoryStream stream;
             private Workbook workbook;
@@ -203,9 +202,9 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions);
+                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
                 this.stream = stream;
                 this.workbook = workbook;
                 this.options = readerOptions;
@@ -213,7 +212,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.RelationshipReader)]
-        public class ReplaceRelationshipReader : RelationshipReader, IPluginReader
+        public class ReplaceRelationshipReader : RelationshipReader, IPluginBaseReader
         {
             private MemoryStream stream;
             private Workbook workbook;
@@ -228,9 +227,9 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions);
+                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
                 this.stream = stream;
                 this.workbook = workbook;
                 this.options = readerOptions;
@@ -238,7 +237,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorksheetReader)]
-        public class ReplaceWorksheetReader : WorksheetReader, IPluginReader
+        public class ReplaceWorksheetReader : WorksheetReader, IPluginBaseReader
         {
             private MemoryStream stream;
             private Workbook workbook;
@@ -253,9 +252,9 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions);
+                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
                 this.stream = stream;
                 this.workbook = workbook;
                 this.options = readerOptions;
@@ -263,7 +262,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorkbookReader)]
-        public class ReplaceWorkbookReader : Internal.Readers.WorkbookReader, IPluginReader
+        public class ReplaceWorkbookReader : WorkbookReader, IPluginBaseReader
         {
             private MemoryStream stream;
             private Workbook workbook;
@@ -278,9 +277,9 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions);
+                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
                 this.stream = stream;
                 this.workbook = workbook;
                 this.options = readerOptions;

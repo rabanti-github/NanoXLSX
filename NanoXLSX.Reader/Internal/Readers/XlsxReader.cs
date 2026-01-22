@@ -12,7 +12,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using NanoXLSX.Exceptions;
-using NanoXLSX.Interfaces.Plugin;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Styles;
@@ -173,7 +172,7 @@ namespace NanoXLSX.Internal.Readers
             ms = GetEntryStream("xl/sharedStrings.xml", zf);
             if (ms != null && ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
             {
-                sharedStringsReader.Init(ms, wb, readerOptions);
+                sharedStringsReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
                 sharedStringsReader.Execute();
             }
             Dictionary<int, string> themeStreamNames = GetSequentialStreamNames("xl/theme/theme", zf);
@@ -184,43 +183,43 @@ namespace NanoXLSX.Internal.Readers
                 // (currently) only the first occurring theme will be read  
                 foreach (KeyValuePair<int, string> streamName in themeStreamNames)
                 {
-                    IPluginReader themeReader = PlugInLoader.GetPlugIn<IPluginReader>(PlugInUUID.ThemeReader, new ThemeReader());
+                    IPluginBaseReader themeReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.ThemeReader, new ThemeReader());
                     ms = GetEntryStream(streamName.Value, zf);
-                    themeReader.Init(ms, wb, readerOptions);
+                    themeReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
                     themeReader.Execute();
                     break;
                 }
             }
             StyleRepository.Instance.ImportInProgress = true; // TODO: To be checked
-            IPluginReader styleReader = PlugInLoader.GetPlugIn<IPluginReader>(PlugInUUID.StyleReader, new StyleReader());
+            IPluginBaseReader styleReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.StyleReader, new StyleReader());
             ms = GetEntryStream("xl/styles.xml", zf);
-            styleReader.Init(ms, wb, readerOptions);
+            styleReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
             styleReader.Execute();
             StyleRepository.Instance.ImportInProgress = false;
 
             ms = GetEntryStream("xl/workbook.xml", zf);
-            IPluginReader workbookReader = PlugInLoader.GetPlugIn<IPluginReader>(PlugInUUID.WorkbookReader, new WorkbookReader());
-            workbookReader.Init(ms, wb, readerOptions);
+            IPluginBaseReader workbookReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.WorkbookReader, new WorkbookReader());
+            workbookReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
             workbookReader.Execute();
 
             ms = GetEntryStream("docProps/app.xml", zf);
             if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/app.xml seems to be defined 
             {
-                IPluginReader metadataAppReader = PlugInLoader.GetPlugIn<IPluginReader>(PlugInUUID.MetadataAppReader, new MetadataAppReader());
-                metadataAppReader.Init(ms, wb, readerOptions);
+                IPluginBaseReader metadataAppReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.MetadataAppReader, new MetadataAppReader());
+                metadataAppReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
                 metadataAppReader.Execute();
             }
             ms = GetEntryStream("docProps/core.xml", zf);
             if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/core.xml seems to be defined 
             {
-                IPluginReader metadataCoreReader = PlugInLoader.GetPlugIn<IPluginReader>(PlugInUUID.MetadataCoreReader, new MetadataCoreReader());
-                metadataCoreReader.Init(ms, wb, readerOptions);
+                IPluginBaseReader metadataCoreReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.MetadataCoreReader, new MetadataCoreReader());
+                metadataCoreReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
                 metadataCoreReader.Execute();
             }
 
-            IPluginReader relationships = PlugInLoader.GetPlugIn<IPluginReader>(PlugInUUID.RelationshipReader, new RelationshipReader());
+            IPluginBaseReader relationships = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.RelationshipReader, new RelationshipReader());
             ms = GetEntryStream("xl/_rels/workbook.xml.rels", zf);
-            relationships.Init(ms, wb, readerOptions);
+            relationships.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
             relationships.Execute();
 
             IWorksheetReader worksheetReader = PlugInLoader.GetPlugIn<IWorksheetReader>(PlugInUUID.WorksheetReader, new WorksheetReader());
@@ -235,7 +234,7 @@ namespace NanoXLSX.Internal.Readers
                     throw new IOException("There was an error while reading an XLSX file. The relationship target of the worksheet with the RelID " + definition.RelId + " was not found");
                 }
                 ms = GetEntryStream(relationship.Target, zf);
-                worksheetReader.Init(ms, wb, readerOptions);
+                worksheetReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
                 worksheetReader.CurrentWorksheetID = definition.SheetID;
                 worksheetReader.Execute();
             }
@@ -308,11 +307,11 @@ namespace NanoXLSX.Internal.Readers
         private void HandleQueuePlugIns(string queueUuid, ZipArchive zf, ref Workbook workbook)
         {
             string lastUuid = null;
-            IPluginReader queueReader;
+            IPluginQueueReader queueReader;
             do
             {
                 string currentUuid;
-                queueReader = PlugInLoader.GetNextQueuePlugIn<IPluginReader>(queueUuid, lastUuid, out currentUuid);
+                queueReader = PlugInLoader.GetNextQueuePlugIn<IPluginQueueReader>(queueUuid, lastUuid, out currentUuid);
                 MemoryStream ms = null;
                 if (queueReader != null)
                 {
@@ -329,7 +328,7 @@ namespace NanoXLSX.Internal.Readers
                             }
                         }
                     }
-                    queueReader.Init(ms, workbook, this.readerOptions); // stream may be null
+                    queueReader.Init(ms, workbook, this.readerOptions, null); // stream may be null, inlinePluginAction is not used here
                     queueReader.Execute();
                     lastUuid = currentUuid;
                 }

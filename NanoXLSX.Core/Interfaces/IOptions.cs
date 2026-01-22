@@ -5,10 +5,10 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-namespace NanoXLSX.Interfaces.Plugin
+namespace NanoXLSX.Interfaces
 {
     /// <summary>
-    /// Interface used by option classes (e.g. ReaderOptions)
+    /// General Interface used by option classes (e.g. ReaderOptions)
     /// </summary>
     public interface IOptions
     {

@@ -10,7 +10,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
-using NanoXLSX.Interfaces.Plugin;
+using NanoXLSX.Interfaces;
+using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils;
@@ -29,7 +30,6 @@ namespace NanoXLSX.Internal.Readers
         private bool capturePhoneticCharacters;
         private readonly List<PhoneticInfo> phoneticsInfo;
         private MemoryStream stream;
-        private Workbook workbook;
         #endregion
 
         #region properties
@@ -45,7 +45,15 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Workbook reference where read data is stored (should not be null)
         /// </summary>
-        public Workbook Workbook { get => workbook; set => workbook = value; }
+        public Workbook Workbook { get ; set; }
+        /// <summary>
+        /// Reader options
+        /// </summary>
+        public IOptions Options { get; set; }
+        /// <summary>
+        /// Reference to the <see cref="ReaderPlugInHandler"/>, to be used for post operations in the <see cref="Execute"/> method
+        /// </summary>
+        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         #endregion
 
         #region constructors
@@ -66,10 +74,13 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="stream">MemoryStream to be read</param>
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+        /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
+        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;
-            this.workbook = workbook;
+            this.Workbook = workbook;
+            this.Options = readerOptions;
+            this.InlinePluginHandler = inlinePluginHandler;
             if (readerOptions is ReaderOptions options)
             {
                 this.capturePhoneticCharacters = options.EnforcePhoneticCharacterImport;
@@ -110,7 +121,7 @@ namespace NanoXLSX.Internal.Readers
                                 }
                             }
                         }
-                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.SharedStringsInlineReader);
+                        InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.SharedStringsInlineReader, Options, null);
                     }
                 }
             }

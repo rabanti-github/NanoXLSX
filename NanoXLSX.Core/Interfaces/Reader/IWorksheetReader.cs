@@ -7,14 +7,13 @@
 
 using System;
 using System.Collections.Generic;
-using NanoXLSX.Interfaces.Reader;
 
-namespace NanoXLSX.Interfaces.Plugin
+namespace NanoXLSX.Interfaces.Reader
 {
     /// <summary>
     /// Interface, used by worksheet readers
     /// </summary>
-    internal interface IWorksheetReader : IPluginReader
+    internal interface IWorksheetReader : IPluginBaseReader
     {
         /// <summary>
         /// Gets or sets the (r)ID (1-based) of the currently processed worksheet.
@@ -24,6 +23,6 @@ namespace NanoXLSX.Interfaces.Plugin
         /// <summary>
         /// Gets or Sets the list of the shared strings. The index of the list corresponds to the index, defined in cell values
         /// </summary>
-        List<String> SharedStrings { get; set; }
+        List<string> SharedStrings { get; set; }
     }
 }

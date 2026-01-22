@@ -12,7 +12,7 @@ using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Themes;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
-using static NanoXLSX.Internal.Enums.WriterPassword;
+using static NanoXLSX.Enums.Password;
 
 namespace NanoXLSX.Internal.Writers
 {

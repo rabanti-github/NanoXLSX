@@ -7,7 +7,8 @@
 
 using NanoXLSX.Utils.Xml;
 using System.Collections.Generic;
-using static NanoXLSX.Internal.Enums.WriterPassword;
+using static NanoXLSX.Enums.Password;
+
 
 namespace NanoXLSX.Interfaces.Writer
 {

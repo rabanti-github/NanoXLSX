@@ -12,7 +12,7 @@ using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
-using static NanoXLSX.Internal.Enums.ReaderPassword;
+using static NanoXLSX.Enums.Password;
 
 namespace NanoXLSX.Internal.Readers
 {

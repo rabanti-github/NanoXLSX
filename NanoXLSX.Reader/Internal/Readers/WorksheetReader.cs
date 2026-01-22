@@ -12,12 +12,12 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using NanoXLSX.Exceptions;
-using NanoXLSX.Interfaces.Plugin;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
-using static NanoXLSX.Internal.Enums.ReaderPassword;
+using static NanoXLSX.Enums.Password;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
@@ -29,7 +29,6 @@ namespace NanoXLSX.Internal.Readers
     {
         #region privateFields
         private MemoryStream stream;
-        private ReaderOptions readerOptions;
         private List<string> dateStyles;
         private List<string> timeStyles;
         private Dictionary<string, Style> resolvedStyles;
@@ -42,6 +41,14 @@ namespace NanoXLSX.Internal.Readers
         /// Workbook reference where read data is stored (should not be null)
         /// </summary>
         public Workbook Workbook { get; set; }
+        /// <summary>
+        /// Reader options
+        /// </summary>
+        public IOptions Options { get; set; }
+        /// <summary>
+        /// Reference to the <see cref="ReaderPlugInHandler"/>, to be used for post operations in the <see cref="Execute"/> method
+        /// </summary>
+        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         /// <summary>
         /// Gets or sets the (r)ID of the current worksheet
         /// </summary>
@@ -69,11 +76,14 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="stream">MemoryStream to be read</param>
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions)
+        /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
+        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;
             this.Workbook = workbook;
-            this.readerOptions = readerOptions as ReaderOptions;
+            this.Options = readerOptions;
+            this.InlinePluginHandler = inlinePluginHandler;
+            //this.readerOptions = readerOptions as ReaderOptions;
             if (dateStyles == null || timeStyles == null || this.resolvedStyles == null)
             {
                 StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
@@ -82,7 +92,7 @@ namespace NanoXLSX.Internal.Readers
             if (this.passwordReader == null)
             {
                 this.passwordReader = PlugInLoader.GetPlugIn<IPasswordReader>(PlugInUUID.PasswordReader, new LegacyPasswordReader());
-                this.passwordReader.Init(PasswordType.WorksheetProtection, this.readerOptions);
+                this.passwordReader.Init(PasswordType.WorksheetProtection, (ReaderOptions)readerOptions);
             }
         }
 
@@ -101,23 +111,22 @@ namespace NanoXLSX.Internal.Readers
                 };
                 using (stream) // Close after processing
                 {
+                    ReaderOptions readerOptions = this.Options as ReaderOptions;
                     XmlDocument document = new XmlDocument() { XmlResolver = null };
                     using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
                     {
                         document.Load(reader);
-                        GetRows(document, worksheet);
+                        GetRows(document, worksheet, readerOptions);
                         GetSheetView(document, worksheet);
                         GetMergedCells(document, worksheet);
                         GetSheetFormats(document, worksheet);
                         GetAutoFilters(document, worksheet);
-                        GetColumns(document, worksheet);
+                        GetColumns(document, worksheet, readerOptions);
                         GetSheetProtection(document, worksheet);
                         SetWorkbookRelation(worksheet);
-                        RederPlugInHandler.HandleInlineQueuePlugins(ref stream, Workbook, PlugInUUID.WorksheetInlineReader, CurrentWorksheetID);
+                        InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.WorksheetInlineReader, Options, CurrentWorksheetID);
                     }
                 }
-
-
             }
             catch (NotSupportedContentException)
             {
@@ -175,7 +184,8 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="document">XML document of the current worksheet</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private void GetRows(XmlDocument document, Worksheet worksheet)
+        /// <param name="readerOptions">Reader options</param>
+        private void GetRows(XmlDocument document, Worksheet worksheet, ReaderOptions readerOptions)
         {
             XmlNodeList rows = document.GetElementsByTagName("row");
             foreach (XmlNode row in rows)
@@ -196,7 +206,7 @@ namespace NanoXLSX.Internal.Readers
                     string heightAttribute = ReaderUtils.GetAttribute(row, "ht");
                     if (heightAttribute != null)
                     {
-                        worksheet.RowHeights.Add(rowNumber, GetValidatedHeight(ParserUtils.ParseFloat(heightAttribute)));
+                        worksheet.RowHeights.Add(rowNumber, GetValidatedHeight(ParserUtils.ParseFloat(heightAttribute), readerOptions));
                     }
                 }
                 if (row.HasChildNodes)
@@ -418,6 +428,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="worksheet">Currently processed worksheet</param>
         private void GetSheetProtection(XmlDocument xmlDocument, Worksheet worksheet)
         {
+            ReaderOptions readerOptions = this.Options as ReaderOptions;
             XmlNodeList sheetProtectionNodes = xmlDocument.GetElementsByTagName("sheetProtection");
             if (sheetProtectionNodes != null && sheetProtectionNodes.Count > 0)
             {
@@ -545,7 +556,8 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="xmlDocument">XML document of the current worksheet</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private void GetColumns(XmlDocument xmlDocument, Worksheet worksheet)
+        /// <param name="readerOptions">Reader options</param>
+        private void GetColumns(XmlDocument xmlDocument, Worksheet worksheet, ReaderOptions readerOptions)
         {
             XmlNodeList columnNodes = xmlDocument.GetElementsByTagName("col");
             foreach (XmlNode columnNode in columnNodes)
@@ -604,7 +616,7 @@ namespace NanoXLSX.Internal.Readers
 
                     if (width != Worksheet.DefaultWorksheetColumnWidth)
                     {
-                        worksheet.SetColumnWidth(columnAddress, GetValidatedWidth(width));
+                        worksheet.SetColumnWidth(columnAddress, GetValidatedWidth(width, readerOptions));
                     }
                     if (hidden)
                     {
@@ -673,6 +685,7 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Cell object with either the originally loaded or modified (by import options) value</returns>
         private Cell ResolveCellData(string raw, string type, string styleNumber, string address)
         {
+            ReaderOptions readerOptions = this.Options as ReaderOptions;
             Cell.CellType importedType = Cell.CellType.Default;
             object rawValue;
             if (type == "b")
@@ -796,6 +809,7 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Modified value</returns>
         private object GetGloballyEnforcedFlagValues(object data, Address address)
         {
+            ReaderOptions readerOptions = this.Options as ReaderOptions;
             if (address.Row < readerOptions.EnforcingStartRowNumber)
             {
                 return data;
@@ -826,13 +840,14 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Converted value</returns>
         private object GetGloballyEnforcedValue(object data, Address address)
         {
+            ReaderOptions readerOptions = this.Options as ReaderOptions;
             if (address.Row < readerOptions.EnforcingStartRowNumber)
             {
                 return data;
             }
-            if (readerOptions.GlobalEnforcingType == ReaderOptions.GlobalType.AllNumbersToDouble)
+            if (readerOptions.GlobalEnforcingType ==  ReaderOptions.GlobalType.AllNumbersToDouble)
             {
-                object tempDouble = ConvertToDouble(data);
+                object tempDouble = ConvertToDouble(data, readerOptions);
                 if (tempDouble != null)
                 {
                     return tempDouble;
@@ -840,7 +855,7 @@ namespace NanoXLSX.Internal.Readers
             }
             else if (readerOptions.GlobalEnforcingType == ReaderOptions.GlobalType.AllNumbersToDecimal)
             {
-                object tempDecimal = ConvertToDecimal(data);
+                object tempDecimal = ConvertToDecimal(data, readerOptions);
                 if (tempDecimal != null)
                 {
                     return tempDecimal;
@@ -856,7 +871,7 @@ namespace NanoXLSX.Internal.Readers
             }
             else if (readerOptions.GlobalEnforcingType == ReaderOptions.GlobalType.EverythingToString)
             {
-                return ConvertToString(data);
+                return ConvertToString(data, readerOptions);
             }
             return data;
         }
@@ -870,6 +885,7 @@ namespace NanoXLSX.Internal.Readers
         /// <returns></returns>
         private object GetEnforcedColumnValue(object data, Cell.CellType importedTyp, Address address)
         {
+            ReaderOptions readerOptions = this.Options as ReaderOptions;
             if (address.Row < readerOptions.EnforcingStartRowNumber)
             {
                 return data;
@@ -885,19 +901,19 @@ namespace NanoXLSX.Internal.Readers
             switch (columnType)
             {
                 case ReaderOptions.ColumnType.Numeric:
-                    return GetNumericValue(data, importedTyp);
+                    return GetNumericValue(data, importedTyp, readerOptions);
                 case ReaderOptions.ColumnType.Decimal:
-                    return ConvertToDecimal(data);
+                    return ConvertToDecimal(data, readerOptions);
                 case ReaderOptions.ColumnType.Double:
-                    return ConvertToDouble(data);
+                    return ConvertToDouble(data, readerOptions);
                 case ReaderOptions.ColumnType.Date:
-                    return ConvertToDate(data);
+                    return ConvertToDate(data, readerOptions);
                 case ReaderOptions.ColumnType.Time:
-                    return ConvertToTime(data);
+                    return ConvertToTime(data, readerOptions);
                 case ReaderOptions.ColumnType.Bool:
-                    return ConvertToBool(data);
+                    return ConvertToBool(data, readerOptions);
                 default:
-                    return ConvertToString(data);
+                    return ConvertToString(data, readerOptions);
             }
         }
 
@@ -905,8 +921,9 @@ namespace NanoXLSX.Internal.Readers
         /// Tries to convert a value to a bool
         /// </summary>
         /// <param name="data">Raw data</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>Bool value or original value if not possible to convert</returns>
-        private object ConvertToBool(object data)
+        private object ConvertToBool(object data, ReaderOptions readerOptions)
         {
             switch (data)
             {
@@ -921,7 +938,7 @@ namespace NanoXLSX.Internal.Readers
                 case byte _:
                 case sbyte _:
                 case int _:
-                    object tempObject = ConvertToDouble(data);
+                    object tempObject = ConvertToDouble(data, readerOptions);
                     if (tempObject is double)
                     {
                         double tempDouble = (double)tempObject;
@@ -981,10 +998,11 @@ namespace NanoXLSX.Internal.Readers
         /// Tries to convert a value to a double
         /// </summary>
         /// <param name="data">Raw data</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>Double value or original value if not possible to convert</returns>
-        private object ConvertToDouble(object data)
+        private object ConvertToDouble(object data, ReaderOptions readerOptions)
         {
-            object value = ConvertToDecimal(data);
+            object value = ConvertToDecimal(data, readerOptions);
             if (value is decimal)
             {
                 return Decimal.ToDouble((decimal)value);
@@ -1000,8 +1018,9 @@ namespace NanoXLSX.Internal.Readers
         /// Tries to convert a value to a decimal
         /// </summary>
         /// <param name="data">Raw data</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>Decimal value or original value if not possible to convert</returns>
-        private object ConvertToDecimal(object data)
+        private object ConvertToDecimal(object data, ReaderOptions readerOptions)
         {
             IConvertible converter;
             switch (data)
@@ -1047,12 +1066,12 @@ namespace NanoXLSX.Internal.Readers
                     {
                         return dValue;
                     }
-                    DateTime? tempDate = TryParseDate(tempString);
+                    DateTime? tempDate = TryParseDate(tempString, readerOptions);
                     if (tempDate != null)
                     {
                         return new decimal(DataUtils.GetOADateTime(tempDate.Value));
                     }
-                    TimeSpan? tempTime = TryParseTime(tempString);
+                    TimeSpan? tempTime = TryParseTime(tempString, readerOptions);
                     if (tempTime != null)
                     {
                         return new decimal(DataUtils.GetOATime(tempTime.Value));
@@ -1107,8 +1126,9 @@ namespace NanoXLSX.Internal.Readers
         /// Tries to convert a value to a Date (DateTime)
         /// </summary>
         /// <param name="data">Raw data</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>DateTime value or original value if not possible to convert</returns>
-        private object ConvertToDate(object data)
+        private object ConvertToDate(object data, ReaderOptions readerOptions)
         {
             switch (data)
             {
@@ -1132,14 +1152,14 @@ namespace NanoXLSX.Internal.Readers
                 case byte _:
                 case sbyte _:
                 case int _:
-                    return ConvertDateFromDouble(data);
+                    return ConvertDateFromDouble(data, readerOptions);
                 case string _:
-                    DateTime? date2 = TryParseDate((string)data);
+                    DateTime? date2 = TryParseDate((string)data, readerOptions);
                     if (date2 != null)
                     {
                         return date2.Value;
                     }
-                    return ConvertDateFromDouble(data);
+                    return ConvertDateFromDouble(data, readerOptions);
             }
             return data;
         }
@@ -1148,8 +1168,9 @@ namespace NanoXLSX.Internal.Readers
         /// Tries to parse a DateTime instance from a string
         /// </summary>
         /// <param name="raw">String to parse</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>DateTime instance or null if not possible to parse</returns>
-        private DateTime? TryParseDate(string raw)
+        private DateTime? TryParseDate(string raw, ReaderOptions readerOptions)
         {
             DateTime dateTime;
             bool isDateTime;
@@ -1172,13 +1193,14 @@ namespace NanoXLSX.Internal.Readers
         /// Tries to convert a value to a Time (TimeSpan)
         /// </summary>
         /// <param name="data">Raw data</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>TimeSpan value or original value if not possible to convert</returns>
-        private object ConvertToTime(object data)
+        private object ConvertToTime(object data, ReaderOptions readerOptions)
         {
             switch (data)
             {
                 case DateTime _:
-                    return ConvertTimeFromDouble(data);
+                    return ConvertTimeFromDouble(data, readerOptions);
                 case TimeSpan _:
                     return data;
                 case double _:
@@ -1191,14 +1213,14 @@ namespace NanoXLSX.Internal.Readers
                 case byte _:
                 case sbyte _:
                 case int _:
-                    return ConvertTimeFromDouble(data);
+                    return ConvertTimeFromDouble(data, readerOptions);
                 case string _:
-                    TimeSpan? time = TryParseTime((string)data);
+                    TimeSpan? time = TryParseTime((string)data, readerOptions);
                     if (time != null)
                     {
                         return time;
                     }
-                    return ConvertTimeFromDouble(data);
+                    return ConvertTimeFromDouble(data, readerOptions);
             }
             return data;
         }
@@ -1207,9 +1229,10 @@ namespace NanoXLSX.Internal.Readers
         /// Tries to parse a TimeSpan instance from a string
         /// </summary>
         /// <param name="raw">String to parse</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>TimeSpan instance or null if not possible to parse</returns>
-        private TimeSpan? TryParseTime(string raw)
-        {
+        private TimeSpan? TryParseTime(string raw, ReaderOptions readerOptions)
+        {   
             TimeSpan timeSpan;
             bool isTimeSpan;
             if (readerOptions == null || string.IsNullOrEmpty(readerOptions.TimeSpanFormat) || readerOptions.TemporalCultureInfo == null)
@@ -1270,10 +1293,11 @@ namespace NanoXLSX.Internal.Readers
         /// Tries to convert a date (DateTime) from a double
         /// </summary>
         /// <param name="data">Raw data (may not be a double)</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>DateTime value or original value if not possible to convert</returns>
-        private object ConvertDateFromDouble(object data)
+        private object ConvertDateFromDouble(object data, ReaderOptions readerOptions)
         {
-            object oaDate = ConvertToDouble(data);
+            object oaDate = ConvertToDouble(data, readerOptions);
             if (oaDate is double && (double)oaDate < DataUtils.MaxOADateValue)
             {
                 DateTime date = DataUtils.GetDateFromOA((double)oaDate);
@@ -1289,10 +1313,11 @@ namespace NanoXLSX.Internal.Readers
         /// Tries to convert a time (TimeSpan) from a double
         /// </summary>
         /// <param name="data">Raw data (my not be a double)</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>TimeSpan value or original value if not possible to convert</returns>
-        private object ConvertTimeFromDouble(object data)
+        private object ConvertTimeFromDouble(object data, ReaderOptions readerOptions)
         {
-            object oaDate = ConvertToDouble(data);
+            object oaDate = ConvertToDouble(data, readerOptions);
             if (oaDate is double)
             {
                 double d = (double)oaDate;
@@ -1336,8 +1361,9 @@ namespace NanoXLSX.Internal.Readers
         /// Converts an arbitrary value to string 
         /// </summary>
         /// <param name="data">Raw data</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>Converted string or null in case of null as input</returns>
-        private string ConvertToString(object data)
+        private string ConvertToString(object data, ReaderOptions readerOptions)
         {
             switch (data)
             {
@@ -1373,8 +1399,9 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="raw">Raw value</param>
         /// <param name="importedType">Originally resolved cell type</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>Converted value or the raw value if not possible to convert</returns>
-        private object GetNumericValue(object raw, Cell.CellType importedType)
+        private object GetNumericValue(object raw, Cell.CellType importedType, ReaderOptions readerOptions)
         {
             if (raw == null)
             {
@@ -1390,17 +1417,17 @@ namespace NanoXLSX.Internal.Readers
                     {
                         return tempObject;
                     }
-                    DateTime? tempDate = TryParseDate(tempString);
+                    DateTime? tempDate = TryParseDate(tempString, readerOptions);
                     if (tempDate != null)
                     {
                         return DataUtils.GetOADateTime(tempDate.Value);
                     }
-                    TimeSpan? tempTime = TryParseTime(tempString);
+                    TimeSpan? tempTime = TryParseTime(tempString, readerOptions);
                     if (tempTime != null)
                     {
                         return DataUtils.GetOATime(tempTime.Value);
                     }
-                    tempObject = ConvertToBool(raw);
+                    tempObject = ConvertToBool(raw, readerOptions);
                     if (tempObject is bool)
                     {
                         return (bool)tempObject ? 1 : 0;
@@ -1500,9 +1527,10 @@ namespace NanoXLSX.Internal.Readers
         /// Gets the column width according to <see cref="ReaderOptions.EnforceStrictValidation"/>
         /// </summary>
         /// <param name="rawValue">Raw column width</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>Modified column width in case <see cref="ReaderOptions.EnforceStrictValidation"/> is set to false, and the raw value was invalid</returns>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the raw value was invalid and <see cref="ReaderOptions.EnforceStrictValidation"/> is set to true</exception>
-        private float GetValidatedWidth(float rawValue)
+        private float GetValidatedWidth(float rawValue, ReaderOptions readerOptions)
         {
             if (rawValue < Worksheet.MinColumnWidth)
             {
@@ -1536,9 +1564,10 @@ namespace NanoXLSX.Internal.Readers
         /// Gets the row height according to <see cref="ReaderOptions.EnforceStrictValidation"/>
         /// </summary>
         /// <param name="rawValue">Raw row height</param>
+        /// <param name="readerOptions">Reader options</param>
         /// <returns>Modified row height in case <see cref="ReaderOptions.EnforceStrictValidation"/> is set to false, and the raw value was invalid</returns>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the raw value was invalid and <see cref="ReaderOptions.EnforceStrictValidation"/> is set to true</exception>
-        private float GetValidatedHeight(float rawValue)
+        private float GetValidatedHeight(float rawValue, ReaderOptions readerOptions)
         {
             if (rawValue < Worksheet.MinRowHeight)
             {

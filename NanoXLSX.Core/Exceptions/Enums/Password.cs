@@ -5,12 +5,12 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-namespace NanoXLSX.Internal.Enums
+namespace NanoXLSX.Enums
 {
     /// <summary>
-    /// Static class that contains enums for password handling
+    /// Static class that contains shared enums for password handling, during read or write operations
     /// </summary>
-    public static class ReaderPassword
+    public static class Password
     {
         /// <summary>
         /// Target type of the password

@@ -5,20 +5,21 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using System;
 using System.IO;
-using NanoXLSX.Interfaces.Plugin;
 
 namespace NanoXLSX.Interfaces.Reader
 {
     /// <summary>
-    /// Interface, used by XML reader classes 
+    /// Interface, used by base plug-ins in XML reader classes 
     /// </summary>
-    internal interface IPluginReader : IPlugin
+    internal interface IPluginBaseReader : IPluginReader
     {
+
         /// <summary>
-        /// Gets or replaces the workbook instance, defined by the constructor
+        /// Optional reader options
         /// </summary>
-        Workbook Workbook { get; set; }
+        IOptions Options { get; set; }
 
         /// <summary>
         /// Initialization method
@@ -26,7 +27,8 @@ namespace NanoXLSX.Interfaces.Reader
         /// <param name="stream">Stream, containing the XML file to red</param>
         /// <param name="workbook">Workbook instance where read data is placed</param>
         /// <param name="readerOptions">Optional reader options</param>
-        void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions);
+        /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
+        void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler);
 
     }
 }

@@ -74,7 +74,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             {
                 Workbook workbook = new Workbook("test");
                 StyleReader styleReader = new StyleReader();
-                styleReader.Init(memStream, workbook, new ReaderOptions());
+                styleReader.Init(memStream, workbook, new ReaderOptions(), ReaderPlugInHandler.HandleInlineQueuePlugins);
                 styleReader.Execute();
                 StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
                 NumberFormat numberFormat = styleReaderContainer.GetNumberFormat(formatId);
@@ -102,7 +102,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             {
                 Workbook workbook = new Workbook("test");
                 StyleReader styleReader = new StyleReader();
-                styleReader.Init(memStream, workbook, new ReaderOptions());
+                styleReader.Init(memStream, workbook, new ReaderOptions(), ReaderPlugInHandler.HandleInlineQueuePlugins);
                 styleReader.Execute();
                 StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
                 NumberFormat numberFormat = styleReaderContainer.GetNumberFormat(formatId);
@@ -117,7 +117,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             {
                 Workbook workbook = new Workbook("test");
                 StyleReader styleReader = new StyleReader();
-                styleReader.Init(memStream, workbook, new ReaderOptions());
+                styleReader.Init(memStream, workbook, new ReaderOptions(), ReaderPlugInHandler.HandleInlineQueuePlugins);
                 styleReader.Execute();
                 StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
 
@@ -135,7 +135,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             {
                 Workbook workbook = new Workbook("test");
                 StyleReader styleReader = new StyleReader();
-                styleReader.Init(memStream, workbook, new ReaderOptions());
+                styleReader.Init(memStream, workbook, new ReaderOptions(), ReaderPlugInHandler.HandleInlineQueuePlugins);
                 styleReader.Execute();
                 StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
 
@@ -154,7 +154,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             {
                 Workbook workbook = new Workbook("test");
                 StyleReader styleReader = new StyleReader();
-                styleReader.Init(memStream, workbook, new ReaderOptions());
+                styleReader.Init(memStream, workbook, new ReaderOptions(), ReaderPlugInHandler.HandleInlineQueuePlugins);
                 styleReader.Execute();
                 StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
 

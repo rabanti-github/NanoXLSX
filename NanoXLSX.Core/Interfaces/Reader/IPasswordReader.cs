@@ -6,7 +6,9 @@
  */
 
 using System.Xml;
-using static NanoXLSX.Internal.Enums.ReaderPassword;
+using static NanoXLSX.Enums.Password;
+
+
 
 namespace NanoXLSX.Interfaces.Reader
 {

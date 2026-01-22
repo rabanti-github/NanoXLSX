@@ -3,12 +3,12 @@
 ## v3.0.0-rc.7
 
 ---
-Release Date: **11.01.2026**
+Release Date: **22.01.2026**
 
 - Added overloads in the Cell class, to call `AddCellRange` with a `Range` object
 - Added Constructor to create a ThemeColor by index
 - Added Baseline as Value for vertical alignments
-- Fixed plug-in handling
+- Changed plug-in handling
 - Added test cases
 - Optimizing code
 

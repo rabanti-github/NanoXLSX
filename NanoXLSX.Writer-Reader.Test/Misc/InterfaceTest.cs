@@ -1,5 +1,5 @@
 ﻿using System;
-using NanoXLSX.Internal.Enums;
+using NanoXLSX.Enums;
 using NanoXLSX.Internal.Readers;
 using NanoXLSX.Internal.Structures;
 using NanoXLSX.Internal.Writers;
@@ -56,9 +56,9 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
         }
 
         [Theory(DisplayName = "Test of the failing attempt of accessing CopyFrom of LegacyPasswordReader (for code coverage)")]
-        [InlineData(ReaderPassword.PasswordType.WorkbookProtection)]
-        [InlineData(ReaderPassword.PasswordType.WorksheetProtection)]
-        public void FailingLegacyPasswordReaderCopyFromTest(ReaderPassword.PasswordType type)
+        [InlineData(Password.PasswordType.WorkbookProtection)]
+        [InlineData(Password.PasswordType.WorksheetProtection)]
+        public void FailingLegacyPasswordReaderCopyFromTest(Password.PasswordType type)
         {
             LegacyPasswordReader reader = new LegacyPasswordReader();
             LegacyPasswordReader reader2 = new LegacyPasswordReader();
@@ -68,9 +68,9 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
         }
 
         [Theory(DisplayName = "Test of the failing attempt of accessing SetPassword of LegacyPasswordReader (for code coverage)")]
-        [InlineData(ReaderPassword.PasswordType.WorkbookProtection)]
-        [InlineData(ReaderPassword.PasswordType.WorksheetProtection)]
-        public void FailingLegacyPasswordReaderSetPasswordTest(ReaderPassword.PasswordType type)
+        [InlineData(Password.PasswordType.WorkbookProtection)]
+        [InlineData(Password.PasswordType.WorksheetProtection)]
+        public void FailingLegacyPasswordReaderSetPasswordTest(Password.PasswordType type)
         {
             LegacyPasswordReader reader = new LegacyPasswordReader();
             reader.Init(type, new ReaderOptions());
@@ -78,9 +78,9 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
         }
 
         [Theory(DisplayName = "Test of the failing attempt of accessing UnsetPassword of LegacyPasswordReader (for code coverage)")]
-        [InlineData(ReaderPassword.PasswordType.WorkbookProtection)]
-        [InlineData(ReaderPassword.PasswordType.WorksheetProtection)]
-        public void FailingLegacyPasswordReaderUnsetPasswordTest(ReaderPassword.PasswordType type)
+        [InlineData(Password.PasswordType.WorkbookProtection)]
+        [InlineData(Password.PasswordType.WorksheetProtection)]
+        public void FailingLegacyPasswordReaderUnsetPasswordTest(Password.PasswordType type)
         {
             LegacyPasswordReader reader = new LegacyPasswordReader();
             reader.Init(type, new ReaderOptions());
@@ -88,9 +88,9 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
         }
 
         [Theory(DisplayName = "Test of the failing attempt of accessing CopyFrom of LegacyPasswordWriter (for code coverage)")]
-        [InlineData(WriterPassword.PasswordType.WorkbookProtection)]
-        [InlineData(WriterPassword.PasswordType.WorksheetProtection)]
-        public void FailingLegacyPasswordWriterCopyFromTest(WriterPassword.PasswordType type)
+        [InlineData(Password.PasswordType.WorkbookProtection)]
+        [InlineData(Password.PasswordType.WorksheetProtection)]
+        public void FailingLegacyPasswordWriterCopyFromTest(Password.PasswordType type)
         {
             LegacyPasswordWriter writer = new LegacyPasswordWriter(type, "1337");
             LegacyPasswordWriter writer2 = new LegacyPasswordWriter(type, "1337");
@@ -98,27 +98,27 @@ namespace NanoXLSX.Test.Writer_Reader.MiscTest
         }
 
         [Theory(DisplayName = "Test of the failing attempt of accessing SetPassword of LegacyPasswordWriter (for code coverage)")]
-        [InlineData(WriterPassword.PasswordType.WorkbookProtection)]
-        [InlineData(WriterPassword.PasswordType.WorksheetProtection)]
-        public void FailingLegacyPasswordWriterSetPasswordTest(WriterPassword.PasswordType type)
+        [InlineData(Password.PasswordType.WorkbookProtection)]
+        [InlineData(Password.PasswordType.WorksheetProtection)]
+        public void FailingLegacyPasswordWriterSetPasswordTest(Password.PasswordType type)
         {
             LegacyPasswordWriter writer = new LegacyPasswordWriter(type, "1337");
             Assert.Throws<NotImplementedException>(() => writer.SetPassword("test"));
         }
 
         [Theory(DisplayName = "Test of the failing attempt of accessing UnsetPassword of LegacyPasswordWriter (for code coverage)")]
-        [InlineData(WriterPassword.PasswordType.WorkbookProtection)]
-        [InlineData(WriterPassword.PasswordType.WorksheetProtection)]
-        public void FailingLegacyPasswordWriterUnsetPasswordTest(WriterPassword.PasswordType type)
+        [InlineData(Password.PasswordType.WorkbookProtection)]
+        [InlineData(Password.PasswordType.WorksheetProtection)]
+        public void FailingLegacyPasswordWriterUnsetPasswordTest(Password.PasswordType type)
         {
             LegacyPasswordWriter writer = new LegacyPasswordWriter(type, "1337");
             Assert.Throws<NotImplementedException>(() => writer.UnsetPassword());
         }
 
         [Theory(DisplayName = "Test of the failing attempt of accessing GetPassword of LegacyPasswordWriter (for code coverage)")]
-        [InlineData(WriterPassword.PasswordType.WorkbookProtection)]
-        [InlineData(WriterPassword.PasswordType.WorksheetProtection)]
-        public void FailingLegacyPasswordWriterGetPasswordTest(WriterPassword.PasswordType type)
+        [InlineData(Password.PasswordType.WorkbookProtection)]
+        [InlineData(Password.PasswordType.WorksheetProtection)]
+        public void FailingLegacyPasswordWriterGetPasswordTest(Password.PasswordType type)
         {
             LegacyPasswordWriter writer = new LegacyPasswordWriter(type, "1337");
             Assert.Throws<NotImplementedException>(() => writer.GetPassword());
