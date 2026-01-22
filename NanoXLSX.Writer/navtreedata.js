@@ -32,7 +32,7 @@ var NAVTREE =
       [ "Changes", "index.html#autotoc_md14", null ]
     ] ],
     [ "Change Log - NanoXLSX.Writer", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html", [
-      [ "v3.0.0-rc.4", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html#autotoc_md1", null ],
+      [ "v3.0.0-rc.4 + v3.0.0-rc.5", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html#autotoc_md1", null ],
       [ "v3.0.0-rc.3", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html#autotoc_md3", null ],
       [ "v3.0.0-rc.2", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html#autotoc_md5", null ],
       [ "v3.0.0-rc.1", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Writer_2Changelog.html#autotoc_md7", null ]

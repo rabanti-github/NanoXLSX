@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['log_20nanoxlsx_20reader_0',['Change Log - NanoXLSX.Reader',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html',1,'']]]
+  ['further_20references_0',['Further References',['../index.html#autotoc_md13',1,'']]]
 ];

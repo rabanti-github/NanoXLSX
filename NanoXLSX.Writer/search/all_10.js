@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['unsetpassword_0',['UnsetPassword',['../classNanoXLSX_1_1Internal_1_1Writers_1_1LegacyPasswordWriter.html#a8e4977eaa6d12fa133e0b5658733dc38',1,'NanoXLSX::Internal::Writers::LegacyPasswordWriter']]]
+  ['type_0',['Type',['../classNanoXLSX_1_1Internal_1_1Writers_1_1LegacyPasswordWriter.html#ae8f6fc1305c16edc9177e2431d43627e',1,'NanoXLSX::Internal::Writers::LegacyPasswordWriter']]]
 ];
