@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.CodeDom.Compiler;
 using System.IO;
 
 namespace NanoXLSX.Interfaces.Reader
@@ -29,6 +30,11 @@ namespace NanoXLSX.Interfaces.Reader
         /// <param name="readerOptions">Optional reader options</param>
         /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
         void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler);
+
+        /// <summary>
+        /// Reference to a handler of in-line plugins, to be used for post operations in the <see cref="IPlugin.Execute"/> method
+        /// </summary>
+        Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
     }
 }

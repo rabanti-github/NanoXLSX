@@ -5,9 +5,9 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using System.Collections.Generic;
 using NanoXLSX.Colors;
 using NanoXLSX.Utils.Xml;
-using System.Collections.Generic;
 
 namespace NanoXLSX.Interfaces.Writer
 {
