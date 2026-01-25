@@ -989,9 +989,13 @@ namespace NanoXLSX
         /// <param name="style">Style to apply on the all cells of the range</param>
         /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
-        /// <exception cref="RangeException">Throws a RangeException if the number of cells differs from the number of passed values</exception>
+        /// <exception cref="RangeException">Throws a RangeException if the passes list is null or the number of cells differs from the number of passed values</exception>
         private void AddCellRangeInternal<T>(IReadOnlyList<T> values, Address startAddress, Address endAddress, Style style)
         {
+            if (values == null)
+            {
+                throw new RangeException("The passed value list cannot be null");
+            }
             List<Address> addresses = Cell.GetCellRange(startAddress, endAddress) as List<Address>;
             if (values.Count != addresses.Count)
             {

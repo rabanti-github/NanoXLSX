@@ -6,7 +6,6 @@
  */
 
 using System;
-using System.CodeDom.Compiler;
 using System.IO;
 
 namespace NanoXLSX.Interfaces.Reader

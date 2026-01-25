@@ -8,7 +8,7 @@
 namespace NanoXLSX.Interfaces.Reader
 {
     /// <summary>
-    /// Interface, used by ipackage reader plug-ins
+    /// Interface, used by package reader plug-ins
     /// </summary>
     internal interface IPluginPackageReader : IPluginQueueReader
     {

@@ -229,6 +229,14 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.Throws<RangeException>(() => worksheet.AddCellRange(data.Values, falseRange));
         }
 
+        [Fact(DisplayName = "Test of the failing AddCellRange function with a null as passed list")]
+        public void AddCellRangeFailingTest3()
+        {
+            NanoXLSX.Range cellRange = "A1:A1";
+            Worksheet worksheet = new Worksheet();
+            Assert.Empty(worksheet.Cells);
+            Assert.Throws<RangeException>(() => worksheet.AddCellRange(null, cellRange));
+        }
 
         private void AssertRange(Worksheet worksheet, ListTuple expectedData)
         {
