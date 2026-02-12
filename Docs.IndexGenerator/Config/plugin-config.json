@@ -4,19 +4,37 @@
       "id": "NanoXLSX.Core",
       "title": "NanoXLSX.Core API",
       "path": "NanoXLSX.Core",
-      "description": "Core library"
+      "description": "Core library",
+      "repository": "https://github.com/rabanti-github/NanoXLSX",
+      "repositoryDisplayName": "NanoXLSX",
+      "bundled": true
     },
     {
       "id": "NanoXLSX.Reader",
       "title": "NanoXLSX.Reader API",
       "path": "NanoXLSX.Reader",
-      "description": "Reader component, to load XLSX files"
+      "description": "Reader component, to load XLSX files",
+      "repository": "https://github.com/rabanti-github/NanoXLSX",
+      "repositoryDisplayName": "NanoXLSX",
+      "bundled": true
     },
     {
       "id": "NanoXLSX.Writer",
       "title": "NanoXLSX.Writer API",
       "path": "NanoXLSX.Writer",
-      "description": "Writer component, to save XLSX files"
+      "description": "Writer component, to save XLSX files",
+      "repository": "https://github.com/rabanti-github/NanoXLSX",
+      "repositoryDisplayName": "NanoXLSX",
+      "bundled": true
+    },
+    {
+      "id": "NanoXLSX.Formatting",
+      "title": "NanoXLSX.Formatter API",
+      "path": "https://rabanti-github.github.io/NanoXLSX.Formatting",
+      "description": "Extension managing advanced cell formatting",
+      "repository": "https://github.com/rabanti-github/NanoXLSX.Formatting",
+      "repositoryDisplayName": "NanoXLSX.Formatting",
+      "bundled": true
     }
   ]
 }

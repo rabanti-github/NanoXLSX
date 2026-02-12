@@ -13,7 +13,7 @@ using System.Text.Json;
 namespace Docs.IndexGenerator
 {
 #nullable enable
-    internal record DocEntry(string Id, string Title, string Path, string? Description);
+    internal record DocEntry(string Id, string Title, string Path, string? Description, string? Repository, string? RepositoryDisplayName, bool Bundled);
     internal record RootConfig(string ProjectName, string BaseDescription, string RootDescription);
     internal record MetaPackageConfig(string PackageName, string Version, string? Description);
     internal record PluginConfig(DocEntry[] Entries);
@@ -115,9 +115,7 @@ namespace Docs.IndexGenerator
 
           <p class=""version"">Version 2.6.7</p>
 
-        <br>
         <hr>
-        <br>
 
         <h1>
             <img src=""NanoXLSX.png""
@@ -126,10 +124,8 @@ namespace Docs.IndexGenerator
             {EscapeHtml(rootConfig.ProjectName)} v3.x
         </h1>
 
-        <p>
-        {EscapeHtml(rootConfig.BaseDescription)}<br>
-        {EscapeHtml(rootConfig.RootDescription)}
-        <p>
+        <p>{EscapeHtml(rootConfig.BaseDescription)}</p>
+        <p>{EscapeHtml(rootConfig.RootDescription)}</p>
 
         <hr>
 
@@ -146,9 +142,12 @@ namespace Docs.IndexGenerator
 
         <section>
           <h2>Dependency Package Documentation</h2>
-          <ul class=""list"">
+          <table class=""list"">
+            <tr>
+            <td>Package</td><td>Description</td><td>Bundled</td><td>Repository</td>
+            </tr>
     {GenerateListItems(pluginConfig)}
-          </ul>
+          </table>
         </section>
       </main>
     </body>
@@ -158,12 +157,22 @@ namespace Docs.IndexGenerator
 
             // style.css
             string css = @"body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; color: #222; margin: 32px; }
-main { max-width: 900px; margin: auto; }
-header h1 { margin: 0; }
-.version { color: #666; margin-top: 4px; }
-.list { line-height: 1.8; }
-.list a { color: #0366d6; text-decoration: none; }
-.list a:hover { text-decoration: underline; }
+hr {
+    margin: 2rem 0;
+    border: none;
+    border-top: 1px solid #e5e7eb;
+}
+main {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, ""Segoe UI"", Roboto, sans-serif;
+}
+
+header h1 {
+    margin: 0;
+}
+
 .version {
     display: inline-block;
     background-color: #f2f4f7;
@@ -174,6 +183,40 @@ header h1 { margin: 0; }
     border-radius: 6px;
     border: 1px solid #d0d7de;
     margin-top: 8px;
+}
+
+table.list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}
+
+table.list th,
+table.list td {
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+}
+
+table.list th {
+    font-weight: 600;
+    background-color: #f9fafb;
+    border-bottom: 2px solid #d0d7de;
+}
+
+table.list tr:hover {
+    background-color: #f6f8fa;
+}
+
+table.list a {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+table.list a:hover {
+    text-decoration: underline;
 }
 ";
             File.WriteAllText(Path.Combine(outDir, "style.css"), css);
@@ -195,8 +238,15 @@ header h1 { margin: 0; }
             var sb = new System.Text.StringBuilder();
             foreach (var e in cfg.Entries)
             {
-                string href = $"{Uri.EscapeDataString(e.Path)}/index.html";
-                sb.AppendLine($"        <li><a href=\"{href}\"><strong>{EscapeHtml(e.Title)}</strong></a> — {EscapeHtml(e.Description ?? "")}</li>");
+                string repoUrl = Uri.EscapeUriString(e.Repository);
+                string docUrl = $"{Uri.EscapeUriString(e.Path)}/index.html";
+                sb.AppendLine("  <tr>");
+                sb.AppendLine($"    <td><a href=\"{docUrl}\"><strong>{EscapeHtml(e.Title)}</strong></a></td>");
+                sb.AppendLine($"    <td>{EscapeHtml(e.Description ?? "")}</td>");
+                sb.AppendLine($"    <td>{EscapeHtml(e.Bundled.ToString())}</td>");
+                sb.AppendLine($"    <td><a href=\"{repoUrl}\" target=\"_blank\" rel=\"noopener\">{EscapeHtml(e.RepositoryDisplayName)}</a></td>");
+                sb.AppendLine("  </tr>");
+
             }
             return sb.ToString();
         }
