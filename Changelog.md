@@ -1,5 +1,13 @@
 # Change Log
 
+## v3.0.0-rc.8
+
+---
+Release Date: **14.02.2026**  <sup>(DMY)</sup>
+
+- Added external dependency **NanoXLSX.Formatting** as bundled part of NanoXLSX
+- Formal updates
+
 ## v3.0.0-rc.7
 
 ---

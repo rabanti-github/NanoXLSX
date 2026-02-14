@@ -9,8 +9,8 @@
 
 ## Pre-Release v3.x
 
-The pre-release of NanoXLSX is now available as [Nuget Package](https://www.nuget.org/packages/NanoXLSX/3.0.0-rc.6), version **3.0.0-rc.6**.
-Since there are breaking changes between NanoXLSX v2.x and v3.0.0-rc6, please see the **[Migration guide](MigrationGuide.md)**, to migrate applications from v2 to v3. Please feel free to open issues, in case of problems with the pre-release.
+The pre-release of NanoXLSX is now available as [Nuget Package](https://www.nuget.org/packages/NanoXLSX/3.0.0-rc.8), version **3.0.0-rc.8**.
+Since there are breaking changes between NanoXLSX v2.x and v3.0.0-rc8, please see the **[Migration guide](MigrationGuide.md)**, to migrate applications from v2 to v3. Please feel free to open issues, in case of problems with the pre-release.
 
 There will be possibly further adaptions and additional pre-releases before the final release.
 
