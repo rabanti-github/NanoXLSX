@@ -202,3 +202,4 @@ UnitTest/
 Executable/
 
 *.nuspec
+.claude/

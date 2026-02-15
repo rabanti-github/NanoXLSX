@@ -103,25 +103,7 @@ namespace Docs.IndexGenerator
             <img src=""NanoXLSX.png""
                  alt=""NanoXLSX""
                  style=""height:48px; vertical-align:middle; margin-right:10px;"">
-            {EscapeHtml(rootConfig.ProjectName)} v2.x
-        </h1>
-        
-          <h2>API Documentation</h2>
-            <section>
-            <ul class=""list"">
-                <li><a href=""v2/"">NanoXLSX 2.x</a> — Current version</li>
-            </ul>
-            </section>
-
-          <p class=""version"">Version 2.6.7</p>
-
-        <hr>
-
-        <h1>
-            <img src=""NanoXLSX.png""
-                 alt=""NanoXLSX""
-                 style=""height:48px; vertical-align:middle; margin-right:10px;"">
-            {EscapeHtml(rootConfig.ProjectName)} v3.x
+            {EscapeHtml(rootConfig.ProjectName)}
         </h1>
 
         <p>{EscapeHtml(rootConfig.BaseDescription)}</p>
