@@ -1,16 +1,24 @@
 # Change Log - NanoXLSX.Core
 
+## v3.0.0
+
+---
+Release Date: **(28.02.2026)** <sup>(DMY)</sup>
+
+- Final release of NanoXLSX.Core
+- See the [main changelog](https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md) for a comprehensive summary of all changes since v2.6.7
+
 ## v3.0.0-rc.7
 
 ---
-Release Date: **15.02.2026**
+Release Date: **15.02.2026** <sup>(DMY)</sup>
 
 - Fixed a bug in the PlugInLoader
 
 ## v3.0.0-rc.5
 
 ---
-Release Date: **22.01.2026**
+Release Date: **22.01.2026** <sup>(DMY)</sup>
 
 - Fixed plug-in handling when loading plug-ins from NuGet packages
 - Added Constructor to create a ThemeColor by index
@@ -18,35 +26,33 @@ Release Date: **22.01.2026**
 - Moved internal interfaces of the Reader and Writer package to NanoXLSX.Core (namespace `NanoXLSX.Interfaces.Reader` and `NanoXLSX.Interfaces.Writer`)
 - Moved and consolidated enums of password types to NanoXLSX.Core (namespace `NanoXLSX.Enums.Password`)
 
-
 ## v3.0.0-rc.4
 
 ---
-Release Date: **07.01.2026**
+Release Date: **07.01.2026** <sup>(DMY)</sup>
 
 - Added Font properties: `Font.Outline`, `Font.Shadow`, `Font.Condense` and `Font.Extend` (optional font properties)
 
 ## v3.0.0-rc.3
 
 ---
-Release Date: **04.01.2026**
+Release Date: **04.01.2026** <sup>(DMY)</sup>
 
 - Internal change of structured text handling
 - Formal change of the `Color` and `ThemeColor` classes
 - Removed the property `ColorTheme` from the `Font` class
 - Changed the type of the property `ColorVlaue` of the Font class from `string` to `Color` (namespace `NanoXLES.Colors`)
 
-
 ## v3.0.0-rc.2
 
 ---
-Release Date: **27.11.2025**
+Release Date: **27.11.2025** <sup>(DMY)</sup>
 
 - Refactoring of several enums from lowercase start to uppercase start for better consistency
 
 ## v3.0.0-rc.1
 
 ---
-Release Date: **25.11.2025**
+Release Date: **25.11.2025** <sup>(DMY)</sup>
 
 - Initial release of the core library

@@ -21,9 +21,9 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageTags>Excel Office XLSX</PackageTags>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<Version>3.0.0-rc.7</Version>
-		<AssemblyVersion>3.0.0-rc.7</AssemblyVersion>
-		<FileVersion>3.0.0-rc.7</FileVersion>
+		<Version>3.0.0</Version>
+		<AssemblyVersion>3.0.0.0</AssemblyVersion>
+		<FileVersion>3.0.0.0</FileVersion>
 		<RepositoryType>git</RepositoryType>
         <PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>

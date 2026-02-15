@@ -1,16 +1,94 @@
 # Change Log
 
+## v3.0.0
+
+---
+Release Date: **(28.02.2026) - Major Release** <sup>(DMY)</sup>
+
+### Modularization
+
+- Split the monolithic NanoXLSX library into separate NuGet packages: **NanoXLSX.Core**, **NanoXLSX.Reader**, **NanoXLSX.Writer** and the meta-package **NanoXLSX**
+- Introduced a plugin architecture for Reader and Writer modules, allowing custom implementations
+- Added external module **NanoXLSX.Formatting** for in-line cell formatting (rich text), bundled with the meta-package
+- The methods `Workbook.Load(...)` and `Workbook.LoadAsync(...)` were moved to `WorkbookReader` in the `NanoXLSX.Extensions` namespace (provided by **NanoXLSX.Reader**)
+- Internal reader classes moved from `NanoXLSX.LowLevel` to `NanoXLSX.Internal.Readers`
+
+### Color System
+
+- Introduced new `Color` class (namespace `NanoXLSX.Colors`) supporting RGB, ARGB, indexed, theme, system and auto colors
+- Changed `Font.ColorValue` from `string` to `Color`
+- Removed `Font.ColorTheme` property (value now handled by `Font.ColorValue` when type is `ThemeColor`)
+- Changed `Fill.BackgroundColor` and `Fill.ForegroundColor` from `string` to `Color`
+- Removed `Fill.IndexedColor` property (value now part of `Color` class)
+- Added implicit conversions for colors from strings (ARGB) and integers (indexed color)
+
+### Font Redesign
+
+- Changed `Font.Family` from `string` to enum `Font.FontFamilyValue`
+- Changed `Font.Charset` from `string` to enum `Font.CharsetValue`
+- Changed `Font.VerticalAlign` from `Font.VerticalAlignValue` to `Font.VerticalTextAlignValue`
+- Added `Baseline` as value for `VerticalTextAlignValue`
+- Added font properties: `Font.Outline`, `Font.Shadow`, `Font.Condense` and `Font.Extend`
+- Renamed font constants to PascalCase (e.g. `DEFAULT_FONT_NAME` to `DefaultFontName`)
+
+### Fill Redesign
+
+- Complete overhaul of the `Fill` class for flexible color definitions including tint support
+- Changed fill color properties to use the new `Color` class
+- Added implicit operators for `Fill` creation from strings and integers
+- Renamed fill constants and enum values to PascalCase
+
+### Worksheet and Workbook
+
+- `Worksheet.SelectedCells` changed from `Range` to `List<Range>` with automatic range recalculation
+- `Worksheet.SheetProtectionPassword` changed from `string` to `IPassword` interface (default: `LegacyPassword`)
+- `Address` struct properties (`Row`, `Column`, `Type`) are now read-only (immutable)
+- `Range` struct properties (`StartAddress`, `EndAddress`) are now read-only (immutable)
+- Added explicit cast operator for `Address` from string and implicit cast operator for `Range` from string
+- Added `AddCellRange` overloads accepting `Range` objects
+- Removed deprecated methods: `Workbook.AddStyle`, `Workbook.AddStyleComponent`, `Workbook.RemoveStyle`
+- `Workbook.GetMruColors()` now returns `IReadOnlyList<Color>`
+- Empty `Workbook.WorkbookMetadata` now returns a default object instead of null
+
+### Naming Conventions (Breaking)
+
+- All enum values renamed from camelCase to PascalCase across: `Cell.CellType`, `Worksheet.SheetProtectionValue`, `Worksheet.WorksheetPane`, `Worksheet.SheetViewType`, `Border.StyleValue`, `Fill.FillType`, `Fill.PatternValue`, `CellXf.HorizontalAlignValue`, `CellXf.TextBreakValue`, `CellXf.TextDirectionValue`, `CellXf.VerticalAlignValue`, `NumberFormat.FormatRange`, `NumberFormat.FormatNumber`, `Font.SchemeValue`, `Font.VerticalTextAlignValue`, `Font.UnderlineValue`
+- All public constants renamed from UPPER_SNAKE_CASE to PascalCase across `Worksheet`, `Font`, `Border`, `Fill`, `CellXf`, `NumberFormat`
+
+### Reader
+
+- `ImportOptions` renamed to `ReaderOptions`
+- `EnforceValidColumnDimensions` and `EnforceValidRowDimensions` combined into `EnforceStrictValidation`
+- Removed `ImportOptions.GlobalType.AllSingleToDecimal` (use `ReaderOptions.GlobalType.AllNumbersToDecimal`)
+- Newline handling normalized: all newlines in string cell values are now `\n` only
+
+### Utils
+
+- General `Utils` class split into `DataUtils`, `ParserUtils` and `Validators` in namespace `NanoXLSX.Utils`
+- `Utils.GeneratePasswordHash` moved to `LegacyPassword.GenerateLegacyPasswordHash`
+- Constants moved to `NanoXLSX.Utils.Constants`
+
+### Misc
+
+- Introduced `Theme` class for workbook theme representation
+- All (s)RGB values are automatically validated and cast to uppercase
+- Improved Cell constructor behavior: `EMPTY` type discards any passed value
+- Added `ThemeColor` constructor by index
+- Various bug fixes and optimizations from RC releases
+
+See the **[Migration Guide](MigrationGuide.md)** for detailed instructions on migrating from v2.x to v3.0.0.
+
 ## v3.0.0-rc.9
 
 ---
-Release Date: **15.02.2026**  <sup>(DMY)</sup>
+Release Date: **15.02.2026** <sup>(DMY)</sup>
 
 - Fixed a bug in the PlugInLoader
 
 ## v3.0.0-rc.8
 
 ---
-Release Date: **14.02.2026**  <sup>(DMY)</sup>
+Release Date: **14.02.2026** <sup>(DMY)</sup>
 
 - Added external dependency **NanoXLSX.Formatting** as bundled part of NanoXLSX
 - Formal updates
@@ -18,7 +96,7 @@ Release Date: **14.02.2026**  <sup>(DMY)</sup>
 ## v3.0.0-rc.7
 
 ---
-Release Date: **22.01.2026**
+Release Date: **22.01.2026** <sup>(DMY)</sup>
 
 - Added overloads in the Cell class, to call `AddCellRange` with a `Range` object
 - Added Constructor to create a ThemeColor by index
@@ -30,7 +108,7 @@ Release Date: **22.01.2026**
 ## v3.0.0-rc.6
 
 ---
-Release Date: **07.01.2026**
+Release Date: **07.01.2026** <sup>(DMY)</sup>
 
 - Added Font properties: `Font.Outline`, `Font.Shadow`, `Font.Condense` and `Font.Extend` (optional font properties)
 - Added test cases
@@ -38,7 +116,7 @@ Release Date: **07.01.2026**
 ## v3.0.0-rc.5
 
 ---
-Release Date: **04.01.2026**
+Release Date: **04.01.2026** <sup>(DMY)</sup>
 
 - Added explicit operator for Address to convert from string to Address (string can be cast to address explicitly)
 - Added implicit operator for Range to convert from string to Range (string can be cast to range implicitly)
@@ -66,26 +144,23 @@ Note: Implicit address conversion from string to Address was not implemented, to
 ## v3.0.0-rc.3 + v3.0.0-rc.4
 
 ---
-Release Date(s): **02.12.2025** / **03.12.2025** 
+Release Date(s): **02.12.2025** / **03.12.2025** <sup>(DMY)</sup>
 
 - Formal changes to enforce displaying target frameworks in NuGet meta package
 
 Note: The version numbers of the dependencies `NanoXLSX.Core`, `NanoXLSX.Reader` and `NanoXLSX.Writer` have not changed with this release. There are also no functional changes
 
-
-
 ## v3.0.0-rc.2
 
 ---
-Release Date: **27.11.2025**
+Release Date: **27.11.2025** <sup>(DMY)</sup>
 
 - Refactoring of several enums in `NanoXLSX.Core`, `NanoXLSX.Reader` and `NanoXLSX.Writer` from lowercase start to uppercase start for better consistency
 
-
-# v3.0.0-rc.1
+## v3.0.0-rc.1
 
 ---
-Release Date: **25.11.2025**
+Release Date: **25.11.2025** <sup>(DMY)</sup>
 
 - Initial release candidate of the NanoXLSX library split into three separate libraries:
   - NanoXLSX.Core
@@ -95,7 +170,7 @@ Release Date: **25.11.2025**
 ## v2.6.7
 
 ---
-Release Date: **01.10.2025**
+Release Date: **01.10.2025** <sup>(DMY)</sup>
 
 - Fixed handling of worksheet protection (regression bug)
 - Code cleanup
@@ -103,7 +178,7 @@ Release Date: **01.10.2025**
 ## v2.6.6
 
 ---
-Release Date: **29.09.2025**
+Release Date: **29.09.2025** <sup>(DMY)</sup>
 
 - Fixed handling of worksheet protection (selecting locked or unlocked cells)
 - Added test case
@@ -114,7 +189,7 @@ Note: The default value of `Style.CurrentCellXf.Locked` is now true, to be consi
 ## v2.6.5
 
 ---
-Release Date: **13.09.2025**
+Release Date: **13.09.2025** <sup>(DMY)</sup>
 
 - Added import option to ignore invalid column widths or row heights. Concept provided by pokorny
 - Added test case
@@ -122,7 +197,7 @@ Release Date: **13.09.2025**
 ## v2.6.4
 
 ---
-Release Date: **19.07.2025**
+Release Date: **19.07.2025** <sup>(DMY)</sup>
 
 - Added support for in-line string values (non-formatted). Change provided by Misir
 - Added test case
@@ -130,7 +205,7 @@ Release Date: **19.07.2025**
 ## v2.6.3
 
 ---
-Release Date: **26.04.2025**
+Release Date: **26.04.2025** <sup>(DMY)</sup>
 
 - Fixed a bug that prevented adding new worksheets when a pane split was defined
 - Changed handling of reading workbooks, when docProps are missing (formal change)
@@ -139,7 +214,7 @@ Release Date: **26.04.2025**
 ## v2.6.2
 
 ---
-Release Date: **24.01.2025**
+Release Date: **24.01.2025** <sup>(DMY)</sup>
 
 - Fixed a regression bug in the Cell function ConvertArray
 - Added test cases
@@ -147,7 +222,7 @@ Release Date: **24.01.2025**
 ## v2.6.1
 
 ---
-Release Date: **19.01.2025**
+Release Date: **19.01.2025** <sup>(DMY)</sup>
 
 - Fixed a bug on writing default column styles (not persisted in some cases)
 - Adapted style reader: When a workbook is loaded, not defined color values of Border styles are now empty strings (were null), as if a new style is created
@@ -158,7 +233,7 @@ Note: The color values of Border styles are handled identical on writing XLSX fi
 ## v2.6.0
 
 ---
-Release Date: **12.01.2025**
+Release Date: **12.01.2025** <sup>(DMY)</sup>
 
 - Added InsertRow and InsertColumn functions. Functionality provided by Alexander Schlecht
 - Added FirstCellByValue, FirstOrDefaultCell, CellsByValue functions. Functionality provided by Alexander Schlecht
@@ -168,7 +243,7 @@ Release Date: **12.01.2025**
 ## v2.5.2
 
 ---
-Release Date: **24.11.2024**
+Release Date: **24.11.2024** <sup>(DMY)</sup>
 
 - Fixed a bug of the column address (letter) resolution. Column letters above 'Z' were resolved incorrectly
 - Changed async handing of the workbook reader, to avoid deadlocks. Change provided by Jarren Long
@@ -178,14 +253,14 @@ Release Date: **24.11.2024**
 ## v2.5.1
 
 ---
-Release Date: **26.10.2024**
+Release Date: **26.10.2024** <sup>(DMY)</sup>
 
 - Fixed a bug regarding the determination of the first data cell in an empty worksheet. Bug fix provided by Martin Stránský
 
 ## v2.5.0
 
 ---
-Release Date: **22.07.2024**
+Release Date: **22.07.2024** <sup>(DMY)</sup>
 
 - Adapted handling of the font scheme in styles. The scheme is now determined automatically
 - Added column option to define a default column style
@@ -194,7 +269,7 @@ Release Date: **22.07.2024**
 ## v2.4.0
 
 ---
-Release Date: **21.04.2024**
+Release Date: **21.04.2024** <sup>(DMY)</sup>
 
 - Added handling to load workbooks from files asynchronously. Concept provided by John Leyva
 - Fixed a bug when loading a workbook asynchronously from a stream. Bug fix provided by John Leyva
@@ -205,7 +280,7 @@ Release Date: **21.04.2024**
 ## v2.3.3
 
 ---
-Release Date: **24.02.2024**
+Release Date: **24.02.2024** <sup>(DMY)</sup>
 
 - Fixed a bug in the GetFirstDataCellAddress function
 - Fixed test cases
@@ -213,7 +288,7 @@ Release Date: **24.02.2024**
 ## v2.3.2
 
 ---
-Release Date: **24.02.2024**
+Release Date: **24.02.2024** <sup>(DMY)</sup>
 
 - Fixed a bug when reading min and max values in the GetLastDataColumnNumber function. Bug fix provided by pokorny
 - Code maintenance
@@ -221,7 +296,7 @@ Release Date: **24.02.2024**
 ## v2.3.1
 
 ---
-Release Date: **22.01.2024**
+Release Date: **22.01.2024** <sup>(DMY)</sup>
 
 - Fixed a bug when reading fill styles. Bug fix provided by Marq Watkin
 - Fixed a bug regarding casting floats to integers, in the worksheet reader. Bug fix provided by wappenull
@@ -231,7 +306,7 @@ Release Date: **22.01.2024**
 ## v2.3.0
 
 ---
-Release Date: **07.09.2023**
+Release Date: **07.09.2023** <sup>(DMY)</sup>
 
 - Added worksheet option for zoom factors
 - Added worksheet option for view types (e.g. page break preview)
@@ -242,7 +317,7 @@ Release Date: **07.09.2023**
 ## v2.2.0
 
 ---
-Release Date: **23.04.2023**
+Release Date: **23.04.2023** <sup>(DMY)</sup>
 
 - Added new import option to cast all single values into decimals. Feature implementation provided by Tim M. Madsen
 - Adapted hex color validation (clarified number of necessary characters)
@@ -251,7 +326,7 @@ Release Date: **23.04.2023**
 ## v2.1.1
 
 ---
-Release Date: **04.03.2023**
+Release Date: **04.03.2023** <sup>(DMY)</sup>
 
 - Fixed a bug when a workbook contains charts instead of worksheets. Bug fix provided by Iivari Mokelainen
 - Minor code maintenance
@@ -259,7 +334,7 @@ Release Date: **04.03.2023**
 ## v2.1.0
 
 ---
-Release Date: **08.11.2022**
+Release Date: **08.11.2022** <sup>(DMY)</sup>
 
 - Added a several methods in the Worksheet class to add multiple ranges of selected cells
 - Fixed a bug in the reader function to read worksheets with multiple ranges of selected cells
@@ -276,7 +351,7 @@ Note 2: The incomplete internal escaping of custom number format codes was remov
 ## v2.0.4
 
 ---
-Release Date: **04.10.2022**
+Release Date: **04.10.2022** <sup>(DMY)</sup>
 
 - Fixed a bug in the reader function of dates and times on hosts with locales different than en-US (and others)
 - Added == and != operator overload on Address and Range struct
@@ -285,7 +360,7 @@ Release Date: **04.10.2022**
 ## v2.0.3
 
 ---
-Release Date: **01.10.2022**
+Release Date: **01.10.2022** <sup>(DMY)</sup>
 
 - Fixed a bug in the functions to write and read font values (styles)
 - Adapted tests according to specs
@@ -295,7 +370,7 @@ Release Date: **01.10.2022**
 ## v2.0.2
 
 ---
-Release Date: **29.09.2022**
+Release Date: **29.09.2022** <sup>(DMY)</sup>
 
 - Fixed a bug in the functions to write and read custom number formats
 - Fixed behavior of empty cells and added re-evaluation if values are set by the Value property
@@ -304,20 +379,20 @@ Release Date: **29.09.2022**
 
 Note:
 
-- When defining a custom number format, now the CustomFormatCode property must always be defined as well, since an empty value leads to an invalid Workbook 
+- When defining a custom number format, now the CustomFormatCode property must always be defined as well, since an empty value leads to an invalid Workbook
 - When a cell is now created (by constructor) with the type EMPTY, any passed value will be discarded in this cell
 
 ## v2.0.1
 
 ---
-Release Date: **10.09.2022**
+Release Date: **10.09.2022** <sup>(DMY)</sup>
 
 - Fixed a bug when loading workbooks on hosts with locales different than en-US (and others)
 
 ## v2.0.0
 
 ---
-Release Date: **03.09.2022 - Major Release**
+Release Date: **03.09.2022 - Major Release** <sup>(DMY)</sup>
 
 ### Workbook and Shortener
 
@@ -402,14 +477,14 @@ Release Date: **03.09.2022 - Major Release**
 ## v1.8.7
 
 ---
-Release Date: **06.08.2022**
+Release Date: **06.08.2022** <sup>(DMY)</sup>
 
 - Fixed a bug when setting a workbook protection password
 
 ## v1.8.6
 
 ---
-Release Date: **02.04.2022**
+Release Date: **02.04.2022** <sup>(DMY)</sup>
 
 - Added an import option to display phonetic characters (like Ruby Characters / Furigana / Zhuyin / Pinyin are now discarded) in strings
 
@@ -418,7 +493,7 @@ Note: Phonetic characters are discarded by default. If the import option "Enforc
 ## v1.8.5
 
 ---
-Release Date: **27.03.2022**
+Release Date: **27.03.2022** <sup>(DMY)</sup>
 
 - Fixed a follow-up issue on finding first/last cell addresses on explicitly defined, empty cells
 - Code maintenance
@@ -426,14 +501,14 @@ Release Date: **27.03.2022**
 ## v1.8.4
 
 ---
-Release Date: **20.03.2022**
+Release Date: **20.03.2022** <sup>(DMY)</sup>
 
 - Fixed a regression bug, caused by changes of v1.8.3
 
 ## v1.8.3
 
 ---
-Release Date: **10.03.2022**
+Release Date: **10.03.2022** <sup>(DMY)</sup>
 
 - Added functions to determine the first cell address, column number or row number of a worksheet
 - Adapted internal style handling
@@ -443,7 +518,7 @@ Release Date: **10.03.2022**
 ## v1.8.2
 
 ---
-Release Date: **20.12.2021**
+Release Date: **20.12.2021** <sup>(DMY)</sup>
 
 - Added hidden property for worksheets when loading a workbook
 
@@ -452,7 +527,7 @@ Note: The reader functionality on worksheets is not feature complete yet. Additi
 ## v1.8.1
 
 ---
-Release Date: **12.09.2021**
+Release Date: **12.09.2021** <sup>(DMY)</sup>
 
 - Fixed a bug when hiding worksheets
 
@@ -461,7 +536,7 @@ Note: It is not possible anymore to remove all worksheets from a workbook, or to
 ## v1.8.0
 
 ---
-Release Date: **10.07.2021**
+Release Date: **10.07.2021** <sup>(DMY)</sup>
 
 - Added functions to split (and freeze) a worksheet horizontally and vertically into panes
 - Added a property to set the visibility of a workbook
@@ -476,7 +551,7 @@ Note: The column widths and row heights may change slightly with this release, s
 ## v1.7.0
 
 ---
-Release Date: **05.06.2021**
+Release Date: **05.06.2021** <sup>(DMY)</sup>
 
 - Added functions to determine the last row, column or cell with data
 - Fixed documentation formatting issues
@@ -485,7 +560,7 @@ Release Date: **05.06.2021**
 ## v1.6.0
 
 ---
-Release Date: **18.04.2021**
+Release Date: **18.04.2021** <sup>(DMY)</sup>
 
 - Introduced library version for .NET Standard 2.0 (and assigned demos)
 - Updated project structure (two projects for .NET >=4.5 and two for .NET Standard 2.0)
@@ -507,16 +582,16 @@ Thanks to the following people (in the order of contribution date):
 ## v1.5.0
 
 ---
-Release Date: **10.12.2020**
+Release Date: **10.12.2020** <sup>(DMY)</sup>
 
-- Added indentation property of horizontal text alignment (CellXF) as style 
+- Added indentation property of horizontal text alignment (CellXF) as style
 - Added example in demo for text indentation
 - Code Cleanup
 
 ## v1.4.1
 
 ---
-Release Date: **13.09.2020**
+Release Date: **13.09.2020** <sup>(DMY)</sup>
 
 - Fixed a bug regarding numeric cells in the worksheet reader. Bug fix provided by John Lenz
 - Minor code maintenance
@@ -525,7 +600,7 @@ Release Date: **13.09.2020**
 ## v1.4.0
 
 ---
-Release Date: **30.08.2020**
+Release Date: **30.08.2020** <sup>(DMY)</sup>
 
 - Added style reader to resolve dates and times properly
 - Added new data type TIME, represented by TimeSpan objects in reader and writer
@@ -543,7 +618,7 @@ Release Date: **30.08.2020**
 ## v1.3.6
 
 ---
-Release Date: **19.07.2020**
+Release Date: **19.07.2020** <sup>(DMY)</sup>
 
 - Fixed a bug in the reader regarding dates, times and booleans
 - Fixed a bug in the method AddNextCellFormula
@@ -553,7 +628,7 @@ Note: Fixes provided by Silvio Burger and Thiago Souza. The fix for the reader b
 ## v1.3.5
 
 ---
-Release Date: **10.01.2020**
+Release Date: **10.01.2020** <sup>(DMY)</sup>
 
 - Fixed a bug in the reader regarding decimal numbers (for locales where the decimal pointer is not a dot)
 - Formal changes
@@ -561,7 +636,7 @@ Release Date: **10.01.2020**
 ## v1.3.4
 
 ---
-Release Date: **01.12.2019**
+Release Date: **01.12.2019** <sup>(DMY)</sup>
 
 - Fixed a bug of reorganized worksheets (when deleted in Excel)
 - Fixed a bug in the handling of shared strings
@@ -570,7 +645,7 @@ Release Date: **01.12.2019**
 ## v1.3.3
 
 ---
-Release Date: **20.05.2019**
+Release Date: **20.05.2019** <sup>(DMY)</sup>
 
 - Fixed a bug in the handling of streams (streams can be left open now)
 - Updated stream demo
@@ -580,21 +655,21 @@ Release Date: **20.05.2019**
 ## v1.3.2
 
 ---
-Release Date: **08.12.2018**
+Release Date: **08.12.2018** <sup>(DMY)</sup>
 
 - Improved the performance of adding stylized cells by factor 10 to 100
 
 ## v1.3.1
 
 ---
-Release Date: **04.11.2018**
+Release Date: **04.11.2018** <sup>(DMY)</sup>
 
 - Fixed a bug in the style handling of merged cells. Bug fix provided by David Courtel for PicoXLSX
 
 ## v1.3.0
 
 ---
-Release Date: **06.10.2018**
+Release Date: **06.10.2018** <sup>(DMY)</sup>
 
 - Added missing features of PicoXLSX (synced with PicoXLSX version 2.6.1)
 - Added asynchronous methods SaveAsync, SaveAsAsync, SaveAsStreamAsync and LoadAsync
@@ -609,7 +684,7 @@ Release Date: **06.10.2018**
 ## v1.2.4
 
 ---
-Release Date: **24.08.2018**
+Release Date: **24.08.2018** <sup>(DMY)</sup>
 
 - Fixed a bug regarding formulas in the reader
 - Added support for dates in the reader
@@ -618,6 +693,6 @@ Release Date: **24.08.2018**
 ## v1.2.3
 
 ---
-Release Date: **24.08.2018**
+Release Date: **24.08.2018** <sup>(DMY)</sup>
 
 - Initial Release (synced to v 1.2.3 of NanoXLSX4j for Java)

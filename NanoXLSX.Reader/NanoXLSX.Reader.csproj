@@ -5,7 +5,7 @@
 		<PackageId>NanoXLSX.Reader</PackageId>
 		<OutputType>Library</OutputType>
 		<TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-		<Title>NanoXLSX.Writer</Title>
+		<Title>NanoXLSX.Reader</Title>
 		<Product>NanoXLSX</Product>
 		<Company>Raphael Stoeckli</Company>
 		<Authors>Raphael Stoeckli</Authors>
@@ -20,9 +20,9 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageTags>Excel Office XLSX Reader</PackageTags>
-		<Version>3.0.0-rc.6</Version>
-		<AssemblyVersion>3.0.0-rc.6</AssemblyVersion>
-		<FileVersion>3.0.0-rc.6</FileVersion>
+		<Version>3.0.0</Version>
+		<AssemblyVersion>3.0.0.0</AssemblyVersion>
+		<FileVersion>3.0.0.0</FileVersion>
 		<RepositoryType>git</RepositoryType>
         <PackageReadmeFile>README.md</PackageReadmeFile>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -48,9 +48,6 @@
 		<Reference Include="System.Xml" />
 		<Reference Include="WindowsBase" />
 	</ItemGroup>
-	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
-		<ProjectReference Include="..\NanoXLSX.Core\NanoXLSX.Core.csproj" />
-	</ItemGroup>
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 	  <Exec Command="@echo off&#xD;&#xA;echo PROJECT_NUMBER = $(Version) &gt; &quot;$(ProjectDir)Documentation\projectNumber.doxygen&quot;&#xD;&#xA;echo PROJECT_NAME = $(ProjectName) &gt; &quot;$(ProjectDir)Documentation\projectName.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = ../../docs/$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\outputDirectory.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = ../../docs/$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\htmlOutput.doxygen&quot;" />
 	</Target>
@@ -62,7 +59,6 @@
 		<ProjectReference Include="..\NanoXLSX.Core\NanoXLSX.Core.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<!--<PackageReference Include="NanoXLSX.Core" Version="3.0.*" /> -->
-		<PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.6" />
+		<PackageReference Include="NanoXLSX.Core" Version="[3.0.0, 4.0.0)" />
 	</ItemGroup>
 </Project>

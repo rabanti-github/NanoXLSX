@@ -18,11 +18,12 @@ The meta package of NanoXLSX defines the necessary dependencies to run the libra
 
 The feature set of the meta package is:
 
-| Dependency          | Version | Scope     | Description |
-| --------------------|---------|-----------|-------------|
-| **NanoXLSX.Core**   | 3.0.x   | Mandatory | Base functionalities, like workbooks, worksheet or cells and all standard operations |
-| **NanoXLSX.Reader** | 3.0.x   | Optional  | Functions to read workbooks and its parts like worksheets, styles or shared strings |
-| **NanoXLSX.Writer** | 3.0.x   | Optional  | Functions to write workbooks and its parts like worksheets, styles or shared strings |
+| Dependency               | Version | Scope     | Description                                                                         |
+| -------------------------|---------|-----------|-------------|
+| **NanoXLSX.Core**        | 3.0.x   | Mandatory | Base functionalities, like workbooks, worksheet or cells and all standard operations |
+| **NanoXLSX.Reader**      | 3.0.x   | Optional  | Functions to read workbooks and its parts like worksheets, styles or shared strings  |
+| **NanoXLSX.Writer**      | 3.0.x   | Optional  | Functions to write workbooks and its parts like worksheets, styles or shared strings |
+| **NanoXLSX.Formatting**  | 3.0.x   | Optional  | In-line cell formatting (rich text)                                                 |
 
 ## Further References
 
