@@ -186,7 +186,7 @@ namespace NanoXLSX.Registry
                 {
                     if (plugInClasses.ContainsKey(attribute.PlugInUUID))
                     {
-                        if (attribute.PlugInOrder <= plugInClasses[attribute.PlugInUUID].Order)
+                        if (attribute.PlugInOrder >= plugInClasses[attribute.PlugInUUID].Order)
                         {
                             // Skip duplicates with lower order numbers
                             plugInClasses[attribute.PlugInUUID] = new PlugInInstance(attribute.PlugInUUID, attribute.PlugInOrder, plugInType);

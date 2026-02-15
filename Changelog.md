@@ -1,5 +1,12 @@
 # Change Log
 
+## v3.0.0-rc.9
+
+---
+Release Date: **15.02.2026**  <sup>(DMY)</sup>
+
+- Fixed a bug in the PlugInLoader
+
 ## v3.0.0-rc.8
 
 ---
