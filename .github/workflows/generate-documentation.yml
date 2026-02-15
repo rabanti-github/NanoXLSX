@@ -3,11 +3,9 @@ name: Build Documentation
 on:
   push:
     branches:
-      - dev-v3
-    paths-ignore: 
+      - master
+    paths-ignore:
       - 'docs/**'
-#      - '.github/**'
-  pull_request:
 
 jobs:
   build-docs:
@@ -55,19 +53,6 @@ jobs:
         run: |
           mkdir -p docs
           mv Docs.IndexGenerator/Output/* docs/
-
-      # Pull current v2 docs from master branch
-      - name: Checkout master docs
-        uses: actions/checkout@v4
-        with:
-          ref: master
-          path: master_docs
-
-      # Copy v2 docs to /docs/v2
-      - name: Add legacy v2 documentation
-        run: |
-          mkdir -p docs/v2
-          cp -r master_docs/docs/* docs/v2/
 
       # Upload docs artifact
       - name: Upload docs artifact
