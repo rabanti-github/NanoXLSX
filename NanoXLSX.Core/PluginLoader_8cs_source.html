@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.0.0-rc.6</span>
+   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.0.0-rc.7</span>
    </div>
   </td>
  </tr>
@@ -249,7 +249,7 @@ $(function(){initNavTree('PluginLoader_8cs_source.html','',''); });
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                {</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                    <span class="keywordflow">if</span> (plugInClasses.ContainsKey(attribute.<a class="code hl_property" href="classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a7ccebd1fc9cc6b6a22c28acfd8a40cbd">PlugInUUID</a>))</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                    {</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                        <span class="keywordflow">if</span> (attribute.<a class="code hl_property" href="classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a0df68d1eec9bea305c4f024cbea4d80f">PlugInOrder</a> &lt;= plugInClasses[attribute.<a class="code hl_property" href="classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a7ccebd1fc9cc6b6a22c28acfd8a40cbd">PlugInUUID</a>].Order)</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                        <span class="keywordflow">if</span> (attribute.<a class="code hl_property" href="classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a0df68d1eec9bea305c4f024cbea4d80f">PlugInOrder</a> &gt;= plugInClasses[attribute.<a class="code hl_property" href="classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a7ccebd1fc9cc6b6a22c28acfd8a40cbd">PlugInUUID</a>].Order)</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                        {</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                            <span class="comment">// Skip duplicates with lower order numbers</span></div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                            plugInClasses[attribute.<a class="code hl_property" href="classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a7ccebd1fc9cc6b6a22c28acfd8a40cbd">PlugInUUID</a>] = <span class="keyword">new</span> PlugInInstance(attribute.<a class="code hl_property" href="classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a7ccebd1fc9cc6b6a22c28acfd8a40cbd">PlugInUUID</a>, attribute.<a class="code hl_property" href="classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a0df68d1eec9bea305c4f024cbea4d80f">PlugInOrder</a>, plugInType);</div>

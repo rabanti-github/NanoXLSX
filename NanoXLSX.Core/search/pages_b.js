@@ -1,9 +1,4 @@
 var searchData=
 [
-  ['rc_201_0',['v3.0.0-rc.1',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md9',1,'']]],
-  ['rc_202_1',['v3.0.0-rc.2',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md7',1,'']]],
-  ['rc_203_2',['v3.0.0-rc.3',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md5',1,'']]],
-  ['rc_204_3',['v3.0.0-rc.4',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md3',1,'']]],
-  ['rc_205_4',['v3.0.0-rc.5',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1',1,'']]],
-  ['references_5',['Further References',['../index.html#autotoc_md15',1,'']]]
+  ['nanoxlsx_20core_0',['NanoXLSX Core',['../md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html',1,'Change Log - NanoXLSX.Core'],['../index.html',1,'NanoXLSX.Core'],['../index.html#autotoc_md13',1,'NanoXLSX.Core']]]
 ];

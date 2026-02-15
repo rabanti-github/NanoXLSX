@@ -25,18 +25,19 @@
 var NAVTREE =
 [
   [ "NanoXLSX.Core", "index.html", [
-    [ "NanoXLSX.Core", "index.html#autotoc_md11", [
-      [ "Description", "index.html#autotoc_md13", null ],
-      [ "Dependencies", "index.html#autotoc_md14", null ],
-      [ "Further References", "index.html#autotoc_md15", null ],
-      [ "Changes", "index.html#autotoc_md16", null ]
+    [ "NanoXLSX.Core", "index.html#autotoc_md13", [
+      [ "Description", "index.html#autotoc_md15", null ],
+      [ "Dependencies", "index.html#autotoc_md16", null ],
+      [ "Further References", "index.html#autotoc_md17", null ],
+      [ "Changes", "index.html#autotoc_md18", null ]
     ] ],
     [ "Change Log - NanoXLSX.Core", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html", [
-      [ "v3.0.0-rc.5", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1", null ],
-      [ "v3.0.0-rc.4", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md3", null ],
-      [ "v3.0.0-rc.3", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md5", null ],
-      [ "v3.0.0-rc.2", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md7", null ],
-      [ "v3.0.0-rc.1", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md9", null ]
+      [ "v3.0.0-rc.7", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1", null ],
+      [ "v3.0.0-rc.5", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md3", null ],
+      [ "v3.0.0-rc.4", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md5", null ],
+      [ "v3.0.0-rc.3", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md7", null ],
+      [ "v3.0.0-rc.2", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md9", null ],
+      [ "v3.0.0-rc.1", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md11", null ]
     ] ],
     [ "Packages", "namespaces.html", [
       [ "Package List", "namespaces.html", "namespaces_dup" ]
