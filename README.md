@@ -26,9 +26,9 @@ NanoXLSX v3 is split into modular NuGet packages:
 | Module | Status | Description |
 |--------|--------|-------------|
 | **[NanoXLSX.Core](https://www.nuget.org/packages/NanoXLSX.Core)** | :green_circle: Mandatory, Bundled | Core library with workbooks, worksheets, cells, styles. No external dependencies |
-| **[NanoXLSX.Reader](https://www.nuget.org/packages/NanoXLSX.Reader)** | :blue_circle: Optional, Bundled | Extension methods to read/load XLSX files. Depends on Core |
-| **[NanoXLSX.Writer](https://www.nuget.org/packages/NanoXLSX.Writer)** | :blue_circle: Optional, Bundled | Extension methods to write/save XLSX files. Depends on Core |
-| **[NanoXLSX.Formatting](https://www.nuget.org/packages/NanoXLSX.Formatting)** | :blue_circle: Optional, Bundled | In-line cell formatting (rich text). [External repo](https://github.com/rabanti-github/NanoXLSX.Formatting). Depends on Core |
+| **[NanoXLSX.Reader](https://www.nuget.org/packages/NanoXLSX.Reader)** | :large_blue_circle: Optional, Bundled | Extension methods to read/load XLSX files. Depends on Core |
+| **[NanoXLSX.Writer](https://www.nuget.org/packages/NanoXLSX.Writer)** | :large_blue_circle: Optional, Bundled | Extension methods to write/save XLSX files. Depends on Core |
+| **[NanoXLSX.Formatting](https://www.nuget.org/packages/NanoXLSX.Formatting)** | :large_blue_circle: Optional, Bundled | In-line cell formatting (rich text). [External repo](https://github.com/rabanti-github/NanoXLSX.Formatting). Depends on Core |
 | **[NanoXLSX](https://www.nuget.org/packages/NanoXLSX)** | :star: Meta-Package | Bundles all of the above. **Recommended for most users** |
 
 > **Note:** All bundled modules are included when you install the `NanoXLSX` meta-package. There are currently no non-bundled (standalone) modules.
@@ -93,7 +93,7 @@ The Test project and GitHub Actions may also require dependencies like unit test
 
 ## :inbox_tray: Installation
 
-### Using NuGet
+### Using NuGet (recommended)
 
 By package Manager (PM):
 
@@ -107,13 +107,7 @@ By .NET CLI:
 dotnet add package NanoXLSX
 ```
 
-### As DLL
-
-Simply place the NanoXLSX DLL into your .NET project and add a reference to it. Please keep in mind that the .NET version of your solution must match with the runtime version of the NanoXLSX DLL (currently compiled with 4.5 and .NET Standard 2.0).
-
-### As source files
-
-Place all .CS files from the NanoXLSX source folder and its sub-folders into your project. In case of the .NET >=4.5 version, the necessary dependencies have to be referenced as well.
+:information_source: **Note**: Other methods like adding DLLs or source files directly into your project are technically still possible, but **not recommended** anymore. Use dependency management, whenever possible
 
 ## :bulb: Usage
 
