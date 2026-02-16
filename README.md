@@ -151,11 +151,15 @@ dotnet add package NanoXLSX
 See the full **API-Documentation** at: [https://rabanti-github.github.io/NanoXLSX/](https://rabanti-github.github.io/NanoXLSX/).
 
 The **[Demo Project](https://github.com/rabanti-github/NanoXLSX.Demo)** contains 27 examples covering various use cases. The demo project is maintained in a separate repository.
+See the section **[NanoXLSX](https://github.com/rabanti-github/NanoXLSX.Demo/tree/main/NanoXLSX)** for the specific examples related to NanoXLSX.
 
 See also: [Getting started in the Wiki](https://github.com/rabanti-github/NanoXLSX/wiki/Getting-started)
 
 Hint: You will find most certainly any function, and the way how to use it, in the [Unit Test Project](https://github.com/rabanti-github/NanoXLSX/tree/master/NanoXlsx%20Test)
 
-## License
+## :balance_scale: License
 
+NanoXLSX is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+This library claims to be free of any dependencies on proprietary software or libraries.
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_large)
