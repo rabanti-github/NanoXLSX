@@ -243,27 +243,6 @@ namespace NanoXLSX.Colors
             return new SrgbColor(GetArgbValue());
         }
 
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object
-        /// </summary>
-        /// <param name="obj">Other object to compare</param>
-        /// <returns>True if both objects are equal</returns>
-        public override bool Equals(object obj)
-        {
-            return obj is IndexedColor color &&
-                   ColorValue == color.ColorValue;
-        }
-
-        /// <summary>
-        /// Gets the hash code of the instance
-        /// </summary>
-        /// <returns>Hash code</returns>
-        public override int GetHashCode()
-        {
-            return 800285905 + ColorValue.GetHashCode();
-        }
-
         /// <summary>
         /// Maps the indexed color value to its ARGB hex code representation
         /// </summary>
@@ -439,6 +418,26 @@ namespace NanoXLSX.Colors
                     // Excel default: black text
                     return DefaultSystemForegroundColorArgb;
             }
+        }
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
+        /// <param name="obj">Other object to compare</param>
+        /// <returns>True if both objects are equal</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is IndexedColor color &&
+                   ColorValue == color.ColorValue;
+        }
+
+        /// <summary>
+        /// Gets the hash code of the instance
+        /// </summary>
+        /// <returns>Hash code</returns>
+        public override int GetHashCode()
+        {
+            return 800285905 + ColorValue.GetHashCode();
         }
 
         /// <summary>

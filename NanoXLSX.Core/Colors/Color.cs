@@ -358,7 +358,7 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// String representation od a Color instance
+        /// String representation of a Color instance
         /// </summary>
         /// <returns>String value</returns>
         public override string ToString()
@@ -422,7 +422,7 @@ namespace NanoXLSX.Colors
         /// Compares two instances for sorting purpose
         /// </summary>
         /// <param name="obj">Object to compare</param>
-        /// <returns></returns>
+        /// <returns>Negative integer, zero, or positive integer as this object is less than, equal to, or greater than the specified object</returns>
         /// <exception cref="StyleException">Throws a StyleException if the compared object is not from the type Color</exception>
         public int CompareTo(object obj)
         {

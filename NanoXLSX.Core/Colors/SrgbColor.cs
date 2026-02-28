@@ -60,9 +60,9 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Constructor with parameters
+        /// Constructor with an RGB or ARGB hex string
         /// </summary>
-        /// <param name="rgb">RGB/ARGB value</param>
+        /// <param name="rgb"RGB (6-char) or ARGB (8-char) hex string (case-insensitive)</param>
         public SrgbColor(string rgb) : this()
         {
             ColorValue = rgb;
@@ -72,7 +72,7 @@ namespace NanoXLSX.Colors
         /// Determines whether the specified object is equal to the current object
         /// </summary>
         /// <param name="obj">Other object to compare</param>
-        /// <returns></returns>
+        /// <returns>True if the specified object is equal to the current object; otherwise, false</returns>
         public override bool Equals(object obj)
         {
             return obj is SrgbColor color &&
@@ -86,6 +86,15 @@ namespace NanoXLSX.Colors
         public override int GetHashCode()
         {
             return 800285905 + EqualityComparer<string>.Default.GetHashCode(ColorValue);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object, which is the color value
+        /// </summary>
+        /// <returns>String value</returns>
+        public override string ToString()
+        {
+            return colorValue;
         }
     }
 }

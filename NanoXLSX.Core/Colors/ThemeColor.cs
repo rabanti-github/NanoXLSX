@@ -84,5 +84,14 @@ namespace NanoXLSX.Colors
         {
             return 800285905 + ColorValue.GetHashCode();
         }
+
+        /// <summary>
+        /// Gets the string representation of the theme color, which is the numeric index of the color scheme element
+        /// </summary>
+        /// <returns>String value</returns>
+        public override string ToString()
+        {
+            return StringValue;
+        }
     }
 }
