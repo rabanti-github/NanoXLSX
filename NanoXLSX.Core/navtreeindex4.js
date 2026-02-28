@@ -1,5 +1,9 @@
 var NAVTREEINDEX4 =
 {
+"classNanoXLSX_1_1Styles_1_1Border.html#ad7184a99d142f583e3937cb34037e6ed":[3,0,0,5,3,2],
+"classNanoXLSX_1_1Styles_1_1Border.html#af187293e67cd306a74b0319f613d450e":[2,0,0,5,3,4],
+"classNanoXLSX_1_1Styles_1_1Border.html#af187293e67cd306a74b0319f613d450e":[3,0,0,5,3,4],
+"classNanoXLSX_1_1Styles_1_1CellXf.html":[2,0,0,5,4],
 "classNanoXLSX_1_1Styles_1_1CellXf.html":[3,0,0,5,4],
 "classNanoXLSX_1_1Styles_1_1CellXf.html#a075443bb3c30821006f97af157a9f999":[2,0,0,5,4,12],
 "classNanoXLSX_1_1Styles_1_1CellXf.html#a075443bb3c30821006f97af157a9f999":[3,0,0,5,4,12],
@@ -245,9 +249,5 @@ var NAVTREEINDEX4 =
 "classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dca7599922e28b6009660de5e67f8ce210c":[3,0,0,5,6,1,0],
 "classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dca93876cb309016fa725517b046474c44b":[2,0,0,5,6,1,6],
 "classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dca93876cb309016fa725517b046474c44b":[3,0,0,5,6,1,6],
-"classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dcaad1c9cd3e7b07e2c364c985f73188054":[2,0,0,5,6,1,3],
-"classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dcaad1c9cd3e7b07e2c364c985f73188054":[3,0,0,5,6,1,3],
-"classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dcab3edf740b9a6b5d2be22c377fe076c04":[2,0,0,5,6,1,8],
-"classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dcab3edf740b9a6b5d2be22c377fe076c04":[3,0,0,5,6,1,8],
-"classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dcab5df36ac79aa6391ffb432b9e5ad7880":[2,0,0,5,6,1,1]
+"classNanoXLSX_1_1Styles_1_1Font.html#ad477342219dc324abdbadb0bc0d955dcaad1c9cd3e7b07e2c364c985f73188054":[2,0,0,5,6,1,3]
 };

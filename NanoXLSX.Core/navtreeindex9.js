@@ -1,5 +1,9 @@
 var NAVTREEINDEX9 =
 {
+"interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a914cd8abdaca5052cb4b766524142e14":[2,0,0,3,3,8],
+"interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a914cd8abdaca5052cb4b766524142e14":[3,0,0,3,3,8],
+"interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#aaf36739a998ebe0a8ce87782588f1c2f":[2,0,0,3,3,6],
+"interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#aaf36739a998ebe0a8ce87782588f1c2f":[3,0,0,3,3,6],
 "interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#ad5f0e3287c051b94c2d31d9247f632cf":[2,0,0,3,3,3],
 "interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#ad5f0e3287c051b94c2d31d9247f632cf":[3,0,0,3,3,3],
 "interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#ae731d8537c77f6cb5adf078181a8992d":[2,0,0,3,3,11],

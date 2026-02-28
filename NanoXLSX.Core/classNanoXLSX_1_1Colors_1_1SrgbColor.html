@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.0.0-rc.7</span>
+   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.0.0</span>
    </div>
   </td>
  </tr>
@@ -111,11 +111,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa3e836b64c6d6d64567c55791bd59650" id="r_aa3e836b64c6d6d64567c55791bd59650"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa3e836b64c6d6d64567c55791bd59650">SrgbColor</a> ()</td></tr>
 <tr class="memdesc:aa3e836b64c6d6d64567c55791bd59650"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="memitem:acddc2869a06d172e4d52d431a1f37ca0" id="r_acddc2869a06d172e4d52d431a1f37ca0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acddc2869a06d172e4d52d431a1f37ca0">SrgbColor</a> (string rgb)</td></tr>
-<tr class="memdesc:acddc2869a06d172e4d52d431a1f37ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with parameters.  <br /></td></tr>
+<tr class="memdesc:acddc2869a06d172e4d52d431a1f37ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with an RGB or ARGB hex string.  <br /></td></tr>
 <tr class="memitem:acaf35a8d6017bb19eeea03482d179a05" id="r_acaf35a8d6017bb19eeea03482d179a05"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acaf35a8d6017bb19eeea03482d179a05">Equals</a> (object obj)</td></tr>
 <tr class="memdesc:acaf35a8d6017bb19eeea03482d179a05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the specified object is equal to the current object.  <br /></td></tr>
 <tr class="memitem:ac4abc7d9a4a29fb9e43566d1b6954f43" id="r_ac4abc7d9a4a29fb9e43566d1b6954f43"><td class="memItemLeft" align="right" valign="top">override int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4abc7d9a4a29fb9e43566d1b6954f43">GetHashCode</a> ()</td></tr>
 <tr class="memdesc:ac4abc7d9a4a29fb9e43566d1b6954f43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the hash code of the instance.  <br /></td></tr>
+<tr class="memitem:a11e2e5d8c853d80116ddd432f57e1795" id="r_a11e2e5d8c853d80116ddd432f57e1795"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11e2e5d8c853d80116ddd432f57e1795">ToString</a> ()</td></tr>
+<tr class="memdesc:a11e2e5d8c853d80116ddd432f57e1795"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string that represents the current object, which is the color value.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-attribs" class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -170,13 +172,8 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor with parameters. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">rgb</td><td>RGB/ARGB value</td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Constructor with an RGB or ARGB hex string. </p>
+<p>&lt;param name="rgb"RGB (6-char) or ARGB (8-char) hex string (case-insensitive)</p>
 
 <p class="definition">Definition at line <a class="el" href="SrgbColor_8cs_source.html#l00066">66</a> of file <a class="el" href="SrgbColor_8cs_source.html">SrgbColor.cs</a>.</p>
 
@@ -205,7 +202,7 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the specified object is equal to the current object; otherwise, false</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SrgbColor_8cs_source.html#l00076">76</a> of file <a class="el" href="SrgbColor_8cs_source.html">SrgbColor.cs</a>.</p>
 
@@ -230,6 +227,28 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Hash code</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SrgbColor_8cs_source.html#l00086">86</a> of file <a class="el" href="SrgbColor_8cs_source.html">SrgbColor.cs</a>.</p>
+
+</div>
+</div>
+<a id="a11e2e5d8c853d80116ddd432f57e1795" name="a11e2e5d8c853d80116ddd432f57e1795"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11e2e5d8c853d80116ddd432f57e1795">&#9670;&#160;</a></span>ToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">override string NanoXLSX.Colors.SrgbColor.ToString </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a string that represents the current object, which is the color value. </p>
+<dl class="section return"><dt>Returns</dt><dd>String value</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SrgbColor_8cs_source.html#l00095">95</a> of file <a class="el" href="SrgbColor_8cs_source.html">SrgbColor.cs</a>.</p>
 
 </div>
 </div>

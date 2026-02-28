@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"classNanoXLSX_1_1Worksheet.html#a80de3184301e64c26d5fd6a463ec9594":[3,0,0,18,14],
+"classNanoXLSX_1_1Worksheet.html#a8714caa0ec6ffaf04239da216bc07db3":[2,0,0,18,109],
+"classNanoXLSX_1_1Worksheet.html#a8714caa0ec6ffaf04239da216bc07db3":[3,0,0,18,109],
+"classNanoXLSX_1_1Worksheet.html#a881b27045a37c867d2859f784f3c5130":[2,0,0,18,8],
 "classNanoXLSX_1_1Worksheet.html#a881b27045a37c867d2859f784f3c5130":[3,0,0,18,8],
 "classNanoXLSX_1_1Worksheet.html#a8a83618cc9068c49dbfedc9ed0d78791":[2,0,0,18,95],
 "classNanoXLSX_1_1Worksheet.html#a8a83618cc9068c49dbfedc9ed0d78791":[3,0,0,18,95],
@@ -245,9 +249,5 @@ var NAVTREEINDEX8 =
 "interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a7e65e6fe1eecbf2b13af035f7d2bbcae":[2,0,0,3,3,1],
 "interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a7e65e6fe1eecbf2b13af035f7d2bbcae":[3,0,0,3,3,1],
 "interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a8e8886ad30c6443faec881db90d68d28":[2,0,0,3,3,5],
-"interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a8e8886ad30c6443faec881db90d68d28":[3,0,0,3,3,5],
-"interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a914cd8abdaca5052cb4b766524142e14":[2,0,0,3,3,8],
-"interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a914cd8abdaca5052cb4b766524142e14":[3,0,0,3,3,8],
-"interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#aaf36739a998ebe0a8ce87782588f1c2f":[2,0,0,3,3,6],
-"interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#aaf36739a998ebe0a8ce87782588f1c2f":[3,0,0,3,3,6]
+"interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a8e8886ad30c6443faec881db90d68d28":[3,0,0,3,3,5]
 };

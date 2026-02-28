@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"classNanoXLSX_1_1Colors_1_1SystemColor.html#ab68e50cb3382a0c37baf8052c4a16757":[3,0,0,0,4,2],
+"classNanoXLSX_1_1Colors_1_1SystemColor.html#adf5c479761dfc2f470e6983a9d43bd27":[2,0,0,0,4,6],
 "classNanoXLSX_1_1Colors_1_1SystemColor.html#adf5c479761dfc2f470e6983a9d43bd27":[3,0,0,0,4,6],
 "classNanoXLSX_1_1Colors_1_1SystemColor.html#ae7289b697c69af5f41c4c12407ccc87d":[2,0,0,0,4,3],
 "classNanoXLSX_1_1Colors_1_1SystemColor.html#ae7289b697c69af5f41c4c12407ccc87d":[3,0,0,0,4,3],
@@ -11,14 +13,16 @@ var NAVTREEINDEX2 =
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#a1fbfd2fad3f7deef2efe3014aa053492":[3,0,0,0,5,1],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#a250ccc9d7589c3b4827c4a7e67092084":[2,0,0,0,5,2],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#a250ccc9d7589c3b4827c4a7e67092084":[3,0,0,0,5,2],
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a42d8aa72a397e27534f34b5ae3f55531":[2,0,0,0,5,5],
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#a42d8aa72a397e27534f34b5ae3f55531":[3,0,0,0,5,5],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#a6a1dc6f1be745bad493291fec977aa7e":[2,0,0,0,5,3],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#a6a1dc6f1be745bad493291fec977aa7e":[3,0,0,0,5,3],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#a9536d671f9f60cc4c1a6e2338064f70b":[2,0,0,0,5,4],
 "classNanoXLSX_1_1Colors_1_1ThemeColor.html#a9536d671f9f60cc4c1a6e2338064f70b":[3,0,0,0,5,4],
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html#aa500a1c26abf94b021efad317c6478c9":[2,0,0,0,5,5],
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html#aa500a1c26abf94b021efad317c6478c9":[3,0,0,0,5,5],
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html#abf2f500c2d48f89db8b9e016ec7f67af":[2,0,0,0,5,6],
-"classNanoXLSX_1_1Colors_1_1ThemeColor.html#abf2f500c2d48f89db8b9e016ec7f67af":[3,0,0,0,5,6],
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#aa500a1c26abf94b021efad317c6478c9":[2,0,0,0,5,6],
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#aa500a1c26abf94b021efad317c6478c9":[3,0,0,0,5,6],
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#abf2f500c2d48f89db8b9e016ec7f67af":[2,0,0,0,5,7],
+"classNanoXLSX_1_1Colors_1_1ThemeColor.html#abf2f500c2d48f89db8b9e016ec7f67af":[3,0,0,0,5,7],
 "classNanoXLSX_1_1Column.html":[2,0,0,11],
 "classNanoXLSX_1_1Column.html":[3,0,0,11],
 "classNanoXLSX_1_1Column.html#a0f962762db38d5bb4051c1dee0c2a089":[2,0,0,11,8],
@@ -245,9 +249,5 @@ var NAVTREEINDEX2 =
 "classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a0df68d1eec9bea305c4f024cbea4d80f":[3,0,0,4,0,0,0],
 "classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a7ccebd1fc9cc6b6a22c28acfd8a40cbd":[2,0,0,4,0,0,1],
 "classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html#a7ccebd1fc9cc6b6a22c28acfd8a40cbd":[3,0,0,4,0,0,1],
-"classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxQueuePlugInAttribute.html":[2,0,0,4,0,1],
-"classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxQueuePlugInAttribute.html":[3,0,0,4,0,1],
-"classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxQueuePlugInAttribute.html#a3a292d9e2aa6dbd3dec3b1f54307882a":[2,0,0,4,0,1,1],
-"classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxQueuePlugInAttribute.html#a3a292d9e2aa6dbd3dec3b1f54307882a":[3,0,0,4,0,1,1],
-"classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxQueuePlugInAttribute.html#a4f561c68c23a10abe358cbd577a74c3f":[2,0,0,4,0,1,0]
+"classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxQueuePlugInAttribute.html":[2,0,0,4,0,1]
 };
