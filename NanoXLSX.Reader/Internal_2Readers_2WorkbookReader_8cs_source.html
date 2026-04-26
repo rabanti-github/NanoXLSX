@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="NanoXLSXlib.png"/></td>
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Reader<span id="projectnumber">&#160;3.0.0</span>
+   <div id="projectname">NanoXLSX.Reader<span id="projectnumber">&#160;3.0.1</span>
    </div>
   </td>
  </tr>
@@ -237,38 +237,40 @@ $(function(){initNavTree('Internal_2Readers_2WorkbookReader_8cs_source.html','',
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span></div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> GetWorksheetInformation(XmlNodeList nodes)</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        {</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>            <span class="keywordflow">foreach</span> (XmlNode node <span class="keywordflow">in</span> nodes)</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>            {</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                <span class="keywordflow">if</span> (node.LocalName.Equals(<span class="stringliteral">&quot;sheet&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>                {</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>                    <span class="keywordflow">try</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>                    {</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                        <span class="keywordtype">string</span> sheetName = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;worksheet1&quot;</span>);</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                        <span class="keywordtype">int</span> <span class="keywordtype">id</span> = ParserUtils.ParseInt(ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;sheetId&quot;</span>)); <span class="comment">// Default will rightly throw an exception</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                        <span class="keywordtype">string</span> relId = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;r:id&quot;</span>);</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                        <span class="keywordtype">string</span> state = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;state&quot;</span>);</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                        <span class="keywordtype">bool</span> hidden = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                        <span class="keywordflow">if</span> (state != <span class="keyword">null</span> &amp;&amp; ParserUtils.ToLower(state) == <span class="stringliteral">&quot;hidden&quot;</span>)</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                        {</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                            hidden = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                        }</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                        WorksheetDefinition definition = <span class="keyword">new</span> WorksheetDefinition(<span class="keywordtype">id</span>, sheetName, relId)</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>                        {</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                            Hidden = hidden</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                        };</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, <span class="keywordtype">id</span>, definition);</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                    }</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>                    <span class="keywordflow">catch</span> (Exception e)</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>                    {</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>                        <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_typedef" href="namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72">IOException</a>(<span class="stringliteral">&quot;The workbook information could not be resolved. Please see the inner exception:&quot;</span>, e);</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>                    }</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>                }</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>            }</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        }</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="preprocessor">        #endregion</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    }</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>            <span class="keywordtype">int</span> visibleWorksheetOrder = 0;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>            <span class="keywordflow">foreach</span> (XmlNode node <span class="keywordflow">in</span> nodes)</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>            {</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>                <span class="keywordflow">if</span> (node.LocalName.Equals(<span class="stringliteral">&quot;sheet&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>                {</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>                    <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                    {</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                        <span class="keywordtype">string</span> sheetName = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;worksheet1&quot;</span>);</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                        <span class="keywordtype">int</span> <span class="keywordtype">id</span> = ParserUtils.ParseInt(ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;sheetId&quot;</span>)); <span class="comment">// Default will rightly throw an exception</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                        <span class="keywordtype">string</span> relId = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;r:id&quot;</span>);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                        <span class="keywordtype">string</span> state = ReaderUtils.GetAttribute(node, <span class="stringliteral">&quot;state&quot;</span>);</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                        <span class="keywordtype">bool</span> hidden = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                        <span class="keywordflow">if</span> (state != <span class="keyword">null</span> &amp;&amp; ParserUtils.ToLower(state) == <span class="stringliteral">&quot;hidden&quot;</span>)</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                        {</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                            hidden = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                        }</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>                        WorksheetDefinition definition = <span class="keyword">new</span> WorksheetDefinition(<span class="keywordtype">id</span>, sheetName, relId)</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                        {</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                            Hidden = hidden</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>                        };</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                        <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#a2131f0ce7740d8e2f511bbe87d9587bf">Workbook</a>.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, visibleWorksheetOrder, definition);</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>                        visibleWorksheetOrder++;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>                    }</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>                    <span class="keywordflow">catch</span> (Exception e)</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>                    {</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>                        <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_typedef" href="namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72">IOException</a>(<span class="stringliteral">&quot;The workbook information could not be resolved. Please see the inner exception:&quot;</span>, e);</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>                    }</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>                }</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>            }</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        }</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor">        #endregion</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    }</div>
 </div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>}</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>}</div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1ReaderUtils_html"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html">NanoXLSX.Internal.ReaderUtils</a></div><div class="ttdoc">Static class with common util methods, used during reading XLSX files.</div><div class="ttdef"><b>Definition</b> <a href="ReaderUtils_8cs_source.html#l00017">ReaderUtils.cs:18</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1ReaderUtils_html_a7d407e6ee000c0593d4a78e786bb6d40"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1ReaderUtils.html#a7d407e6ee000c0593d4a78e786bb6d40">NanoXLSX.Internal.ReaderUtils.GetAttribute</a></div><div class="ttdeci">static string GetAttribute(XmlNode node, string targetName, string fallbackValue=null)</div><div class="ttdoc">Gets the XML attribute of the passed XML node by its name.</div><div class="ttdef"><b>Definition</b> <a href="ReaderUtils_8cs_source.html#l00026">ReaderUtils.cs:26</a></div></div>
 <div class="ttc" id="aclassNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader_html"><div class="ttname"><a href="classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html">NanoXLSX.Internal.Readers.LegacyPasswordReader</a></div><div class="ttdoc">Class representing a reader for legacy passwords.</div><div class="ttdef"><b>Definition</b> <a href="LegacyPasswordReader_8cs_source.html#l00023">LegacyPasswordReader.cs:24</a></div></div>

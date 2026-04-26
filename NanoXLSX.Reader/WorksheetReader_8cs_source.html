@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="NanoXLSXlib.png"/></td>
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Reader<span id="projectnumber">&#160;3.0.0</span>
+   <div id="projectname">NanoXLSX.Reader<span id="projectnumber">&#160;3.0.1</span>
    </div>
   </td>
  </tr>
@@ -174,7 +174,7 @@ $(function(){initNavTree('WorksheetReader_8cs_source.html','',''); });
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            <span class="keywordflow">try</span></div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            {</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                WorksheetDefinition worksheetDefinition = <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#aca792b8334ae6b64f790a91e41b40f2b">Workbook</a>.AuxiliaryData.GetData&lt;WorksheetDefinition&gt;(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#a22e58b80c776208830a1ba140bb2f62f">CurrentWorksheetID</a>);</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                Worksheet worksheet = <span class="keyword">new</span> Worksheet(worksheetDefinition.WorksheetName, <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#a22e58b80c776208830a1ba140bb2f62f">CurrentWorksheetID</a>, <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#aca792b8334ae6b64f790a91e41b40f2b">Workbook</a>)</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                Worksheet worksheet = <span class="keyword">new</span> Worksheet(worksheetDefinition.WorksheetName, worksheetDefinition.SheetID, <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#aca792b8334ae6b64f790a91e41b40f2b">Workbook</a>)</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                {</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                    Hidden = worksheetDefinition.Hidden</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                };</div>
@@ -212,7 +212,7 @@ $(function(){initNavTree('WorksheetReader_8cs_source.html','',''); });
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        {</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>            <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#aca792b8334ae6b64f790a91e41b40f2b">Workbook</a>.AddWorksheet(worksheet);</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>            <span class="keywordtype">int</span> selectedWorksheetId = <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#aca792b8334ae6b64f790a91e41b40f2b">Workbook</a>.AuxiliaryData.GetData&lt;<span class="keywordtype">int</span>&gt;(PlugInUUID.WorkbookReader, PlugInUUID.SelectedWorksheetEntity);</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="keywordflow">if</span> (selectedWorksheetId + 1 == <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#a22e58b80c776208830a1ba140bb2f62f">CurrentWorksheetID</a>) <span class="comment">// selectedWorksheetId is 0-based</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="keywordflow">if</span> (selectedWorksheetId == <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#a22e58b80c776208830a1ba140bb2f62f">CurrentWorksheetID</a>)</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>            {</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>                <a class="code hl_property" href="classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#aca792b8334ae6b64f790a91e41b40f2b">Workbook</a>.SetSelectedWorksheet(worksheet);</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            }</div>
