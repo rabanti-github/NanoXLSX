@@ -102,10 +102,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public new void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
-                this.stream = stream;
+                this.stream = new MemoryStream();
+                stream.CopyTo(this.stream);
+                base.Init(this.stream, workbook, readerOptions, inlinePluginHandler);
                 this.workbook = workbook;
                 this.options = readerOptions;
             }
@@ -127,10 +128,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public new void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
-                this.stream = stream;
+                this.stream = new MemoryStream();
+                stream.CopyTo(this.stream);
+                base.Init(this.stream, workbook, readerOptions, inlinePluginHandler);
                 this.workbook = workbook;
                 this.options = readerOptions;
             }
@@ -152,10 +154,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public new void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
-                this.stream = stream;
+                this.stream = new MemoryStream();
+                stream.CopyTo(this.stream);
+                base.Init(this.stream, workbook, readerOptions, inlinePluginHandler);
                 this.workbook = workbook;
                 this.options = readerOptions;
             }
@@ -177,10 +180,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public new void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
-                this.stream = stream;
+                this.stream = new MemoryStream();
+                stream.CopyTo(this.stream);
+                base.Init(this.stream, workbook, readerOptions, inlinePluginHandler);
                 this.workbook = workbook;
                 this.options = readerOptions;
             }
@@ -202,10 +206,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public new void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
-                this.stream = stream;
+                this.stream = new MemoryStream();
+                stream.CopyTo(this.stream);
+                base.Init(this.stream, workbook, readerOptions, inlinePluginHandler);
                 this.workbook = workbook;
                 this.options = readerOptions;
             }
@@ -227,10 +232,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public new void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
-                this.stream = stream;
+                this.stream = new MemoryStream();
+                stream.CopyTo(this.stream);
+                base.Init(this.stream, workbook, readerOptions, inlinePluginHandler);
                 this.workbook = workbook;
                 this.options = readerOptions;
             }
@@ -252,10 +258,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public new void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
-                this.stream = stream;
+                this.stream = new MemoryStream();
+                stream.CopyTo(this.stream);
+                base.Init(this.stream, workbook, readerOptions, inlinePluginHandler);
                 this.workbook = workbook;
                 this.options = readerOptions;
             }
@@ -277,10 +284,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 base.Execute(); // Execute regular reader
             }
 
-            public new void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public new void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
-                base.Init(stream, workbook, readerOptions, inlinePluginHandler);
-                this.stream = stream;
+                this.stream = new MemoryStream();
+                stream.CopyTo(this.stream);
+                base.Init(this.stream, workbook, readerOptions, inlinePluginHandler);
                 this.workbook = workbook;
                 this.options = readerOptions;
             }
@@ -345,6 +353,5 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 get { return true; } // Force incompatible algorithm
             }
         }
-
     }
 }

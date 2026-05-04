@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
+using NanoXLSX.Internal;
 using NanoXLSX.Registry;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
@@ -182,7 +183,8 @@ namespace NanoXLSX
         #region privateFields
         private Style activeStyle;
         private Range? autoFilterRange;
-        private readonly Dictionary<string, Cell> cells;
+        private readonly Dictionary<CellKey, Cell> cells;
+        private readonly StringKeyedCellView cellsStringView;
         private readonly Dictionary<int, Column> columns;
         private string sheetName;
         private int currentRowNumber;
@@ -219,11 +221,21 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the cells of the worksheet as dictionary with the cell address as key and the cell object as value
+        /// Gets the cells of the worksheet as read-only dictionary with the cell address string as key and the cell object as value.
+        /// Use <see cref="CellValues"/> for iteration-heavy code paths to avoid per-cell address-string allocation.
         /// </summary>
-        public Dictionary<string, Cell> Cells
+        public IReadOnlyDictionary<string, Cell> Cells
         {
-            get { return cells; }
+            get { return cellsStringView; }
+        }
+
+        /// <summary>
+        /// Gets all cells of the worksheet as an enumerable sequence.
+        /// Preferred over <see cref="Cells"/> in performance-critical paths (Writer, StyleManager) because no address string is allocated per cell.
+        /// </summary>
+        public IEnumerable<Cell> CellValues
+        {
+            get { return cells.Values; }
         }
 
         /// <summary>
@@ -533,7 +545,8 @@ namespace NanoXLSX
         public Worksheet()
         {
             CurrentCellDirection = CellDirection.ColumnToColumn;
-            cells = new Dictionary<string, Cell>();
+            cells = new Dictionary<CellKey, Cell>(1000); // Let's assume a default of 1000 cells per worksheet, which is a good starting point for most use cases. This can be adjusted if needed, but it will save some resizing operations on the dictionary in the average case
+            cellsStringView = new StringKeyedCellView(cells);
             currentRowNumber = 0;
             currentColumnNumber = 0;
             defaultColumnWidth = DefaultWorksheetColumnWidth;
@@ -650,15 +663,7 @@ namespace NanoXLSX
                     cell.SetStyle(mixedStyle);
                 }
             }
-            string address = cell.CellAddress;
-            if (cells.ContainsKey(address))
-            {
-                cells[address] = cell;
-            }
-            else
-            {
-                cells.Add(address, cell);
-            }
+            cells[new CellKey(cell.ColumnNumber, cell.RowNumber)] = cell;
             if (incremental)
             {
                 if (CurrentCellDirection == CellDirection.ColumnToColumn)
@@ -1022,8 +1027,7 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public bool RemoveCell(int columnNumber, int rowNumber)
         {
-            string address = Cell.ResolveCellAddress(columnNumber, rowNumber);
-            return cells.Remove(address);
+            return cells.Remove(new CellKey(columnNumber, rowNumber));
         }
 
         /// <summary>
@@ -1056,16 +1060,15 @@ namespace NanoXLSX
             IReadOnlyList<Address> addresses = cellRange.ResolveEnclosedAddresses();
             foreach (Address address in addresses)
             {
-                string key = address.GetAddress();
-                if (this.cells.ContainsKey(key))
+                if (cells.TryGetValue(new CellKey(address.Column, address.Row), out Cell existing))
                 {
                     if (style == null)
                     {
-                        cells[key].RemoveStyle();
+                        existing.RemoveStyle();
                     }
                     else
                     {
-                        cells[key].SetStyle(style);
+                        existing.SetStyle(style);
                     }
                 }
                 else
@@ -1312,19 +1315,19 @@ namespace NanoXLSX
             {
                 if (row && min)
                 {
-                    return cells.Min(x => x.Value.RowNumber);
+                    return cells.Values.Min(x => x.RowNumber);
                 }
                 else if (row)
                 {
-                    return cells.Max(x => x.Value.RowNumber);
+                    return cells.Values.Max(x => x.RowNumber);
                 }
                 else if (min)
                 {
-                    return cells.Min(x => x.Value.ColumnNumber);
+                    return cells.Values.Min(x => x.ColumnNumber);
                 }
                 else
                 {
-                    return cells.Max(x => x.Value.ColumnNumber);
+                    return cells.Values.Max(x => x.ColumnNumber);
                 }
             }
             List<Cell> nonEmptyCells = cells.Values.Where(x => x.Value != null && x.Value.ToString() != string.Empty).ToList();
@@ -1458,25 +1461,22 @@ namespace NanoXLSX
             var upperRow = this.GetRow(rowNumber);
 
             // Identify all cells below the insertion point to adjust their addresses
-            var cellsToChange = this.Cells.Where(c => c.Value.CellAddress2.Row > rowNumber).ToList();
+            var cellsToChange = cells.Values.Where(c => c.CellAddress2.Row > rowNumber).ToList();
 
             // Make a copy of the cells to be moved and then delete the original cells;
-            Dictionary<string, Cell> newCells = new Dictionary<string, Cell>();
-            foreach (var cell in cellsToChange)
+            List<Cell> newCells = new List<Cell>();
+            foreach (Cell cell in cellsToChange)
             {
-                var row = cell.Value.CellAddress2.Row;
-                var col = cell.Value.CellAddress2.Column;
+                int row = cell.CellAddress2.Row;
+                int col = cell.CellAddress2.Column;
                 Address newAddress = new Address(col, row + numberOfNewRows);
-
-                Cell newCell = new Cell(cell.Value.Value, cell.Value.DataType, newAddress);
-                if (cell.Value.CellStyle != null)
+                Cell newCell = new Cell(cell.Value, cell.DataType, newAddress);
+                if (cell.CellStyle != null)
                 {
-                    newCell.SetStyle(cell.Value.CellStyle); // Apply the style from the "old" cell.
+                    newCell.SetStyle(cell.CellStyle);
                 }
-                newCells.Add(newAddress.GetAddress(), newCell);
-
-                // Delete the original cells since the key cannot be changed.
-                this.Cells.Remove(cell.Key);
+                newCells.Add(newCell);
+                cells.Remove(new CellKey(col, row));
             }
 
             // Fill the gap with new cells, using the same style as the first row.
@@ -1487,15 +1487,17 @@ namespace NanoXLSX
                     Address newAddress = new Address(cell.CellAddress2.Column, cell.CellAddress2.Row + 1 + i);
                     Cell newCell = new Cell(null, Cell.CellType.Empty, newAddress);
                     if (cell.CellStyle != null)
+                    {
                         newCell.SetStyle(cell.CellStyle);
-                    this.Cells.Add(newAddress.GetAddress(), newCell);
+                    }
+                    cells[new CellKey(newAddress.Column, newAddress.Row)] = newCell;
                 }
             }
 
-            // Re-add the previous cells from the copy back with a new key.
-            foreach (KeyValuePair<string, Cell> cellKeyValue in newCells)
+            // Re-add the displaced cells with their new addresses.
+            foreach (Cell newCell in newCells)
             {
-                this.Cells.Add(cellKeyValue.Key, cellKeyValue.Value);  //cell.Value is the cell incl. Style etc.
+                cells[new CellKey(newCell.ColumnNumber, newCell.RowNumber)] = newCell;
             }
         }
 
@@ -1510,27 +1512,24 @@ namespace NanoXLSX
         public void InsertColumn(int columnNumber, int numberOfNewColumns)
         {
             var leftColumn = this.GetColumn(columnNumber);
-            var cellsToChange = this.Cells.Where(c => c.Value.CellAddress2.Column > columnNumber).ToList();
+            var cellsToChange = cells.Values.Where(c => c.CellAddress2.Column > columnNumber).ToList();
 
-            Dictionary<string, Cell> newCells = new Dictionary<string, Cell>();
-            foreach (var cell in cellsToChange)
+            List<Cell> newCells = new List<Cell>();
+            foreach (Cell cell in cellsToChange)
             {
-                var row = cell.Value.CellAddress2.Row;
-                var col = cell.Value.CellAddress2.Column;
+                int row = cell.CellAddress2.Row;
+                int col = cell.CellAddress2.Column;
                 Address newAddress = new Address(col + numberOfNewColumns, row);
-
-                Cell newCell = new Cell(cell.Value.Value, cell.Value.DataType, newAddress);
-                if (cell.Value.CellStyle != null)
+                Cell newCell = new Cell(cell.Value, cell.DataType, newAddress);
+                if (cell.CellStyle != null)
                 {
-                    newCell.SetStyle(cell.Value.CellStyle); // Apply the style from the "old" cell.
+                    newCell.SetStyle(cell.CellStyle);
                 }
-                newCells.Add(newAddress.GetAddress(), newCell);
-
-                // Delete the original cells since the key cannot be changed.
-                this.Cells.Remove(cell.Key);
+                newCells.Add(newCell);
+                cells.Remove(new CellKey(col, row));
             }
 
-            // Fill the gap with new cells, using the same style as the first row.
+            // Fill the gap with new cells, using the same style as the left column.
             foreach (Cell cell in leftColumn)
             {
                 for (int i = 0; i < numberOfNewColumns; i++)
@@ -1538,15 +1537,17 @@ namespace NanoXLSX
                     Address newAddress = new Address(cell.CellAddress2.Column + 1 + i, cell.CellAddress2.Row);
                     Cell newCell = new Cell(null, Cell.CellType.Empty, newAddress);
                     if (cell.CellStyle != null)
+                    {
                         newCell.SetStyle(cell.CellStyle);
-                    this.Cells.Add(newAddress.GetAddress(), newCell);
+                    }
+                    cells[new CellKey(newAddress.Column, newAddress.Row)] = newCell;
                 }
             }
 
-            // Re-add the previous cells from the copy back with a new key.
-            foreach (KeyValuePair<string, Cell> cellKeyValue in newCells)
+            // Re-add the displaced cells with their new addresses.
+            foreach (Cell newCell in newCells)
             {
-                this.Cells.Add(cellKeyValue.Key, cellKeyValue.Value);  //cell.Value is the cell incl. Style etc.
+                cells[new CellKey(newCell.ColumnNumber, newCell.RowNumber)] = newCell;
             }
         }
 
@@ -1557,10 +1558,7 @@ namespace NanoXLSX
         /// <returns>The first cell containing the searched value or null if the value was not found</returns>
         public Cell FirstCellByValue(object searchValue)
         {
-            var cell = this.Cells.FirstOrDefault(c =>
-                Equals(c.Value.Value, searchValue))
-                .Value;
-            return cell;
+            return cells.Values.FirstOrDefault(c => Equals(c.Value, searchValue));
         }
 
         /// <summary>
@@ -1571,8 +1569,7 @@ namespace NanoXLSX
         /// <returns>The first cell containing the searched value or null if the value was not found</returns>
         public Cell FirstOrDefaultCell(Func<Cell, bool> predicate)
         {
-            return this.Cells.Values
-                .FirstOrDefault(c => c != null && (c.Value == null || predicate(c)));
+            return cells.Values.FirstOrDefault(c => c != null && (c.Value == null || predicate(c)));
         }
 
         /// <summary>
@@ -1582,10 +1579,7 @@ namespace NanoXLSX
         /// <returns>A list of cells that contain the specified value.</returns>
         public List<Cell> CellsByValue(object searchValue)
         {
-            return this.Cells.Where(c =>
-                Equals(c.Value.Value, searchValue))
-                .Select(c => c.Value)
-                .ToList();
+            return cells.Values.Where(c => Equals(c.Value, searchValue)).ToList();
         }
 
         /// <summary>
@@ -1675,11 +1669,11 @@ namespace NanoXLSX
         /// <exception cref="WorksheetException">Trows a WorksheetException if the cell was not found on the cell table of this worksheet</exception>
         public Cell GetCell(Address address)
         {
-            if (!cells.ContainsKey(address.GetAddress()))
+            if (!cells.TryGetValue(new CellKey(address.Column, address.Row), out Cell cell))
             {
                 throw new WorksheetException("The cell with the address " + address.GetAddress() + " does not exist in this worksheet");
             }
-            return cells[address.GetAddress()];
+            return cell;
         }
 
         /// <summary>
@@ -1703,7 +1697,7 @@ namespace NanoXLSX
         /// </returns>
         public bool HasCell(Address address)
         {
-            return cells.ContainsKey(address.GetAddress());
+            return cells.ContainsKey(new CellKey(address.Column, address.Row));
         }
 
         /// <summary>
@@ -1746,11 +1740,11 @@ namespace NanoXLSX
         public IReadOnlyList<Cell> GetRow(int rowNumber)
         {
             List<Cell> list = new List<Cell>();
-            foreach (KeyValuePair<string, Cell> cell in cells)
+            foreach (Cell cell in cells.Values)
             {
-                if (cell.Value.RowNumber == rowNumber)
+                if (cell.RowNumber == rowNumber)
                 {
-                    list.Add(cell.Value);
+                    list.Add(cell);
                 }
             }
             list.Sort((c1, c2) => (c1.ColumnNumber.CompareTo(c2.ColumnNumber))); // Lambda sort
@@ -1777,11 +1771,11 @@ namespace NanoXLSX
         public IReadOnlyList<Cell> GetColumn(int columnNumber)
         {
             List<Cell> list = new List<Cell>();
-            foreach (KeyValuePair<string, Cell> cell in cells)
+            foreach (Cell cell in cells.Values)
             {
-                if (cell.Value.ColumnNumber == columnNumber)
+                if (cell.ColumnNumber == columnNumber)
                 {
-                    list.Add(cell.Value);
+                    list.Add(cell);
                 }
             }
             list.Sort((c1, c2) => (c1.RowNumber.CompareTo(c2.RowNumber))); // Lambda sort
@@ -1915,12 +1909,12 @@ namespace NanoXLSX
             int start = autoFilterRange.Value.StartAddress.Column;
             int end = autoFilterRange.Value.EndAddress.Column;
             int endRow = 0;
-            foreach (KeyValuePair<string, Cell> item in Cells)
+            foreach (Cell item in CellValues)
             {
-                if (item.Value.ColumnNumber < start || item.Value.ColumnNumber > end)
+                if (item.ColumnNumber < start || item.ColumnNumber > end)
                 { continue; }
-                if (item.Value.RowNumber > endRow)
-                { endRow = item.Value.RowNumber; }
+                if (item.RowNumber > endRow)
+                { endRow = item.RowNumber; }
             }
             Column c;
             for (int i = start; i <= end; i++)
@@ -1975,7 +1969,7 @@ namespace NanoXLSX
                 List<Address> addresses = Cell.GetCellRange(range.Value.StartAddress, range.Value.EndAddress) as List<Address>;
                 foreach (Address address in addresses)
                 {
-                    if (!Cells.ContainsKey(address.GetAddress()))
+                    if (!cells.TryGetValue(new CellKey(address.Column, address.Row), out cell))
                     {
                         cell = new Cell
                         {
@@ -1984,10 +1978,6 @@ namespace NanoXLSX
                             ColumnNumber = address.Column
                         };
                         AddCell(cell, cell.ColumnNumber, cell.RowNumber);
-                    }
-                    else
-                    {
-                        cell = Cells[address.GetAddress()];
                     }
                     if (pos != 0)
                     {
@@ -2064,9 +2054,8 @@ namespace NanoXLSX
             List<Address> addresses = Cell.GetCellRange(range) as List<Address>;
             foreach (Address address in addresses)
             {
-                if (cells.ContainsKey(address.GetAddress()))
+                if (cells.TryGetValue(new CellKey(address.Column, address.Row), out Cell cell))
                 {
-                    Cell cell = cells[address.GetAddress()];
                     if (BasicStyles.MergeCellStyle.Equals(cell.CellStyle))
                     {
                         cell.RemoveStyle();
@@ -2630,9 +2619,9 @@ namespace NanoXLSX
         public Worksheet Copy()
         {
             Worksheet copy = new Worksheet();
-            foreach (KeyValuePair<string, Cell> cell in this.cells)
+            foreach (Cell cell in this.cells.Values)
             {
-                copy.AddCell(cell.Value.Copy(), cell.Key);
+                copy.AddCell(cell.Copy(), cell.ColumnNumber, cell.RowNumber);
             }
             copy.activePane = this.activePane;
             copy.activeStyle = this.activeStyle;

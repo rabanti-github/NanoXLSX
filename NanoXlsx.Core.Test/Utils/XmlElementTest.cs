@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Xml;
 using NanoXLSX.Utils.Xml;
+using XmlElement = NanoXLSX.Utils.Xml.XmlElement;
+using XmlAttribute = NanoXLSX.Utils.Xml.XmlAttribute;
 using Xunit;
 
 namespace NanoXLSX.Core.Test.UtilsTest
@@ -347,6 +352,191 @@ namespace NanoXLSX.Core.Test.UtilsTest
             Assert.Equal("123", childId);
         }
 
+        [Fact(DisplayName = "TransformToDocument should register non-xmlns prefix namespaces so that prefixed child elements resolve to the correct namespace URI")]
+        public void TransformToDocumentWithPrefixNamespaceTest()
+        {
+            XmlElement root = XmlElement.CreateElement("Root");
+            root.AddDefaultXmlNameSpace("http://example.com/ns");
+            root.AddNameSpaceAttribute("x14ac", "xmlns", "http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac");
+            root.AddChildElement("Child", "x14ac");
+
+            System.Xml.XmlDocument doc = root.TransformToDocument();
+
+            System.Xml.XmlElement childElem = (System.Xml.XmlElement)doc.DocumentElement.ChildNodes[0];
+            Assert.Equal("x14ac", childElem.Prefix);
+            Assert.Equal("Child", childElem.LocalName);
+            Assert.Equal("http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac", childElem.NamespaceURI);
+        }
+
+        [Fact(DisplayName = "TransformToDocument should create prefixed attributes with the correct namespace URI and value")]
+        public void TransformToDocumentWithPrefixedAttributeTest()
+        {
+            XmlElement root = XmlElement.CreateElement("Root");
+            root.AddDefaultXmlNameSpace("http://example.com/ns");
+            root.AddNameSpaceAttribute("x14ac", "xmlns", "http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac");
+            root.AddAttribute(XmlAttribute.CreateAttribute("dyDescent", "0.25", "x14ac"));
+
+            System.Xml.XmlDocument doc = root.TransformToDocument();
+
+            System.Xml.XmlAttribute attr = doc.DocumentElement.Attributes["dyDescent", "http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac"];
+            Assert.NotNull(attr);
+            Assert.Equal("0.25", attr.Value);
+            Assert.Equal("x14ac", attr.Prefix);
+        }
+
+        [Fact(DisplayName = "WriteTo should emit a default namespace declaration exactly once on the root")]
+        public void WriteToDefaultNamespaceTest()
+        {
+            XmlElement root = XmlElement.CreateElement("Root");
+            root.AddDefaultXmlNameSpace("http://example.com/ns");
+            root.AddAttribute("version", "1.0");
+
+            string xml = SerializeWriteTo(root);
+
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+            Assert.Equal("Root", doc.DocumentElement.LocalName);
+            Assert.Equal("http://example.com/ns", doc.DocumentElement.NamespaceURI);
+            Assert.Equal("1.0", doc.DocumentElement.GetAttribute("version"));
+            // Exactly one xmlns declaration on the root
+            int xmlnsCount = 0;
+            foreach (System.Xml.XmlAttribute a in doc.DocumentElement.Attributes)
+            {
+                if (a.Name == "xmlns" || a.Prefix == "xmlns")
+                {
+                    xmlnsCount++;
+                }
+            }
+            Assert.Equal(1, xmlnsCount);
+        }
+
+        [Fact(DisplayName = "WriteTo should emit each prefix-namespace declaration exactly once and resolve prefixed attributes")]
+        public void WriteToPrefixNamespacesTest()
+        {
+            XmlElement root = XmlElement.CreateElement("worksheet");
+            root.AddDefaultXmlNameSpace("http://schemas.openxmlformats.org/spreadsheetml/2006/main");
+            root.AddNameSpaceAttribute("mc", "xmlns", "http://schemas.openxmlformats.org/markup-compatibility/2006");
+            root.AddNameSpaceAttribute("x14ac", "xmlns", "http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac");
+            root.AddAttribute(XmlAttribute.CreateAttribute("dyDescent", "0.25", "x14ac"));
+
+            string xml = SerializeWriteTo(root);
+
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+            Assert.Equal("http://schemas.openxmlformats.org/spreadsheetml/2006/main", doc.DocumentElement.NamespaceURI);
+
+            int mcCount = 0;
+            int x14acCount = 0;
+            foreach (System.Xml.XmlAttribute a in doc.DocumentElement.Attributes)
+            {
+                if (a.Prefix == "xmlns" && a.LocalName == "mc")
+                {
+                    mcCount++;
+                }
+                if (a.Prefix == "xmlns" && a.LocalName == "x14ac")
+                {
+                    x14acCount++;
+                }
+            }
+            Assert.Equal(1, mcCount);
+            Assert.Equal(1, x14acCount);
+
+            System.Xml.XmlAttribute dy = doc.DocumentElement.Attributes["dyDescent", "http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac"];
+            Assert.NotNull(dy);
+            Assert.Equal("0.25", dy.Value);
+        }
+
+        [Fact(DisplayName = "WriteTo should skip xmlns-keyed namespace map entries and not emit an xmlns:xmlns declaration")]
+        public void WriteToSkipsXmlnsKeyedNamespaceTest()
+        {
+            XmlElement root = XmlElement.CreateElement("Root");
+            root.AddDefaultXmlNameSpace("http://example.com/ns");
+            root.AddNameSpaceAttribute("xmlns", "xmlns", "http://example.com/other"); // key "xmlns" → must be skipped
+            root.AddAttribute("id", "42");
+
+            string xml = SerializeWriteTo(root);
+
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+            Assert.Equal("Root", doc.DocumentElement.LocalName);
+            Assert.Equal("42", doc.DocumentElement.GetAttribute("id"));
+            foreach (System.Xml.XmlAttribute a in doc.DocumentElement.Attributes)
+            {
+                Assert.False(a.Prefix == "xmlns" && a.LocalName == "xmlns");
+            }
+        }
+
+        [Fact(DisplayName = "WriteTo should propagate the default namespace to children without re-declaration or empty xmlns")]
+        public void WriteToChildDefaultNamespacePropagationTest()
+        {
+            XmlElement root = XmlElement.CreateElement("Root");
+            root.AddDefaultXmlNameSpace("http://example.com/ns");
+            XmlElement child = root.AddChildElement("Child");
+            child.InnerValue = "value";
+
+            string xml = SerializeWriteTo(root);
+
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+            System.Xml.XmlElement childElem = (System.Xml.XmlElement)doc.DocumentElement.ChildNodes[0];
+            Assert.Equal("http://example.com/ns", childElem.NamespaceURI);
+            Assert.Equal("value", childElem.InnerText);
+            // Child must not have its own xmlns attribute (would mean re-declaration or override)
+            Assert.Equal(0, childElem.Attributes.Count);
+        }
+
+        [Fact(DisplayName = "WriteTo should escape XML special characters in inner values")]
+        public void WriteToInnerValueEscapingTest()
+        {
+            XmlElement root = XmlElement.CreateElement("Root");
+            XmlElement child = root.AddChildElement("Child");
+            child.InnerValue = "a < b & c > d";
+
+            string xml = SerializeWriteTo(root);
+
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+            Assert.Equal("a < b & c > d", doc.DocumentElement.ChildNodes[0].InnerText);
+            Assert.Contains("&lt;", xml);
+            Assert.Contains("&amp;", xml);
+        }
+
+        [Fact(DisplayName = "WriteTo on an empty element should produce a valid empty element")]
+        public void WriteToEmptyElementTest()
+        {
+            XmlElement root = XmlElement.CreateElement("Root");
+
+            string xml = SerializeWriteTo(root);
+
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+            Assert.Equal("Root", doc.DocumentElement.LocalName);
+            Assert.Empty(doc.DocumentElement.ChildNodes);
+            Assert.Equal(0, doc.DocumentElement.Attributes.Count);
+        }
+
+        [Fact(DisplayName = "WriteTo on an element with prefix and inner value should preserve both")]
+        public void WriteToPrefixedElementWithValueTest()
+        {
+            XmlElement root = XmlElement.CreateElement("coreProperties", "cp");
+            root.AddNameSpaceAttribute("cp", "xmlns", "http://schemas.openxmlformats.org/package/2006/metadata/core-properties");
+            root.AddNameSpaceAttribute("dc", "xmlns", "http://purl.org/dc/elements/1.1/");
+            XmlElement creator = root.AddChildElement("creator", "dc");
+            creator.InnerValue = "Tester";
+
+            string xml = SerializeWriteTo(root);
+
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+            Assert.Equal("cp", doc.DocumentElement.Prefix);
+            Assert.Equal("coreProperties", doc.DocumentElement.LocalName);
+            System.Xml.XmlElement creatorElem = (System.Xml.XmlElement)doc.DocumentElement.ChildNodes[0];
+            Assert.Equal("dc", creatorElem.Prefix);
+            Assert.Equal("creator", creatorElem.LocalName);
+            Assert.Equal("http://purl.org/dc/elements/1.1/", creatorElem.NamespaceURI);
+            Assert.Equal("Tester", creatorElem.InnerText);
+        }
+
         [Fact(DisplayName = "FindElementByName should return an IEnumerable with one element, if there is only one matching child")]
         public void FindElementByNameTest()
         {
@@ -575,6 +765,26 @@ namespace NanoXLSX.Core.Test.UtilsTest
             XmlElement root = XmlElement.CreateElement("root");
             IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1", "test1");
             Assert.Empty(givenResult);
+        }
+
+        private static string SerializeWriteTo(XmlElement root)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Encoding = new UTF8Encoding(false),
+                    Indent = false,
+                    OmitXmlDeclaration = true,
+                    CloseOutput = false
+                };
+                using (XmlWriter writer = XmlWriter.Create(ms, settings))
+                {
+                    root.WriteTo(writer);
+                    writer.Flush();
+                }
+                return Encoding.UTF8.GetString(ms.ToArray());
+            }
         }
 
     }

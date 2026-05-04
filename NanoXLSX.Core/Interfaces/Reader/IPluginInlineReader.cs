@@ -18,7 +18,7 @@ namespace NanoXLSX.Interfaces.Reader
         /// <summary>
         /// Reference to the a handler action, to be used for post operations in reader methods. Only relevant for in-line plug-ins, therefore null for queue plug-ins.
         /// </summary>
-        Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+        Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
         /// <summary>
         /// Initialization method
@@ -27,7 +27,7 @@ namespace NanoXLSX.Interfaces.Reader
         /// <param name="workbook">Workbook instance where read data is placed</param>
         /// <param name="readerOptions">Optional reader options</param>
         /// <param name="index">Optional index, e.g. for worksheet identification</param>
-        void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, int? index = null);
+        void Init(Stream stream, Workbook workbook, IOptions readerOptions, int? index = null);
 
     }
 }

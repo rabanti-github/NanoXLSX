@@ -1,5 +1,23 @@
 # Change Log - NanoXLSX.Reader
 
+## v3.1.0
+
+---
+Release Date: **(04.05.2026)** <sup>(DMY)</sup>
+
+- Version bump of NanoXLSX.Core to v3.1.0
+- Improved reader performance (memory consumption, load time). Reading a workbook should now be up to 3 times faster.
+
+## v3.0.1
+
+---
+Release Date: **(24.04.2026)** <sup>(DMY)</sup>
+
+- Fixed internal async handling of the workbook reader, to avoid deadlocks in WinForms/WPF projects, when async is not used (regression).
+- Fixed order of worksheets when manually changed
+- Added filename to workbook when reading from file
+
+
 ## v3.0.0
 
 ---

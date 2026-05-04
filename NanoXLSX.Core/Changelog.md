@@ -1,5 +1,17 @@
 # Change Log - NanoXLSX.Core
 
+## v3.1.0
+
+---
+Release Date: **(04.05.2026)** <sup>(DMY)</sup>
+
+- **Breaking change:** `Worksheet.Cells` now returns `IReadOnlyDictionary<string, Cell>` instead of `Dictionary<string, Cell>`. All read operations (`["A1"]`, `ContainsKey`, `TryGetValue`, `foreach`, `Count`, `Keys`, `Values`) work unchanged. Mutating properties of an existing cell in-place (e.g. `Cells["A1"].Value = x`) continues to work. Adding or removing cells through `Cells` directly (e.g. `Cells.Add(...)`, `Cells.Remove(...)`, `Cells["A1"] = new Cell(...)`) is no longer possible; use `Worksheet.AddCell(...)` and `Worksheet.RemoveCell(...)` instead.
+- Replaced internal cell storage with a `Dictionary<CellKey, Cell>` keyed by `(column, row)` integer pair. This eliminates per-cell address string allocation on every `AddCell` call, reducing memory usage and improving write performance for large workbooks.
+- Added internal `CellKey` struct (`NanoXLSX.Internal`) implementing an efficient hash function collision-free across the full Excel address space (16 384 columns × 1 048 576 rows).
+- Added `Worksheet.CellValues` property (`IEnumerable<Cell>`): allocation-free enumeration over all cells in a worksheet, preferred for hot iteration paths.
+
+Note: Direct manipulation of the cell dictionary through `Worksheet.Cells` (e.g. `Cells.Add(...)`, `Cells.Remove(...)`, `Cells["A1"] = new Cell(...)`) was never an intended or documented API. Doing so bypassed address validation, style normalisation and internal bookkeeping performed by `AddCell` and `RemoveCell`, and could silently produce invalid workbooks. The change to `IReadOnlyDictionary` makes this boundary explicit.
+
 ## v3.0.0
 
 ---

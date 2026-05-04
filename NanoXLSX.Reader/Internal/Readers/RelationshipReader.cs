@@ -13,6 +13,7 @@ using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils;
+using NanoXLSX.Utils.Xml;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
@@ -24,7 +25,7 @@ namespace NanoXLSX.Internal.Readers
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.RelationshipReader)]
     public partial class RelationshipReader : IPluginBaseReader
     {
-        private MemoryStream stream;
+        private Stream stream;
 
         #region properties
 
@@ -39,7 +40,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reference to the <see cref="ReaderPlugInHandler"/>, to be used for post operations in the <see cref="Execute"/> method
         /// </summary>
-        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+        public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
         #endregion
 
@@ -60,7 +61,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options (NoOp)</param>
         /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+        public void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;
             this.Workbook = workbook;
@@ -77,22 +78,19 @@ namespace NanoXLSX.Internal.Readers
             if (stream == null) return;
             try
             {
-                XmlDocument xr;
                 using (stream) // Close after processing
                 {
-                    xr = new XmlDocument
+                    using (XmlReader reader = XmlReader.Create(stream, XmlStreamUtils.CreateSettings()))
                     {
-                        XmlResolver = null
-                    };
-                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
-                    {
-                        xr.Load(reader);
-                        XmlNodeList relationships = xr.GetElementsByTagName("Relationship");
-                        foreach (XmlNode relationship in relationships)
+                        while (reader.Read())
                         {
-                            string id = ReaderUtils.GetAttribute(relationship, "Id");
-                            string type = ReaderUtils.GetAttribute(relationship, "Type");
-                            string target = ReaderUtils.GetAttribute(relationship, "Target");
+                            if (!XmlStreamUtils.IsElement(reader, "Relationship"))
+                            {
+                                continue;
+                            }
+                            string id = reader.GetAttribute("Id");
+                            string type = reader.GetAttribute("Type");
+                            string target = reader.GetAttribute("Target");
                             if (ParserUtils.StartsWith(target, "/"))
                             {
                                 target = target.TrimStart('/');

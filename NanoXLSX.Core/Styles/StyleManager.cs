@@ -276,12 +276,12 @@ namespace NanoXLSX.Styles
 
             for (int i = 0; i < workbook.Worksheets.Count; i++)
             {
-                foreach (KeyValuePair<string, Cell> cell in workbook.Worksheets[i].Cells)
+                foreach (Cell cell in workbook.Worksheets[i].CellValues)
                 {
-                    if (cell.Value.CellStyle != null)
+                    if (cell.CellStyle != null)
                     {
-                        Style resolvedStyle = styleManager.AddStyle(cell.Value.CellStyle);
-                        workbook.Worksheets[i].Cells[cell.Key].SetStyle(resolvedStyle, true);
+                        Style resolvedStyle = styleManager.AddStyle(cell.CellStyle);
+                        cell.SetStyle(resolvedStyle, true);
                     }
                 }
                 foreach (KeyValuePair<int, Column> column in workbook.Worksheets[i].Columns)

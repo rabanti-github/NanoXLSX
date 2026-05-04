@@ -17,5 +17,10 @@ namespace NanoXLSX.Interfaces.Writer
         /// Gets the currently active worksheet
         /// </summary>
         Worksheet CurrentWorksheet { get; set; }
+
+        /// <summary>
+        /// Method to initiate freeing memory used by the XML element
+        /// </summary>
+        void ReleaseXmlElement();
     }
 }

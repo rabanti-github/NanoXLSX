@@ -8,6 +8,7 @@
 namespace NanoXLSX.Internal.Readers
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Xml;
     using NanoXLSX.Colors;
@@ -18,6 +19,7 @@ namespace NanoXLSX.Internal.Readers
     using NanoXLSX.Styles;
     using NanoXLSX.Themes;
     using NanoXLSX.Utils;
+    using NanoXLSX.Utils.Xml;
     using static NanoXLSX.Styles.Border;
     using static NanoXLSX.Styles.CellXf;
     using static NanoXLSX.Styles.Font;
@@ -32,7 +34,7 @@ namespace NanoXLSX.Internal.Readers
     public class StyleReader : IPluginBaseReader
     {
 
-        private MemoryStream stream;
+        private Stream stream;
         private StyleReaderContainer styleReaderContainer;
 
         #region properties
@@ -47,7 +49,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reference to the <see cref="ReaderPlugInHandler"/>, to be used for post operations in the <see cref="Execute"/> method
         /// </summary>
-        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+        public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         #endregion
 
         #region constructors
@@ -68,7 +70,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
         /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+        public void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;
             this.Workbook = workbook;
@@ -87,39 +89,34 @@ namespace NanoXLSX.Internal.Readers
             {
                 using (stream) // Close after processing
                 {
-                    XmlDocument xr = new XmlDocument() { XmlResolver = null };
-                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
+                    using (XmlReader reader = XmlReader.Create(stream, XmlStreamUtils.CreateSettings()))
                     {
-                        xr.Load(reader);
-                        foreach (XmlNode node in xr.DocumentElement.ChildNodes)
+                        while (reader.Read())
                         {
-                            if (node.LocalName.Equals("numfmts", StringComparison.OrdinalIgnoreCase)) // Handles custom number formats
+                            if (reader.NodeType != XmlNodeType.Element)
                             {
-                                GetNumberFormats(node);
+                                continue;
                             }
-                            else if (node.LocalName.Equals("borders", StringComparison.OrdinalIgnoreCase)) // Handles borders
+                            switch (reader.LocalName.ToLowerInvariant())
                             {
-                                GetBorders(node);
-                            }
-                            else if (node.LocalName.Equals("fills", StringComparison.OrdinalIgnoreCase)) // Handles fills
-                            {
-                                GetFills(node);
-                            }
-                            else if (node.LocalName.Equals("fonts", StringComparison.OrdinalIgnoreCase)) // Handles fonts
-                            {
-                                GetFonts(node);
-                            }
-                            else if (node.LocalName.Equals("colors", StringComparison.OrdinalIgnoreCase)) // Handles MRU colors
-                            {
-                                GetColors(node);
-                            }
-                            // TODO: Implement other style components
-                        }
-                        foreach (XmlNode node in xr.DocumentElement.ChildNodes) // Redo for composition after all style parts are gathered; standard number formats
-                        {
-                            if (node.LocalName.Equals("cellxfs", StringComparison.OrdinalIgnoreCase))
-                            {
-                                GetCellXfs(node);
+                                case "numfmts":
+                                    GetNumberFormats(reader);
+                                    break;
+                                case "borders":
+                                    GetBorders(reader);
+                                    break;
+                                case "fills":
+                                    GetFills(reader);
+                                    break;
+                                case "fonts":
+                                    GetFonts(reader);
+                                    break;
+                                case "colors":
+                                    GetColors(reader);
+                                    break;
+                                case "cellxfs":
+                                    GetCellXfs(reader);
+                                    break;
                             }
                         }
                         HandleMruColors();
@@ -139,28 +136,31 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         private void HandleMruColors()
         {
-            if (styleReaderContainer.GetMruColors().Count > 0)
+            List<string> mruColors = styleReaderContainer.GetMruColors();
+            foreach (string color in mruColors)
             {
-                foreach (string color in styleReaderContainer.GetMruColors())
-                {
-                    Workbook.AddMruColor(color);
-                }
+                Workbook.AddMruColor(color);
             }
         }
 
         /// <summary>
         /// Determines the number formats in an XML node of the style document.
         /// </summary>
-        /// <param name="node">Number formats root name.</param>
-        private void GetNumberFormats(XmlNode node)
+        /// <param name="reader">Reader positioned on the numFmts start element.</param>
+        private void GetNumberFormats(XmlReader reader)
         {
-            foreach (XmlNode childNode in node.ChildNodes)
+            using (XmlReader subtree = reader.ReadSubtree())
             {
-                if (childNode.LocalName.Equals("numfmt", StringComparison.OrdinalIgnoreCase))
+                subtree.Read(); // consume <numFmts>
+                while (subtree.Read())
                 {
+                    if (!XmlStreamUtils.IsElement(subtree, "numFmt"))
+                    {
+                        continue;
+                    }
                     NumberFormat numberFormat = new NumberFormat();
-                    int id = ParserUtils.ParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId")); // Default will (justified) throw an exception
-                    string code = ReaderUtils.GetAttribute(childNode, "formatCode", string.Empty);
+                    int id = ParserUtils.ParseInt(subtree.GetAttribute("numFmtId")); // null will rightly throw
+                    string code = subtree.GetAttribute("formatCode") ?? string.Empty;
                     numberFormat.CustomFormatID = id;
                     numberFormat.Number = FormatNumber.Custom;
                     numberFormat.InternalID = id;
@@ -173,495 +173,450 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Determines the borders in an XML node of the style document.
         /// </summary>
-        /// <param name="node">Border root node.</param>
-        private void GetBorders(XmlNode node)
+        /// <param name="reader">Reader positioned on the borders start element.</param>
+        private void GetBorders(XmlReader reader)
         {
-            foreach (XmlNode border in node.ChildNodes)
+            using (XmlReader subtree = reader.ReadSubtree())
             {
-                Border borderStyle = new Border();
-                string diagonalDown = ReaderUtils.GetAttribute(border, "diagonalDown");
-                string diagonalUp = ReaderUtils.GetAttribute(border, "diagonalUp");
-                if (diagonalDown != null)
+                subtree.Read(); // consume <borders>
+                while (subtree.Read())
                 {
-                    int value = ParserUtils.ParseBinaryBool(diagonalDown);
-                    if (value == 1)
+                    if (!XmlStreamUtils.IsElement(subtree, "border"))
+                    {
+                        continue;
+                    }
+                    Border borderStyle = new Border();
+                    string diagonalDown = subtree.GetAttribute("diagonalDown");
+                    if (diagonalDown != null && ParserUtils.ParseBinaryBool(diagonalDown) == 1)
                     {
                         borderStyle.DiagonalDown = true;
                     }
-                }
-                if (diagonalUp != null)
-                {
-                    int value = ParserUtils.ParseBinaryBool(diagonalUp);
-                    if (value == 1)
+                    string diagonalUp = subtree.GetAttribute("diagonalUp");
+                    if (diagonalUp != null && ParserUtils.ParseBinaryBool(diagonalUp) == 1)
                     {
                         borderStyle.DiagonalUp = true;
                     }
+                    StyleValue sideStyle;
+                    string sideColor;
+                    using (XmlReader borderSubtree = subtree.ReadSubtree())
+                    {
+                        borderSubtree.Read(); // consume <border>
+                        while (borderSubtree.Read())
+                        {
+                            if (borderSubtree.NodeType != XmlNodeType.Element)
+                            {
+                                continue;
+                            }
+                            switch (borderSubtree.LocalName.ToLowerInvariant())
+                            {
+                                case "diagonal":
+                                    ReadBorderSide(borderSubtree, out sideStyle, out sideColor);
+                                    borderStyle.DiagonalStyle = sideStyle;
+                                    borderStyle.DiagonalColor = sideColor;
+                                    break;
+                                case "top":
+                                    ReadBorderSide(borderSubtree, out sideStyle, out sideColor);
+                                    borderStyle.TopStyle = sideStyle;
+                                    borderStyle.TopColor = sideColor;
+                                    break;
+                                case "bottom":
+                                    ReadBorderSide(borderSubtree, out sideStyle, out sideColor);
+                                    borderStyle.BottomStyle = sideStyle;
+                                    borderStyle.BottomColor = sideColor;
+                                    break;
+                                case "left":
+                                    ReadBorderSide(borderSubtree, out sideStyle, out sideColor);
+                                    borderStyle.LeftStyle = sideStyle;
+                                    borderStyle.LeftColor = sideColor;
+                                    break;
+                                case "right":
+                                    ReadBorderSide(borderSubtree, out sideStyle, out sideColor);
+                                    borderStyle.RightStyle = sideStyle;
+                                    borderStyle.RightColor = sideColor;
+                                    break;
+                            }
+                        }
+                    }
+                    borderStyle.InternalID = this.styleReaderContainer.GetNextBorderId();
+                    this.styleReaderContainer.AddStyleComponent(borderStyle);
                 }
-                XmlNode innerNode = ReaderUtils.GetChildNode(border, "diagonal");
-                if (innerNode != null)
-                {
-                    borderStyle.DiagonalStyle = ParseBorderStyle(innerNode);
-                    borderStyle.DiagonalColor = GetColor(innerNode, Border.DefaultBorderColor);
-                }
-                innerNode = ReaderUtils.GetChildNode(border, "top");
-                if (innerNode != null)
-                {
-                    borderStyle.TopStyle = ParseBorderStyle(innerNode);
-                    borderStyle.TopColor = GetColor(innerNode, Border.DefaultBorderColor);
-                }
-                innerNode = ReaderUtils.GetChildNode(border, "bottom");
-                if (innerNode != null)
-                {
-                    borderStyle.BottomStyle = ParseBorderStyle(innerNode);
-                    borderStyle.BottomColor = GetColor(innerNode, Border.DefaultBorderColor);
-                }
-                innerNode = ReaderUtils.GetChildNode(border, "left");
-                if (innerNode != null)
-                {
-                    borderStyle.LeftStyle = ParseBorderStyle(innerNode);
-                    borderStyle.LeftColor = GetColor(innerNode, Border.DefaultBorderColor);
-                }
-                innerNode = ReaderUtils.GetChildNode(border, "right");
-                if (innerNode != null)
-                {
-                    borderStyle.RightStyle = ParseBorderStyle(innerNode);
-                    borderStyle.RightColor = GetColor(innerNode, Border.DefaultBorderColor);
-                }
-                borderStyle.InternalID = this.styleReaderContainer.GetNextBorderId();
-                this.styleReaderContainer.AddStyleComponent(borderStyle);
             }
         }
 
         /// <summary>
-        /// Tries to parse a border style.
+        /// Reads the style and color from a border side element (left, right, top, bottom, diagonal).
+        /// Uses ReadSubtree so the outer reader advances past the element on return.
         /// </summary>
-        /// <param name="innerNode">Border sub-node.</param>
-        /// <returns>Border type or none if parsing was not successful.</returns>
-        private static StyleValue ParseBorderStyle(XmlNode innerNode)
+        private static void ReadBorderSide(XmlReader reader, out StyleValue style, out string color)
         {
-            string value = ReaderUtils.GetAttribute(innerNode, "style");
-            if (value != null)
+            style = StyleValue.None;
+            color = Border.DefaultBorderColor;
+            string styleAttr = reader.GetAttribute("style");
+            if (styleAttr != null)
             {
-                return Border.GetStyleEnum(value);
+                style = Border.GetStyleEnum(styleAttr);
             }
-            return StyleValue.None;
+            if (reader.IsEmptyElement)
+            {
+                return;
+            }
+            using (XmlReader subtree = reader.ReadSubtree())
+            {
+                subtree.Read(); // consume the side element open tag
+                while (subtree.Read())
+                {
+                    if (subtree.NodeType == XmlNodeType.Element
+                        && subtree.LocalName.Equals("color", StringComparison.OrdinalIgnoreCase))
+                    {
+                        string rgb = subtree.GetAttribute("rgb");
+                        if (rgb != null)
+                        {
+                            color = rgb;
+                        }
+                        break;
+                    }
+                }
+            }
         }
 
         /// <summary>
         /// Determines the fills in an XML node of the style document.
         /// </summary>
-        /// <param name="node">Fill root node.</param>
-        private void GetFills(XmlNode node)
+        /// <param name="reader">Reader positioned on the fills start element.</param>
+        private void GetFills(XmlReader reader)
         {
-            foreach (XmlNode fill in node.ChildNodes)
+            using (XmlReader subtree = reader.ReadSubtree())
             {
-                Fill fillStyle = new Fill();
-                XmlNode innerNode = ReaderUtils.GetChildNode(fill, "patternFill");
-                if (innerNode != null)
+                subtree.Read(); // consume <fills>
+                while (subtree.Read())
                 {
-                    string pattern = ReaderUtils.GetAttribute(innerNode, "patternType", string.Empty);
-                    fillStyle.PatternFill = Fill.GetPatternEnum(pattern);
-
-                    // Read fgColor
-                    XmlNode fgColorNode = ReaderUtils.GetChildNode(innerNode, "fgColor");
-                    if (fgColorNode != null)
+                    if (!XmlStreamUtils.IsElement(subtree, "fill"))
                     {
-                        fillStyle.ForegroundColor = ReadColorFromNode(fgColorNode);
+                        continue;
                     }
-
-                    // Read bgColor
-                    XmlNode bgColorNode = ReaderUtils.GetChildNode(innerNode, "bgColor");
-                    if (bgColorNode != null)
+                    Fill fillStyle = new Fill();
+                    using (XmlReader fillSubtree = subtree.ReadSubtree())
                     {
-                        fillStyle.BackgroundColor = ReadColorFromNode(bgColorNode);
+                        fillSubtree.Read(); // consume <fill>
+                        while (fillSubtree.Read())
+                        {
+                            if (!XmlStreamUtils.IsElement(fillSubtree, "patternFill"))
+                            {
+                                continue;
+                            }
+                            fillStyle.PatternFill = Fill.GetPatternEnum(fillSubtree.GetAttribute("patternType") ?? string.Empty);
+                            using (XmlReader patternSubtree = fillSubtree.ReadSubtree())
+                            {
+                                patternSubtree.Read(); // consume <patternFill>
+                                while (patternSubtree.Read())
+                                {
+                                    if (patternSubtree.NodeType != XmlNodeType.Element)
+                                    {
+                                        continue;
+                                    }
+                                    if (patternSubtree.LocalName.Equals("fgColor", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        fillStyle.ForegroundColor = ReadColorFromNode(patternSubtree);
+                                    }
+                                    else if (patternSubtree.LocalName.Equals("bgColor", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        fillStyle.BackgroundColor = ReadColorFromNode(patternSubtree);
+                                    }
+                                }
+                            }
+                        }
                     }
+                    fillStyle.InternalID = this.styleReaderContainer.GetNextFillId();
+                    this.styleReaderContainer.AddStyleComponent(fillStyle);
                 }
-                fillStyle.InternalID = this.styleReaderContainer.GetNextFillId();
-                this.styleReaderContainer.AddStyleComponent(fillStyle);
             }
         }
 
         /// <summary>
-        /// Reads a CT_Color from an XML node (fgColor or bgColor element)
+        /// Reads a CT_Color from an XmlReader positioned on the color element (fgColor, bgColor, etc.)
         /// </summary>
-        /// <param name="colorNode">The color XML node</param>
-        /// <returns>Color object representing the CT_Color</returns>
-        private static Color ReadColorFromNode(XmlNode colorNode)
+        private static Color ReadColorFromNode(XmlReader reader)
         {
-            // Check for auto attribute
-            string autoAttr = ReaderUtils.GetAttribute(colorNode, "auto");
+            string autoAttr = reader.GetAttribute("auto");
             if (!string.IsNullOrEmpty(autoAttr) && ParserUtils.ParseBinaryBool(autoAttr) == 1)
             {
                 return Color.CreateAuto();
             }
-
-            // Check for rgb attribute
-            string rgbAttr = ReaderUtils.GetAttribute(colorNode, "rgb");
+            string rgbAttr = reader.GetAttribute("rgb");
             if (!string.IsNullOrEmpty(rgbAttr))
             {
                 return Color.CreateRgb(rgbAttr);
             }
-
-            // Check for indexed attribute
-            string indexedAttr = ReaderUtils.GetAttribute(colorNode, "indexed");
+            string indexedAttr = reader.GetAttribute("indexed");
             if (!string.IsNullOrEmpty(indexedAttr))
             {
                 return Color.CreateIndexed(ParserUtils.ParseInt(indexedAttr));
             }
-
-            // Check for theme attribute
-            string themeAttr = ReaderUtils.GetAttribute(colorNode, "theme");
+            string themeAttr = reader.GetAttribute("theme");
             if (!string.IsNullOrEmpty(themeAttr))
             {
                 int themeIndex = ParserUtils.ParseInt(themeAttr);
-                // Check for optional tint attribute
-                string tintAttr = ReaderUtils.GetAttribute(colorNode, "tint");
+                string tintAttr = reader.GetAttribute("tint");
                 double? tint = null;
                 if (!string.IsNullOrEmpty(tintAttr))
                 {
-                    tint = ParserUtils.ParseDouble(tintAttr); // Or Convert.ToDouble with InvariantCulture
+                    tint = ParserUtils.ParseDouble(tintAttr);
                 }
                 return Color.CreateTheme((Theme.ColorSchemeElement)themeIndex, tint);
             }
-
-            // Check for system attribute (if supported)
-            string systemAttr = ReaderUtils.GetAttribute(colorNode, "system");
+            string systemAttr = reader.GetAttribute("system");
             if (!string.IsNullOrEmpty(systemAttr))
             {
-                SystemColor sysColor = new SystemColor(SystemColor.MapStringToValue(systemAttr));
-                return Color.CreateSystem(sysColor);
+                return Color.CreateSystem(new SystemColor(SystemColor.MapStringToValue(systemAttr)));
             }
-
-            // No color defined
             return Color.CreateNone();
         }
 
         /// <summary>
         /// Determines the fonts in an XML node of the style document.
         /// </summary>
-        /// <param name="node">Font root node.</param>
-        private void GetFonts(XmlNode node)
+        /// <param name="reader">Reader positioned on the fonts start element.</param>
+        private void GetFonts(XmlReader reader)
         {
-            string attribute;
-            foreach (XmlNode font in node.ChildNodes)
+            using (XmlReader subtree = reader.ReadSubtree())
             {
-                Font fontStyle = new Font();
-                XmlNode boldNode = ReaderUtils.GetChildNode(font, "b");
-                if (boldNode != null)
+                subtree.Read(); // consume <fonts>
+                while (subtree.Read())
                 {
-                    fontStyle.Bold = true;
-                }
-                XmlNode italicdNode = ReaderUtils.GetChildNode(font, "i");
-                if (italicdNode != null)
-                {
-                    fontStyle.Italic = true;
-                }
-                XmlNode strikeNode = ReaderUtils.GetChildNode(font, "strike");
-                if (strikeNode != null)
-                {
-                    fontStyle.Strike = true;
-                }
-                XmlNode outlineNode = ReaderUtils.GetChildNode(font, "outline");
-                if (outlineNode != null)
-                {
-                    fontStyle.Outline = true;
-                }
-                XmlNode shadowNode = ReaderUtils.GetChildNode(font, "shadow");
-                if (shadowNode != null)
-                {
-                    fontStyle.Shadow = true;
-                }
-                XmlNode condenseNode = ReaderUtils.GetChildNode(font, "condense");
-                if (condenseNode != null)
-                {
-                    fontStyle.Condense = true;
-                }
-                XmlNode extendNode = ReaderUtils.GetChildNode(font, "extend");
-                if (extendNode != null)
-                {
-                    fontStyle.Extend = true;
-                }
-                if (ReaderUtils.GetAttributeOfChild(font, "u", "val", out attribute))
-                {
-                    if (attribute == null)
+                    if (!XmlStreamUtils.IsElement(subtree, "font"))
                     {
-                        fontStyle.Underline = Font.UnderlineValue.Single; // Default value
+                        continue;
                     }
-                    else
-                    {
-                        fontStyle.Underline = Font.GetUnderlineEnum(attribute);
-                    }
+                    Font fontStyle = new Font();
+                    ReadFontElement(subtree, fontStyle);
+                    fontStyle.InternalID = this.styleReaderContainer.GetNextFontId();
+                    this.styleReaderContainer.AddStyleComponent(fontStyle);
                 }
-                if (ReaderUtils.GetAttributeOfChild(font, "vertAlign", "val", out attribute))
-                {
-                    fontStyle.VerticalAlign = Font.GetVerticalTextAlignEnum(attribute);
-                }
-                if (ReaderUtils.GetAttributeOfChild(font, "sz", "val", out attribute))
-                {
-                    fontStyle.Size = ParserUtils.ParseFloat(attribute);
-                }
-                XmlNode colorNode = ReaderUtils.GetChildNode(font, "color");
-                if (colorNode != null)
-                {
-
-                    attribute = ReaderUtils.GetAttribute(colorNode, "theme");
-                    if (attribute != null)
-                    {
-                        ColorSchemeElement element = ColorSchemeElement.Dark1;
-                        switch (attribute)
-                        {
-                            case "0":
-                                element = ColorSchemeElement.Dark1;
-                                break;
-                            case "1":
-                                element = ColorSchemeElement.Light1;
-                                break;
-                            case "2":
-                                element = ColorSchemeElement.Dark2;
-                                break;
-                            case "3":
-                                element = ColorSchemeElement.Light2;
-                                break;
-                            case "4":
-                                element = ColorSchemeElement.Accent1;
-                                break;
-                            case "5":
-                                element = ColorSchemeElement.Accent2;
-                                break;
-                            case "6":
-                                element = ColorSchemeElement.Accent3;
-                                break;
-                            case "7":
-                                element = ColorSchemeElement.Accent4;
-                                break;
-                            case "8":
-                                element = ColorSchemeElement.Accent5;
-                                break;
-                            case "9":
-                                element = ColorSchemeElement.Accent6;
-                                break;
-                            case "10":
-                                element = ColorSchemeElement.Hyperlink;
-                                break;
-                            case "11":
-                                element = ColorSchemeElement.FollowedHyperlink;
-                                break;
-                        }
-                        fontStyle.ColorValue = Color.CreateTheme(element);
-
-                    }
-                    attribute = ReaderUtils.GetAttribute(colorNode, "rgb");
-                    if (attribute != null)
-                    {
-                        fontStyle.ColorValue = Color.CreateRgb(attribute);
-                    }
-                }
-                if (ReaderUtils.GetAttributeOfChild(font, "name", "val", out attribute))
-                {
-                    fontStyle.Name = attribute;
-                }
-                if (ReaderUtils.GetAttributeOfChild(font, "family", "val", out attribute))
-                {
-                    switch (attribute)
-                    {
-
-                        case "0":
-                            fontStyle.Family = FontFamilyValue.NotApplicable;
-                            break;
-                        case "1":
-                            fontStyle.Family = FontFamilyValue.Roman;
-                            break;
-                        case "2":
-                            fontStyle.Family = FontFamilyValue.Swiss;
-                            break;
-                        case "3":
-                            fontStyle.Family = FontFamilyValue.Modern;
-                            break;
-                        case "4":
-                            fontStyle.Family = FontFamilyValue.Script;
-                            break;
-                        case "5":
-                            fontStyle.Family = FontFamilyValue.Decorative;
-                            break;
-                        case "6":
-                            fontStyle.Family = FontFamilyValue.Reserved1;
-                            break;
-                        case "7":
-                            fontStyle.Family = FontFamilyValue.Reserved2;
-                            break;
-                        case "8":
-                            fontStyle.Family = FontFamilyValue.Reserved3;
-                            break;
-                        case "9":
-                            fontStyle.Family = FontFamilyValue.Reserved4;
-                            break;
-                        case "10":
-                            fontStyle.Family = FontFamilyValue.Reserved5;
-                            break;
-                        case "11":
-                            fontStyle.Family = FontFamilyValue.Reserved6;
-                            break;
-                        case "12":
-                            fontStyle.Family = FontFamilyValue.Reserved7;
-                            break;
-                        case "13":
-                            fontStyle.Family = FontFamilyValue.Reserved8;
-                            break;
-                        case "14":
-                            fontStyle.Family = FontFamilyValue.Reserved9;
-                            break;
-                    }
-                }
-                if (ReaderUtils.GetAttributeOfChild(font, "scheme", "val", out attribute))
-                {
-                    switch (attribute)
-                    {
-                        case "major":
-                            fontStyle.Scheme = SchemeValue.Major;
-                            break;
-                        case "minor":
-                            fontStyle.Scheme = SchemeValue.Minor;
-                            break;
-                    }
-                }
-                if (ReaderUtils.GetAttributeOfChild(font, "charset", "val", out attribute))
-                {
-                    switch (attribute)
-                    {
-                        case "0":
-                            fontStyle.Charset = CharsetValue.ANSI;
-                            break;
-                        case "1":
-                            fontStyle.Charset = CharsetValue.Default;
-                            break;
-                        case "2":
-                            fontStyle.Charset = CharsetValue.Symbols;
-                            break;
-                        case "77":
-                            fontStyle.Charset = CharsetValue.Macintosh;
-                            break;
-                        case "128":
-                            fontStyle.Charset = CharsetValue.JIS;
-                            break;
-                        case "129":
-                            fontStyle.Charset = CharsetValue.Hangul;
-                            break;
-                        case "130":
-                            fontStyle.Charset = CharsetValue.Johab;
-                            break;
-                        case "134":
-                            fontStyle.Charset = CharsetValue.GBK;
-                            break;
-                        case "136":
-                            fontStyle.Charset = CharsetValue.Big5;
-                            break;
-                        case "161":
-                            fontStyle.Charset = CharsetValue.Greek;
-                            break;
-                        case "162":
-                            fontStyle.Charset = CharsetValue.Turkish;
-                            break;
-                        case "163":
-                            fontStyle.Charset = CharsetValue.Vietnamese;
-                            break;
-                        case "177":
-                            fontStyle.Charset = CharsetValue.Hebrew;
-                            break;
-                        case "178":
-                            fontStyle.Charset = CharsetValue.Arabic;
-                            break;
-                        case "186":
-                            fontStyle.Charset = CharsetValue.Baltic;
-                            break;
-                        case "204":
-                            fontStyle.Charset = CharsetValue.Russian;
-                            break;
-                        case "222":
-                            fontStyle.Charset = CharsetValue.Thai;
-                            break;
-                        case "238":
-                            fontStyle.Charset = CharsetValue.EasternEuropean;
-                            break;
-                        case "255":
-                            fontStyle.Charset = CharsetValue.OEM;
-                            break;
-                        default:
-                            fontStyle.Charset = CharsetValue.ApplicationDefined;
-                            break;
-                    }
-                }
-
-                fontStyle.InternalID = this.styleReaderContainer.GetNextFontId();
-                this.styleReaderContainer.AddStyleComponent(fontStyle);
             }
         }
 
         /// <summary>
-        /// Determines the cell XF entries in an XML node of the style document.
+        /// Reads all child elements of a &lt;font&gt; entry into the given Font object.
         /// </summary>
-        /// <param name="node">Cell XF root node.</param>
-        private void GetCellXfs(XmlNode node)
+        private static void ReadFontElement(XmlReader reader, Font fontStyle)
         {
-            foreach (XmlNode childNode in node.ChildNodes)
+            using (XmlReader fontSubtree = reader.ReadSubtree())
             {
-                if (ReaderUtils.IsNode(childNode, "xf"))
+                fontSubtree.Read(); // consume <font>
+                while (fontSubtree.Read())
                 {
-                    CellXf cellXfStyle = new CellXf();
-                    string attribute = ReaderUtils.GetAttribute(childNode, "applyAlignment");
-                    if (attribute != null)
+                    if (fontSubtree.NodeType != XmlNodeType.Element)
                     {
-                        int value = ParserUtils.ParseBinaryBool(attribute);
-                        cellXfStyle.ForceApplyAlignment = value == 1;
+                        continue;
                     }
-                    XmlNode alignmentNode = ReaderUtils.GetChildNode(childNode, "alignment");
-                    if (alignmentNode != null)
+                    string val;
+                    switch (fontSubtree.LocalName.ToLowerInvariant())
                     {
-                        attribute = ReaderUtils.GetAttribute(alignmentNode, "shrinkToFit");
-                        if (attribute != null)
-                        {
-                            int value = ParserUtils.ParseBinaryBool(attribute);
-                            if (value == 1)
+                        case "b":
+                            fontStyle.Bold = true;
+                            break;
+                        case "i":
+                            fontStyle.Italic = true;
+                            break;
+                        case "strike":
+                            fontStyle.Strike = true;
+                            break;
+                        case "outline":
+                            fontStyle.Outline = true;
+                            break;
+                        case "shadow":
+                            fontStyle.Shadow = true;
+                            break;
+                        case "condense":
+                            fontStyle.Condense = true;
+                            break;
+                        case "extend":
+                            fontStyle.Extend = true;
+                            break;
+                        case "u":
+                            val = fontSubtree.GetAttribute("val");
+                            fontStyle.Underline = val == null ? Font.UnderlineValue.Single : Font.GetUnderlineEnum(val);
+                            break;
+                        case "vertalign":
+                            fontStyle.VerticalAlign = Font.GetVerticalTextAlignEnum(fontSubtree.GetAttribute("val"));
+                            break;
+                        case "sz":
+                            fontStyle.Size = ParserUtils.ParseFloat(fontSubtree.GetAttribute("val"));
+                            break;
+                        case "color":
+                            string themeVal = fontSubtree.GetAttribute("theme");
+                            if (themeVal != null)
                             {
-                                cellXfStyle.Alignment = TextBreakValue.ShrinkToFit;
+                                fontStyle.ColorValue = Color.CreateTheme(ParseFontColorSchemeElement(themeVal));
+                            }
+                            string rgbVal = fontSubtree.GetAttribute("rgb");
+                            if (rgbVal != null)
+                            {
+                                fontStyle.ColorValue = Color.CreateRgb(rgbVal);
+                            }
+                            break;
+                        case "name":
+                            fontStyle.Name = fontSubtree.GetAttribute("val");
+                            break;
+                        case "family":
+                            val = fontSubtree.GetAttribute("val");
+                            if (val != null)
+                            {
+                                fontStyle.Family = ParseFontFamilyValue(val);
+                            }
+                            break;
+                        case "scheme":
+                            val = fontSubtree.GetAttribute("val");
+                            if (val != null)
+                            {
+                                switch (val)
+                                {
+                                    case "major":
+                                        fontStyle.Scheme = SchemeValue.Major;
+                                        break;
+                                    case "minor":
+                                        fontStyle.Scheme = SchemeValue.Minor;
+                                        break;
+                                }
+                            }
+                            break;
+                        case "charset":
+                            val = fontSubtree.GetAttribute("val");
+                            if (val != null)
+                            {
+                                fontStyle.Charset = ParseFontCharsetValue(val);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Maps a theme index string ("0"-"11") to the corresponding ColorSchemeElement for font color.
+        /// </summary>
+        private static ColorSchemeElement ParseFontColorSchemeElement(string value)
+        {
+            switch (value)
+            {
+                case "1": return ColorSchemeElement.Light1;
+                case "2": return ColorSchemeElement.Dark2;
+                case "3": return ColorSchemeElement.Light2;
+                case "4": return ColorSchemeElement.Accent1;
+                case "5": return ColorSchemeElement.Accent2;
+                case "6": return ColorSchemeElement.Accent3;
+                case "7": return ColorSchemeElement.Accent4;
+                case "8": return ColorSchemeElement.Accent5;
+                case "9": return ColorSchemeElement.Accent6;
+                case "10": return ColorSchemeElement.Hyperlink;
+                case "11": return ColorSchemeElement.FollowedHyperlink;
+                default: return ColorSchemeElement.Dark1;
+            }
+        }
+
+        /// <summary>
+        /// Maps a font family numeric string to FontFamilyValue.
+        /// </summary>
+        private static FontFamilyValue ParseFontFamilyValue(string value)
+        {
+            switch (value)
+            {
+                case "1": return FontFamilyValue.Roman;
+                case "2": return FontFamilyValue.Swiss;
+                case "3": return FontFamilyValue.Modern;
+                case "4": return FontFamilyValue.Script;
+                case "5": return FontFamilyValue.Decorative;
+                case "6": return FontFamilyValue.Reserved1;
+                case "7": return FontFamilyValue.Reserved2;
+                case "8": return FontFamilyValue.Reserved3;
+                case "9": return FontFamilyValue.Reserved4;
+                case "10": return FontFamilyValue.Reserved5;
+                case "11": return FontFamilyValue.Reserved6;
+                case "12": return FontFamilyValue.Reserved7;
+                case "13": return FontFamilyValue.Reserved8;
+                case "14": return FontFamilyValue.Reserved9;
+                default: return FontFamilyValue.NotApplicable;
+            }
+        }
+
+        /// <summary>
+        /// Maps a charset numeric string to CharsetValue.
+        /// </summary>
+        private static CharsetValue ParseFontCharsetValue(string value)
+        {
+            switch (value)
+            {
+                case "0": return CharsetValue.ANSI;
+                case "1": return CharsetValue.Default;
+                case "2": return CharsetValue.Symbols;
+                case "77": return CharsetValue.Macintosh;
+                case "128": return CharsetValue.JIS;
+                case "129": return CharsetValue.Hangul;
+                case "130": return CharsetValue.Johab;
+                case "134": return CharsetValue.GBK;
+                case "136": return CharsetValue.Big5;
+                case "161": return CharsetValue.Greek;
+                case "162": return CharsetValue.Turkish;
+                case "163": return CharsetValue.Vietnamese;
+                case "177": return CharsetValue.Hebrew;
+                case "178": return CharsetValue.Arabic;
+                case "186": return CharsetValue.Baltic;
+                case "204": return CharsetValue.Russian;
+                case "222": return CharsetValue.Thai;
+                case "238": return CharsetValue.EasternEuropean;
+                case "255": return CharsetValue.OEM;
+                default: return CharsetValue.ApplicationDefined;
+            }
+        }
+
+        /// <summary>
+        /// Determines the cell XF entries in the style document.
+        /// cellXfs always follows fonts/fills/borders per OOXML spec, so a single forward pass suffices.
+        /// </summary>
+        /// <param name="reader">Reader positioned on the cellXfs start element.</param>
+        private void GetCellXfs(XmlReader reader)
+        {
+            using (XmlReader subtree = reader.ReadSubtree())
+            {
+                subtree.Read(); // consume <cellXfs>
+                while (subtree.Read())
+                {
+                    if (!XmlStreamUtils.IsElement(subtree, "xf"))
+                    {
+                        continue;
+                    }
+                    CellXf cellXfStyle = new CellXf();
+                    string applyAlignment = subtree.GetAttribute("applyAlignment");
+                    if (applyAlignment != null)
+                    {
+                        cellXfStyle.ForceApplyAlignment = ParserUtils.ParseBinaryBool(applyAlignment) == 1;
+                    }
+                    string numFmtIdStr = subtree.GetAttribute("numFmtId");
+                    string borderIdStr = subtree.GetAttribute("borderId");
+                    string fillIdStr = subtree.GetAttribute("fillId");
+                    string fontIdStr = subtree.GetAttribute("fontId");
+                    if (!subtree.IsEmptyElement)
+                    {
+                        using (XmlReader xfSubtree = subtree.ReadSubtree())
+                        {
+                            xfSubtree.Read(); // consume <xf>
+                            while (xfSubtree.Read())
+                            {
+                                if (xfSubtree.NodeType != XmlNodeType.Element)
+                                {
+                                    continue;
+                                }
+                                if (xfSubtree.LocalName.Equals("alignment", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    ReadXfAlignment(xfSubtree, cellXfStyle);
+                                }
+                                else if (xfSubtree.LocalName.Equals("protection", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    ReadXfProtection(xfSubtree, cellXfStyle);
+                                }
                             }
                         }
-                        attribute = ReaderUtils.GetAttribute(alignmentNode, "wrapText");
-                        if (attribute != null && attribute == "1")
-                        {
-                            cellXfStyle.Alignment = TextBreakValue.WrapText;
-                        }
-                        attribute = ReaderUtils.GetAttribute(alignmentNode, "horizontal", string.Empty);
-                        cellXfStyle.HorizontalAlign = CellXf.GetHorizontalAlignEnum(attribute);
-                        attribute = ReaderUtils.GetAttribute(alignmentNode, "vertical", string.Empty);
-                        cellXfStyle.VerticalAlign = CellXf.GetVerticalAlignEnum(attribute);
-                        attribute = ReaderUtils.GetAttribute(alignmentNode, "indent");
-                        if (attribute != null)
-                        {
-                            cellXfStyle.Indent = ParserUtils.ParseInt(attribute);
-                        }
-                        attribute = ReaderUtils.GetAttribute(alignmentNode, "textRotation");
-                        if (attribute != null)
-                        {
-                            int rotation = ParserUtils.ParseInt(attribute);
-                            cellXfStyle.TextRotation = rotation > 90 ? 90 - rotation : rotation;
-                        }
                     }
-                    XmlNode protectionNode = ReaderUtils.GetChildNode(childNode, "protection");
-                    if (protectionNode != null)
-                    {
-                        attribute = ReaderUtils.GetAttribute(protectionNode, "hidden");
-                        if (attribute != null && attribute == "1")
-                        {
-                            cellXfStyle.Hidden = true;
-                        }
-                        attribute = ReaderUtils.GetAttribute(protectionNode, "locked");
-                        if (attribute != null && attribute == "0")
-                        {
-                            cellXfStyle.Locked = false;
-                        }
-                        // else - NoOp - No need to set locked value, since true by default
-                    }
-
                     cellXfStyle.InternalID = this.styleReaderContainer.GetNextCellXFId();
                     this.styleReaderContainer.AddStyleComponent(cellXfStyle);
 
@@ -669,14 +624,12 @@ namespace NanoXLSX.Internal.Readers
                     int id;
                     bool hasId;
 
-                    hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "numFmtId"), out id);
+                    hasId = ParserUtils.TryParseInt(numFmtIdStr, out id);
                     NumberFormat format = this.styleReaderContainer.GetNumberFormat(id);
                     if (!hasId || format == null)
                     {
                         FormatNumber formatNumber;
-                        NumberFormat.TryParseFormatNumber(id, out formatNumber); // Validity is neglected here to prevent unhandled crashes. If invalid, the format will be declared as 'none'.
-                                                                                 // Invalid values should not occur at all (malformed Excel files). 
-                                                                                 // Undefined values may occur if the file was saved by an Excel version that has implemented yet unknown format numbers (undefined in NanoXLSX) 
+                        NumberFormat.TryParseFormatNumber(id, out formatNumber);
                         format = new NumberFormat
                         {
                             Number = formatNumber,
@@ -684,7 +637,7 @@ namespace NanoXLSX.Internal.Readers
                         };
                         this.styleReaderContainer.AddStyleComponent(format);
                     }
-                    hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "borderId"), out id);
+                    hasId = ParserUtils.TryParseInt(borderIdStr, out id);
                     Border border = this.styleReaderContainer.GetBorder(id);
                     if (!hasId || border == null)
                     {
@@ -693,7 +646,7 @@ namespace NanoXLSX.Internal.Readers
                             InternalID = this.styleReaderContainer.GetNextBorderId()
                         };
                     }
-                    hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fillId"), out id);
+                    hasId = ParserUtils.TryParseInt(fillIdStr, out id);
                     Fill fill = this.styleReaderContainer.GetFill(id);
                     if (!hasId || fill == null)
                     {
@@ -702,7 +655,7 @@ namespace NanoXLSX.Internal.Readers
                             InternalID = this.styleReaderContainer.GetNextFillId()
                         };
                     }
-                    hasId = ParserUtils.TryParseInt(ReaderUtils.GetAttribute(childNode, "fontId"), out id);
+                    hasId = ParserUtils.TryParseInt(fontIdStr, out id);
                     Font font = this.styleReaderContainer.GetFont(id);
                     if (!hasId || font == null)
                     {
@@ -711,61 +664,105 @@ namespace NanoXLSX.Internal.Readers
                             InternalID = this.styleReaderContainer.GetNextFontId()
                         };
                     }
-
-                    // TODO: Implement other style information
                     style.CurrentNumberFormat = format;
                     style.CurrentBorder = border;
                     style.CurrentFill = fill;
                     style.CurrentFont = font;
                     style.CurrentCellXf = cellXfStyle;
                     style.InternalID = this.styleReaderContainer.GetNextStyleId();
-
                     this.styleReaderContainer.AddStyleComponent(style);
                 }
             }
         }
 
         /// <summary>
-        /// Determines the MRU colors in an XML node of the style document.
+        /// Reads alignment attributes from an &lt;alignment&gt; element into the given CellXf.
         /// </summary>
-        /// <param name="node">Color root node.</param>
-        private void GetColors(XmlNode node)
+        private static void ReadXfAlignment(XmlReader reader, CellXf cellXfStyle)
         {
-            foreach (XmlNode color in node.ChildNodes)
+            string shrinkToFit = reader.GetAttribute("shrinkToFit");
+            if (shrinkToFit != null && ParserUtils.ParseBinaryBool(shrinkToFit) == 1)
             {
-                XmlNode mruColor = ReaderUtils.GetChildNode(color, "color");
-                if (color.Name.Equals("mruColors", StringComparison.Ordinal) && mruColor != null)
+                cellXfStyle.Alignment = TextBreakValue.ShrinkToFit;
+            }
+            string wrapText = reader.GetAttribute("wrapText");
+            if (wrapText != null && wrapText == "1")
+            {
+                cellXfStyle.Alignment = TextBreakValue.WrapText;
+            }
+            cellXfStyle.HorizontalAlign = CellXf.GetHorizontalAlignEnum(reader.GetAttribute("horizontal") ?? string.Empty);
+            cellXfStyle.VerticalAlign = CellXf.GetVerticalAlignEnum(reader.GetAttribute("vertical") ?? string.Empty);
+            string indent = reader.GetAttribute("indent");
+            if (indent != null)
+            {
+                cellXfStyle.Indent = ParserUtils.ParseInt(indent);
+            }
+            string textRotation = reader.GetAttribute("textRotation");
+            if (textRotation != null)
+            {
+                int rotation = ParserUtils.ParseInt(textRotation);
+                cellXfStyle.TextRotation = rotation > 90 ? 90 - rotation : rotation;
+            }
+        }
+
+        /// <summary>
+        /// Reads protection attributes from a &lt;protection&gt; element into the given CellXf.
+        /// </summary>
+        private static void ReadXfProtection(XmlReader reader, CellXf cellXfStyle)
+        {
+            string hidden = reader.GetAttribute("hidden");
+            if (hidden != null && hidden == "1")
+            {
+                cellXfStyle.Hidden = true;
+            }
+            string locked = reader.GetAttribute("locked");
+            if (locked != null && locked == "0")
+            {
+                cellXfStyle.Locked = false;
+            }
+        }
+
+        /// <summary>
+        /// Determines the MRU colors in the style document.
+        /// </summary>
+        /// <param name="reader">Reader positioned on the colors start element.</param>
+        private void GetColors(XmlReader reader)
+        {
+            using (XmlReader subtree = reader.ReadSubtree())
+            {
+                subtree.Read(); // consume <colors>
+                while (subtree.Read())
                 {
-                    foreach (XmlNode value in color.ChildNodes)
+                    if (subtree.NodeType == XmlNodeType.Element
+                        && subtree.LocalName.Equals("mruColors", StringComparison.OrdinalIgnoreCase))
                     {
-                        string attribute = ReaderUtils.GetAttribute(value, "rgb");
-                        if (attribute != null)
-                        {
-                            this.styleReaderContainer.AddMruColor(attribute);
-                        }
+                        ReadMruColors(subtree);
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Resolves a color value from an XML node, when a RGB attribute exists. If the value is null, the fallback will be returned
+        /// Reads individual color entries from a &lt;mruColors&gt; element.
         /// </summary>
-        /// <param name="node">Node to check.</param>
-        /// <param name="fallback">Fallback value if the color could not be resolved.</param>
-        /// <returns>RGB value as string or the fallback.</returns>
-        private static string GetColor(XmlNode node, string fallback)
+        private void ReadMruColors(XmlReader reader)
         {
-            XmlNode childNode = ReaderUtils.GetChildNode(node, "color");
-            if (childNode != null)
+            using (XmlReader subtree = reader.ReadSubtree())
             {
-                string color = ReaderUtils.GetAttribute(childNode, "rgb");
-                if (color != null)
+                subtree.Read(); // consume <mruColors>
+                while (subtree.Read())
                 {
-                    return color;
+                    if (subtree.NodeType == XmlNodeType.Element
+                        && subtree.LocalName.Equals("color", StringComparison.OrdinalIgnoreCase))
+                    {
+                        string rgb = subtree.GetAttribute("rgb");
+                        if (rgb != null)
+                        {
+                            this.styleReaderContainer.AddMruColor(rgb);
+                        }
+                    }
                 }
             }
-            return fallback;
         }
         #endregion
     }

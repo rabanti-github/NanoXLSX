@@ -1,5 +1,10 @@
-﻿{
-  "projectName":  "NanoXLSX",
+{
+  "projectName": "NanoXLSX",
   "baseDescription": "NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way.",
-  "rootDescription": "The library is modular and consists of one core and several optional dependencies.<br>This documentation page contains the links to all relevant documentation sub-pages."
+  "rootDescription": "The library is modular and consists of one core and several optional dependencies.<br>This documentation page contains the links to all relevant documentation sub-pages.",
+  "apiDocsUrl": "https://rabanti-github.github.io/NanoXLSX/",
+  "repositoryUrl": "https://github.com/rabanti-github/NanoXLSX",
+  "demoRepositoryUrl": "https://github.com/rabanti-github/NanoXLSX.Demo",
+  "demoRepositoryUseCaseUrl": "https://github.com/rabanti-github/NanoXLSX.Demo/tree/main/NanoXLSX/Demo/UseCases",
+  "llmsSummary": "A small, dependency-free .NET library to create and read Microsoft Excel (XLSX) files. Modular plugin architecture: a Core package plus optional Reader, Writer, and Formatting plugins. Targets .NET Standard 2.0 and .NET Framework 4.5+."
 }

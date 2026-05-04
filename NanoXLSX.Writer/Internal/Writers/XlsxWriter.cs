@@ -303,6 +303,8 @@ namespace NanoXLSX.Internal.Writers
                             worksheetWriter.CurrentWorksheet = item;
                             worksheetWriter.Execute();
                             AppendXmlToPackagePart(worksheetWriter.XmlElement, part);
+                            worksheetWriter.ReleaseXmlElement();
+                            GC.Collect(1, GCCollectionMode.Optimized); // 
                         }
                     }
                     else
@@ -311,6 +313,7 @@ namespace NanoXLSX.Internal.Writers
                         worksheetWriter.CurrentWorksheet = new Worksheet("sheet1");
                         worksheetWriter.Execute();
                         AppendXmlToPackagePart(worksheetWriter.XmlElement, part);
+                        worksheetWriter.ReleaseXmlElement();
                     }
 
                     // Shared strings - write after collection of strings
@@ -449,20 +452,20 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="pp">Package part</param>
         private void AppendXmlToPackagePart(XmlElement rootElement, PackagePart pp)
         {
-            XmlDocument doc = rootElement.TransformToDocument(); // This creates a System.Xml.XmlDocument from a custom XmlElement instance
             using (MemoryStream ms = new MemoryStream())
             {
                 XmlWriterSettings settings = new XmlWriterSettings
                 {
                     Encoding = new UTF8Encoding(false), // No BOM
                     Indent = true,
-                    OmitXmlDeclaration = false // Include <?xml version="1.0" encoding="utf-8"?>
+                    OmitXmlDeclaration = true, // Include <?xml version="1.0" encoding="utf-8"?>
+                    CloseOutput = false
                 };
 
                 using (XmlWriter writer = XmlWriter.Create(ms, settings))
                 {
                     writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"");
-                    doc.WriteTo(writer);
+                    rootElement.WriteTo(writer);
                     writer.Flush();
                 }
 

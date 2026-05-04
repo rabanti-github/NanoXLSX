@@ -1,7 +1,4 @@
-﻿using NanoXLSX.Colors;
-using NanoXLSX.Styles;
-using NanoXLSX.Test.Writer_Reader.Utils;
-using NanoXLSX.Themes;
+﻿using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
 
 namespace NanoXLSX.Test.Writer_Reader.MiscTest

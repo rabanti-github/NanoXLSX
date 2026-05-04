@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
@@ -17,6 +18,7 @@ using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
+using NanoXLSX.Utils.Xml;
 using static NanoXLSX.Enums.Password;
 using IOException = NanoXLSX.Exceptions.IOException;
 
@@ -28,11 +30,12 @@ namespace NanoXLSX.Internal.Readers
     public class WorksheetReader : IWorksheetReader
     {
         #region privateFields
-        private MemoryStream stream;
-        private List<string> dateStyles;
-        private List<string> timeStyles;
+        private Stream stream;
+        private HashSet<string> dateStyles;
+        private HashSet<string> timeStyles;
         private Dictionary<string, Style> resolvedStyles;
         private IPasswordReader passwordReader;
+        private ReaderOptions readerOptions;
         #endregion
 
         #region properties
@@ -48,7 +51,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reference to the <see cref="ReaderPlugInHandler"/>, to be used for post operations in the <see cref="Execute"/> method
         /// </summary>
-        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+        public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         /// <summary>
         /// Gets or sets the (r)ID of the current worksheet
         /// </summary>
@@ -77,13 +80,13 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
         /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+        public void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;
             this.Workbook = workbook;
             this.Options = readerOptions;
+            this.readerOptions = readerOptions as ReaderOptions;
             this.InlinePluginHandler = inlinePluginHandler;
-            //this.readerOptions = readerOptions as ReaderOptions;
             if (dateStyles == null || timeStyles == null || this.resolvedStyles == null)
             {
                 StyleReaderContainer styleReaderContainer = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
@@ -105,24 +108,46 @@ namespace NanoXLSX.Internal.Readers
             try
             {
                 WorksheetDefinition worksheetDefinition = Workbook.AuxiliaryData.GetData<WorksheetDefinition>(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, CurrentWorksheetID);
-                Worksheet worksheet = new Worksheet(worksheetDefinition.WorksheetName, CurrentWorksheetID, Workbook)
+                Worksheet worksheet = new Worksheet(worksheetDefinition.WorksheetName, worksheetDefinition.SheetID, Workbook)
                 {
                     Hidden = worksheetDefinition.Hidden
                 };
                 using (stream) // Close after processing
                 {
-                    ReaderOptions readerOptions = this.Options as ReaderOptions;
-                    XmlDocument document = new XmlDocument() { XmlResolver = null };
-                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
+                    StringBuilder sb = new StringBuilder();
+                    using (XmlReader reader = XmlReader.Create(stream, XmlStreamUtils.CreateSettings()))
                     {
-                        document.Load(reader);
-                        GetRows(document, worksheet, readerOptions);
-                        GetSheetView(document, worksheet);
-                        GetMergedCells(document, worksheet);
-                        GetSheetFormats(document, worksheet);
-                        GetAutoFilters(document, worksheet);
-                        GetColumns(document, worksheet, readerOptions);
-                        GetSheetProtection(document, worksheet);
+                        while (reader.Read())
+                        {
+                            if (reader.NodeType != XmlNodeType.Element)
+                            {
+                                continue;
+                            }
+                            switch (reader.LocalName.ToLowerInvariant())
+                            {
+                                case "sheetviews":
+                                    GetSheetView(reader, worksheet);
+                                    break;
+                                case "sheetformatpr":
+                                    GetSheetFormats(reader, worksheet);
+                                    break;
+                                case "cols":
+                                    GetColumns(reader, worksheet, readerOptions);
+                                    break;
+                                case "sheetdata":
+                                    GetRows(reader, worksheet, readerOptions, sb);
+                                    break;
+                                case "sheetprotection":
+                                    GetSheetProtection(reader, worksheet);
+                                    break;
+                                case "mergecells":
+                                    GetMergedCells(reader, worksheet);
+                                    break;
+                                case "autofilter":
+                                    GetAutoFilters(reader, worksheet);
+                                    break;
+                            }
+                        }
                         SetWorkbookRelation(worksheet);
                         InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.WorksheetInlineReader, Options, CurrentWorksheetID);
                     }
@@ -146,7 +171,7 @@ namespace NanoXLSX.Internal.Readers
         {
             Workbook.AddWorksheet(worksheet);
             int selectedWorksheetId = Workbook.AuxiliaryData.GetData<int>(PlugInUUID.WorkbookReader, PlugInUUID.SelectedWorksheetEntity);
-            if (selectedWorksheetId + 1 == CurrentWorksheetID) // selectedWorksheetId is 0-based
+            if (selectedWorksheetId == CurrentWorksheetID)
             {
                 Workbook.SetSelectedWorksheet(worksheet);
             }
@@ -158,8 +183,8 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="styleReaderContainer">Resolved styles from the style reader</param>
         private void ProcessStyles(StyleReaderContainer styleReaderContainer)
         {
-            this.dateStyles = new List<string>();
-            this.timeStyles = new List<string>();
+            this.dateStyles = new HashSet<string>();
+            this.timeStyles = new HashSet<string>();
             this.resolvedStyles = new Dictionary<string, Style>();
             for (int i = 0; i < styleReaderContainer.StyleCount; i++)
             {
@@ -182,38 +207,50 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Gets the row definitions of the current worksheet
         /// </summary>
-        /// <param name="document">XML document of the current worksheet</param>
+        /// <param name="reader">XmlReader positioned on the sheetData start element</param>
         /// <param name="worksheet">Currently processed worksheet</param>
         /// <param name="readerOptions">Reader options</param>
-        private void GetRows(XmlDocument document, Worksheet worksheet, ReaderOptions readerOptions)
+        /// <param name="sb">Reusable StringBuilder to avoid per-cell allocations</param>
+        private void GetRows(XmlReader reader, Worksheet worksheet, ReaderOptions readerOptions, StringBuilder sb)
         {
-            XmlNodeList rows = document.GetElementsByTagName("row");
-            foreach (XmlNode row in rows)
+            using (XmlReader sheetDataReader = reader.ReadSubtree())
             {
-                string rowAttribute = ReaderUtils.GetAttribute(row, "r");
-                if (rowAttribute != null)
+                sheetDataReader.Read(); // consume the sheetData open tag
+                while (sheetDataReader.Read())
                 {
-                    int rowNumber = ParserUtils.ParseInt(rowAttribute) - 1; // Transform to zero-based
-                    string hiddenAttribute = ReaderUtils.GetAttribute(row, "hidden");
-                    if (hiddenAttribute != null)
+                    if (!XmlStreamUtils.IsElement(sheetDataReader, "row"))
                     {
-                        int value = ParserUtils.ParseBinaryBool(hiddenAttribute);
-                        if (value == 1)
+                        continue;
+                    }
+                    string rowAttribute = sheetDataReader.GetAttribute("r");
+                    if (rowAttribute != null)
+                    {
+                        int rowNumber = ParserUtils.ParseInt(rowAttribute) - 1; // Transform to zero-based
+                        string hiddenAttribute = sheetDataReader.GetAttribute("hidden");
+                        if (hiddenAttribute != null && ParserUtils.ParseBinaryBool(hiddenAttribute) == 1)
                         {
                             worksheet.AddHiddenRow(rowNumber);
                         }
+                        string heightAttribute = sheetDataReader.GetAttribute("ht");
+                        if (heightAttribute != null)
+                        {
+                            worksheet.RowHeights.Add(rowNumber, GetValidatedHeight(ParserUtils.ParseFloat(heightAttribute), readerOptions));
+                        }
                     }
-                    string heightAttribute = ReaderUtils.GetAttribute(row, "ht");
-                    if (heightAttribute != null)
+                    if (!sheetDataReader.IsEmptyElement)
                     {
-                        worksheet.RowHeights.Add(rowNumber, GetValidatedHeight(ParserUtils.ParseFloat(heightAttribute), readerOptions));
-                    }
-                }
-                if (row.HasChildNodes)
-                {
-                    foreach (XmlNode rowChild in row.ChildNodes)
-                    {
-                        ReadCell(rowChild, worksheet);
+                        using (XmlReader rowReader = sheetDataReader.ReadSubtree())
+                        {
+                            rowReader.Read(); // consume the row open tag
+                            while (rowReader.Read())
+                            {
+                                if (!XmlStreamUtils.IsElement(rowReader, "c"))
+                                {
+                                    continue;
+                                }
+                                ReadCell(rowReader, worksheet, sb);
+                            }
+                        }
                     }
                 }
             }
@@ -222,71 +259,72 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Gets the selected cells of the current worksheet
         /// </summary>
-        /// <param name="xmlDocument">XML document of the current worksheet</param>
+        /// <param name="reader">XmlReader positioned on the sheetViews start element</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private static void GetSheetView(XmlDocument xmlDocument, Worksheet worksheet)
+        private static void GetSheetView(XmlReader reader, Worksheet worksheet)
         {
-            XmlNodeList sheetViewsNodes = xmlDocument.GetElementsByTagName("sheetViews");
-            if (sheetViewsNodes != null && sheetViewsNodes.Count > 0)
+            using (XmlReader subtree = reader.ReadSubtree())
             {
-                XmlNodeList sheetViewNodes = sheetViewsNodes[0].ChildNodes;
-                string attribute;
-                // Go through all possible views
-                foreach (XmlNode sheetView in sheetViewNodes)
+                subtree.Read(); // consume sheetViews
+                while (subtree.Read())
                 {
-                    attribute = ReaderUtils.GetAttribute(sheetView, "view", string.Empty);
+                    if (!XmlStreamUtils.IsElement(subtree, "sheetView"))
+                    {
+                        continue;
+                    }
+                    string attribute = subtree.GetAttribute("view") ?? string.Empty;
                     worksheet.ViewType = Worksheet.GetSheetViewTypeEnum(attribute);
-                    attribute = ReaderUtils.GetAttribute(sheetView, "zoomScale");
+                    attribute = subtree.GetAttribute("zoomScale");
                     if (attribute != null)
                     {
                         worksheet.ZoomFactor = ParserUtils.ParseInt(attribute);
                     }
-                    attribute = ReaderUtils.GetAttribute(sheetView, "zoomScaleNormal");
+                    attribute = subtree.GetAttribute("zoomScaleNormal");
                     if (attribute != null)
                     {
-                        int scale = ParserUtils.ParseInt(attribute);
-                        worksheet.ZoomFactors[Worksheet.SheetViewType.Normal] = scale;
+                        worksheet.ZoomFactors[Worksheet.SheetViewType.Normal] = ParserUtils.ParseInt(attribute);
                     }
-                    attribute = ReaderUtils.GetAttribute(sheetView, "zoomScalePageLayoutView");
+                    attribute = subtree.GetAttribute("zoomScalePageLayoutView");
                     if (attribute != null)
                     {
-                        int scale = ParserUtils.ParseInt(attribute);
-                        worksheet.ZoomFactors[Worksheet.SheetViewType.PageLayout] = scale;
+                        worksheet.ZoomFactors[Worksheet.SheetViewType.PageLayout] = ParserUtils.ParseInt(attribute);
                     }
-                    attribute = ReaderUtils.GetAttribute(sheetView, "zoomScaleSheetLayoutView");
+                    attribute = subtree.GetAttribute("zoomScaleSheetLayoutView");
                     if (attribute != null)
                     {
-                        int scale = ParserUtils.ParseInt(attribute);
-                        worksheet.ZoomFactors[Worksheet.SheetViewType.PageBreakPreview] = scale;
+                        worksheet.ZoomFactors[Worksheet.SheetViewType.PageBreakPreview] = ParserUtils.ParseInt(attribute);
                     }
-                    attribute = ReaderUtils.GetAttribute(sheetView, "showGridLines");
+                    attribute = subtree.GetAttribute("showGridLines");
                     if (attribute != null)
                     {
                         worksheet.ShowGridLines = ParserUtils.ParseBinaryBool(attribute) == 1;
                     }
-                    attribute = ReaderUtils.GetAttribute(sheetView, "showRowColHeaders");
+                    attribute = subtree.GetAttribute("showRowColHeaders");
                     if (attribute != null)
                     {
                         worksheet.ShowRowColumnHeaders = ParserUtils.ParseBinaryBool(attribute) == 1;
                     }
-                    attribute = ReaderUtils.GetAttribute(sheetView, "showRuler");
+                    attribute = subtree.GetAttribute("showRuler");
                     if (attribute != null)
                     {
                         worksheet.ShowRuler = ParserUtils.ParseBinaryBool(attribute) == 1;
                     }
-                    if (sheetView.LocalName.Equals("sheetView", StringComparison.OrdinalIgnoreCase))
+                    using (XmlReader sheetViewReader = subtree.ReadSubtree())
                     {
-                        XmlNodeList selectionNodes = sheetView.ChildNodes;
-                        if (selectionNodes != null && selectionNodes.Count > 0)
+                        sheetViewReader.Read(); // consume sheetView
+                        while (sheetViewReader.Read())
                         {
-                            foreach (XmlNode selectionNode in selectionNodes)
+                            if (sheetViewReader.NodeType != XmlNodeType.Element)
                             {
-                                attribute = ReaderUtils.GetAttribute(selectionNode, "sqref");
+                                continue;
+                            }
+                            if (XmlStreamUtils.IsElement(sheetViewReader, "selection"))
+                            {
+                                attribute = sheetViewReader.GetAttribute("sqref");
                                 if (attribute != null)
                                 {
                                     if (attribute.Contains(" "))
                                     {
-                                        // Multiple ranges
                                         string[] ranges = attribute.Split(' ');
                                         foreach (string range in ranges)
                                         {
@@ -297,14 +335,12 @@ namespace NanoXLSX.Internal.Readers
                                     {
                                         CollectSelectedCells(attribute, worksheet);
                                     }
-
                                 }
                             }
-                        }
-                        XmlNode paneNode = ReaderUtils.GetChildNode(sheetView, "pane");
-                        if (paneNode != null)
-                        {
-                            SetPaneSplit(paneNode, worksheet);
+                            else if (XmlStreamUtils.IsElement(sheetViewReader, "pane"))
+                            {
+                                SetPaneSplit(sheetViewReader, worksheet);
+                            }
                         }
                     }
                 }
@@ -333,11 +369,11 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Sets the pane split values of the current worksheet
         /// </summary>
-        /// <param name="paneNode">XML node</param>
+        /// <param name="reader">XmlReader positioned on the pane start element</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private static void SetPaneSplit(XmlNode paneNode, Worksheet worksheet)
+        private static void SetPaneSplit(XmlReader reader, Worksheet worksheet)
         {
-            string attribute = ReaderUtils.GetAttribute(paneNode, "state");
+            string attribute = reader.GetAttribute("state");
             bool useNumbers = false;
             bool frozenState = false;
             bool ySplitDefined = false;
@@ -356,7 +392,7 @@ namespace NanoXLSX.Internal.Readers
                 }
                 useNumbers = frozenState;
             }
-            attribute = ReaderUtils.GetAttribute(paneNode, "ySplit");
+            attribute = reader.GetAttribute("ySplit");
             if (attribute != null)
             {
                 ySplitDefined = true;
@@ -369,7 +405,7 @@ namespace NanoXLSX.Internal.Readers
                     paneSplitHeight = DataUtils.GetPaneSplitHeight(ParserUtils.ParseFloat(attribute));
                 }
             }
-            attribute = ReaderUtils.GetAttribute(paneNode, "xSplit");
+            attribute = reader.GetAttribute("xSplit");
             if (attribute != null)
             {
                 xSplitDefined = true;
@@ -382,12 +418,12 @@ namespace NanoXLSX.Internal.Readers
                     paneSplitWidth = DataUtils.GetPaneSplitWidth(ParserUtils.ParseFloat(attribute));
                 }
             }
-            attribute = ReaderUtils.GetAttribute(paneNode, "topLeftCell");
+            attribute = reader.GetAttribute("topLeftCell");
             if (attribute != null)
             {
                 topLeftCell = new Address(attribute);
             }
-            attribute = ReaderUtils.GetAttribute(paneNode, "activePane", string.Empty);
+            attribute = reader.GetAttribute("activePane") ?? string.Empty;
             activePane = Worksheet.GetWorksheetPaneEnum(attribute);
             if (frozenState)
             {
@@ -422,88 +458,92 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Gets the sheet protection values of the current worksheets
+        /// Gets the sheet protection values of the current worksheet.
+        /// Protection attributes are read directly from the start element; the element is then
+        /// captured via ReadOuterXml and loaded into a minimal XmlDocument solely to satisfy the
+        /// IPasswordReader.ReadXmlAttributes(XmlNode) interface contract.
         /// </summary>
-        /// <param name="xmlDocument">XML document of the current worksheet</param>
+        /// <param name="reader">XmlReader positioned on the sheetProtection start element</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private void GetSheetProtection(XmlDocument xmlDocument, Worksheet worksheet)
+        private void GetSheetProtection(XmlReader reader, Worksheet worksheet)
         {
-            ReaderOptions readerOptions = this.Options as ReaderOptions;
-            XmlNodeList sheetProtectionNodes = xmlDocument.GetElementsByTagName("sheetProtection");
-            if (sheetProtectionNodes != null && sheetProtectionNodes.Count > 0)
+            int hasProtection = 0;
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.AutoFilter, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.DeleteColumns, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.DeleteRows, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.FormatCells, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.FormatColumns, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.FormatRows, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.InsertColumns, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.InsertHyperlinks, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.InsertRows, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.Objects, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.PivotTables, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.Scenarios, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.SelectLockedCells, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.SelectUnlockedCells, worksheet);
+            hasProtection += ReadSheetProtectionAttribute(reader, Worksheet.SheetProtectionValue.Sort, worksheet);
+            if (hasProtection > 0)
             {
-                int hasProtection = 0;
-                XmlNode sheetProtectionNode = sheetProtectionNodes[0];
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.AutoFilter, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.DeleteColumns, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.DeleteRows, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.FormatCells, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.FormatColumns, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.FormatRows, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.InsertColumns, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.InsertHyperlinks, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.InsertRows, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.Objects, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.PivotTables, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.Scenarios, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.SelectLockedCells, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.SelectUnlockedCells, worksheet);
-                hasProtection += ManageSheetProtection(sheetProtectionNode, Worksheet.SheetProtectionValue.Sort, worksheet);
-                if (hasProtection > 0)
+                worksheet.UseSheetProtection = true;
+            }
+            string outerXml;
+            using (XmlReader subtree = reader.ReadSubtree())
+            {
+                subtree.MoveToContent();
+                outerXml = subtree.ReadOuterXml();
+            }
+            XmlDocument miniDoc = new XmlDocument { XmlResolver = null };
+            miniDoc.LoadXml(outerXml);
+            this.passwordReader.ReadXmlAttributes(miniDoc.DocumentElement);
+            if (this.passwordReader.PasswordIsSet())
+            {
+                if (this.passwordReader is LegacyPasswordReader && (this.passwordReader as LegacyPasswordReader).ContemporaryAlgorithmDetected && (readerOptions == null || !readerOptions.IgnoreNotSupportedPasswordAlgorithms))
                 {
-                    worksheet.UseSheetProtection = true;
+                    throw new NotSupportedContentException("A not supported, contemporary password algorithm for the worksheet protection was detected. Check possible packages to add support to NanoXLSX, or ignore this error by a reader option");
                 }
-                this.passwordReader.ReadXmlAttributes(sheetProtectionNode);
-                if (this.passwordReader.PasswordIsSet())
-                {
-                    if (this.passwordReader is LegacyPasswordReader && (this.passwordReader as LegacyPasswordReader).ContemporaryAlgorithmDetected && (readerOptions == null || !readerOptions.IgnoreNotSupportedPasswordAlgorithms))
-                    {
-                        throw new NotSupportedContentException("A not supported, contemporary password algorithm for the worksheet protection was detected. Check possible packages to add support to NanoXLSX, or ignore this error by a reader option");
-                    }
-                    worksheet.SheetProtectionPassword.CopyFrom(this.passwordReader);
-                }
+                worksheet.SheetProtectionPassword.CopyFrom(this.passwordReader);
             }
         }
 
         /// <summary>
-        /// Manages particular sheet protection values if defined
+        /// Reads a single sheet protection attribute from the current reader position and registers it on the worksheet if present
         /// </summary>
-        /// <param name="node">Sheet protection node</param>
-        /// <param name="sheetProtectionValue">Value to check and maintain (if defined)</param>
+        /// <param name="reader">XmlReader positioned on the sheetProtection start element</param>
+        /// <param name="sheetProtectionValue">Protection value to check</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private static int ManageSheetProtection(XmlNode node, Worksheet.SheetProtectionValue sheetProtectionValue, Worksheet worksheet)
+        /// <returns>1 if the attribute was present, 0 otherwise</returns>
+        private static int ReadSheetProtectionAttribute(XmlReader reader, Worksheet.SheetProtectionValue sheetProtectionValue, Worksheet worksheet)
         {
-            int hasProtection = 0;
-            string attributeName = Worksheet.GetSheetProtectionName(sheetProtectionValue);
-            string attribute = ReaderUtils.GetAttribute(node, attributeName);
-            if (attribute != null)
+            string attrName = Worksheet.GetSheetProtectionName(sheetProtectionValue);
+            if (reader.GetAttribute(attrName) != null)
             {
-                hasProtection = 1;
                 worksheet.SheetProtectionValues.Add(sheetProtectionValue);
+                return 1;
             }
-            return hasProtection;
+            return 0;
         }
 
         /// <summary>
         /// Gets the merged cells of the current worksheet
         /// </summary>
-        /// <param name="xmlDocument">XML document of the current worksheet</param>
+        /// <param name="reader">XmlReader positioned on the mergeCells start element</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private static void GetMergedCells(XmlDocument xmlDocument, Worksheet worksheet)
+        private static void GetMergedCells(XmlReader reader, Worksheet worksheet)
         {
-            XmlNodeList mergedCellsNodes = xmlDocument.GetElementsByTagName("mergeCells");
-            if (mergedCellsNodes != null && mergedCellsNodes.Count > 0)
+            using (XmlReader subtree = reader.ReadSubtree())
             {
-                XmlNodeList mergedCellNodes = mergedCellsNodes[0].ChildNodes;
-                if (mergedCellNodes != null && mergedCellNodes.Count > 0)
+                subtree.Read(); // consume the mergeCells open tag
+                while (subtree.Read())
                 {
-                    foreach (XmlNode mergedCells in mergedCellNodes)
+                    if (!XmlStreamUtils.IsElement(subtree, "mergeCell"))
                     {
-                        string attribute = ReaderUtils.GetAttribute(mergedCells, "ref");
-                        if (attribute != null)
-                        {
-                            worksheet.MergeCells(new Range(attribute));
-                        }
+                        continue;
+                    }
+                    string attribute = subtree.GetAttribute("ref");
+                    if (attribute != null)
+                    {
+                        worksheet.MergeCells(new Range(attribute));
                     }
                 }
             }
@@ -512,115 +552,109 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Gets the sheet format information of the current worksheet
         /// </summary>
-        /// <param name="xmlDocument">XML document of the current worksheet</param>
+        /// <param name="reader">XmlReader positioned on the sheetFormatPr start element</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private static void GetSheetFormats(XmlDocument xmlDocument, Worksheet worksheet)
+        private static void GetSheetFormats(XmlReader reader, Worksheet worksheet)
         {
-            XmlNodeList formatNodes = xmlDocument.GetElementsByTagName("sheetFormatPr");
-            if (formatNodes != null && formatNodes.Count > 0)
+            string attribute = reader.GetAttribute("defaultColWidth");
+            if (attribute != null)
             {
-                string attribute = ReaderUtils.GetAttribute(formatNodes[0], "defaultColWidth");
-                if (attribute != null)
-                {
-                    worksheet.DefaultColumnWidth = ParserUtils.ParseFloat(attribute);
-                }
-                attribute = ReaderUtils.GetAttribute(formatNodes[0], "defaultRowHeight");
-                if (attribute != null)
-                {
-                    worksheet.DefaultRowHeight = ParserUtils.ParseFloat(attribute);
-                }
+                worksheet.DefaultColumnWidth = ParserUtils.ParseFloat(attribute);
+            }
+            attribute = reader.GetAttribute("defaultRowHeight");
+            if (attribute != null)
+            {
+                worksheet.DefaultRowHeight = ParserUtils.ParseFloat(attribute);
             }
         }
 
         /// <summary>
         /// Gets the auto filters of the current worksheet
         /// </summary>
-        /// <param name="xmlDocument">XML document of the current worksheet</param>
+        /// <param name="reader">XmlReader positioned on the autoFilter start element</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private static void GetAutoFilters(XmlDocument xmlDocument, Worksheet worksheet)
+        private static void GetAutoFilters(XmlReader reader, Worksheet worksheet)
         {
-            XmlNodeList autoFilterNodes = xmlDocument.GetElementsByTagName("autoFilter");
-            if (autoFilterNodes != null && autoFilterNodes.Count > 0)
+            string autoFilterRef = reader.GetAttribute("ref");
+            if (autoFilterRef != null)
             {
-                string autoFilterRef = ReaderUtils.GetAttribute(autoFilterNodes[0], "ref");
-                if (autoFilterRef != null)
-                {
-                    Range range = new Range(autoFilterRef);
-                    worksheet.SetAutoFilter(range.StartAddress.Column, range.EndAddress.Column);
-                }
+                Range range = new Range(autoFilterRef);
+                worksheet.SetAutoFilter(range.StartAddress.Column, range.EndAddress.Column);
             }
         }
 
         /// <summary>
         /// Gets the columns of the current worksheet
         /// </summary>
-        /// <param name="xmlDocument">XML document of the current worksheet</param>
+        /// <param name="reader">XmlReader positioned on the cols start element</param>
         /// <param name="worksheet">Currently processed worksheet</param>
         /// <param name="readerOptions">Reader options</param>
-        private void GetColumns(XmlDocument xmlDocument, Worksheet worksheet, ReaderOptions readerOptions)
+        private void GetColumns(XmlReader reader, Worksheet worksheet, ReaderOptions readerOptions)
         {
-            XmlNodeList columnNodes = xmlDocument.GetElementsByTagName("col");
-            foreach (XmlNode columnNode in columnNodes)
+            using (XmlReader subtree = reader.ReadSubtree())
             {
-                int? min = null;
-                int? max = null;
-                List<int> indices = new List<int>();
-                string attribute = ReaderUtils.GetAttribute(columnNode, "min");
-                if (attribute != null)
+                subtree.Read(); // consume the cols open tag
+                while (subtree.Read())
                 {
-                    min = ParserUtils.ParseInt(attribute);
-                    max = min;
-                    indices.Add(min.Value);
-                }
-                attribute = ReaderUtils.GetAttribute(columnNode, "max");
-                if (attribute != null)
-                {
-                    max = ParserUtils.ParseInt(attribute);
-                }
-                if (min != null && max.Value != min.Value)
-                {
-                    for (int i = min.Value; i <= max.Value; i++)
+                    if (!XmlStreamUtils.IsElement(subtree, "col"))
                     {
-                        indices.Add(i);
+                        continue;
                     }
-                }
-                attribute = ReaderUtils.GetAttribute(columnNode, "width");
-                float width = Worksheet.DefaultWorksheetColumnWidth;
-                if (attribute != null)
-                {
-                    width = ParserUtils.ParseFloat(attribute);
-                }
-                attribute = ReaderUtils.GetAttribute(columnNode, "hidden");
-                bool hidden = false;
-                if (attribute != null)
-                {
-                    int value = ParserUtils.ParseBinaryBool(attribute);
-                    if (value == 1)
+                    int? min = null;
+                    int? max = null;
+                    List<int> indices = new List<int>();
+                    string attribute = subtree.GetAttribute("min");
+                    if (attribute != null)
+                    {
+                        min = ParserUtils.ParseInt(attribute);
+                        max = min;
+                        indices.Add(min.Value);
+                    }
+                    attribute = subtree.GetAttribute("max");
+                    if (attribute != null)
+                    {
+                        max = ParserUtils.ParseInt(attribute);
+                    }
+                    if (min != null && max.Value != min.Value)
+                    {
+                        for (int i = min.Value; i <= max.Value; i++)
+                        {
+                            indices.Add(i);
+                        }
+                    }
+                    attribute = subtree.GetAttribute("width");
+                    float width = Worksheet.DefaultWorksheetColumnWidth;
+                    if (attribute != null)
+                    {
+                        width = ParserUtils.ParseFloat(attribute);
+                    }
+                    attribute = subtree.GetAttribute("hidden");
+                    bool hidden = false;
+                    if (attribute != null && ParserUtils.ParseBinaryBool(attribute) == 1)
                     {
                         hidden = true;
                     }
-                }
-                attribute = ReaderUtils.GetAttribute(columnNode, "style");
-                Style defaultStyle = null;
-                if (attribute != null && resolvedStyles.TryGetValue(attribute, out var attributeValue))
-                {
-                    defaultStyle = attributeValue;
-                }
-                foreach (int index in indices)
-                {
-                    string columnAddress = Cell.ResolveColumnAddress(index - 1); // Transform to zero-based     
-                    if (defaultStyle != null)
+                    attribute = subtree.GetAttribute("style");
+                    Style defaultStyle = null;
+                    if (attribute != null && resolvedStyles.TryGetValue(attribute, out var attributeValue))
                     {
-                        worksheet.SetColumnDefaultStyle(columnAddress, defaultStyle);
+                        defaultStyle = attributeValue;
                     }
-
-                    if (width != Worksheet.DefaultWorksheetColumnWidth)
+                    foreach (int index in indices)
                     {
-                        worksheet.SetColumnWidth(columnAddress, GetValidatedWidth(width, readerOptions));
-                    }
-                    if (hidden)
-                    {
-                        worksheet.AddHiddenColumn(columnAddress);
+                        string columnAddress = Cell.ResolveColumnAddress(index - 1); // Transform to zero-based
+                        if (defaultStyle != null)
+                        {
+                            worksheet.SetColumnDefaultStyle(columnAddress, defaultStyle);
+                        }
+                        if (width != Worksheet.DefaultWorksheetColumnWidth)
+                        {
+                            worksheet.SetColumnWidth(columnAddress, GetValidatedWidth(width, readerOptions));
+                        }
+                        if (hidden)
+                        {
+                            worksheet.AddHiddenColumn(columnAddress);
+                        }
                     }
                 }
             }
@@ -629,50 +663,53 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reads one cell in a worksheet
         /// </summary>
-        /// <param name="rowChild">Current child row as XmlNode</param>
+        /// <param name="rowReader">XmlReader positioned on the c start element</param>
         /// <param name="worksheet">Currently processed worksheet</param>
-        private void ReadCell(XmlNode rowChild, Worksheet worksheet)
+        /// <param name="sb">Reusable StringBuilder for inline string content</param>
+        private void ReadCell(XmlReader rowReader, Worksheet worksheet, StringBuilder sb)
         {
-            string type = "s";
-            string styleNumber = "";
-            string address = "A1";
+            string address = rowReader.GetAttribute("r"); // Mandatory
+            string type = rowReader.GetAttribute("t");    // can be null
+            string styleNumber = rowReader.GetAttribute("s"); // can be null
             string value = "";
-            if (rowChild.LocalName.Equals("c", StringComparison.OrdinalIgnoreCase))
+            if (!rowReader.IsEmptyElement)
             {
-                address = ReaderUtils.GetAttribute(rowChild, "r"); // Mandatory
-                type = ReaderUtils.GetAttribute(rowChild, "t"); // can be null if not existing
-                styleNumber = ReaderUtils.GetAttribute(rowChild, "s"); // can be null
-                if (rowChild.HasChildNodes)
+                using (XmlReader cellReader = rowReader.ReadSubtree())
                 {
-                    foreach (XmlNode valueNode in rowChild.ChildNodes)
+                    cellReader.Read(); // consume <c>
+                    while (cellReader.Read())
                     {
-                        if (valueNode.LocalName.Equals("v", StringComparison.OrdinalIgnoreCase))
+                        if (cellReader.NodeType != XmlNodeType.Element)
                         {
-                            value = valueNode.InnerText;
+                            continue;
                         }
-                        if (valueNode.LocalName.Equals("f", StringComparison.OrdinalIgnoreCase))
+                        if (cellReader.LocalName.Equals("v", StringComparison.OrdinalIgnoreCase) ||
+                            cellReader.LocalName.Equals("f", StringComparison.OrdinalIgnoreCase))
                         {
-                            value = valueNode.InnerText;
+                            value = cellReader.ReadElementContentAsString();
                         }
-                        if (valueNode.LocalName.Equals("is", StringComparison.OrdinalIgnoreCase))
+                        else if (cellReader.LocalName.Equals("is", StringComparison.OrdinalIgnoreCase))
                         {
-                            value = valueNode.InnerText;
+                            sb.Clear();
+                            using (XmlReader isReader = cellReader.ReadSubtree())
+                            {
+                                isReader.Read(); // consume <is>
+                                while (isReader.Read())
+                                {
+                                    if (isReader.NodeType == XmlNodeType.Element &&
+                                        isReader.LocalName.Equals("t", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        sb.Append(isReader.ReadElementContentAsString());
+                                    }
+                                }
+                            }
+                            value = sb.ToString();
                         }
                     }
                 }
             }
-            string key = ParserUtils.ToUpper(address);
             Cell cell = ResolveCellData(value, type, styleNumber, address);
             worksheet.AddCell(cell, address);
-            if (styleNumber != null)
-            {
-                Style style = null;
-                this.resolvedStyles.TryGetValue(styleNumber, out style);
-                if (style != null)
-                {
-                    worksheet.Cells[address].SetStyle(style);
-                }
-            }
         }
 
         /// <summary>
@@ -685,7 +722,6 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Cell object with either the originally loaded or modified (by import options) value</returns>
         private Cell ResolveCellData(string raw, string type, string styleNumber, string address)
         {
-            ReaderOptions readerOptions = this.Options as ReaderOptions;
             Cell.CellType importedType = Cell.CellType.Default;
             object rawValue;
             if (type == "b")
@@ -809,7 +845,6 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Modified value</returns>
         private object GetGloballyEnforcedFlagValues(object data, Address address)
         {
-            ReaderOptions readerOptions = this.Options as ReaderOptions;
             if (address.Row < readerOptions.EnforcingStartRowNumber)
             {
                 return data;
@@ -840,12 +875,11 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Converted value</returns>
         private object GetGloballyEnforcedValue(object data, Address address)
         {
-            ReaderOptions readerOptions = this.Options as ReaderOptions;
             if (address.Row < readerOptions.EnforcingStartRowNumber)
             {
                 return data;
             }
-            if (readerOptions.GlobalEnforcingType ==  ReaderOptions.GlobalType.AllNumbersToDouble)
+            if (readerOptions.GlobalEnforcingType == ReaderOptions.GlobalType.AllNumbersToDouble)
             {
                 object tempDouble = ConvertToDouble(data, readerOptions);
                 if (tempDouble != null)
@@ -885,7 +919,6 @@ namespace NanoXLSX.Internal.Readers
         /// <returns></returns>
         private object GetEnforcedColumnValue(object data, Cell.CellType importedTyp, Address address)
         {
-            ReaderOptions readerOptions = this.Options as ReaderOptions;
             if (address.Row < readerOptions.EnforcingStartRowNumber)
             {
                 return data;
@@ -1232,7 +1265,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="readerOptions">Reader options</param>
         /// <returns>TimeSpan instance or null if not possible to parse</returns>
         private TimeSpan? TryParseTime(string raw, ReaderOptions readerOptions)
-        {   
+        {
             TimeSpan timeSpan;
             bool isTimeSpan;
             if (readerOptions == null || string.IsNullOrEmpty(readerOptions.TimeSpanFormat) || readerOptions.TemporalCultureInfo == null)

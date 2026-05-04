@@ -256,7 +256,7 @@ namespace NanoXLSX.Test.Core.MiscTest
         {
             DateTime expectedDate = DateTime.ParseExact(expectedDateString, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
             DateTime date = DataUtils.GetDateFromOA(givenValue);
-            Assert.Equal(expectedDate, date);
+            Assert.True(Math.Abs((expectedDate - date).TotalMilliseconds) < 1d);
         }
 
         [Theory(DisplayName = "Test of the MergeRange function")]

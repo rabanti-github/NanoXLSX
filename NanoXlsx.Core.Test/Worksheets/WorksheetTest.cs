@@ -1817,8 +1817,8 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             var worksheet = new Worksheet();
             var cell1 = new Cell("Test1", CellType.String, "A1");
             var cell2 = new Cell(matchingValue, CellType.Default, "B1");
-            worksheet.Cells.Add("A1", cell1);
-            worksheet.Cells.Add("B1", cell2);
+            worksheet.AddCell(cell1, 0, 0);
+            worksheet.AddCell(cell2, 1, 0);
 
             Cell? result = worksheet.FirstCellByValue(matchingValue);
 
@@ -1834,8 +1834,8 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             var cell1 = new Cell("Test1", CellType.String, "A1");
             DateTime matchingValue = new DateTime(2025, 02, 10, 5, 6, 7, DateTimeKind.Utc);
             var cell2 = new Cell(matchingValue, CellType.Date, "B1");
-            worksheet.Cells.Add("A1", cell1);
-            worksheet.Cells.Add("B1", cell2);
+            worksheet.AddCell(cell1, 0, 0);
+            worksheet.AddCell(cell2, 1, 0);
 
             var result = worksheet.FirstCellByValue(matchingValue);
 
@@ -1857,7 +1857,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             var worksheet = new Worksheet();
             var cell1 = new Cell("Test1", CellType.String, "A1");
-            worksheet.Cells.Add("A1", cell1);
+            worksheet.AddCell(cell1, 0, 0);
 
             var result = worksheet.FirstCellByValue(notMatchingValue);
 

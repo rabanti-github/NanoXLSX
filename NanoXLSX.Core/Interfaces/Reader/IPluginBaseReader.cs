@@ -28,12 +28,12 @@ namespace NanoXLSX.Interfaces.Reader
         /// <param name="workbook">Workbook instance where read data is placed</param>
         /// <param name="readerOptions">Optional reader options</param>
         /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
-        void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler);
+        void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler);
 
         /// <summary>
         /// Reference to a handler of in-line plugins, to be used for post operations in the <see cref="IPlugin.Execute"/> method
         /// </summary>
-        Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+        Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
     }
 }

@@ -1,5 +1,40 @@
 # Change Log
 
+## v3.1.0
+
+---
+
+Release Date: **(04.05.2026)** <sup>(DMY)</sup>
+
+- Package: **NanoXLSX.Core**
+  * **Breaking change:** `Worksheet.Cells` now returns `IReadOnlyDictionary<string, Cell>` instead of `Dictionary<string, Cell>`. All read operations (`["A1"]`, `ContainsKey`, `TryGetValue`, `foreach`, `Count`, `Keys`, `Values`) work unchanged. Mutating properties of an existing cell in-place (e.g. `Cells["A1"].Value = x`) continues to work. Adding or removing cells through `Cells` directly (e.g. `Cells.Add(...)`, `Cells.Remove(...)`, `Cells["A1"] = new Cell(...)`) is no longer possible; use `Worksheet.AddCell(...)` and `Worksheet.RemoveCell(...)` instead.
+  * Replaced internal cell storage with an integer-keyed dictionary (`(column, row)`), eliminating per-cell address string allocation on every `AddCell` call and reducing memory overhead for large workbooks.
+  * Added `Worksheet.CellValues` property (`IEnumerable<Cell>`): allocation-free enumeration over all cells, preferred for hot iteration paths.
+- Package: **NanoXLSX.Reader**
+  * Improved reader performance (memory consumption, load time). Reading a workbook should now be up to 3 times faster.
+- Package: **NanoXLSX.Writer**
+  * Optimized writer performance (memory consumption, save time)
+  * Updated internal worksheet iteration to use `Worksheet.CellValues`, eliminating per-cell string allocation during save.
+- **General**
+  * Added llms.txt to root directory of the repository, for better orientation of AI agents
+  * Added hints for AI agent, pointing to llms.txt
+  * Updated test projects from .Net 5.0 to .Net 8.0, Xunit 2.x to 3.x, and various test-relevant dependencies to the most recent versions.
+ 
+Note: Direct manipulation of the cell dictionary through `Worksheet.Cells` (e.g. `Cells.Add(...)`, `Cells.Remove(...)`, `Cells["A1"] = new Cell(...)`) was never an intended or documented API. Doing so bypassed address validation, style normalization and internal bookkeeping performed by `AddCell` and `RemoveCell`, and could silently produce invalid workbooks. The change to `IReadOnlyDictionary` makes this boundary explicit.
+
+
+## v3.0.1
+
+---
+
+Release Date: **(24.04.2026)** <sup>(DMY)</sup>
+
+- Package: **NanoXLSX.Reader**
+  * Fixed internal async handling of the workbook reader, to avoid deadlocks in WinForms/WPF projects, when async is not used (regression).
+  * Fixed order of worksheets when manually changed
+  * Added filename to workbook when reading from file
+
+
 ## v3.0.0
 
 ---
@@ -246,7 +281,7 @@ Release Date: **12.01.2025** <sup>(DMY)</sup>
 Release Date: **24.11.2024** <sup>(DMY)</sup>
 
 - Fixed a bug of the column address (letter) resolution. Column letters above 'Z' were resolved incorrectly
-- Changed async handing of the workbook reader, to avoid deadlocks. Change provided by Jarren Long
+- Changed async handling of the workbook reader, to avoid deadlocks. Change provided by Jarren Long
 - Simplified project structure (unified .Net 4.x and Standard). Change provided by Jarren Long
 - Added tests for column address resolution
 

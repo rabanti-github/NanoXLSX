@@ -12,6 +12,7 @@ using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
+using NanoXLSX.Utils.Xml;
 
 namespace NanoXLSX.Internal.Readers
 {
@@ -21,7 +22,7 @@ namespace NanoXLSX.Internal.Readers
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataCoreReader)]
     public class MetadataCoreReader : IPluginBaseReader
     {
-        private MemoryStream stream;
+        private Stream stream;
 
         #region properties
         /// <summary>
@@ -35,7 +36,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reference to the <see cref="ReaderPlugInHandler"/>, to be used for post operations in the <see cref="Execute"/> method
         /// </summary>
-        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+        public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         #endregion
 
         #region constructors
@@ -56,7 +57,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options (NoOp)</param>
         /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+        public void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;
             this.Workbook = workbook;
@@ -75,40 +76,41 @@ namespace NanoXLSX.Internal.Readers
                 using (stream) // Close after processing
                 {
                     Metadata metadata = Workbook.WorkbookMetadata;
-
-                    XmlDocument xr = new XmlDocument() { XmlResolver = null };
-                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
+                    using (XmlReader reader = XmlReader.Create(stream, XmlStreamUtils.CreateSettings()))
                     {
-                        xr.Load(reader);
-                        foreach (XmlNode node in xr.DocumentElement.ChildNodes)
+                        while (reader.Read())
                         {
-                            if (node.LocalName.Equals("Category", StringComparison.OrdinalIgnoreCase))
+                            if (reader.NodeType != XmlNodeType.Element)
                             {
-                                metadata.Category = node.InnerText;
+                                continue;
                             }
-                            else if (node.LocalName.Equals("ContentStatus", StringComparison.OrdinalIgnoreCase))
+                            if (XmlStreamUtils.IsElement(reader, "Category"))
                             {
-                                metadata.ContentStatus = node.InnerText;
+                                metadata.Category = XmlStreamUtils.ReadElementText(reader);
                             }
-                            else if (node.LocalName.Equals("Creator", StringComparison.OrdinalIgnoreCase))
+                            else if (XmlStreamUtils.IsElement(reader, "ContentStatus"))
                             {
-                                metadata.Creator = node.InnerText;
+                                metadata.ContentStatus = XmlStreamUtils.ReadElementText(reader);
                             }
-                            else if (node.LocalName.Equals("Description", StringComparison.OrdinalIgnoreCase))
+                            else if (XmlStreamUtils.IsElement(reader, "Creator"))
                             {
-                                metadata.Description = node.InnerText;
+                                metadata.Creator = XmlStreamUtils.ReadElementText(reader);
                             }
-                            else if (node.LocalName.Equals("Keywords", StringComparison.OrdinalIgnoreCase))
+                            else if (XmlStreamUtils.IsElement(reader, "Description"))
                             {
-                                metadata.Keywords = node.InnerText;
+                                metadata.Description = XmlStreamUtils.ReadElementText(reader);
                             }
-                            else if (node.LocalName.Equals("Subject", StringComparison.OrdinalIgnoreCase))
+                            else if (XmlStreamUtils.IsElement(reader, "Keywords"))
                             {
-                                metadata.Subject = node.InnerText;
+                                metadata.Keywords = XmlStreamUtils.ReadElementText(reader);
                             }
-                            else if (node.LocalName.Equals("Title", StringComparison.OrdinalIgnoreCase))
+                            else if (XmlStreamUtils.IsElement(reader, "Subject"))
                             {
-                                metadata.Title = node.InnerText;
+                                metadata.Subject = XmlStreamUtils.ReadElementText(reader);
+                            }
+                            else if (XmlStreamUtils.IsElement(reader, "Title"))
+                            {
+                                metadata.Title = XmlStreamUtils.ReadElementText(reader);
                             }
                         }
                         InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.MetadataCoreInlineReader, Options, null);

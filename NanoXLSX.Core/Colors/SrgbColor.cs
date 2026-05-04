@@ -62,7 +62,7 @@ namespace NanoXLSX.Colors
         /// <summary>
         /// Constructor with an RGB or ARGB hex string
         /// </summary>
-        /// <param name="rgb"RGB (6-char) or ARGB (8-char) hex string (case-insensitive)</param>
+        /// <param name="rgb">RGB (6-char) or ARGB (8-char) hex string (case-insensitive)</param>
         public SrgbColor(string rgb) : this()
         {
             ColorValue = rgb;

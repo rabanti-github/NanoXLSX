@@ -290,6 +290,98 @@ namespace NanoXLSX.Utils.Xml
         }
 
         /// <summary>
+        /// Streams this custom XmlElement (and its children) directly to an <see cref="XmlWriter"/>, bypassing the intermediate <see cref="XmlDocument"/>.
+        /// </summary>
+        /// <param name="writer">Target XmlWriter to write to</param>
+        /// <param name="defaultNs">Default namespace URI inherited from the parent element. Pass null at the root.</param>
+        internal void WriteTo(XmlWriter writer, string defaultNs = null)
+        {
+            string elementDefaultNs = hasDefaultNameSpace ? defaultXmlNsUri : defaultNs;
+
+            if (hasPrefix)
+            {
+                string nsUri = null;
+                if (PrefixNameSpaceMap != null && PrefixNameSpaceMap.TryGetValue(Prefix, out string prefixNs))
+                {
+                    nsUri = prefixNs;
+                }
+                writer.WriteStartElement(Prefix, Name, nsUri);
+            }
+            else
+            {
+                writer.WriteStartElement(Name, elementDefaultNs);
+            }
+
+            if (hasNameSpaces && PrefixNameSpaceMap != null)
+            {
+                foreach (KeyValuePair<string, string> ns in PrefixNameSpaceMap)
+                {
+                    if (ns.Key == "xmlns")
+                    {
+                        continue;
+                    }
+                    writer.WriteAttributeString("xmlns", ns.Key, null, ns.Value);
+                }
+            }
+
+            if (hasAttributes)
+            {
+                foreach (XmlAttribute attr in Attributes)
+                {
+                    if (attr.HasPrefix)
+                    {
+                        if (attr.Prefix == "xmlns")
+                        {
+                            continue;
+                        }
+                        string attrNsUri = null;
+                        if (PrefixNameSpaceMap != null && PrefixNameSpaceMap.TryGetValue(attr.Prefix, out string mapped))
+                        {
+                            attrNsUri = mapped;
+                        }
+                        writer.WriteAttributeString(attr.Prefix, attr.Name, attrNsUri, attr.Value);
+                    }
+                    else
+                    {
+                        int colonIndex = attr.Name.IndexOf(':');
+                        if (colonIndex > 0)
+                        {
+                            // Qualified attribute name encoded as a single string (e.g. "mc:Ignorable").
+                            // XmlWriter requires the prefix and local name to be supplied separately.
+                            string implicitPrefix = attr.Name.Substring(0, colonIndex);
+                            string localName = attr.Name.Substring(colonIndex + 1);
+                            string nsUri = null;
+                            if (PrefixNameSpaceMap != null && PrefixNameSpaceMap.TryGetValue(implicitPrefix, out string mappedNs))
+                            {
+                                nsUri = mappedNs;
+                            }
+                            writer.WriteAttributeString(implicitPrefix, localName, nsUri, attr.Value);
+                        }
+                        else
+                        {
+                            writer.WriteAttributeString(attr.Name, attr.Value);
+                        }
+                    }
+                }
+            }
+
+            if (hasInnerValue)
+            {
+                writer.WriteString(innerValue);
+            }
+
+            if (hasChildren)
+            {
+                foreach (XmlElement child in Children)
+                {
+                    child.WriteTo(writer, elementDefaultNs);
+                }
+            }
+
+            writer.WriteEndElement();
+        }
+
+        /// <summary>
         /// Method to find XML child elements, based of its name. Name space and hierarchy is not considered as exclusion parameters
         /// </summary>
         /// <param name="name">Name of the target element or elements</param>

@@ -173,6 +173,15 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.NotEqual(color5.GetHashCode(), color6.GetHashCode());
         }
 
+        [Fact(DisplayName = "Test of the ToString method")]
+        public void ToStringTest()
+        {
+            var color1 = new SrgbColor("ACADAF");
+            Assert.Equal("FFACADAF", color1.ToString());
+            var color2 = new SrgbColor();
+            Assert.Null(color2.ToString());
+        }
+
         private class DummyColor : IColor
         {
             public string StringValue => null;

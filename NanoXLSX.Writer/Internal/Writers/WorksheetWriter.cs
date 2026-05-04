@@ -129,6 +129,14 @@ namespace NanoXLSX.Internal.Writers
         }
 
         /// <summary>
+        /// Releases the XML element from memory. Should be called after the XML document has been generated and the element is not needed anymore.
+        /// </summary>
+        void IWorksheetWriter.ReleaseXmlElement()
+        {
+            this.worksheet = null;
+        }
+
+        /// <summary>
         /// Method to create merged cell information in one XmlElement
         /// </summary>
         /// <param name="worksheet">Corresponding worksheet</param>
@@ -343,11 +351,7 @@ namespace NanoXLSX.Internal.Writers
         /// <returns>Sorted list of dynamic rows that are either defined by cells or row widths / hidden states. The list is sorted by row numbers (zero-based)</returns>
         private static List<DynamicRow> GetSortedSheetData(Worksheet worksheet)
         {
-            List<Cell> temp = new List<Cell>();
-            foreach (KeyValuePair<string, Cell> item in worksheet.Cells)
-            {
-                temp.Add(item.Value);
-            }
+            List<Cell> temp = new List<Cell>(worksheet.CellValues);
             temp.Sort();
             DynamicRow row = new DynamicRow(); ;
             Dictionary<int, DynamicRow> rows = new Dictionary<int, DynamicRow>();

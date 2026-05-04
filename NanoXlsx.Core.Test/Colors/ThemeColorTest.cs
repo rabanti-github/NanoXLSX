@@ -129,5 +129,11 @@ namespace NanoXLSX.Core.Test.Colors
             Assert.NotEqual(color3.GetHashCode(), color4.GetHashCode());
         }
 
+        [Fact(DisplayName = "Test of the ToString method")]
+        public void ToStringTest()
+        {
+            ThemeColor color = new ThemeColor(Theme.ColorSchemeElement.Accent3);
+            Assert.Equal(color.StringValue, color.ToString());
+        }
     }
 }

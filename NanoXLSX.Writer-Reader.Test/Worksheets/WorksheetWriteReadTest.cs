@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using NanoXLSX.Extensions;
 using NanoXLSX.Styles;
+using NanoXLSX.Test.Writer_Reader.Utils;
 using NanoXLSX.Utils;
 using Xunit;
 using static NanoXLSX.Styles.CellXf;
@@ -628,6 +629,16 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
             Assert.Equal(TextBreakValue.ShrinkToFit, givenWorksheet.Cells["A3"].CellStyle.CurrentCellXf.Alignment);
         }
 
+        [Fact(DisplayName = "Test of the correct reading order of worksheets if the worksheets were manually reordered in Excel (WS1 is on pos 2 and WS2 is on pos 1")]
+        public void ReadSwappedWorksheetsTest()
+        {
+            // The file has two worksheets: "Table 2" at index 0 and "Table 1" as index 1
+            Stream stream = TestUtils.GetResource("swapped_worksheets.xlsx");
+            Workbook workbook = WorkbookReader.Load(stream);
+            Assert.Equal("Table 2", workbook.Worksheets[0].SheetName);
+            Assert.Equal("Table 1", workbook.Worksheets[1].SheetName);
+            Assert.Equal(2, workbook.Worksheets.Count);
+        }
 
         private static Dictionary<Worksheet.SheetProtectionValue, bool> PrepareSheetProtectionValues(string tokenString)
         {

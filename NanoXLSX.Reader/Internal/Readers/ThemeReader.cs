@@ -14,6 +14,7 @@ using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Themes;
+using NanoXLSX.Utils.Xml;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
@@ -25,7 +26,7 @@ namespace NanoXLSX.Internal.Readers
     public class ThemeReader : IPluginBaseReader
     {
 
-        private MemoryStream stream;
+        private Stream stream;
 
         #region properties
         /// <summary>
@@ -39,7 +40,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reference to the <see cref="ReaderPlugInHandler"/>, to be used for post operations in the <see cref="Execute"/> method
         /// </summary>
-        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+        public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         #endregion
 
         #region constructors
@@ -59,7 +60,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
         /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+        public void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;
             this.Workbook = workbook;
@@ -77,66 +78,25 @@ namespace NanoXLSX.Internal.Readers
             {
                 using (stream) // Close after processing
                 {
-                    XmlDocument xr = new XmlDocument() { XmlResolver = null };
-                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
+                    ColorScheme colorScheme = null;
+                    using (XmlReader reader = XmlReader.Create(stream, XmlStreamUtils.CreateSettings()))
                     {
-                        xr.Load(reader);
-                        string prefix = ReaderUtils.DiscoverPrefix(xr, "theme");
-                        XmlNodeList themes = ReaderUtils.GetElementsByTagName(xr, "theme", prefix);
-                        string themeName = ReaderUtils.GetAttribute(themes[0], "name"); // If this fails, something is completely wrong
-                        Workbook.WorkbookTheme = new Theme(themeName);
-                        ColorScheme colorScheme = new ColorScheme();
-                        Workbook.WorkbookTheme.Colors = colorScheme;
-                        XmlNodeList colors = ReaderUtils.GetElementsByTagName(xr, "clrScheme", prefix);
-
-                        foreach (XmlNode color in colors)
+                        while (reader.Read())
                         {
-                            string colorSchemeName = ReaderUtils.GetAttribute(color, "name", "");
-                            Workbook.WorkbookTheme.Colors.Name = colorSchemeName;
-                            XmlNodeList colorNodes = color.ChildNodes;
-                            foreach (XmlNode colorNode in colorNodes)
+                            if (reader.NodeType != XmlNodeType.Element)
                             {
-                                string name = colorNode.LocalName;
-                                switch (name)
-                                {
-                                    case "dk1":
-                                        colorScheme.Dark1 = ParseColor(colorNode.ChildNodes);
-                                        break;
-                                    case "lt1":
-                                        colorScheme.Light1 = ParseColor(colorNode.ChildNodes);
-                                        break;
-                                    case "dk2":
-                                        colorScheme.Dark2 = ParseColor(colorNode.ChildNodes);
-                                        break;
-                                    case "lt2":
-                                        colorScheme.Light2 = ParseColor(colorNode.ChildNodes);
-                                        break;
-                                    case "accent1":
-                                        colorScheme.Accent1 = ParseColor(colorNode.ChildNodes);
-                                        break;
-                                    case "accent2":
-                                        colorScheme.Accent2 = ParseColor(colorNode.ChildNodes);
-                                        break;
-                                    case "accent3":
-                                        colorScheme.Accent3 = ParseColor(colorNode.ChildNodes);
-                                        break;
-                                    case "accent4":
-                                        colorScheme.Accent4 = ParseColor(colorNode.ChildNodes);
-                                        break;
-                                    case "accent5":
-                                        colorScheme.Accent5 = ParseColor(colorNode.ChildNodes);
-                                        break;
-                                    case "accent6":
-                                        colorScheme.Accent6 = ParseColor(colorNode.ChildNodes);
-                                        break;
-                                    case "hlink":
-                                        colorScheme.Hyperlink = ParseColor(colorNode.ChildNodes);
-                                        break;
-                                    case "folHlink":
-                                        colorScheme.FollowedHyperlink = ParseColor(colorNode.ChildNodes);
-                                        break;
-                                }
-
+                                continue;
+                            }
+                            if (XmlStreamUtils.IsElement(reader, "theme") && colorScheme == null)
+                            {
+                                string themeName = reader.GetAttribute("name");
+                                Workbook.WorkbookTheme = new Theme(themeName);
+                                colorScheme = new ColorScheme();
+                                Workbook.WorkbookTheme.Colors = colorScheme;
+                            }
+                            else if (XmlStreamUtils.IsElement(reader, "clrScheme") && colorScheme != null)
+                            {
+                                ReadClrScheme(reader, colorScheme);
                             }
                         }
                         InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.ThemeInlineReader, Options, null);
@@ -150,49 +110,123 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Parses a color value (either RGB-like or enumerated system color)
+        /// Reads the clrScheme element: captures its name attribute and iterates its color-slot
+        /// children (dk1, lt1, …) using a single subtree pass to avoid sibling-skipping.
         /// </summary>
-        /// <param name="childNodes">List of XML nodes that can contain color values</param>
-        /// <returns><see cref="IColor"/> value or null, if no color could be determined</returns>
-        private static IColor ParseColor(XmlNodeList childNodes)
+        private static void ReadClrScheme(XmlReader reader, ColorScheme colorScheme)
         {
-            foreach (XmlNode node in childNodes)
+            colorScheme.Name = reader.GetAttribute("name") ?? string.Empty;
+            using (XmlReader subtree = reader.ReadSubtree())
             {
-                if (node.LocalName == "sysClr")
+                subtree.Read(); // consume the <clrScheme> open tag
+                while (subtree.Read())
                 {
-                    SystemColor.Value value = ParseSystemColor(node);
-                    SystemColor systemColor = new SystemColor
+                    if (subtree.NodeType != XmlNodeType.Element)
                     {
-                        ColorValue = value
-                    };
-                    string lastColor = ReaderUtils.GetAttribute(node, "lastClr");
-                    if (lastColor != null)
-                    {
-                        systemColor.LastColor = lastColor;
+                        continue;
                     }
-                    return systemColor;
-                }
-                else if (node.LocalName == "srgbClr")
-                {
-                    SrgbColor srgbColor = new SrgbColor
+                    string slot = subtree.LocalName;
+                    IColor color = ReadColorEntry(subtree);
+                    switch (slot)
                     {
-                        ColorValue = ReaderUtils.GetAttribute(node, "val")
-                    };
-                    return srgbColor;
+                        case "dk1":
+                            colorScheme.Dark1 = color;
+                            break;
+                        case "lt1":
+                            colorScheme.Light1 = color;
+                            break;
+                        case "dk2":
+                            colorScheme.Dark2 = color;
+                            break;
+                        case "lt2":
+                            colorScheme.Light2 = color;
+                            break;
+                        case "accent1":
+                            colorScheme.Accent1 = color;
+                            break;
+                        case "accent2":
+                            colorScheme.Accent2 = color;
+                            break;
+                        case "accent3":
+                            colorScheme.Accent3 = color;
+                            break;
+                        case "accent4":
+                            colorScheme.Accent4 = color;
+                            break;
+                        case "accent5":
+                            colorScheme.Accent5 = color;
+                            break;
+                        case "accent6":
+                            colorScheme.Accent6 = color;
+                            break;
+                        case "hlink":
+                            colorScheme.Hyperlink = color;
+                            break;
+                        case "folHlink":
+                            colorScheme.FollowedHyperlink = color;
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads the color value from the children of a color-slot element (dk1, lt1, etc.).
+        /// Uses depth-based traversal so the reader is left on the slot's end element on return,
+        /// allowing the caller's while loop to correctly advance to the next slot sibling.
+        /// </summary>
+        private static IColor ReadColorEntry(XmlReader reader)
+        {
+            if (reader.IsEmptyElement)
+            {
+                return null;
+            }
+            int slotDepth = reader.Depth;
+            while (reader.Read())
+            {
+                if (reader.Depth == slotDepth)
+                {
+                    break; // at the slot's end element — caller's Read() moves to next sibling
+                }
+                if (reader.NodeType == XmlNodeType.Element)
+                {
+                    if (reader.LocalName.Equals("sysClr", StringComparison.OrdinalIgnoreCase))
+                    {
+                        string val = reader.GetAttribute("val");
+                        SystemColor systemColor = new SystemColor
+                        {
+                            ColorValue = ParseSystemColor(val)
+                        };
+                        string lastColor = reader.GetAttribute("lastClr");
+                        if (lastColor != null)
+                        {
+                            systemColor.LastColor = lastColor;
+                        }
+                        reader.Skip(); // advance past sysClr to the slot's end element
+                        return systemColor;
+                    }
+                    else if (reader.LocalName.Equals("srgbClr", StringComparison.OrdinalIgnoreCase))
+                    {
+                        SrgbColor color = new SrgbColor
+                        {
+                            ColorValue = reader.GetAttribute("val")
+                        };
+                        reader.Skip(); // advance past srgbClr to the slot's end element
+                        return color;
+                    }
                 }
             }
             return null;
         }
 
         /// <summary>
-        /// Tries to parse a system color
+        /// Tries to parse a system color string value
         /// </summary>
-        /// <param name="innerNode">Color scheme sub-node</param>
-        /// <returns>System color</returns>
-        /// <exception cref="NanoXLSX.Exceptions.StyleException">Throws IOException in case of an invalid value</exception>
-        private static SystemColor.Value ParseSystemColor(XmlNode innerNode)
+        /// <param name="value">String value of the val attribute</param>
+        /// <returns>System color enum value</returns>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">Throws IOException in case of an invalid value</exception>
+        private static SystemColor.Value ParseSystemColor(string value)
         {
-            string value = ReaderUtils.GetAttribute(innerNode, "val");
             if (string.IsNullOrEmpty(value))
             {
                 throw new IOException("The system color entry was null or empty");

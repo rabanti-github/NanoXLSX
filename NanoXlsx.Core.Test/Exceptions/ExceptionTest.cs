@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Reflection;
+using System.Runtime.Serialization;
 using NanoXLSX.Exceptions;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
@@ -144,17 +145,17 @@ namespace NanoXLSX.Test.Core.ExceptionTest
 
         public static void AssertExceptionSerialization<TException>(TException originalException) where TException : Exception
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            TException deserializedException;
-#pragma warning disable SYSLIB0011
-            using (var stream = new System.IO.MemoryStream())
-            {
-                formatter.Serialize(stream, originalException);
+            SerializationInfo info = new SerializationInfo(typeof(TException), new FormatterConverter());
+            StreamingContext context = new StreamingContext(StreamingContextStates.All);
+            originalException.GetObjectData(info, context);
 
-                stream.Seek(0, System.IO.SeekOrigin.Begin);
-                deserializedException = (TException)formatter.Deserialize(stream);
-            }
-#pragma warning restore SYSLIB0011
+            ConstructorInfo ctor = typeof(TException).GetConstructor(
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                null,
+                new[] { typeof(SerializationInfo), typeof(StreamingContext) },
+                null);
+
+            TException deserializedException = (TException)ctor.Invoke(new object[] { info, context });
             Assert.Equal(originalException.Message, deserializedException.Message);
         }
 

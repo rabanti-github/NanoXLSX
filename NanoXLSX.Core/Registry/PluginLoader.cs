@@ -249,6 +249,16 @@ namespace NanoXLSX.Registry
         }
 
         /// <summary>
+        /// Indicates whether at least one queue plug-in is registered for the given queue UUID.
+        /// </summary>
+        /// <param name="queueUUID">UUID of the queue to check</param>
+        /// <returns>True if at least one plug-in is registered for the queue, otherwise false</returns>
+        internal static bool HasQueuePlugins(string queueUUID)
+        {
+            return queuePlugInClasses.TryGetValue(queueUUID, out var list) && list.Count > 0;
+        }
+
+        /// <summary>
         /// Method to get the next instance of a queue plug-in. To get the first one of a queue, the parameter 'lastPlugInUUID' is set as null.
         /// If no further plug-in can be found in the queue, null will be returned as instance
         /// </summary>

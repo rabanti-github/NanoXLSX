@@ -72,6 +72,9 @@ There are some limitations:
 * No support of other objects than spreadsheet data at the moment
 * Due to the potential high complexity, custom number format codes are currently not automatically escaped on writing or un-escaped on reading
 
+## :robot: For AI Agents
+For AI agents and LLM tooling, a machine-readable [`llms.txt`](./llms.txt) is available.
+
 ## :gear: Requirements
 
 NanoXLSX is originally based on PicoXLSX. However, NanoXLSX is now in the development lead, whereas PicoXLSX is a subset of it. The library is currently on compatibility level with .NET version 4.5 and .NET Standard 2.0. Newer versions should of course work as well. Older versions, like .NET 3.5 have only limited support, since newer language features were used.
@@ -149,7 +152,7 @@ dotnet add package NanoXLSX
 
 See the full **API-Documentation** at: [https://rabanti-github.github.io/NanoXLSX/](https://rabanti-github.github.io/NanoXLSX/).
 
-The **[Demo Project](https://github.com/rabanti-github/NanoXLSX.Demo)** contains 27 examples covering various use cases. The demo project is maintained in a separate repository.
+The **[Demo Project](https://github.com/rabanti-github/NanoXLSX.Demo)** contains 28 examples covering various use cases. The demo project is maintained in a separate repository.
 See the section **[NanoXLSX](https://github.com/rabanti-github/NanoXLSX.Demo/tree/main/NanoXLSX)** for the specific examples related to NanoXLSX.
 
 See also: [Getting started in the Wiki](https://github.com/rabanti-github/NanoXLSX/wiki/Getting-started)

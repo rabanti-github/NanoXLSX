@@ -15,6 +15,7 @@ using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils;
+using NanoXLSX.Utils.Xml;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
@@ -29,7 +30,7 @@ namespace NanoXLSX.Internal.Readers
         #region privateFields
         private bool capturePhoneticCharacters;
         private readonly List<PhoneticInfo> phoneticsInfo;
-        private MemoryStream stream;
+        private Stream stream;
         #endregion
 
         #region properties
@@ -45,7 +46,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Workbook reference where read data is stored (should not be null)
         /// </summary>
-        public Workbook Workbook { get ; set; }
+        public Workbook Workbook { get; set; }
         /// <summary>
         /// Reader options
         /// </summary>
@@ -53,7 +54,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reference to the <see cref="ReaderPlugInHandler"/>, to be used for post operations in the <see cref="Execute"/> method
         /// </summary>
-        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+        public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         #endregion
 
         #region constructors
@@ -75,7 +76,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
         /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+        public void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;
             this.Workbook = workbook;
@@ -97,28 +98,24 @@ namespace NanoXLSX.Internal.Readers
             {
                 using (stream) // Close after processing
                 {
-                    XmlDocument xr = new XmlDocument
+                    StringBuilder sb = new StringBuilder();
+                    using (XmlReader reader = XmlReader.Create(stream, XmlStreamUtils.CreateSettings()))
                     {
-                        XmlResolver = null
-                    };
-                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
-                    {
-                        xr.Load(reader);
-                        StringBuilder sb = new StringBuilder();
-                        foreach (XmlNode node in xr.DocumentElement.ChildNodes)
+                        while (reader.Read())
                         {
-                            if (node.LocalName.Equals("si", StringComparison.OrdinalIgnoreCase))
+                            if (!XmlStreamUtils.IsElement(reader, "si"))
                             {
-                                sb.Clear();
-                                GetTextToken(node, ref sb);
-                                if (capturePhoneticCharacters)
-                                {
-                                    SharedStrings.Add(ProcessPhoneticCharacters(sb));
-                                }
-                                else
-                                {
-                                    SharedStrings.Add(sb.ToString());
-                                }
+                                continue;
+                            }
+                            sb.Clear();
+                            ReadSiElement(reader, sb);
+                            if (capturePhoneticCharacters)
+                            {
+                                SharedStrings.Add(ProcessPhoneticCharacters(sb));
+                            }
+                            else
+                            {
+                                SharedStrings.Add(sb.ToString());
                             }
                         }
                         InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.SharedStringsInlineReader, Options, null);
@@ -132,33 +129,72 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Function collects text tokens recursively in case of a split by formatting
+        /// Reads a single shared-string item (&lt;si&gt;) using a subtree reader.
+        /// Collects text from all &lt;t&gt; elements, skipping or capturing &lt;rPh&gt; phonetic elements.
         /// </summary>
-        /// <param name="node">Root node to process</param>
-        /// <param name="sb">StringBuilder reference</param>
-        private void GetTextToken(XmlNode node, ref StringBuilder sb)
+        private void ReadSiElement(XmlReader reader, StringBuilder sb)
         {
-            if (node.LocalName.Equals("rPh", StringComparison.OrdinalIgnoreCase))
+            using (XmlReader siSubtree = reader.ReadSubtree())
             {
-                if (capturePhoneticCharacters && !string.IsNullOrEmpty(node.InnerText))
+                siSubtree.Read(); // consume the <si> open tag
+                while (siSubtree.Read())
                 {
-                    string start = node.Attributes.GetNamedItem("sb").InnerText;
-                    string end = node.Attributes.GetNamedItem("eb").InnerText;
-                    phoneticsInfo.Add(new PhoneticInfo(node.InnerText, start, end));
+                    if (siSubtree.NodeType != XmlNodeType.Element)
+                    {
+                        continue;
+                    }
+                    if (siSubtree.LocalName.Equals("rPh", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (capturePhoneticCharacters)
+                        {
+                            ReadPhoneticElement(siSubtree);
+                        }
+                        else
+                        {
+                            using (siSubtree.ReadSubtree()) { } // dispose immediately; positions siSubtree at </rPh>
+                        }
+                    }
+                    else if (siSubtree.LocalName.Equals("t", StringComparison.OrdinalIgnoreCase))
+                    {
+                        string text;
+                        using (XmlReader tSubtree = siSubtree.ReadSubtree())
+                        {
+                            tSubtree.Read(); // position at <t>
+                            text = tSubtree.ReadElementContentAsString();
+                        }
+                        if (!string.IsNullOrEmpty(text))
+                        {
+                            sb.Append(text);
+                        }
+                    }
                 }
-                return;
             }
+        }
 
-            if (node.LocalName.Equals("t", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(node.InnerText))
+        /// <summary>
+        /// Reads a &lt;rPh&gt; element and captures its text and position attributes for phonetic annotation.
+        /// Uses a subtree reader so the outer reader advances past the element on return.
+        /// </summary>
+        private void ReadPhoneticElement(XmlReader reader)
+        {
+            string start = reader.GetAttribute("sb");
+            string end = reader.GetAttribute("eb");
+            string text = null;
+            using (XmlReader rPhSubtree = reader.ReadSubtree())
             {
-                sb.Append(node.InnerText);
-            }
-            if (node.HasChildNodes)
-            {
-                foreach (XmlNode childNode in node.ChildNodes)
+                rPhSubtree.Read(); // consume the <rPh> open tag
+                while (rPhSubtree.Read())
                 {
-                    GetTextToken(childNode, ref sb);
+                    if (rPhSubtree.NodeType == XmlNodeType.Element
+                        && rPhSubtree.LocalName.Equals("t", StringComparison.OrdinalIgnoreCase))
+                    {
+                        text = rPhSubtree.ReadElementContentAsString();
+                    }
                 }
+            }
+            if (!string.IsNullOrEmpty(text))
+            {
+                phoneticsInfo.Add(new PhoneticInfo(text, start, end));
             }
         }
 

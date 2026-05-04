@@ -77,7 +77,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 using (memoryStream = new MemoryStream())
                 {
-                    ReadInternal().GetAwaiter().GetResult();
+                    Task.Run(() => ReadInternal()).GetAwaiter().GetResult();
                 }
             }
             catch (NotSupportedContentException)
@@ -166,25 +166,43 @@ namespace NanoXLSX.Internal.Readers
             {
                 importInProgress = true // Disables checks during load
             };
-            HandleQueuePlugIns(PlugInUUID.ReaderPrependingQueue, zf, ref wb);
+            Dictionary<string, ZipArchiveEntry> entryLookup = new Dictionary<string, ZipArchiveEntry>(zf.Entries.Count, StringComparer.Ordinal);
+            foreach (ZipArchiveEntry entry in zf.Entries)
+            {
+                entryLookup[entry.FullName] = entry;
+            }
+            HandleQueuePlugIns(PlugInUUID.ReaderPrependingQueue, entryLookup, ref wb);
 
             ISharedStringReader sharedStringsReader = PlugInLoader.GetPlugIn<ISharedStringReader>(PlugInUUID.SharedStringsReader, new SharedStringsReader());
-            ms = GetEntryStream("xl/sharedStrings.xml", zf);
-            if (ms != null && ms.Length > 0) // If length == 0, no shared strings are defined (no text in file)
+            if (entryLookup.TryGetValue("xl/sharedStrings.xml", out ZipArchiveEntry sharedStringsEntry) && sharedStringsEntry.Length > 0)
             {
-                sharedStringsReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
-                sharedStringsReader.Execute();
+                if (PlugInLoader.HasQueuePlugins(PlugInUUID.SharedStringsInlineReader))
+                {
+                    // Inline plugins need a seekable stream; buffer so the handler can reset position
+                    MemoryStream ssMs = GetEntryStream("xl/sharedStrings.xml", entryLookup);
+                    sharedStringsReader.Init(ssMs, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
+                    sharedStringsReader.Execute();
+                }
+                else
+                {
+                    // Direct-stream from ZIP entry — no intermediate MemoryStream
+                    using (Stream sharedStringsStream = sharedStringsEntry.Open())
+                    {
+                        sharedStringsReader.Init(sharedStringsStream, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
+                        sharedStringsReader.Execute();
+                    }
+                }
             }
-            Dictionary<int, string> themeStreamNames = GetSequentialStreamNames("xl/theme/theme", zf);
+            Dictionary<int, string> themeStreamNames = GetSequentialStreamNames("xl/theme/theme", entryLookup);
             if (themeStreamNames.Count > 0)
             {
                 // There is not really a definition whether multiple themes can be managed in one workbook.
                 // the suffix number (e.g. theme1) indicates it. However, no examples were found and therefore
-                // (currently) only the first occurring theme will be read  
+                // (currently) only the first occurring theme will be read
                 foreach (KeyValuePair<int, string> streamName in themeStreamNames)
                 {
                     IPluginBaseReader themeReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.ThemeReader, new ThemeReader());
-                    ms = GetEntryStream(streamName.Value, zf);
+                    ms = GetEntryStream(streamName.Value, entryLookup);
                     themeReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
                     themeReader.Execute();
                     break;
@@ -192,25 +210,25 @@ namespace NanoXLSX.Internal.Readers
             }
             StyleRepository.Instance.ImportInProgress = true; // TODO: To be checked
             IPluginBaseReader styleReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.StyleReader, new StyleReader());
-            ms = GetEntryStream("xl/styles.xml", zf);
+            ms = GetEntryStream("xl/styles.xml", entryLookup);
             styleReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
             styleReader.Execute();
             StyleRepository.Instance.ImportInProgress = false;
 
-            ms = GetEntryStream("xl/workbook.xml", zf);
+            ms = GetEntryStream("xl/workbook.xml", entryLookup);
             IPluginBaseReader workbookReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.WorkbookReader, new WorkbookReader());
             workbookReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
             workbookReader.Execute();
 
-            ms = GetEntryStream("docProps/app.xml", zf);
-            if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/app.xml seems to be defined 
+            ms = GetEntryStream("docProps/app.xml", entryLookup);
+            if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/app.xml seems to be defined
             {
                 IPluginBaseReader metadataAppReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.MetadataAppReader, new MetadataAppReader());
                 metadataAppReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
                 metadataAppReader.Execute();
             }
-            ms = GetEntryStream("docProps/core.xml", zf);
-            if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/core.xml seems to be defined 
+            ms = GetEntryStream("docProps/core.xml", entryLookup);
+            if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/core.xml seems to be defined
             {
                 IPluginBaseReader metadataCoreReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.MetadataCoreReader, new MetadataCoreReader());
                 metadataCoreReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
@@ -218,74 +236,92 @@ namespace NanoXLSX.Internal.Readers
             }
 
             IPluginBaseReader relationships = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.RelationshipReader, new RelationshipReader());
-            ms = GetEntryStream("xl/_rels/workbook.xml.rels", zf);
+            ms = GetEntryStream("xl/_rels/workbook.xml.rels", entryLookup);
             relationships.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
             relationships.Execute();
 
             IWorksheetReader worksheetReader = PlugInLoader.GetPlugIn<IWorksheetReader>(PlugInUUID.WorksheetReader, new WorksheetReader());
             worksheetReader.SharedStrings = sharedStringsReader.SharedStrings;
-            List<WorksheetDefinition> workshetDefinitions = wb.AuxiliaryData.GetDataList<WorksheetDefinition>(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity);
             List<Relationship> relationshipDefinitions = wb.AuxiliaryData.GetDataList<Relationship>(PlugInUUID.RelationshipReader, PlugInUUID.RelationshipEntity);
-            foreach (WorksheetDefinition definition in workshetDefinitions)
+            int worksheetVisualIndex = 0;
+            WorksheetDefinition definition;
+            while ((definition = wb.AuxiliaryData.GetData<WorksheetDefinition>(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, worksheetVisualIndex)) != null)
             {
                 Relationship relationship = relationshipDefinitions.SingleOrDefault(r => r.RID == definition.RelId);
                 if (relationship == null)
                 {
                     throw new IOException("There was an error while reading an XLSX file. The relationship target of the worksheet with the RelID " + definition.RelId + " was not found");
                 }
-                ms = GetEntryStream(relationship.Target, zf);
-                worksheetReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
-                worksheetReader.CurrentWorksheetID = definition.SheetID;
-                worksheetReader.Execute();
+                if (!entryLookup.TryGetValue(relationship.Target, out ZipArchiveEntry worksheetEntry))
+                {
+                    throw new IOException("There was an error while reading an XLSX file. The worksheet entry '" + relationship.Target + "' was not found in the archive");
+                }
+                worksheetReader.CurrentWorksheetID = worksheetVisualIndex;
+                if (PlugInLoader.HasQueuePlugins(PlugInUUID.WorksheetInlineReader))
+                {
+                    // Inline plugins need a seekable stream; buffer so the handler can reset position
+                    MemoryStream wsMs = GetEntryStream(relationship.Target, entryLookup);
+                    worksheetReader.Init(wsMs, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
+                    worksheetReader.Execute();
+                }
+                else
+                {
+                    // Direct-stream from ZIP entry — largest single allocation on big files
+                    using (Stream worksheetStream = worksheetEntry.Open())
+                    {
+                        worksheetReader.Init(worksheetStream, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
+                        worksheetReader.Execute();
+                    }
+                }
+                worksheetVisualIndex++;
             }
             if (wb.Worksheets.Count == 0)
             {
                 throw new IOException("No worksheet was found in the workbook");
             }
-            HandleQueuePlugIns(PlugInUUID.ReaderAppendingQueue, zf, ref wb);
+            HandleQueuePlugIns(PlugInUUID.ReaderAppendingQueue, entryLookup, ref wb);
             wb.importInProgress = false; // Enables checks for runtime
             wb.AuxiliaryData.ClearTemporaryData(); // Remove temporary staging data
             this.Workbook = wb;
         }
 
         /// <summary>
-        /// Gets the memory stream of the specified file in the archive (XLSX file)
+        /// Gets a buffered MemoryStream of the specified file in the archive (XLSX file).
+        /// The buffer is pre-allocated to the entry's uncompressed size for reduced allocation churn.
         /// </summary>
         /// <param name="name">Name of the XML file within the XLSX file</param>
-        /// <param name="archive">Zip file (XLSX)</param>
-        /// <returns>MemoryStream object of the specified file</returns>
-        private static MemoryStream GetEntryStream(string name, ZipArchive archive)
+        /// <param name="entryLookup">Pre-built lookup of archive entries by FullName</param>
+        /// <returns>MemoryStream object of the specified file, or null if the entry was not found</returns>
+        private static MemoryStream GetEntryStream(string name, Dictionary<string, ZipArchiveEntry> entryLookup)
         {
-            MemoryStream stream = null;
-            for (int i = 0; i < archive.Entries.Count; i++)
+            if (!entryLookup.TryGetValue(name, out ZipArchiveEntry entry))
             {
-                if (archive.Entries[i].FullName == name)
-                {
-                    MemoryStream ms = new MemoryStream();
-                    archive.Entries[i].Open().CopyTo(ms);
-                    ms.Position = 0;
-                    stream = ms;
-                    break;
-                }
+                return null;
             }
-            return stream;
+            int capacity = (int)Math.Min(entry.Length, int.MaxValue);
+            MemoryStream ms = new MemoryStream(capacity);
+            using (Stream src = entry.Open())
+            {
+                src.CopyTo(ms);
+            }
+            ms.Position = 0;
+            return ms;
         }
 
         /// <summary>
         /// Gets a map of all packed filenames that are matching the given prefix
         /// </summary>
         /// <param name="namePrefix">filename prefix</param>
-        /// <param name="archive">Zip archive instance</param>
+        /// <param name="entryLookup">Pre-built lookup of archive entries by FullName</param>
         /// <returns>Dictionary of filename, where the key is the extracted index of the filename</returns>
-        private static Dictionary<int, string> GetSequentialStreamNames(string namePrefix, ZipArchive archive)
+        private static Dictionary<int, string> GetSequentialStreamNames(string namePrefix, Dictionary<string, ZipArchiveEntry> entryLookup)
         {
             Dictionary<int, string> files = new Dictionary<int, string>();
             int index = 1; // Assumption: There is no file that has the index 0 in its name
             while (true)
             {
                 string name = namePrefix + ParserUtils.ToString(index) + ".xml";
-                var ms = GetEntryStream(name, archive);
-                if (ms != null)
+                if (entryLookup.ContainsKey(name))
                 {
                     files.Add(index, name);
                 }
@@ -302,9 +338,9 @@ namespace NanoXLSX.Internal.Readers
         /// Method to handle queue plug-ins
         /// </summary>
         /// <param name="queueUuid">Queue UUID</param>
-        /// <param name="zf">Zip archive</param>
+        /// <param name="entryLookup">Pre-built lookup of archive entries by FullName</param>
         /// <param name="workbook">Workbook reference</param>
-        private void HandleQueuePlugIns(string queueUuid, ZipArchive zf, ref Workbook workbook)
+        private void HandleQueuePlugIns(string queueUuid, Dictionary<string, ZipArchiveEntry> entryLookup, ref Workbook workbook)
         {
             string lastUuid = null;
             IPluginQueueReader queueReader;
@@ -320,7 +356,7 @@ namespace NanoXLSX.Internal.Readers
                         string streamPartName = (queueReader as IPluginPackageReader).StreamEntryName;
                         if (!string.IsNullOrEmpty(streamPartName))
                         {
-                            ms = GetEntryStream(streamPartName, zf);
+                            ms = GetEntryStream(streamPartName, entryLookup);
                             if (ms == null)
                             {
                                 lastUuid = currentUuid;

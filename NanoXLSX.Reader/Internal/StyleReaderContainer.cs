@@ -21,7 +21,7 @@ namespace NanoXLSX.Internal
         #region privateFields
 
         private List<CellXf> cellXfs = new List<CellXf>();
-        private List<NumberFormat> numberFormats = new List<NumberFormat>();
+        private Dictionary<int, NumberFormat> numberFormats = new Dictionary<int, NumberFormat>();
         private List<Style> styles = new List<Style>();
         private List<Border> borders = new List<Border>();
         private List<Fill> fills = new List<Fill>();
@@ -58,7 +58,11 @@ namespace NanoXLSX.Internal
             }
             else if (t == typeof(NumberFormat))
             {
-                numberFormats.Add(component as NumberFormat);
+                NumberFormat nf = component as NumberFormat;
+                if (nf.InternalID.HasValue && !numberFormats.ContainsKey(nf.InternalID.Value))
+                {
+                    numberFormats.Add(nf.InternalID.Value, nf);
+                }
             }
             else if (t == typeof(Style))
             {
@@ -206,13 +210,12 @@ namespace NanoXLSX.Internal
             {
                 if (type == typeof(NumberFormat))
                 {
-                    //Number format entries are handles differently, since identified by 'numFmtId'. Other components are identified by its entry index
-                    NumberFormat numberFormat = numberFormats.Find(x => x.InternalID == index);
-                    if (numberFormat == null)
+                    NumberFormat numberFormat;
+                    if (numberFormats.TryGetValue(index, out numberFormat))
                     {
-                        throw new StyleException("The number format with the numFmtId: " + index + " was not found");
+                        return numberFormat;
                     }
-                    return numberFormat;
+                    throw new StyleException("The number format with the numFmtId: " + index + " was not found");
                 }
                 else if (type == typeof(Style))
                 {

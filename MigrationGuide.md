@@ -27,6 +27,14 @@ The following guide lists all necessary changes, as well as changed behaviors of
 
 ### Worksheet
 
+#### Update v3.1.0 (minor breaking change)
+
+  Worksheet.Cells now returns `IReadOnlyDictionary<string, Cell>` instead of `Dictionary<string, Cell>`. All read operations (`["A1"]`, `ContainsKey`, `TryGetValue`, `foreach`, `Count`, `Keys`, `Values`) **work unchanged**. 
+  Mutating properties of an existing cell in-place (e.g. `Cells["A1"].Value = x`) **continues to work**.
+  Adding or removing cells through Cells directly (e.g. `Cells.Add(...)`, `Cells.Remove(...)`, `Cells["A1"] = new Cell(...))` is **no longer possible**; use `Worksheet.AddCell(...)`, `Worksheet.AddNextCell(...)` and `Worksheet.RemoveCell(...)` instead 
+
+#### Update v3.0.0
+
   - The method `Worksheet.SetSelectedCells(Range)`(and overloads) was replaced by three methods: `Worksheet.AddSelectedCell(Range)`, `Worksheet.AddSelectedCells(String)` (address or range), `Worksheet.AddSelectedCells(Address)` and `Worksheet.AddSelectedCells(Address, Address)`.
   - The method `Worksheet.RemoveSelectedCells()` was replaced by `Worksheet.ClearSelectedCells()`. 
   - The methods `Worksheet.RemoveSelectedCells(Range)`, `Worksheet.RemoveSelectedCells(String)` (address or range), `Worksheet.RemoveSelectedCells(Address)` and `Worksheet.RemoveSelectedCells(Address, Address)` were introduced to remove specific selected cells or ranges from the selection.

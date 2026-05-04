@@ -1,0 +1,36 @@
+# NanoXLSX
+
+> A small, dependency-free .NET library to create and read Microsoft Excel (XLSX) files. Modular plugin architecture: a Core package plus optional Reader, Writer, and Formatting plugins. Targets .NET Standard 2.0 and .NET Framework 4.5+.
+
+## Packages
+
+Meta package **NanoXLSX v3.1.0** bundles all of the below.
+
+- [NanoXLSX](https://www.nuget.org/packages/NanoXLSX): NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way. This package is the meta package of NanoXLSX and should be used in most cases as dependency in your project.
+- [NanoXLSX.Core](https://www.nuget.org/packages/NanoXLSX.Core): Core library: workbooks, worksheets, cells, styles, colors. Has no external dependencies. (bundled)
+- [NanoXLSX.Reader](https://www.nuget.org/packages/NanoXLSX.Reader): Reader plugin: extension methods to load XLSX files. Depends on Core. (bundled)
+- [NanoXLSX.Writer](https://www.nuget.org/packages/NanoXLSX.Writer): Writer plugin: extension methods to save XLSX files. Depends on Core. (bundled)
+- [NanoXLSX.Formatting](https://www.nuget.org/packages/NanoXLSX.Formatting): Formatting plugin: in-line cell formatting (rich text). Depends on Core. Maintained in an external repository. (bundled)
+
+## API Documentation
+
+- Combined documentation portal: https://rabanti-github.github.io/NanoXLSX/
+- NanoXLSX.Core: https://rabanti-github.github.io/NanoXLSX/NanoXLSX.Core/
+- NanoXLSX.Reader: https://rabanti-github.github.io/NanoXLSX/NanoXLSX.Reader/
+- NanoXLSX.Writer: https://rabanti-github.github.io/NanoXLSX/NanoXLSX.Writer/
+- NanoXLSX.Formatting: https://rabanti-github.github.io/NanoXLSX.Formatting/
+
+## Source
+
+- Primary repository: https://github.com/rabanti-github/NanoXLSX
+- NanoXLSX.Formatting (external): https://github.com/rabanti-github/NanoXLSX.Formatting
+
+## Demos
+
+- Repository with running demo use cases: https://github.com/rabanti-github/NanoXLSX.Demo
+- Direct folder URL with use cases for NanoXLSX: https://github.com/rabanti-github/NanoXLSX.Demo/tree/main/NanoXLSX/Demo/UseCases
+
+## Notes
+
+- Docs.IndexGenerator/ is a build utility and not part of the public API.
+- This file is generated automatically on build from Docs.IndexGenerator/Config/*.json — do not edit by hand.

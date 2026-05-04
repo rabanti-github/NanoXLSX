@@ -14,6 +14,7 @@ using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Utils;
+using NanoXLSX.Utils.Xml;
 using static NanoXLSX.Enums.Password;
 using IOException = NanoXLSX.Exceptions.IOException;
 
@@ -25,9 +26,9 @@ namespace NanoXLSX.Internal.Readers
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorkbookReader)]
     public partial class WorkbookReader : IPluginBaseReader
     {
-        private MemoryStream stream;
+        private Stream stream;
         private IPasswordReader passwordReader;
-       // private ReaderOptions readerOptions;
+        // private ReaderOptions readerOptions;
 
         #region properties
         /// <summary>
@@ -41,7 +42,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reference to the <see cref="ReaderPlugInHandler"/>, to be used for post operations in the <see cref="Execute"/> method
         /// </summary>
-        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+        public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         #endregion
 
         #region constructors
@@ -61,7 +62,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
         /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+        public void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;
             this.Workbook = workbook;
@@ -81,23 +82,25 @@ namespace NanoXLSX.Internal.Readers
             {
                 using (stream) // Close after processing
                 {
-                    XmlDocument xr = new XmlDocument() { XmlResolver = null };
-                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
+                    using (XmlReader reader = XmlReader.Create(stream, XmlStreamUtils.CreateSettings()))
                     {
-                        xr.Load(reader);
-                        foreach (XmlNode node in xr.DocumentElement.ChildNodes)
+                        while (reader.Read())
                         {
-                            if (node.LocalName.Equals("sheets", StringComparison.OrdinalIgnoreCase) && node.HasChildNodes)
+                            if (reader.NodeType != XmlNodeType.Element)
                             {
-                                GetWorksheetInformation(node.ChildNodes);
+                                continue;
                             }
-                            else if (node.LocalName.Equals("bookViews", StringComparison.OrdinalIgnoreCase) && node.HasChildNodes)
+                            if (XmlStreamUtils.IsElement(reader, "sheets"))
                             {
-                                GetViewInformation(node.ChildNodes);
+                                GetWorksheetInformation(reader);
                             }
-                            else if (node.LocalName.Equals("workbookProtection", StringComparison.OrdinalIgnoreCase))
+                            else if (XmlStreamUtils.IsElement(reader, "bookViews"))
                             {
-                                GetProtectionInformation(node);
+                                GetViewInformation(reader);
+                            }
+                            else if (XmlStreamUtils.IsElement(reader, "workbookProtection"))
+                            {
+                                GetProtectionInformation(reader);
                             }
                         }
                         InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.WorkbookInlineReader, Options, null);
@@ -115,30 +118,35 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Gets the workbook protection information
+        /// Gets the workbook protection information. Because the password reader interface requires an
+        /// XmlNode, the protection element is captured via ReadOuterXml and loaded into a minimal
+        /// temporary XmlDocument — a single-element DOM allocation that is negligible in practice.
         /// </summary>
-        /// <param name="node">Root node to check</param>
-        private void GetProtectionInformation(XmlNode node)
+        /// <param name="reader">Reader positioned on the workbookProtection start element</param>
+        private void GetProtectionInformation(XmlReader reader)
         {
             bool lockStructure = false;
             bool lockWindows = false;
-            //this.Protected = true;
-            string attribute = ReaderUtils.GetAttribute(node, "lockWindows");
+            string attribute = reader.GetAttribute("lockWindows");
             if (attribute != null)
             {
-                int value = ParserUtils.ParseBinaryBool(attribute);
-                //this.LockWindows = value == 1;
-                lockWindows = value == 1;
+                lockWindows = ParserUtils.ParseBinaryBool(attribute) == 1;
             }
-            attribute = ReaderUtils.GetAttribute(node, "lockStructure");
+            attribute = reader.GetAttribute("lockStructure");
             if (attribute != null)
             {
-                int value = ParserUtils.ParseBinaryBool(attribute);
-                //this.LockStructure = value == 1;
-                lockStructure = value == 1;
+                lockStructure = ParserUtils.ParseBinaryBool(attribute) == 1;
             }
             Workbook.SetWorkbookProtection(true, lockWindows, lockStructure, null);
-            passwordReader.ReadXmlAttributes(node);
+            string outerXml;
+            using (XmlReader subtree = reader.ReadSubtree())
+            {
+                subtree.MoveToContent();
+                outerXml = subtree.ReadOuterXml();
+            }
+            XmlDocument miniDoc = new XmlDocument { XmlResolver = null };
+            miniDoc.LoadXml(outerXml);
+            passwordReader.ReadXmlAttributes(miniDoc.DocumentElement);
             if (passwordReader.PasswordIsSet())
             {
                 Workbook.WorkbookProtectionPassword.CopyFrom(passwordReader);
@@ -148,19 +156,24 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Gets the workbook view information
         /// </summary>
-        /// <param name="nodes">View nodes to check</param>
-        private void GetViewInformation(XmlNodeList nodes)
+        /// <param name="reader">Reader positioned on the bookViews start element</param>
+        private void GetViewInformation(XmlReader reader)
         {
-            foreach (XmlNode node in nodes)
+            using (XmlReader subtree = reader.ReadSubtree())
             {
-                if (node.LocalName.Equals("workbookView", StringComparison.OrdinalIgnoreCase))
+                subtree.Read(); // consume the bookViews open tag
+                while (subtree.Read())
                 {
-                    string attribute = ReaderUtils.GetAttribute(node, "visibility");
+                    if (!XmlStreamUtils.IsElement(subtree, "workbookView"))
+                    {
+                        continue;
+                    }
+                    string attribute = subtree.GetAttribute("visibility");
                     if (attribute != null && ParserUtils.ToLower(attribute) == "hidden")
                     {
-                        this.Workbook.Hidden = true;
+                        Workbook.Hidden = true;
                     }
-                    attribute = ReaderUtils.GetAttribute(node, "activeTab");
+                    attribute = subtree.GetAttribute("activeTab");
                     if (!string.IsNullOrEmpty(attribute))
                     {
                         Workbook.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.SelectedWorksheetEntity, ParserUtils.ParseInt(attribute));
@@ -172,29 +185,32 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Gets the worksheet information
         /// </summary>
-        /// <param name="nodes">Sheet nodes to check</param>
-        private void GetWorksheetInformation(XmlNodeList nodes)
+        /// <param name="reader">Reader positioned on the sheets start element</param>
+        private void GetWorksheetInformation(XmlReader reader)
         {
-            foreach (XmlNode node in nodes)
+            int visibleWorksheetOrder = 0;
+            using (XmlReader subtree = reader.ReadSubtree())
             {
-                if (node.LocalName.Equals("sheet", StringComparison.OrdinalIgnoreCase))
+                subtree.Read(); // consume the sheets open tag
+                while (subtree.Read())
                 {
+                    if (!XmlStreamUtils.IsElement(subtree, "sheet"))
+                    {
+                        continue;
+                    }
                     try
                     {
-                        string sheetName = ReaderUtils.GetAttribute(node, "name", "worksheet1");
-                        int id = ParserUtils.ParseInt(ReaderUtils.GetAttribute(node, "sheetId")); // Default will rightly throw an exception
-                        string relId = ReaderUtils.GetAttribute(node, "r:id");
-                        string state = ReaderUtils.GetAttribute(node, "state");
-                        bool hidden = false;
-                        if (state != null && ParserUtils.ToLower(state) == "hidden")
-                        {
-                            hidden = true;
-                        }
+                        string sheetName = subtree.GetAttribute("name") ?? "worksheet1";
+                        int id = ParserUtils.ParseInt(subtree.GetAttribute("sheetId")); // null will rightly throw
+                        string relId = subtree.GetAttribute("r:id");
+                        string state = subtree.GetAttribute("state");
+                        bool hidden = state != null && ParserUtils.ToLower(state) == "hidden";
                         WorksheetDefinition definition = new WorksheetDefinition(id, sheetName, relId)
                         {
                             Hidden = hidden
                         };
-                        Workbook.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, id, definition);
+                        Workbook.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, visibleWorksheetOrder, definition);
+                        visibleWorksheetOrder++;
                     }
                     catch (Exception e)
                     {

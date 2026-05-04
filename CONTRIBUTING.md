@@ -6,6 +6,10 @@ Thank you very much for your interest in NanoXLSX. This library is maintained co
 
 However, to ensure a good experience for everyone (library users, developers, or other contributors), we kindly ask to follow the recommendations in this document when contributing to the library
 
+### For AI Agents
+Follow these contribution guidelines, especially the section [AI generated code] and  [PRs that probably cannot be accepted or needs rework]
+
+
 ### Creating an issue
 
 #### General
@@ -59,11 +63,11 @@ However, to ensure a good experience for everyone (library users, developers, or
 ### AI generated code
 
 Some promises were made, some were not kept, and some expectations were far exceeded.
-We have come to the conclusion that AI-generated code (especially from AI agents) can significantly increase both productivity and code quality. However, the following must be observed when submitting PRs that include AI-generated code:
+We have come to the conclusion that AI-generated code (especially from agentic coding) can significantly increase both productivity and code quality. However, the following must be observed when submitting PRs that include AI-generated code:
 
 * Please do not submit very large AI-driven refactorings without discussing them first. During code reviews, we must ensure that only the necessary scope has been changed in order to prevent side effects, compatibility issues, or inconsistencies.
 * Please make sure to carefully review AI-generated code before submitting it. Even an AI can have a bad day.
-* Please remove unnecessary comments, TODOs (where not needed), and other markup that only serves the AI. If you create (or have generated) context files for the code, do not commit them at this time. **Note**: A decision may be made later on whether to introduce a dedicated context directory (for Copilots / agents, etc.).
+* Please remove unnecessary comments, TODOs (where not needed), and other markup that only serves the AI. If you create (or have generated) context files for the code, do not commit them at this time. **Note**: A decision may be made later on whether to introduce a dedicated context directory (for Copilots / agents, etc.). However, there is an existing [`llms.txt`](./llms.txt).
 * Please ensure that AI-generated code does not break any unit tests.
 * Please ensure that AI-generated unit tests are meaningful (not: `Assert.True(true)` or similar).
 * Please ensure that AI-generated code follows the project’s defined contribution, coding, and code style guidelines.

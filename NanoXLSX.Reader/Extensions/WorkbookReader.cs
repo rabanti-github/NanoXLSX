@@ -34,6 +34,7 @@ namespace NanoXLSX.Extensions
             using (XlsxReader reader = new XlsxReader(filename, options))
             {
                 reader.Read();
+                reader.Workbook.Filename = filename;
                 return reader.Workbook;
             }
         }
@@ -66,6 +67,7 @@ namespace NanoXLSX.Extensions
             using (XlsxReader reader = new XlsxReader(filename, options))
             {
                 await reader.ReadAsync();
+                reader.Workbook.Filename = filename;
                 return reader.Workbook;
             }
         }

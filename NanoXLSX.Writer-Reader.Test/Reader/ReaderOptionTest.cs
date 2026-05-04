@@ -613,6 +613,13 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         {
             TimeSpan time = new TimeSpan(11, 12, 13);
             DateTime date = new DateTime(2021, 8, 14, 18, 22, 13, 0);
+            // Mirror the reader's OA round-trip when computing the expected string value, since the
+            // FP representation of a TimeSpan as a fraction of a day may lose sub-second precision
+            // (e.g. 11:12:13 -> 0.4668...; on .NET 7+ this round-trips back through DateTime as
+            // 11:12:12.999...). The reconstructed TimeSpan only carries second resolution anyway.
+            DateTime timeAsDate = DataUtils.GetDateFromOA(DataUtils.GetOATime(time));
+            TimeSpan roundTrippedTime = new TimeSpan(0, timeAsDate.Hour, timeAsDate.Minute, timeAsDate.Second);
+            DateTime roundTrippedDate = DataUtils.GetDateFromOA(DataUtils.GetOADateTime(date));
             Dictionary<string, Object> cells = new Dictionary<string, object>
             {
                 { "A1", 1 },
@@ -649,8 +656,8 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 { "B1", "1" },
                 { "B2", "Test" },
                 { "B3", "False" },
-                { "B4", time.ToString(ReaderOptions.DefaultTimeSpanFormat) },
-                { "B5", date.ToString(ReaderOptions.DefaultDateTimeFormat) },
+                { "B4", roundTrippedTime.ToString(ReaderOptions.DefaultTimeSpanFormat) },
+                { "B5", roundTrippedDate.ToString(ReaderOptions.DefaultDateTimeFormat) },
                 { "B6", "0" },
                 { "B7", "True" },
                 { "B8", "-10" },

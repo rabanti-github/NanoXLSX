@@ -1,5 +1,16 @@
 # Change Log - NanoXLSX.Writer
 
+## v3.1.0
+
+---
+Release Date: **(04.05.2026)** <sup>(DMY)</sup>
+
+- Version bump of NanoXLSX.Core to v3.1.0
+- Optimized writer performance (memory consumption, save time)
+- Updated internal worksheet iteration to use `Worksheet.CellValues`, eliminating per-cell string allocation during save. Requires **NanoXLSX.Core ≥ 3.1.0**.
+
+
+
 ## v3.0.0
 
 ---

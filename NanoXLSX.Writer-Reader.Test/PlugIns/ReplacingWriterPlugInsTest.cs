@@ -236,6 +236,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
                 // NoOp
             }
 
+            public void ReleaseXmlElement()
+            {
+                this.worksheet = null;
+            }
+
             void IPluginWriter.Init(IBaseWriter baseWriter)
             {
                 this.Workbook = baseWriter.Workbook;

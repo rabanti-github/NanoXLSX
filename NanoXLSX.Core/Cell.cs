@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
@@ -25,7 +24,6 @@ namespace NanoXLSX
         #region constants
         private const int ASCII_OFFSET = 64;
         #endregion
-
 
         #region enums
         /// <summary>
@@ -761,7 +759,6 @@ namespace NanoXLSX
             ResolveCellCoordinate(address, out column, out row, out _);
         }
 
-
         /// <summary>
         /// Gets the column and row number (zero based) of a cell by the address
         /// </summary>
@@ -777,33 +774,51 @@ namespace NanoXLSX
             {
                 throw new FormatException("The cell address is null or empty and could not be resolved");
             }
-            address = ParserUtils.ToUpper(address);
-            Regex pattern = new Regex("(^(\\$?)([A-Z]{1,3})(\\$?)([0-9]{1,7})$)");
-            Match matcher = pattern.Match(address);
-            if (matcher.Groups.Count != 6)
+
+            int i = 0;
+            int len = address.Length;
+            bool fixedCol = false;
+            bool fixedRow = false;
+
+            // Optional $ for column
+            if (i < len && address[i] == '$') { fixedCol = true; i++; }
+
+            // Column letters
+            int colStart = i;
+            while (i < len && ((address[i] >= 'A' && address[i] <= 'Z') || (address[i] >= 'a' && address[i] <= 'z')))
+            {
+                i++;
+            }
+            if (i == colStart)
             {
                 throw new FormatException("The format of the cell address (" + address + ") is malformed");
             }
-            int digits = int.Parse(matcher.Groups[5].Value, CultureInfo.InvariantCulture);
-            column = ResolveColumn(matcher.Groups[3].Value);
-            row = digits - 1;
+
+            string colPart = address.Substring(colStart, i - colStart);
+
+            // Optional $ for row
+            if (i < len && address[i] == '$') { fixedRow = true; i++; }
+
+            // Row digits
+            int rowStart = i;
+            while (i < len && address[i] >= '0' && address[i] <= '9')
+            {
+                i++;
+            }
+
+            if (i == rowStart || i != len)
+            {
+                throw new FormatException("The format of the cell address (" + address + ") is malformed");
+            }
+
+            row = int.Parse(address.Substring(rowStart, i - rowStart), NumberStyles.Integer, CultureInfo.InvariantCulture) - 1;
+            column = ResolveColumn(colPart);
             ValidateRowNumber(row);
-            if (!String.IsNullOrEmpty(matcher.Groups[2].Value) && !String.IsNullOrEmpty(matcher.Groups[4].Value))
-            {
-                addressType = AddressType.FixedRowAndColumn;
-            }
-            else if (!String.IsNullOrEmpty(matcher.Groups[2].Value) && String.IsNullOrEmpty(matcher.Groups[4].Value))
-            {
-                addressType = AddressType.FixedColumn;
-            }
-            else if (String.IsNullOrEmpty(matcher.Groups[2].Value) && !String.IsNullOrEmpty(matcher.Groups[4].Value))
-            {
-                addressType = AddressType.FixedRow;
-            }
-            else
-            {
-                addressType = AddressType.Default;
-            }
+
+            if (fixedCol && fixedRow) { addressType = AddressType.FixedRowAndColumn; }
+            else if (fixedCol) { addressType = AddressType.FixedColumn; }
+            else if (fixedRow) { addressType = AddressType.FixedRow; }
+            else { addressType = AddressType.Default; }
         }
 
         /// <summary>

@@ -165,7 +165,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             public string StreamEntryName => null;
             public Workbook Workbook { get; set; }
             public IOptions Options { get; set; }
-            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+            public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -173,7 +173,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 Workbook.AuxiliaryData.SetData("TEST_READER_PLUGIN_1", 0, testData, true);
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions options, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public void Init(Stream stream, Workbook workbook, IOptions options, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
                 this.Workbook = workbook;
                 this.Options = options;
@@ -187,7 +187,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             public string StreamEntryName => null;
             public Workbook Workbook { get; set; }
             public IOptions Options { get; set; }
-            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+            public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -195,7 +195,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 Workbook.AuxiliaryData.SetData("TEST_READER_PLUGIN_2", 0, testData, true);
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions options, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public void Init(Stream stream, Workbook workbook, IOptions options, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
                 this.Workbook = workbook;
                 this.Options = options;
@@ -209,7 +209,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             public string StreamEntryName => null;
             public Workbook Workbook { get; set; }
             public IOptions Options { get; set; }
-            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+            public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -218,7 +218,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 Workbook.AuxiliaryData.SetData("TEST_READER_PLUGIN_ORDER_1", 0, pluginOrder, true);
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions options, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public void Init(Stream stream, Workbook workbook, IOptions options, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
                 this.Workbook = workbook;
                 this.InlinePluginHandler = inlinePluginHandler;
@@ -231,7 +231,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             public string StreamEntryName => null;
             public Workbook Workbook { get; set; }
             public IOptions Options { get; set; }
-            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+            public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -241,7 +241,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 Workbook.AuxiliaryData.SetData("TEST_READER_PLUGIN_ORDER_2", 0, pluginOrder, true);
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions options, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public void Init(Stream stream, Workbook workbook, IOptions options, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
                 this.Workbook = workbook;
                 this.Options = options;
@@ -255,7 +255,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             public string StreamEntryName => null;
             public Workbook Workbook { get; set; }
             public IOptions Options { get; set; }
-            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+            public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -263,7 +263,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 Workbook.AuxiliaryData.SetData("TEST_READER_PLUGIN_NO_STREAM", 0, testData, true);
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions options, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public void Init(Stream stream, Workbook workbook, IOptions options, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
                 Assert.Null(stream);
                 this.Workbook = workbook;
@@ -279,7 +279,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             [ExcludeFromCodeCoverage]
             public Workbook Workbook { get; set; }
             public IOptions Options { get; set; }
-            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+            public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
             [ExcludeFromCodeCoverage]
             public void Execute()
             {
@@ -288,7 +288,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 Workbook.AuxiliaryData.SetData("TEST_READER_PLUGIN_MISSING_STREAM", 0, testData);
             }
             [ExcludeFromCodeCoverage]
-            public void Init(MemoryStream stream, Workbook workbook, IOptions options, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public void Init(Stream stream, Workbook workbook, IOptions options, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
                 this.Workbook = workbook;
                 this.Options = options;
@@ -302,7 +302,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             public string StreamEntryName => "xl/workbook.xml";
             public Workbook Workbook { get; set; }
             public IOptions Options { get; set; }
-            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+            public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -311,7 +311,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 Workbook.AuxiliaryData.SetData("TEST_READER_PLUGIN_EXISTING_STREAM", 0, testData, true);
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions options, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+            public void Init(Stream stream, Workbook workbook, IOptions options, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
             {
                 Assert.NotNull(stream);
                 this.Workbook = workbook;

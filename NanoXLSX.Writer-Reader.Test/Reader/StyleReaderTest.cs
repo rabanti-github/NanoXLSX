@@ -6,6 +6,7 @@ using NanoXLSX.Registry;
 using NanoXLSX.Styles;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
+using static NanoXLSX.Styles.Border;
 using static NanoXLSX.Styles.NumberFormat;
 
 namespace NanoXLSX.Test.Writer_Reader.ReaderTest
@@ -165,6 +166,68 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 Assert.True(isDateStyle);
                 Assert.Equal(FormatNumber.Format14, formatNumber);
             }
+        }
+
+        private static string BuildBorderXml(string leftSideXml)
+        {
+            return "<styleSheet>" +
+                   " <fonts count=\"1\"><font><sz val=\"11\"/><name val=\"Calibri\"/></font></fonts>" +
+                   " <fills count=\"2\">" +
+                   "  <fill><patternFill patternType=\"none\"/></fill>" +
+                   "  <fill><patternFill patternType=\"gray125\"/></fill>" +
+                   " </fills>" +
+                   " <borders count=\"1\">" +
+                   "   <border>" +
+                   "     " + leftSideXml +
+                   "     <right/><top/><bottom/><diagonal/>" +
+                   "   </border>" +
+                   " </borders>" +
+                   " <cellXfs count=\"1\">" +
+                   "   <xf numFmtId=\"0\" fontId=\"0\" fillId=\"0\" borderId=\"0\"/>" +
+                   " </cellXfs>" +
+                   "</styleSheet>";
+        }
+
+        private static Border ReadFirstBorder(string borderXml)
+        {
+            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(borderXml)))
+            {
+                Workbook workbook = new Workbook("test");
+                StyleReader styleReader = new StyleReader();
+                styleReader.Init(ms, workbook, new ReaderOptions(), ReaderPlugInHandler.HandleInlineQueuePlugins);
+                styleReader.Execute();
+                StyleReaderContainer container = workbook.AuxiliaryData.GetData<StyleReaderContainer>(PlugInUUID.StyleReader, PlugInUUID.StyleEntity);
+                return container.GetBorder(0);
+            }
+        }
+
+        [Fact(DisplayName = "Test of border side reading with style attribute and rgb color element")]
+        public void BorderSideWithStyleAndRgbColorIsRead()
+        {
+            string borderXml = BuildBorderXml("<left style=\"thin\"><color rgb=\"FFFF0000\"/></left>");
+            Border border = ReadFirstBorder(borderXml);
+            Assert.Equal(StyleValue.Thin, border.LeftStyle);
+            Assert.Equal("FFFF0000", border.LeftColor);
+        }
+
+        [Fact(DisplayName = "Test of border side reading with color element but no rgb attribute keeps default color")]
+        public void BorderSideWithColorElementButNoRgbKeepsDefaultColor()
+        {
+            // color element exists but uses indexed attribute — rgb is null, default color is kept
+            string borderXml = BuildBorderXml("<left style=\"thin\"><color indexed=\"0\"/></left>");
+            Border border = ReadFirstBorder(borderXml);
+            Assert.Equal(StyleValue.Thin, border.LeftStyle);
+            Assert.Equal(DefaultBorderColor, border.LeftColor);
+        }
+
+        [Fact(DisplayName = "Test of border side reading with non-empty side but no color child keeps default color")]
+        public void BorderSideNonEmptyWithoutColorChildKeepsDefaultColor()
+        {
+            // non-empty element with an unrecognized child — while loop runs but never breaks on color
+            string borderXml = BuildBorderXml("<left style=\"dashed\"><unknown/></left>");
+            Border border = ReadFirstBorder(borderXml);
+            Assert.Equal(StyleValue.Dashed, border.LeftStyle);
+            Assert.Equal(DefaultBorderColor, border.LeftColor);
         }
     }
 }
