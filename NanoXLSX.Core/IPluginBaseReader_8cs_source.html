@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.0.0</span>
+   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.1.0</span>
    </div>
   </td>
  </tr>
@@ -108,9 +108,9 @@ $(function(){initNavTree('IPluginBaseReader_8cs_source.html','',''); });
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        IOptions Options { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keywordtype">void</span> Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action&lt;MemoryStream, Workbook, string, IOptions, int?&gt; inlinePluginHandler);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keywordtype">void</span> Init(Stream stream, Workbook workbook, IOptions readerOptions, Action&lt;Stream, Workbook, string, IOptions, int?&gt; inlinePluginHandler);</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        Action&lt;MemoryStream, Workbook, string, IOptions, int?&gt; InlinePluginHandler { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        Action&lt;Stream, Workbook, string, IOptions, int?&gt; InlinePluginHandler { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    }</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}</div>

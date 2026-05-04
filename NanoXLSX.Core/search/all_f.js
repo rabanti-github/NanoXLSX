@@ -35,11 +35,12 @@ var searchData=
   ['isdateformat_32',['IsDateFormat',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#a1ea3d7ea9b80221f9aa90d2c06bcbc68',1,'NanoXLSX::Styles::NumberFormat']]],
   ['isdefaultfont_33',['IsDefaultFont',['../classNanoXLSX_1_1Styles_1_1Font.html#a60ba6d399ea1e2ac5f9f1f9c48ee9be9',1,'NanoXLSX::Styles::Font']]],
   ['isdefined_34',['IsDefined',['../classNanoXLSX_1_1Colors_1_1Color.html#a71d41d3ec1adca4aee630ec9f1d200df',1,'NanoXLSX::Colors::Color']]],
-  ['ishidden_35',['IsHidden',['../classNanoXLSX_1_1Column.html#a93aa27dc390952185834632ff9062c95',1,'NanoXLSX::Column']]],
-  ['isinternalstyle_36',['IsInternalStyle',['../classNanoXLSX_1_1Styles_1_1Style.html#ab23678d39662bd08e8fa2c719dfd4f71',1,'NanoXLSX::Styles::Style']]],
-  ['istimeformat_37',['IsTimeFormat',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#ad3fb7631c3b49ed91f79578c632fdc74',1,'NanoXLSX::Styles::NumberFormat']]],
-  ['iszero_38',['IsZero',['../classNanoXLSX_1_1Utils_1_1Comparators.html#a858e707245da553c4eb490d1bcfc7142',1,'NanoXLSX.Utils.Comparators.IsZero(double value)'],['../classNanoXLSX_1_1Utils_1_1Comparators.html#a68e82d4deca63b6a132e3dba542b84e8',1,'NanoXLSX.Utils.Comparators.IsZero(float value)']]],
-  ['italic_39',['Italic',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#a4d4dc7feec08b474d8980020c69d175b',1,'NanoXLSX.Styles.BasicStyles.Italic'],['../classNanoXLSX_1_1Styles_1_1Font.html#a6696b950fee8963df2ec1778cb5d253a',1,'NanoXLSX.Styles.Font.Italic']]],
-  ['itextoptions_40',['ITextOptions',['../interfaceNanoXLSX_1_1Interfaces_1_1ITextOptions.html',1,'NanoXLSX::Interfaces']]],
-  ['itypedcolor_2d1_2dg_41',['ITypedColor-1-g',['../interfaceNanoXLSX_1_1Interfaces_1_1ITypedColor-1-g.html',1,'NanoXLSX::Interfaces']]]
+  ['iselement_35',['IsElement',['../classNanoXLSX_1_1Utils_1_1Xml_1_1XmlStreamUtils.html#a62aa330558071c21cd2ebf42f4d04ee9',1,'NanoXLSX::Utils::Xml::XmlStreamUtils']]],
+  ['ishidden_36',['IsHidden',['../classNanoXLSX_1_1Column.html#a93aa27dc390952185834632ff9062c95',1,'NanoXLSX::Column']]],
+  ['isinternalstyle_37',['IsInternalStyle',['../classNanoXLSX_1_1Styles_1_1Style.html#ab23678d39662bd08e8fa2c719dfd4f71',1,'NanoXLSX::Styles::Style']]],
+  ['istimeformat_38',['IsTimeFormat',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html#ad3fb7631c3b49ed91f79578c632fdc74',1,'NanoXLSX::Styles::NumberFormat']]],
+  ['iszero_39',['IsZero',['../classNanoXLSX_1_1Utils_1_1Comparators.html#a858e707245da553c4eb490d1bcfc7142',1,'NanoXLSX.Utils.Comparators.IsZero(double value)'],['../classNanoXLSX_1_1Utils_1_1Comparators.html#a68e82d4deca63b6a132e3dba542b84e8',1,'NanoXLSX.Utils.Comparators.IsZero(float value)']]],
+  ['italic_40',['Italic',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#a4d4dc7feec08b474d8980020c69d175b',1,'NanoXLSX.Styles.BasicStyles.Italic'],['../classNanoXLSX_1_1Styles_1_1Font.html#a6696b950fee8963df2ec1778cb5d253a',1,'NanoXLSX.Styles.Font.Italic']]],
+  ['itextoptions_41',['ITextOptions',['../interfaceNanoXLSX_1_1Interfaces_1_1ITextOptions.html',1,'NanoXLSX::Interfaces']]],
+  ['itypedcolor_2d1_2dg_42',['ITypedColor-1-g',['../interfaceNanoXLSX_1_1Interfaces_1_1ITypedColor-1-g.html',1,'NanoXLSX::Interfaces']]]
 ];

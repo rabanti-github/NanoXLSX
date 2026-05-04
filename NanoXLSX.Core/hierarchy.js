@@ -75,5 +75,6 @@ var hierarchy =
     [ "NanoXLSX.Worksheet", "classNanoXLSX_1_1Worksheet.html", null ],
     [ "NanoXLSX.Utils.Xml.XmlAttribute", "structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html", null ],
     [ "NanoXLSX.Utils.Xml.XmlElement", "classNanoXLSX_1_1Utils_1_1Xml_1_1XmlElement.html", null ],
+    [ "NanoXLSX.Utils.Xml.XmlStreamUtils", "classNanoXLSX_1_1Utils_1_1Xml_1_1XmlStreamUtils.html", null ],
     [ "NanoXLSX.Utils.Xml.XmlUtils", "classNanoXLSX_1_1Utils_1_1Xml_1_1XmlUtils.html", null ]
 ];

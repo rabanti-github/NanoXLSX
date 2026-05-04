@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="NanoXLSXlib.png"/></td>
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Reader<span id="projectnumber">&#160;3.0.1</span>
+   <div id="projectname">NanoXLSX.Reader<span id="projectnumber">&#160;3.1.0</span>
    </div>
   </td>
  </tr>
@@ -101,15 +101,11 @@ $(function(){initNavTree('classNanoXLSX_1_1Internal_1_1ReaderUtils.html','','cla
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a7d407e6ee000c0593d4a78e786bb6d40" id="r_a7d407e6ee000c0593d4a78e786bb6d40"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d407e6ee000c0593d4a78e786bb6d40">GetAttribute</a> (XmlNode node, string targetName, string fallbackValue=null)</td></tr>
 <tr class="memdesc:a7d407e6ee000c0593d4a78e786bb6d40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the XML attribute of the passed XML node by its name.  <br /></td></tr>
-<tr class="memitem:ac553b3cf46bbeffd011d0a5eb8584123" id="r_ac553b3cf46bbeffd011d0a5eb8584123"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac553b3cf46bbeffd011d0a5eb8584123">GetAttributeOfChild</a> (XmlNode node, string childNodeName, string attributeName, out string output)</td></tr>
-<tr class="memdesc:ac553b3cf46bbeffd011d0a5eb8584123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the XML attribute from a child node of the passed XML node by its name and the name of the child node. This method simplifies the process of gathering one single child node attribute.  <br /></td></tr>
-<tr class="memitem:a384f44e58b95713bfaeb769674fe1687" id="r_a384f44e58b95713bfaeb769674fe1687"><td class="memItemLeft" align="right" valign="top">static XmlNode&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a384f44e58b95713bfaeb769674fe1687">GetChildNode</a> (XmlNode node, string name)</td></tr>
-<tr class="memdesc:a384f44e58b95713bfaeb769674fe1687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the specified child node.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Static class with common util methods, used during reading XLSX files. </p>
 
-<p class="definition">Definition at line <a class="el" href="ReaderUtils_8cs_source.html#l00017">17</a> of file <a class="el" href="ReaderUtils_8cs_source.html">ReaderUtils.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ReaderUtils_8cs_source.html#l00015">15</a> of file <a class="el" href="ReaderUtils_8cs_source.html">ReaderUtils.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a7d407e6ee000c0593d4a78e786bb6d40" name="a7d407e6ee000c0593d4a78e786bb6d40"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7d407e6ee000c0593d4a78e786bb6d40">&#9670;&#160;</a></span>GetAttribute()</h2>
@@ -154,101 +150,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Attribute value as string or default value if not found (can be null)</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ReaderUtils_8cs_source.html#l00026">26</a> of file <a class="el" href="ReaderUtils_8cs_source.html">ReaderUtils.cs</a>.</p>
-
-</div>
-</div>
-<a id="ac553b3cf46bbeffd011d0a5eb8584123" name="ac553b3cf46bbeffd011d0a5eb8584123"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac553b3cf46bbeffd011d0a5eb8584123">&#9670;&#160;</a></span>GetAttributeOfChild()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool NanoXLSX.Internal.ReaderUtils.GetAttributeOfChild </td>
-          <td>(</td>
-          <td class="paramtype">XmlNode</td>          <td class="paramname"><span class="paramname"><em>node</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string</td>          <td class="paramname"><span class="paramname"><em>childNodeName</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string</td>          <td class="paramname"><span class="paramname"><em>attributeName</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out string</td>          <td class="paramname"><span class="paramname"><em>output</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the XML attribute from a child node of the passed XML node by its name and the name of the child node. This method simplifies the process of gathering one single child node attribute. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">node</td><td>XML node that contains the child node</td></tr>
-    <tr><td class="paramname">childNodeName</td><td>Name of the child node</td></tr>
-    <tr><td class="paramname">attributeName</td><td>Name of the attribute in the child node</td></tr>
-    <tr><td class="paramname">output</td><td>Value of the attribute as string or null if not found</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if found, otherwise false</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="ReaderUtils_8cs_source.html#l00053">53</a> of file <a class="el" href="ReaderUtils_8cs_source.html">ReaderUtils.cs</a>.</p>
-
-</div>
-</div>
-<a id="a384f44e58b95713bfaeb769674fe1687" name="a384f44e58b95713bfaeb769674fe1687"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a384f44e58b95713bfaeb769674fe1687">&#9670;&#160;</a></span>GetChildNode()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">XmlNode NanoXLSX.Internal.ReaderUtils.GetChildNode </td>
-          <td>(</td>
-          <td class="paramtype">XmlNode</td>          <td class="paramname"><span class="paramname"><em>node</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the specified child node. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">node</td><td>XML node that contains child node</td></tr>
-    <tr><td class="paramname">name</td><td>Name of the child node</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Child node or null if not found</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="ReaderUtils_8cs_source.html#l00071">71</a> of file <a class="el" href="ReaderUtils_8cs_source.html">ReaderUtils.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ReaderUtils_8cs_source.html#l00024">24</a> of file <a class="el" href="ReaderUtils_8cs_source.html">ReaderUtils.cs</a>.</p>
 
 </div>
 </div>

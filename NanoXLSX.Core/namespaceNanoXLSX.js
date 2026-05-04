@@ -4,6 +4,7 @@ var namespaceNanoXLSX =
     [ "Enums", "namespaceNanoXLSX_1_1Enums.html", "namespaceNanoXLSX_1_1Enums" ],
     [ "Exceptions", "namespaceNanoXLSX_1_1Exceptions.html", "namespaceNanoXLSX_1_1Exceptions" ],
     [ "Interfaces", "namespaceNanoXLSX_1_1Interfaces.html", "namespaceNanoXLSX_1_1Interfaces" ],
+    [ "Internal", "namespaceNanoXLSX_1_1Internal.html", null ],
     [ "Registry", "namespaceNanoXLSX_1_1Registry.html", "namespaceNanoXLSX_1_1Registry" ],
     [ "Styles", "namespaceNanoXLSX_1_1Styles.html", "namespaceNanoXLSX_1_1Styles" ],
     [ "Themes", "namespaceNanoXLSX_1_1Themes.html", "namespaceNanoXLSX_1_1Themes" ],
