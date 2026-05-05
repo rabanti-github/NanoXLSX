@@ -6,5 +6,10 @@
   "repositoryUrl": "https://github.com/rabanti-github/NanoXLSX",
   "demoRepositoryUrl": "https://github.com/rabanti-github/NanoXLSX.Demo",
   "demoRepositoryUseCaseUrl": "https://github.com/rabanti-github/NanoXLSX.Demo/tree/main/NanoXLSX/Demo/UseCases",
-  "llmsSummary": "A small, dependency-free .NET library to create and read Microsoft Excel (XLSX) files. Modular plugin architecture: a Core package plus optional Reader, Writer, and Formatting plugins. Targets .NET Standard 2.0 and .NET Framework 4.5+."
+  "llmsSummary": "A small, dependency-free .NET library to create and read Microsoft Excel (XLSX) files. Modular plugin architecture: a Core package plus optional Reader, Writer, and Formatting plugins. Targets .NET Standard 2.0 and .NET Framework 4.5+.",
+  "llmsBodyParagraph": "NanoXLSX is a meta-package bundling NanoXLSX.Core,  NanoXLSX.Reader, NanoXLSX.Writer, and NanoXLSX.Formatting.",
+  "llmsUsageSnippetLanguage": "csharp",
+  "llmsUsageSnippet": "Workbook workbook = new Workbook(\"myWorkbook.xlsx\", \"Sheet1\");\nworkbook.CurrentWorksheet.AddNextCell(\"Some Data\");\nworkbook.CurrentWorksheet.AddNextCell(42);\nworkbook.CurrentWorksheet.GoToNextRow();\nworkbook.CurrentWorksheet.AddNextCell(DateTime.Now);\nworkbook.Save();\n\n\\\\Reading a workbook\nWorkbook workbook = WorkbookReader.Load(\"myWorkbook.xlsx\");",
+  "wikiUrl": "https://github.com/rabanti-github/NanoXLSX/wiki/Getting-started"
 }
+

@@ -22,93 +22,103 @@ namespace Docs.IndexGenerator.Generation
         {
             var sb = new StringBuilder();
 
+            // H1 + blockquote (required by spec)
             sb.Append("# ").AppendLine(root.ProjectName);
             sb.AppendLine();
             sb.Append("> ").AppendLine(root.LlmsSummary);
-            sb.AppendLine();
 
+            // Optional prose paragraph between blockquote and first H2
+            if (!string.IsNullOrEmpty(root.LlmsBodyParagraph))
+            {
+                sb.AppendLine();
+                sb.AppendLine(root.LlmsBodyParagraph);
+            }
+
+            // Installation section
+            bool hasPm = !string.IsNullOrEmpty(meta.PmInstallCommand);
+            bool hasCli = !string.IsNullOrEmpty(meta.CliInstallCommand);
+            if (hasPm || hasCli)
+            {
+                sb.AppendLine();
+                sb.AppendLine("## Installation");
+                sb.AppendLine();
+                if (hasPm)
+                    sb.Append("- Install via NuGet (Package Manager): `").Append(meta.PmInstallCommand).AppendLine("`");
+                if (hasCli)
+                    sb.Append("- Install via .NET CLI: `").Append(meta.CliInstallCommand).AppendLine("`");
+            }
+
+            // Packages section — spec-compliant [name](url): description links
+            sb.AppendLine();
             sb.AppendLine("## Packages");
             sb.AppendLine();
-            sb.Append("Meta package **").Append(meta.PackageName).Append(" v").Append(meta.Version)
-              .AppendLine("** bundles all of the below.");
-            sb.AppendLine();
 
-            string metaUrl = !string.IsNullOrEmpty(meta.NuGetUrl)
-                ? meta.NuGetUrl
-                : root.RepositoryUrl;
+            string metaUrl = !string.IsNullOrEmpty(meta.NuGetUrl) ? meta.NuGetUrl : root.RepositoryUrl;
             sb.Append("- [").Append(meta.PackageName).Append("](").Append(metaUrl).Append("): ")
               .AppendLine(meta.Description ?? string.Empty);
 
-            List<DocEntry> nonBundledEntries = new List<DocEntry>();
-
             foreach (DocEntry e in plugins.Entries)
             {
-                if (!e.Bundled)
-                {
-                    nonBundledEntries.Add(e);
-                    continue;
-                }
-                string url = !string.IsNullOrEmpty(e.NuGetUrl)
-                    ? e.NuGetUrl
-                    : (e.Repository ?? string.Empty);
+                string url = !string.IsNullOrEmpty(e.NuGetUrl) ? e.NuGetUrl : (e.Repository ?? string.Empty);
                 string description = e.Description ?? string.Empty;
-                string bundledTag = e.Bundled ? " (bundled)" : string.Empty;
+                string tag = e.Bundled ? " (bundled)" : string.Empty;
                 sb.Append("- [").Append(e.Id).Append("](").Append(url).Append("): ")
-                  .Append(description).AppendLine(bundledTag);
+                  .Append(description).AppendLine(tag);
             }
 
-            if (nonBundledEntries.Count > 0)
+            // Usage / quick-start section
+            if (!string.IsNullOrEmpty(root.LlmsUsageSnippet))
             {
+                string lang = root.LlmsUsageSnippetLanguage ?? "csharp";
                 sb.AppendLine();
-                sb.AppendLine("Other available packages (not bundled in meta package):");
+                sb.AppendLine("## Usage");
                 sb.AppendLine();
-                foreach (DocEntry e in nonBundledEntries)
-                {
-                    string url = !string.IsNullOrEmpty(e.NuGetUrl)
-                        ? e.NuGetUrl
-                        : (e.Repository ?? string.Empty);
-                    string description = e.Description ?? string.Empty;
-                    sb.Append("- [").Append(e.Id).Append("](").Append(url).Append("): ")
-                      .Append(description).AppendLine();
-                }
+                sb.Append("```").AppendLine(lang);
+                sb.AppendLine(root.LlmsUsageSnippet);
+                sb.AppendLine("```");
             }
 
+            // API Documentation — spec-compliant [name](url): description links
             sb.AppendLine();
             sb.AppendLine("## API Documentation");
             sb.AppendLine();
-            sb.Append("- Combined documentation portal: ").AppendLine(root.ApiDocsUrl);
-            foreach (var e in plugins.Entries)
+            sb.Append("- [Combined documentation portal](").Append(root.ApiDocsUrl).AppendLine("): All NanoXLSX packages");
+            foreach (DocEntry e in plugins.Entries)
             {
                 if (!string.IsNullOrEmpty(e.ApiDocsUrl))
                 {
-                    sb.Append("- ").Append(e.Id).Append(": ").AppendLine(e.ApiDocsUrl);
+                    string note = !string.IsNullOrEmpty(e.Description) ? e.Description : e.Id + " API reference";
+                    sb.Append("- [").Append(e.Id).Append("](").Append(e.ApiDocsUrl).Append("): ").AppendLine(note);
                 }
             }
 
+            // Source — spec-compliant [name](url): description links
             sb.AppendLine();
             sb.AppendLine("## Source");
             sb.AppendLine();
-            sb.Append("- Primary repository: ").AppendLine(root.RepositoryUrl);
-            foreach (var e in plugins.Entries)
+            sb.Append("- [").Append(root.ProjectName).Append("](").Append(root.RepositoryUrl).AppendLine("): Primary repository (meta-package, docs)");
+
+            // Deduplicate external repos (multiple entries may share the same repo URL)
+            var seenRepos = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (DocEntry e in plugins.Entries)
             {
-                if (!string.IsNullOrEmpty(e.Repository) &&
-                    !string.Equals(e.Repository, root.RepositoryUrl, StringComparison.OrdinalIgnoreCase))
-                {
-                    sb.Append("- ").Append(e.Id).Append(" (external): ").AppendLine(e.Repository);
-                }
+                if (string.IsNullOrEmpty(e.Repository) ||
+                    string.Equals(e.Repository, root.RepositoryUrl, StringComparison.OrdinalIgnoreCase))
+                    continue;
+                if (!seenRepos.Add(e.Repository))
+                    continue;
+                string repoName = !string.IsNullOrEmpty(e.RepositoryDisplayName) ? e.RepositoryDisplayName : e.Id;
+                sb.Append("- [").Append(repoName).Append("](").Append(e.Repository).AppendLine("): Source code (external)");
             }
 
+            // Optional section (spec-defined: these entries can be skipped in short contexts)
             sb.AppendLine();
-            sb.AppendLine("## Demos");
+            sb.AppendLine("## Optional");
             sb.AppendLine();
-            sb.Append("- Repository with running demo use cases: ").AppendLine(root.DemoRepositoryUrl);
-            sb.Append("- Direct folder URL with use cases for ").Append(root.ProjectName).Append(": ").AppendLine(root.DemoRepositoryUseCaseUrl);
-
-            sb.AppendLine();
-            sb.AppendLine("## Notes");
-            sb.AppendLine();
-            sb.AppendLine("- Docs.IndexGenerator/ is a build utility and not part of the public API.");
-            sb.AppendLine("- This file is generated automatically on build from Docs.IndexGenerator/Config/*.json — do not edit by hand.");
+            sb.Append("- [Demo repository](").Append(root.DemoRepositoryUrl).AppendLine("): Running demo use cases");
+            sb.Append("- [").Append(root.ProjectName).Append(" demo use cases](").Append(root.DemoRepositoryUseCaseUrl).AppendLine("): Direct folder with NanoXLSX examples");
+            if (!string.IsNullOrEmpty(root.WikiUrl))
+                sb.Append("- [Getting started](").Append(root.WikiUrl).AppendLine("): Wiki / getting started guide");
 
             return sb.ToString();
         }

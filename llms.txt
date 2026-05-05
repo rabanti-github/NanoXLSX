@@ -2,9 +2,9 @@
 
 > A small, dependency-free .NET library to create and read Microsoft Excel (XLSX) files. Modular plugin architecture: a Core package plus optional Reader, Writer, and Formatting plugins. Targets .NET Standard 2.0 and .NET Framework 4.5+.
 
-## Packages
+NanoXLSX is a meta-package bundling NanoXLSX.Core,  NanoXLSX.Reader, NanoXLSX.Writer, and NanoXLSX.Formatting.
 
-Meta package **NanoXLSX v3.1.0** bundles all of the below.
+## Packages
 
 - [NanoXLSX](https://www.nuget.org/packages/NanoXLSX): NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way. This package is the meta package of NanoXLSX and should be used in most cases as dependency in your project.
 - [NanoXLSX.Core](https://www.nuget.org/packages/NanoXLSX.Core): Core library: workbooks, worksheets, cells, styles, colors. Has no external dependencies. (bundled)
@@ -12,25 +12,35 @@ Meta package **NanoXLSX v3.1.0** bundles all of the below.
 - [NanoXLSX.Writer](https://www.nuget.org/packages/NanoXLSX.Writer): Writer plugin: extension methods to save XLSX files. Depends on Core. (bundled)
 - [NanoXLSX.Formatting](https://www.nuget.org/packages/NanoXLSX.Formatting): Formatting plugin: in-line cell formatting (rich text). Depends on Core. Maintained in an external repository. (bundled)
 
+## Usage
+
+```csharp
+Workbook workbook = new Workbook("myWorkbook.xlsx", "Sheet1");
+workbook.CurrentWorksheet.AddNextCell("Some Data");
+workbook.CurrentWorksheet.AddNextCell(42);
+workbook.CurrentWorksheet.GoToNextRow();
+workbook.CurrentWorksheet.AddNextCell(DateTime.Now);
+workbook.Save();
+
+\\Reading a workbook
+Workbook workbook = WorkbookReader.Load("myWorkbook.xlsx");
+```
+
 ## API Documentation
 
-- Combined documentation portal: https://rabanti-github.github.io/NanoXLSX/
-- NanoXLSX.Core: https://rabanti-github.github.io/NanoXLSX/NanoXLSX.Core/
-- NanoXLSX.Reader: https://rabanti-github.github.io/NanoXLSX/NanoXLSX.Reader/
-- NanoXLSX.Writer: https://rabanti-github.github.io/NanoXLSX/NanoXLSX.Writer/
-- NanoXLSX.Formatting: https://rabanti-github.github.io/NanoXLSX.Formatting/
+- [Combined documentation portal](https://rabanti-github.github.io/NanoXLSX/): All NanoXLSX packages
+- [NanoXLSX.Core](https://rabanti-github.github.io/NanoXLSX/NanoXLSX.Core/): Core library: workbooks, worksheets, cells, styles, colors. Has no external dependencies.
+- [NanoXLSX.Reader](https://rabanti-github.github.io/NanoXLSX/NanoXLSX.Reader/): Reader plugin: extension methods to load XLSX files. Depends on Core.
+- [NanoXLSX.Writer](https://rabanti-github.github.io/NanoXLSX/NanoXLSX.Writer/): Writer plugin: extension methods to save XLSX files. Depends on Core.
+- [NanoXLSX.Formatting](https://rabanti-github.github.io/NanoXLSX.Formatting/): Formatting plugin: in-line cell formatting (rich text). Depends on Core. Maintained in an external repository.
 
 ## Source
 
-- Primary repository: https://github.com/rabanti-github/NanoXLSX
-- NanoXLSX.Formatting (external): https://github.com/rabanti-github/NanoXLSX.Formatting
+- [NanoXLSX](https://github.com/rabanti-github/NanoXLSX): Primary repository (meta-package, docs)
+- [NanoXLSX.Formatting](https://github.com/rabanti-github/NanoXLSX.Formatting): Source code (external)
 
-## Demos
+## Optional
 
-- Repository with running demo use cases: https://github.com/rabanti-github/NanoXLSX.Demo
-- Direct folder URL with use cases for NanoXLSX: https://github.com/rabanti-github/NanoXLSX.Demo/tree/main/NanoXLSX/Demo/UseCases
-
-## Notes
-
-- Docs.IndexGenerator/ is a build utility and not part of the public API.
-- This file is generated automatically on build from Docs.IndexGenerator/Config/*.json — do not edit by hand.
+- [Demo repository](https://github.com/rabanti-github/NanoXLSX.Demo): Running demo use cases
+- [NanoXLSX demo use cases](https://github.com/rabanti-github/NanoXLSX.Demo/tree/main/NanoXLSX/Demo/UseCases): Direct folder with NanoXLSX examples
+- [Getting started](https://github.com/rabanti-github/NanoXLSX/wiki/Getting-started): Wiki / getting started guide

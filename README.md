@@ -73,7 +73,9 @@ There are some limitations:
 * Due to the potential high complexity, custom number format codes are currently not automatically escaped on writing or un-escaped on reading
 
 ## :robot: For AI Agents
+
 For AI agents and LLM tooling, a machine-readable [`llms.txt`](./llms.txt) is available.
+It lists all packages, installation commands, API documentation, source repositories, and a quick-start code snippet.
 
 ## :gear: Requirements
 

@@ -27,13 +27,19 @@ namespace Docs.IndexGenerator.Models
         string RepositoryUrl,
         string DemoRepositoryUrl,
         string DemoRepositoryUseCaseUrl,
-        string LlmsSummary);
+        string LlmsSummary,
+        string? LlmsBodyParagraph,
+        string? LlmsUsageSnippet,
+        string? LlmsUsageSnippetLanguage,
+        string? WikiUrl);
 
     internal record MetaPackageConfig(
         string PackageName,
         string Version,
         string? Description,
-        string? NuGetUrl);
+        string? NuGetUrl,
+        string? PmInstallCommand,
+        string? CliInstallCommand);
 
     internal record PluginConfig(DocEntry[] Entries);
 }
