@@ -109,8 +109,41 @@ namespace NanoXLSX.Internal.Writers
                 sheet.AddAttribute("sheetId", "1");
                 sheet.AddAttribute("name", "sheet1");
             }
+            workbook.AddChildElement(GetDefinedNamesElement());
 
             WriterPlugInHandler.HandleInlineQueuePlugins(ref workbook, Workbook, PlugInUUID.WorkbookInlineWriter);
+        }
+
+        /// <summary>
+        /// Builds the &lt;definedNames&gt; element for the workbook, or returns null if no defined names are present.
+        /// </summary>
+        /// <returns>The defined names XmlElement, or null when nothing to write.</returns>
+        private XmlElement GetDefinedNamesElement()
+        {
+            System.Collections.Generic.IReadOnlyList<DefinedName> names = Workbook.GetDefinedNames();
+            if (names.Count == 0)
+            {
+                return null;
+            }
+            XmlElement definedNames = XmlElement.CreateElement("definedNames");
+            foreach (DefinedName item in names)
+            {
+                XmlElement definedName = definedNames.AddChildElementWithValue("definedName", XmlUtils.SanitizeXmlValue(item.Reference));
+                definedName.AddAttribute("name", XmlUtils.SanitizeXmlValue(item.Name));
+                if (item.LocalSheet != null)
+                {
+                    int index = Workbook.Worksheets.IndexOf(item.LocalSheet);
+                    if (index >= 0)
+                    {
+                        definedName.AddAttribute("localSheetId", ParserUtils.ToString(index));
+                    }
+                }
+                if (!string.IsNullOrEmpty(item.Comment))
+                {
+                    definedName.AddAttribute("comment", XmlUtils.SanitizeXmlValue(item.Comment));
+                }
+            }
+            return definedNames;
         }
 
         /// <summary>

@@ -210,6 +210,10 @@ namespace NanoXLSX.Registry
         /// UUID for the styles, on reading a workbook
         /// </summary>
         public const string StyleEntity = "638F9F5A-334A-49A1-BE07-1F2F3BFB70C4";
+        /// <summary>
+        /// UUID for the defined names section, on reading a workbook
+        /// </summary>
+        public const string DefinedNameEntity = "7774EFED-65A6-4AD7-9870-20DE4D09DB41";
         #endregion
 
     }

@@ -38,6 +38,7 @@ namespace NanoXLSX
         private int selectedWorksheet;
         private Shortener shortener;
         private readonly List<Color> mruColors = new List<Color>();
+        private readonly List<DefinedName> definedNames = new List<DefinedName>();
         internal bool importInProgress; // Used by NanoXLSX.Reader
         #endregion
 
@@ -248,6 +249,98 @@ namespace NanoXLSX
         public void ClearMruColors()
         {
             mruColors.Clear();
+        }
+
+        /// <summary>
+        /// Adds a defined name to the workbook. A defined name with the same <see cref="DefinedName.Name"/>
+        /// and the same <see cref="DefinedName.LocalSheet"/> scope must not already exist.
+        /// </summary>
+        /// <param name="definedName">Defined name instance to add. Must not be null.</param>
+        /// <exception cref="WorksheetException">Thrown if a defined name with the same name and scope already exists, or if <paramref name="definedName"/> is null.</exception>
+        public void AddDefinedName(DefinedName definedName)
+        {
+            if (definedName == null)
+            {
+                throw new WorksheetException("The defined name to add must not be null.");
+            }
+            if (FindDefinedNameIndex(definedName.Name, definedName.LocalSheet) >= 0)
+            {
+                string scope = definedName.LocalSheet == null ? "workbook" : "worksheet '" + definedName.LocalSheet.SheetName + "'";
+                throw new WorksheetException("A defined name with the name '" + definedName.Name + "' already exists in the " + scope + " scope.");
+            }
+            definedNames.Add(definedName);
+        }
+
+        /// <summary>
+        /// Adds a defined name to the workbook (convenience overload that constructs the <see cref="DefinedName"/> in place).
+        /// </summary>
+        /// <param name="name">Name of the defined name.</param>
+        /// <param name="reference">Reference text (cell, range, formula, or constant).</param>
+        /// <param name="localSheet">Optional worksheet that scopes the defined name. Pass null for workbook scope.</param>
+        /// <param name="comment">Optional comment.</param>
+        /// <exception cref="WorksheetException">Thrown if a defined name with the same name and scope already exists.</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Thrown if <paramref name="name"/> or <paramref name="reference"/> is invalid (see <see cref="DefinedName"/>).</exception>
+        public void AddDefinedName(string name, string reference, Worksheet localSheet = null, string comment = null)
+        {
+            AddDefinedName(new DefinedName(name, reference, localSheet, comment));
+        }
+
+        /// <summary>
+        /// Removes the defined name with the supplied name and scope.
+        /// </summary>
+        /// <param name="name">Name of the defined name to remove.</param>
+        /// <param name="localSheet">Worksheet scope, or null for workbook scope.</param>
+        /// <returns>True if a matching defined name was removed, false if no match was found.</returns>
+        public bool RemoveDefinedName(string name, Worksheet localSheet = null)
+        {
+            int index = FindDefinedNameIndex(name, localSheet);
+            if (index < 0)
+            {
+                return false;
+            }
+            definedNames.RemoveAt(index);
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the defined name with the supplied name and scope.
+        /// </summary>
+        /// <param name="name">Name of the defined name.</param>
+        /// <param name="localSheet">Worksheet scope, or null for workbook scope.</param>
+        /// <returns>The matching <see cref="DefinedName"/> instance, or null if no match was found.</returns>
+        public DefinedName GetDefinedName(string name, Worksheet localSheet = null)
+        {
+            int index = FindDefinedNameIndex(name, localSheet);
+            return index < 0 ? null : definedNames[index];
+        }
+
+        /// <summary>
+        /// Gets a read-only view of all defined names in this workbook in insertion order.
+        /// </summary>
+        /// <returns>Read-only list of <see cref="DefinedName"/> instances.</returns>
+        public IReadOnlyList<DefinedName> GetDefinedNames()
+        {
+            return definedNames;
+        }
+
+        /// <summary>
+        /// Locates the index of a defined name by name and scope.
+        /// </summary>
+        /// <param name="name">Name to find.</param>
+        /// <param name="localSheet">Worksheet scope, or null for workbook scope.</param>
+        /// <returns>Index in the internal list, or -1 if not found.</returns>
+        private int FindDefinedNameIndex(string name, Worksheet localSheet)
+        {
+            for (int i = 0; i < definedNames.Count; i++)
+            {
+                DefinedName candidate = definedNames[i];
+                if (string.Equals(candidate.Name, name, System.StringComparison.Ordinal)
+                    && ReferenceEquals(candidate.LocalSheet, localSheet))
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
 
         /// <summary>

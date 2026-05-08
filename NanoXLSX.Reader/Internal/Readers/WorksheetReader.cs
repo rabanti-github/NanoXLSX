@@ -175,6 +175,35 @@ namespace NanoXLSX.Internal.Readers
             {
                 Workbook.SetSelectedWorksheet(worksheet);
             }
+            FinalizeDefinedNamesIfLast();
+        }
+
+        /// <summary>
+        /// Finalizes the stashed defined-name definitions into <see cref="DefinedName"/> instances on the workbook,
+        /// once all expected worksheets have been bound. Defined-name resolution requires worksheet references for
+        /// localSheetId scoping; therefore, this step is deferred until after the last worksheet is wired up.
+        /// </summary>
+        private void FinalizeDefinedNamesIfLast()
+        {
+            List<WorksheetDefinition> worksheetDefinitions = Workbook.AuxiliaryData.GetDataList<WorksheetDefinition>(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity);
+            if (Workbook.Worksheets.Count < worksheetDefinitions.Count)
+            {
+                return;
+            }
+            List<DefinedNameDefinition> definitions = Workbook.AuxiliaryData.GetDataList<DefinedNameDefinition>(PlugInUUID.WorkbookReader, PlugInUUID.DefinedNameEntity);
+            foreach (DefinedNameDefinition definition in definitions)
+            {
+                Worksheet localSheet = null;
+                if (definition.LocalSheetId.HasValue)
+                {
+                    int idx = definition.LocalSheetId.Value;
+                    if (idx >= 0 && idx < Workbook.Worksheets.Count)
+                    {
+                        localSheet = Workbook.Worksheets[idx];
+                    }
+                }
+                Workbook.AddDefinedName(definition.Name, definition.Reference, localSheet, definition.Comment);
+            }
         }
 
         /// <summary>
