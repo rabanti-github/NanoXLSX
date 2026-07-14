@@ -78,12 +78,8 @@ namespace NanoXLSX.Registry
 
             // Guard the assembly-directory enumeration. Directory.GetFiles can throw (e.g. IOException
             // "The parameter is incorrect" when BaseDirectory contains an entry the native enumerator
-            // cannot stat — observed when the host process's base directory is the Unity 6000.5.x editor
-            // install folder). Because this runs from WorkbookReader's static constructor, an unhandled
-            // throw here surfaces as a TypeInitializationException and permanently disables the reader
-            // for the whole AppDomain. Phase 1 above already registered plugins from loaded assemblies,
-            // so on enumeration failure we degrade to that result rather than crashing. This mirrors the
-            // per-path try/catch already used in the load loop below.
+            // cannot stat). Phase 1 above already registered plugins from loaded assemblies,
+            // so on enumeration failure, the already processed result is returned rather than crashing.
             List<string> referencedPaths;
             try
             {
