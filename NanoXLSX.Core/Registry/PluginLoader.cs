@@ -76,9 +76,22 @@ namespace NanoXLSX.Registry
                 .Select(a => a.Location);
             HashSet<string> loadedPaths = new HashSet<string>(allLoadedPaths, StringComparer.InvariantCultureIgnoreCase);
 
-            List<string> referencedPaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
-                .Where(path => !loadedPaths.Contains(path))
-                .ToList();
+            // Guard the assembly-directory enumeration. Directory.GetFiles can throw (e.g. IOException
+            // "The parameter is incorrect" when BaseDirectory contains an entry the native enumerator
+            // cannot stat). Phase 1 above already registered plugins from loaded assemblies,
+            // so on enumeration failure, the already processed result is returned rather than crashing.
+            List<string> referencedPaths;
+            try
+            {
+                referencedPaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
+                    .Where(path => !loadedPaths.Contains(path))
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to enumerate assemblies in {AppDomain.CurrentDomain.BaseDirectory}: {ex.Message}");
+                return;
+            }
 
             foreach (string path in referencedPaths)
             {

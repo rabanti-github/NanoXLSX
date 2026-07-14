@@ -208,6 +208,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         {
             public string StreamEntryName => null;
             public Workbook Workbook { get; set; }
+            [ExcludeFromCodeCoverage]
             public IOptions Options { get; set; }
             public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
@@ -278,7 +279,9 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             public string StreamEntryName => "xl/nonexistent/file.xml";
             [ExcludeFromCodeCoverage]
             public Workbook Workbook { get; set; }
+            [ExcludeFromCodeCoverage]
             public IOptions Options { get; set; }
+            [ExcludeFromCodeCoverage]
             public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
             [ExcludeFromCodeCoverage]
             public void Execute()
