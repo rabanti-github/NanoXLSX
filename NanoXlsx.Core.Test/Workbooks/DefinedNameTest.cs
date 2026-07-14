@@ -1,4 +1,5 @@
 ﻿using NanoXLSX.Exceptions;
+using NanoXLSX.Styles;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
@@ -303,6 +304,126 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Workbook wb = new Workbook("Sheet1");
             Assert.False(wb.RemoveDefinedName("Unknown"));
         }
+
+        #endregion
+
+        #region Worksheet API tests
+
+        [Fact(DisplayName = "Test of Worksheet.AddDefinedName creates a worksheet-scoped name")]
+        public void Worksheet_AddDefinedName()
+        {
+            Workbook wb = new Workbook("Sheet1");
+            wb.CurrentWorksheet.AddDefinedName("MyName", "Sheet1!$A$1");
+            DefinedName dn = wb.GetDefinedName("MyName", wb.CurrentWorksheet);
+            Assert.NotNull(dn);
+            Assert.Same(wb.CurrentWorksheet, dn.LocalSheet);
+        }
+
+        [Fact(DisplayName = "Test that Worksheet.AddDefinedName on a detached worksheet throws")]
+        public void Worksheet_AddDefinedName_Detached()
+        {
+            Worksheet ws = new Worksheet("orphan");
+            Assert.Throws<WorksheetException>(() => ws.AddDefinedName("MyName", "Sheet1!$A$1"));
+        }
+
+        [Fact(DisplayName = "Test of Worksheet.RemoveDefinedName removes only worksheet scope")]
+        public void Worksheet_RemoveDefinedName()
+        {
+            Workbook wb = new Workbook("Sheet1");
+            wb.AddDefinedName("MyName", "wb-ref");
+            wb.CurrentWorksheet.AddDefinedName("MyName", "sheet-ref");
+            Assert.True(wb.CurrentWorksheet.RemoveDefinedName("MyName"));
+            Assert.NotNull(wb.GetDefinedName("MyName"));
+            Assert.Null(wb.GetDefinedName("MyName", wb.CurrentWorksheet));
+        }
+
+        [Fact(DisplayName = "Test that Worksheet.RemoveDefinedName on detached worksheet throws")]
+        public void Worksheet_RemoveDefinedName_Detached()
+        {
+            Worksheet ws = new Worksheet("orphan");
+            Assert.Throws<WorksheetException>(() => ws.RemoveDefinedName("X"));
+        }
+
+        [Fact(DisplayName = "Test that Worksheet.GetDefinedName returns only worksheet scope")]
+        public void Worksheet_GetDefinedName()
+        {
+            Workbook wb = new Workbook("Sheet1");
+            wb.AddDefinedName("MyName", "wb-ref");
+            Assert.Null(wb.CurrentWorksheet.GetDefinedName("MyName"));
+            wb.CurrentWorksheet.AddDefinedName("MyName", "sheet-ref");
+            Assert.Equal("sheet-ref", wb.CurrentWorksheet.GetDefinedName("MyName").Reference);
+        }
+
+        [Fact(DisplayName = "Test that Worksheet.GetDefinedName on detached worksheet throws")]
+        public void Worksheet_GetDefinedName_Detached()
+        {
+            Worksheet ws = new Worksheet("orphan");
+            Assert.Throws<WorksheetException>(() => ws.GetDefinedName("X"));
+        }
+
+        #endregion
+
+        #region AddCellReference tests
+
+        [Fact(DisplayName = "Test of AddCellReference(DefinedName, address) creates a Reference cell")]
+        public void Worksheet_AddCellReference_StringAddress()
+        {
+            Workbook wb = new Workbook("Sheet1");
+            DefinedName dn = new DefinedName("MyName", "Sheet1!$A$1");
+            wb.AddDefinedName(dn);
+            wb.CurrentWorksheet.AddCellReference(dn, "B2");
+            Cell c = wb.CurrentWorksheet.Cells["B2"];
+            Assert.Equal(Cell.CellType.Reference, c.DataType);
+            Assert.Equal("MyName", c.Value);
+        }
+
+        [Fact(DisplayName = "Test of AddCellReference(DefinedName, address) creates a Reference cell with a style")]
+        public void Worksheet_AddCellReference_StringAddress_WithStyle()
+        {
+            Workbook wb = new Workbook("Sheet1");
+            DefinedName dn = new DefinedName("MyName", "Sheet1!$A$1");
+            wb.AddDefinedName(dn);
+            wb.CurrentWorksheet.AddCellReference(dn, "B2", (Style)BasicStyles.Bold.Copy());
+            Cell c = wb.CurrentWorksheet.Cells["B2"];
+            Assert.Equal(Cell.CellType.Reference, c.DataType);
+            Assert.Equal("MyName", c.Value);
+            Assert.Equal(BasicStyles.Bold.GetHashCode(), c.CellStyle.GetHashCode());  
+        }
+
+        [Fact(DisplayName = "Test of AddCellReference(DefinedName, col, row) creates a Reference cell")]
+        public void Worksheet_AddCellReference_ColRow()
+        {
+            Workbook wb = new Workbook("Sheet1");
+            DefinedName dn = new DefinedName("MyName", "Sheet1!$A$1");
+            wb.AddDefinedName(dn);
+            wb.CurrentWorksheet.AddCellReference(dn, 1, 1);
+            Cell c = wb.CurrentWorksheet.Cells["B2"];
+            Assert.Equal(Cell.CellType.Reference, c.DataType);
+            Assert.Equal("MyName", c.Value);
+        }
+        [Fact(DisplayName = "Test of AddCellReference(DefinedName, col, row) creates a Reference cell with a style")]
+        public void Worksheet_AddCellReference_ColRow_WithStyle()
+        {
+            Workbook wb = new Workbook("Sheet1");
+            DefinedName dn = new DefinedName("MyName", "Sheet1!$A$1");
+            wb.AddDefinedName(dn);
+            wb.CurrentWorksheet.AddCellReference(dn, 1, 1, (Style)BasicStyles.Italic.Copy());
+            Cell c = wb.CurrentWorksheet.Cells["B2"];
+            Assert.Equal(Cell.CellType.Reference, c.DataType);
+            Assert.Equal("MyName", c.Value);
+            Assert.Equal(BasicStyles.Italic.GetHashCode(), c.CellStyle.GetHashCode());
+        }
+
+        [Fact(DisplayName = "Test that AddCellReference(null) throws WorksheetException")]
+        public void Worksheet_AddCellReference_NullThrows()
+        {
+            Workbook wb = new Workbook("Sheet1");
+            Assert.Throws<WorksheetException>(() => wb.CurrentWorksheet.AddCellReference(null, "A1"));
+        }
+
+        #endregion
+
+        #region misc
 
         [Fact(DisplayName = "Test that GetDefinedNames returns insertion order")]
         public void Workbook_InsertionOrderPreserved()

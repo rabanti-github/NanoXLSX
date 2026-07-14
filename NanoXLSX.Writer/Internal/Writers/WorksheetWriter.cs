@@ -685,7 +685,7 @@ namespace NanoXLSX.Internal.Writers
                     }
                     else // Handle sharedStrings
                     {
-                        if (item.DataType == Cell.CellType.Formula)
+                        if (item.DataType == Cell.CellType.Formula || item.DataType == Cell.CellType.Reference)
                         {
                             typeAttribute = "str";
                             valueDef = item.Value.ToString();
@@ -711,7 +711,7 @@ namespace NanoXLSX.Internal.Writers
                     XmlElement c = row.AddChildElementWithAttribute("c", "r", item.CellAddress);
                     c.AddAttribute(typeDef);
                     c.AddAttribute(styleDef);
-                    if (item.DataType == Cell.CellType.Formula)
+                    if (item.DataType == Cell.CellType.Formula || item.DataType == Cell.CellType.Reference)
                     {
                         c.AddChildElementWithValue("f", XmlUtils.SanitizeXmlValue(item.Value.ToString()));
                     }

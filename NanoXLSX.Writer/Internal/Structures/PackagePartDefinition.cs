@@ -27,13 +27,13 @@ namespace NanoXLSX.Internal.Structures
         /// </summary>
         internal const int METADATA_PACKAGE_PART_START_INDEX = 1000;
         /// <summary>
-        /// Package part definition start index (for sorting), designated for worksheet parts. These numbers shall not be used for other instances until <see cref="POST_WORSHEET_PACKAGE_PART_START_INDEX"/>
+        /// Package part definition start index (for sorting), designated for worksheet parts. These numbers shall not be used for other instances until <see cref="POST_WORkSHEET_PACKAGE_PART_START_INDEX"/>
         /// </summary>
         internal const int WORKSHEET_PACKAGE_PART_START_INDEX = 10000;
         /// <summary>
         /// Package part definition start index (for sorting), designated for other non-root package parts
         /// </summary>
-        internal const int POST_WORSHEET_PACKAGE_PART_START_INDEX = 2000000;
+        internal const int POST_WORkSHEET_PACKAGE_PART_START_INDEX = 2000000;
         #endregion
 
         #region enums

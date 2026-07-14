@@ -204,6 +204,37 @@ namespace NanoXLSX.Internal.Readers
                 }
                 Workbook.AddDefinedName(definition.Name, definition.Reference, localSheet, definition.Comment);
             }
+            RetagReferenceCells();
+        }
+
+        /// <summary>
+        /// Tags formula cells whose value matches a workbook defined name as <see cref="Cell.CellType.Reference"/>.
+        /// Runs once, after all worksheets are bound and defined names finalized, since both worksheets and
+        /// defined names must be in place to perform the lookup.
+        /// </summary>
+        private void RetagReferenceCells()
+        {
+            HashSet<string> names = new HashSet<string>(StringComparer.Ordinal);
+            foreach (DefinedName dn in Workbook.GetDefinedNames())
+            {
+                names.Add(dn.Name);
+            }
+            if (names.Count == 0)
+            {
+                return;
+            }
+            foreach (Worksheet ws in Workbook.Worksheets)
+            {
+                foreach (Cell cell in ws.Cells.Values)
+                {
+                    if (cell.DataType == Cell.CellType.Formula
+                        && cell.Value is string s
+                        && names.Contains(s))
+                    {
+                        cell.DataType = Cell.CellType.Reference;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -701,6 +732,8 @@ namespace NanoXLSX.Internal.Readers
             string type = rowReader.GetAttribute("t");    // can be null
             string styleNumber = rowReader.GetAttribute("s"); // can be null
             string value = "";
+            string formulaText = null;
+            bool hasFormula = false;
             if (!rowReader.IsEmptyElement)
             {
                 using (XmlReader cellReader = rowReader.ReadSubtree())
@@ -712,8 +745,15 @@ namespace NanoXLSX.Internal.Readers
                         {
                             continue;
                         }
-                        if (cellReader.LocalName.Equals("v", StringComparison.OrdinalIgnoreCase) ||
-                            cellReader.LocalName.Equals("f", StringComparison.OrdinalIgnoreCase))
+                        if (cellReader.LocalName.Equals("f", StringComparison.OrdinalIgnoreCase))
+                        {
+                            // Formula cells in OOXML may omit the t attribute and carry a cached <v>.
+                            // The presence of <f> is authoritative: the cell is a formula, and the formula
+                            // text (not the cached value) is what we preserve.
+                            formulaText = cellReader.ReadElementContentAsString();
+                            hasFormula = true;
+                        }
+                        else if (cellReader.LocalName.Equals("v", StringComparison.OrdinalIgnoreCase))
                         {
                             value = cellReader.ReadElementContentAsString();
                         }
@@ -736,6 +776,13 @@ namespace NanoXLSX.Internal.Readers
                         }
                     }
                 }
+            }
+            if (hasFormula)
+            {
+                // The presence of <f> always wins over the t attribute (which Excel often omits) and
+                // over the cached <v>. We force the formula path and preserve the formula text as value.
+                value = formulaText;
+                type = "str";
             }
             Cell cell = ResolveCellData(value, type, styleNumber, address);
             worksheet.AddCell(cell, address);
