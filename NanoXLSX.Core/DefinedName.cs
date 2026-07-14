@@ -1,4 +1,4 @@
-/*
+﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
  * Copyright Raphael Stoeckli © 2026
  * This library is licensed under the MIT License.
@@ -7,7 +7,6 @@
 
 using System;
 using System.Text.RegularExpressions;
-using NanoXLSX.Exceptions;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX

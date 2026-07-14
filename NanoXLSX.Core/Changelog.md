@@ -1,5 +1,14 @@
 # Change Log - NanoXLSX.Core
 
+## v3.2.0
+
+---
+Release Date: **(17.07.2026)** <sup>(DMY)</sup>
+
+- Implemented defined names (cell references)
+- Fixed a bug in the PlugInLoader. Bug fix provided by yolkin-games
+
+
 ## v3.1.0
 
 ---

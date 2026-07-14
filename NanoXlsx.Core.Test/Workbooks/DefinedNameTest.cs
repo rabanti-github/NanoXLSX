@@ -387,7 +387,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Cell c = wb.CurrentWorksheet.Cells["B2"];
             Assert.Equal(Cell.CellType.Reference, c.DataType);
             Assert.Equal("MyName", c.Value);
-            Assert.Equal(BasicStyles.Bold.GetHashCode(), c.CellStyle.GetHashCode());  
+            Assert.Equal(BasicStyles.Bold.GetHashCode(), c.CellStyle.GetHashCode());
         }
 
         [Fact(DisplayName = "Test of AddCellReference(DefinedName, col, row) creates a Reference cell")]

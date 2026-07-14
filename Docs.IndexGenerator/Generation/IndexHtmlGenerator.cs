@@ -5,10 +5,10 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
-using System.Text;
 using Docs.IndexGenerator.Models;
 using Docs.IndexGenerator.Util;
+using System;
+using System.Text;
 
 namespace Docs.IndexGenerator.Generation
 {

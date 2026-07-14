@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using NanoXLSX.Colors;
-using NanoXLSX.Extensions;
 using NanoXLSX.Styles;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
