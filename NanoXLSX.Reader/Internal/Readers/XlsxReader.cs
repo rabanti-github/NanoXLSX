@@ -210,6 +210,9 @@ namespace NanoXLSX.Internal.Readers
             }
 
             IPluginBaseReader themeReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.ThemeReader, new ThemeReader());
+            // Multiple workbook theme relationships are not defined clearly. Retain every relationship in the
+            // discovery catalog, but preserve the previous reader behavior by processing only the first one.
+            // "First" is deterministic and means XML order in the discovered workbook relationship part.
             RelationshipInfo themeRelationship = GetRelationship(relationshipCatalog, workbookPartPath, GetDocumentType(themeReader, new ThemeReader().DocumentType), false);
             if (themeRelationship != null)
             {
