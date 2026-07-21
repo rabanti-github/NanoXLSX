@@ -20,8 +20,9 @@ namespace NanoXLSX.Internal.Readers
 {
 
     /// <summary>
-    /// Class representing a reader for relationship of XLSX files
+    /// Class representing the legacy workbook relationship reader of XLSX files.
     /// </summary>
+    /// \remark <remarks>This reader is retained for plug-in and inline-hook compatibility. Relationship discovery is authoritative for document resolution. Reconsider removal only in the next major version.</remarks>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.RelationshipReader)]
     public partial class RelationshipReader : IPluginBaseReader
     {
@@ -75,6 +76,7 @@ namespace NanoXLSX.Internal.Readers
         /// <exception cref="Exceptions.IOException">Throws an IOException in case of a error during reading</exception>
         public void Execute()
         {
+            // TODO (next major version): Replace this compatibility staging reader after its UUID and inline plug-in contracts can be retired.
             if (stream == null) return;
             try
             {
