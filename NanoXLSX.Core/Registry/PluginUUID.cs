@@ -10,9 +10,11 @@ namespace NanoXLSX.Registry
     /// <summary>
     /// Static class, holding UUIDs to be used for registering packages, containing plug-ins or identifiers for data entities
     /// </summary>
-    /// \remark <remarks>The UUID strings shall never be altered. New UUIDs may be added. Obsolete may be completely removed.</remarks>
+    /// \remark <remarks>The UUID strings shall never be altered. New UUIDs may be added. Existing UUIDs must remain available throughout version 3 for API and plug-in compatibility.</remarks>
     public static class PlugInUUID
     {
+
+        // TODO (next major version): Re-evaluate whether string-based UUID dispatch can be replaced by a strongly typed registration mechanism.
 
         #region writerUUIDs
         /// <summary>
@@ -139,6 +141,10 @@ namespace NanoXLSX.Registry
         /// UUID for the relationship reader, when a workbook is loaded
         /// </summary>
         public const string RelationshipReader = "DB9AF89B-6181-4F94-A666-5AB70840EDDF";
+        /// <summary>
+        /// UUID for the package relationship discovery reader, when a workbook is loaded
+        /// </summary>
+        public const string DiscoveryReader = "08FE5C9F-C8A3-4B46-A74F-D2BF3F083CC4";
         #endregion
 
         #region generalReaderQueueUUIDs
@@ -214,6 +220,10 @@ namespace NanoXLSX.Registry
         /// UUID for the defined names section, on reading a workbook
         /// </summary>
         public const string DefinedNameEntity = "7774EFED-65A6-4AD7-9870-20DE4D09DB41";
+        /// <summary>
+        /// UUID for the relationship discovery catalog, on reading a workbook
+        /// </summary>
+        public const string DiscoveryCatalogEntity = "A3FB109E-F7F8-4FA1-9AAF-CF3C5A62A9A8";
         #endregion
 
     }

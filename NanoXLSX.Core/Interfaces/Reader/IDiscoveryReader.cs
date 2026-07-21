@@ -1,27 +1,27 @@
-﻿/*
+/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
  * Copyright Raphael Stoeckli © 2026
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System.Collections.Generic;
+using System.IO.Compression;
 
 namespace NanoXLSX.Interfaces.Reader
 {
     /// <summary>
-    /// Interface, used by worksheet readers
+    /// Interface for readers that discover package-level information before document readers execute.
     /// </summary>
-    internal interface IWorksheetReader : IDocumentReader
+    internal interface IDiscoveryReader : IPluginReader
     {
         /// <summary>
-        /// Gets or sets the (r)ID (1-based) of the currently processed worksheet.
+        /// Gets or sets the reader options used for discovery validation.
         /// </summary>
-        int CurrentWorksheetID { get; set; }
+        IOptions Options { get; set; }
 
         /// <summary>
-        /// Gets or Sets the list of the shared strings. The index of the list corresponds to the index, defined in cell values
+        /// Initializes discovery with a caller-owned ZIP archive.
         /// </summary>
-        List<string> SharedStrings { get; set; }
+        void Init(ZipArchive archive, Workbook workbook, IOptions readerOptions);
     }
 }

@@ -36,6 +36,11 @@ namespace NanoXLSX.Internal.Readers
         #region properties
 
         /// <summary>
+        /// Gets the relationship type URI of a shared strings document.
+        /// </summary>
+        public virtual string DocumentType { get { return @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings"; } }
+
+        /// <summary>
         /// List of shared string entries
         /// </summary>
         /// <value>

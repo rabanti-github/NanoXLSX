@@ -24,13 +24,18 @@ namespace NanoXLSX.Internal.Readers
     /// Class representing a reader to decompile a workbook in an XLSX files
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.WorkbookReader)]
-    public partial class WorkbookReader : IPluginBaseReader
+    public partial class WorkbookReader : IDocumentReader
     {
         private Stream stream;
         private IPasswordReader passwordReader;
         // private ReaderOptions readerOptions;
 
         #region properties
+        /// <summary>
+        /// Gets the relationship type URI of a workbook document.
+        /// </summary>
+        public virtual string DocumentType { get { return @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument"; } }
+
         /// <summary>
         /// Workbook reference where read data is stored (should not be null)
         /// </summary>
