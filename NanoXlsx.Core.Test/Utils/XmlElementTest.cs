@@ -3,10 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using NanoXLSX.Utils.Xml;
-using XmlElement = NanoXLSX.Utils.Xml.XmlElement;
-using XmlAttribute = NanoXLSX.Utils.Xml.XmlAttribute;
 using Xunit;
+using XmlAttribute = NanoXLSX.Utils.Xml.XmlAttribute;
+using XmlElement = NanoXLSX.Utils.Xml.XmlElement;
 
 namespace NanoXLSX.Core.Test.UtilsTest
 {

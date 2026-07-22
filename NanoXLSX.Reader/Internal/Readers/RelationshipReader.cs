@@ -7,22 +7,20 @@
 
 using System;
 using System.IO;
-using System.Xml;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
-using NanoXLSX.Utils;
-using NanoXLSX.Utils.Xml;
-using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
 {
 
     /// <summary>
-    /// Class representing a reader for relationship of XLSX files
+    /// Class representing the legacy workbook relationship reader of XLSX files.
     /// </summary>
+    /// \remark <remarks>This reader is retained for plug-in and inline-hook compatibility. Relationship discovery is authoritative for document resolution. Reconsider removal only in the next major version.</remarks>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.RelationshipReader)]
+    [Obsolete("Will be removed with the next major version")]
     public partial class RelationshipReader : IPluginBaseReader
     {
         private Stream stream;
@@ -70,50 +68,15 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Method to execute the main logic of the plug-in (interface implementation)
+        /// Executes legacy relationship inline plug-ins without duplicating discovery parsing.
         /// </summary>
-        /// <exception cref="Exceptions.IOException">Throws an IOException in case of a error during reading</exception>
         public void Execute()
         {
+            // TODO (next major version): Replace this compatibility staging reader after its UUID and inline plug-in contracts can be retired.
             if (stream == null) return;
-            try
+            using (stream) // Close after processing
             {
-                using (stream) // Close after processing
-                {
-                    using (XmlReader reader = XmlReader.Create(stream, XmlStreamUtils.CreateSettings()))
-                    {
-                        while (reader.Read())
-                        {
-                            if (!XmlStreamUtils.IsElement(reader, "Relationship"))
-                            {
-                                continue;
-                            }
-                            string id = reader.GetAttribute("Id");
-                            string type = reader.GetAttribute("Type");
-                            string target = reader.GetAttribute("Target");
-                            if (ParserUtils.StartsWith(target, "/"))
-                            {
-                                target = target.TrimStart('/');
-                            }
-                            if (ParserUtils.NotStartsWith(target, "xl/"))
-                            {
-                                target = "xl/" + target;
-                            }
-                            Relationship rel = new Relationship
-                            {
-                                RID = id,
-                                Type = type,
-                                Target = target,
-                            };
-                            Workbook.AuxiliaryData.SetData(PlugInUUID.RelationshipReader, PlugInUUID.RelationshipEntity, id, rel);
-                        }
-                        InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.RelationshipInlineReader, Options, null);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new IOException("The XML entry could not be read from the input stream. Please see the inner exception:", ex);
+                InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.RelationshipInlineReader, Options, null);
             }
         }
         #endregion
