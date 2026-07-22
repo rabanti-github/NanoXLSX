@@ -9,13 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Threading.Tasks;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Registry;
 using NanoXLSX.Styles;
-using NanoXLSX.Utils;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
@@ -82,11 +80,11 @@ namespace NanoXLSX.Internal.Readers
             }
             catch (NotSupportedContentException)
             {
-                throw; // rethrow
+                throw; // re-throw
             }
             catch (IOException)
             {
-                throw; // rethrow
+                throw; // re-throw
             }
             catch (Exception ex)
             {
@@ -112,7 +110,7 @@ namespace NanoXLSX.Internal.Readers
             }
             catch (IOException)
             {
-                throw; // rethrow
+                throw; // re-throw
             }
             catch (Exception ex)
             {
@@ -171,15 +169,32 @@ namespace NanoXLSX.Internal.Readers
             {
                 entryLookup[entry.FullName] = entry;
             }
-            HandleQueuePlugIns(PlugInUUID.ReaderPrependingQueue, entryLookup, ref wb);
+
+            IDiscoveryReader discoveryReader = PlugInLoader.GetPlugIn<IDiscoveryReader>(PlugInUUID.DiscoveryReader, new DiscoveryReader());
+            discoveryReader.Init(zf, wb, readerOptions);
+            discoveryReader.Execute();
+            RelationshipCatalog relationshipCatalog = wb.AuxiliaryData.GetData<RelationshipCatalog>(PlugInUUID.DiscoveryReader, PlugInUUID.DiscoveryCatalogEntity);
+            if (relationshipCatalog == null)
+            {
+                throw new IOException("The relationship discovery reader did not provide a relationship catalog. The XLSX file may be corrupted.");
+            }
+
+            HandleQueuePlugIns(PlugInUUID.ReaderPackageRegistryQueue, entryLookup, relationshipCatalog, ref wb);
+            HandleQueuePlugIns(PlugInUUID.ReaderPrependingQueue, entryLookup, relationshipCatalog, ref wb);
+
+            IPluginBaseReader workbookReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.WorkbookReader, new WorkbookReader());
+            RelationshipInfo workbookRelationship = GetRelationship(relationshipCatalog, string.Empty, GetDocumentType(workbookReader, new WorkbookReader().DocumentType), true);
+            string workbookPartPath = workbookRelationship.ResolvedTargetPath;
 
             ISharedStringReader sharedStringsReader = PlugInLoader.GetPlugIn<ISharedStringReader>(PlugInUUID.SharedStringsReader, new SharedStringsReader());
-            if (entryLookup.TryGetValue("xl/sharedStrings.xml", out ZipArchiveEntry sharedStringsEntry) && sharedStringsEntry.Length > 0)
+            RelationshipInfo sharedStringsRelationship = GetRelationship(relationshipCatalog, workbookPartPath, sharedStringsReader.DocumentType, false);
+            if (sharedStringsRelationship != null)
             {
+                ZipArchiveEntry sharedStringsEntry = GetRequiredEntry(sharedStringsRelationship, entryLookup);
                 if (PlugInLoader.HasQueuePlugins(PlugInUUID.SharedStringsInlineReader))
                 {
                     // Inline plugins need a seekable stream; buffer so the handler can reset position
-                    MemoryStream ssMs = GetEntryStream("xl/sharedStrings.xml", entryLookup);
+                    MemoryStream ssMs = GetEntryStream(sharedStringsRelationship.ResolvedTargetPath, entryLookup);
                     sharedStringsReader.Init(ssMs, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
                     sharedStringsReader.Execute();
                 }
@@ -193,74 +208,75 @@ namespace NanoXLSX.Internal.Readers
                     }
                 }
             }
-            Dictionary<int, string> themeStreamNames = GetSequentialStreamNames("xl/theme/theme", entryLookup);
-            if (themeStreamNames.Count > 0)
+
+            IPluginBaseReader themeReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.ThemeReader, new ThemeReader());
+            // Multiple workbook theme relationships are not defined clearly. Retain every relationship in the
+            // discovery catalog, but preserve the previous reader behavior by processing only the first one.
+            // "First" is deterministic and means XML order in the discovered workbook relationship part.
+            RelationshipInfo themeRelationship = GetRelationship(relationshipCatalog, workbookPartPath, GetDocumentType(themeReader, new ThemeReader().DocumentType), false);
+            if (themeRelationship != null)
             {
-                // There is not really a definition whether multiple themes can be managed in one workbook.
-                // the suffix number (e.g. theme1) indicates it. However, no examples were found and therefore
-                // (currently) only the first occurring theme will be read
-                foreach (KeyValuePair<int, string> streamName in themeStreamNames)
-                {
-                    IPluginBaseReader themeReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.ThemeReader, new ThemeReader());
-                    ms = GetEntryStream(streamName.Value, entryLookup);
-                    themeReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
-                    themeReader.Execute();
-                    break;
-                }
+                ms = GetRequiredEntryStream(themeRelationship, entryLookup);
+                themeReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
+                themeReader.Execute();
             }
+
             StyleRepository.Instance.ImportInProgress = true; // TODO: To be checked
             IPluginBaseReader styleReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.StyleReader, new StyleReader());
-            ms = GetEntryStream("xl/styles.xml", entryLookup);
+            RelationshipInfo styleRelationship = GetRelationship(relationshipCatalog, workbookPartPath, GetDocumentType(styleReader, new StyleReader().DocumentType), true);
+            ms = GetRequiredEntryStream(styleRelationship, entryLookup);
             styleReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
             styleReader.Execute();
             StyleRepository.Instance.ImportInProgress = false;
 
-            ms = GetEntryStream("xl/workbook.xml", entryLookup);
-            IPluginBaseReader workbookReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.WorkbookReader, new WorkbookReader());
+            ms = GetRequiredEntryStream(workbookRelationship, entryLookup);
             workbookReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
             workbookReader.Execute();
 
-            ms = GetEntryStream("docProps/app.xml", entryLookup);
-            if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/app.xml seems to be defined
+            IPluginBaseReader metadataAppReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.MetadataAppReader, new MetadataAppReader());
+            RelationshipInfo metadataAppRelationship = GetRelationship(relationshipCatalog, string.Empty, GetDocumentType(metadataAppReader, new MetadataAppReader().DocumentType), false);
+            if (metadataAppRelationship != null)
             {
-                IPluginBaseReader metadataAppReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.MetadataAppReader, new MetadataAppReader());
+                ms = GetRequiredEntryStream(metadataAppRelationship, entryLookup);
                 metadataAppReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
                 metadataAppReader.Execute();
             }
-            ms = GetEntryStream("docProps/core.xml", entryLookup);
-            if (ms != null && ms.Length > 0) // If null/length == 0, no docProps/core.xml seems to be defined
+
+            IPluginBaseReader metadataCoreReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.MetadataCoreReader, new MetadataCoreReader());
+            RelationshipInfo metadataCoreRelationship = GetRelationship(relationshipCatalog, string.Empty, GetDocumentType(metadataCoreReader, new MetadataCoreReader().DocumentType), false);
+            if (metadataCoreRelationship != null)
             {
-                IPluginBaseReader metadataCoreReader = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.MetadataCoreReader, new MetadataCoreReader());
+                ms = GetRequiredEntryStream(metadataCoreRelationship, entryLookup);
                 metadataCoreReader.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
                 metadataCoreReader.Execute();
             }
 
             IPluginBaseReader relationships = PlugInLoader.GetPlugIn<IPluginBaseReader>(PlugInUUID.RelationshipReader, new RelationshipReader());
-            ms = GetEntryStream("xl/_rels/workbook.xml.rels", entryLookup);
+            ms = GetEntryStream(GetRelationshipPartPath(workbookPartPath), entryLookup);
             relationships.Init(ms, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
-            relationships.Execute();
+            relationships.Execute(); // Only for remaining plugin handling
 
             IWorksheetReader worksheetReader = PlugInLoader.GetPlugIn<IWorksheetReader>(PlugInUUID.WorksheetReader, new WorksheetReader());
             worksheetReader.SharedStrings = sharedStringsReader.SharedStrings;
-            List<Relationship> relationshipDefinitions = wb.AuxiliaryData.GetDataList<Relationship>(PlugInUUID.RelationshipReader, PlugInUUID.RelationshipEntity);
             int worksheetVisualIndex = 0;
             WorksheetDefinition definition;
             while ((definition = wb.AuxiliaryData.GetData<WorksheetDefinition>(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, worksheetVisualIndex)) != null)
             {
-                Relationship relationship = relationshipDefinitions.SingleOrDefault(r => r.RID == definition.RelId);
+                RelationshipInfo relationship = relationshipCatalog.GetBySourceAndId(workbookPartPath, definition.RelId);
                 if (relationship == null)
                 {
                     throw new IOException("There was an error while reading an XLSX file. The relationship target of the worksheet with the RelID " + definition.RelId + " was not found");
                 }
-                if (!entryLookup.TryGetValue(relationship.Target, out ZipArchiveEntry worksheetEntry))
+                if (relationship.TargetMode != System.IO.Packaging.TargetMode.Internal
+                    || !entryLookup.TryGetValue(relationship.ResolvedTargetPath, out ZipArchiveEntry worksheetEntry))
                 {
-                    throw new IOException("There was an error while reading an XLSX file. The worksheet entry '" + relationship.Target + "' was not found in the archive");
+                    throw new IOException("There was an error while reading an XLSX file. The worksheet entry '" + relationship.ResolvedTargetPath + "' was not found in the archive");
                 }
                 worksheetReader.CurrentWorksheetID = worksheetVisualIndex;
                 if (PlugInLoader.HasQueuePlugins(PlugInUUID.WorksheetInlineReader))
                 {
                     // Inline plugins need a seekable stream; buffer so the handler can reset position
-                    MemoryStream wsMs = GetEntryStream(relationship.Target, entryLookup);
+                    MemoryStream wsMs = GetEntryStream(relationship.ResolvedTargetPath, entryLookup);
                     worksheetReader.Init(wsMs, wb, readerOptions, ReaderPlugInHandler.HandleInlineQueuePlugins);
                     worksheetReader.Execute();
                 }
@@ -279,7 +295,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 throw new IOException("No worksheet was found in the workbook");
             }
-            HandleQueuePlugIns(PlugInUUID.ReaderAppendingQueue, entryLookup, ref wb);
+            HandleQueuePlugIns(PlugInUUID.ReaderAppendingQueue, entryLookup, relationshipCatalog, ref wb);
             wb.importInProgress = false; // Enables checks for runtime
             wb.AuxiliaryData.ClearTemporaryData(); // Remove temporary staging data
             this.Workbook = wb;
@@ -309,29 +325,87 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Gets a map of all packed filenames that are matching the given prefix
+        /// Gets the relationship information about a package entry from the discovered relationships
         /// </summary>
-        /// <param name="namePrefix">filename prefix</param>
-        /// <param name="entryLookup">Pre-built lookup of archive entries by FullName</param>
-        /// <returns>Dictionary of filename, where the key is the extracted index of the filename</returns>
-        private static Dictionary<int, string> GetSequentialStreamNames(string namePrefix, Dictionary<string, ZipArchiveEntry> entryLookup)
+        /// <param name="catalog">Relationship catalog reference</param>
+        /// <param name="sourcePartPath">Given source path</param>
+        /// <param name="documentType">Given document type URI</param>
+        /// <param name="required">Set whether the document is required or not. If true, a missing entry will raise an exception</param>
+        /// <returns>Determined relationship information</returns>
+        /// <exception cref="IOException">Throws an IOException if a required relationship is missing</exception>
+        private static RelationshipInfo GetRelationship(RelationshipCatalog catalog, string sourcePartPath, string documentType, bool required)
         {
-            Dictionary<int, string> files = new Dictionary<int, string>();
-            int index = 1; // Assumption: There is no file that has the index 0 in its name
-            while (true)
+            foreach (RelationshipInfo relationship in catalog.GetByType(documentType))
             {
-                string name = namePrefix + ParserUtils.ToString(index) + ".xml";
-                if (entryLookup.ContainsKey(name))
+                if (relationship.TargetMode == System.IO.Packaging.TargetMode.Internal
+                    && string.Equals(relationship.SourcePartPath, sourcePartPath, StringComparison.Ordinal))
                 {
-                    files.Add(index, name);
+                    return relationship;
                 }
-                else
-                {
-                    break;
-                }
-                index++;
             }
-            return files;
+            if (required)
+            {
+                string sourceDescription = string.IsNullOrEmpty(sourcePartPath) ? "the package root" : "'" + sourcePartPath + "'";
+                throw new IOException("The required relationship type '" + documentType + "' was not found for " + sourceDescription);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets a required entry from the given ZIP entries
+        /// </summary>
+        /// <param name="relationship">Relationship information of the required entry</param>
+        /// <param name="entryLookup">Dictionary with ZIP archive entries</param>
+        /// <returns>Returns the found ZI entry</returns>
+        /// <exception cref="IOException">Throws a IOException if the entry was not found in the given entries</exception>
+        private static ZipArchiveEntry GetRequiredEntry(RelationshipInfo relationship, Dictionary<string, ZipArchiveEntry> entryLookup)
+        {
+            // All callers obtain required relationships through GetRelationship or guard optional
+            // relationships before reaching this helper, so a null value is not a valid call state.
+            if (string.IsNullOrEmpty(relationship.ResolvedTargetPath)
+                || !entryLookup.TryGetValue(relationship.ResolvedTargetPath, out ZipArchiveEntry entry))
+            {
+                throw new IOException("The relationship target entry '" + relationship.ResolvedTargetPath + "' was not found in the archive");
+            }
+            return entry;
+        }
+
+        /// <summary>
+        /// Gets the memory stream of a required entry from the given ZIP entries
+        /// </summary>
+        /// <param name="relationship">Relationship information of the required entry</param>
+        /// <param name="entryLookup">Dictionary with ZIP archive entries</param>
+        /// <returns>Memory stream of the entry</returns>
+        private static MemoryStream GetRequiredEntryStream(RelationshipInfo relationship, Dictionary<string, ZipArchiveEntry> entryLookup)
+        {
+            GetRequiredEntry(relationship, entryLookup);
+            return GetEntryStream(relationship.ResolvedTargetPath, entryLookup);
+        }
+
+        /// <summary>
+        /// Gets the document type URI from a given reader plug-in
+        /// </summary>
+        /// <param name="reader">Reader plug-in instance</param>
+        /// <param name="defaultDocumentType">Default document type in case of absence</param>
+        /// <returns>Return the URI or the default document type, if not defined</returns>
+        private static string GetDocumentType(IPluginBaseReader reader, string defaultDocumentType)
+        {
+            IDocumentReader documentReader = reader as IDocumentReader;
+            return documentReader == null || string.IsNullOrEmpty(documentReader.DocumentType)
+                ? defaultDocumentType
+                : documentReader.DocumentType;
+        }
+
+        /// <summary>
+        /// Gets the relationship part path. This method is currently only used by the obsolete <see cref="RelationshipReader"/>
+        /// </summary>
+        /// <param name="sourcePartPath">Given source path</param>
+        /// <returns>Path of the relationship part path (mostly for worksheets)</returns>
+        private static string GetRelationshipPartPath(string sourcePartPath)
+        {
+            Uri sourcePartUri = new Uri("/" + sourcePartPath, UriKind.Relative);
+            Uri relationshipPartUri = System.IO.Packaging.PackUriHelper.GetRelationshipPartUri(sourcePartUri);
+            return relationshipPartUri.OriginalString.TrimStart('/');
         }
 
         /// <summary>
@@ -339,8 +413,9 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="queueUuid">Queue UUID</param>
         /// <param name="entryLookup">Pre-built lookup of archive entries by FullName</param>
+        /// <param name="relationshipCatalog">Discovered package relationships used for discovery-aware queue readers</param>
         /// <param name="workbook">Workbook reference</param>
-        private void HandleQueuePlugIns(string queueUuid, Dictionary<string, ZipArchiveEntry> entryLookup, ref Workbook workbook)
+        private void HandleQueuePlugIns(string queueUuid, Dictionary<string, ZipArchiveEntry> entryLookup, RelationshipCatalog relationshipCatalog, ref Workbook workbook)
         {
             string lastUuid = null;
             IPluginQueueReader queueReader;
@@ -351,6 +426,25 @@ namespace NanoXLSX.Internal.Readers
                 MemoryStream ms = null;
                 if (queueReader != null)
                 {
+                    IDiscoveryPackageReader discoveryPackageReader = queueReader as IDiscoveryPackageReader;
+                    if (discoveryPackageReader != null)
+                    {
+                        foreach (RelationshipInfo relationship in relationshipCatalog.GetByType(discoveryPackageReader.DocumentType))
+                        {
+                            if (relationship.TargetMode != System.IO.Packaging.TargetMode.Internal
+                                || string.IsNullOrEmpty(relationship.ResolvedTargetPath)
+                                || !entryLookup.ContainsKey(relationship.ResolvedTargetPath))
+                            {
+                                continue; // Internal, invalid or not discovered
+                            }
+                            discoveryPackageReader.CurrentRelationship = relationship;
+                            ms = GetEntryStream(relationship.ResolvedTargetPath, entryLookup);
+                            discoveryPackageReader.Init(ms, workbook, this.readerOptions, null);
+                            discoveryPackageReader.Execute();
+                        }
+                        lastUuid = currentUuid;
+                        continue;
+                    }
                     if (queueReader is IPluginPackageReader)
                     {
                         string streamPartName = (queueReader as IPluginPackageReader).StreamEntryName;
@@ -384,7 +478,6 @@ namespace NanoXLSX.Internal.Readers
             this.inputStream?.Dispose();
             GC.SuppressFinalize(this);
         }
-
 
         #endregion
     }
