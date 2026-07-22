@@ -94,7 +94,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         {
             private Workbook workbook;
 
-            public int OrderNumber => PackagePartDefinition.POST_WORSHEET_PACKAGE_PART_START_INDEX + 1;
+            public int OrderNumber => PackagePartDefinition.POST_WORkSHEET_PACKAGE_PART_START_INDEX + 1;
 
             public string PackagePartPath => "xl/theme/";
 
@@ -136,7 +136,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         {
             private Workbook workbook;
 
-            public int OrderNumber => PackagePartDefinition.POST_WORSHEET_PACKAGE_PART_START_INDEX + 2;
+            public int OrderNumber => PackagePartDefinition.POST_WORkSHEET_PACKAGE_PART_START_INDEX + 2;
 
             public string PackagePartPath => "xl/theme/";
 

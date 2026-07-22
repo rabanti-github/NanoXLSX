@@ -143,7 +143,7 @@ namespace NanoXLSX.Internal.Writers
                     worksheetOrderNumber++;
                 }
             }
-            int postWorksheetOrderNumber = PackagePartDefinition.POST_WORSHEET_PACKAGE_PART_START_INDEX;
+            int postWorksheetOrderNumber = PackagePartDefinition.POST_WORkSHEET_PACKAGE_PART_START_INDEX;
             if (Workbook.WorkbookTheme != null)
             {
                 RegisterPackagePart(PackagePartType.Other, postWorksheetOrderNumber, THEME, @"application/vnd.openxmlformats-officedocument.theme+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme");

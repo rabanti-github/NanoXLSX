@@ -107,6 +107,10 @@ namespace NanoXLSX.Internal.Readers
                             {
                                 GetProtectionInformation(reader);
                             }
+                            else if (XmlStreamUtils.IsElement(reader, "definedNames"))
+                            {
+                                GetDefinedNamesInformation(reader);
+                            }
                         }
                         InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.WorkbookInlineReader, Options, null);
                     }
@@ -156,6 +160,69 @@ namespace NanoXLSX.Internal.Readers
             {
                 Workbook.WorkbookProtectionPassword.CopyFrom(passwordReader);
             }
+        }
+
+        /// <summary>
+        /// Gets the defined names information. The raw entries are stashed in <see cref="Workbook.AuxiliaryData"/>
+        /// because worksheets are not yet bound to the workbook at this point. Finalization happens in the
+        /// worksheet reader once all worksheets are wired up.
+        /// </summary>
+        /// <param name="reader">Reader positioned on the definedNames start element</param>
+        private void GetDefinedNamesInformation(XmlReader reader)
+        {
+            int index = 0;
+            using (XmlReader subtree = reader.ReadSubtree())
+            {
+                subtree.Read(); // consume the definedNames open tag
+                while (subtree.Read())
+                {
+                    if (!XmlStreamUtils.IsElement(subtree, "definedName"))
+                    {
+                        continue;
+                    }
+                    DefinedNameDefinition definition = new DefinedNameDefinition
+                    {
+                        Name = subtree.GetAttribute("name"),
+                        Comment = subtree.GetAttribute("comment")
+                    };
+                    string localSheetId = subtree.GetAttribute("localSheetId");
+                    if (!string.IsNullOrEmpty(localSheetId))
+                    {
+                        definition.LocalSheetId = ParserUtils.ParseInt(localSheetId);
+                    }
+                    definition.Reference = ReadDefinedNameReference(subtree);
+                    Workbook.AuxiliaryData.SetData(PlugInUUID.WorkbookReader, PlugInUUID.DefinedNameEntity, index, definition);
+                    index++;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads the inner text of a definedName element without consuming the end tag.
+        /// This is required because the outer iteration loop calls Read() to advance to the next sibling;
+        /// using ReadElementContentAsString would advance past the end tag and skip the following sibling.
+        /// </summary>
+        /// <param name="reader">XmlReader positioned on the definedName start element</param>
+        /// <returns>Concatenated text content of the element</returns>
+        internal static string ReadDefinedNameReference(XmlReader reader)
+        {
+            if (reader.IsEmptyElement)
+            {
+                return string.Empty;
+            }
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            while (reader.Read())
+            {
+                if (reader.NodeType == XmlNodeType.EndElement)
+                {
+                    break;
+                }
+                if (reader.NodeType == XmlNodeType.Text || reader.NodeType == XmlNodeType.CDATA || reader.NodeType == XmlNodeType.SignificantWhitespace)
+                {
+                    sb.Append(reader.Value);
+                }
+            }
+            return sb.ToString();
         }
 
         /// <summary>

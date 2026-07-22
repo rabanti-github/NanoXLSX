@@ -47,6 +47,8 @@ namespace NanoXLSX
             Formula,
             /// <summary>Type for empty cells. This type is only used for merged cells (all cells except the first of the cell range)</summary>
             Empty,
+            /// <summary>Type for cell references, defined by <see cref="DefinedName"/> instances on the workbook. The value of such cells is the reference name</summary>
+            Reference,
             /// <summary>Default Type, not specified</summary>
             Default
         }
@@ -333,6 +335,42 @@ namespace NanoXLSX
         public void RemoveStyle()
         {
             cellStyle = null;
+        }
+
+        /// <summary>
+        /// Sets this cell as a reference to a <see cref="DefinedName"/> (workbook- or worksheet-scoped). The cell's
+        /// <see cref="DataType"/> becomes <see cref="CellType.Reference"/> and its <see cref="Value"/>
+        /// is set to <see cref="DefinedName.Name"/>. The cell will be persisted as
+        /// <c>&lt;c t="str"&gt;&lt;f&gt;name&lt;/f&gt;&lt;/c&gt;</c> in the worksheet XML.
+        /// </summary>
+        /// <param name="definedName">Defined name to associate with this cell. Must not be null.</param>
+        /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
+        public void SetReference(DefinedName definedName)
+        {
+            if (definedName == null)
+            {
+                throw new WorksheetException("The defined name to set as cell reference must not be null.");
+            }
+            this.value = definedName.Name;
+            DataType = CellType.Reference;
+        }
+
+        /// <summary>
+        /// Sets this cell as a reference to a defined name by its bare name string. Use this overload when
+        /// the <see cref="DefinedName"/> instance is not at hand. No validation against the workbook is performed
+        /// at this point — the writer emits the name verbatim, and the reader reverse-maps to
+        /// <see cref="CellType.Reference"/> only when the name actually exists in the workbook.
+        /// </summary>
+        /// <param name="definedNameName">Name of the defined name. Must be non-empty.</param>
+        /// <exception cref="FormatException">Thrown if <paramref name="definedNameName"/> is null or empty.</exception>
+        public void SetReference(string definedNameName)
+        {
+            if (string.IsNullOrEmpty(definedNameName))
+            {
+                throw new FormatException("The defined name string for a cell reference must not be null or empty.");
+            }
+            this.value = definedNameName;
+            DataType = CellType.Reference;
         }
 
         /// <summary>

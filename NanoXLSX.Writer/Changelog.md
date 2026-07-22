@@ -1,5 +1,14 @@
 # Change Log - NanoXLSX.Writer
 
+## v3.2.0
+
+---
+Release Date: **(17.07.2026)** <sup>(DMY)</sup>
+
+- Version bump of NanoXLSX.Core to v3.2.0
+- Implemented writing of defined names (cell references)
+
+
 ## v3.1.0
 
 ---

@@ -886,6 +886,130 @@ namespace NanoXLSX
 
         #endregion
 
+        #region methods_AddDefinedName
+
+        /// <summary>
+        /// Adds a worksheet-scoped <see cref="DefinedName"/> to the parent workbook (with this worksheet as its <see cref="DefinedName.LocalSheet"/>).
+        /// </summary>
+        /// <param name="name">Name of the defined name.</param>
+        /// <param name="reference">Reference text (cell, range, formula, or constant).</param>
+        /// <param name="comment">Optional comment.</param>
+        /// <exception cref="WorksheetException">Thrown if this worksheet is not bound to a workbook, or if a defined name with the same name already exists in this worksheet's scope.</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Thrown if <paramref name="name"/> or <paramref name="reference"/> is invalid.</exception>
+        public void AddDefinedName(string name, string reference, string comment = null)
+        {
+            if (workbookReference == null)
+            {
+                throw new WorksheetException("The worksheet is not bound to a workbook. A defined name cannot be added.");
+            }
+            workbookReference.AddDefinedName(name, reference, this, comment);
+        }
+
+        /// <summary>
+        /// Removes a worksheet-scoped <see cref="DefinedName"/> from the parent workbook.
+        /// </summary>
+        /// <param name="name">Name of the defined name to remove.</param>
+        /// <returns>True if a matching worksheet-scoped defined name was removed, false if not found.</returns>
+        /// <exception cref="WorksheetException">Thrown if this worksheet is not bound to a workbook.</exception>
+        public bool RemoveDefinedName(string name)
+        {
+            if (workbookReference == null)
+            {
+                throw new WorksheetException("The worksheet is not bound to a workbook. A defined name cannot be removed.");
+            }
+            return workbookReference.RemoveDefinedName(name, this);
+        }
+
+        /// <summary>
+        /// Gets a worksheet-scoped <see cref="DefinedName"/> from the parent workbook.
+        /// </summary>
+        /// <param name="name">Name of the defined name.</param>
+        /// <returns>The matching <see cref="DefinedName"/> instance, or null if no match was found.</returns>
+        /// <exception cref="WorksheetException">Thrown if this worksheet is not bound to a workbook.</exception>
+        public DefinedName GetDefinedName(string name)
+        {
+            if (workbookReference == null)
+            {
+                throw new WorksheetException("The worksheet is not bound to a workbook. A defined name cannot be retrieved.");
+            }
+            return workbookReference.GetDefinedName(name, this);
+        }
+
+        #endregion
+
+        #region methods_AddCellReference
+
+        /// <summary>
+        /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook
+        /// (either workbook-scoped or worksheet-scoped). The cell will have
+        /// <see cref="Cell.CellType.Reference"/> as data type and the <see cref="DefinedName.Name"/> as value.
+        /// </summary>
+        /// <param name="definedName">Defined name to reference. Must not be null.</param>
+        /// <param name="columnNumber">Column number (zero-based).</param>
+        /// <param name="rowNumber">Row number (zero-based).</param>
+        /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
+        /// <exception cref="RangeException">Thrown if the passed cell coordinate is out of range.</exception>
+        /// <remarks>To remove a cell reference, use the <see cref="RemoveCell(int, int)"/> method. If a values is set by <see cref="Cell.Value"/> it will be overwritten.</remarks>
+        public void AddCellReference(DefinedName definedName, int columnNumber, int rowNumber)
+        {
+            Cell c = new Cell(null, Cell.CellType.Default, columnNumber, rowNumber);
+            c.SetReference(definedName);
+            AddNextCell(c, false, null);
+        }
+
+        /// <summary>
+        /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook, with a style.
+        /// </summary>
+        /// <param name="definedName">Defined name to reference. Must not be null.</param>
+        /// <param name="columnNumber">Column number (zero-based).</param>
+        /// <param name="rowNumber">Row number (zero-based).</param>
+        /// <param name="style">Style to apply on the cell.</param>
+        /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
+        /// <exception cref="RangeException">Thrown if the passed cell coordinate is out of range.</exception>
+        /// <exception cref="StyleException">Thrown if the passed style is malformed.</exception>
+        public void AddCellReference(DefinedName definedName, int columnNumber, int rowNumber, Style style)
+        {
+            Cell c = new Cell(null, Cell.CellType.Default, columnNumber, rowNumber);
+            c.SetReference(definedName);
+            AddNextCell(c, false, style);
+        }
+
+        /// <summary>
+        /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook, addressed by string.
+        /// </summary>
+        /// <param name="definedName">Defined name to reference. Must not be null.</param>
+        /// <param name="address">Cell address in the format A1 - XFD1048576.</param>
+        /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
+        /// <exception cref="RangeException">Thrown if the passed cell address is out of range.</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Thrown if the passed cell address is malformed.</exception>
+        public void AddCellReference(DefinedName definedName, string address)
+        {
+            int column;
+            int row;
+            Cell.ResolveCellCoordinate(address, out column, out row);
+            AddCellReference(definedName, column, row);
+        }
+
+        /// <summary>
+        /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook, addressed by string and styled.
+        /// </summary>
+        /// <param name="definedName">Defined name to reference. Must not be null.</param>
+        /// <param name="address">Cell address in the format A1 - XFD1048576.</param>
+        /// <param name="style">Style to apply on the cell.</param>
+        /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
+        /// <exception cref="RangeException">Thrown if the passed cell address is out of range.</exception>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Thrown if the passed cell address is malformed.</exception>
+        /// <exception cref="StyleException">Thrown if the passed style is malformed.</exception>
+        public void AddCellReference(DefinedName definedName, string address, Style style)
+        {
+            int column;
+            int row;
+            Cell.ResolveCellCoordinate(address, out column, out row);
+            AddCellReference(definedName, column, row, style);
+        }
+
+        #endregion
+
         #region methods_AddCellRange
 
         /// <summary>

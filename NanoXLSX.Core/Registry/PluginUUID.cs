@@ -218,6 +218,13 @@ namespace NanoXLSX.Registry
         /// </summary>
         public const string StyleEntity = "638F9F5A-334A-49A1-BE07-1F2F3BFB70C4";
         /// <summary>
+<<<<<<< HEAD
+=======
+        /// UUID for the defined names section, on reading a workbook
+        /// </summary>
+        public const string DefinedNameEntity = "7774EFED-65A6-4AD7-9870-20DE4D09DB41";
+        /// <summary>
+>>>>>>> dev-discovery
         /// UUID for the relationship discovery catalog, on reading a workbook
         /// </summary>
         public const string DiscoveryCatalogEntity = "A3FB109E-F7F8-4FA1-9AAF-CF3C5A62A9A8";
