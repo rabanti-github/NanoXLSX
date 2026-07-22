@@ -1,5 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using NanoXLSX.Exceptions;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 
 namespace NanoXLSX.Utils
@@ -43,6 +45,54 @@ namespace NanoXLSX.Utils
             if (message != null)
             {
                 throw new StyleException(message);
+            }
+        }
+
+        /// <summary>
+        /// Validates the passed string, whether it is a valid single cell address or cell range. The address or range can contain modifier characters (<see cref="Cell.AddressType"/>) 
+        /// </summary>
+        /// <param name="expression">The address expression to validate</param>
+        /// <param name="scope">Optional parameter to validate for a specific addres scope (Any, SingleAddress, Range). Default is: Any</param>
+        /// <exception cref="FormatException">A format exception is thrown if the passed address is not a valid cell address or range</exception>
+        /// /Remark <remarks>If <see cref="Cell.AddressScope"/> of the scope parameter is set to <see cref="Cell.AddressScope.Invalid"/>, it inverts the validation, so that a valid cell OR range will throw an exception</remarks>
+        internal static void ValidateCellAddressExpression(string expression, Cell.AddressScope scope = Cell.AddressScope.Any)
+        {
+            bool isCellAddress = false;
+            bool isRange = false;
+            Exception lastException = null;
+            try
+            {
+                Cell.ResolveCellCoordinate(expression);
+                isCellAddress = true;
+            }
+            catch(Exception ex)
+            {
+                if (scope == Cell.AddressScope.SingleAddress)
+                {
+                    throw new FormatException(ex.Message, ex); // No further checks necessary
+                }
+                lastException = ex;
+            }
+            try
+            {
+                Cell.ResolveCellRange(expression);
+                isRange = true;
+            }
+            catch (Exception ex)
+            {
+                if (scope == Cell.AddressScope.Range)
+                {
+                    throw new FormatException(ex.Message, ex); // No further checks necessary
+                }
+                lastException = ex;
+            }
+            if (scope == Cell.AddressScope.Any && !isCellAddress && !isRange)
+            {
+                throw new FormatException(lastException.Message, lastException); // Not a cell or range
+            }
+            else if (scope == Cell.AddressScope.Invalid && (isCellAddress || isRange))
+            {
+                throw new FormatException("The passed expression is valid cell address or range, but the validation was explicitly inverted");
             }
         }
 

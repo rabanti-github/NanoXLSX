@@ -157,7 +157,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             Assert.Single(given.GetDefinedNames());
             DefinedName dn = given.GetDefinedName("MyCell");
             Assert.NotNull(dn);
-            Assert.Equal("sheet1!$A$1", dn.Reference);
+            Assert.Equal("sheet1!$A$1", dn.TextValue);
             Assert.Null(dn.LocalSheet);
             Assert.Null(dn.Comment);
         }
@@ -173,7 +173,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             Workbook given = TestUtils.WriteAndReadWorkbook(workbook);
             DefinedName dn = given.GetDefinedName("MyRange");
             Assert.NotNull(dn);
-            Assert.Equal("sheet1!$A$1:$A$3", dn.Reference);
+            Assert.Equal("sheet1!$A$1:$A$3", dn.TextValue);
         }
 
         [Fact(DisplayName = "Test of a workbook-scoped defined name holding a formula expression")]
@@ -184,7 +184,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             Workbook given = TestUtils.WriteAndReadWorkbook(workbook);
             DefinedName dn = given.GetDefinedName("MySum");
             Assert.NotNull(dn);
-            Assert.Equal("SUM(sheet1!$A$1:$A$3)", dn.Reference);
+            Assert.Equal("SUM(sheet1!$A$1:$A$3)", dn.TextValue);
         }
 
         [Fact(DisplayName = "Test of a worksheet-scoped defined name (localSheetId) round-trip")]
@@ -198,7 +198,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             Worksheet sheet2 = given.GetWorksheet("sheet2");
             DefinedName dn = given.GetDefinedName("LocalName", sheet2);
             Assert.NotNull(dn);
-            Assert.Equal("sheet2!$B$2", dn.Reference);
+            Assert.Equal("sheet2!$B$2", dn.TextValue);
             Assert.Same(sheet2, dn.LocalSheet);
         }
 

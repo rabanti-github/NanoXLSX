@@ -15,7 +15,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Workbook wb = new Workbook("Sheet1");
             DefinedName dn = new DefinedName("MyName", "Sheet1!$A$1", wb.CurrentWorksheet, "a comment");
             Assert.Equal("MyName", dn.Name);
-            Assert.Equal("Sheet1!$A$1", dn.Reference);
+            Assert.Equal("Sheet1!$A$1", dn.TextValue);
             Assert.Same(wb.CurrentWorksheet, dn.LocalSheet);
             Assert.Equal("a comment", dn.Comment);
         }
@@ -25,7 +25,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
         {
             DefinedName dn = new DefinedName("MyName", "Sheet1!$A$1");
             Assert.Equal("MyName", dn.Name);
-            Assert.Equal("Sheet1!$A$1", dn.Reference);
+            Assert.Equal("Sheet1!$A$1", dn.TextValue);
             Assert.Null(dn.LocalSheet);
             Assert.Null(dn.Comment);
         }
@@ -224,7 +224,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Assert.Single(wb.GetDefinedNames());
             DefinedName dn = wb.GetDefinedName("MyName");
             Assert.NotNull(dn);
-            Assert.Equal("Sheet1!$A$1", dn.Reference);
+            Assert.Equal("Sheet1!$A$1", dn.TextValue);
             Assert.Null(dn.LocalSheet);
         }
 
@@ -274,9 +274,9 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             wb.AddDefinedName("MyName", "wb-ref");
             wb.AddDefinedName("MyName", "sheet1-ref", wb.Worksheets[0]);
             wb.AddDefinedName("MyName", "sheet2-ref", wb.Worksheets[1]);
-            Assert.Equal("wb-ref", wb.GetDefinedName("MyName").Reference);
-            Assert.Equal("sheet1-ref", wb.GetDefinedName("MyName", wb.Worksheets[0]).Reference);
-            Assert.Equal("sheet2-ref", wb.GetDefinedName("MyName", wb.Worksheets[1]).Reference);
+            Assert.Equal("wb-ref", wb.GetDefinedName("MyName").TextValue);
+            Assert.Equal("sheet1-ref", wb.GetDefinedName("MyName", wb.Worksheets[0]).TextValue);
+            Assert.Equal("sheet2-ref", wb.GetDefinedName("MyName", wb.Worksheets[1]).TextValue);
         }
 
         [Fact(DisplayName = "Test that GetDefinedName returns null when not found")]
@@ -351,7 +351,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             wb.AddDefinedName("MyName", "wb-ref");
             Assert.Null(wb.CurrentWorksheet.GetDefinedName("MyName"));
             wb.CurrentWorksheet.AddDefinedName("MyName", "sheet-ref");
-            Assert.Equal("sheet-ref", wb.CurrentWorksheet.GetDefinedName("MyName").Reference);
+            Assert.Equal("sheet-ref", wb.CurrentWorksheet.GetDefinedName("MyName").TextValue);
         }
 
         [Fact(DisplayName = "Test that Worksheet.GetDefinedName on detached worksheet throws")]
