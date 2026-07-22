@@ -6,8 +6,10 @@
  */
 
 using System;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Linq;
 using FormatException = NanoXLSX.Exceptions.FormatException;
+using NanoXLSX.Utils;
 
 namespace NanoXLSX
 {
@@ -20,32 +22,87 @@ namespace NanoXLSX
     /// A defined name has a workbook scope by default (<see cref="LocalSheet"/> is null). When a
     /// <see cref="Worksheet"/> is supplied as <see cref="LocalSheet"/>, the defined name is scoped to
     /// that worksheet (corresponding to the <c>localSheetId</c> attribute in the OOXML representation).
-    /// The <see cref="Reference"/> is stored verbatim — NanoXLSX does not parse or evaluate it.
+    /// The <see cref="TextValue"/> is stored verbatim — NanoXLSX does not parse or evaluate it.
     /// </remarks>
     public sealed class DefinedName : IEquatable<DefinedName>, IComparable<DefinedName>
     {
+        #region enums
         /// <summary>
-        /// Regular expression matching a cell reference in the range A1 - XFD1048576.
+        /// Enum to specify the type of the defined name
         /// </summary>
-        /// \remark <remarks>According to the OOXML specification (§18.2.5), a defined name in this range is considered an error.</remarks>
-        private static readonly Regex CellReferenceRegex = new Regex(
-            "^[A-Za-z]{1,3}[0-9]+$", RegexOptions.Compiled);
+        public enum NameType
+        {
+            /// <summary>Defined name is a single cell </summary>
+            Cell,
+            /// <summary>Defined name is a cell range </summary>
+            Range,
+            /// <summary>Defined name is a formula </summary>
+            Formula,
+            /// <summary>Defined name is a constant value </summary>
+            Constant
+
+        }
+
+        #endregion
+
+        #region constants
+
+        private const int MAX_NAME_LENGTH = 255;
+
+        /// <summary>
+        /// Disallowed names for defined names (ignore case)
+        /// </summary>
+        private static readonly HashSet<string> DISALLOWED_NAMES = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+        "C",
+        "R"
+            };
+
+        /// <summary>
+        /// Allowed special characters at the start of a defined name
+        /// </summary>
+        private static readonly char[] ALLOWED_NAME_START_CHARS = { '\\', '_' };
+        /// <summary>
+        /// Allowed special characters after the first character of a defined name.
+        /// \remark <remarks>'\' is accepted because Excel allows it, although it is not documented in the official naming rules.</remarks>
+        /// </summary>
+        private static readonly char[] ALLOWED_NAME_CHARS = { '_', '.', '\\' };
+
+        #endregion
 
         #region properties
+
+        /// <summary>
+        /// Type of the defined name
+        /// </summary>
+        public NameType Type {get;}
+
         /// <summary>
         /// Gets the name of the defined name as it appears in the workbook (e.g. <c>MyRange</c>).
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        /// Gets the textual reference of the defined name. This is stored verbatim and may be a cell address
-        /// (e.g. <c>Sheet1!$A$1</c>), a range (e.g. <c>Sheet1!$A$1:$A$10</c>), a formula (e.g. <c>SUM(Sheet1!$A$1:$A$10)</c>),
-        /// or a constant value.
+        /// Gets the target worksheet in case of Cell or Range values. For other types, like formulas or constants, the target worksheet is null 
         /// </summary>
-        public string Reference { get; }
+        public Worksheet TargetWorksheet { get; }
 
         /// <summary>
-        /// Gets the worksheet that scopes this defined name. If null, the defined name has workbook scope and
+        /// Gets the textual reference of the defined name. This is stored verbatim and may be a cell address
+        /// (e.g. <c>$A$1</c>), a range (e.g. <c>$A$1:$A$10</c>), a formula (e.g. <c>SUM(Sheet1!$A$1:$A$10)</c>),
+        /// or a constant value.
+        /// </summary>
+        /// \remark <remarks>Do not add the target worksheet name (e.g. <c>Sheet1</c>) in front of the Reference in case of cells or ranges. The worksheet is automatically added by the defined <see cref="TargetWorksheet"/></remarks>
+        public string TextValue { get; private set; }
+
+        /// <summary>
+        /// Gets the raw reference of the defined Name. The value will be transformed in its appropriate text value (<see cref="TextValue"/>).
+        /// If the object is not supported (integer, float, date / date and time, boolean or string), <see cref="Object.ToString"/> will be used to determine the text value
+        /// </summary>
+        public object Value { get; private set; }
+
+        /// <summary>
+        /// Gets the worksheet that scopes (constraint) this defined name. If null, the defined name has workbook scope and
         /// is visible from any worksheet. If non-null, the defined name is scoped to the referenced worksheet
         /// (mapped to the <c>localSheetId</c> attribute on save).
         /// </summary>
@@ -59,33 +116,155 @@ namespace NanoXLSX
         #endregion
 
         #region constructors
+
         /// <summary>
         /// Constructs a new defined name.
+        /// </summary>
+        /// <param name="workbook">Workbook reference (to check for duplicate names)</param>
+        /// <param name="type">Type of the defined name</param>
+        /// <param name="name">Name of the defined name. Must be non-empty, must not start with a digit, and must not match a cell reference in the range A1 - XFD1048576.</param>
+        /// <param name="reference">Reference text (cell, range, formula, or constant). Must be non-empty.</param>
+        /// <param name="worksheet">Target worksheet in case of cells or cell ranges</param>
+        /// <param name="localSheet">Optional worksheet that scopes the defined name. Pass null for workbook scope.</param>
+        /// <param name="comment">Optional comment.</param>
+        /// <exception cref="FormatException">Thrown if <paramref name="name"/> is null, empty, starts with a digit, or matches a cell reference.</exception>
+        /// <exception cref="FormatException">Thrown if <paramref name="reference"/> is null or resolved to an empty string</exception>
+        internal DefinedName(Workbook workbook, NameType type, string name, object reference, Worksheet worksheet, Worksheet localSheet = null, string comment = null)
+        {
+            ValidateName(workbook, name);
+            if (reference == null || string.IsNullOrEmpty(reference.ToString()))
+            {
+                throw new FormatException("The reference of a defined name must not be null or empty.");
+            }
+            this.Type = type;
+            this.Name = name;
+            this.Value = reference;
+            this.TargetWorksheet = worksheet;
+            this.LocalSheet = localSheet;
+            this.Comment = comment;
+            CastValue(workbook);
+        }
+
+        // TODO check whether ValidateName(null, name); is valid. Rather not
+        // TODO2 Add handling for external links
+        /// <summary>
+        /// Constructs a new defined name. 
         /// </summary>
         /// <param name="name">Name of the defined name. Must be non-empty, must not start with a digit, and must not match a cell reference in the range A1 - XFD1048576.</param>
         /// <param name="reference">Reference text (cell, range, formula, or constant). Must be non-empty.</param>
         /// <param name="localSheet">Optional worksheet that scopes the defined name. Pass null for workbook scope.</param>
         /// <param name="comment">Optional comment.</param>
         /// <exception cref="FormatException">Thrown if <paramref name="name"/> is null, empty, starts with a digit, or matches a cell reference.</exception>
-        /// <exception cref="FormatException">Thrown if <paramref name="reference"/> is null or empty.</exception>
         public DefinedName(string name, string reference, Worksheet localSheet = null, string comment = null)
         {
-            ValidateName(name);
+            ValidateName(null, name);
             if (string.IsNullOrEmpty(reference))
             {
                 throw new FormatException("The reference of a defined name must not be null or empty.");
             }
             this.Name = name;
-            this.Reference = reference;
+            this.TextValue = reference;
             this.LocalSheet = localSheet;
             this.Comment = comment;
         }
         #endregion
 
         #region methods
+
+        /// <summary>
+        /// Validates that the supplied name is non-empty, does not start with a digit, an invalid name or character, and does not match
+        /// a cell reference in the range A1 - XFD1048576.
+        /// </summary>
+        /// <param name="name">Name to validate.</param>
+        /// <param name="workbook">Workbook to check for duplicate names</param>
+        /// <exception cref="FormatException">Thrown if validation fails.</exception>
+        private static void ValidateName(Workbook workbook, string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new FormatException("The name of a defined name must not be null or empty.");
+            }
+            if (name.Length > MAX_NAME_LENGTH)
+            {
+                throw new FormatException($"A defined name must not exceed {MAX_NAME_LENGTH} characters.");
+            }
+
+            char firstChar = name[0];
+
+            if (!char.IsLetter(firstChar)
+                && !ALLOWED_NAME_START_CHARS.Contains(firstChar))
+            {
+                throw new FormatException($"The name of a defined name must start with a letter, underscore, or backslash. Provided: '{name}'");
+            }
+            if (DISALLOWED_NAMES.Contains(name))
+            {
+                throw new FormatException($"'{name}' cannot be used as a defined name.");
+            }
+            for (int i = 1; i < name.Length; i++)
+            {
+                char character = name[i];
+
+                if (!char.IsLetterOrDigit(character) && !ALLOWED_NAME_CHARS.Contains(character))
+                {
+                    throw new FormatException($"The character '{character}' at position {i} is not valid in the defined name '{name}'.");
+                }
+            }
+
+            foreach (DefinedName existingName in workbook.GetDefinedNames())
+            {
+                if (string.Equals(existingName.Name, name, StringComparison.OrdinalIgnoreCase)) 
+                {
+                    throw new FormatException($"The defined name '{name}' already exists in this workbook");
+                }
+            }
+            try
+            {
+                Validators.ValidateCellAddressExpression(name, Cell.AddressScope.SingleAddress);
+            }
+            catch 
+            {
+                // Not a valid cell address; therefore it may be used as a defined name.
+                return;
+            }
+            throw new FormatException($"The defined name '{name}' must not be a valid cell address.");
+        }
+
+        // TODO Handling of workbook????
+        private void CastValue(Workbook workbook)
+        {
+            if (this.Value == null)
+            {
+                throw new FormatException("The value of a defined name cannot be null or empty");
+            }
+            switch (this.Type)
+            {
+                // The object type is assumed to be validated prior
+                case NameType.Cell:
+                    string address = this.Value as string;
+                    Validators.ValidateCellAddressExpression(address, Cell.AddressScope.SingleAddress); // throw if not an address
+                    Address fixedAddress = new Address(address, Cell.AddressType.FixedRowAndColumn);
+                    this.TextValue = fixedAddress.ToString();
+                    this.Value = fixedAddress; // Reformat passed object
+                    break;
+                case NameType.Range:
+                    string range = this.Value as string;
+                    Validators.ValidateCellAddressExpression(range, Cell.AddressScope.Range); // throw if not valid range
+                    Range tempRange = new Range(range);
+                    Range fixedRange = new Range(new Address(tempRange.StartAddress.Row, tempRange.StartAddress.Column, Cell.AddressType.FixedRowAndColumn), new Address(tempRange.EndAddress.Row, tempRange.EndAddress.Column, Cell.AddressType.FixedRowAndColumn));
+                    this.TextValue = fixedRange.ToString();
+                    break;
+                case NameType.Formula:
+                    this.TextValue = this.Value.ToString(); // No formula validation yet
+                    break;
+                default: // constant
+                    this.TextValue = this.Value.ToString();
+                    break;
+            }
+        }
+
         /// <summary>
         /// Determines whether the specified <see cref="DefinedName"/> instance is equal to the current instance.
-        /// Two instances are considered equal when their <see cref="Name"/>, <see cref="Reference"/>,
+        /// Two instances are considered equal when their <see cref="Name"/>, <see cref="TextValue"/>,
         /// <see cref="Comment"/>, and <see cref="LocalSheet"/> (compared by reference) match.
         /// </summary>
         /// <param name="other">Other defined name instance, or null.</param>
@@ -101,8 +280,10 @@ namespace NanoXLSX
                 return true;
             }
             return string.Equals(Name, other.Name, StringComparison.Ordinal)
-                && string.Equals(Reference, other.Reference, StringComparison.Ordinal)
+                && Enum.Equals(Type, other.Type)
+                && string.Equals(TextValue, other.TextValue, StringComparison.Ordinal) // object implicit compared by string
                 && string.Equals(Comment, other.Comment, StringComparison.Ordinal)
+                && ReferenceEquals(TargetWorksheet, other.TargetWorksheet)
                 && ReferenceEquals(LocalSheet, other.LocalSheet);
         }
 
@@ -126,8 +307,10 @@ namespace NanoXLSX
             {
                 int hash = 17;
                 hash = (hash * 31) + (Name != null ? Name.GetHashCode() : 0);
-                hash = (hash * 31) + (Reference != null ? Reference.GetHashCode() : 0);
+                hash = (hash * 31) + Type.GetHashCode();
+                hash = (hash * 31) + (TextValue != null ? TextValue.GetHashCode() : 0); // Object implicit covered by string
                 hash = (hash * 31) + (Comment != null ? Comment.GetHashCode() : 0);
+                hash = (hash * 31) + (TargetWorksheet != null ? System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(TargetWorksheet) : 0);
                 hash = (hash * 31) + (LocalSheet != null ? System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(LocalSheet) : 0);
                 return hash;
             }
@@ -137,7 +320,7 @@ namespace NanoXLSX
         /// Compares this instance with another <see cref="DefinedName"/> for ordering. The order is
         /// determined by <see cref="Name"/> (ordinal), then by scope (workbook scope sorts before any
         /// worksheet-scoped name; for worksheet-scoped names by <see cref="Worksheet.SheetID"/>), then
-        /// by <see cref="Reference"/>, then by <see cref="Comment"/>.
+        /// by <see cref="TextValue"/>, then by <see cref="Comment"/>.
         /// </summary>
         /// <param name="other">Other defined name, or null. A null comparand sorts after this instance.</param>
         /// <returns>Negative, zero, or positive integer following the standard <see cref="IComparable{T}"/> contract.</returns>
@@ -152,12 +335,22 @@ namespace NanoXLSX
             {
                 return cmp;
             }
+            cmp = Type.CompareTo(other.Type);
+            if (cmp != 0)
+            {
+                return cmp;
+            }
             cmp = CompareScope(LocalSheet, other.LocalSheet);
             if (cmp != 0)
             {
                 return cmp;
             }
-            cmp = string.CompareOrdinal(Reference, other.Reference);
+            cmp = CompareScope(TargetWorksheet, other.TargetWorksheet);
+            if (cmp != 0)
+            {
+                return cmp;
+            }
+            cmp = string.CompareOrdinal(TextValue, other.TextValue);
             if (cmp != 0)
             {
                 return cmp;
@@ -172,71 +365,7 @@ namespace NanoXLSX
         public override string ToString()
         {
             string scope = LocalSheet == null ? "workbook" : "sheet:" + LocalSheet.SheetName;
-            return "DefinedName{name=" + Name + ", scope=" + scope + ", ref=" + Reference + "}";
-        }
-
-        /// <summary>
-        /// Validates that the supplied name is non-empty, does not start with a digit, and does not match
-        /// a cell reference in the range A1 - XFD1048576.
-        /// </summary>
-        /// <param name="name">Name to validate.</param>
-        /// <exception cref="FormatException">Thrown if validation fails.</exception>
-        private static void ValidateName(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new FormatException("The name of a defined name must not be null or empty.");
-            }
-            char first = name[0];
-            if (first >= '0' && first <= '9')
-            {
-                throw new FormatException("The name of a defined name must not start with a digit. Provided: '" + name + "'");
-            }
-            if (CellReferenceRegex.IsMatch(name) && IsCellReferenceInRange(name))
-            {
-                throw new FormatException("The name of a defined name must not match a cell reference in the range A1 - XFD1048576. Provided: '" + name + "'");
-            }
-        }
-
-        /// <summary>
-        /// Determines whether a candidate name parses as a cell reference within the legal range A1 - XFD1048576.
-        /// </summary>
-        /// <param name="name">Candidate name (already known to match <see cref="CellReferenceRegex"/>).</param>
-        /// <returns>True if the candidate is a cell reference in range, otherwise false.</returns>
-        private static bool IsCellReferenceInRange(string name)
-        {
-            int letterCount = 0;
-            while (letterCount < name.Length && IsLetter(name[letterCount]))
-            {
-                letterCount++;
-            }
-            string letters = name.Substring(0, letterCount).ToUpperInvariant();
-            string digits = name.Substring(letterCount);
-            int column = 0;
-            foreach (char c in letters)
-            {
-                column = (column * 26) + (c - 'A' + 1);
-            }
-            // A=1 ... XFD=16384
-            if (column < 1 || column > 16384)
-            {
-                return false;
-            }
-            if (!int.TryParse(digits, out int row))
-            {
-                return false;
-            }
-            return row >= 1 && row <= 1048576;
-        }
-
-        /// <summary>
-        /// Indicates whether a character is an ASCII letter (A-Z or a-z).
-        /// </summary>
-        /// <param name="c">Character to test.</param>
-        /// <returns>True if the character is a letter, otherwise false.</returns>
-        private static bool IsLetter(char c)
-        {
-            return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+            return "DefinedName{name=" + Name + ", scope=" + scope + ", ref=" + TextValue + "}";
         }
 
         /// <summary>

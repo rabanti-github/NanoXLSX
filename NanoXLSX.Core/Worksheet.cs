@@ -939,6 +939,8 @@ namespace NanoXLSX
 
         #region methods_AddCellReference
 
+
+
         /// <summary>
         /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook
         /// (either workbook-scoped or worksheet-scoped). The cell will have

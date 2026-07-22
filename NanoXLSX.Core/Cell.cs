@@ -73,6 +73,8 @@ namespace NanoXLSX
         /// </summary>
         public enum AddressScope
         {
+            /// <summary>The address represents a single cell or a range of cells</summary>
+            Any, 
             /// <summary>The address represents a single cell</summary>
             SingleAddress,
             /// <summary>The address represents a range of cells</summary>
@@ -336,6 +338,7 @@ namespace NanoXLSX
         {
             cellStyle = null;
         }
+
 
         /// <summary>
         /// Sets this cell as a reference to a <see cref="DefinedName"/> (workbook- or worksheet-scoped). The cell's

@@ -128,7 +128,7 @@ namespace NanoXLSX.Internal.Writers
             XmlElement definedNames = XmlElement.CreateElement("definedNames");
             foreach (DefinedName item in names)
             {
-                XmlElement definedName = definedNames.AddChildElementWithValue("definedName", XmlUtils.SanitizeXmlValue(item.Reference));
+                XmlElement definedName = definedNames.AddChildElementWithValue("definedName", XmlUtils.SanitizeXmlValue(item.TextValue));
                 definedName.AddAttribute("name", XmlUtils.SanitizeXmlValue(item.Name));
                 if (item.LocalSheet != null)
                 {
