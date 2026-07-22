@@ -440,7 +440,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             if (columnType == ReaderOptions.ColumnType.Decimal)
             {
                 // m-suffix is not working
-                expectedCells.Add("B1", Convert.ToDecimal(expectedValue));
+                expectedCells.Add("B1", Convert.ToDecimal(expectedValue, CultureInfo.InvariantCulture));
             }
             else
             {

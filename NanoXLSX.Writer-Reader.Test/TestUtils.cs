@@ -92,15 +92,15 @@ namespace NanoXLSX.Test.Writer_Reader.Utils
         {
             if (sourceType == typeof(decimal))
             {
-                return decimal.Parse(sourceValue);
+                return decimal.Parse(sourceValue, CultureInfo.InvariantCulture);
             }
             else if (sourceType == typeof(double))
             {
-                return double.Parse(sourceValue);
+                return double.Parse(sourceValue, CultureInfo.InvariantCulture);
             }
             else if (sourceType == typeof(int))
             {
-                double d = double.Parse(sourceValue);
+                double d = double.Parse(sourceValue, CultureInfo.InvariantCulture);
                 return (int)d;
             }
             else if (sourceType == typeof(string))

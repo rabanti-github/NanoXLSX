@@ -27,8 +27,8 @@ namespace NanoXLSX.Test.Core.MiscTest
             string format = "dd.MM.yyyy HH:mm:ss";
             DateTime date = DateTime.ParseExact(dateString, format, provider);
             string oaDate = DataUtils.GetOADateTimeString(date);
-            float expected = float.Parse(expectedOaDate);
-            float given = float.Parse(oaDate);
+            float expected = float.Parse(expectedOaDate, CultureInfo.InvariantCulture);
+            float given = float.Parse(oaDate, CultureInfo.InvariantCulture);
             float threshold = 0.000000001f; // Ignore everything below a millisecond
             Assert.True(Math.Abs(expected - given) < threshold);
         }
@@ -105,8 +105,8 @@ namespace NanoXLSX.Test.Core.MiscTest
             string format = "hh\\:mm\\:ss";
             TimeSpan time = TimeSpan.ParseExact(timeString, format, provider);
             string oaDate = DataUtils.GetOATimeString(time);
-            float expected = float.Parse(expectedOaTime);
-            float given = float.Parse(oaDate);
+            float expected = float.Parse(expectedOaTime, CultureInfo.InvariantCulture);
+            float given = float.Parse(oaDate, CultureInfo.InvariantCulture);
             float threshold = 0.000000001f; // Ignore everything below a millisecond
             Assert.True(Math.Abs(expected - given) < threshold);
         }

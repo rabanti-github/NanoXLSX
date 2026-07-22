@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using NanoXLSX.Extensions;
@@ -258,7 +259,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorksheetTest
             {
                 if (tokens[i] != "")
                 {
-                    rows.Add(int.Parse(tokens[i]), float.Parse(heightTokens[i]));
+                    rows.Add(int.Parse(tokens[i]), float.Parse(heightTokens[i], CultureInfo.InvariantCulture));
                 }
             }
             Workbook workbook = PrepareWorkbook(4, "test");
