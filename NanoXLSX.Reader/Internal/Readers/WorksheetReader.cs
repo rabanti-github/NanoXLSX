@@ -41,6 +41,11 @@ namespace NanoXLSX.Internal.Readers
         #region properties
 
         /// <summary>
+        /// Gets the relationship type URI of a worksheet document.
+        /// </summary>
+        public virtual string DocumentType { get { return @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet"; } }
+
+        /// <summary>
         /// Workbook reference where read data is stored (should not be null)
         /// </summary>
         public Workbook Workbook { get; set; }

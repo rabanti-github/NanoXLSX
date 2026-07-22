@@ -20,11 +20,16 @@ namespace NanoXLSX.Internal.Readers
     /// Class representing a reader for the Core metadata file (docProps) embedded in XLSX files
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.MetadataCoreReader)]
-    public class MetadataCoreReader : IPluginBaseReader
+    public class MetadataCoreReader : IDocumentReader
     {
         private Stream stream;
 
         #region properties
+        /// <summary>
+        /// Gets the relationship type URI of the core metadata document.
+        /// </summary>
+        public virtual string DocumentType { get { return @"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties"; } }
+
         /// <summary>
         /// Workbook reference where read data is stored (should not be null)
         /// </summary>

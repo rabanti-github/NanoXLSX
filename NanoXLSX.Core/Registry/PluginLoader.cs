@@ -280,7 +280,7 @@ namespace NanoXLSX.Registry
         /// <param name="lastPlugInUUID">UUID of the last plug-in instance, to determine the next one</param>
         /// <param name="currentPlugInUUID">Out parameter that return the UUID of the determined, next plug-in instance</param>
         /// <returns>Plug-in instance or null, if the end of the queue was reached</returns>
-        /// /// \remark <remarks>This method is not intended to manage preserved plugin instances. When called, always a new instance of the plugin will be created</remarks>
+        /// \remark <remarks>This method is not intended to manage preserved plugin instances. When called, always a new instance of the plugin will be created</remarks>
         internal static T GetNextQueuePlugIn<T>(string queueUUID, string lastPlugInUUID, out string currentPlugInUUID)
         {
             if (queuePlugInClasses.TryGetValue(queueUUID, out var plugInList) && plugInList.Count > 0)

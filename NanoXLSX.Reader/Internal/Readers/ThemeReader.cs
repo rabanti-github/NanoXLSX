@@ -23,12 +23,17 @@ namespace NanoXLSX.Internal.Readers
     /// Class representing a reader for theme definitions of XLSX files.
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.ThemeReader)]
-    public class ThemeReader : IPluginBaseReader
+    public class ThemeReader : IDocumentReader
     {
 
         private Stream stream;
 
         #region properties
+        /// <summary>
+        /// Gets the relationship type URI of a theme document.
+        /// </summary>
+        public virtual string DocumentType { get { return @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme"; } }
+
         /// <summary>
         /// Workbook reference where read data is stored (should not be null)
         /// </summary>
