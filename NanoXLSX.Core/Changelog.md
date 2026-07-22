@@ -1,5 +1,17 @@
 # Change Log - NanoXLSX.Core
 
+## v3.2.0
+
+---
+
+Release Date: **(xx.yy.2026)** <sup>(DMY)</sup>
+
+- Added new interfaces for plug-ins
+- Updated internal plug-in registry 
+- Fixed unit tests
+- Code maintenance
+
+
 ## v3.1.0
 
 ---

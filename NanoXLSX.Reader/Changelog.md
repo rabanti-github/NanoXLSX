@@ -1,5 +1,18 @@
 # Change Log - NanoXLSX.Reader
 
+## v3.2.0
+
+---
+
+Release Date: **(xx.yy.2026)** <sup>(DMY)</sup>
+
+- Introduced a discovery reader to make the reading process more robust (collect data about all parts in a XLSX file)
+- Updated readers with the new reader interfaces
+- Deprecated RelationshipReader (replaced by DiscoveryReader)
+- Added unit test for discovery
+- Code maintenance 
+
+
 ## v3.1.0
 
 ---

@@ -20,9 +20,9 @@
 		<PackageTags>Excel Office XLSX</PackageTags>
 		<RepositoryType>git</RepositoryType>
 		<PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
-		<Version>3.1.0</Version>
-		<AssemblyVersion>3.1.0.0</AssemblyVersion>
-		<FileVersion>3.1.0.0</FileVersion>
+		<Version>3.2.0</Version>
+		<AssemblyVersion>3.2.0.0</AssemblyVersion>
+		<FileVersion>3.2.0.0</FileVersion>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="Resources\autofilter.xlsx" />

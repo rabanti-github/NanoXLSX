@@ -1,5 +1,18 @@
 # Change Log
 
+## v3.2.0
+
+---
+
+Release Date: **(xx.yy.2026)** <sup>(DMY)</sup>
+
+- Package: **NanoXLSX.Core**
+ * Updated internal plug-in handling
+- **General**
+ * Fixed unit tests
+ * Code maintenance
+
+
 ## v3.1.0
 
 ---
