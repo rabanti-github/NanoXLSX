@@ -47,8 +47,6 @@ namespace NanoXLSX
             Formula,
             /// <summary>Type for empty cells. This type is only used for merged cells (all cells except the first of the cell range)</summary>
             Empty,
-            /// <summary>Type for cell references, defined by <see cref="DefinedName"/> instances on the workbook. The value of such cells is the reference name</summary>
-            Reference,
             /// <summary>Default Type, not specified</summary>
             Default
         }
@@ -163,6 +161,7 @@ namespace NanoXLSX
         public AddressType CellAddressType { get; set; }
 
         /// <summary>Gets or sets the value of the cell (generic object type). When setting a value, the <see cref="DataType"/> is automatically resolved</summary>
+        /// \remark <remarks>In case of a formula is only the plain text of the formula set as value. See the <see cref="Formula"/> property for further information</remarks>
         public object Value
         {
             get => this.value;
@@ -173,6 +172,12 @@ namespace NanoXLSX
             }
 
         }
+
+        /// <summary>
+        /// Formula object in case of the cell has the DataType <see cref="CellType.Formula"/>. Default is null, if the cell does not contain a formula
+        /// </summary>
+        /// \remark <remarks>The plain text of the formula is still set in <see cref="Value"/>. One exception are linked cells (<see cref="FormulaData.FormulaType.Array"/> and <see cref="FormulaData.MasterCellAddress"/> is set). In this case, the cached value will be in <see cref="Value"/> due to compatibility reason.</remarks>
+        public FormulaData Formula { get; internal set; }
 
         #endregion
 
@@ -320,6 +325,10 @@ namespace NanoXLSX
             {
                 return false;
             }
+            if (this.Formula != null && other.Formula != null && !this.Formula.Equals(other.Formula))
+            {
+                return false;
+            }
             if (this.DataType != other.DataType)
             {
                 return false;
@@ -342,38 +351,52 @@ namespace NanoXLSX
 
         /// <summary>
         /// Sets this cell as a reference to a <see cref="DefinedName"/> (workbook- or worksheet-scoped). The cell's
-        /// <see cref="DataType"/> becomes <see cref="CellType.Reference"/> and its <see cref="Value"/>
-        /// is set to <see cref="DefinedName.Name"/>. The cell will be persisted as
-        /// <c>&lt;c t="str"&gt;&lt;f&gt;name&lt;/f&gt;&lt;/c&gt;</c> in the worksheet XML.
+        /// <see cref="DataType"/> becomes <see cref="CellType.Formula"/> and its <see cref="Value"/> is set to <see cref="DefinedName.Name"/>.
         /// </summary>
         /// <param name="definedName">Defined name to associate with this cell. Must not be null.</param>
+        /// <param name="cachedValue">Optional cached value that will be shown as long as the cell is not refreshed. The value will be ignored if the defined name type is <see cref="DefinedName.NameType.Constant"/></param>
+        /// <returns>Returns the range object of transposed linked cells if the type is <see cref="DefinedName.NameType.Range"/>. The value is null otherwise.</returns>
         /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
-        public void SetReference(DefinedName definedName)
+        internal Range SetReference(DefinedName definedName, object cachedValue = null)
         {
             if (definedName == null)
             {
                 throw new WorksheetException("The defined name to set as cell reference must not be null.");
             }
+            FormulaData formula = new FormulaData();
+            Range referenceRange = null;
+            formula.DefinedNameReference = definedName;
+            formula.Expression = definedName.Name;
+            if (definedName.Type == DefinedName.NameType.Range)
+            {
+                formula.FormulaRange = definedName.TextValue; // Assumed as range string
+                formula.Type = FormulaData.FormulaType.Array;
+                referenceRange = TransposeDefinedNameArrayRange(definedName.TextValue);
+            }
+            else if (definedName.Type == DefinedName.NameType.Cell)
+            {
+                formula.FormulaRange = definedName.TextValue; // Assumed as cell string
+            }
+            if (definedName.Type == DefinedName.NameType.Constant)
+            {
+                formula.CachedValue = definedName.TextValue;
+            }
+            else
+            {
+                formula.CachedValue = ParserUtils.ToCachedValueString(cachedValue); // Force value as plain OOXML string
+            }
+            this.Formula = formula;
+            this.DataType = CellType.Formula; // Force type
             this.value = definedName.Name;
-            DataType = CellType.Reference;
+            return referenceRange;
         }
 
-        /// <summary>
-        /// Sets this cell as a reference to a defined name by its bare name string. Use this overload when
-        /// the <see cref="DefinedName"/> instance is not at hand. No validation against the workbook is performed
-        /// at this point — the writer emits the name verbatim, and the reader reverse-maps to
-        /// <see cref="CellType.Reference"/> only when the name actually exists in the workbook.
-        /// </summary>
-        /// <param name="definedNameName">Name of the defined name. Must be non-empty.</param>
-        /// <exception cref="FormatException">Thrown if <paramref name="definedNameName"/> is null or empty.</exception>
-        public void SetReference(string definedNameName)
+        private Range TransposeDefinedNameArrayRange(string referenceExpression)
         {
-            if (string.IsNullOrEmpty(definedNameName))
-            {
-                throw new FormatException("The defined name string for a cell reference must not be null or empty.");
-            }
-            this.value = definedNameName;
-            DataType = CellType.Reference;
+            Range resolvedRange = new Range(referenceExpression);
+            int rowCount = resolvedRange.EndAddress.Row - resolvedRange.StartAddress.Row;
+            int columnCount = resolvedRange.EndAddress.Column - resolvedRange.StartAddress.Column;
+            return new Range(this.ColumnNumber, this.rowNumber, this.rowNumber + rowCount, this.columnNumber + columnCount);
         }
 
         /// <summary>
@@ -389,7 +412,7 @@ namespace NanoXLSX
                 return;
             }
             if (DataType == CellType.Formula)
-            { return; }
+            { return; } // Do not overwrite type
             Type t = this.value.GetType();
             if (t == typeof(bool))
             { DataType = CellType.Bool; }
@@ -473,6 +496,10 @@ namespace NanoXLSX
                 CellAddress = this.CellAddress,
                 CellAddressType = this.CellAddressType
             };
+            if (Formula != null)
+            {
+                copy.Formula = this.Formula.Copy(); // DefinedName reference is NOT deep-copied
+            }
             if (this.cellStyle != null)
             {
                 copy.SetStyle(this.cellStyle, true);
@@ -494,6 +521,7 @@ namespace NanoXLSX
                 hash = hash * 31 + DataType.GetHashCode();
                 hash = hash * 31 + (cellStyle?.GetHashCode() ?? 0);
                 hash = hash * 31 + (value?.GetHashCode() ?? 0);
+                hash = hash * 31 + (Formula?.GetHashCode() ?? 0);
                 return hash;
             }
         }
@@ -662,7 +690,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="range">Range to process</param>
         /// <returns>List of cell addresses</returns>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception>
         public static IEnumerable<Address> GetCellRange(string range)
         {
@@ -676,7 +704,7 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address as string in the format A1 - XFD1048576</param>
         /// <param name="endAddress">End address as string in the format A1 - XFD1048576</param>
         /// <returns>List of cell addresses</returns>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if a part of the passed range is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception> 
         public static IEnumerable<Address> GetCellRange(string startAddress, string endAddress)
         {
@@ -707,7 +735,7 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
         /// <returns>List of cell addresses</returns>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if a part of the passed addresses is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if a part of the passed addresses is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the value of one passed address is out of range (A-XFD and 1 to 1048576) </exception>
         public static IEnumerable<Address> GetCellRange(Address startAddress, Address endAddress)
         {
@@ -776,7 +804,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="address">Address as string in the format A1 - XFD1048576</param>
         /// <returns>Struct with row and column</returns>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed address is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the passed address is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the value of the passed address is out of range (A-XFD and 1 to 1048576) </exception>
         public static Address ResolveCellCoordinate(string address)
         {
@@ -793,7 +821,7 @@ namespace NanoXLSX
         /// <param name="address">Address as string in the format A1 - XFD1048576</param>
         /// <param name="column">Column number of the cell (zero-based) as out parameter</param>
         /// <param name="row">Row number of the cell (zero-based) as out parameter</param>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the range address was malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the range address was malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the row or column number was out of range</exception>
         public static void ResolveCellCoordinate(string address, out int column, out int row)
         {
@@ -807,7 +835,7 @@ namespace NanoXLSX
         /// <param name="column">Column number of the cell (zero-based) as out parameter</param>
         /// <param name="row">Row number of the cell (zero-based) as out parameter</param>
         /// <param name="addressType">Address type of the cell (if defined as modifiers in the address string)</param>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the range address was malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the range address was malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the row or column number was out of range</exception>
         public static void ResolveCellCoordinate(string address, out int column, out int row, out AddressType addressType)
         {
@@ -867,7 +895,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="range">Range to process</param>
         /// <returns>Range object</returns>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the start or end address was malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the start or end address was malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the range is out of range (A-XFD and 1 to 1048576) </exception>
         public static Range ResolveCellRange(string range)
         {

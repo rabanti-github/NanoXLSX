@@ -14,7 +14,7 @@ using NanoXLSX.Registry;
 namespace NanoXLSX.Internal.Readers
 {
     /// <summary>
-    /// Class for the handling of reader in-line plug-ins
+    /// Class for the handling of reader and processor (pseudo-readers) in-line plug-ins
     /// </summary>
     internal static class ReaderPlugInHandler
     {
@@ -74,6 +74,36 @@ namespace NanoXLSX.Internal.Readers
             {
                 owned?.Dispose();
             }
+        }
+
+        /// <summary>
+        /// Method to handle in-line queue plug-ins of a specific processor plug-in
+        /// </summary>
+        /// <param name="workbook">Workbook reference</param>
+        /// <param name="queueUuid">UUID of the in-line plug-in</param>
+        /// <param name="readerOptions">Reader options</param>
+        /// <param name="index">Optional index, e.g. for worksheet identification</param>
+        [ExcludeFromCodeCoverage] // No testable logic, only plug-in handling
+        internal static void HandleInlineQueueProcessorPlugins(Workbook workbook, string queueUuid, IOptions readerOptions, int? index)
+        {
+            IPluginInlineProcessor queueProcessor = null;
+            string lastUuid = null;
+            do
+            {
+                string currentUuid;
+                queueProcessor = PlugInLoader.GetNextQueuePlugIn<IPluginInlineProcessor>(queueUuid, lastUuid, out currentUuid);
+                if (queueProcessor != null)
+                {
+                    queueProcessor.Init(workbook, readerOptions, index);
+                    queueProcessor.Execute();
+                    lastUuid = currentUuid;
+                }
+                else
+                {
+                    lastUuid = null;
+                }
+
+            } while (queueProcessor != null);
         }
     }
 }

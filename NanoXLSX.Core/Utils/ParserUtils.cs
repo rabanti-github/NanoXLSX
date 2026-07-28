@@ -8,6 +8,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 
 namespace NanoXLSX.Utils
 {
@@ -199,6 +200,60 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
+        /// Transforms a given object to a string displayed as cached Values. The common known compatible numeric types, like int, float, sbyte etc. will be transformed to their appropriate string representations.  
+        /// Bool will be either 0 or 1, or to TRUE or FALSE if convertBoolToNumber is set to false. 
+        /// Date or TimeSpan will be transformed to a OADate (numeric) value.
+        /// Null or empty will be transformed to 0. 
+        /// If an unknown object type is passed, its own ToString() method will be used. 
+        /// </summary>
+        /// <param name="input">Object to transform</param>
+        /// <param name="convertBoolToNumber">If set to true, a bool value will be TRUE or FALSE, otherwise 1 and 0. Default is true</param>
+        /// <returns>Most appropriate OOXML string form given </returns>
+        /// \remark <remarks>This method transforms values to the Excel-internal OOXML format. It is not meant as a generic ToString() method. Also do not pass nested objects like <see cref="Cell"/> or <see cref="FormulaData"/>, since they will be handled as unknown object types.</remarks>
+        public static string ToCachedValueString(object input, bool convertBoolToNumber = true)
+        {
+            if (input == null) { return string.Empty; }
+            else if (input is string)
+            {
+                return input as string;
+            }
+            else if (input is bool)
+            {
+                if (convertBoolToNumber)
+                {
+                    return (bool)input ? "1" : "0";
+                }
+                else
+                {
+                    return (bool)input ? "TRUE" : "FALSE";
+                }
+            }
+            else if (input is bool) { return ToString((byte)input); }
+            else if (input is sbyte) { return ToString((sbyte)input); }
+            else if (input is decimal) { return ToString((decimal)input); }
+            else if (input is double) { return ToString((double)input); }
+            else if (input is int) { return ToString((int)input); }
+            else if (input is uint) { return ToString((uint)input); }
+            else if (input is long) { return ToString((ulong)input); }
+            else if (input is ulong) { return ToString((ulong)input); }
+            else if (input is short) { return ToString((ushort)input); }
+            else if (input is ushort) { return ToString((ushort)input); }
+            else if (input is DateTime)
+            {
+                return DataUtils.GetOADateTimeString((DateTime)input);
+            }
+            else if (input is TimeSpan)
+            {
+                return DataUtils.GetOATimeString((TimeSpan)input);
+            }
+            else
+            {
+                return input.ToString(); // Generic string
+            }
+        }
+
+
+        /// <summary>
         /// Normalizes all newlines of a string to CR+LF
         /// </summary>
         /// <param name="value">Input value</param>
@@ -259,24 +314,26 @@ namespace NanoXLSX.Utils
             int value;
             if (TryParseInt(rawValue, out value))
             {
-                if (value >= 1)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 0;
-                }
+                return value >= 1 ? 1 : 0;
             }
-            rawValue = rawValue.ToLower(InvariantCulture);
-            if (rawValue == "true")
+            bool regularBool;
+            if (TryParseBool(rawValue, out regularBool))
             {
-                return 1;
+                return regularBool ? 1 : 0;
             }
-            else
-            {
-                return 0;
-            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Tries to parse a bool from its string name (true/false), independent from the case
+        /// </summary>
+        /// <param name="rawValue">Raw bool as string</param>
+        /// <param name="parsedValue">Parsed bool</param>
+        /// <returns>True, if the parsing was successful</returns>
+        /// /remark <remarks>Integer values, like 0 or 1 will return false</remarks>
+        public static bool TryParseBool(string rawValue, out bool parsedValue)
+        {
+            return bool.TryParse(rawValue, out parsedValue);
         }
 
         /// <summary>
@@ -355,5 +412,133 @@ namespace NanoXLSX.Utils
         {
             return double.TryParse(rawValue, NumberStyles.Any, InvariantCulture, out parsedValue);
         }
+
+        /// <summary>
+        /// Tries to parse a raw string as an Excel formula string constant.
+        /// Escaped double quotes (<c>""</c>) are converted to single double quotes (<c>"</c>).
+        /// </summary>
+        /// <param name="expression">Raw string expression.</param>
+        /// <param name="value">Parsed and unescaped string value as out parameter.</param>
+        /// <param name="enclosingQuotesRemoved">If true, the enclosing leading and trailing double quotes have already been removed. Default is false.</param>
+        /// <returns>True if the expression is a valid formula string constant; otherwise false.</returns>
+        public static bool TryParseFormulaStringConstant(string expression, out string value, bool enclosingQuotesRemoved = false)
+        {
+            value = null;
+            if (expression == null)
+            {
+                return false;
+            }
+
+            int startIndex;
+            int endIndex;
+            if (enclosingQuotesRemoved)
+            {
+                // The complete expression represents the content inside the string literal.
+                startIndex = 0;
+                endIndex = expression.Length;
+            }
+            else
+            {
+                // A complete formula string constant requires enclosing double quotes.
+                if (expression.Length < 2
+                    || expression[0] != '"'
+                    || expression[expression.Length - 1] != '"')
+                {
+                    return false;
+                }
+                startIndex = 1;
+                endIndex = expression.Length - 1;
+            }
+
+            StringBuilder builder = new StringBuilder(endIndex - startIndex);
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                char current = expression[i];
+                if (current != '"')
+                {
+                    builder.Append(current);
+                    continue;
+                }
+                // Quotes inside an Excel string constant must always occur as a pair.
+                if (i + 1 >= endIndex || expression[i + 1] != '"')
+                {
+                    return false;
+                }
+                builder.Append('"');
+                i++;
+            }
+
+            value = builder.ToString();
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to parse a qualifies worksheet name and address or range expression from a raw string.
+        /// </summary>
+        /// <param name="expression">Raw expression to parse</param>
+        /// <param name="worksheetName">Resolved worksheet name as out parameter</param>
+        /// <param name="reference">Resolved address or range expression as string (out parameter)</param>
+        /// <returns>True if the expression is a valid worksheet name with attached reference (address / range); otherwise false.</returns>
+        /// \remark <remarks>This method cannot detect worksheet names and references within formulas or cell calculations. Such an expression has to be tokenized first.</remarks>
+        public static bool TryParseWorksheetQualifiedReference(string expression,  out string worksheetName, out string reference)
+        {
+            worksheetName = null;
+            reference = null;
+
+            if (string.IsNullOrEmpty(expression))
+            {
+                return false;
+            }
+
+            if (expression[0] != '\'')
+            {
+                int separatorIndex = expression.IndexOf('!');
+                if (separatorIndex <= 0 || separatorIndex == expression.Length - 1)
+                {
+                    return false;
+                }
+
+                worksheetName = expression.Substring(0, separatorIndex);
+                reference = expression.Substring(separatorIndex + 1);
+                return true;
+            }
+
+            StringBuilder builder = new StringBuilder();
+            for (int i = 1; i < expression.Length; i++)
+            {
+                char current = expression[i];
+                if (current != '\'')
+                {
+                    builder.Append(current);
+                    continue;
+                }
+
+                // Two apostrophes inside a quoted worksheet name represent one literal apostrophe.
+                if (i + 1 < expression.Length && expression[i + 1] == '\'')
+                {
+                    builder.Append('\'');
+                    i++;
+                    continue;
+                }
+
+                // A single apostrophe closes the quoted worksheet name. It must immediately be followed by the reference separator.
+                if (i + 1 >= expression.Length || expression[i + 1] != '!')
+                {
+                    return false;
+                }
+
+                if (i + 2 >= expression.Length)
+                {
+                    return false;
+                }
+
+                worksheetName = builder.ToString();
+                reference = expression.Substring(i + 2);
+                return true;
+            }
+            // No closing apostrophe was found.
+            return false;
+        }
+
     }
 }

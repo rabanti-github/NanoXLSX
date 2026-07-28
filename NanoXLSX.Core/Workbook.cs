@@ -252,37 +252,208 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Adds a defined name to the workbook. A defined name with the same <see cref="DefinedName.Name"/>
-        /// and the same <see cref="DefinedName.LocalSheet"/> scope must not already exist.
+        /// Adds a defined name, pointing to a single cell, to the workbook
         /// </summary>
-        /// <param name="definedName">Defined name instance to add. Must not be null.</param>
-        /// <exception cref="WorksheetException">Thrown if a defined name with the same name and scope already exists, or if <paramref name="definedName"/> is null.</exception>
-        public void AddDefinedName(DefinedName definedName)
+        /// <param name="name">Unique name of defined name</param>
+        /// <param name="worksheet">Worksheet that contains the target cell (cannot be null)</param>
+        /// <param name="cellAddress">Cell address as string (cannot be null)</param>
+        /// <param name="localWorksheet">If not null, the defined name will only be available on the given worksheet. The combination of 'name' and 'worksheet' must be unique</param>
+        /// <param name="comment">Optional comment of the defined name</param>
+        /// <returns>Returns the added defined name object</returns>
+        /// <exception cref="WorksheetException">Thrown if the worksheet or cell address is null</exception>
+        /// <exception cref="FormatException">Thrown if the name of the defined name or the cell address is invalid</exception>
+        public DefinedName AddDefinedNameCell(string name, Worksheet worksheet, string cellAddress, Worksheet localWorksheet = null, string comment = null)
         {
-            if (definedName == null)
-            {
-                throw new WorksheetException("The defined name to add must not be null.");
-            }
-            if (FindDefinedNameIndex(definedName.Name, definedName.LocalSheet) >= 0)
-            {
-                string scope = definedName.LocalSheet == null ? "workbook" : "worksheet '" + definedName.LocalSheet.SheetName + "'";
-                throw new WorksheetException("A defined name with the name '" + definedName.Name + "' already exists in the " + scope + " scope.");
-            }
-            definedNames.Add(definedName);
+            Address address = new Address(cellAddress);
+            return AddDefinedNameCell(name, worksheet, address, localWorksheet, comment);
         }
 
         /// <summary>
-        /// Adds a defined name to the workbook (convenience overload that constructs the <see cref="DefinedName"/> in place).
+        /// Adds a defined name, pointing to a single cell, to the workbook
+        /// </summary>
+        /// <param name="name">Unique name of defined name</param>
+        /// <param name="worksheet">Worksheet that contains the target cell (cannot be null)</param>
+        /// <param name="column">Column number (zero-based) of the target cell</param>
+        /// <param name="row">Row number (zero-based) of the target cell</param>
+        /// <param name="localWorksheet">If not null, the defined name will only be available on the given worksheet. The combination of 'name' and 'worksheet' must be unique</param>
+        /// <param name="comment">Optional comment of the defined name</param>
+        /// <returns>Returns the added defined name object</returns>
+        /// <exception cref="WorksheetException">Thrown if the worksheet or cell address is null</exception>
+        /// <exception cref="FormatException">Thrown if the name of the defined name or the cell address is invalid</exception>
+        public DefinedName AddDefinedNameCell(string name, Worksheet worksheet, int column, int row, Worksheet localWorksheet = null, string comment = null)
+        {
+            Address address = new Address(column, row);
+            return AddDefinedNameCell(name, worksheet, address, localWorksheet, comment);
+        }
+
+        /// <summary>
+        /// Adds a defined name, pointing to a single cell, to the workbook
+        /// </summary>
+        /// <param name="name">Unique name of defined name</param>
+        /// <param name="worksheet">Worksheet that contains the target cell (cannot be null)</param>
+        /// <param name="cellAddress">Address object of the target cell</param>
+        /// <param name="localWorksheet">If not null, the defined name will only be available on the given worksheet. The combination of 'name' and 'worksheet' must be unique</param>
+        /// <param name="comment">Optional comment of the defined name</param>
+        /// <returns>Returns the added defined name object</returns>
+        /// <exception cref="WorksheetException">Thrown if the worksheet or cell address is null</exception>
+        /// <exception cref="FormatException">Thrown if the name of the defined name or the cell address is invalid</exception>
+        public DefinedName AddDefinedNameCell(string name, Worksheet worksheet, Address cellAddress, Worksheet localWorksheet = null, string comment = null)
+        {
+            if (worksheet == null)
+            {
+                throw new WorksheetException("A defined name to a cell must have a worksheet");
+            }
+            if (cellAddress == null)
+            {
+                throw new WorksheetException("The cell address pointing to a defined name cannot be null");
+            }
+            return AddDefinedName(name, DefinedName.NameType.Cell, cellAddress, worksheet, localWorksheet, comment);
+        }
+
+        /// <summary>
+        /// Adds a defined name, pointing to a cell range, to the workbook
+        /// </summary>
+        /// <param name="name">Unique name of defined name</param>
+        /// <param name="worksheet">Worksheet that contains the target cell (cannot be null)</param>
+        /// <param name="rangeAddress">Address of the target range as string</param>
+        /// <param name="localWorksheet">If not null, the defined name will only be available on the given worksheet. The combination of 'name' and 'worksheet' must be unique</param>
+        /// <param name="comment">Optional comment of the defined name</param>
+        /// <returns>Returns the added defined name object</returns>
+        /// <exception cref="WorksheetException">Thrown if the worksheet or range address is null</exception>
+        /// <exception cref="FormatException">Thrown if the name of the defined name or the range address is invalid</exception>
+        public DefinedName AddDefinedNameRange(string name, Worksheet worksheet, string rangeAddress, Worksheet localWorksheet = null, string comment = null)
+        {
+            Range range = new Range(rangeAddress);
+            return AddDefinedNameRange(name, worksheet, range, localWorksheet, comment);
+        }
+        /// <summary>
+        /// Adds a defined name, pointing to a cell range, to the workbook
+        /// </summary>
+        /// <param name="name">Unique name of defined name</param>
+        /// <param name="worksheet">Worksheet that contains the target cell (cannot be null)</param>
+        /// <param name="startAddress">Start address object of the target range</param>
+        /// <param name="endAddress">End address object of the target range</param>
+        /// <param name="localWorksheet">If not null, the defined name will only be available on the given worksheet. The combination of 'name' and 'worksheet' must be unique</param>
+        /// <param name="comment">Optional comment of the defined name</param>
+        /// <returns>Returns the added defined name object</returns>
+        /// <exception cref="WorksheetException">Thrown if the worksheet or range address is null</exception>
+        /// <exception cref="FormatException">Thrown if the name of the defined name or the range address is invalid</exception>
+        public DefinedName AddDefinedNameRange(string name, Worksheet worksheet, Address startAddress, Address endAddress, Worksheet localWorksheet = null, string comment = null)
+        {
+            Range range = new Range(startAddress, endAddress);
+            return AddDefinedNameRange(name, worksheet, range, localWorksheet, comment);
+        }
+        /// <summary>
+        /// Adds a defined name, pointing to a cell range, to the workbook
+        /// </summary>
+        /// <param name="name">Unique name of defined name</param>
+        /// <param name="worksheet">Worksheet that contains the target cell (cannot be null)</param>
+        /// <param name="startColumn">Start column number (zero-based) of the target range</param>
+        /// <param name="startRow">Start row number (zero-based) of the target range</param>
+        /// <param name="endColumn">End column number (zero-based) of the target range</param>
+        /// <param name="endRow">End row number (zero-based) of the target range</param>
+        /// <param name="localWorksheet">If not null, the defined name will only be available on the given worksheet. The combination of 'name' and 'worksheet' must be unique</param>
+        /// <param name="comment">Optional comment of the defined name</param>
+        /// <returns>Returns the added defined name object</returns>
+        /// <exception cref="WorksheetException">Thrown if the worksheet or range address is null</exception>
+        /// <exception cref="FormatException">Thrown if the name of the defined name or the range address is invalid</exception>
+        public DefinedName AddDefinedNameRange(string name, Worksheet worksheet, int startColumn, int startRow, int endColumn, int endRow, Worksheet localWorksheet = null, string comment = null)
+        {
+            Range range = new Range(startColumn, startRow, endColumn, endRow);
+            return AddDefinedNameRange(name, worksheet, range, localWorksheet, comment);
+        }
+        /// <summary>
+        /// Adds a defined name, pointing to a cell range, to the workbook
+        /// </summary>
+        /// <param name="name">Unique name of defined name</param>
+        /// <param name="worksheet">Worksheet that contains the target cell (cannot be null)</param>
+        /// <param name="rangeAddress">Range object of the target range</param>
+        /// <param name="localWorksheet">If not null, the defined name will only be available on the given worksheet. The combination of 'name' and 'worksheet' must be unique</param>
+        /// <param name="comment">Optional comment of the defined name</param>
+        /// <returns>Returns the added defined name object</returns>
+        /// <exception cref="WorksheetException">Thrown if the worksheet or range address is null</exception>
+        /// <exception cref="FormatException">Thrown if the name of the defined name or the range address is invalid</exception>
+        public DefinedName AddDefinedNameRange(string name, Worksheet worksheet, Range rangeAddress, Worksheet localWorksheet = null, string comment = null)
+        {
+            if (worksheet == null)
+            {
+                throw new WorksheetException("A defined name to a cell must have a worksheet");
+            }
+            if (rangeAddress == null)
+            {
+                throw new WorksheetException("The range address pointing to a defined name cannot be null");
+            }
+            return AddDefinedName(name, DefinedName.NameType.Range, rangeAddress, worksheet, localWorksheet, comment);
+        }
+
+        /// <summary>
+        /// Adds a defined name, pointing to a constant value, to the workbook
+        /// </summary>
+        /// <param name="name">Unique name of defined name</param>
+        /// <param name="value">Constant value</param>
+        /// <param name="localWorksheet">If not null, the defined name will only be available on the given worksheet. The combination of 'name' and 'worksheet' must be unique</param>
+        /// <param name="comment">Optional comment of the defined name</param>
+        /// <returns>Returns the added defined name object</returns>
+        /// <exception cref="WorksheetException">Thrown if the constant value is null</exception>
+        /// <exception cref="FormatException">Thrown if the name of the defined name is invalid</exception>
+        /// \remark <remarks>A constant should be one of the compatible types: string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. Other types will be treated as string, using <see cref="object.ToString()"/>.</remarks>
+        public DefinedName AddDefinedNameConstant(string name, object value, Worksheet localWorksheet = null, string comment = null)
+        {
+            if (value == null)
+            {
+                throw new WorksheetException("A constant value pointing to a defined name cannot be nul");
+            }
+            return AddDefinedName(name, DefinedName.NameType.Constant, value, null, localWorksheet, comment);  
+        }
+
+        /// <summary>
+        /// Adds a defined name, pointing to a formula expression, to the workbook. Do not add a leading equal sign (=) to the formula. 
+        /// For simple cell references (e.g. "A1") use <see cref="AddDefinedNameCell(string, Worksheet, Address, Worksheet, string)"/> or one of the overloaded methods. 
+        /// For cell range references (e.g. "A1:C3") use <see cref="AddDefinedNameRange(string, Worksheet, Address, Address, Worksheet, string)"/> or one of the overloaded methods. 
+        /// </summary>
+        /// <param name="name">Unique name of defined name</param>
+        /// <param name="formula">Formula value</param>
+        /// <param name="localWorksheet">If not null, the defined name will only be available on the given worksheet. The combination of 'name' and 'worksheet' must be unique</param>
+        /// <param name="comment">Optional comment of the defined name</param>
+        /// <returns>Returns the added defined name object</returns>
+        /// <exception cref="WorksheetException">Thrown if the formula value is null or empty</exception>
+        /// <exception cref="FormatException">Thrown if the name of the defined name is invalid</exception>
+        /// \remark <remarks>The formula is not evaluated. Also do not add references to external workbooks (will cause an exception on save), as longs no NanoXLSX extension is loaded that can handle external links.</remarks>
+        public DefinedName AddDefinedNameFormula(string name, string formula, Worksheet localWorksheet = null, string comment = null)
+        {
+            if (string.IsNullOrEmpty(formula))
+            {
+                throw new WorksheetException("A formula value pointing to a defined name cannot be null or empty");
+            }
+            // Note: Added strings like '[0]' will out-of-the-box throw an exception on saveing a workbook 
+            return AddDefinedName(name, DefinedName.NameType.Formula, formula, null, localWorksheet, comment);
+        }
+
+        /// <summary>
+        /// Internal method to add a defined name
         /// </summary>
         /// <param name="name">Name of the defined name.</param>
-        /// <param name="reference">Reference text (cell, range, formula, or constant).</param>
-        /// <param name="localSheet">Optional worksheet that scopes the defined name. Pass null for workbook scope.</param>
+        /// <param name="type">Type of the reference.</param>
+        /// <param name="value">Reference text (cell, range, formula, or constant).</param>
+        /// <param name="targetWorksheet">Target worksheet in case of a cell or range. Pass null for constant or formula.</param>
+        /// <param name="localWorksheet">Optional worksheet that scopes the defined name. Pass null for workbook scope.</param>
         /// <param name="comment">Optional comment.</param>
-        /// <exception cref="WorksheetException">Thrown if a defined name with the same name and scope already exists.</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Thrown if <paramref name="name"/> or <paramref name="reference"/> is invalid (see <see cref="DefinedName"/>).</exception>
-        public void AddDefinedName(string name, string reference, Worksheet localSheet = null, string comment = null)
+        /// <returns>Returns the added defined name.</returns>
+        internal DefinedName AddDefinedName(string name, DefinedName.NameType type, object value, Worksheet targetWorksheet, Worksheet localWorksheet, string comment)
         {
-            AddDefinedName(new DefinedName(name, reference, localSheet, comment));
+            // Validation is implemented in DefinedName class
+            DefinedName definedName = new DefinedName(this, type, name, value, targetWorksheet, localWorksheet, comment);
+            AddDefinedName(definedName);
+            return definedName;
+        }
+
+        /// <summary>
+        /// Internal method to add a defined name object without validation
+        /// </summary>
+        /// <param name="definedName">Defined name object</param>
+        internal void AddDefinedName(DefinedName definedName)
+        {
+            definedNames.Add(definedName);
         }
 
         /// <summary>
@@ -291,6 +462,7 @@ namespace NanoXLSX
         /// <param name="name">Name of the defined name to remove.</param>
         /// <param name="localSheet">Worksheet scope, or null for workbook scope.</param>
         /// <returns>True if a matching defined name was removed, false if no match was found.</returns>
+        /// \remark <remarks><b>Important:</b> Removing defined names may remove references in worksheets. If a workbook is saved in this state, it can lead to broken formula references, indicated by "#NAME?"</remarks>
         public bool RemoveDefinedName(string name, Worksheet localSheet = null)
         {
             int index = FindDefinedNameIndex(name, localSheet);
@@ -298,6 +470,8 @@ namespace NanoXLSX
             {
                 return false;
             }
+            DefinedName definedName = definedNames[index];
+            InvalidateDefinedNameReferences(definedName);
             definedNames.RemoveAt(index);
             return true;
         }
@@ -329,7 +503,7 @@ namespace NanoXLSX
         /// <param name="name">Name to find.</param>
         /// <param name="localSheet">Worksheet scope, or null for workbook scope.</param>
         /// <returns>Index in the internal list, or -1 if not found.</returns>
-        private int FindDefinedNameIndex(string name, Worksheet localSheet)
+        internal int FindDefinedNameIndex(string name, Worksheet localSheet)
         {
             for (int i = 0; i < definedNames.Count; i++)
             {
@@ -752,6 +926,26 @@ namespace NanoXLSX
                 }
             }
         }
+
+        /// <summary>
+        /// Removes all references of invalid defined names in Worksheets
+        /// </summary>
+        /// <param name="definedName">Defined name object to invalidate</param>
+        private void InvalidateDefinedNameReferences(DefinedName definedName)
+        {
+            foreach (Worksheet worksheet in worksheets)
+            {
+                foreach (KeyValuePair<string, Cell> cell in worksheet.Cells)
+                {
+                    FormulaData formula = cell.Value.Formula;
+                    if (formula != null && ReferenceEquals(formula.DefinedNameReference, definedName))
+                    {
+                        formula.DefinedNameReference = null;
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// Removes the worksheet at the defined index and relocates current and selected worksheet references

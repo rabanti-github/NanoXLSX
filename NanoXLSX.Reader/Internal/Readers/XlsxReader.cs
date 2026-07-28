@@ -296,6 +296,11 @@ namespace NanoXLSX.Internal.Readers
                 throw new IOException("No worksheet was found in the workbook");
             }
             HandleQueuePlugIns(PlugInUUID.ReaderAppendingQueue, entryLookup, relationshipCatalog, ref wb);
+            // finalizing processor(s)
+            IPluginProcessor finalizingProcessor = PlugInLoader.GetPlugIn<IPluginProcessor>(PlugInUUID.FinalizingProcessor, new FinalizingProcessor());
+            finalizingProcessor.Init(wb, readerOptions, ReaderPlugInHandler.HandleInlineQueueProcessorPlugins);
+            finalizingProcessor.Execute();
+            // Read process is completed
             wb.importInProgress = false; // Enables checks for runtime
             wb.AuxiliaryData.ClearTemporaryData(); // Remove temporary staging data
             this.Workbook = wb;

@@ -146,6 +146,10 @@ namespace NanoXLSX.Registry
         /// UUID for the package relationship discovery reader, when a workbook is loaded
         /// </summary>
         public const string DiscoveryReader = "08FE5C9F-C8A3-4B46-A74F-D2BF3F083CC4";
+        /// <summary>
+        /// UUID for the finalizing processor that performs regular finalizing tasks after all workbook parts are read and after appending queue readers from plug-ins. Such plug-ins do not handle a stream anymore
+        /// </summary>
+        public const string FinalizingProcessor = "7B6B70B7-F2E1-433A-8171-018E93DE43A0";
         #endregion
 
         #region generalReaderQueueUUIDs
@@ -198,6 +202,10 @@ namespace NanoXLSX.Registry
         /// UUID for in-line queued reader, appended right after the execution of the relationship reader, when a workbook is loaded
         /// </summary>
         public const string RelationshipInlineReader = "E474D078-FBBC-49BE-B0B8-6086C07023DA";
+        /// <summary>
+        /// UUID for in-line queued processor, appended right after the execution of the finalizing reader, when a workbook is loaded. Note: such processors do not handle a stream
+        /// </summary>
+        public const string FinalizingInlineProcessor = "0DAF416F-C735-4EB1-962A-859495E034DC";
         #endregion
 
         #region entityUUIDs
@@ -218,13 +226,10 @@ namespace NanoXLSX.Registry
         /// </summary>
         public const string StyleEntity = "638F9F5A-334A-49A1-BE07-1F2F3BFB70C4";
         /// <summary>
-<<<<<<< HEAD
-=======
         /// UUID for the defined names section, on reading a workbook
         /// </summary>
         public const string DefinedNameEntity = "7774EFED-65A6-4AD7-9870-20DE4D09DB41";
         /// <summary>
->>>>>>> dev-discovery
         /// UUID for the relationship discovery catalog, on reading a workbook
         /// </summary>
         public const string DiscoveryCatalogEntity = "A3FB109E-F7F8-4FA1-9AAF-CF3C5A62A9A8";

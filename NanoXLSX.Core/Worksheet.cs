@@ -602,7 +602,7 @@ namespace NanoXLSX
         /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be cast to a String. 
         /// A prepared object of the type Cell will not be cast but adjusted. The direction of the next cell depends on the current cell direction (default is <see cref="Worksheet.CellDirection.ColumnToColumn"/>).
         /// </summary>
-        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <param name="value">Unspecified value to insert</param>
         /// <exception cref="RangeException">Throws a RangeException if the next cell is out of range (on row or column)</exception>
@@ -616,7 +616,7 @@ namespace NanoXLSX
         /// Adds an object to the next cell position. If the type of the value does not match with one of the supported data types, it will be cast to a String. 
         /// A prepared object of the type Cell will not be cast but adjusted. The direction of the next cell depends on the current cell direction (default is <see cref="Worksheet.CellDirection.ColumnToColumn"/>).
         /// </summary>
-        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="style">Style object to apply on this cell</param>
@@ -634,7 +634,7 @@ namespace NanoXLSX
         /// <param name="cell">Cell object to insert</param>
         /// <param name="incremental">If true, the address value (row or column) will be incremented, otherwise not</param>
         /// <param name="style">If not null, the defined style will be applied to the cell, otherwise no style or the default style will be applied</param>
-        /// \remark <remarks>Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. All other types will be cast into a string using the default ToString() method.<br />
+        /// \remark <remarks>Recognized are the following data types: string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. All other types will be cast into a string using the default ToString() method.<br />
         /// If the cell object already has a style definition, and a style or active style is defined, the cell style will be merged, otherwise just set</remarks>
         /// <exception cref="StyleException">Throws a StyleException if the default style was malformed</exception>
         private void AddNextCell(Cell cell, bool incremental, Style style)
@@ -732,7 +732,7 @@ namespace NanoXLSX
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="columnNumber">Column number (zero based)</param>
         /// <param name="rowNumber">Row number (zero based)</param>
-        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public void AddCell(object value, int columnNumber, int rowNumber)
@@ -748,7 +748,7 @@ namespace NanoXLSX
         /// <param name="columnNumber">Column number (zero based)</param>
         /// <param name="rowNumber">Row number (zero based)</param>
         /// <param name="style">Style to apply on the cell</param>
-        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
@@ -764,7 +764,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="value">Unspecified value to insert</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
-        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
@@ -886,128 +886,135 @@ namespace NanoXLSX
 
         #endregion
 
-        #region methods_AddDefinedName
-
-        /// <summary>
-        /// Adds a worksheet-scoped <see cref="DefinedName"/> to the parent workbook (with this worksheet as its <see cref="DefinedName.LocalSheet"/>).
-        /// </summary>
-        /// <param name="name">Name of the defined name.</param>
-        /// <param name="reference">Reference text (cell, range, formula, or constant).</param>
-        /// <param name="comment">Optional comment.</param>
-        /// <exception cref="WorksheetException">Thrown if this worksheet is not bound to a workbook, or if a defined name with the same name already exists in this worksheet's scope.</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Thrown if <paramref name="name"/> or <paramref name="reference"/> is invalid.</exception>
-        public void AddDefinedName(string name, string reference, string comment = null)
-        {
-            if (workbookReference == null)
-            {
-                throw new WorksheetException("The worksheet is not bound to a workbook. A defined name cannot be added.");
-            }
-            workbookReference.AddDefinedName(name, reference, this, comment);
-        }
-
-        /// <summary>
-        /// Removes a worksheet-scoped <see cref="DefinedName"/> from the parent workbook.
-        /// </summary>
-        /// <param name="name">Name of the defined name to remove.</param>
-        /// <returns>True if a matching worksheet-scoped defined name was removed, false if not found.</returns>
-        /// <exception cref="WorksheetException">Thrown if this worksheet is not bound to a workbook.</exception>
-        public bool RemoveDefinedName(string name)
-        {
-            if (workbookReference == null)
-            {
-                throw new WorksheetException("The worksheet is not bound to a workbook. A defined name cannot be removed.");
-            }
-            return workbookReference.RemoveDefinedName(name, this);
-        }
-
-        /// <summary>
-        /// Gets a worksheet-scoped <see cref="DefinedName"/> from the parent workbook.
-        /// </summary>
-        /// <param name="name">Name of the defined name.</param>
-        /// <returns>The matching <see cref="DefinedName"/> instance, or null if no match was found.</returns>
-        /// <exception cref="WorksheetException">Thrown if this worksheet is not bound to a workbook.</exception>
-        public DefinedName GetDefinedName(string name)
-        {
-            if (workbookReference == null)
-            {
-                throw new WorksheetException("The worksheet is not bound to a workbook. A defined name cannot be retrieved.");
-            }
-            return workbookReference.GetDefinedName(name, this);
-        }
-
-        #endregion
-
         #region methods_AddCellReference
 
-
-
         /// <summary>
-        /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook
-        /// (either workbook-scoped or worksheet-scoped). The cell will have
-        /// <see cref="Cell.CellType.Reference"/> as data type and the <see cref="DefinedName.Name"/> as value.
+        /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook (either workbook-scoped or worksheet-scoped).
+        /// The cell will have <see cref="Cell.CellType.Formula"/> as data type and <see cref="FormulaData.DefinedNameReference"/> in <see cref="Cell.Formula"/> as value. 
+        /// The cell value will be <see cref="DefinedName.Name"/> (formula expression).
+        /// If the defined name has the type <see cref="DefinedName.NameType.Range"/> (array), the transposed cells of that array will be added / replaced and set to <see cref="Cell.CellType.Formula"/> with a <see cref="FormulaData"/> object, and set Value in <see cref="FormulaData.MasterCellAddress"/>. This might overwrite existing cells. 
         /// </summary>
         /// <param name="definedName">Defined name to reference. Must not be null.</param>
         /// <param name="columnNumber">Column number (zero-based).</param>
         /// <param name="rowNumber">Row number (zero-based).</param>
+        /// <param name="cachedValue">Optional cached value that will be shown as long as the cell is not be refreshed. The value will be ignored if the defined name type is <see cref="DefinedName.NameType.Constant"/></param>
+        /// <returns>Returns a immutable list of cell addresses that are affected by the defined name. For <see cref="FormulaData.FormulaType.Array"/>, the list contains all addresses of the array elements and that of the master cell as first element. In all other cases, the list will just contain the passed address of this method</returns>
         /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
         /// <exception cref="RangeException">Thrown if the passed cell coordinate is out of range.</exception>
         /// <remarks>To remove a cell reference, use the <see cref="RemoveCell(int, int)"/> method. If a values is set by <see cref="Cell.Value"/> it will be overwritten.</remarks>
-        public void AddCellReference(DefinedName definedName, int columnNumber, int rowNumber)
+        public IReadOnlyList<Address> AddCellReference(DefinedName definedName, int columnNumber, int rowNumber, object cachedValue = null)
         {
-            Cell c = new Cell(null, Cell.CellType.Default, columnNumber, rowNumber);
-            c.SetReference(definedName);
+            Cell c = new Cell(definedName.Name, Cell.CellType.Formula, columnNumber, rowNumber);
+            Range arrayRange = c.SetReference(definedName, cachedValue);
             AddNextCell(c, false, null);
+            List<Address> list = new List<Address>();
+            list.Add(new Address(columnNumber, rowNumber));
+            if (arrayRange != null)
+            {
+                IReadOnlyList<Address> addedCells = AddDefinedNameArrayCells(c, arrayRange, null);
+                list.AddRange(addedCells);
+            }
+            return list;
         }
 
         /// <summary>
-        /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook, with a style.
+        /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook (either workbook-scoped or worksheet-scoped) with a style.
+        /// The cell will have <see cref="Cell.CellType.Formula"/> as data type and <see cref="FormulaData.DefinedNameReference"/> in <see cref="Cell.Formula"/> as value.
+        /// The cell value will be <see cref="DefinedName.Name"/> (formula expression).
+        /// If the defined name has the type <see cref="DefinedName.NameType.Range"/> (array), the transposed cells of that array will be added / replaced and set to <see cref="Cell.CellType.Formula"/> with a <see cref="FormulaData"/> object, and set Value in <see cref="FormulaData.MasterCellAddress"/>. The style will be applied to these cells as well.This might overwrite existing cells. 
         /// </summary>
         /// <param name="definedName">Defined name to reference. Must not be null.</param>
         /// <param name="columnNumber">Column number (zero-based).</param>
         /// <param name="rowNumber">Row number (zero-based).</param>
         /// <param name="style">Style to apply on the cell.</param>
+        /// <param name="cachedValue">Optional cached value that will be shown as long as the cell is not be refreshed. The value will be ignored if the defined name type is <see cref="DefinedName.NameType.Constant"/></param>
+        /// <returns>Returns a immutable list of cell addresses that are affected by the defined name. For <see cref="FormulaData.FormulaType.Array"/>, the list contains all addresses of the array elements and that of the master cell as first element. In all other cases, the list will just contain the passed address of this method</returns>
         /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
         /// <exception cref="RangeException">Thrown if the passed cell coordinate is out of range.</exception>
         /// <exception cref="StyleException">Thrown if the passed style is malformed.</exception>
-        public void AddCellReference(DefinedName definedName, int columnNumber, int rowNumber, Style style)
+        public IReadOnlyList<Address> AddCellReference(DefinedName definedName, int columnNumber, int rowNumber, Style style, object cachedValue = null)
         {
-            Cell c = new Cell(null, Cell.CellType.Default, columnNumber, rowNumber);
-            c.SetReference(definedName);
+            Cell c = new Cell(definedName.Name, Cell.CellType.Formula, columnNumber, rowNumber);
+            Range arrayRange = c.SetReference(definedName, cachedValue);
             AddNextCell(c, false, style);
+            List<Address> list = new List<Address>();
+            list.Add(new Address(columnNumber, rowNumber));
+            if (arrayRange != null)
+            {
+                IReadOnlyList<Address> addedCells = AddDefinedNameArrayCells(c, arrayRange, style);
+                list.AddRange(addedCells);
+            }
+            return list;
         }
 
         /// <summary>
-        /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook, addressed by string.
+        /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook (either workbook-scoped or worksheet-scoped), addressed by string.
+        /// The cell will have <see cref="Cell.CellType.Formula"/> as data type and <see cref="FormulaData.DefinedNameReference"/> in <see cref="Cell.Formula"/> as value.
+        /// The cell value will be <see cref="DefinedName.Name"/> (formula expression).
+        /// If the defined name has the type <see cref="DefinedName.NameType.Range"/> (array), the transposed cells of that array will be added / replaced and set to <see cref="Cell.CellType.Formula"/> with a <see cref="FormulaData"/> object, and set Value in <see cref="FormulaData.MasterCellAddress"/>. This might overwrite existing cells. 
         /// </summary>
         /// <param name="definedName">Defined name to reference. Must not be null.</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576.</param>
+        /// <param name="cachedValue">Optional cached value that will be shown as long as the cell is not be refreshed. The value will be ignored if the defined name type is <see cref="DefinedName.NameType.Constant"/></param>
+        /// <returns>Returns a immutable list of cell addresses that are affected by the defined name. For <see cref="FormulaData.FormulaType.Array"/>, the list contains all addresses of the array elements and that of the master cell as first element. In all other cases, the list will just contain the passed address of this method</returns>
         /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
         /// <exception cref="RangeException">Thrown if the passed cell address is out of range.</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Thrown if the passed cell address is malformed.</exception>
-        public void AddCellReference(DefinedName definedName, string address)
+        /// <exception cref="FormatException">Thrown if the passed cell address is malformed.</exception>
+        public IReadOnlyList<Address> AddCellReference(DefinedName definedName, string address, object cachedValue = null)
         {
             int column;
             int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
-            AddCellReference(definedName, column, row);
+            return AddCellReference(definedName, column, row, cachedValue);
         }
 
         /// <summary>
-        /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook, addressed by string and styled.
+        /// Adds a cell whose content is a reference to a <see cref="DefinedName"/> in the workbook (either workbook-scoped or worksheet-scoped), addressed by string and with a style.
+        /// The cell will have <see cref="Cell.CellType.Formula"/> as data type and <see cref="FormulaData.DefinedNameReference"/> in <see cref="Cell.Formula"/> as value.
+        /// The cell value will be <see cref="DefinedName.Name"/> (formula expression). 
+        /// If the defined name has the type <see cref="DefinedName.NameType.Range"/> (array), the transposed cells of that array will be added / replaced and set to <see cref="Cell.CellType.Formula"/> with a <see cref="FormulaData"/> object, and set Value in <see cref="FormulaData.MasterCellAddress"/>. This might overwrite existing cells. 
         /// </summary>
         /// <param name="definedName">Defined name to reference. Must not be null.</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576.</param>
         /// <param name="style">Style to apply on the cell.</param>
+        /// <param name="cachedValue">Optional cached value that will be shown as long as the cell is not be refreshed. The value will be ignored if the defined name type is <see cref="DefinedName.NameType.Constant"/></param>
+        /// <returns>Returns a immutable list of cell addresses that are affected by the defined name. For <see cref="FormulaData.FormulaType.Array"/>, the list contains all addresses of the array elements and that of the master cell as first element. In all other cases, the list will just contain the passed address of this method</returns>
         /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
         /// <exception cref="RangeException">Thrown if the passed cell address is out of range.</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Thrown if the passed cell address is malformed.</exception>
+        /// <exception cref="FormatException">Thrown if the passed cell address is malformed.</exception>
         /// <exception cref="StyleException">Thrown if the passed style is malformed.</exception>
-        public void AddCellReference(DefinedName definedName, string address, Style style)
+        public IReadOnlyList<Address> AddCellReference(DefinedName definedName, string address, Style style, object cachedValue = null)
         {
             int column;
             int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
-            AddCellReference(definedName, column, row, style);
+            return AddCellReference(definedName, column, row, style, cachedValue);
+        }
+
+        /// <summary>
+        /// Adds array cells derived from a defined name object of a master cell, with array as type
+        /// </summary>
+        /// <param name="masterCell">Master cell object</param>
+        /// <param name="arrayRange">Range of the array to insert</param>
+        /// <param name="style">Optional style that will be applied to the array cells</param>
+        /// <returns>Returns the list of all array cell addresses without the master cell</returns>
+        internal IReadOnlyList<Address> AddDefinedNameArrayCells(Cell masterCell, Range arrayRange, Style style)
+        {
+            IReadOnlyList<Address> addresses = arrayRange.ResolveEnclosedAddresses();
+            foreach (Address address in addresses)
+            {
+                if (address.Row == masterCell.RowNumber && address.Column == masterCell.ColumnNumber)
+                {
+                    continue; // Skip master cell
+                }
+                Cell arrayRefCell = new Cell(null, Cell.CellType.Formula);
+                arrayRefCell.Formula = new FormulaData();
+                arrayRefCell.Formula.MasterCellAddress = masterCell.CellAddress;
+                arrayRefCell.Formula.FormulaRange = masterCell.Formula.FormulaRange;
+                arrayRefCell.Formula.Type = FormulaData.FormulaType.Array;
+                AddCell(arrayRefCell, address.Column, address.Row, style);
+            }
+            return addresses;
         }
 
         #endregion
@@ -1021,7 +1028,7 @@ namespace NanoXLSX
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
-        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         public void AddCellRange(IReadOnlyList<object> values, Address startAddress, Address endAddress)
@@ -1037,7 +1044,7 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
-        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
@@ -1052,7 +1059,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="cellRange">Cell range as string in the format like A1:D1 or X10:X22</param>
-        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
@@ -1069,7 +1076,7 @@ namespace NanoXLSX
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="cellRange">Cell range as string in the format like A1:D1 or X10:X22</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
-        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
@@ -1086,7 +1093,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="cellRange">Cell range object</param>
-        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         public void AddCellRange(IReadOnlyList<object> values, Range cellRange)
@@ -1101,7 +1108,7 @@ namespace NanoXLSX
         /// <param name="values">List of unspecified objects to insert</param>
         /// <param name="cellRange">Cell range object</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
-        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
@@ -1118,7 +1125,7 @@ namespace NanoXLSX
         /// <param name="startAddress">Start address</param>
         /// <param name="endAddress">End address</param>
         /// <param name="style">Style to apply on the all cells of the range</param>
-        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, double, float, long, DateTime, TimeSpan, bool. 
+        /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the passes list is null or the number of cells differs from the number of passed values</exception>
         private void AddCellRangeInternal<T>(IReadOnlyList<T> values, Address startAddress, Address endAddress, Style style)
