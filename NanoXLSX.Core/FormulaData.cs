@@ -86,6 +86,19 @@ namespace NanoXLSX
             this.Type = FormulaType.Normal;
         }
 
+        /// <summary>
+        /// Constructor with formula expression and optional cached value to create a formula of the common type <see cref="FormulaType.Normal"/>
+        /// </summary>
+        /// <param name="expression">Formula expression (without leading equal sign)</param>
+        /// <param name="cachedValue">Optional cached value. Default is null</param>
+        public FormulaData(string expression, object cachedValue = null) : this()
+        {
+            Expression = expression;
+            CachedValue = cachedValue;
+        }
+
+
+
         #endregion
         #region methods
 

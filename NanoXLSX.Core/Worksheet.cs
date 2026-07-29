@@ -801,9 +801,9 @@ namespace NanoXLSX
         #region methods_AddCellFormula
 
         /// <summary>
-        /// Adds a cell formula as string to the defined cell address
+        /// Adds a formula of the type <see cref="FormulaData.FormulaType.Normal"/> as string expression to the defined cell address
         /// </summary>
-        /// <param name="formula">Formula to insert</param>
+        /// <param name="formula">Formula expression to insert (without leading equal sign)</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
@@ -813,13 +813,14 @@ namespace NanoXLSX
             int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
             Cell c = new Cell(formula, Cell.CellType.Formula, column, row);
+            c.Formula = new FormulaData(formula);
             AddNextCell(c, false, null);
         }
 
         /// <summary>
-        /// Adds a cell formula as string to the defined cell address
+        /// Adds a formula of the type <see cref="FormulaData.FormulaType.Normal"/> as string expression to the defined cell address
         /// </summary>
-        /// <param name="formula">Formula to insert</param>
+        /// <param name="formula">Formula expression to insert (without leading equal sign)</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <param name="style">Style to apply on the cell</param>
         /// <exception cref="StyleException">Throws a StyleException if the passed style was malformed</exception>
@@ -831,26 +832,28 @@ namespace NanoXLSX
             int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
             Cell c = new Cell(formula, Cell.CellType.Formula, column, row);
+            c.Formula = new FormulaData(formula);
             AddNextCell(c, false, style);
         }
 
         /// <summary>
-        /// Adds a cell formula as string to the defined cell address
+        /// Adds a formula of the type <see cref="FormulaData.FormulaType.Normal"/> as string expression to the defined cell address
         /// </summary>
-        /// <param name="formula">Formula to insert</param>
+        /// <param name="formula">Formula expression to insert (without leading equal sign)</param>
         /// <param name="columnNumber">Column number (zero based)</param>
         /// <param name="rowNumber">Row number (zero based)</param>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public void AddCellFormula(string formula, int columnNumber, int rowNumber)
         {
             Cell c = new Cell(formula, Cell.CellType.Formula, columnNumber, rowNumber);
+            c.Formula = new FormulaData(formula);
             AddNextCell(c, false, null);
         }
 
         /// <summary>
-        /// Adds a cell formula as string to the defined cell address
+        /// Adds a formula of the type <see cref="FormulaData.FormulaType.Normal"/> as string expression to the defined cell address
         /// </summary>
-        /// <param name="formula">Formula to insert</param>
+        /// <param name="formula">Formula expression to insert (without leading equal sign)</param>
         /// <param name="columnNumber">Column number (zero based)</param>
         /// <param name="rowNumber">Row number (zero based)</param>
         /// <param name="style">Style to apply on the cell</param>
@@ -858,29 +861,34 @@ namespace NanoXLSX
         public void AddCellFormula(string formula, int columnNumber, int rowNumber, Style style)
         {
             Cell c = new Cell(formula, Cell.CellType.Formula, columnNumber, rowNumber);
+            c.Formula = new FormulaData(formula);
             AddNextCell(c, false, style);
         }
 
         /// <summary>
-        /// Adds a formula as string to the next cell position
+        /// Adds a formula of the type <see cref="FormulaData.FormulaType.Normal"/> as string expression to the next cell position. 
+        /// The object <see cref="Cell.Formula"/> is created automatically.
         /// </summary>
-        /// <param name="formula">Formula to insert</param>
+        /// <param name="formula">Formula expression to insert (without leading equal sign)</param>
         /// <exception cref="RangeException">Trows a RangeException if the next cell is out of range (on row or column)</exception>
         public void AddNextCellFormula(string formula)
         {
             Cell c = new Cell(formula, Cell.CellType.Formula, currentColumnNumber, currentRowNumber);
+            c.Formula = new FormulaData(formula);
             AddNextCell(c, true, null);
         }
 
         /// <summary>
-        /// Adds a formula as string to the next cell position
+        /// Adds a formula of the type <see cref="FormulaData.FormulaType.Normal"/> as string expression to the next cell position. 
+        /// The object <see cref="Cell.Formula"/> is created automatically.
         /// </summary>
-        /// <param name="formula">Formula to insert</param>
+        /// <param name="formula">Formula expression to insert (without leading equal sign)</param>
         /// <param name="style">Style to apply on the cell</param>
         /// <exception cref="RangeException">Trows a RangeException if the next cell is out of range (on row or column)</exception>
         public void AddNextCellFormula(string formula, Style style)
         {
             Cell c = new Cell(formula, Cell.CellType.Formula, currentColumnNumber, currentRowNumber);
+            c.Formula = new FormulaData(formula);
             AddNextCell(c, true, style);
         }
 

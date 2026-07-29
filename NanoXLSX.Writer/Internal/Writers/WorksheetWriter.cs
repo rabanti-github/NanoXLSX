@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Enums;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
@@ -627,107 +628,192 @@ namespace NanoXLSX.Internal.Writers
                 row.AddAttribute("hidden", "1");
             }
 
-            string valueDef = "";
             foreach (Cell item in dynamicRow.CellDefinitions)
             {
-                XmlAttribute? styleDef = null;
-                XmlAttribute? typeDef = null;
+                string cellValue = null;
+                XmlAttribute? cellStyle = null;
+                XmlAttribute? cellType = null;
+                XmlElement formulaElement = null;
 
                 if (item.CellStyle != null)
                 {
-                    styleDef = XmlAttribute.CreateAttribute("s", ParserUtils.ToString(item.CellStyle.InternalID.Value));
+                    cellStyle = XmlAttribute.CreateAttribute("s", ParserUtils.ToString(item.CellStyle.InternalID.Value));
                 }
+                // Data types
                 if (item.DataType == Cell.CellType.Bool)
                 {
-                    typeDef = XmlAttribute.CreateAttribute("t", "b");
-                    if ((bool)item.Value) { valueDef = "1"; }
-                    else { valueDef = "0"; }
-
+                    cellType = XmlAttribute.CreateAttribute("t", "b");
+                    cellValue = (bool)item.Value ? "1" : "0";
                 }
                 // Number casting
                 else if (item.DataType == Cell.CellType.Number)
                 {
-                    typeDef = XmlAttribute.CreateAttribute("t", "n");
-                    Type t = item.Value.GetType();
-
-                    if (t == typeof(byte)) { valueDef = ParserUtils.ToString((byte)item.Value); }
-                    else if (t == typeof(sbyte)) { valueDef = ParserUtils.ToString((sbyte)item.Value); }
-                    else if (t == typeof(decimal)) { valueDef = ParserUtils.ToString((decimal)item.Value); }
-                    else if (t == typeof(double)) { valueDef = ParserUtils.ToString((double)item.Value); }
-                    else if (t == typeof(float)) { valueDef = ParserUtils.ToString((float)item.Value); }
-                    else if (t == typeof(int)) { valueDef = ParserUtils.ToString((int)item.Value); }
-                    else if (t == typeof(uint)) { valueDef = ParserUtils.ToString((uint)item.Value); }
-                    else if (t == typeof(long)) { valueDef = ParserUtils.ToString((long)item.Value); }
-                    else if (t == typeof(ulong)) { valueDef = ParserUtils.ToString((ulong)item.Value); }
-                    else if (t == typeof(short)) { valueDef = ParserUtils.ToString((short)item.Value); }
-                    else if (t == typeof(ushort)) { valueDef = ParserUtils.ToString((ushort)item.Value); }
+                    cellType = XmlAttribute.CreateAttribute("t", "n");
+                    cellValue = CastNumber(item.Value); // Not a number should not be possible
                 }
-                // Date parsing
+                // Date parsing (style should be on cell)
                 else if (item.DataType == Cell.CellType.Date)
                 {
                     DateTime date = (DateTime)item.Value;
-                    valueDef = DataUtils.GetOADateTimeString(date);
+                    cellValue = DataUtils.GetOADateTimeString(date);
                 }
-                // Time parsing
+                // Time parsing (style should be on cell)
                 else if (item.DataType == Cell.CellType.Time)
                 {
                     TimeSpan time = (TimeSpan)item.Value;
-                    valueDef = DataUtils.GetOATimeString(time);
+                    cellValue = DataUtils.GetOATimeString(time);
                 }
-                else
+                else if (item.DataType == Cell.CellType.String)
                 {
-                    string typeAttribute = null;
-                    if (item.Value == null)
+                    cellType = XmlAttribute.CreateAttribute("t", "s");
+                    if (item.Value is IFormattableText text)
                     {
-                        typeAttribute = null;
-                        valueDef = null;
-                        // No typeDef
-                    }
-                    else // Handle sharedStrings
-                    {
-                        if (item.DataType == Cell.CellType.Formula || item.DataType == Cell.CellType.Reference)
-                        {
-                            typeAttribute = "str";
-                            valueDef = item.Value.ToString();
-                        }
-                        else
-                        {
-                            typeAttribute = "s";
-                            if (item.Value is IFormattableText text)
-                            {
-                                valueDef = sharedStrings.Add(text, ParserUtils.ToString(sharedStrings.Count));
-                            }
-                            else
-                            {
-                                valueDef = sharedStrings.Add(new PlainText(item.Value.ToString()), ParserUtils.ToString(sharedStrings.Count));
-                            }
-                            this.sharedStringWriter.SharedStringsTotalCount++;
-                        }
-                    }
-                    typeDef = XmlAttribute.CreateAttribute("t", typeAttribute);
-                }
-                if (item.DataType != Cell.CellType.Empty)
-                {
-                    XmlElement c = row.AddChildElementWithAttribute("c", "r", item.CellAddress);
-                    c.AddAttribute(typeDef);
-                    c.AddAttribute(styleDef);
-                    if (item.DataType == Cell.CellType.Formula || item.DataType == Cell.CellType.Reference)
-                    {
-                        c.AddChildElementWithValue("f", XmlUtils.SanitizeXmlValue(item.Value.ToString()));
+                        cellValue = sharedStrings.Add(text, ParserUtils.ToString(sharedStrings.Count));
                     }
                     else
                     {
-                        c.AddChildElementWithValue("v", XmlUtils.SanitizeXmlValue(valueDef));
+                        cellValue = sharedStrings.Add(new PlainText(item.Value.ToString()), ParserUtils.ToString(sharedStrings.Count));
                     }
+                    this.sharedStringWriter.SharedStringsTotalCount++;
                 }
-                else if (valueDef == null || item.DataType == Cell.CellType.Empty) // Empty cell
+                else if (item.DataType == Cell.CellType.Formula)
                 {
-                    XmlElement c = row.AddChildElementWithAttribute("c", "r", item.CellAddress);
-                    c.AddAttribute(styleDef);
+                    formulaElement = CreateFormulaElement(item, out cellValue, out cellType); // If null: formula omitted -> array referenced cell
                 }
+                else if (item.DataType == Cell.CellType.Error)
+                {
+                    // TODO add specific error type (if deliberately wanted by user)
+                    cellValue = Errors.FormulaErrorToString(Errors.FormulaError.Name);
+                    cellType = XmlAttribute.CreateAttribute("t", "e");
+                }
+                // else Cell.CellType.Empty or Cell.CellType.Empty lead to empty cell (no "t" attribute & <v> element)
+
+                XmlElement c = row.AddChildElementWithAttribute("c", "r", item.CellAddress);
+                c.AddAttribute(cellType);
+                c.AddAttribute(cellStyle);
+                if (formulaElement != null)
+                {
+                    c.AddChildElement(formulaElement);
+                }
+                if (!string.IsNullOrEmpty(cellValue))
+                {
+                    c.AddChildElementWithValue("v", XmlUtils.SanitizeXmlValue(cellValue));
+                }
+
             }
             return row;
         }
+
+        /// <summary>
+        /// Creates a formula as XmlElement. If the formula is omitted due to the cell is just a array reference, null will be returned
+        /// </summary>
+        /// <param name="cell">Cell object</param>
+        /// <param name="cellValue">cell values (resolved to string) as out parameter</param>
+        /// <param name="cellType">XmlAttribute of the cell as out parameter (can be <see cref="Cell.CellType.Error"/>)</param>
+        /// <returns>XmlElemnt object or null if omitted</returns>
+        private static XmlElement CreateFormulaElement(Cell cell, out string cellValue, out XmlAttribute? cellType)
+        {
+            XmlElement formulaElement = null;
+            cellType = XmlAttribute.CreateAttribute("t", "str");
+            XmlAttribute? formulaTypeAttribute = null;
+            XmlAttribute? formulaRangeAttribute = null;
+            string formulaExpression;
+            bool omitFormula = false;
+            if (cell.Formula != null)
+            {
+                switch (cell.Formula.Type)
+                {
+                    case FormulaData.FormulaType.DataTable:
+                        formulaTypeAttribute = new XmlAttribute("t", "dataTable");
+                        break;
+                    case FormulaData.FormulaType.Shared:
+                        formulaTypeAttribute = new XmlAttribute("t", "shared");
+                        break;
+                    case FormulaData.FormulaType.Array:
+                        formulaTypeAttribute = new XmlAttribute("t", "array");
+                        break;
+                    default:
+                        formulaTypeAttribute = new XmlAttribute("t", "normal");
+                        break;
+                }
+                if (cell.Formula.FormulaRange != null)
+                {
+                    formulaRangeAttribute = new XmlAttribute("ref", cell.Formula.FormulaRange); // Assumed as validated
+                }
+                if (cell.Formula.CachedValue == null)
+                {
+                    cellValue = string.Empty; // Resolution of cached values is currently not handled
+                }
+                else
+                {
+                    cellValue = CastNumber(cell.Formula.CachedValue); // Returns null if not a number
+                    if (cellValue == null && cell.Formula.CachedValue.GetType() == typeof(bool))
+                    {
+                        cellValue = ((bool)cell.Formula.CachedValue) ? "1" : "0";
+                    }
+                    else if (cellValue == null)
+                    {
+                        cellValue = cell.Formula.CachedValue.ToString(); // Sanitizing follows on cell creation
+                    }
+                }
+                if (cell.Formula.MasterCellAddress != null)
+                {
+                    omitFormula = true; // Array referenced cells are only internal formulas
+                }
+                if (cell.Formula.DefinedNameReference != null)
+                {
+                    if (cell.Formula.DefinedNameReference.Error != Errors.FormulaError.NoError)
+                    {
+                        cellType = XmlAttribute.CreateAttribute("t", "e"); // Mark cell type as error (propagated form defined name)
+                    }
+                    formulaExpression = XmlUtils.SanitizeXmlValue(cell.Formula.DefinedNameReference.Name); // reflects currently cell.Value
+                }
+                else
+                {
+                    formulaExpression = XmlUtils.SanitizeXmlValue(cell.Formula.Expression); // reflects currently cell.Value
+                }
+            }
+            else // Fallback (TODO check whether is reachable)
+            {
+                formulaExpression = XmlUtils.SanitizeXmlValue(cell.Value.ToString());
+                cellValue = string.Empty; // Resolution of cached values is currently not handled
+            }
+            if (!omitFormula)
+            {
+                formulaElement = XmlElement.CreateElement("f");
+                formulaElement.AddAttribute(formulaTypeAttribute);
+                formulaElement.AddAttribute(formulaRangeAttribute);
+                formulaElement.InnerValue = formulaExpression;
+            }
+            return formulaElement;
+        }
+
+        /// <summary>
+        /// Casts the input object to a number or returns null, if not a number
+        /// </summary>
+        /// <param name="item">Object to cast</param>
+        /// <returns>String representation of the number or null</returns>
+        private static string CastNumber(object item)
+        {
+            string cellValue = null;
+            Type t = item.GetType();
+
+            if (t == typeof(byte)) { cellValue = ParserUtils.ToString((byte)item); }
+            else if (t == typeof(sbyte)) { cellValue = ParserUtils.ToString((sbyte)item); }
+            else if (t == typeof(decimal)) { cellValue = ParserUtils.ToString((decimal)item); }
+            else if (t == typeof(double)) { cellValue = ParserUtils.ToString((double)item); }
+            else if (t == typeof(float)) { cellValue = ParserUtils.ToString((float)item); }
+            else if (t == typeof(int)) { cellValue = ParserUtils.ToString((int)item); }
+            else if (t == typeof(uint)) { cellValue = ParserUtils.ToString((uint)item); }
+            else if (t == typeof(long)) { cellValue = ParserUtils.ToString((long)item); }
+            else if (t == typeof(ulong)) { cellValue = ParserUtils.ToString((ulong)item); }
+            else if (t == typeof(short)) { cellValue = ParserUtils.ToString((short)item); }
+            else if (t == typeof(ushort)) { cellValue = ParserUtils.ToString((ushort)item); }
+            // Not a number = null
+            return cellValue;
+        }
+
+
 
         /// <summary>
         /// Method to create an List of row elements (XmlElement)

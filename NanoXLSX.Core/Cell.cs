@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using NanoXLSX.Enums;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
@@ -47,6 +48,12 @@ namespace NanoXLSX
             Formula,
             /// <summary>Type for empty cells. This type is only used for merged cells (all cells except the first of the cell range)</summary>
             Empty,
+            /// <summary>
+            /// Type for errors in a cell (mostly formula)
+            /// </summary>
+            /// \remark <remarks>Although not intended / intuitive, this type can deliberately be set on a cell. Values will be not written in this case, but (currently) a <see cref="Errors.FormulaError.Name"/>. 
+            /// However, the type is usually only used to mark errors in cells, when a workbook is loaded.</remarks>
+            Error,
             /// <summary>Default Type, not specified</summary>
             Default
         }
