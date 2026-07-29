@@ -110,6 +110,13 @@ namespace NanoXLSX.Registry
         /// UUID for in-line queued processors, appended right after the execution of the initial preparing processor, when a workbook is saved. 
         /// </summary>
         public const string PreparingInlineProcessor = "6CB92B28-25A5-4E80-92BA-5F7D904E993C";
+        /// <summary>
+        /// UUID for in-line queued processors, appended right <b>before</b> the execution of the initial compatibility check, when a workbook is saved. 
+        /// </summary>
+        /// \remark <remarks>In contrast to the other in-line plug-ins, plug-ins with this UUID are executed <b>before</b> the core compatibility processor executes its checks. 
+        /// Particular features can be enabled (that would be disabled by default) by this approach. 
+        /// Furthermore, there is no UUID for a non-queued compatibility processor, since the core compatibility processor must not be overwritten.</remarks>
+        public const string CompatibilityInlineProcessor = "B86C2CD1-1E94-465A-AEA1-BF8C4108533D";
         #endregion
 
         #region readerUUIDs

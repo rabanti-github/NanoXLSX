@@ -17,12 +17,12 @@ namespace NanoXLSX.Interfaces.Writer
         /// <summary>
         /// Style manager instance, that can be accessed during the write preparation
         /// </summary>
-        StyleManager StyleManager { get; }
+        StyleManager StyleManager { get; set; }
 
         /// <summary>
         /// StyleRepository instance, that can be accessed during the write preparation
         /// </summary>
-        StyleRepository StyleRepository { get; }
+        StyleRepository StyleRepository { get; set; }
 
         // TODO add further relevant data for processing here - To be implemented in interface implementations
     }

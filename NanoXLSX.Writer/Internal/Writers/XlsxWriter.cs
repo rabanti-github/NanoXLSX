@@ -144,6 +144,10 @@ namespace NanoXLSX.Internal.Writers
                 IPluginWriteProcessor preparingProcessor = PlugInLoader.GetPlugIn<IPluginWriteProcessor>(PlugInUUID.PreparingProcessor, new PreparingProcessor());
                 preparingProcessor.Init(this, WriterPlugInHandler.HandleInlineQueueProcessorPlugins);
                 preparingProcessor.Execute();
+                // Compatibility check
+                IPluginWriteProcessor compatibilityProcessor = new ComatibilityProcessor(); // This core processor cannot be overwritten
+                compatibilityProcessor.Init(this, WriterPlugInHandler.HandleInlineQueueProcessorPlugins);
+                compatibilityProcessor.Execute();
                 // Workbook can now be written
                 HandlePackageRegistryQueuePlugIns();
                 HandleQueuePlugIns(PlugInUUID.WriterPrependingQueue);
