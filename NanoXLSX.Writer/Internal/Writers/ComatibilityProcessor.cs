@@ -56,13 +56,14 @@ namespace NanoXLSX.Internal.Writers
 
         private void CheckExternalLinks()
         {
+
             bool externalLinksexists = WriteContext.Workbook.GetDefinedNames().Any(x => x.HasExternalReferences);
-            if (WriteContext.IsFeaturePrepared(PlugInUUID.WriteExternalLinkFeature))
+            if (externalLinksexists && !WriteContext.IsFeaturePrepared(PlugInUUID.WriteExternalLinkFeature))
             {
-                return; // Prepared
+                throw new NotSupportedContentException("The workbook contains external links in the defined names, but no compatible writer plug-in is capable to write such links. " +
+                    "Note: Consider adding the package NanoXLSX.Compatibility. ");
             }
-            throw new NotSupportedContentException("The workbook contains external links in the defined names, but no compatible writer plug-in is capable to write such links. " +
-                "Note: Consider adding the package NanoXLSX.Compatibility. ");
+
         }
     }
 }
