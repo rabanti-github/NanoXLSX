@@ -13,12 +13,17 @@ namespace NanoXLSX.Interfaces.Writer
     /// <summary>
     /// Interface, used by in-line (queue) plug-ins in XML writer classes 
     /// </summary>
-    internal interface IInlinePluginWriter : IPlugin
+    internal interface IPluginInlineWriter : IPlugin
     {
         /// <summary>
         /// Gets or replaces the workbook instance, defined by the constructor
         /// </summary>
         Workbook Workbook { get; set; }
+
+        /// <summary>
+        /// Gets or replaces the write context, defined by the constructor
+        /// </summary>
+        IWriteContext WriteContext { get; set; }
 
         /// <summary>
         /// Gets or replaces the root XML element, defined by the constructor

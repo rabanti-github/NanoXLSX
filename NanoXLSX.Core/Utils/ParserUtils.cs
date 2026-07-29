@@ -480,7 +480,7 @@ namespace NanoXLSX.Utils
         /// <param name="reference">Resolved address or range expression as string (out parameter)</param>
         /// <returns>True if the expression is a valid worksheet name with attached reference (address / range); otherwise false.</returns>
         /// \remark <remarks>This method cannot detect worksheet names and references within formulas or cell calculations. Such an expression has to be tokenized first.</remarks>
-        public static bool TryParseWorksheetQualifiedReference(string expression,  out string worksheetName, out string reference)
+        public static bool TryParseWorksheetQualifiedReference(string expression, out string worksheetName, out string reference)
         {
             worksheetName = null;
             reference = null;

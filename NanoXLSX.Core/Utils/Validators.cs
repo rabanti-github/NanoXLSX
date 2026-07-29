@@ -65,7 +65,7 @@ namespace NanoXLSX.Utils
                 Cell.ResolveCellCoordinate(expression);
                 isCellAddress = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 if (scope == Cell.AddressScope.SingleAddress)
                 {

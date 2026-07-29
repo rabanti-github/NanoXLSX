@@ -26,12 +26,12 @@ namespace NanoXLSX.Internal.Writers
         /// <returns>XML element instance. If no plug-ins were processes, the root element is passed back unaltered</returns>
         internal static void HandleInlineQueuePlugins(ref XmlElement rootElement, Workbook workbook, string queueUuid, int? index = null)
         {
-            IInlinePluginWriter queueWriter = null;
+            IPluginInlineWriter queueWriter = null;
             string lastUuid = null;
             do
             {
                 string currentUuid;
-                queueWriter = PlugInLoader.GetNextQueuePlugIn<IInlinePluginWriter>(queueUuid, lastUuid, out currentUuid);
+                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPluginInlineWriter>(queueUuid, lastUuid, out currentUuid);
                 if (queueWriter != null)
                 {
                     queueWriter.Init(ref rootElement, workbook, index);
@@ -44,6 +44,33 @@ namespace NanoXLSX.Internal.Writers
                 }
 
             } while (queueWriter != null);
+        }
+
+        /// <summary>
+        /// Method to handle in-line queue processor plug-ins of a specific processor plug-in
+        /// </summary>
+        /// <param name="context">Write context</param>
+        /// <param name="queueUuid">UUID of the in-line plug-in</param>
+        internal static void HandleInlineQueueProcessorPlugins(IWriteContext context, string queueUuid)
+        {
+            IPluginInlineWriteProcessor queueProcessor;
+            string lastUuid = null;
+            do
+            {
+                string currentUuid;
+                queueProcessor = PlugInLoader.GetNextQueuePlugIn<IPluginInlineWriteProcessor>(queueUuid, lastUuid, out currentUuid);
+                if (queueProcessor != null)
+                {
+                    queueProcessor.Init(context);
+                    queueProcessor.Execute();
+                    lastUuid = currentUuid;
+                }
+                else
+                {
+                    lastUuid = null;
+                }
+
+            } while (queueProcessor != null);
         }
     }
 }

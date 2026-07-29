@@ -44,12 +44,12 @@ namespace NanoXLSX.Internal.Writers
         #region privateFields
         private int rootPackageIndex = 1;
         private int xlPackageIndex = 1;
+        private Package package = null;
 
         private readonly List<PackagePartDefinition> packagePartDefinitions = new List<PackagePartDefinition>();
-
         private readonly Dictionary<string, Dictionary<string, PackagePart>> packageParts = new Dictionary<string, Dictionary<string, PackagePart>>();
         private readonly Dictionary<int, DocumentPath> worksheetPaths = new Dictionary<int, DocumentPath>();
-        private Package package = null;
+        private readonly HashSet<string> preparedWriterFeatures = new HashSet<string>();
 
         #endregion
 
@@ -60,9 +60,9 @@ namespace NanoXLSX.Internal.Writers
         public Workbook Workbook { get; }
 
         /// <summary>
-        /// Style manager attached to the workbook to save
+        /// Processing data outside of the workbook (e.g. used for preparation)
         /// </summary>
-        public StyleManager Styles { get; private set; }
+        public IWriterProcessingData WriterProcessingData { get; set; }
 
         /// <summary>
         /// Shared string writer attached to the workbook to save
@@ -114,6 +114,134 @@ namespace NanoXLSX.Internal.Writers
         public async Task SaveAsync()
         {
             await Task.Run(() => { Save(); });
+        }
+
+        /// <summary>
+        /// Method to save the workbook as stream asynchronous.
+        /// </summary>
+        /// <param name="stream">Writable stream as target</param>
+        /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
+        /// \remark <remarks>Possible Exceptions are <see cref="IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="Exceptions.FormatException">FormatException</see> and <see cref="StyleException">StyleException</see>. These exceptions may not emerge directly if using the async method since async/await adds further abstraction layers.</remarks>
+        /// <returns>Async Task</returns>
+        public async Task SaveAsStreamAsync(Stream stream, bool leaveOpen = false)
+        {
+            await Task.Run(() => { SaveAsStream(stream, leaveOpen); });
+        }
+
+        /// <summary>
+        /// Method to save the workbook as stream.
+        /// </summary>
+        /// <param name="stream">Writable stream as target</param>
+        /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
+        /// \remark <remarks>Possible Exceptions are <see cref="IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="Exceptions.FormatException">FormatException</see> and <see cref="StyleException">StyleException</see>.</remarks>
+        public void SaveAsStream(Stream stream, bool leaveOpen = false)
+        {
+            preparedWriterFeatures.Clear();
+            WriterProcessingData = new WriterProcessingData(Workbook, StyleRepository.Instance);
+            try
+            {
+                // preparing processor(s)
+                IPluginWriteProcessor preparingProcessor = PlugInLoader.GetPlugIn<IPluginWriteProcessor>(PlugInUUID.PreparingProcessor, new PreparingProcessor());
+                preparingProcessor.Init(this, WriterPlugInHandler.HandleInlineQueueProcessorPlugins);
+                preparingProcessor.Execute();
+                // Workbook can now be written
+                HandlePackageRegistryQueuePlugIns();
+                HandleQueuePlugIns(PlugInUUID.WriterPrependingQueue);
+
+                RegisterCommonPackageParts();
+                using (Package xlsxPackage = Package.Open(stream, FileMode.Create))
+                {
+                    this.package = xlsxPackage;
+                    PreparePackage();
+                    PackagePart part;
+
+                    // Workbook
+                    IPluginWriter workbookWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.WorkbookWriter, new WorkbookWriter());
+                    workbookWriter.Init(this);
+                    workbookWriter.Execute();
+                    part = packageParts[WORKBOOK.Path][WORKBOOK.Filename];
+                    AppendXmlToPackagePart(workbookWriter.XmlElement, part);
+
+                    // Style
+                    IPluginWriter styleWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.StyleWriter, new StyleWriter());
+                    styleWriter.Init(this);
+                    styleWriter.Execute();
+                    part = packageParts[STYLES.Path][STYLES.Filename];
+                    AppendXmlToPackagePart(styleWriter.XmlElement, part);
+
+                    // Shared strings - preparation
+                    SharedStringWriter = PlugInLoader.GetPlugIn<ISharedStringWriter>(PlugInUUID.SharedStringsWriter, new SharedStringWriter());
+                    SharedStringWriter.Init(this);
+                    // Worksheets
+                    IWorksheetWriter worksheetWriter = PlugInLoader.GetPlugIn<IWorksheetWriter>(PlugInUUID.WorksheetWriter, new WorksheetWriter());
+                    worksheetWriter.Init(this);
+                    if (Workbook.Worksheets.Count > 0)
+                    {
+                        for (int i = 0; i < Workbook.Worksheets.Count; i++)
+                        {
+                            Worksheet item = Workbook.Worksheets[i];
+                            part = packageParts[worksheetPaths[i].Path][worksheetPaths[i].Filename];
+                            worksheetWriter.CurrentWorksheet = item;
+                            worksheetWriter.Execute();
+                            AppendXmlToPackagePart(worksheetWriter.XmlElement, part);
+                            worksheetWriter.ReleaseXmlElement();
+                            GC.Collect(1, GCCollectionMode.Optimized); // 
+                        }
+                    }
+                    else
+                    {
+                        part = packageParts[worksheetPaths[0].Path][worksheetPaths[0].Filename];
+                        worksheetWriter.CurrentWorksheet = new Worksheet("sheet1");
+                        worksheetWriter.Execute();
+                        AppendXmlToPackagePart(worksheetWriter.XmlElement, part);
+                        worksheetWriter.ReleaseXmlElement();
+                    }
+
+                    // Shared strings - write after collection of strings
+                    part = packageParts[SHARED_STRINGS.Path][SHARED_STRINGS.Filename];
+                    SharedStringWriter.Execute();
+                    AppendXmlToPackagePart(SharedStringWriter.XmlElement, part);
+
+                    // Metadata
+                    if (this.Workbook.WorkbookMetadata != null)
+                    {
+                        IPluginWriter metadataAppWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.MetadataAppWriter, new MetadataAppWriter());
+                        metadataAppWriter.Init(this);
+                        metadataAppWriter.Execute();
+                        part = packageParts[APP_PROPERTIES.Path][APP_PROPERTIES.Filename];
+                        AppendXmlToPackagePart(metadataAppWriter.XmlElement, part);
+                        IPluginWriter metadataCoreWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.MetadataCoreWriter, new MetadataCoreWriter());
+                        metadataCoreWriter.Init(this);
+                        metadataCoreWriter.Execute();
+                        part = packageParts[CORE_PROPERTIES.Path][CORE_PROPERTIES.Filename];
+                        AppendXmlToPackagePart(metadataCoreWriter.XmlElement, part);
+                    }
+
+                    // Theme
+                    if (Workbook.WorkbookTheme != null)
+                    {
+                        IPluginWriter themeWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.ThemeWriter, new ThemeWriter());
+                        themeWriter.Init(this);
+                        themeWriter.Execute();
+                        part = packageParts[THEME.Path][THEME.Filename];
+                        AppendXmlToPackagePart(themeWriter.XmlElement, part);
+                    }
+
+                    HandleQueuePlugIns(PlugInUUID.WriterAppendingQueue);
+
+                    this.package.Flush();
+                    this.package.Close();
+                    if (!leaveOpen)
+                    {
+                        stream.Close();
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                throw new IOException("An error occurred while saving. See inner exception for details: " + e.Message, e);
+            }
         }
 
         /// <summary>
@@ -252,130 +380,48 @@ namespace NanoXLSX.Internal.Writers
             this.packagePartDefinitions.Add(new PackagePartDefinition(type, orderNumber, documentPath, contentType, relationshipType));
         }
 
-        /// <summary>
-        /// Method to save the workbook as stream.
-        /// </summary>
-        /// <param name="stream">Writable stream as target</param>
-        /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
-        /// \remark <remarks>Possible Exceptions are <see cref="IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="Exceptions.FormatException">FormatException</see> and <see cref="StyleException">StyleException</see>.</remarks>
-        public void SaveAsStream(Stream stream, bool leaveOpen = false)
-        {
-            Workbook.ResolveMergedCells();
-            this.Styles = StyleManager.GetManagedStyles(Workbook);
-            try
-            {
-                HandlePackageRegistryQueuePlugIns();
-                HandleQueuePlugIns(PlugInUUID.WriterPrependingQueue);
-
-                RegisterCommonPackageParts();
-                using (Package xlsxPackage = Package.Open(stream, FileMode.Create))
-                {
-                    this.package = xlsxPackage;
-                    PreparePackage();
-                    PackagePart part;
-
-                    // Workbook
-                    IPluginWriter workbookWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.WorkbookWriter, new WorkbookWriter());
-                    workbookWriter.Init(this);
-                    workbookWriter.Execute();
-                    part = packageParts[WORKBOOK.Path][WORKBOOK.Filename];
-                    AppendXmlToPackagePart(workbookWriter.XmlElement, part);
-
-                    // Style
-                    IPluginWriter styleWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.StyleWriter, new StyleWriter());
-                    styleWriter.Init(this);
-                    styleWriter.Execute();
-                    part = packageParts[STYLES.Path][STYLES.Filename];
-                    AppendXmlToPackagePart(styleWriter.XmlElement, part);
-
-                    // Shared strings - preparation
-                    SharedStringWriter = PlugInLoader.GetPlugIn<ISharedStringWriter>(PlugInUUID.SharedStringsWriter, new SharedStringWriter());
-                    SharedStringWriter.Init(this);
-                    // Worksheets
-                    IWorksheetWriter worksheetWriter = PlugInLoader.GetPlugIn<IWorksheetWriter>(PlugInUUID.WorksheetWriter, new WorksheetWriter());
-                    worksheetWriter.Init(this);
-                    if (Workbook.Worksheets.Count > 0)
-                    {
-                        for (int i = 0; i < Workbook.Worksheets.Count; i++)
-                        {
-                            Worksheet item = Workbook.Worksheets[i];
-                            part = packageParts[worksheetPaths[i].Path][worksheetPaths[i].Filename];
-                            worksheetWriter.CurrentWorksheet = item;
-                            worksheetWriter.Execute();
-                            AppendXmlToPackagePart(worksheetWriter.XmlElement, part);
-                            worksheetWriter.ReleaseXmlElement();
-                            GC.Collect(1, GCCollectionMode.Optimized); // 
-                        }
-                    }
-                    else
-                    {
-                        part = packageParts[worksheetPaths[0].Path][worksheetPaths[0].Filename];
-                        worksheetWriter.CurrentWorksheet = new Worksheet("sheet1");
-                        worksheetWriter.Execute();
-                        AppendXmlToPackagePart(worksheetWriter.XmlElement, part);
-                        worksheetWriter.ReleaseXmlElement();
-                    }
-
-                    // Shared strings - write after collection of strings
-                    part = packageParts[SHARED_STRINGS.Path][SHARED_STRINGS.Filename];
-                    SharedStringWriter.Execute();
-                    AppendXmlToPackagePart(SharedStringWriter.XmlElement, part);
-
-                    // Metadata
-                    if (this.Workbook.WorkbookMetadata != null)
-                    {
-                        IPluginWriter metadataAppWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.MetadataAppWriter, new MetadataAppWriter());
-                        metadataAppWriter.Init(this);
-                        metadataAppWriter.Execute();
-                        part = packageParts[APP_PROPERTIES.Path][APP_PROPERTIES.Filename];
-                        AppendXmlToPackagePart(metadataAppWriter.XmlElement, part);
-                        IPluginWriter metadataCoreWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.MetadataCoreWriter, new MetadataCoreWriter());
-                        metadataCoreWriter.Init(this);
-                        metadataCoreWriter.Execute();
-                        part = packageParts[CORE_PROPERTIES.Path][CORE_PROPERTIES.Filename];
-                        AppendXmlToPackagePart(metadataCoreWriter.XmlElement, part);
-                    }
-
-                    // Theme
-                    if (Workbook.WorkbookTheme != null)
-                    {
-                        IPluginWriter themeWriter = PlugInLoader.GetPlugIn<IPluginWriter>(PlugInUUID.ThemeWriter, new ThemeWriter());
-                        themeWriter.Init(this);
-                        themeWriter.Execute();
-                        part = packageParts[THEME.Path][THEME.Filename];
-                        AppendXmlToPackagePart(themeWriter.XmlElement, part);
-                    }
-
-                    HandleQueuePlugIns(PlugInUUID.WriterAppendingQueue);
-
-                    this.package.Flush();
-                    this.package.Close();
-                    if (!leaveOpen)
-                    {
-                        stream.Close();
-                    }
-
-                }
-            }
-            catch (Exception e)
-            {
-                throw new IOException("An error occurred while saving. See inner exception for details: " + e.Message, e);
-            }
-        }
-
-        /// <summary>
-        /// Method to save the workbook as stream asynchronous.
-        /// </summary>
-        /// <param name="stream">Writable stream as target</param>
-        /// <param name="leaveOpen">Optional parameter to keep the stream open after writing (used for MemoryStreams; default is false)</param>
-        /// \remark <remarks>Possible Exceptions are <see cref="IOException">IOException</see>, <see cref="RangeException">RangeException</see>, <see cref="Exceptions.FormatException">FormatException</see> and <see cref="StyleException">StyleException</see>. These exceptions may not emerge directly if using the async method since async/await adds further abstraction layers.</remarks>
-        /// <returns>Async Task</returns>
-        public async Task SaveAsStreamAsync(Stream stream, bool leaveOpen = false)
-        {
-            await Task.Run(() => { SaveAsStream(stream, leaveOpen); });
-        }
         #endregion
 
+        #region interface_methodes
+
+        /// <summary>
+        /// Marks a feature, defined by its UUID, as prepared, so that a writer can handle it
+        /// </summary>
+        /// <param name="featureUuid">Feature UUID to be set as prepared</param>
+        public void MarkFeatureAsPrepared(string featureUuid)
+        {
+            ValidateFeatureUuid(featureUuid);
+            preparedWriterFeatures.Add(featureUuid);
+        }
+
+        /// <summary>
+        /// Gets whether a feature UUID was marked as prepared, and therefore can be used in the writing process
+        /// </summary>
+        /// <param name="featureUuid">Feature UUID to be checked</param>
+        /// <returns>True if the feature was defined and was marked as prepared</returns>
+        public bool IsFeaturePrepared(string featureUuid)
+        {
+            ValidateFeatureUuid(featureUuid);
+            return preparedWriterFeatures.Contains(featureUuid);
+        }
+
+        /// <summary>
+        /// Validates a given feature UUID
+        /// </summary>
+        /// <param name="uuid">UUID to validate</param>
+        /// <exception cref="ArgumentException">Thrown if the feature UUID is not valid</exception>
+        private void ValidateFeatureUuid(string uuid)
+        {
+            if (string.IsNullOrWhiteSpace(uuid))
+            {
+                throw new ArgumentException("The feature UUID must not be null, empty or whitespace");
+            }
+            // TODO add other validation checks here if applicable (e.g. UUID must be officially registered)
+        }
+
+        #endregion
+
+        #region helper_methods
         /// <summary>
         /// Method to handle queue plug-ins
         /// </summary>
@@ -485,5 +531,6 @@ namespace NanoXLSX.Internal.Writers
             stream.Flush();
         }
 
+        #endregion
     }
 }

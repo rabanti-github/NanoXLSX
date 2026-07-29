@@ -5,26 +5,13 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-
-using NanoXLSX.Styles;
-
 namespace NanoXLSX.Interfaces.Writer
 {
     /// <summary>
     /// Interface, used by writers
     /// </summary>
-    internal interface IBaseWriter
+    internal interface IBaseWriter : IWriteContext
     {
-        /// <summary>
-        /// Gets the workbook instance used by writer
-        /// </summary>
-        Workbook Workbook { get; }
-
-        /// <summary>
-        /// Gets the style manager instance used by writer
-        /// </summary>
-        StyleManager Styles { get; }
-
         /// <summary>
         /// Gets or set the writer to write shared strings
         /// </summary>

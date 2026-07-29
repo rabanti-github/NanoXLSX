@@ -403,7 +403,7 @@ namespace NanoXLSX
             {
                 throw new WorksheetException("A constant value pointing to a defined name cannot be nul");
             }
-            return AddDefinedName(name, DefinedName.NameType.Constant, value, null, localWorksheet, comment);  
+            return AddDefinedName(name, DefinedName.NameType.Constant, value, null, localWorksheet, comment);
         }
 
         /// <summary>

@@ -62,7 +62,7 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="baseWriter">Base writer instance that holds any information for this writer</param>
         public void Init(IBaseWriter baseWriter)
         {
-            this.styles = baseWriter.Styles;
+            this.styles = baseWriter.WriterProcessingData.StyleManager;
             this.Workbook = baseWriter.Workbook;
             this.colorWriter = PlugInLoader.GetPlugIn<IColorWriter>(PlugInUUID.ColorWriter, new ColorWriter());
         }

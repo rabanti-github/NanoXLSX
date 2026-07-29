@@ -85,7 +85,7 @@ namespace NanoXLSX
         /// <summary>
         /// Type of the defined name
         /// </summary>
-        public NameType Type {get;}
+        public NameType Type { get; }
 
         /// <summary>
         /// Gets the name of the defined name as it appears in the workbook (e.g. <c>MyRange</c>).
@@ -225,7 +225,7 @@ namespace NanoXLSX
             {
                 Validators.ValidateCellAddressExpression(name, Cell.AddressScope.SingleAddress);
             }
-            catch 
+            catch
             {
                 // Not a valid cell address; therefore it may be used as a defined name.
                 return;
@@ -311,14 +311,14 @@ namespace NanoXLSX
                 case NameType.Formula:
                     string formula = value as string;
                     return EXT_REFERENCE_REGEX.IsMatch(formula);
-                    case NameType.Range:
-                    case NameType.Cell:
-                     if (worksheet != null)
+                case NameType.Range:
+                case NameType.Cell:
+                    if (worksheet != null)
                     {
                         return EXT_WORKSHEET_REFERENE_REGEX.IsMatch(worksheet);
                     }
                     break;
-                    default: // constant
+                default: // constant
                     break; // NoOp
             }
             return false;

@@ -297,7 +297,7 @@ namespace NanoXLSX.Internal.Readers
             }
             HandleQueuePlugIns(PlugInUUID.ReaderAppendingQueue, entryLookup, relationshipCatalog, ref wb);
             // finalizing processor(s)
-            IPluginProcessor finalizingProcessor = PlugInLoader.GetPlugIn<IPluginProcessor>(PlugInUUID.FinalizingProcessor, new FinalizingProcessor());
+            IPluginReadProcessor finalizingProcessor = PlugInLoader.GetPlugIn<IPluginReadProcessor>(PlugInUUID.FinalizingProcessor, new FinalizingProcessor());
             finalizingProcessor.Init(wb, readerOptions, ReaderPlugInHandler.HandleInlineQueueProcessorPlugins);
             finalizingProcessor.Execute();
             // Read process is completed

@@ -72,7 +72,7 @@ namespace NanoXLSX
         public enum AddressScope
         {
             /// <summary>The address represents a single cell or a range of cells</summary>
-            Any, 
+            Any,
             /// <summary>The address represents a single cell</summary>
             SingleAddress,
             /// <summary>The address represents a range of cells</summary>
@@ -389,14 +389,6 @@ namespace NanoXLSX
             this.DataType = CellType.Formula; // Force type
             this.value = definedName.Name;
             return referenceRange;
-        }
-
-        private Range TransposeDefinedNameArrayRange(string referenceExpression)
-        {
-            Range resolvedRange = new Range(referenceExpression);
-            int rowCount = resolvedRange.EndAddress.Row - resolvedRange.StartAddress.Row;
-            int columnCount = resolvedRange.EndAddress.Column - resolvedRange.StartAddress.Column;
-            return new Range(this.ColumnNumber, this.rowNumber, this.rowNumber + rowCount, this.columnNumber + columnCount);
         }
 
         /// <summary>
@@ -1017,6 +1009,20 @@ namespace NanoXLSX
                     Worksheet.MinRowNumber + " to " + Worksheet.MaxRowNumber + " (" + (Worksheet.MaxRowNumber + 1) + " rows).");
             }
         }
+
+        /// <summary>
+        /// Transposes the range expression of a defined name to the target range of linked cells
+        /// </summary>
+        /// <param name="referenceExpression">Range expression as string (to be validated first)</param>
+        /// <returns>Transposed range of affected liked cells</returns>
+        private Range TransposeDefinedNameArrayRange(string referenceExpression)
+        {
+            Range resolvedRange = new Range(referenceExpression);
+            int rowCount = resolvedRange.EndAddress.Row - resolvedRange.StartAddress.Row;
+            int columnCount = resolvedRange.EndAddress.Column - resolvedRange.StartAddress.Column;
+            return new Range(this.ColumnNumber, this.rowNumber, this.rowNumber + rowCount, this.columnNumber + columnCount);
+        }
+
         #endregion
 
     }

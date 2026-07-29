@@ -22,7 +22,7 @@ namespace NanoXLSX.Internal.Writers
     internal class ThemeWriter : IPluginWriter
     {
 
-        private IColorWriter colorWriter;
+        private IColorWriter colorWriter; // Currently NoOp (see TODO in GetColor)
 
         #region properties
         /// <summary>
@@ -103,6 +103,7 @@ namespace NanoXLSX.Internal.Writers
         /// <returns>XmlElement, holding color information</returns>
         private static XmlElement GetColor(string name, IColor color, string prefix)
         {
+            // TODO check whether colorWriter should be used here
             XmlElement colorElement = XmlElement.CreateElement(name, prefix);
             if (color is SystemColor)
             {

@@ -86,12 +86,12 @@ namespace NanoXLSX.Internal.Readers
         [ExcludeFromCodeCoverage] // No testable logic, only plug-in handling
         internal static void HandleInlineQueueProcessorPlugins(Workbook workbook, string queueUuid, IOptions readerOptions, int? index)
         {
-            IPluginInlineProcessor queueProcessor = null;
+            IPluginInlineReadProcessor queueProcessor = null;
             string lastUuid = null;
             do
             {
                 string currentUuid;
-                queueProcessor = PlugInLoader.GetNextQueuePlugIn<IPluginInlineProcessor>(queueUuid, lastUuid, out currentUuid);
+                queueProcessor = PlugInLoader.GetNextQueuePlugIn<IPluginInlineReadProcessor>(queueUuid, lastUuid, out currentUuid);
                 if (queueProcessor != null)
                 {
                     queueProcessor.Init(workbook, readerOptions, index);

@@ -6,17 +6,22 @@
  */
 
 using System;
-using System.IO;
 
 namespace NanoXLSX.Interfaces.Reader
 {
     /// <summary>
-    /// Interface, used by in-line (queue) plug-ins that are not handling a stream, but data in <see cref="IPluginReader.Workbook"/>
+    /// Interface, used by base reader plug-ins that are not handling a stream, but data in <see cref="IPluginReader.Workbook"/>
     /// </summary>
-    internal interface IPluginInlineProcessor : IPluginReader
+    internal interface IPluginReadProcessor : IPluginReader
     {
+
         /// <summary>
-        /// Reference to the a handler action, to be used for post operations in reader methods. Only relevant for in-line plug-ins, therefore null for queue plug-ins.
+        /// Optional reader options
+        /// </summary>
+        IOptions Options { get; set; }
+
+        /// <summary>
+        /// Reference to a handler of in-line plugins, to be used for post operations in the <see cref="IPlugin.Execute"/> method
         /// </summary>
         Action<Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
@@ -25,8 +30,8 @@ namespace NanoXLSX.Interfaces.Reader
         /// </summary>
         /// <param name="workbook">Workbook instance where read data is placed</param>
         /// <param name="readerOptions">Optional reader options</param>
-        /// <param name="index">Optional index, e.g. for worksheet identification</param>
-        void Init(Workbook workbook, IOptions readerOptions, int? index = null);
+        /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in processor methods</param>
+        void Init(Workbook workbook, IOptions readerOptions, Action<Workbook, string, IOptions, int?> inlinePluginHandler);
 
     }
 }

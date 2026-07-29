@@ -53,6 +53,10 @@ namespace NanoXLSX.Registry
         /// UUID for the color writer, providing general method to write color definitions
         /// </summary>
         public const string ColorWriter = "7276A073-55D2-482A-B5CD-AB752A70EA9D";
+        /// <summary>
+        /// UUID for the initial preparing processor, that performs checks and actions before any other writer plug-in is executed. 
+        /// </summary>
+        public const string PreparingProcessor = "8156D4A2-BADB-4196-B5FC-4BE1CC743CFE";
         #endregion
 
         #region generalWriterQueueUUIDs
@@ -102,6 +106,10 @@ namespace NanoXLSX.Registry
         /// UUID for in-line queued writers, appended right after the execution of the theme writer, when a workbook is saved
         /// </summary>
         public const string ThemeInlineWriter = "4CB6FD0E-AB69-40E9-B048-06B0E00C892D";
+        /// <summary>
+        /// UUID for in-line queued processors, appended right after the execution of the initial preparing processor, when a workbook is saved. 
+        /// </summary>
+        public const string PreparingInlineProcessor = "6CB92B28-25A5-4E80-92BA-5F7D904E993C";
         #endregion
 
         #region readerUUIDs
@@ -233,6 +241,28 @@ namespace NanoXLSX.Registry
         /// UUID for the relationship discovery catalog, on reading a workbook
         /// </summary>
         public const string DiscoveryCatalogEntity = "A3FB109E-F7F8-4FA1-9AAF-CF3C5A62A9A8";
+        #endregion
+
+        #region featureWriterUUIDs
+
+        /// <summary>
+        /// UUID for the reader feature identification of external links (e.g. external workbooks)
+        /// </summary>
+        public const string ReadExternalLinkFeature = "8E62F688-B7C6-4464-AF2A-BDBFF5F04AB5";
+
+        // TODO add here new features (keep in sync with region fatureReaderUUIDs; use different UUIDs)
+
+        #endregion
+
+        #region featureReaderUUIDs
+
+        /// <summary>
+        /// UUID for the writer feature identification of external links (e.g. external workbooks)
+        /// </summary>
+        public const string WriteExternalLinkFeature = "D25A7462-CC8B-491E-B620-4A8EF81DE717";
+
+        // TODO add here new features (keep in sync with region fatureWriterUUIDs; use different UUIDs)
+
         #endregion
 
     }

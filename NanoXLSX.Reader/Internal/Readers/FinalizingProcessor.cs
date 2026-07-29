@@ -18,17 +18,17 @@ namespace NanoXLSX.Internal.Readers
     /// Class representing a processor (no stream handling) for finalizing tasks after all parts are read from a XLSX file
     /// </summary>
     [NanoXlsxPlugIn(PlugInUUID = PlugInUUID.FinalizingProcessor)]
-    public class FinalizingProcessor : IPluginProcessor
+    public class FinalizingProcessor : IPluginReadProcessor
     {
         /// <summary>
         /// Reader options
         /// </summary>
-        public IOptions Options { get; set ; }
+        public IOptions Options { get; set; }
 
         /// <summary>
         /// Reference to the <see cref="ReaderPlugInHandler"/>, to be used for post operations in the <see cref="Execute"/> method
         /// </summary>
-        public Action<Workbook, string, IOptions, int?> InlinePluginHandler { get ; set; }
+        public Action<Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
         /// <summary>
         /// Workbook reference where read data is stored (should not be null)
@@ -55,7 +55,7 @@ namespace NanoXLSX.Internal.Readers
         public void Execute()
         {
             FinalizeDefinedNames();
-            
+
             // TODO Add further regular finalizing tasks here
 
             InlinePluginHandler?.Invoke(Workbook, PlugInUUID.FinalizingInlineProcessor, Options, null);
@@ -99,7 +99,7 @@ namespace NanoXLSX.Internal.Readers
         private void RetagReferenceCells()
         {
             Dictionary<string, DefinedName> names = new Dictionary<string, DefinedName>(StringComparer.Ordinal);
-            
+
             foreach (DefinedName dn in Workbook.GetDefinedNames())
             {
                 names.Add(dn.Name, dn);
@@ -128,8 +128,8 @@ namespace NanoXLSX.Internal.Readers
                 List<string> processedAddresses = new List<string>();
                 foreach (KeyValuePair<string, Tuple<Cell, DefinedName>> cell in referenceCellCopies)
                 {
-                    if (!processedAddresses.Contains(cell.Key)) 
-                    { 
+                    if (!processedAddresses.Contains(cell.Key))
+                    {
                         continue; // Skip processed cells 
                     }
                     IReadOnlyList<Address> addresses;
