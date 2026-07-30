@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using NanoXLSX.Utils;
 using Xunit;
 
@@ -92,6 +93,96 @@ namespace NanoXLSX.Test.Core.UtilsTest
         {
             string value = ParserUtils.ToString(givenValue);
             Assert.Equal(expectedValue, value);
+        }
+
+        [Theory(DisplayName = "Test of the ParserUtils ToCachedValueString function for null and strings")]
+        [InlineData(null, "0")]
+        [InlineData("", "0")]
+        [InlineData(" ", " ")]
+        [InlineData("text", "text")]
+        [InlineData("Grüße 世界", "Grüße 世界")]
+        public void ToCachedValueStringTest(object givenValue, string expectedValue)
+        {
+            string value = ParserUtils.ToCachedValueString(givenValue);
+            Assert.Equal(expectedValue, value);
+        }
+
+        [Theory(DisplayName = "Test of the ParserUtils ToCachedValueString function for booleans")]
+        [InlineData(true, true, "1")]
+        [InlineData(false, true, "0")]
+        [InlineData(true, false, "TRUE")]
+        [InlineData(false, false, "FALSE")]
+        public void ToCachedValueStringBoolTest(bool givenValue, bool givenConvertBoolToNumber, string expectedValue)
+        {
+            string value = ParserUtils.ToCachedValueString(givenValue, givenConvertBoolToNumber);
+            Assert.Equal(expectedValue, value);
+        }
+
+        [Theory(DisplayName = "Test of the ParserUtils ToCachedValueString function for numerical types")]
+        [InlineData((byte)255, "255")]
+        [InlineData((sbyte)-128, "-128")]
+        [InlineData((short)-32768, "-32768")]
+        [InlineData((ushort)65535, "65535")]
+        [InlineData(int.MinValue, "-2147483648")]
+        [InlineData(uint.MaxValue, "4294967295")]
+        [InlineData(long.MinValue, "-9223372036854775808")]
+        [InlineData(ulong.MaxValue, "18446744073709551615")]
+        [InlineData(-1.25f, "-1.25")]
+        [InlineData(-1234.5d, "-1234.5")]
+        public void ToCachedValueStringNumericTest(object givenValue, string expectedValue)
+        {
+            CultureInfo originalCulture = CultureInfo.CurrentCulture;
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("de-CH");
+                string value = ParserUtils.ToCachedValueString(givenValue);
+                Assert.Equal(expectedValue, value);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = originalCulture;
+            }
+        }
+
+        [Fact(DisplayName = "Test of the ParserUtils ToCachedValueString function for decimals")]
+        public void ToCachedValueStringDecimalTest()
+        {
+            string value = ParserUtils.ToCachedValueString(-1234.5678m);
+            Assert.Equal("-1234.5678", value);
+        }
+
+        [Fact(DisplayName = "Test of the ParserUtils ToCachedValueString function for dates")]
+        public void ToCachedValueStringDateTimeTest()
+        {
+            string value = ParserUtils.ToCachedValueString(new DateTime(2021, 1, 1));
+            Assert.Equal("44197", value);
+        }
+
+        [Fact(DisplayName = "Test of the ParserUtils ToCachedValueString function for time spans")]
+        public void ToCachedValueStringTimeSpanTest()
+        {
+            string value = ParserUtils.ToCachedValueString(new TimeSpan(1, 12, 0, 0));
+            Assert.Equal("1.5", value);
+        }
+
+        [Fact(DisplayName = "Test of the ParserUtils ToCachedValueString function for unknown object types")]
+        public void ToCachedValueStringUnknownObjectTest()
+        {
+            Guid givenValue = new Guid("12345678-1234-5678-90ab-1234567890ab");
+            string value = ParserUtils.ToCachedValueString(givenValue);
+            Assert.Equal("12345678-1234-5678-90ab-1234567890ab", value);
+        }
+
+        [Fact(DisplayName = "Test of the failing ParserUtils ToCachedValueString function for invalid dates")]
+        public void ToCachedValueStringDateTimeFailTest()
+        {
+            Assert.Throws<Exceptions.FormatException>(() => ParserUtils.ToCachedValueString(DateTime.MinValue));
+        }
+
+        [Fact(DisplayName = "Test of the failing ParserUtils ToCachedValueString function for unknown object types")]
+        public void ToCachedValueStringUnknownObjectFailTest()
+        {
+            Assert.Throws<InvalidOperationException>(() => ParserUtils.ToCachedValueString(new InvalidStringValue()));
         }
 
         [Theory(DisplayName = "Test of the ParserUtils NormalizeNewLines function")]
@@ -350,6 +441,81 @@ namespace NanoXLSX.Test.Core.UtilsTest
             Assert.Equal(expectedMatch, match);
         }
 
+        [Theory(DisplayName = "Test of the successful ParserUtils TryParseFormulaStringConstant function")]
+        [InlineData("\"\"", "", false)]
+        [InlineData("\"text\"", "text", false)]
+        [InlineData("\"text with spaces\"", "text with spaces", false)]
+        [InlineData("\"Grüße 世界\"", "Grüße 世界", false)]
+        [InlineData("\"line 1\nline 2\"", "line 1\nline 2", false)]
+        [InlineData("\"He said \"\"Hello\"\"\"", "He said \"Hello\"", false)]
+        [InlineData("\"\"\"\"", "\"", false)]
+        [InlineData("", "", true)]
+        [InlineData("text", "text", true)]
+        [InlineData("日本語", "日本語", true)]
+        [InlineData("He said \"\"Hello\"\"", "He said \"Hello\"", true)]
+        [InlineData("\"\"", "\"", true)]
+        public void TryParseFormulaStringConstantTest(string givenExpression, string expectedValue, bool givenEnclosingQuotesRemoved)
+        {
+            bool match = ParserUtils.TryParseFormulaStringConstant(givenExpression, out string value, givenEnclosingQuotesRemoved);
+            Assert.True(match);
+            Assert.Equal(expectedValue, value);
+        }
+
+        [Theory(DisplayName = "Test of the failing ParserUtils TryParseFormulaStringConstant function")]
+        [InlineData(null, false)]
+        [InlineData("", false)]
+        [InlineData("\"", false)]
+        [InlineData("text", false)]
+        [InlineData("\"text", false)]
+        [InlineData("text\"", false)]
+        [InlineData("\"unpaired \" quote\"", false)]
+        [InlineData("\"", true)]
+        [InlineData("unpaired \" quote", true)]
+        public void TryParseFormulaStringConstantFailTest(string givenExpression, bool givenEnclosingQuotesRemoved)
+        {
+            bool match = ParserUtils.TryParseFormulaStringConstant(givenExpression, out string value, givenEnclosingQuotesRemoved);
+            Assert.False(match);
+            Assert.Null(value);
+        }
+
+        [Theory(DisplayName = "Test of the successful ParserUtils TryParseWorksheetQualifiedReference function")]
+        [InlineData("Sheet1!A1", "Sheet1", "A1")]
+        [InlineData("Tabelle Übersicht!$XFD$1048576", "Tabelle Übersicht", "$XFD$1048576")]
+        [InlineData("工作表!A1:B2", "工作表", "A1:B2")]
+        [InlineData("Sheet1!A1!B2", "Sheet1", "A1!B2")]
+        [InlineData("'Sheet 1'!A1", "Sheet 1", "A1")]
+        [InlineData("'Übersicht 世界'!$A$1:$B$2", "Übersicht 世界", "$A$1:$B$2")]
+        [InlineData("'Owner''s Sheet'!C3", "Owner's Sheet", "C3")]
+        [InlineData("''''!A1", "'", "A1")]
+        [InlineData("''!A1", "", "A1")]
+        public void TryParseWorksheetQualifiedReferenceTest(string givenExpression, string expectedWorksheetName, string expectedReference)
+        {
+            bool match = ParserUtils.TryParseWorksheetQualifiedReference(givenExpression, out string worksheetName, out string reference);
+            Assert.True(match);
+            Assert.Equal(expectedWorksheetName, worksheetName);
+            Assert.Equal(expectedReference, reference);
+        }
+
+        [Theory(DisplayName = "Test of the failing ParserUtils TryParseWorksheetQualifiedReference function")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("Sheet1")]
+        [InlineData("!A1")]
+        [InlineData("Sheet1!")]
+        [InlineData("'")]
+        [InlineData("'Sheet 1")]
+        [InlineData("'Sheet 1'")]
+        [InlineData("'Sheet 1' A1")]
+        [InlineData("'Sheet 1'!")]
+        [InlineData("'Owner''s Sheet")]
+        public void TryParseWorksheetQualifiedReferenceFailTest(string givenExpression)
+        {
+            bool match = ParserUtils.TryParseWorksheetQualifiedReference(givenExpression, out string worksheetName, out string reference);
+            Assert.False(match);
+            Assert.Null(worksheetName);
+            Assert.Null(reference);
+        }
+
 
         [Fact(DisplayName = "Test of several numerical Parse and TryParse functions for their minimum values")]
         public void ParseMinTest()
@@ -431,7 +597,13 @@ namespace NanoXLSX.Test.Core.UtilsTest
             Assert.True(match);
         }
 
-
+        private class InvalidStringValue
+        {
+            public override string ToString()
+            {
+                throw new InvalidOperationException("The value cannot be converted to a string");
+            }
+        }
 
     }
 }

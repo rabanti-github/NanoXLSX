@@ -51,7 +51,7 @@ namespace NanoXLSX.Test.Core.UtilsTest
 
         public void ValidateColorFailTest(string givenHexCode, bool givenUseAlpha, bool givenAllowEmpty)
         {
-            Assert.Throws<NanoXLSX.Exceptions.StyleException>(() => Validators.ValidateColor(givenHexCode, givenUseAlpha, givenAllowEmpty));
+            Assert.Throws<Exceptions.StyleException>(() => Validators.ValidateColor(givenHexCode, givenUseAlpha, givenAllowEmpty));
         }
 
         [Theory(DisplayName = "Test of the successful Validator function ValidateGenericColor")]
@@ -91,7 +91,64 @@ namespace NanoXLSX.Test.Core.UtilsTest
 
         public void ValidateGenericColorFailTest(string givenHexCode, bool givenAllowEmpty)
         {
-            Assert.Throws<NanoXLSX.Exceptions.StyleException>(() => Validators.ValidateGenericColor(givenHexCode, givenAllowEmpty));
+            Assert.Throws<Exceptions.StyleException>(() => Validators.ValidateGenericColor(givenHexCode, givenAllowEmpty));
+        }
+
+        [Theory(DisplayName = "Test of the successful Validator function ValidateCellAddressExpression")]
+        [InlineData("A1", Cell.AddressScope.Any)]
+        [InlineData("$XFD$1048576", Cell.AddressScope.Any)]
+        [InlineData("A1:B2", Cell.AddressScope.Any)]
+        [InlineData("A1", Cell.AddressScope.SingleAddress)]
+        [InlineData("$A$1", Cell.AddressScope.SingleAddress)]
+        [InlineData("A1:B2", Cell.AddressScope.Range)]
+        [InlineData("A1:A1", Cell.AddressScope.Range)]
+        [InlineData(null, Cell.AddressScope.Invalid)]
+        [InlineData("", Cell.AddressScope.Invalid)]
+        [InlineData(" ", Cell.AddressScope.Invalid)]
+        [InlineData("A1:B2:C3", Cell.AddressScope.Invalid)]
+        [InlineData("$A$$1", Cell.AddressScope.Invalid)]
+        [InlineData("世界1", Cell.AddressScope.Invalid)]
+        [InlineData("A0", Cell.AddressScope.Invalid)]
+        public void ValidateCellAddressExpressionTest(string givenExpression, Cell.AddressScope givenScope)
+        {
+            Validators.ValidateCellAddressExpression(givenExpression, givenScope);
+            Assert.True(true);
+        }
+
+        [Theory(DisplayName = "Test of the failing Validator function ValidateCellAddressExpression")]
+        [InlineData(null, Cell.AddressScope.Any)]
+        [InlineData("", Cell.AddressScope.Any)]
+        [InlineData(" ", Cell.AddressScope.Any)]
+        [InlineData("世界1", Cell.AddressScope.Any)]
+        [InlineData("A0", Cell.AddressScope.Any)]
+        [InlineData("XFE1", Cell.AddressScope.Any)]
+        [InlineData("A1048577", Cell.AddressScope.Any)]
+        [InlineData("A1:B2:C3", Cell.AddressScope.Any)]
+        [InlineData(null, Cell.AddressScope.SingleAddress)]
+        [InlineData("A1:B2", Cell.AddressScope.SingleAddress)]
+        [InlineData("A1:A1", Cell.AddressScope.SingleAddress)]
+        [InlineData(null, Cell.AddressScope.Range)]
+        [InlineData("A1", Cell.AddressScope.Range)]
+        [InlineData("A1:B2:C3", Cell.AddressScope.Range)]
+        [InlineData("$A$$1", Cell.AddressScope.SingleAddress)]
+        public void ValidateCellAddressExpressionFailTest(string givenExpression, Cell.AddressScope givenScope)
+        {
+            Exceptions.FormatException exception = Assert.Throws<Exceptions.FormatException>(
+                () => Validators.ValidateCellAddressExpression(givenExpression, givenScope));
+            Assert.NotNull(exception.InnerException);
+        }
+
+        [Theory(DisplayName = "Test of the inverted Validator function ValidateCellAddressExpression")]
+        [InlineData("A1")]
+        [InlineData("$XFD$1048576")]
+        [InlineData("A1:B2")]
+        public void ValidateCellAddressExpressionInvalidScopeFailTest(string givenExpression)
+        {
+            Exceptions.FormatException exception = Assert.Throws<Exceptions.FormatException>(
+                () => Validators.ValidateCellAddressExpression(givenExpression, Cell.AddressScope.Invalid));
+            Assert.Null(exception.InnerException);
+            // TODO fix this term if the naming changes in ValidateCellAddressExpression
+            Assert.Equal("The passed expression is valid cell address or range, but the validation was explicitly inverted", exception.Message);
         }
     }
 }

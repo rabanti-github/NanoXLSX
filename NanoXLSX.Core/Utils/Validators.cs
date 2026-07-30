@@ -52,9 +52,9 @@ namespace NanoXLSX.Utils
         /// Validates the passed string, whether it is a valid single cell address or cell range. The address or range can contain modifier characters (<see cref="Cell.AddressType"/>) 
         /// </summary>
         /// <param name="expression">The address expression to validate</param>
-        /// <param name="scope">Optional parameter to validate for a specific addres scope (Any, SingleAddress, Range). Default is: Any</param>
+        /// <param name="scope">Optional parameter to validate for a specific address scope (Any, SingleAddress, Range). Default is: Any</param>
         /// <exception cref="FormatException">A format exception is thrown if the passed address is not a valid cell address or range</exception>
-        /// /Remark <remarks>If <see cref="Cell.AddressScope"/> of the scope parameter is set to <see cref="Cell.AddressScope.Invalid"/>, it inverts the validation, so that a valid cell OR range will throw an exception</remarks>
+        /// \remark <remarks>If <paramref name="scope"/> is <see cref="Cell.AddressScope.Range"/>, an explicit range expression is required; a single address is rejected even though <see cref="Cell.ResolveCellRange(string)"/> can represent it as a one-cell range. If the scope is <see cref="Cell.AddressScope.Invalid"/>, the validation is inverted, so that a valid cell or range will throw an exception.</remarks>
         internal static void ValidateCellAddressExpression(string expression, Cell.AddressScope scope = Cell.AddressScope.Any)
         {
             bool isCellAddress = false;
@@ -86,7 +86,12 @@ namespace NanoXLSX.Utils
                 }
                 lastException = ex;
             }
-            if (scope == Cell.AddressScope.Any && !isCellAddress && !isRange)
+            if (scope == Cell.AddressScope.Range && isCellAddress && isRange)
+            {
+                System.FormatException innerException = new System.FormatException("The expression (" + expression + ") is a single cell address, but a cell range was expected");
+                throw new FormatException(innerException.Message, innerException);
+            }
+            else if (scope == Cell.AddressScope.Any && !isCellAddress && !isRange)
             {
                 throw new FormatException(lastException.Message, lastException); // Not a cell or range
             }

@@ -321,6 +321,7 @@ namespace NanoXLSX
         /// <returns>Returns the added defined name object</returns>
         /// <exception cref="WorksheetException">Thrown if the worksheet or range address is null</exception>
         /// <exception cref="FormatException">Thrown if the name of the defined name or the range address is invalid</exception>
+        /// \remark <remarks>The range string must contain an explicit start and end address, for example <c>A1:B2</c>. To define a name for one cell, use <see cref="AddDefinedNameCell(string, Worksheet, string, Worksheet, string)"/>.</remarks>
         public DefinedName AddDefinedNameRange(string name, Worksheet worksheet, string rangeAddress, Worksheet localWorksheet = null, string comment = null)
         {
             Range range = new Range(rangeAddress);

@@ -209,6 +209,7 @@ namespace NanoXLSX.Utils
         /// <param name="input">Object to transform</param>
         /// <param name="convertBoolToNumber">If set to true, a bool value will be 1 or 0, otherwise TRUE or FALSE. Default is true</param>
         /// <returns>Most appropriate OOXML string form given </returns>
+        /// <exception cref="Exceptions.FormatException">Thrown if an invalid Date value was passed. See method <see cref="DataUtils.GetOADateTimeString(DateTime)"/> for details</exception>
         /// \remark <remarks>This method transforms values to the Excel-internal OOXML format. It is not meant as a generic ToString() method. Also do not pass nested objects like <see cref="Cell"/> or <see cref="FormulaData"/>, since they will be handled as unknown object types.</remarks>
         public static string ToCachedValueString(object input, bool convertBoolToNumber = true)
         {
