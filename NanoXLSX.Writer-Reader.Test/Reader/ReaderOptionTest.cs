@@ -92,6 +92,49 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
+        [Fact(DisplayName = "Test that decimal enforcement preserves numeric cell metadata")]
+        public void CastToDecimalCellTypeTest()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            workbook.CurrentWorksheet.AddCell(-0.111123456789123d, "A1");
+            using MemoryStream stream = new MemoryStream();
+            workbook.SaveAsStream(stream, true);
+            stream.Position = 0;
+
+            ReaderOptions options = new ReaderOptions
+            {
+                GlobalEnforcingType = ReaderOptions.GlobalType.AllNumbersToDecimal
+            };
+            Cell cell = WorkbookReader.Load(stream, options).CurrentWorksheet.Cells["A1"];
+
+            Assert.IsType<decimal>(cell.Value);
+            Assert.Equal(Cell.CellType.Number, cell.DataType);
+        }
+
+        [Fact(DisplayName = "Test that reader type enforcement does not convert formulas")]
+        public void FormulaEnforcementExclusionTest()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            workbook.CurrentWorksheet.AddCellFormula("A2+1", "A1");
+            using MemoryStream stream = new MemoryStream();
+            workbook.SaveAsStream(stream, true);
+            stream.Position = 0;
+
+            ReaderOptions options = new ReaderOptions
+            {
+                GlobalEnforcingType = ReaderOptions.GlobalType.EverythingToString,
+                EnforceEmptyValuesAsString = true,
+                EnforceDateTimesAsNumbers = true
+            };
+            options.AddEnforcedColumn("A", ReaderOptions.ColumnType.String);
+            Cell cell = WorkbookReader.Load(stream, options).CurrentWorksheet.Cells["A1"];
+
+            Assert.Equal(Cell.CellType.Formula, cell.DataType);
+            Assert.Equal("A2+1", cell.Value);
+            Assert.NotNull(cell.Formula);
+            Assert.Equal("A2+1", cell.Formula.Expression);
+        }
+
 
         [Fact(DisplayName = "Test of the reader functionality with the global import option to cast all number to double")]
         public void CastToDoubleTest()

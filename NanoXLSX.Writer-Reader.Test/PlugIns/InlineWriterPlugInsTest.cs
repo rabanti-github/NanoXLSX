@@ -49,9 +49,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatAppWriterPlugIn1", QueueUUID = PlugInUUID.MetadataAppInlineWriter)]
-        public class InlineAppMetadataWriter : IInlinePluginWriter
+        public class InlineAppMetadataWriter : IPluginInlineWriter
         {
             private string testValue = "test";
+            [ExcludeFromCodeCoverage]
+            IWriteContext IPluginInlineWriter.WriteContext { get; set; }
             public Workbook Workbook { get; set; }
             public XmlElement RootElement { get; set; }
 
@@ -81,9 +83,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "MetadatCoreWriterPlugIn1", QueueUUID = PlugInUUID.MetadataCoreInlineWriter)]
-        public class InlineCoreMetadataWriter : IInlinePluginWriter
+        public class InlineCoreMetadataWriter : IPluginInlineWriter
         {
             private string testValue = "test";
+            [ExcludeFromCodeCoverage]
+            IWriteContext IPluginInlineWriter.WriteContext { get; set; }
             public Workbook Workbook { get; set; }
             public XmlElement RootElement { get; set; }
 
@@ -113,9 +117,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "StyleWriterPlugIn1", QueueUUID = PlugInUUID.StyleInlineWriter)]
-        public class InlineStyleWriter : IInlinePluginWriter
+        public class InlineStyleWriter : IPluginInlineWriter
         {
             private string testValue = "test";
+            [ExcludeFromCodeCoverage]
+            IWriteContext IPluginInlineWriter.WriteContext { get; set; }
             public Workbook Workbook { get; set; }
             public XmlElement RootElement { get; set; }
 
@@ -145,9 +151,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "ThemeWriterPlugIn1", QueueUUID = PlugInUUID.ThemeInlineWriter)]
-        public class InlineThemeWriter : IInlinePluginWriter
+        public class InlineThemeWriter : IPluginInlineWriter
         {
             private string testValue = "test";
+            [ExcludeFromCodeCoverage]
+            IWriteContext IPluginInlineWriter.WriteContext { get; set; }
             public Workbook Workbook { get; set; }
             public XmlElement RootElement { get; set; }
 
@@ -177,9 +185,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "SharedStringeWriterPlugIn1", QueueUUID = PlugInUUID.WorksheetInlineWriter)]
-        public class InlineSharedStringWriter : IInlinePluginWriter
+        public class InlineSharedStringWriter : IPluginInlineWriter
         {
             private string testValue = "test";
+            [ExcludeFromCodeCoverage]
+            IWriteContext IPluginInlineWriter.WriteContext { get; set; }
             public Workbook Workbook { get; set; }
             public XmlElement RootElement { get; set; }
 
@@ -209,9 +219,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "WorksheetWriterPlugIn1", QueueUUID = PlugInUUID.WorksheetInlineWriter)]
-        public class InlineWorksheetWriter : IInlinePluginWriter
+        public class InlineWorksheetWriter : IPluginInlineWriter
         {
             private string testValue = "test";
+            [ExcludeFromCodeCoverage]
+            IWriteContext IPluginInlineWriter.WriteContext { get; set; }
             public Workbook Workbook { get; set; }
             public XmlElement RootElement { get; set; }
 
@@ -241,9 +253,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         }
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "WorkbookWriterPlugIn1", QueueUUID = PlugInUUID.WorkbookInlineWriter)]
-        public class InlineWorkbookWriter : IInlinePluginWriter
+        public class InlineWorkbookWriter : IPluginInlineWriter
         {
             private string testValue = "test";
+            [ExcludeFromCodeCoverage]
+            IWriteContext IPluginInlineWriter.WriteContext { get; set; }
             public Workbook Workbook { get; set; }
             public XmlElement RootElement { get; set; }
 

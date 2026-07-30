@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using NanoXLSX.Enums;
 using NanoXLSX.Extensions;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
@@ -365,6 +366,75 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             }
         }
 
+        [Fact(DisplayName = "Test of the reader functionality for formula metadata and linked formula cells")]
+        public void ReadFormulaDataTest()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            Worksheet worksheet = workbook.CurrentWorksheet;
+
+            worksheet.AddCellFormula("SUM(A2:A3)", "A1");
+            worksheet.Cells["A1"].Formula.CachedValue = 3;
+            worksheet.Cells["A1"].Formula.CachedValueType = Cell.CellType.Number;
+
+            worksheet.AddCellFormula("SUM(B2:B3)", "B1");
+            worksheet.Cells["B1"].Formula.Type = FormulaData.FormulaType.Array;
+            worksheet.Cells["B1"].Formula.FormulaRange = "B1:B3";
+            worksheet.Cells["B1"].Formula.CachedValue = 4;
+            worksheet.Cells["B1"].Formula.CachedValueType = Cell.CellType.Number;
+
+            worksheet.AddCellFormula("C2", "C1");
+            worksheet.Cells["C1"].Formula.Type = FormulaData.FormulaType.Shared;
+            worksheet.Cells["C1"].Formula.FormulaRange = "C1:C3";
+            worksheet.Cells["C1"].Formula.CachedValue = true;
+            worksheet.Cells["C1"].Formula.CachedValueType = Cell.CellType.Bool;
+
+            worksheet.AddCellFormula("TABLE(D2,D3)", "D1");
+            worksheet.Cells["D1"].Formula.Type = FormulaData.FormulaType.DataTable;
+            worksheet.Cells["D1"].Formula.FormulaRange = "D1:D3";
+            worksheet.Cells["D1"].Formula.CachedValue = Errors.FormulaError.DivisionByZero;
+            worksheet.Cells["D1"].Formula.CachedValueType = Cell.CellType.Error;
+
+            worksheet.AddCellFormula("SUM(E2:E3)", "E1");
+            worksheet.Cells["E1"].Formula.Type = FormulaData.FormulaType.Array;
+            worksheet.Cells["E1"].Formula.CachedValue = "linked value";
+            worksheet.Cells["E1"].Formula.CachedValueType = Cell.CellType.String;
+            worksheet.Cells["E1"].Formula.MasterCellAddress = "A1";
+
+            using MemoryStream stream = new MemoryStream();
+            workbook.SaveAsStream(stream, true);
+            stream.Position = 0;
+
+            Workbook givenWorkbook = WorkbookReader.Load(stream);
+            Worksheet givenWorksheet = givenWorkbook.CurrentWorksheet;
+
+            AssertFormulaData(givenWorksheet.Cells["A1"], "SUM(A2:A3)", FormulaData.FormulaType.Normal, null, "3", Cell.CellType.Number);
+            AssertFormulaData(givenWorksheet.Cells["B1"], "SUM(B2:B3)", FormulaData.FormulaType.Array, "B1:B3", "4", Cell.CellType.Number);
+            AssertFormulaData(givenWorksheet.Cells["C1"], "C2", FormulaData.FormulaType.Shared, "C1:C3", "1", Cell.CellType.Bool);
+            AssertFormulaData(givenWorksheet.Cells["D1"], "TABLE(D2,D3)", FormulaData.FormulaType.DataTable, "D1:D3", "#DIV/0!", Cell.CellType.Error);
+            AssertFormulaData(givenWorksheet.Cells["E1"], null, FormulaData.FormulaType.Normal, null, "linked value", Cell.CellType.String);
+            Assert.Equal("linked value", givenWorksheet.Cells["E1"].Value);
+        }
+
+        [Fact(DisplayName = "Test of decimal enforcement fallback for an overflowing double")]
+        public void ReadDecimalOverflowTest()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            workbook.CurrentWorksheet.AddCell(double.MaxValue, "A1");
+            using MemoryStream stream = new MemoryStream();
+            workbook.SaveAsStream(stream, true);
+            stream.Position = 0;
+
+            ReaderOptions options = new ReaderOptions
+            {
+                GlobalEnforcingType = ReaderOptions.GlobalType.AllNumbersToDecimal
+            };
+            Cell cell = WorkbookReader.Load(stream, options).CurrentWorksheet.Cells["A1"];
+
+            Assert.Equal(Cell.CellType.Number, cell.DataType);
+            Assert.IsType<double>(cell.Value);
+            Assert.Equal(double.MaxValue, cell.Value);
+        }
+
         [Theory(DisplayName = "Test of the reader functionality on invalid / unexpected values")]
         [InlineData("A1", Cell.CellType.String, "Test")]
         [InlineData("B1", Cell.CellType.String, "x")]
@@ -495,6 +565,17 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         private static void AssertEquals<T>(T expected, T given)
         {
             Assert.Equal(expected, given);
+        }
+
+        private static void AssertFormulaData(Cell cell, string expression, FormulaData.FormulaType type, string formulaRange, string cachedValue, Cell.CellType cachedValueType)
+        {
+            Assert.Equal(Cell.CellType.Formula, cell.DataType);
+            Assert.NotNull(cell.Formula);
+            Assert.Equal(expression, cell.Formula.Expression);
+            Assert.Equal(type, cell.Formula.Type);
+            Assert.Equal(formulaRange, cell.Formula.FormulaRange);
+            Assert.Equal(cachedValue, cell.Formula.CachedValue);
+            Assert.Equal(cachedValueType, cell.Formula.CachedValueType);
         }
 
         [Fact(DisplayName = "Test of reading inline and shared strings from embedded resource")]

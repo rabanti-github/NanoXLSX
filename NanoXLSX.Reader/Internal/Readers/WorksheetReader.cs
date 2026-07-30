@@ -697,10 +697,10 @@ namespace NanoXLSX.Internal.Readers
                         }
                         if (cellReader.LocalName.Equals("f", StringComparison.OrdinalIgnoreCase))
                         {
-                            formulaExpression = cellReader.ReadElementContentAsString();
-                            hasFormula = true;
                             formulaType = cellReader.GetAttribute("t"); // Can be null
                             formulaReference = cellReader.GetAttribute("ref"); // Can be null
+                            formulaExpression = cellReader.ReadElementContentAsString();
+                            hasFormula = true;
                         }
                         if (cellReader.LocalName.Equals("v", StringComparison.OrdinalIgnoreCase))
                         {
@@ -795,11 +795,6 @@ namespace NanoXLSX.Internal.Readers
                 importedType = Cell.CellType.String;
                 rawValue = ResolveSharedString(raw);
             }
-            else if (type == "str")
-            {
-                importedType = Cell.CellType.Formula;
-                rawValue = raw;
-            }
             else if (type == "inlineStr")
             {
                 importedType = Cell.CellType.String;
@@ -837,7 +832,7 @@ namespace NanoXLSX.Internal.Readers
                 }
                 rawValue = GetGloballyEnforcedValue(rawValue, cellAddress);
                 rawValue = GetGloballyEnforcedFlagValues(rawValue, cellAddress);
-                importedType = ResolveType(rawValue, importedType);
+                importedType = ResolveType(rawValue);
                 if (importedType == Cell.CellType.Date && rawValue is DateTime && (DateTime)rawValue < DataUtils.FirstAllowedExcelDate)
                 {
                     // Fix conversion from time to date, where time has no days
@@ -931,14 +926,9 @@ namespace NanoXLSX.Internal.Readers
         /// Resolves the final cell type after a possible conversion by import options
         /// </summary>
         /// <param name="value">Value of the cell</param>
-        /// <param name="defaultType">Originally resolved type. If a formula, the method immediately returns</param>
         /// <returns>Resolved cell type</returns>
-        private static Cell.CellType ResolveType(object value, Cell.CellType defaultType)
+        private static Cell.CellType ResolveType(object value)
         {
-            if (defaultType == Cell.CellType.Formula)
-            {
-                return defaultType;
-            }
             if (value == null)
             {
                 return Cell.CellType.Empty;
@@ -950,6 +940,7 @@ namespace NanoXLSX.Internal.Readers
                 case ulong _:
                 case short _:
                 case ushort _:
+                case decimal _:
                 case float _:
                 case double _:
                 case byte _:
@@ -1054,10 +1045,6 @@ namespace NanoXLSX.Internal.Readers
                 return data;
             }
             if (!readerOptions.EnforcedColumnTypes.TryGetValue(address.Column, out var columnType))
-            {
-                return data;
-            }
-            if (importedTyp == Cell.CellType.Formula)
             {
                 return data;
             }
@@ -1188,8 +1175,15 @@ namespace NanoXLSX.Internal.Readers
             IConvertible converter;
             switch (data)
             {
-                case double _:
-                    return data;
+                case double doubleValue:
+                    try
+                    {
+                        return Convert.ToDecimal(doubleValue);
+                    }
+                    catch (OverflowException)
+                    {
+                        return data;
+                    }
                 case uint _:
                 case long _:
                 case ulong _:

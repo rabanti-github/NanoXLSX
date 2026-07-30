@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using NanoXLSX.Enums;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
 
@@ -151,6 +152,39 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             TestUtils.GetRandomName();
             Workbook workbook = new Workbook("test");
             await Assert.ThrowsAnyAsync<Exception>(() => workbook.SaveAsStreamAsync(null));
+        }
+
+        // TODO consider move this test to another test class (currently for test coverage)
+        [Fact(DisplayName = "Test worksheet serialization of error cells")]
+        public void SaveErrorCellTest()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            workbook.CurrentWorksheet.AddCell(new Cell(Errors.FormulaError.Name, Cell.CellType.Error, "A1"), "A1");
+
+            using MemoryStream stream = new MemoryStream();
+            workbook.SaveAsStream(stream, true);
+
+            TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", "r=\"A1\"");
+            TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", "t=\"e\"");
+            TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", "<v>#NAME?</v>");
+        }
+
+        // TODO consider move this test to another test class (currently for test coverage)
+        [Fact(DisplayName = "Test worksheet serialization of string-backed formula time caches")]
+        public void SaveFormulaTimeCacheTest()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            workbook.CurrentWorksheet.AddCellFormula("B2", "B1");
+            workbook.CurrentWorksheet.Cells["B1"].Formula.CachedValue = "0.5";
+            workbook.CurrentWorksheet.Cells["B1"].Formula.CachedValueType = Cell.CellType.Time;
+
+            using MemoryStream stream = new MemoryStream();
+            workbook.SaveAsStream(stream, true);
+
+            TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", "r=\"B1\"");
+            TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", "t=\"normal\"");
+            TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", ">B2</f>");
+            TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", "<v>0.5</v>");
         }
 
 

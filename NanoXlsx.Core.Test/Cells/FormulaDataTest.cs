@@ -82,5 +82,84 @@ namespace NanoXLSX.Test.Core.CellTest
             Assert.NotEqual(0, number.CompareTo(text));
             Assert.NotEqual(number.GetHashCode(), text.GetHashCode());
         }
+
+        [Fact(DisplayName = "Test of the FormulaData CompareTo method")]
+        public void CompareToTest()
+        {
+            FormulaData data = CreateFormulaData();
+
+            Assert.Equal(1, data.CompareTo(null));
+            Assert.Equal(0, data.CompareTo(data.Copy()));
+            Assert.NotEqual(0, data.CompareTo(CreateFormulaData(expression: "B1")));
+            Assert.NotEqual(0, data.CompareTo(CreateFormulaData(type: FormulaData.FormulaType.Shared)));
+            Assert.NotEqual(0, data.CompareTo(CreateFormulaData(formulaRange: "A1:A3")));
+            Assert.NotEqual(0, data.CompareTo(CreateFormulaData(definedName: CreateDefinedName("OtherName"))));
+            Assert.NotEqual(0, data.CompareTo(CreateFormulaData(cachedValueType: Cell.CellType.String)));
+            Assert.NotEqual(0, data.CompareTo(CreateFormulaData(cachedValue: 2)));
+            Assert.NotEqual(0, data.CompareTo(CreateFormulaData(masterCellAddress: "A2")));
+        }
+
+        [Fact(DisplayName = "Test of the strongly typed FormulaData Equals method")]
+        public void EqualsFormulaDataTest()
+        {
+            FormulaData data = CreateFormulaData();
+
+            Assert.False(data.Equals((FormulaData)null));
+            Assert.True(data.Equals(data));
+            Assert.True(data.Equals(data.Copy()));
+            Assert.False(data.Equals(CreateFormulaData(expression: "B1")));
+            Assert.False(data.Equals(CreateFormulaData(type: FormulaData.FormulaType.Shared)));
+            Assert.False(data.Equals(CreateFormulaData(formulaRange: "A1:A3")));
+            Assert.False(data.Equals(CreateFormulaData(definedName: CreateDefinedName("OtherName"))));
+            Assert.False(data.Equals(CreateFormulaData(cachedValue: 2)));
+            Assert.False(data.Equals(CreateFormulaData(cachedValueType: Cell.CellType.String)));
+            Assert.False(data.Equals(CreateFormulaData(masterCellAddress: "A2")));
+        }
+
+        [Fact(DisplayName = "Test of the object FormulaData Equals method")]
+        public void EqualsObjectTest()
+        {
+            FormulaData data = CreateFormulaData();
+
+            Assert.True(data.Equals((object)data.Copy()));
+            Assert.False(data.Equals((object)null));
+            Assert.False(data.Equals("Wrong type"));
+        }
+
+        [Fact(DisplayName = "Test of the FormulaData GetHashCode method")]
+        public void GetHashCodeTest()
+        {
+            FormulaData data = CreateFormulaData();
+            FormulaData copy = data.Copy();
+            FormulaData empty = new FormulaData();
+
+            Assert.Equal(data.GetHashCode(), copy.GetHashCode());
+            Assert.NotEqual(data.GetHashCode(), empty.GetHashCode());
+            Assert.Equal(empty.GetHashCode(), new FormulaData().GetHashCode());
+        }
+
+        private static FormulaData CreateFormulaData(
+            string expression = "A1",
+            FormulaData.FormulaType type = FormulaData.FormulaType.Array,
+            string formulaRange = "A1:A2",
+            DefinedName definedName = null,
+            object cachedValue = null,
+            Cell.CellType cachedValueType = Cell.CellType.Number,
+            string masterCellAddress = "A1")
+        {
+            return new FormulaData(expression, cachedValue ?? 1)
+            {
+                Type = type,
+                FormulaRange = formulaRange,
+                DefinedNameReference = definedName ?? CreateDefinedName("FormulaName"),
+                CachedValueType = cachedValueType,
+                MasterCellAddress = masterCellAddress
+            };
+        }
+
+        private static DefinedName CreateDefinedName(string name)
+        {
+            return new DefinedName(new Workbook(), DefinedName.NameType.Constant, name, 1, null);
+        }
     }
 }

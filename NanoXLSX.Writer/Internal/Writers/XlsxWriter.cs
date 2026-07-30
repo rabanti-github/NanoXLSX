@@ -145,7 +145,7 @@ namespace NanoXLSX.Internal.Writers
                 preparingProcessor.Init(this, WriterPlugInHandler.HandleInlineQueueProcessorPlugins);
                 preparingProcessor.Execute();
                 // Compatibility check
-                IPluginWriteProcessor compatibilityProcessor = new ComatibilityProcessor(); // This core processor cannot be overwritten
+                IPluginWriteProcessor compatibilityProcessor = new CompatibilityProcessor(); // This core processor cannot be overwritten
                 compatibilityProcessor.Init(this, WriterPlugInHandler.HandleInlineQueueProcessorPlugins);
                 compatibilityProcessor.Execute();
                 // Workbook can now be written

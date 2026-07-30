@@ -13,7 +13,8 @@ using NanoXLSX.Interfaces;
 namespace NanoXLSX
 {
     /// <summary>
-    /// The reader options define global rules, applied when loading a worksheet. The options are mainly to override particular cell types (e.g. interpretation of dates as numbers)
+    /// The reader options define global rules, applied when loading a worksheet. The options are mainly to override particular cell types (e.g. interpretation of dates as numbers).
+    /// Formula cells, including their expressions and cached values, are not converted by these options.
     /// </summary>
     public class ReaderOptions : IOptions, ITextOptions
     {
@@ -34,7 +35,8 @@ namespace NanoXLSX
         public static readonly CultureInfo DefaultCultureInfo = CultureInfo.InvariantCulture;
 
         /// <summary>
-        /// Global conversion types to enforce during the load process. All types other than <see cref="GlobalType.Default" /> will override defined <see cref="ColumnType">Column types</see>
+        /// Global conversion types to enforce during the load process. All types other than <see cref="GlobalType.Default" /> will override defined <see cref="ColumnType">Column types</see>.
+        /// Formula cells are excluded from global conversion.
         /// </summary>
         public enum GlobalType
         {
@@ -55,7 +57,7 @@ namespace NanoXLSX
             /// </summary>
             AllNumbersToInt,
             /// <summary>
-            /// Every cell is cast to a string
+            /// Every non-formula cell is cast to a string
             /// </summary>
             EverythingToString
         }
@@ -126,7 +128,7 @@ namespace NanoXLSX
 
 
         /// <summary>
-        /// Type enforcing rules during the read process for particular columns
+        /// Type enforcing rules during the read process for particular columns. Formula cells are excluded from column type enforcement.
         /// </summary>
         public Dictionary<int, ColumnType> EnforcedColumnTypes { get; private set; } = new Dictionary<int, ColumnType>();
 

@@ -19,7 +19,7 @@ namespace NanoXLSX.Internal.Writers
     /// \remark <remarks>This processor should not be overwritten by an external plug-in. 
     /// It ensures that the core functionality does not propagate incompatible (to the default writer) features into the writing process.
     /// External plug-ins can inject a <see cref="IPluginInlineWriteProcessor"/> class with the UUID <see cref="PlugInUUID.CompatibilityInlineProcessor"/> to enable a feature.</remarks>
-    internal class ComatibilityProcessor : IPluginWriteProcessor
+    internal class CompatibilityProcessor : IPluginWriteProcessor
     {
         /// <summary>
         /// Writer Context
