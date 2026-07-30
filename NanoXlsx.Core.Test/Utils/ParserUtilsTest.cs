@@ -337,6 +337,19 @@ namespace NanoXLSX.Test.Core.UtilsTest
             Assert.Equal(expectedMatch, match);
         }
 
+        [Theory(DisplayName = "Test of the ParserUtils TryParseDouble function with defined number styles")]
+        [InlineData("1,234", NumberStyles.Any, 1234, true)]
+        [InlineData("1,234", NumberStyles.Float, 0, false)]
+        [InlineData("123-", NumberStyles.Any, -123, true)]
+        [InlineData("123-", NumberStyles.Float, 0, false)]
+        [InlineData(" 1.25E+3 ", NumberStyles.Float, 1250, true)]
+        public void TryParseDoubleTest2(string givenValue, NumberStyles givenNumberStyles, double expectedValue, bool expectedMatch)
+        {
+            bool match = ParserUtils.TryParseDouble(givenValue, out double value, givenNumberStyles);
+            Assert.Equal(expectedValue, value);
+            Assert.Equal(expectedMatch, match);
+        }
+
 
         [Fact(DisplayName = "Test of several numerical Parse and TryParse functions for their minimum values")]
         public void ParseMinTest()

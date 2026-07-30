@@ -364,14 +364,14 @@ namespace NanoXLSX
         /// <param name="cachedValue">Optional cached value that will be shown as long as the cell is not refreshed. The value will be ignored if the defined name type is <see cref="DefinedName.NameType.Constant"/></param>
         /// <returns>Returns the range object of transposed linked cells if the type is <see cref="DefinedName.NameType.Range"/>. The value is null otherwise.</returns>
         /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
-        internal Range SetReference(DefinedName definedName, object cachedValue = null)
+        internal Range? SetReference(DefinedName definedName, object cachedValue = null)
         {
             if (definedName == null)
             {
                 throw new WorksheetException("The defined name to set as cell reference must not be null.");
             }
             FormulaData formula = new FormulaData();
-            Range referenceRange = null;
+            Range? referenceRange = null;
             formula.DefinedNameReference = definedName;
             formula.Expression = definedName.Name;
             if (definedName.Type == DefinedName.NameType.Range)
@@ -387,9 +387,18 @@ namespace NanoXLSX
             if (definedName.Type == DefinedName.NameType.Constant)
             {
                 formula.CachedValue = definedName.TextValue;
+                formula.CachedValueType = FormulaData.ResolveCachedValueType(definedName.Value);
             }
             else
             {
+                if (cachedValue == null || (cachedValue is string stringValue && stringValue.Length == 0))
+                {
+                    formula.CachedValueType = CellType.Number;
+                }
+                else
+                {
+                    formula.CachedValueType = FormulaData.ResolveCachedValueType(cachedValue);
+                }
                 formula.CachedValue = ParserUtils.ToCachedValueString(cachedValue); // Force value as plain OOXML string
             }
             this.Formula = formula;

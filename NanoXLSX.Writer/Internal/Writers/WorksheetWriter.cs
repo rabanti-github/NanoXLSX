@@ -15,6 +15,7 @@ using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using static NanoXLSX.Enums.Password;
@@ -714,7 +715,7 @@ namespace NanoXLSX.Internal.Writers
         private static XmlElement CreateFormulaElement(Cell cell, out string cellValue, out XmlAttribute? cellType)
         {
             XmlElement formulaElement = null;
-            cellType = XmlAttribute.CreateAttribute("t", "str");
+            cellType = null;
             XmlAttribute? formulaTypeAttribute = null;
             XmlAttribute? formulaRangeAttribute = null;
             string formulaExpression;
@@ -740,22 +741,7 @@ namespace NanoXLSX.Internal.Writers
                 {
                     formulaRangeAttribute = new XmlAttribute("ref", cell.Formula.FormulaRange); // Assumed as validated
                 }
-                if (cell.Formula.CachedValue == null)
-                {
-                    cellValue = string.Empty; // Resolution of cached values is currently not handled
-                }
-                else
-                {
-                    cellValue = CastNumber(cell.Formula.CachedValue); // Returns null if not a number
-                    if (cellValue == null && cell.Formula.CachedValue.GetType() == typeof(bool))
-                    {
-                        cellValue = ((bool)cell.Formula.CachedValue) ? "1" : "0";
-                    }
-                    else if (cellValue == null)
-                    {
-                        cellValue = cell.Formula.CachedValue.ToString(); // Sanitizing follows on cell creation
-                    }
-                }
+                ResolveFormulaCachedValue(cell.Formula, out cellValue, out cellType);
                 if (cell.Formula.MasterCellAddress != null)
                 {
                     omitFormula = true; // Array referenced cells are only internal formulas
@@ -786,6 +772,83 @@ namespace NanoXLSX.Internal.Writers
                 formulaElement.InnerValue = formulaExpression;
             }
             return formulaElement;
+        }
+
+        /// <summary>
+        /// Resolves the serialized value and OOXML cell type of a formula cache.
+        /// </summary>
+        /// <param name="formula">Formula data to resolve as output parameter</param>
+        /// <param name="cellValue">Serialized cached value.</param>
+        /// <param name="cellType">OOXML cell type attribute, or null for the default numeric type as nullable output parameter</param>
+        private static void ResolveFormulaCachedValue(FormulaData formula, out string cellValue, out XmlAttribute? cellType)
+        {
+            cellValue = string.Empty;
+            cellType = null;
+            if (formula.CachedValue == null)
+            {
+                return;
+            }
+            Cell.CellType cachedValueType = formula.CachedValueType;
+            if (cachedValueType == Cell.CellType.Default)
+            {
+                cachedValueType = FormulaData.ResolveCachedValueType(formula.CachedValue);
+            }
+            switch (cachedValueType)
+            {
+                case Cell.CellType.Number:
+                    cellValue = CastNumber(formula.CachedValue) ?? formula.CachedValue.ToString();
+                    break;
+                case Cell.CellType.Date:
+                    if (formula.CachedValue is DateTime dateTime)
+                    {
+                        cellValue = DataUtils.GetOADateTimeString(dateTime);
+                    }
+                    else
+                    {
+                        cellValue = formula.CachedValue.ToString();
+                        if (!ParserUtils.TryParseDouble(cellValue, out _, NumberStyles.Float))
+                        {
+                            cellType = XmlAttribute.CreateAttribute("t", "d");
+                        }
+                    }
+                    break;
+                case Cell.CellType.Time:
+                    if (formula.CachedValue is TimeSpan timeSpan)
+                    {
+                        cellValue = DataUtils.GetOATimeString(timeSpan);
+                    }
+                    else
+                    {
+                        cellValue = formula.CachedValue.ToString();
+                    }
+                    break;
+                case Cell.CellType.Bool:
+                    if (formula.CachedValue is bool booleanValue)
+                    {
+                        cellValue = booleanValue ? "1" : "0";
+                    }
+                    else
+                    {
+                        cellValue = formula.CachedValue.ToString();
+                        if (ParserUtils.TryParseBool(cellValue, out booleanValue))
+                        {
+                            cellValue = booleanValue ? "1" : "0";
+                        }
+                    }
+                    cellType = XmlAttribute.CreateAttribute("t", "b");
+                    break;
+                case Cell.CellType.Error:
+                    cellValue = formula.CachedValue is Errors.FormulaError formulaError
+                        ? Errors.FormulaErrorToString(formulaError)
+                        : formula.CachedValue.ToString();
+                    cellType = XmlAttribute.CreateAttribute("t", "e");
+                    break;
+                case Cell.CellType.String:
+                default:
+                    cellValue = formula.CachedValue.ToString();
+                    cellType = XmlAttribute.CreateAttribute("t", "str");
+                    break;
+            }
         }
 
         /// <summary>

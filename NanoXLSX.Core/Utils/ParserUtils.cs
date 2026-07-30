@@ -203,19 +203,20 @@ namespace NanoXLSX.Utils
         /// Transforms a given object to a string displayed as cached Values. The common known compatible numeric types, like int, float, sbyte etc. will be transformed to their appropriate string representations.  
         /// Bool will be either 0 or 1, or to TRUE or FALSE if convertBoolToNumber is set to false. 
         /// Date or TimeSpan will be transformed to a OADate (numeric) value.
-        /// Null or empty will be transformed to 0. 
+        /// Null or an empty string will be transformed to 0.
         /// If an unknown object type is passed, its own ToString() method will be used. 
         /// </summary>
         /// <param name="input">Object to transform</param>
-        /// <param name="convertBoolToNumber">If set to true, a bool value will be TRUE or FALSE, otherwise 1 and 0. Default is true</param>
+        /// <param name="convertBoolToNumber">If set to true, a bool value will be 1 or 0, otherwise TRUE or FALSE. Default is true</param>
         /// <returns>Most appropriate OOXML string form given </returns>
         /// \remark <remarks>This method transforms values to the Excel-internal OOXML format. It is not meant as a generic ToString() method. Also do not pass nested objects like <see cref="Cell"/> or <see cref="FormulaData"/>, since they will be handled as unknown object types.</remarks>
         public static string ToCachedValueString(object input, bool convertBoolToNumber = true)
         {
-            if (input == null) { return string.Empty; }
+            if (input == null) { return "0"; }
             else if (input is string)
             {
-                return input as string;
+                string stringValue = input as string;
+                return string.IsNullOrEmpty(stringValue) ? "0" : stringValue;
             }
             else if (input is bool)
             {
@@ -228,15 +229,16 @@ namespace NanoXLSX.Utils
                     return (bool)input ? "TRUE" : "FALSE";
                 }
             }
-            else if (input is bool) { return ToString((byte)input); }
+            else if (input is byte) { return ToString((byte)input); }
             else if (input is sbyte) { return ToString((sbyte)input); }
             else if (input is decimal) { return ToString((decimal)input); }
             else if (input is double) { return ToString((double)input); }
+            else if (input is float) { return ToString((float)input); }
             else if (input is int) { return ToString((int)input); }
             else if (input is uint) { return ToString((uint)input); }
-            else if (input is long) { return ToString((ulong)input); }
+            else if (input is long) { return ToString((long)input); }
             else if (input is ulong) { return ToString((ulong)input); }
-            else if (input is short) { return ToString((ushort)input); }
+            else if (input is short) { return ToString((short)input); }
             else if (input is ushort) { return ToString((ushort)input); }
             else if (input is DateTime)
             {
@@ -403,14 +405,15 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
-        /// Tries to parse a double (with any parsing style) independent from the culture info of the host
+        /// Tries to parse a double independent from the culture info of the host
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <param name="parsedValue">Parsed double</param>
+        /// <param name="numberStyles">Permitted number styles. Default is <see cref="NumberStyles.Any"/></param>
         /// <returns>True, if the parsing was successful</returns>
-        public static bool TryParseDouble(string rawValue, out double parsedValue)
+        public static bool TryParseDouble(string rawValue, out double parsedValue, NumberStyles numberStyles = NumberStyles.Any)
         {
-            return double.TryParse(rawValue, NumberStyles.Any, InvariantCulture, out parsedValue);
+            return double.TryParse(rawValue, numberStyles, InvariantCulture, out parsedValue);
         }
 
         /// <summary>

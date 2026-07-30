@@ -913,13 +913,13 @@ namespace NanoXLSX
         public IReadOnlyList<Address> AddCellReference(DefinedName definedName, int columnNumber, int rowNumber, object cachedValue = null)
         {
             Cell c = new Cell(definedName.Name, Cell.CellType.Formula, columnNumber, rowNumber);
-            Range arrayRange = c.SetReference(definedName, cachedValue);
+            Range? arrayRange = c.SetReference(definedName, cachedValue);
             AddNextCell(c, false, null);
             List<Address> list = new List<Address>();
             list.Add(new Address(columnNumber, rowNumber));
-            if (arrayRange != null)
+            if (arrayRange.HasValue)
             {
-                IReadOnlyList<Address> addedCells = AddDefinedNameArrayCells(c, arrayRange, null);
+                IReadOnlyList<Address> addedCells = AddDefinedNameArrayCells(c, arrayRange.Value, null);
                 list.AddRange(addedCells);
             }
             return list;
@@ -943,13 +943,13 @@ namespace NanoXLSX
         public IReadOnlyList<Address> AddCellReference(DefinedName definedName, int columnNumber, int rowNumber, Style style, object cachedValue = null)
         {
             Cell c = new Cell(definedName.Name, Cell.CellType.Formula, columnNumber, rowNumber);
-            Range arrayRange = c.SetReference(definedName, cachedValue);
+            Range? arrayRange = c.SetReference(definedName, cachedValue);
             AddNextCell(c, false, style);
             List<Address> list = new List<Address>();
             list.Add(new Address(columnNumber, rowNumber));
-            if (arrayRange != null)
+            if (arrayRange.HasValue)
             {
-                IReadOnlyList<Address> addedCells = AddDefinedNameArrayCells(c, arrayRange, style);
+                IReadOnlyList<Address> addedCells = AddDefinedNameArrayCells(c, arrayRange.Value, style);
                 list.AddRange(addedCells);
             }
             return list;

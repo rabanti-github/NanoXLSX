@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using NanoXLSX.Enums;
 
 namespace NanoXLSX
 {
@@ -66,8 +67,14 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the cached value of the formula
         /// </summary>
-        /// \remark <remarks>This value is currently only set when a Workbook is loaded. It is not evaluated when a new formula was defined by <see cref="Worksheet.AddCellFormula(string, int, int)"/> or its overload methods</remarks>
+        /// \remark <remarks>This value can be supplied through the constructor or set when a Workbook is loaded. It is not evaluated when a new formula was defined by <see cref="Worksheet.AddCellFormula(string, int, int)"/> or its overload methods</remarks>
         public object CachedValue { get; internal set; }
+
+        /// <summary>
+        /// Gets the data type of <see cref="CachedValue"/>. The default is <see cref="Cell.CellType.Default"/>
+        /// if no cached value or no supported cached value type is available.
+        /// </summary>
+        public Cell.CellType CachedValueType { get; internal set; }
 
         /// <summary>
         /// Gets the address of the formula's master cell. This is mainly used in case of <see cref="FormulaType.Array"/>.
@@ -84,6 +91,7 @@ namespace NanoXLSX
         public FormulaData()
         {
             this.Type = FormulaType.Normal;
+            this.CachedValueType = Cell.CellType.Default;
         }
 
         /// <summary>
@@ -95,12 +103,47 @@ namespace NanoXLSX
         {
             Expression = expression;
             CachedValue = cachedValue;
+            CachedValueType = ResolveCachedValueType(cachedValue);
         }
-
-
 
         #endregion
         #region methods
+
+        /// <summary>
+        /// Resolves the cell type of a cached formula value without evaluating the formula.
+        /// </summary>
+        /// <param name="cachedValue">Cached formula value, or null if unavailable.</param>
+        /// <returns>Resolved cached value type.</returns>
+        internal static Cell.CellType ResolveCachedValueType(object cachedValue)
+        {
+            if (cachedValue == null)
+            {
+                return Cell.CellType.Default;
+            }
+            if (cachedValue is bool)
+            {
+                return Cell.CellType.Bool;
+            }
+            if (cachedValue is byte || cachedValue is sbyte || cachedValue is decimal || cachedValue is double
+                || cachedValue is float || cachedValue is int || cachedValue is uint || cachedValue is long
+                || cachedValue is ulong || cachedValue is short || cachedValue is ushort)
+            {
+                return Cell.CellType.Number;
+            }
+            if (cachedValue is DateTime)
+            {
+                return Cell.CellType.Date;
+            }
+            if (cachedValue is TimeSpan)
+            {
+                return Cell.CellType.Time;
+            }
+            if (cachedValue is Errors.FormulaError)
+            {
+                return Cell.CellType.Error;
+            }
+            return Cell.CellType.String;
+        }
 
         /// <summary>
         /// Copies the current object into a new one (without copying <see cref="DefinedNameReference"/>)
@@ -114,6 +157,7 @@ namespace NanoXLSX
             data.Type = this.Type;
             data.FormulaRange = this.FormulaRange;
             data.CachedValue = this.CachedValue;
+            data.CachedValueType = this.CachedValueType;
             data.MasterCellAddress = this.MasterCellAddress;
             data.DefinedNameReference = this.DefinedNameReference; // object reference
             return data;
@@ -150,6 +194,11 @@ namespace NanoXLSX
             {
                 return cmp;
             }
+            cmp = CachedValueType.CompareTo(other.CachedValueType);
+            if (cmp != 0)
+            {
+                return cmp;
+            }
             cmp = Comparer<object>.Default.Compare(CachedValue, other.CachedValue);
             if (cmp != 0)
             {
@@ -178,6 +227,7 @@ namespace NanoXLSX
                 && string.Equals(FormulaRange, other.FormulaRange, StringComparison.Ordinal)
                 && EqualityComparer<DefinedName>.Default.Equals(DefinedNameReference, other.DefinedNameReference)
                 && EqualityComparer<object>.Default.Equals(CachedValue, other.CachedValue)
+                && CachedValueType == other.CachedValueType
                 && string.Equals(MasterCellAddress, other.MasterCellAddress, StringComparison.Ordinal);
         }
 
@@ -205,11 +255,11 @@ namespace NanoXLSX
                 hash = (hash * 31) + (FormulaRange != null ? FormulaRange.GetHashCode() : 0);
                 hash = (hash * 31) + (DefinedNameReference != null ? DefinedNameReference.GetHashCode() : 0);
                 hash = (hash * 31) + (CachedValue != null ? CachedValue.GetHashCode() : 0);
+                hash = (hash * 31) + CachedValueType.GetHashCode();
                 hash = (hash * 31) + (MasterCellAddress != null ? MasterCellAddress.GetHashCode() : 0);
                 return hash;
             }
         }
-
         #endregion
     }
 }

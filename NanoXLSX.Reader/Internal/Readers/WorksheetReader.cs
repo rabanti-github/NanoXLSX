@@ -678,6 +678,8 @@ namespace NanoXLSX.Internal.Readers
             string styleNumber = rowReader.GetAttribute("s"); // can be null
             string value = "";
             string cachedValue = null;
+            bool hasCachedValue = false;
+            bool hasInlineString = false;
             string formulaExpression = null;
             bool hasFormula = false;
             string formulaType = null;
@@ -705,6 +707,7 @@ namespace NanoXLSX.Internal.Readers
                             if (hasFormula)
                             {
                                 cachedValue = cellReader.ReadElementContentAsString();
+                                hasCachedValue = true;
                             }
                             else
                             {
@@ -727,23 +730,35 @@ namespace NanoXLSX.Internal.Readers
                                 }
                             }
                             value = sb.ToString();
+                            hasInlineString = true;
                         }
                     }
                 }
             }
             if (hasFormula)
             {
-                // Formula gets the type "str". Formula expression is added as value (compatibility)
+                if (type == "s" && hasCachedValue)
+                {
+                    cachedValue = ResolveSharedString(cachedValue)?.ToString();
+                }
+                else if (type == "inlineStr" && hasInlineString)
+                {
+                    cachedValue = value;
+                    hasCachedValue = true;
+                }
                 value = formulaExpression;
             }
             else if (type == "str" && !hasFormula)
             {
                 // Linked cell of a formula. The master cell will be resolved later in a finalizing processor
                 cachedValue = value; // Value is actually cached value (value is kept for compatibility)
+                hasCachedValue = true;
                 hasFormula = true; // Triggers upsert
             }
-            Cell cell = ResolveCellData(value, type, styleNumber, address);
-            UpsertFormulaData(cell, formulaExpression, cachedValue, formulaType, formulaReference);
+            Cell cell = hasFormula
+                ? CreateCell(value, Cell.CellType.Formula, new Address(address), styleNumber)
+                : ResolveCellData(value, type, styleNumber, address);
+            UpsertFormulaData(cell, formulaExpression, cachedValue, hasCachedValue, type, formulaType, formulaReference);
             worksheet.AddCell(cell, address);
         }
 
@@ -838,9 +853,11 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="cell">Cell reference</param>
         /// <param name="expression">Formula expression</param>
         /// <param name="cachedValue">Cached value (can be null)</param>
+        /// <param name="hasCachedValue">True if a cached value element was found.</param>
+        /// <param name="cachedValueType">OOXML cell type of the cached value.</param>
         /// <param name="formulaType">Type of the formula (can be null; Defaults to type Normal)</param>
         /// <param name="formulaReference">Formula reference (can be null)</param>
-        private static void UpsertFormulaData(Cell cell, string expression, string cachedValue, string formulaType, string formulaReference)
+        private static void UpsertFormulaData(Cell cell, string expression, string cachedValue, bool hasCachedValue, string cachedValueType, string formulaType, string formulaReference)
         {
             if (cell.DataType != Cell.CellType.Formula)
             {
@@ -849,6 +866,7 @@ namespace NanoXLSX.Internal.Readers
             FormulaData formula = new FormulaData();
             formula.Expression = expression;
             formula.CachedValue = cachedValue;
+            formula.CachedValueType = ResolveFormulaCachedValueType(cachedValueType, hasCachedValue);
             formula.FormulaRange = formulaReference;
             if (!string.IsNullOrEmpty(formulaType))
             {
@@ -874,6 +892,39 @@ namespace NanoXLSX.Internal.Readers
             }
             // Note: Defined name and formula master cell (array) resolution has to be performed in a finalizing processor
             cell.Formula = formula;
+        }
+
+        /// <summary>
+        /// Resolves an OOXML formula cached-value type to its internal cell type.
+        /// </summary>
+        /// <param name="type">OOXML cell type.</param>
+        /// <param name="hasCachedValue">True if a cached value was read.</param>
+        /// <returns>Resolved cached value type.</returns>
+        private static Cell.CellType ResolveFormulaCachedValueType(string type, bool hasCachedValue)
+        {
+            if (!hasCachedValue)
+            {
+                return Cell.CellType.Default;
+            }
+            switch (type)
+            {
+                case null:
+                case "":
+                case "n":
+                    return Cell.CellType.Number;
+                case "str":
+                case "s":
+                case "inlineStr":
+                    return Cell.CellType.String;
+                case "b":
+                    return Cell.CellType.Bool;
+                case "e":
+                    return Cell.CellType.Error;
+                case "d":
+                    return Cell.CellType.Date;
+                default:
+                    return Cell.CellType.Default;
+            }
         }
 
         /// <summary>
