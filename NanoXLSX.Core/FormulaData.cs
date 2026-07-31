@@ -16,6 +16,8 @@ namespace NanoXLSX
     /// </summary>
     public class FormulaData : IEquatable<FormulaData>, IComparable<FormulaData>
     {
+        private string expression;
+
         #region enums
         /// <summary>
         /// Enum to define the specific type of a formal if the Cell has the type <see cref="Cell.CellType.Formula"/>
@@ -46,7 +48,20 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the formula expression as string. This value is currently identical with <see cref="Cell.Value"/> if <see cref="Cell.DataType"/> is set to <see cref="Cell.CellType.Formula"/>.
         /// </summary>
-        public string Expression { get; internal set; }
+        public string Expression
+        {
+            get { return expression; }
+            internal set
+            {
+                expression = value;
+                HasExternalReferences = ContainsExternalReference(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets whether the formula expression contains a reference to an external workbook.
+        /// </summary>
+        internal bool HasExternalReferences { get; private set; }
 
         /// <summary>
         /// Type of the formula. Default is <see cref="FormulaType.Normal"/>
@@ -99,6 +114,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="expression">Formula expression (without leading equal sign)</param>
         /// <param name="cachedValue">Optional cached value. Default is null</param>
+        /// \remark <remarks>A basic validity checks (not full parsing) will perform on the expression, e.g. existence of an external link in the formula</remarks>
         public FormulaData(string expression, object cachedValue = null) : this()
         {
             Expression = expression;
@@ -143,6 +159,75 @@ namespace NanoXLSX
                 return Cell.CellType.Error;
             }
             return Cell.CellType.String;
+        }
+
+        /// <summary>
+        /// Determines whether a formula contains an external workbook reference without parsing the formula.
+        /// String literals, structured references, and relative R1C1 references are ignored.
+        /// </summary>
+        /// <param name="formulaExpression">Formula expression without a leading equal sign.</param>
+        /// <returns>True if an external workbook reference was found.</returns>
+        internal static bool ContainsExternalReference(string formulaExpression)
+        {
+            if (string.IsNullOrEmpty(formulaExpression) || formulaExpression.IndexOf('[') < 0)
+            {
+                return false;
+            }
+
+            bool inStringLiteral = false;
+            for (int i = 0; i < formulaExpression.Length; i++)
+            {
+                char current = formulaExpression[i];
+                if (current == '"')
+                {
+                    if (inStringLiteral && i + 1 < formulaExpression.Length && formulaExpression[i + 1] == '"')
+                    {
+                        i++;
+                        continue;
+                    }
+                    inStringLiteral = !inStringLiteral;
+                    continue;
+                }
+                if (inStringLiteral || current != '[')
+                {
+                    continue;
+                }
+
+                int closingBracket = formulaExpression.IndexOf(']', i + 1);
+                if (closingBracket <= i + 1)
+                {
+                    continue;
+                }
+
+                bool hasWorksheetName = false;
+                for (int j = closingBracket + 1; j < formulaExpression.Length; j++)
+                {
+                    char referenceCharacter = formulaExpression[j];
+                    if (referenceCharacter == '!')
+                    {
+                        if (hasWorksheetName)
+                        {
+                            return true;
+                        }
+                        break;
+                    }
+                    if (referenceCharacter == '[' || referenceCharacter == ']' || referenceCharacter == '"'
+                        || referenceCharacter == '+' || referenceCharacter == '-' || referenceCharacter == '*'
+                        || referenceCharacter == '/' || referenceCharacter == '^' || referenceCharacter == '&'
+                        || referenceCharacter == '=' || referenceCharacter == '<' || referenceCharacter == '>'
+                        || referenceCharacter == ',' || referenceCharacter == ';' || referenceCharacter == '('
+                        || referenceCharacter == ')' || referenceCharacter == '{' || referenceCharacter == '}')
+                    {
+                        break;
+                    }
+                    if (!char.IsWhiteSpace(referenceCharacter) && referenceCharacter != '\'')
+                    {
+                        hasWorksheetName = true;
+                    }
+                }
+                i = closingBracket;
+            }
+            return false;
         }
 
         /// <summary>

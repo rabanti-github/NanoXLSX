@@ -289,6 +289,19 @@ namespace NanoXLSX.Test.Core.CellTest
             TestUtils.AssertEquals<DateTime>(new DateTime(2020, 10, 9, 8, 7, 6), new DateTime(2020, 10, 9, 8, 7, 6), new DateTime(2020, 10, 9, 8, 7, 5), this.cellAddress);
         }
 
+        [Fact(DisplayName = "Test of the Equals method on a formula cell")]
+        public void EqualsFormulaTest()
+        {
+            Cell cell1 = new Cell("expression", Cell.CellType.Formula, 1, 1);
+            cell1.Formula = new FormulaData("expression");
+            Cell cell2 = new Cell("expression", Cell.CellType.Formula, 1, 1);
+            cell2.Formula = new FormulaData("expression");
+            Cell cell3 = new Cell("expression2", Cell.CellType.Formula, 1, 1);
+            cell3.Formula = new FormulaData("expression2");
+            Assert.True(cell1.Equals(cell2));
+            Assert.False(cell1.Equals(cell3));
+        }
+
         [Fact(DisplayName = "Test failing of the Equals method, when other cell is null (simplified use cases)")]
         public void EqualsFailTest()
         {

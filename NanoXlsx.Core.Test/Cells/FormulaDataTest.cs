@@ -50,6 +50,69 @@ namespace NanoXLSX.Test.Core.CellTest
             Assert.Equal(Cell.CellType.String, new FormulaData("A1", new object()).CachedValueType);
         }
 
+        [Theory(DisplayName = "Test of external workbook reference detection in formulas")]
+        [InlineData("[1]Sheet1!A1")]
+        [InlineData("SUM([12]Sheet_Name!$A$1)")]
+        [InlineData("'[1]Sheet 1'!$A$1")]
+        [InlineData("[Book.xlsx]Sheet1!A1")]
+        [InlineData("SUM('[Book.xlsx]Owner''s Sheet'!A1)")]
+        [InlineData("[1]Sheet1!A1+[2]Sheet2!B2")]
+        public void ExternalReferenceDetectionTest(string expression)
+        {
+            FormulaData data = new FormulaData(expression);
+
+            Assert.True(data.HasExternalReferences);
+            Assert.True(FormulaData.ContainsExternalReference(expression));
+        }
+
+        [Theory(DisplayName = "Test of expressions without external workbook references")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("SUM(A1:A2)")]
+        [InlineData("Table1[Column]")]
+        [InlineData("Table1[1]")]
+        [InlineData("R[1]C[1]")]
+        [InlineData("[")]
+        [InlineData("[]Sheet1!A1")]
+        [InlineData("[1]")]
+        [InlineData("[1]!A1")]
+        [InlineData("[1]Sheet1+A1")]
+        [InlineData("Table1[Column]+Sheet1!A1")]
+        [InlineData("\"[1]Sheet1!A1\"")]
+        [InlineData("INDIRECT(\"[1]Sheet1!A1\")")]
+        [InlineData("\"escaped \"\"[1]Sheet1!A1\"\" text\"")]
+        public void ExternalReferenceDetectionNegativeTest(string expression)
+        {
+            FormulaData data = new FormulaData(expression);
+
+            Assert.False(data.HasExternalReferences);
+            Assert.False(FormulaData.ContainsExternalReference(expression));
+        }
+
+        [Fact(DisplayName = "Test that external workbook reference detection follows expression changes")]
+        public void ExternalReferenceExpressionChangeTest()
+        {
+            FormulaData data = new FormulaData("A1");
+            Assert.False(data.HasExternalReferences);
+
+            data.Expression = "[1]Sheet1!A1";
+            Assert.True(data.HasExternalReferences);
+
+            data.Expression = "Table1[Column]";
+            Assert.False(data.HasExternalReferences);
+        }
+
+        [Fact(DisplayName = "Test that copying FormulaData preserves external workbook reference detection")]
+        public void ExternalReferenceCopyTest()
+        {
+            FormulaData data = new FormulaData("[1]Sheet1!A1");
+
+            FormulaData copy = data.Copy();
+
+            Assert.True(copy.HasExternalReferences);
+            Assert.Equal(data, copy);
+        }
+
         [Fact(DisplayName = "Test of the FormulaData Copy function with cached value metadata")]
         public void CopyTest()
         {

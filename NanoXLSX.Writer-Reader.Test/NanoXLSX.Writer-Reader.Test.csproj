@@ -31,6 +31,7 @@
 	  <None Remove="Resources\contemporary_password.xlsx" />
 	  <None Remove="Resources\contemporary_password2.xlsx" />
 	  <None Remove="Resources\empty_worksheet.xlsx" />
+	  <None Remove="Resources\external_link.xlsx" />
 	  <None Remove="Resources\inline_shared_strings.xlsx" />
 	  <None Remove="Resources\invalid_column_width_max.xlsx" />
 	  <None Remove="Resources\invalid_column_width_min.xlsx" />
@@ -67,6 +68,7 @@
 	  <EmbeddedResource Include="Resources\contemporary_password.xlsx" />
 	  <EmbeddedResource Include="Resources\contemporary_password2.xlsx" />
 	  <EmbeddedResource Include="Resources\empty_worksheet.xlsx" />
+	  <EmbeddedResource Include="Resources\external_link.xlsx" />
 	  <EmbeddedResource Include="Resources\inline_shared_strings.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_column_width_max.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_column_width_min.xlsx" />

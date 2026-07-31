@@ -51,7 +51,7 @@ namespace NanoXLSX
 
         #region constants
 
-        private static readonly Regex EXT_WORKSHEET_REFERENE_REGEX = new Regex(
+        private static readonly Regex EXT_WORKSHEET_REFERENCE_REGEX = new Regex(
         @"^\[[0-9]+\].+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         private static readonly Regex EXT_REFERENCE_REGEX = new Regex(
@@ -187,7 +187,7 @@ namespace NanoXLSX
         /// <exception cref="FormatException">Thrown if validation fails.</exception>
         private static void ValidateName(Workbook workbook, string name, Worksheet localSheet)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new FormatException("The name of a defined name must not be null or empty.");
             }
@@ -240,26 +240,23 @@ namespace NanoXLSX
         /// <exception cref="FormatException">Thrown if a expected address or range expression is invalid</exception>
         private void CastValue(Workbook workbook)
         {
-            if (this.Value == null)
-            {
-                throw new FormatException("The value of a defined name cannot be null or empty");
-            }
             switch (this.Type)
             {
                 // The object type is assumed to be validated prior
                 case NameType.Cell:
-                    string address = this.Value as string;
+                    string address = this.Value is Address addressValue ? addressValue.ToString() : this.Value as string;
                     Validators.ValidateCellAddressExpression(address, Cell.AddressScope.SingleAddress); // throw if not an address
                     Address fixedAddress = new Address(address, Cell.AddressType.FixedRowAndColumn);
                     this.TextValue = fixedAddress.ToString();
                     this.Value = fixedAddress; // Reformat passed object
                     break;
                 case NameType.Range:
-                    string range = this.Value as string;
+                    string range = this.Value is Range rangeValue ? rangeValue.ToString() : this.Value as string;
                     Validators.ValidateCellAddressExpression(range, Cell.AddressScope.Range); // throw if not valid range
                     Range tempRange = new Range(range);
-                    Range fixedRange = new Range(new Address(tempRange.StartAddress.Row, tempRange.StartAddress.Column, Cell.AddressType.FixedRowAndColumn), new Address(tempRange.EndAddress.Row, tempRange.EndAddress.Column, Cell.AddressType.FixedRowAndColumn));
+                    Range fixedRange = new Range(new Address(tempRange.StartAddress.Column, tempRange.StartAddress.Row, Cell.AddressType.FixedRowAndColumn), new Address(tempRange.EndAddress.Column, tempRange.EndAddress.Row, Cell.AddressType.FixedRowAndColumn));
                     this.TextValue = fixedRange.ToString();
+                    this.Value = fixedRange;
                     break;
                 case NameType.Formula:
                     this.TextValue = this.Value.ToString(); // No formula validation yet
@@ -304,6 +301,13 @@ namespace NanoXLSX
             return definedName;
         }
 
+        /// <summary>
+        /// Checks whether the defined name contains an external link (not applicable for constants)
+        /// </summary>
+        /// <param name="worksheet">optional worksheet name</param>
+        /// <param name="type">Type of the defined name</param>
+        /// <param name="value">Value of the defined name</param>
+        /// <returns>Returns true if an external link was found</returns>
         private static bool ContainsExternalLink(string worksheet, NameType type, object value)
         {
             switch (type)
@@ -313,19 +317,24 @@ namespace NanoXLSX
                     return EXT_REFERENCE_REGEX.IsMatch(formula);
                 case NameType.Range:
                 case NameType.Cell:
-                    if (worksheet != null)
-                    {
-                        return EXT_WORKSHEET_REFERENE_REGEX.IsMatch(worksheet);
-                    }
-                    break;
+                    return worksheet != null && EXT_WORKSHEET_REFERENCE_REGEX.IsMatch(worksheet);
                 default: // constant
                     break; // NoOp
             }
             return false;
         }
 
+        /// <summary>
+        /// Gets the parsed object from a raw reference string
+        /// </summary>
+        /// <param name="reference">Raw reference string to parse</param>
+        /// <param name="type">Determined type of the defined name as out parameter</param>
+        /// <param name="worksheet">Determined worksheet name (cells or ranges) as out parameter</param>
+        /// <param name="error">Possible determined formula error as out parameter</param>
+        /// <returns>Returns the parsed and typed object of the defined name</returns>
         private static object GetParsedObject(string reference, out NameType type, out string worksheet, out FormulaError error)
         {
+            reference = reference?.Trim();
             error = FormulaError.NoError;
             worksheet = null;
             if (ParserUtils.TryParseFormulaStringConstant(reference, out string stringValue))
@@ -400,7 +409,7 @@ namespace NanoXLSX
             {
                 return true;
             }
-            return string.Equals(Name, other.Name, StringComparison.Ordinal)
+            return string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase)
                 && Enum.Equals(Type, other.Type)
                 && string.Equals(TextValue, other.TextValue, StringComparison.Ordinal) // object implicit compared by string
                 && string.Equals(Comment, other.Comment, StringComparison.Ordinal)
@@ -427,7 +436,7 @@ namespace NanoXLSX
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (Name != null ? Name.GetHashCode() : 0);
+                hash = (hash * 31) + (Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(Name) : 0);
                 hash = (hash * 31) + Type.GetHashCode();
                 hash = (hash * 31) + (TextValue != null ? TextValue.GetHashCode() : 0); // Object implicit covered by string
                 hash = (hash * 31) + (Comment != null ? Comment.GetHashCode() : 0);
@@ -451,7 +460,7 @@ namespace NanoXLSX
             {
                 return 1;
             }
-            int cmp = string.CompareOrdinal(Name, other.Name);
+            int cmp = StringComparer.OrdinalIgnoreCase.Compare(Name, other.Name);
             if (cmp != 0)
             {
                 return cmp;

@@ -128,7 +128,7 @@ namespace NanoXLSX.Internal.Writers
             XmlElement definedNames = XmlElement.CreateElement("definedNames");
             foreach (DefinedName item in names)
             {
-                XmlElement definedName = definedNames.AddChildElementWithValue("definedName", XmlUtils.SanitizeXmlValue(item.TextValue));
+                XmlElement definedName = definedNames.AddChildElementWithValue("definedName", XmlUtils.SanitizeXmlValue(GetDefinedNameText(item)));
                 definedName.AddAttribute("name", XmlUtils.SanitizeXmlValue(item.Name));
                 if (item.LocalSheet != null)
                 {
@@ -144,6 +144,21 @@ namespace NanoXLSX.Internal.Writers
                 }
             }
             return definedNames;
+        }
+
+        private static string GetDefinedNameText(DefinedName definedName)
+        {
+            if ((definedName.Type == DefinedName.NameType.Cell || definedName.Type == DefinedName.NameType.Range)
+                && definedName.TargetWorksheet != null)
+            {
+                string worksheetName = definedName.TargetWorksheet.SheetName.Replace("'", "''");
+                return "'" + worksheetName + "'!" + definedName.TextValue;
+            }
+            if (definedName.Type == DefinedName.NameType.Constant && definedName.Value is string stringValue)
+            {
+                return "\"" + stringValue.Replace("\"", "\"\"") + "\"";
+            }
+            return definedName.TextValue;
         }
 
         /// <summary>

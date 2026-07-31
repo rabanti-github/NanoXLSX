@@ -376,13 +376,8 @@ namespace NanoXLSX
             formula.Expression = definedName.Name;
             if (definedName.Type == DefinedName.NameType.Range)
             {
-                formula.FormulaRange = definedName.TextValue; // Assumed as range string
                 formula.Type = FormulaData.FormulaType.Array;
                 referenceRange = TransposeDefinedNameArrayRange(definedName.TextValue);
-            }
-            else if (definedName.Type == DefinedName.NameType.Cell)
-            {
-                formula.FormulaRange = definedName.TextValue; // Assumed as cell string
             }
             if (definedName.Type == DefinedName.NameType.Constant)
             {
@@ -1036,7 +1031,7 @@ namespace NanoXLSX
             Range resolvedRange = new Range(referenceExpression);
             int rowCount = resolvedRange.EndAddress.Row - resolvedRange.StartAddress.Row;
             int columnCount = resolvedRange.EndAddress.Column - resolvedRange.StartAddress.Column;
-            return new Range(this.ColumnNumber, this.rowNumber, this.rowNumber + rowCount, this.columnNumber + columnCount);
+            return new Range(this.ColumnNumber, this.rowNumber, this.ColumnNumber + columnCount, this.rowNumber + rowCount);
         }
 
         #endregion

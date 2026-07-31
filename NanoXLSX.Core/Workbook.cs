@@ -380,10 +380,6 @@ namespace NanoXLSX
             {
                 throw new WorksheetException("A defined name to a cell must have a worksheet");
             }
-            if (rangeAddress == null)
-            {
-                throw new WorksheetException("The range address pointing to a defined name cannot be null");
-            }
             return AddDefinedName(name, DefinedName.NameType.Range, rangeAddress, worksheet, localWorksheet, comment);
         }
 
@@ -422,7 +418,7 @@ namespace NanoXLSX
         /// \remark <remarks>The formula is not evaluated. Also do not add references to external workbooks (will cause an exception on save), as longs no NanoXLSX extension is loaded that can handle external links.</remarks>
         public DefinedName AddDefinedNameFormula(string name, string formula, Worksheet localWorksheet = null, string comment = null)
         {
-            if (string.IsNullOrEmpty(formula))
+            if (string.IsNullOrWhiteSpace(formula))
             {
                 throw new WorksheetException("A formula value pointing to a defined name cannot be null or empty");
             }
@@ -509,7 +505,7 @@ namespace NanoXLSX
             for (int i = 0; i < definedNames.Count; i++)
             {
                 DefinedName candidate = definedNames[i];
-                if (string.Equals(candidate.Name, name, System.StringComparison.Ordinal)
+                if (string.Equals(candidate.Name, name, System.StringComparison.OrdinalIgnoreCase)
                     && ReferenceEquals(candidate.LocalSheet, localSheet))
                 {
                     return i;

@@ -165,6 +165,23 @@ namespace NanoXLSX.Test.Writer_Reader.Reader
             }
         }
 
+        [Fact(DisplayName = "Test of propagating a defined-name formula error to the referencing cell")]
+        public void DefinedNameFormulaErrorWriteTest()
+        {
+            Workbook workbook = CreateWorkbook();
+            DefinedName definedName = DefinedName.ResolveDefinedName("errorRef", "#REF!", workbook, null, null);
+            workbook.AddDefinedName(definedName);
+            workbook.CurrentWorksheet.AddCellReference(definedName, "A1");
+
+            using (MemoryStream stream = SaveWorkbook(workbook))
+            {
+                XElement cellElement = ReadCellElement(stream, "A1");
+                Assert.Equal("e", cellElement.Attribute("t")?.Value);
+                Assert.Equal("errorRef", cellElement.Element(SpreadsheetNamespace + "f")?.Value);
+                Assert.Equal("0", cellElement.Element(SpreadsheetNamespace + "v")?.Value);
+            }
+        }
+
         private static Workbook CreateWorkbook()
         {
             Workbook workbook = new Workbook(false);

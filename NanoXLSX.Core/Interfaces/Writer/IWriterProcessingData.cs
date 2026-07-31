@@ -24,6 +24,12 @@ namespace NanoXLSX.Interfaces.Writer
         /// </summary>
         StyleRepository StyleRepository { get; set; }
 
+        /// <summary>
+        /// Cached result of the external formula reference validation for the current write operation.
+        /// Null indicates that validation has not run yet.
+        /// </summary>
+        bool? HasExternalFormulaReferences { get; set; }
+
         // TODO add further relevant data for processing here - To be implemented in interface implementations
     }
 }

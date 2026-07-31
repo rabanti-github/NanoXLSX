@@ -1,5 +1,6 @@
-﻿using NanoXLSX.Exceptions;
-using NanoXLSX.Styles;
+﻿using System;
+using NanoXLSX.Enums;
+using NanoXLSX.Exceptions;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
@@ -7,435 +8,325 @@ namespace NanoXLSX.Test.Core.WorkbookTest
 {
     public class DefinedNameTest
     {
-        #region constructor tests
-
-        [Fact(DisplayName = "Test of the DefinedName constructor with all parameters")]
-        public void ConstructorTest_AllParameters()
+        [Theory(DisplayName = "Test of valid defined name identifiers")]
+        [InlineData("Revenue_2026")]
+        [InlineData("_private.name")]
+        [InlineData("\\legacy")]
+        [InlineData("Übersicht")]
+        [InlineData("工作表Name")]
+        public void ValidNameTest(string name)
         {
-            Workbook wb = new Workbook("Sheet1");
-            DefinedName dn = new DefinedName("MyName", "Sheet1!$A$1", wb.CurrentWorksheet, "a comment");
-            Assert.Equal("MyName", dn.Name);
-            Assert.Equal("Sheet1!$A$1", dn.TextValue);
-            Assert.Same(wb.CurrentWorksheet, dn.LocalSheet);
-            Assert.Equal("a comment", dn.Comment);
+            Workbook workbook = new Workbook("Sheet1");
+            Assert.Equal(name, workbook.AddDefinedNameConstant(name, 1).Name);
         }
 
-        [Fact(DisplayName = "Test of the DefinedName constructor with default optional parameters")]
-        public void ConstructorTest_Defaults()
-        {
-            DefinedName dn = new DefinedName("MyName", "Sheet1!$A$1");
-            Assert.Equal("MyName", dn.Name);
-            Assert.Equal("Sheet1!$A$1", dn.TextValue);
-            Assert.Null(dn.LocalSheet);
-            Assert.Null(dn.Comment);
-        }
-
-        [Theory(DisplayName = "Test of the DefinedName constructor for invalid name (FormatException)")]
+        [Theory(DisplayName = "Test of invalid defined name identifiers")]
         [InlineData(null)]
         [InlineData("")]
-        [InlineData("1Foo")]
-        [InlineData("9")]
-        [InlineData("A1")] // Cell address is not allowed
-        [InlineData("a1")] // Cell address is not allowed
-        [InlineData("XFD1048576")] // Cell address is not allowed
-        [InlineData("Z42")]
-        public void ConstructorTest_InvalidName(string name)
+        [InlineData("   ")]
+        [InlineData("1Name")]
+        [InlineData(".Name")]
+        [InlineData("Bad Name")]
+        [InlineData("Bad-Name")]
+        [InlineData("C")]
+        [InlineData("r")]
+        [InlineData("A1")]
+        [InlineData("XFD1048576")]
+        public void InvalidNameTest(string name)
         {
-            Assert.Throws<FormatException>(() => new DefinedName(name, "Sheet1!$A$1"));
+            Workbook workbook = new Workbook("Sheet1");
+            Assert.Throws<FormatException>(() => workbook.AddDefinedNameConstant(name, 1));
         }
 
-        [Theory(DisplayName = "Test of the DefinedName constructor for valid (non cell-reference) names")]
-        [InlineData("MyName")]
-        [InlineData("LOGO1000")]
-        [InlineData("Test")]
-        [InlineData("_Foo")]
-        [InlineData("XFE1")] // Out of range cell address - so, allowed as a name
-        [InlineData("ABCD1")] // Out of range cell address - so, allowed as a name
-        [InlineData("A1048577")] // Out of range cell address - so, allowed as a name
-        [InlineData("A99999999999")] // Digit suffix exceeds int.MaxValue (overflow), so int.TryParse fails - allowed as a name
-        [InlineData("XFD2147483648")] // Row number is one past int.MaxValue - allowed as a name
-        public void ConstructorTest_ValidName(string name)
+        [Fact(DisplayName = "Test of the maximum defined name length")]
+        public void NameLengthTest()
         {
-            DefinedName dn = new DefinedName(name, "Sheet1!$A$1");
-            Assert.Equal(name, dn.Name);
+            Workbook workbook = new Workbook("Sheet1");
+            Assert.NotNull(workbook.AddDefinedNameConstant(new string('N', 255), 1));
+            Assert.Throws<FormatException>(() => workbook.AddDefinedNameConstant(new string('N', 256), 1));
         }
 
-        [Theory(DisplayName = "Test of the DefinedName constructor for invalid reference")]
+        [Theory(DisplayName = "Test of AddDefinedNameCell overloads")]
+        [InlineData(0)] // address
+        [InlineData(1)] // row, column
+        [InlineData(2)] // address object
+        public void AddDefinedNameCellTest(int overload)
+        {
+            Workbook workbook = new Workbook("Target");
+            Worksheet target = workbook.CurrentWorksheet;
+            DefinedName name;
+            switch (overload)
+            {
+                case 0:
+                    name = workbook.AddDefinedNameCell("CellName", target, "b2", null, "comment");
+                    break;
+                case 1:
+                    name = workbook.AddDefinedNameCell("CellName", target, 1, 1, null, "comment");
+                    break;
+                default:
+                    name = workbook.AddDefinedNameCell("CellName", target, new Address("B2"), null, "comment"); ;
+                    break;
+            }
+
+            Assert.Equal(DefinedName.NameType.Cell, name.Type);
+            Assert.Equal("$B$2", name.TextValue);
+            Assert.Equal(new Address("$B$2"), name.Value);
+            Assert.Same(target, name.TargetWorksheet);
+            Assert.Null(name.LocalSheet);
+            Assert.Equal("comment", name.Comment);
+            Assert.Equal(Errors.FormulaError.NoError, name.Error);
+            Assert.False(name.HasExternalReferences);
+        }
+
+        [Theory(DisplayName = "Test of AddDefinedNameRange overloads")]
+        [InlineData(0)] // address string
+        [InlineData(1)] // start and end address
+        [InlineData(2)] // start/end row and start/end column
+        [InlineData(3)] // range object
+        public void AddDefinedNameRangeTest(int overload)
+        {
+            Workbook workbook = new Workbook("Target");
+            Worksheet target = workbook.CurrentWorksheet;
+            DefinedName name;
+            switch (overload)
+            {
+                case 0:
+                    name = workbook.AddDefinedNameRange("RangeName", target, "a1:b3");
+                    break;
+                case 1:
+                    name = workbook.AddDefinedNameRange("RangeName", target, new Address("A1"), new Address("B3"));
+                    break;
+                case 2:
+                    name = workbook.AddDefinedNameRange("RangeName", target, 0, 0, 1, 2);
+                    break;
+                default:
+                    name = workbook.AddDefinedNameRange("RangeName", target, new Range("A1:B3"));
+                    break;
+            }
+            Assert.Equal(DefinedName.NameType.Range, name.Type);
+            Assert.Equal("$A$1:$B$3", name.TextValue);
+            Assert.Equal(new Range("$A$1:$B$3"), name.Value);
+            Assert.Same(target, name.TargetWorksheet);
+        }
+
+        [Theory(DisplayName = "Test of all supported defined name constant types")]
+        [InlineData("String")]
+        [InlineData("Whitespace")]
+        [InlineData("Bool")]
+        [InlineData("Byte")]
+        [InlineData("SByte")]
+        [InlineData("Decimal")]
+        [InlineData("Double")]
+        [InlineData("Float")]
+        [InlineData("Int")]
+        [InlineData("UInt")]
+        [InlineData("Long")]
+        [InlineData("ULong")]
+        [InlineData("Short")]
+        [InlineData("UShort")]
+        [InlineData("DateTime")]
+        [InlineData("TimeSpan")]
+        [InlineData("Object")]
+        public void AddDefinedNameConstantTest(string kind)
+        {
+            object value = CreateConstant(kind);
+            Workbook workbook = new Workbook("Sheet1");
+            DefinedName name = workbook.AddDefinedNameConstant("ConstantName", value);
+
+            Assert.Equal(DefinedName.NameType.Constant, name.Type);
+            Assert.Same(value, name.Value);
+            Assert.NotNull(name.TextValue);
+            Assert.Null(name.TargetWorksheet);
+        }
+
+        [Theory(DisplayName = "Test of invalid defined name values (formula)")]
         [InlineData(null)]
         [InlineData("")]
-        public void ConstructorTest_InvalidReference(string reference)
+        [InlineData(" ")]
+        public void InvalidFormulaTest(string formula)
         {
-            Assert.Throws<FormatException>(() => new DefinedName("MyName", reference));
+            Workbook workbook = new Workbook("Sheet1");
+            Assert.Throws<WorksheetException>(() => workbook.AddDefinedNameFormula("FormulaName", formula));
         }
 
-        #endregion
-
-        #region equality tests
-
-        [Fact(DisplayName = "Test that DefinedName equals itself (reflexive)")]
-        public void Equals_Reflexive()
+        [Fact(DisplayName = "Test of formula and null constant defined names")]
+        public void FormulaAndNullConstantTest()
         {
-            DefinedName dn = new DefinedName("A", "Sheet1!$A$1");
-            Assert.True(dn.Equals(dn));
-            Assert.True(dn.Equals((object)dn));
+            Workbook workbook = new Workbook("Sheet1");
+            DefinedName formula = workbook.AddDefinedNameFormula("FormulaName", "SUM(1,2)", null, "note");
+            Assert.Equal(DefinedName.NameType.Formula, formula.Type);
+            Assert.Equal("SUM(1,2)", formula.TextValue);
+            Assert.Equal("note", formula.Comment);
+            Assert.Throws<WorksheetException>(() => workbook.AddDefinedNameConstant("NullName", null));
+            Assert.Throws<FormatException>(() => workbook.AddDefinedNameConstant("EmptyName", string.Empty));
         }
 
-        [Fact(DisplayName = "Test that two equal DefinedName instances are Equals")]
-        public void Equals_TwoEqualInstances()
+        [Fact(DisplayName = "Test of invalid cell and range defined names")]
+        public void InvalidCellAndRangeTest()
         {
-            Workbook wb = new Workbook("Sheet1");
-            DefinedName a = new DefinedName("X", "Sheet1!$A$1", wb.CurrentWorksheet, "c");
-            DefinedName b = new DefinedName("X", "Sheet1!$A$1", wb.CurrentWorksheet, "c");
+            Workbook workbook = new Workbook("Sheet1");
+            Worksheet worksheet = workbook.CurrentWorksheet;
+            Assert.Throws<WorksheetException>(() => workbook.AddDefinedNameCell("Name1", null, new Address("A1")));
+            Assert.Throws<FormatException>(() => workbook.AddDefinedNameCell("Name2", worksheet, (Address)null));
+            Assert.Throws<WorksheetException>(() => workbook.AddDefinedNameRange("Name3", null, new Range("A1:B2")));
+            Assert.Throws<FormatException>(() => workbook.AddDefinedNameRange("Name4", worksheet, (Range)null));
+            Assert.Throws<FormatException>(() => workbook.AddDefinedNameCell("Name5", worksheet, "A1:B2"));
+            Assert.Equal("$A$1:$A$1", workbook.AddDefinedNameRange("Name6", worksheet, "A1").TextValue);
+        }
+
+        [Fact(DisplayName = "Test of case-insensitive identity and defined name scopes")]
+        public void ScopeAndIdentityTest()
+        {
+            Workbook workbook = new Workbook("Sheet1");
+            Worksheet sheet1 = workbook.CurrentWorksheet;
+            workbook.AddWorksheet("Sheet2");
+            Worksheet sheet2 = workbook.CurrentWorksheet;
+            DefinedName global = workbook.AddDefinedNameConstant("Rate", 1);
+            DefinedName local1 = workbook.AddDefinedNameConstant("Rate", 2, sheet1);
+            DefinedName local2 = workbook.AddDefinedNameConstant("RATE", 3, sheet2);
+
+            Assert.Same(global, workbook.GetDefinedName("rate"));
+            Assert.Same(local1, workbook.GetDefinedName("RATE", sheet1));
+            Assert.Same(local2, workbook.GetDefinedName("rate", sheet2));
+            Assert.Null(workbook.GetDefinedName("missing"));
+            Assert.Throws<WorksheetException>(() => workbook.AddDefinedNameConstant("rAtE", 4));
+            Assert.Throws<WorksheetException>(() => workbook.AddDefinedNameConstant("rAtE", 4, sheet1));
+            Assert.Equal(3, workbook.GetDefinedNames().Count);
+        }
+
+        [Fact(DisplayName = "Test of removing a defined name and invalidating formula references")]
+        public void RemoveDefinedNameTest()
+        {
+            Workbook workbook = new Workbook("Sheet1");
+            DefinedName removed = workbook.AddDefinedNameConstant("RemovedName", 5);
+            DefinedName retained = workbook.AddDefinedNameConstant("RetainedName", 6);
+            workbook.CurrentWorksheet.AddCellReference(removed, "A1");
+            workbook.CurrentWorksheet.AddCellReference(retained, "A2");
+            workbook.AddWorksheet("Sheet2");
+            workbook.CurrentWorksheet.AddCellReference(removed, "B1");
+
+            Assert.True(workbook.RemoveDefinedName("removedname"));
+            Assert.Null(workbook.Worksheets[0].Cells["A1"].Formula.DefinedNameReference);
+            Assert.Null(workbook.Worksheets[1].Cells["B1"].Formula.DefinedNameReference);
+            Assert.Same(retained, workbook.Worksheets[0].Cells["A2"].Formula.DefinedNameReference);
+            Assert.False(workbook.RemoveDefinedName("missing"));
+        }
+
+        [Fact(DisplayName = "Test of DefinedName equality, hashing and object equality")]
+        public void EqualityTest()
+        {
+            Workbook workbook1 = new Workbook("Sheet1");
+            Workbook workbook2 = new Workbook("Sheet1");
+            DefinedName a = workbook1.AddDefinedNameConstant("CaseName", 1, null, "comment");
+            DefinedName b = workbook2.AddDefinedNameConstant("casename", 1, null, "comment");
+
+            Assert.True(a.Equals(a));
             Assert.True(a.Equals(b));
-            Assert.True(b.Equals(a));
             Assert.True(a.Equals((object)b));
             Assert.Equal(a.GetHashCode(), b.GetHashCode());
-        }
-
-        [Fact(DisplayName = "Test inequality on differing Name")]
-        public void Equals_DiffersByName()
-        {
-            DefinedName a = new DefinedName("X", "Sheet1!$A$1");
-            DefinedName b = new DefinedName("Y", "Sheet1!$A$1");
-            Assert.False(a.Equals(b));
-        }
-
-        [Fact(DisplayName = "Test inequality on differing Reference")]
-        public void Equals_DiffersByReference()
-        {
-            DefinedName a = new DefinedName("X", "Sheet1!$A$1");
-            DefinedName b = new DefinedName("X", "Sheet1!$A$2");
-            Assert.False(a.Equals(b));
-        }
-
-        [Fact(DisplayName = "Test inequality on differing Comment")]
-        public void Equals_DiffersByComment()
-        {
-            DefinedName a = new DefinedName("X", "Sheet1!$A$1", null, "c1");
-            DefinedName b = new DefinedName("X", "Sheet1!$A$1", null, "c2");
-            Assert.False(a.Equals(b));
-        }
-
-        [Fact(DisplayName = "Test inequality on differing LocalSheet (by reference)")]
-        public void Equals_DiffersByLocalSheet()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            wb.AddWorksheet("Sheet2");
-            DefinedName a = new DefinedName("X", "Sheet1!$A$1", wb.Worksheets[0]);
-            DefinedName b = new DefinedName("X", "Sheet1!$A$1", wb.Worksheets[1]);
-            DefinedName c = new DefinedName("X", "Sheet1!$A$1", null);
-            Assert.False(a.Equals(b));
-            Assert.False(a.Equals(c));
-        }
-
-        [Fact(DisplayName = "Test that Equals returns false against null and different types")]
-        public void Equals_NullAndOtherType()
-        {
-            DefinedName a = new DefinedName("X", "Sheet1!$A$1");
             Assert.False(a.Equals((DefinedName)null));
             Assert.False(a.Equals((object)null));
-            Assert.False(a.Equals("not a defined name"));
+            Assert.False(a.Equals("wrong"));
+            Assert.False(a.Equals(workbook2.AddDefinedNameConstant("OtherName", 1)));
         }
 
-        #endregion
-
-        #region CompareTo tests
-
-        [Fact(DisplayName = "Test of CompareTo: by Name (ordinal)")]
-        public void CompareTo_ByName()
+        [Fact(DisplayName = "Test of DefinedName comparison and string representation")]
+        public void CompareToAndToStringTest()
         {
-            DefinedName a = new DefinedName("Apple", "x");
-            DefinedName b = new DefinedName("Banana", "x");
-            Assert.True(a.CompareTo(b) < 0);
-            Assert.True(b.CompareTo(a) > 0);
-            Assert.Equal(0, a.CompareTo(new DefinedName("Apple", "x")));
+            Workbook workbook = new Workbook("Sheet1");
+            Worksheet sheet = workbook.CurrentWorksheet;
+            DefinedName a = workbook.AddDefinedNameConstant("Alpha", 1);
+            DefinedName sameNameLocal = workbook.AddDefinedNameConstant("alpha", 1, sheet);
+            DefinedName z = workbook.AddDefinedNameFormula("Zulu", "1+1");
+
+            Assert.Equal(1, a.CompareTo(null));
+            Assert.True(a.CompareTo(z) < 0);
+            Assert.True(a.CompareTo(sameNameLocal) < 0);
+            Assert.True(sameNameLocal.CompareTo(a) > 0);
+            Assert.Contains("name=Alpha", a.ToString());
+            Assert.Contains("scope=workbook", a.ToString());
+            Assert.Contains("sheet:Sheet1", sameNameLocal.ToString());
         }
 
-        [Fact(DisplayName = "Test of CompareTo: workbook scope sorts before worksheet scope")]
-        public void CompareTo_ByScope()
+        [Fact(DisplayName = "Test of every DefinedName comparison component")]
+        public void CompareToComponentsTest()
         {
-            Workbook wb = new Workbook("Sheet1");
-            DefinedName workbookScope = new DefinedName("X", "y");
-            DefinedName sheetScope = new DefinedName("X", "y", wb.CurrentWorksheet);
-            Assert.True(workbookScope.CompareTo(sheetScope) < 0);
-            Assert.True(sheetScope.CompareTo(workbookScope) > 0);
+            Workbook workbook1 = new Workbook("Sheet1");
+            workbook1.AddWorksheet("Sheet2");
+            Workbook workbook2 = new Workbook("Other");
+            Worksheet first = workbook1.Worksheets[0];
+            Worksheet second = workbook1.Worksheets[1];
+            DefinedName baseline = new DefinedName(workbook1, DefinedName.NameType.Constant, "Name", 1, null, first, "a");
+
+            Assert.NotEqual(0, baseline.CompareTo(new DefinedName(workbook2, DefinedName.NameType.Formula, "Name", "1", null, first, "a")));
+            Assert.True(baseline.CompareTo(new DefinedName(workbook2, DefinedName.NameType.Constant, "Name", 1, null, second, "a")) < 0);
+            Assert.Equal(0, baseline.CompareTo(new DefinedName(workbook2, DefinedName.NameType.Constant, "name", 1, null, first, "a")));
+            Assert.True(baseline.CompareTo(new DefinedName(workbook2, DefinedName.NameType.Constant, "Name", 2, null, first, "a")) < 0);
+            Assert.True(baseline.CompareTo(new DefinedName(workbook2, DefinedName.NameType.Constant, "Name", 1, null, first, "b")) < 0);
+
+            DefinedName target1 = new DefinedName(workbook1, DefinedName.NameType.Cell, "Target", "A1", first, null);
+            DefinedName target2 = new DefinedName(workbook2, DefinedName.NameType.Cell, "Target", "A1", second, null);
+            Assert.True(target1.CompareTo(target2) < 0);
         }
 
-        [Fact(DisplayName = "Test of CompareTo: worksheet scopes ordered by SheetID")]
-        public void CompareTo_BySheetId()
+        [Theory(DisplayName = "Test of resolving defined names read from workbook XML")]
+        [InlineData("\"text\"", DefinedName.NameType.Constant, "text")]
+        [InlineData("TRUE", DefinedName.NameType.Constant, "TRUE")]
+        [InlineData("42", DefinedName.NameType.Constant, "42")]
+        [InlineData("2.5", DefinedName.NameType.Constant, "2.5")]
+        [InlineData("'Sheet1'!$A$1", DefinedName.NameType.Cell, "$A$1")]
+        [InlineData("'Sheet1'!$A$1:$B$2", DefinedName.NameType.Range, "$A$1:$B$2")]
+        [InlineData("SUM(1,2)", DefinedName.NameType.Formula, "SUM(1,2)")]
+        [InlineData("#REF!", DefinedName.NameType.Formula, "#REF!")]
+        [InlineData("'Missing'!$A$1", DefinedName.NameType.Cell, "$A$1")]
+        [InlineData("'Sheet1'!invalid", DefinedName.NameType.Formula, "'Sheet1'!invalid")]
+        public void ResolveDefinedNameTest(string reference, DefinedName.NameType expectedType, string expectedText)
         {
-            Workbook wb = new Workbook("Sheet1");
-            wb.AddWorksheet("Sheet2");
-            DefinedName onSheet1 = new DefinedName("X", "y", wb.Worksheets[0]);
-            DefinedName onSheet2 = new DefinedName("X", "y", wb.Worksheets[1]);
-            Assert.True(onSheet1.CompareTo(onSheet2) < 0);
-            Assert.True(onSheet2.CompareTo(onSheet1) > 0);
+            Workbook workbook = new Workbook("Sheet1");
+            DefinedName name = DefinedName.ResolveDefinedName("ResolvedName", reference, workbook, null, "comment");
+            Assert.Equal(expectedType, name.Type);
+            Assert.Equal(expectedText, name.TextValue);
+            Assert.Equal("comment", name.Comment);
+            Assert.Equal(reference == "#REF!" ? Errors.FormulaError.Reference : Errors.FormulaError.NoError, name.Error);
         }
 
-        [Fact(DisplayName = "Test of CompareTo: by Reference when name and scope match")]
-        public void CompareTo_ByReference()
+        [Fact(DisplayName = "Test that DefinedName requires a workbook")]
+        public void NullWorkbookTest()
         {
-            DefinedName a = new DefinedName("X", "AA");
-            DefinedName b = new DefinedName("X", "BB");
-            Assert.True(a.CompareTo(b) < 0);
+            Assert.Throws<FormatException>(() => new DefinedName(null, DefinedName.NameType.Constant, "Name", 1, null));
+            Assert.Throws<FormatException>(() => new DefinedName(new Workbook(), DefinedName.NameType.Formula, "Name", "", null));
         }
 
-        [Fact(DisplayName = "Test of CompareTo: by Comment as last tiebreaker")]
-        public void CompareTo_ByComment()
+        private static object CreateConstant(string kind)
         {
-            DefinedName a = new DefinedName("X", "y", null, "alpha");
-            DefinedName b = new DefinedName("X", "y", null, "beta");
-            Assert.True(a.CompareTo(b) < 0);
+            switch (kind)
+            {
+                case "String": return "A \"quoted\" string";
+                case "Whitespace": return "   ";
+                case "Bool": return true;
+                case "Byte": return (byte)1;
+                case "SByte": return (sbyte)-2;
+                case "Decimal": return 3.25m;
+                case "Double": return 4.5d;
+                case "Float": return 5.75f;
+                case "Int": return -6;
+                case "UInt": return (uint)7;
+                case "Long": return (long)-8;
+                case "ULong": return (ulong)9;
+                case "Short": return (short)-10;
+                case "UShort": return (ushort)11;
+                case "DateTime": return new DateTime(2026, 7, 31, 12, 30, 0);
+                case "TimeSpan": return TimeSpan.FromHours(13.5);
+                default: return new ConstantObject();
+            }
         }
 
-        [Fact(DisplayName = "Test of CompareTo: null comparand returns positive")]
-        public void CompareTo_Null()
+        private sealed class ConstantObject
         {
-            DefinedName a = new DefinedName("X", "y");
-            Assert.True(a.CompareTo(null) > 0);
+            public override string ToString()
+            {
+                return "custom";
+            }
         }
-
-        #endregion
-
-        #region ToString tests
-
-        [Fact(DisplayName = "Test of ToString includes name, scope and reference")]
-        public void ToString_ContainsAllInfo()
-        {
-            Workbook wb = new Workbook("MySheet");
-            DefinedName dn = new DefinedName("MyName", "MySheet!$A$1", wb.CurrentWorksheet);
-            string s = dn.ToString();
-            Assert.Contains("MyName", s);
-            Assert.Contains("MySheet", s);
-            Assert.Contains("MySheet!$A$1", s);
-            DefinedName workbookScope = new DefinedName("Other", "ref");
-            Assert.Contains("workbook", workbookScope.ToString());
-        }
-
-        #endregion
-
-        #region Workbook API tests
-
-        [Fact(DisplayName = "Test of Workbook.AddDefinedName / GetDefinedNames / GetDefinedName")]
-        public void Workbook_AddAndGet()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            wb.AddDefinedName("MyName", "Sheet1!$A$1");
-            Assert.Single(wb.GetDefinedNames());
-            DefinedName dn = wb.GetDefinedName("MyName");
-            Assert.NotNull(dn);
-            Assert.Equal("Sheet1!$A$1", dn.TextValue);
-            Assert.Null(dn.LocalSheet);
-        }
-
-        [Fact(DisplayName = "Test of Workbook.AddDefinedName(DefinedName) overload")]
-        public void Workbook_AddInstance()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            wb.AddDefinedName(new DefinedName("MyName", "Sheet1!$A$1"));
-            Assert.Single(wb.GetDefinedNames());
-        }
-
-        [Fact(DisplayName = "Test that AddDefinedName(null) throws")]
-        public void Workbook_AddNullThrows()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            Assert.Throws<WorksheetException>(() => wb.AddDefinedName((DefinedName)null));
-        }
-
-        [Fact(DisplayName = "Test that AddDefinedName with duplicate name and scope throws")]
-        public void Workbook_AddDuplicateThrows()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            wb.AddDefinedName("MyName", "Sheet1!$A$1");
-            Assert.Throws<WorksheetException>(() => wb.AddDefinedName("MyName", "Sheet1!$A$2"));
-        }
-
-        [Fact(DisplayName = "Test that AddDefinedName with same name but different scopes is allowed")]
-        public void Workbook_AddSameNameDifferentScope()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            wb.AddWorksheet("Sheet2");
-            wb.AddDefinedName("MyName", "Sheet1!$A$1");
-            wb.AddDefinedName("MyName", "Sheet1!$A$2", wb.Worksheets[0]);
-            wb.AddDefinedName("MyName", "Sheet1!$A$3", wb.Worksheets[1]);
-            Assert.Equal(3, wb.GetDefinedNames().Count);
-            Assert.NotNull(wb.GetDefinedName("MyName"));
-            Assert.Null(wb.GetDefinedName("MyName").LocalSheet);
-            Assert.Same(wb.Worksheets[0], wb.GetDefinedName("MyName", wb.Worksheets[0]).LocalSheet);
-            Assert.Same(wb.Worksheets[1], wb.GetDefinedName("MyName", wb.Worksheets[1]).LocalSheet);
-        }
-
-        [Fact(DisplayName = "Test of GetDefinedName retrieving by scope")]
-        public void Workbook_GetByScope()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            wb.AddWorksheet("Sheet2");
-            wb.AddDefinedName("MyName", "wb-ref");
-            wb.AddDefinedName("MyName", "sheet1-ref", wb.Worksheets[0]);
-            wb.AddDefinedName("MyName", "sheet2-ref", wb.Worksheets[1]);
-            Assert.Equal("wb-ref", wb.GetDefinedName("MyName").TextValue);
-            Assert.Equal("sheet1-ref", wb.GetDefinedName("MyName", wb.Worksheets[0]).TextValue);
-            Assert.Equal("sheet2-ref", wb.GetDefinedName("MyName", wb.Worksheets[1]).TextValue);
-        }
-
-        [Fact(DisplayName = "Test that GetDefinedName returns null when not found")]
-        public void Workbook_GetMissingReturnsNull()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            Assert.Null(wb.GetDefinedName("Unknown"));
-        }
-
-        [Fact(DisplayName = "Test of RemoveDefinedName: removes only matching scope")]
-        public void Workbook_RemoveByScope()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            wb.AddDefinedName("MyName", "wb-ref");
-            wb.AddDefinedName("MyName", "sheet-ref", wb.CurrentWorksheet);
-            Assert.True(wb.RemoveDefinedName("MyName"));
-            Assert.Single(wb.GetDefinedNames());
-            Assert.NotNull(wb.GetDefinedName("MyName", wb.CurrentWorksheet));
-            Assert.Null(wb.GetDefinedName("MyName"));
-        }
-
-        [Fact(DisplayName = "Test that RemoveDefinedName returns false for missing entry")]
-        public void Workbook_RemoveMissingReturnsFalse()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            Assert.False(wb.RemoveDefinedName("Unknown"));
-        }
-
-        #endregion
-
-        #region Worksheet API tests
-
-        [Fact(DisplayName = "Test of Worksheet.AddDefinedName creates a worksheet-scoped name")]
-        public void Worksheet_AddDefinedName()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            wb.CurrentWorksheet.AddDefinedName("MyName", "Sheet1!$A$1");
-            DefinedName dn = wb.GetDefinedName("MyName", wb.CurrentWorksheet);
-            Assert.NotNull(dn);
-            Assert.Same(wb.CurrentWorksheet, dn.LocalSheet);
-        }
-
-        [Fact(DisplayName = "Test that Worksheet.AddDefinedName on a detached worksheet throws")]
-        public void Worksheet_AddDefinedName_Detached()
-        {
-            Worksheet ws = new Worksheet("orphan");
-            Assert.Throws<WorksheetException>(() => ws.AddDefinedName("MyName", "Sheet1!$A$1"));
-        }
-
-        [Fact(DisplayName = "Test of Worksheet.RemoveDefinedName removes only worksheet scope")]
-        public void Worksheet_RemoveDefinedName()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            wb.AddDefinedName("MyName", "wb-ref");
-            wb.CurrentWorksheet.AddDefinedName("MyName", "sheet-ref");
-            Assert.True(wb.CurrentWorksheet.RemoveDefinedName("MyName"));
-            Assert.NotNull(wb.GetDefinedName("MyName"));
-            Assert.Null(wb.GetDefinedName("MyName", wb.CurrentWorksheet));
-        }
-
-        [Fact(DisplayName = "Test that Worksheet.RemoveDefinedName on detached worksheet throws")]
-        public void Worksheet_RemoveDefinedName_Detached()
-        {
-            Worksheet ws = new Worksheet("orphan");
-            Assert.Throws<WorksheetException>(() => ws.RemoveDefinedName("X"));
-        }
-
-        [Fact(DisplayName = "Test that Worksheet.GetDefinedName returns only worksheet scope")]
-        public void Worksheet_GetDefinedName()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            wb.AddDefinedName("MyName", "wb-ref");
-            Assert.Null(wb.CurrentWorksheet.GetDefinedName("MyName"));
-            wb.CurrentWorksheet.AddDefinedName("MyName", "sheet-ref");
-            Assert.Equal("sheet-ref", wb.CurrentWorksheet.GetDefinedName("MyName").TextValue);
-        }
-
-        [Fact(DisplayName = "Test that Worksheet.GetDefinedName on detached worksheet throws")]
-        public void Worksheet_GetDefinedName_Detached()
-        {
-            Worksheet ws = new Worksheet("orphan");
-            Assert.Throws<WorksheetException>(() => ws.GetDefinedName("X"));
-        }
-
-        #endregion
-
-        #region AddCellReference tests
-
-        [Fact(DisplayName = "Test of AddCellReference(DefinedName, address) creates a Reference cell")]
-        public void Worksheet_AddCellReference_StringAddress()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            DefinedName dn = new DefinedName("MyName", "Sheet1!$A$1");
-            wb.AddDefinedName(dn);
-            wb.CurrentWorksheet.AddCellReference(dn, "B2");
-            Cell c = wb.CurrentWorksheet.Cells["B2"];
-            Assert.Equal(Cell.CellType.Reference, c.DataType);
-            Assert.Equal("MyName", c.Value);
-        }
-
-        [Fact(DisplayName = "Test of AddCellReference(DefinedName, address) creates a Reference cell with a style")]
-        public void Worksheet_AddCellReference_StringAddress_WithStyle()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            DefinedName dn = new DefinedName("MyName", "Sheet1!$A$1");
-            wb.AddDefinedName(dn);
-            wb.CurrentWorksheet.AddCellReference(dn, "B2", (Style)BasicStyles.Bold.Copy());
-            Cell c = wb.CurrentWorksheet.Cells["B2"];
-            Assert.Equal(Cell.CellType.Reference, c.DataType);
-            Assert.Equal("MyName", c.Value);
-            Assert.Equal(BasicStyles.Bold.GetHashCode(), c.CellStyle.GetHashCode());
-        }
-
-        [Fact(DisplayName = "Test of AddCellReference(DefinedName, col, row) creates a Reference cell")]
-        public void Worksheet_AddCellReference_ColRow()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            DefinedName dn = new DefinedName("MyName", "Sheet1!$A$1");
-            wb.AddDefinedName(dn);
-            wb.CurrentWorksheet.AddCellReference(dn, 1, 1);
-            Cell c = wb.CurrentWorksheet.Cells["B2"];
-            Assert.Equal(Cell.CellType.Reference, c.DataType);
-            Assert.Equal("MyName", c.Value);
-        }
-        [Fact(DisplayName = "Test of AddCellReference(DefinedName, col, row) creates a Reference cell with a style")]
-        public void Worksheet_AddCellReference_ColRow_WithStyle()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            DefinedName dn = new DefinedName("MyName", "Sheet1!$A$1");
-            wb.AddDefinedName(dn);
-            wb.CurrentWorksheet.AddCellReference(dn, 1, 1, (Style)BasicStyles.Italic.Copy());
-            Cell c = wb.CurrentWorksheet.Cells["B2"];
-            Assert.Equal(Cell.CellType.Reference, c.DataType);
-            Assert.Equal("MyName", c.Value);
-            Assert.Equal(BasicStyles.Italic.GetHashCode(), c.CellStyle.GetHashCode());
-        }
-
-        [Fact(DisplayName = "Test that AddCellReference(null) throws WorksheetException")]
-        public void Worksheet_AddCellReference_NullThrows()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            Assert.Throws<WorksheetException>(() => wb.CurrentWorksheet.AddCellReference(null, "A1"));
-        }
-
-        #endregion
-
-        #region misc
-
-        [Fact(DisplayName = "Test that GetDefinedNames returns insertion order")]
-        public void Workbook_InsertionOrderPreserved()
-        {
-            Workbook wb = new Workbook("Sheet1");
-            wb.AddDefinedName("Beta", "x");
-            wb.AddDefinedName("Alpha", "y");
-            wb.AddDefinedName("Gamma", "z");
-            Assert.Equal(new[] { "Beta", "Alpha", "Gamma" },
-                new[] { wb.GetDefinedNames()[0].Name, wb.GetDefinedNames()[1].Name, wb.GetDefinedNames()[2].Name });
-        }
-
-        #endregion
     }
 }

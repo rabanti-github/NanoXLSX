@@ -25,6 +25,11 @@ namespace NanoXLSX.Internal.Structures
         /// </summary>
         public StyleRepository StyleRepository { get; set; }
 
+        /// <summary>
+        /// Cached result of the external formula reference validation for the current write operation.
+        /// </summary>
+        public bool? HasExternalFormulaReferences { get; set; }
+
         public WriterProcessingData(Workbook workbook, StyleRepository styleRepository)
         {
             this.StyleRepository = styleRepository;

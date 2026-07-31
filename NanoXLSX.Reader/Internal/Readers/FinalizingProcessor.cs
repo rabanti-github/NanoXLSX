@@ -98,13 +98,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         private void RetagReferenceCells()
         {
-            Dictionary<string, DefinedName> names = new Dictionary<string, DefinedName>(StringComparer.Ordinal);
-
-            foreach (DefinedName dn in Workbook.GetDefinedNames())
-            {
-                names.Add(dn.Name, dn);
-            }
-            if (names.Count == 0)
+            if (Workbook.GetDefinedNames().Count == 0)
             {
                 return;
             }
@@ -115,7 +109,9 @@ namespace NanoXLSX.Internal.Readers
                 {
                     if (cell.DataType == Cell.CellType.Formula && cell.Formula != null)
                     {
-                        if (names.TryGetValue(cell.Formula.Expression, out DefinedName definedName))
+                        DefinedName definedName = Workbook.GetDefinedName(cell.Formula.Expression, ws)
+                            ?? Workbook.GetDefinedName(cell.Formula.Expression);
+                        if (definedName != null)
                         {
                             referenceCellCopies.Add(cell.CellAddress, new Tuple<Cell, DefinedName>(cell.Copy(), definedName));
                         }
@@ -125,23 +121,30 @@ namespace NanoXLSX.Internal.Readers
                 {
                     continue;
                 }
-                List<string> processedAddresses = new List<string>();
+                HashSet<string> processedAddresses = new HashSet<string>(StringComparer.Ordinal);
                 foreach (KeyValuePair<string, Tuple<Cell, DefinedName>> cell in referenceCellCopies)
                 {
-                    if (!processedAddresses.Contains(cell.Key))
+                    if (processedAddresses.Contains(cell.Key))
                     {
                         continue; // Skip processed cells 
                     }
                     IReadOnlyList<Address> addresses;
+                    object cachedValue = cell.Value.Item1.Formula.CachedValue;
                     if (cell.Value.Item1.CellStyle == null) // Re-add formula cells with full resolution
                     {
-                        addresses = ws.AddCellReference(cell.Value.Item2, cell.Key, cell.Value.Item1.Value);
+                        addresses = ws.AddCellReference(cell.Value.Item2, cell.Key, cachedValue);
                     }
                     else
                     {
-                        addresses = ws.AddCellReference(cell.Value.Item2, cell.Key, cell.Value.Item1.CellStyle, cell.Value.Item1.Value);
+                        addresses = ws.AddCellReference(cell.Value.Item2, cell.Key, cell.Value.Item1.CellStyle, cachedValue);
                     }
-                    processedAddresses.AddRange((IEnumerable<string>)addresses);
+                    FormulaData restoredFormula = ws.Cells[cell.Key].Formula;
+                    restoredFormula.CachedValue = cachedValue;
+                    restoredFormula.CachedValueType = cell.Value.Item1.Formula.CachedValueType;
+                    foreach (Address address in addresses)
+                    {
+                        processedAddresses.Add(address.ToString());
+                    }
                 }
             }
         }

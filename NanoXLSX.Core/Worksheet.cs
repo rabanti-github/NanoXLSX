@@ -912,8 +912,16 @@ namespace NanoXLSX
         /// <remarks>To remove a cell reference, use the <see cref="RemoveCell(int, int)"/> method. If a values is set by <see cref="Cell.Value"/> it will be overwritten.</remarks>
         public IReadOnlyList<Address> AddCellReference(DefinedName definedName, int columnNumber, int rowNumber, object cachedValue = null)
         {
+            if (definedName == null)
+            {
+                throw new WorksheetException("The defined name to set as cell reference must not be null.");
+            }
             Cell c = new Cell(definedName.Name, Cell.CellType.Formula, columnNumber, rowNumber);
             Range? arrayRange = c.SetReference(definedName, cachedValue);
+            if (arrayRange.HasValue)
+            {
+                c.Formula.FormulaRange = arrayRange.Value.ToString();
+            }
             AddNextCell(c, false, null);
             List<Address> list = new List<Address>();
             list.Add(new Address(columnNumber, rowNumber));
@@ -942,8 +950,16 @@ namespace NanoXLSX
         /// <exception cref="StyleException">Thrown if the passed style is malformed.</exception>
         public IReadOnlyList<Address> AddCellReference(DefinedName definedName, int columnNumber, int rowNumber, Style style, object cachedValue = null)
         {
+            if (definedName == null)
+            {
+                throw new WorksheetException("The defined name to set as cell reference must not be null.");
+            }
             Cell c = new Cell(definedName.Name, Cell.CellType.Formula, columnNumber, rowNumber);
             Range? arrayRange = c.SetReference(definedName, cachedValue);
+            if (arrayRange.HasValue)
+            {
+                c.Formula.FormulaRange = arrayRange.Value.ToString();
+            }
             AddNextCell(c, false, style);
             List<Address> list = new List<Address>();
             list.Add(new Address(columnNumber, rowNumber));
@@ -1009,6 +1025,7 @@ namespace NanoXLSX
         internal IReadOnlyList<Address> AddDefinedNameArrayCells(Cell masterCell, Range arrayRange, Style style)
         {
             IReadOnlyList<Address> addresses = arrayRange.ResolveEnclosedAddresses();
+            List<Address> addedAddresses = new List<Address>();
             foreach (Address address in addresses)
             {
                 if (address.Row == masterCell.RowNumber && address.Column == masterCell.ColumnNumber)
@@ -1021,8 +1038,9 @@ namespace NanoXLSX
                 arrayRefCell.Formula.FormulaRange = masterCell.Formula.FormulaRange;
                 arrayRefCell.Formula.Type = FormulaData.FormulaType.Array;
                 AddCell(arrayRefCell, address.Column, address.Row, style);
+                addedAddresses.Add(address);
             }
-            return addresses;
+            return addedAddresses;
         }
 
         #endregion

@@ -56,14 +56,62 @@ namespace NanoXLSX.Internal.Writers
 
         private void CheckExternalLinks()
         {
-
-            bool externalLinksexists = WriteContext.Workbook.GetDefinedNames().Any(x => x.HasExternalReferences);
-            if (externalLinksexists && !WriteContext.IsFeaturePrepared(PlugInUUID.WriteExternalLinkFeature))
+            bool externalLinksExist = WriteContext.Workbook.GetDefinedNames().Any(x => x.HasExternalReferences);
+            if (!externalLinksExist)
             {
-                throw new NotSupportedContentException("The workbook contains external links in the defined names, but no compatible writer plug-in is capable to write such links. " +
+                externalLinksExist = HasExternalFormulaReferences();
+            }
+            if (externalLinksExist && !WriteContext.IsFeaturePrepared(PlugInUUID.WriteExternalLinkFeature))
+            {
+                throw new NotSupportedContentException("The workbook contains external links in defined names or cell formulas, but no compatible writer plug-in is capable to write such links. " +
                     "Note: Consider adding the package NanoXLSX.Compatibility. ");
             }
+        }
 
+        private bool HasExternalFormulaReferences()
+        {
+            bool? cachedResult = WriteContext.WriterProcessingData?.HasExternalFormulaReferences;
+            if (cachedResult.HasValue)
+            {
+                return cachedResult.Value;
+            }
+
+            bool result = false;
+            foreach (Worksheet worksheet in WriteContext.Workbook.Worksheets)
+            {
+                foreach (Cell cell in worksheet.CellValues)
+                {
+                    if (cell.DataType != Cell.CellType.Formula)
+                    {
+                        continue;
+                    }
+                    if (cell.Formula != null)
+                    {
+                        if (cell.Formula.HasExternalReferences)
+                        {
+                            result = true;
+                            break;
+                        }
+                        continue;
+                    }
+                    string expression = cell.Value as string ?? cell.Value?.ToString();
+                    if (FormulaData.ContainsExternalReference(expression))
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+                if (result)
+                {
+                    break;
+                }
+            }
+
+            if (WriteContext.WriterProcessingData != null)
+            {
+                WriteContext.WriterProcessingData.HasExternalFormulaReferences = result;
+            }
+            return result;
         }
     }
 }
