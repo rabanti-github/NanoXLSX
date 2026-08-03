@@ -54,9 +54,6 @@ namespace NanoXLSX
         private static readonly Regex EXT_WORKSHEET_REFERENCE_REGEX = new Regex(
         @"^\[[0-9]+\].+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-        private static readonly Regex EXT_REFERENCE_REGEX = new Regex(
-        @"\[[0-9]+\]", RegexOptions.CultureInvariant);
-
         private const int MAX_NAME_LENGTH = 255;
 
         /// <summary>
@@ -172,6 +169,10 @@ namespace NanoXLSX
             this.LocalSheet = localSheet;
             this.Comment = comment;
             CastValue(workbook);
+            if (this.Type == NameType.Formula)
+            {
+                this.HasExternalReferences = FormulaData.ContainsExternalReference(this.TextValue);
+            }
         }
         #endregion
 
@@ -314,7 +315,7 @@ namespace NanoXLSX
             {
                 case NameType.Formula:
                     string formula = value as string;
-                    return EXT_REFERENCE_REGEX.IsMatch(formula);
+                    return FormulaData.ContainsExternalReference(formula);
                 case NameType.Range:
                 case NameType.Cell:
                     return worksheet != null && EXT_WORKSHEET_REFERENCE_REGEX.IsMatch(worksheet);

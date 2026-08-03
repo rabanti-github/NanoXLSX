@@ -157,8 +157,41 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Assert.Equal(DefinedName.NameType.Formula, formula.Type);
             Assert.Equal("SUM(1,2)", formula.TextValue);
             Assert.Equal("note", formula.Comment);
+            Assert.False(formula.HasExternalReferences);
             Assert.Throws<WorksheetException>(() => workbook.AddDefinedNameConstant("NullName", null));
             Assert.Throws<FormatException>(() => workbook.AddDefinedNameConstant("EmptyName", string.Empty));
+        }
+
+        [Theory(DisplayName = "Test of external workbook reference detection in added defined-name formulas")]
+        [InlineData("[book.xlsx]Sheet1!A1")]
+        [InlineData("'..\\[book.xlsx]Data'!$B$2")]
+        [InlineData("'../[book.xlsx]Data'!$B$2")]
+        [InlineData("'C:\\temp\\[book one.xlsx]Sheet 1'!$A$1")]
+        [InlineData("SUM('C:\\temp\\[book one.xlsx]Sheet 1'!$A$1,'..\\[other.xlsx]Data'!$B$2)")]
+        [InlineData("[1]Sheet1!$A$1")]
+        public void AddDefinedNameFormulaExternalReferenceTest(string expression)
+        {
+            Workbook workbook = new Workbook("Sheet1");
+
+            DefinedName name = workbook.AddDefinedNameFormula("ExternalFormula", expression);
+
+            Assert.True(name.HasExternalReferences);
+            Assert.Equal(expression, name.TextValue);
+            Assert.Equal(expression, name.Value);
+        }
+
+        [Theory(DisplayName = "Test of non-external defined-name formulas")]
+        [InlineData("SUM(A1:A2)")]
+        [InlineData("Table1[Column]")]
+        [InlineData("R[1]C[1]")]
+        [InlineData("INDIRECT(\"[1]Sheet1!A1\")")]
+        public void AddDefinedNameFormulaWithoutExternalReferenceTest(string expression)
+        {
+            Workbook workbook = new Workbook("Sheet1");
+
+            DefinedName name = workbook.AddDefinedNameFormula("LocalFormula", expression);
+
+            Assert.False(name.HasExternalReferences);
         }
 
         [Fact(DisplayName = "Test of invalid cell and range defined names")]
@@ -288,6 +321,19 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Assert.Equal(expectedText, name.TextValue);
             Assert.Equal("comment", name.Comment);
             Assert.Equal(reference == "#REF!" ? Errors.FormulaError.Reference : Errors.FormulaError.NoError, name.Error);
+        }
+
+        [Theory(DisplayName = "Test external references in resolved defined names")]
+        [InlineData("'[1]Sheet1'!$A$1")]
+        [InlineData("SUM([1]Sheet1!$A$1)")]
+        [InlineData("SUM('C:\\temp\\[book one.xlsx]Sheet 1'!$A$1)")]
+        public void ResolveDefinedNameExternalReferenceTest(string reference)
+        {
+            Workbook workbook = new Workbook("Sheet1");
+
+            DefinedName name = DefinedName.ResolveDefinedName("ResolvedExternalName", reference, workbook, null, null);
+
+            Assert.True(name.HasExternalReferences);
         }
 
         [Fact(DisplayName = "Test that DefinedName requires a workbook")]

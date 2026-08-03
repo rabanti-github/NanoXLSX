@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using NanoXLSX.Enums;
 using Xunit;
 
@@ -57,6 +57,10 @@ namespace NanoXLSX.Test.Core.CellTest
         [InlineData("[Book.xlsx]Sheet1!A1")]
         [InlineData("SUM('[Book.xlsx]Owner''s Sheet'!A1)")]
         [InlineData("[1]Sheet1!A1+[2]Sheet2!B2")]
+        [InlineData("'..\\[Book.xlsx]Sheet1'!$A$1")]
+        [InlineData("'../[Book.xlsx]Sheet1'!$A$1")]
+        [InlineData("'C:\\temp\\[book one.xlsx]Sheet 1'!$A$1")]
+        [InlineData("SUM('C:\\temp\\[book one.xlsx]Sheet 1'!$A$1,'..\\[other.xlsx]Data'!$B$2)")]
         public void ExternalReferenceDetectionTest(string expression)
         {
             FormulaData data = new FormulaData(expression);

@@ -343,6 +343,22 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             }
         }
 
+        [Theory(DisplayName = "Test that saving a newly added external defined-name formula fails")]
+        [InlineData("SUM('C:\\temp\\[book one.xlsx]Sheet 1'!$A$1,'..\\[other.xlsx]Data'!$B$2)")]
+        [InlineData("[1]ExternalSheet!$A$1")]
+        public void DefinedNames_AddedExternalLinkWriteFailTest(string expression)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            DefinedName definedName = workbook.AddDefinedNameFormula("ExternalFormula", expression);
+            Assert.True(definedName.HasExternalReferences);
+
+            using (MemoryStream output = new MemoryStream())
+            {
+                Exceptions.IOException exception = Assert.Throws<Exceptions.IOException>(() => workbook.SaveAsStream(output, true));
+                Assert.IsType<NotSupportedContentException>(exception.InnerException);
+            }
+        }
+
         [Fact(DisplayName = "Test that the compatibility check rejects an imported external cell formula")]
         public void Formulas_ImportedExternalLinkCompatibilityCheckFailTest()
         {
@@ -410,6 +426,21 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             processor.Init(CreateWriterWithProcessingData(workbook), null);
 
             Assert.Throws<NotSupportedContentException>(() => processor.Execute());
+        }
+
+        [Fact(DisplayName = "Test that a plugin-provided false external-formula cache is authoritative")]
+        public void Formulas_ExternalLinkFalseCacheTest()
+        {
+            Workbook workbook = new Workbook("sheet1");
+            workbook.CurrentWorksheet.AddCellFormula("[1]ExternalSheet!A1", "A1");
+            XlsxWriter writer = CreateWriterWithProcessingData(workbook);
+            writer.WriterProcessingData.HasExternalFormulaReferences = false;
+            CompatibilityProcessor processor = new CompatibilityProcessor();
+            processor.Init(writer, null);
+
+            processor.Execute();
+
+            Assert.False(writer.WriterProcessingData.HasExternalFormulaReferences);
         }
 
         [Fact(DisplayName = "Test that an external formula in a copied worksheet is rejected")]
