@@ -61,7 +61,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets whether the formula expression contains a reference to an external workbook.
         /// </summary>
-        internal bool HasExternalReferences { get; private set; }
+        public bool HasExternalReferences { get; private set; }
 
         /// <summary>
         /// Type of the formula. Default is <see cref="FormulaType.Normal"/>
