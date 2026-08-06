@@ -130,7 +130,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets whether the value contains a reference or multiple references to an external source (e.g. an external workbook)
         /// </summary>
-        public bool HasExternalReferences { get; private set; }
+        public bool HasExternalReferences { get; internal set; }
 
         #endregion
 

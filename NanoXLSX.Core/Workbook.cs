@@ -462,13 +462,29 @@ namespace NanoXLSX
         /// \remark <remarks><b>Important:</b> Removing defined names may remove references in worksheets. If a workbook is saved in this state, it can lead to broken formula references, indicated by "#NAME?"</remarks>
         public bool RemoveDefinedName(string name, Worksheet localSheet = null)
         {
+            return RemoveDefinedName(name, true, localSheet);
+        }
+
+        /// <summary>
+        /// Removes the defined name with the supplied name and scope with optional invalidation of formula references.
+        /// </summary>
+        /// <param name="name">Name of the defined name to remove.</param>
+        /// <param name="invalidate">If true, all references in Formula cells will be removed, otherwise left untouched</param>
+        /// <param name="localSheet">Worksheet scope, or null for workbook scope.</param>
+        /// <returns>True if a matching defined name was removed, false if no match was found.</returns>
+        /// \remark <remarks><b>Important:</b> Removing defined names may remove references in worksheets. If a workbook is saved in this state, it can lead to broken formula references, indicated by "#NAME?"</remarks>
+        internal bool RemoveDefinedName(string name, bool invalidate, Worksheet localSheet = null)
+        {
             int index = FindDefinedNameIndex(name, localSheet);
             if (index < 0)
             {
                 return false;
             }
             DefinedName definedName = definedNames[index];
-            InvalidateDefinedNameReferences(definedName);
+            if (invalidate)
+            {
+                InvalidateDefinedNameReferences(definedName);
+            }
             definedNames.RemoveAt(index);
             return true;
         }
@@ -934,10 +950,13 @@ namespace NanoXLSX
             {
                 foreach (KeyValuePair<string, Cell> cell in worksheet.Cells)
                 {
-                    FormulaData formula = cell.Value.Formula;
-                    if (formula != null && ReferenceEquals(formula.DefinedNameReference, definedName))
+                    if (cell.Value.DataType == Cell.CellType.Formula)
                     {
-                        formula.DefinedNameReference = null;
+                        FormulaData formula = cell.Value.Formula;
+                        if (formula != null && ReferenceEquals(formula.DefinedNameReference, definedName))
+                        {
+                            formula.DefinedNameReference = null;
+                        }
                     }
                 }
             }
