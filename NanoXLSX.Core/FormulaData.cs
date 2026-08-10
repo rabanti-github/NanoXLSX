@@ -45,8 +45,8 @@ namespace NanoXLSX
         }
         #endregion
 
-        private bool hasExternalRefernces = false;
-        private DefinedName definedNameReference = null;
+        private bool hasExternalReferences;
+        private DefinedName definedNameReference;
 
         #region properties
 
@@ -68,11 +68,11 @@ namespace NanoXLSX
         /// </summary>
         public bool HasExternalReferences
         {
-            get { return hasExternalRefernces; }
+            get { return hasExternalReferences; }
             internal set
             {
-                hasExternalRefernces = value;
-                Features.SetFormulaFeatures(definedNameReference == null ? false : true, hasExternalRefernces);
+                hasExternalReferences = value;
+                Features.SetFormulaFeatures(definedNameReference == null ? false : true, hasExternalReferences);
             }
         }
 
@@ -96,7 +96,7 @@ namespace NanoXLSX
             internal set
             {
                 definedNameReference = value;
-                Features.SetFormulaFeatures(definedNameReference == null ? false : true, hasExternalRefernces);
+                Features.SetFormulaFeatures(definedNameReference == null ? false : true, hasExternalReferences);
             }
         }
         /// <summary>

@@ -858,7 +858,7 @@ namespace NanoXLSX.Internal.Readers
             {
                 return;
             }
-            FormulaData formula = new FormulaData();
+            FormulaData formula = cell.Formula ?? new FormulaData();
             formula.Expression = expression;
             formula.CachedValue = cachedValue;
             formula.CachedValueType = ResolveFormulaCachedValueType(cachedValueType, hasCachedValue);

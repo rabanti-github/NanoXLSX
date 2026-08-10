@@ -668,13 +668,12 @@ namespace NanoXLSX
                 }
             }
             CellKey cellKey = new CellKey(cell.ColumnNumber, cell.RowNumber);
-            if (cells.TryGetValue(cellKey, out Cell previousCell)
-                && previousCell.DataType == Cell.CellType.Formula
-                && previousCell.Formula != null)
+            if (cells.TryGetValue(cellKey, out Cell previousCell))
             {
-                previousCell.Formula.Features.Remove(Features);
+                previousCell.UnbindFeatures();
             }
             cells[cellKey] = cell;
+            cell.BindFeatures(Features);
             if (incremental)
             {
                 if (CurrentCellDirection == CellDirection.ColumnToColumn)
@@ -706,14 +705,6 @@ namespace NanoXLSX
                 {
                     // disabled / no-op
                 }
-            }
-            if (cell.DataType == Cell.CellType.Formula)
-            {
-                if (cell.Formula == null)
-                {
-                    cell.Formula = new FormulaData(cell.Value == null ? null : cell.Value.ToString()); // Add formula object in case of manually created cells
-                }
-                cell.Formula.Features.Add(Features); // Add formula feature counters to worksheet features
             }
         }
 
@@ -832,7 +823,6 @@ namespace NanoXLSX
             int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
             Cell c = new Cell(formula, Cell.CellType.Formula, column, row);
-            c.Formula = new FormulaData(formula);
             AddNextCell(c, false, null);
         }
 
@@ -851,7 +841,6 @@ namespace NanoXLSX
             int row;
             Cell.ResolveCellCoordinate(address, out column, out row);
             Cell c = new Cell(formula, Cell.CellType.Formula, column, row);
-            c.Formula = new FormulaData(formula);
             AddNextCell(c, false, style);
         }
 
@@ -865,7 +854,6 @@ namespace NanoXLSX
         public void AddCellFormula(string formula, int columnNumber, int rowNumber)
         {
             Cell c = new Cell(formula, Cell.CellType.Formula, columnNumber, rowNumber);
-            c.Formula = new FormulaData(formula);
             AddNextCell(c, false, null);
         }
 
@@ -880,7 +868,6 @@ namespace NanoXLSX
         public void AddCellFormula(string formula, int columnNumber, int rowNumber, Style style)
         {
             Cell c = new Cell(formula, Cell.CellType.Formula, columnNumber, rowNumber);
-            c.Formula = new FormulaData(formula);
             AddNextCell(c, false, style);
         }
 
@@ -893,7 +880,6 @@ namespace NanoXLSX
         public void AddNextCellFormula(string formula)
         {
             Cell c = new Cell(formula, Cell.CellType.Formula, currentColumnNumber, currentRowNumber);
-            c.Formula = new FormulaData(formula);
             AddNextCell(c, true, null);
         }
 
@@ -907,7 +893,6 @@ namespace NanoXLSX
         public void AddNextCellFormula(string formula, Style style)
         {
             Cell c = new Cell(formula, Cell.CellType.Formula, currentColumnNumber, currentRowNumber);
-            c.Formula = new FormulaData(formula);
             AddNextCell(c, true, style);
         }
 
@@ -1052,7 +1037,6 @@ namespace NanoXLSX
                     continue; // Skip master cell
                 }
                 Cell arrayRefCell = new Cell(null, Cell.CellType.Formula);
-                arrayRefCell.Formula = new FormulaData();
                 arrayRefCell.Formula.MasterCellAddress = masterCell.CellAddress;
                 arrayRefCell.Formula.FormulaRange = masterCell.Formula.FormulaRange;
                 arrayRefCell.Formula.Type = FormulaData.FormulaType.Array;
@@ -1207,9 +1191,9 @@ namespace NanoXLSX
         {
             CellKey key = new CellKey(columnNumber, rowNumber);
             cells.TryGetValue(key, out Cell cell);
-            if (cell != null && cell.DataType == Cell.CellType.Formula && cell.Formula != null)
+            if (cell != null)
             {
-                cell.Formula.Features.Remove(Features); // Decrease counter of features
+                cell.UnbindFeatures(); // Decrease counter of features (if applicable)
             }
             return cells.Remove(key);
         }

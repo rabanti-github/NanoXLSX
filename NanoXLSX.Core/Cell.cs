@@ -94,8 +94,11 @@ namespace NanoXLSX
         #region privateFileds
         private Style cellStyle;
         private int columnNumber;
+        private CellType dataType;
+        private FormulaData formula;
         private int rowNumber;
         private object value;
+        private FeatureSet worksheetFeatures;
         #endregion
 
         #region properties
@@ -147,7 +150,44 @@ namespace NanoXLSX
         }
 
         /// <summary>Gets or sets the type of the cell</summary>
-        public CellType DataType { get; set; }
+        /// \remark <remarks>Changing the type of an existing cell can create or discard formula metadata and update aggregated workbook features.
+        /// Prefer assigning <see cref="Value"/> when automatic type resolution is intended. Repeated manual transitions to or from <see cref="CellType.Formula"/>
+        /// may allocate formula metadata and cause feature-counter propagation.</remarks>
+        public CellType DataType
+        {
+            get { return dataType; }
+            set
+            {
+                if (dataType == value)
+                {
+                    if (value == CellType.Formula && formula == null)
+                    {
+                        Formula = new FormulaData(GetValueAsFormulaExpression()); // Only upsert missing object
+                    }
+                    return;
+                }
+                if (dataType != CellType.Formula && value != CellType.Formula)
+                {
+                    dataType = value;
+                    return;
+                }
+                if (value == CellType.Formula)
+                {
+                    dataType = value;
+                    if (formula == null)
+                    {
+                        Formula = new FormulaData(GetValueAsFormulaExpression()); // Upsert missing object
+                    }
+                    else
+                    {
+                        AttachFormulaFeatures();
+                    }
+                    return;
+                }
+                ClearFormula();
+                dataType = value;
+            }
+        }
 
 
         /// <summary>Gets or sets the number of the row (zero-based)</summary>
@@ -169,7 +209,9 @@ namespace NanoXLSX
         public AddressType CellAddressType { get; set; }
 
         /// <summary>Gets or sets the value of the cell (generic object type). When setting a value, the <see cref="DataType"/> is automatically resolved</summary>
-        /// \remark <remarks>In case of a formula is only the plain text of the formula set as value. See the <see cref="Formula"/> property for further information</remarks>
+        /// \remark <remarks>Assigning a value automatically resolves the cell type and may therefore replace formula metadata. 
+        /// For formula cells, the assigned value is also synchronized with <see cref="FormulaData.Expression"/>. Linked formula cells whose
+        /// <see cref="FormulaData.MasterCellAddress"/> is set retain their special cached-value behavior.</remarks>
         public object Value
         {
             get => this.value;
@@ -177,6 +219,19 @@ namespace NanoXLSX
             {
                 this.value = value;
                 ResolveCellType();
+                if (dataType != CellType.Formula || formula == null)
+                {
+                    return;
+                }
+                if (formula.MasterCellAddress == null)
+                {
+                    string expression = GetValueAsFormulaExpression();
+                    if (!string.Equals(formula.Expression, expression, StringComparison.Ordinal) && formula.DefinedNameReference != null)
+                    {
+                        formula.DefinedNameReference = null; // Remove additional references
+                    }
+                    formula.Expression = expression;
+                }
             }
 
         }
@@ -187,7 +242,25 @@ namespace NanoXLSX
         /// \remark <remarks>The plain text of the formula is still set in <see cref="Value"/>. One exception are linked cells (<see cref="FormulaData.FormulaType.Array"/> and <see cref="FormulaData.MasterCellAddress"/> is set). 
         /// In this case, the cached value will be in <see cref="Value"/> due to compatibility reason. 
         /// <br />API note: Do not manually tamper with Formula. There is <see cref="FeatureSet"/> inside, responsible for up-stream propagated feature counters.</remarks>
-        public FormulaData Formula { get; internal set; }
+        public FormulaData Formula
+        {
+            get { return formula; }
+            internal set
+            {
+                FormulaData replacement = value;
+                if (replacement == null && dataType == CellType.Formula)
+                {
+                    replacement = new FormulaData(GetValueAsFormulaExpression());
+                }
+                if (ReferenceEquals(formula, replacement))
+                {
+                    return;
+                }
+                DetachFormulaFeatures();
+                formula = replacement;
+                AttachFormulaFeatures();
+            }
+        }
 
         #endregion
 
@@ -373,7 +446,7 @@ namespace NanoXLSX
             {
                 throw new WorksheetException("The defined name to set as cell reference must not be null.");
             }
-            FormulaData formula = new FormulaData();
+            FormulaData formula = this.formula ?? new FormulaData();
             Range? referenceRange = null;
             formula.DefinedNameReference = definedName;
             formula.Expression = definedName.Name;
@@ -498,14 +571,11 @@ namespace NanoXLSX
             Cell copy = new Cell
             {
                 value = this.value,
-                DataType = this.DataType,
+                dataType = this.dataType,
                 CellAddress = this.CellAddress,
-                CellAddressType = this.CellAddressType
+                CellAddressType = this.CellAddressType,
+                formula = this.formula?.Copy()
             };
-            if (Formula != null)
-            {
-                copy.Formula = this.Formula.Copy(); // DefinedName reference is NOT deep-copied
-            }
             if (this.cellStyle != null)
             {
                 copy.SetStyle(this.cellStyle, true);
@@ -1022,6 +1092,70 @@ namespace NanoXLSX
                 throw new RangeException("The row number (" + row + ") is out of range. Range is from " +
                     Worksheet.MinRowNumber + " to " + Worksheet.MaxRowNumber + " (" + (Worksheet.MaxRowNumber + 1) + " rows).");
             }
+        }
+
+        /// <summary>
+        /// Binds this cell to the aggregate feature set of its worksheet.
+        /// </summary>
+        /// <param name="features">Worksheet feature set.</param>
+        internal void BindFeatures(FeatureSet features)
+        {
+            if (ReferenceEquals(worksheetFeatures, features))
+            {
+                return;
+            }
+            UnbindFeatures();
+            worksheetFeatures = features;
+            AttachFormulaFeatures();
+        }
+
+        /// <summary>
+        /// Removes this cell's formula contribution from its worksheet feature set.
+        /// </summary>
+        internal void UnbindFeatures()
+        {
+            DetachFormulaFeatures();
+            worksheetFeatures = null;
+        }
+
+        /// <summary>
+        /// Adds a feature set to the formula. Mainly used to add a formula in an existing cell
+        /// </summary>
+        private void AttachFormulaFeatures()
+        {
+            if (worksheetFeatures != null && dataType == CellType.Formula && formula != null)
+            {
+                formula.Features.Add(worksheetFeatures);
+            }
+        }
+
+        /// <summary>
+        /// Clears a formula and all its metadata from an existing cell
+        /// </summary>
+        private void ClearFormula()
+        {
+            DetachFormulaFeatures();
+            formula = null;
+        }
+
+        /// <summary>
+        /// Removes the feature set of the formula. Mainly used to clear a formula in a existing cell
+        /// </summary>
+        private void DetachFormulaFeatures()
+        {
+            if (worksheetFeatures != null && dataType == CellType.Formula && formula != null)
+            {
+                formula.Features.Remove(worksheetFeatures);
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the cell as formula expression (may lead to syntactical invalid Excel formulas)
+        /// </summary>
+        /// <returns>Value as string or null, of no value was set</returns>
+        private string GetValueAsFormulaExpression()
+        {
+            return value == null ? null : value.ToString();
         }
 
         /// <summary>

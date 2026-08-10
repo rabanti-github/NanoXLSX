@@ -36,6 +36,7 @@ namespace NanoXLSX.Internal.Readers
 
         private Stream stream;
         private StyleReaderContainer styleReaderContainer;
+        private ReaderOptions options;
 
         #region properties
         /// <summary>
@@ -80,6 +81,7 @@ namespace NanoXLSX.Internal.Readers
             this.stream = stream;
             this.Workbook = workbook;
             this.Options = readerOptions;
+            this.options = readerOptions as ReaderOptions;
             this.InlinePluginHandler = inlinePluginHandler;
         }
 
@@ -165,7 +167,18 @@ namespace NanoXLSX.Internal.Readers
                     }
                     NumberFormat numberFormat = new NumberFormat();
                     int id = ParserUtils.ParseInt(subtree.GetAttribute("numFmtId")); // null will rightly throw
-                    string code = subtree.GetAttribute("formatCode") ?? string.Empty;
+                    string code = subtree.GetAttribute("formatCode");
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        if (options.EnforceStrictValidation)
+                        {
+                            throw new Exceptions.FormatException("A format code cannot be null or empty, but was read so in the styles");
+                        }
+                        else
+                        {
+                            continue; // Skip an invalid number format
+                        }
+                    }
                     numberFormat.CustomFormatID = id;
                     numberFormat.Number = FormatNumber.Custom;
                     numberFormat.InternalID = id;
