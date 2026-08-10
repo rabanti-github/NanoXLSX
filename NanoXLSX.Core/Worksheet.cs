@@ -534,6 +534,10 @@ namespace NanoXLSX
             }
         }
 
+        /// <summary>
+        /// Internal feature set for cascading feature detection (consider in  <see cref="Copy"/> but not in Equals, GetHashCode etc.)
+        /// </summary>
+        internal FeatureSet Features { get; } = new FeatureSet() { };
 
         #endregion
 
@@ -663,7 +667,14 @@ namespace NanoXLSX
                     cell.SetStyle(mixedStyle);
                 }
             }
-            cells[new CellKey(cell.ColumnNumber, cell.RowNumber)] = cell;
+            CellKey cellKey = new CellKey(cell.ColumnNumber, cell.RowNumber);
+            if (cells.TryGetValue(cellKey, out Cell previousCell)
+                && previousCell.DataType == Cell.CellType.Formula
+                && previousCell.Formula != null)
+            {
+                previousCell.Formula.Features.Remove(Features);
+            }
+            cells[cellKey] = cell;
             if (incremental)
             {
                 if (CurrentCellDirection == CellDirection.ColumnToColumn)
@@ -695,6 +706,14 @@ namespace NanoXLSX
                 {
                     // disabled / no-op
                 }
+            }
+            if (cell.DataType == Cell.CellType.Formula)
+            {
+                if (cell.Formula == null)
+                {
+                    cell.Formula = new FormulaData(cell.Value == null ? null : cell.Value.ToString()); // Add formula object in case of manually created cells
+                }
+                cell.Formula.Features.Add(Features); // Add formula feature counters to worksheet features
             }
         }
 
@@ -1186,7 +1205,13 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public bool RemoveCell(int columnNumber, int rowNumber)
         {
-            return cells.Remove(new CellKey(columnNumber, rowNumber));
+            CellKey key = new CellKey(columnNumber, rowNumber);
+            cells.TryGetValue(key, out Cell cell);
+            if (cell != null && cell.DataType == Cell.CellType.Formula && cell.Formula != null)
+            {
+                cell.Formula.Features.Remove(Features); // Decrease counter of features
+            }
+            return cells.Remove(key);
         }
 
         /// <summary>

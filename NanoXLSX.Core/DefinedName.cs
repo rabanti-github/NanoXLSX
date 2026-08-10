@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NanoXLSX.Enums;
 using NanoXLSX.Exceptions;
+using NanoXLSX.Internal;
 using NanoXLSX.Utils;
 using static NanoXLSX.Enums.Errors;
 using FormatException = NanoXLSX.Exceptions.FormatException;
@@ -130,7 +131,9 @@ namespace NanoXLSX
         /// <summary>
         /// Gets whether the value contains a reference or multiple references to an external source (e.g. an external workbook)
         /// </summary>
-        public bool HasExternalReferences { get; internal set; }
+        public bool HasExternalReferences { get { return Features.ContainsExternalLinks; } }
+
+        internal FeatureSet Features { get; private set; } = FeatureSet.CreateDefinedName();
 
         #endregion
 
@@ -146,12 +149,13 @@ namespace NanoXLSX
         /// <param name="worksheet">Target worksheet in case of cells or cell ranges</param>
         /// <param name="localSheet">Optional worksheet that scopes the defined name. Pass null for workbook scope.</param>
         /// <param name="comment">Optional comment.</param>
+        /// <param name="containsExternalLinks">Optional pre-resolved external-link state used while reading a workbook.</param>
         /// <exception cref="FormatException">Thrown if <paramref name="workbook"/> is null.</exception>
         /// <exception cref="FormatException">Thrown if <paramref name="name"/> is null, empty, only whitespaces, starts with a digit or contains illegal characters.</exception>
         /// <exception cref="FormatException">Thrown if <paramref name="reference"/> is null or resolved to an empty string</exception>
         /// <exception cref="WorksheetException">Thrown if <paramref name="reference"/> already exists or matches a cell reference in the same scope</exception>
         /// \remark <remarks>Use <see cref="Workbook.AddDefinedNameCell(string, Worksheet, string, Worksheet, string)"/>, <see cref="Workbook.AddDefinedNameFormula(string, string, Worksheet, string)"/>, <see cref="Workbook.AddDefinedNameConstant(string, object, Worksheet, string)"/>, <see cref="Workbook.AddDefinedNameFormula(string, string, Worksheet, string)"/> (or available overloaded methods) to conveniently add defined names</remarks>
-        internal DefinedName(Workbook workbook, NameType type, string name, object reference, Worksheet worksheet, Worksheet localSheet = null, string comment = null)
+        internal DefinedName(Workbook workbook, NameType type, string name, object reference, Worksheet worksheet, Worksheet localSheet = null, string comment = null, bool? containsExternalLinks = null)
         {
             if (workbook == null)
             {
@@ -169,14 +173,64 @@ namespace NanoXLSX
             this.LocalSheet = localSheet;
             this.Comment = comment;
             CastValue(workbook);
-            if (this.Type == NameType.Formula)
-            {
-                this.HasExternalReferences = FormulaData.ContainsExternalReference(this.TextValue);
-            }
+            this.Features.Add(workbook.Features); // Add feature reference already here
+            bool hasExternalLinks = containsExternalLinks
+                ?? (this.Type == NameType.Formula && ParserUtils.ContainsExternalReference(this.TextValue));
+            bool isFormula = this.Type == NameType.Formula || hasExternalLinks;
+            this.Features.SetDefinedNameFeatures(isFormula, hasExternalLinks);
         }
         #endregion
 
         #region methods
+
+        /// <summary>
+        /// Resolve a defined name from its string reference 
+        /// </summary>
+        /// <param name="name">Name (cannot be null)</param>
+        /// <param name="reference">String reference (cannot be null)</param>
+        /// <param name="workbook">Workbook reference (for cells, ranges and worksheet resolution)</param>
+        /// <param name="localSheet">Local sheet (can be null)</param>
+        /// <param name="comment"> Comment (can be null)</param>
+        /// <returns>Resolved defined name object</returns>
+        internal static DefinedName ResolveDefinedName(string name, string reference, Workbook workbook, Worksheet localSheet, string comment)
+        {
+            string worksheetName;
+            NameType type;
+            FormulaError formulaError;
+            object value = GetParsedObject(reference, out type, out worksheetName, out formulaError);
+            bool containsExternalLink = ContainsExternalLink(worksheetName, type, value);
+            //workbook.Features.SetFormulaFeatures(false, containsExternalLink);
+            Worksheet worksheet = null;
+            if (worksheetName != null && !containsExternalLink)
+            {
+                foreach (Worksheet ws in workbook.Worksheets)
+                {
+                    if (string.Equals(worksheetName, ws.SheetName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        worksheet = ws;
+                        break;
+                    }
+                }
+            }
+            DefinedName definedName = new DefinedName(workbook, type, name, value, worksheet, localSheet, comment, containsExternalLink);
+            definedName.Error = formulaError;
+            //definedName.HasExternalReferences = containsExternalLink;
+            //definedName.Features.SetExternalLinkFeature(containsExternalLink);
+            return definedName;
+        }
+
+        /// <summary>
+        /// Internal Method to replace a string expression of a <see cref="NameType.Formula"/> instance
+        /// </summary>
+        /// <param name="expression">New string expression</param>
+        internal void ReplaceExpression(string expression)
+        {
+            if (Type == NameType.Formula)
+            {
+                Value = expression;
+                TextValue = expression;
+            }
+        }
 
         /// <summary>
         /// Validates that the supplied name is non-empty, does not start with a digit, an invalid name or character, and does not match
@@ -269,40 +323,6 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Resolve a defined name from its string reference 
-        /// </summary>
-        /// <param name="name">Name (cannot be null)</param>
-        /// <param name="reference">String reference (cannot be null)</param>
-        /// <param name="workbook">Workbook reference (for cells, ranges and worksheet resolution)</param>
-        /// <param name="localSheet">Local sheet (can be null)</param>
-        /// <param name="comment"> Comment (can be null)</param>
-        /// <returns>Resolved defined name object</returns>
-        internal static DefinedName ResolveDefinedName(string name, string reference, Workbook workbook, Worksheet localSheet, string comment)
-        {
-            string worksheetName;
-            NameType type;
-            FormulaError formulaError;
-            object value = GetParsedObject(reference, out type, out worksheetName, out formulaError);
-            bool containsExternalLink = ContainsExternalLink(worksheetName, type, value);
-            Worksheet worksheet = null;
-            if (worksheetName != null && !containsExternalLink)
-            {
-                foreach (Worksheet ws in workbook.Worksheets)
-                {
-                    if (string.Equals(worksheetName, ws.SheetName, StringComparison.OrdinalIgnoreCase))
-                    {
-                        worksheet = ws;
-                        break;
-                    }
-                }
-            }
-            DefinedName definedName = new DefinedName(workbook, type, name, value, worksheet, localSheet, comment);
-            definedName.Error = formulaError;
-            definedName.HasExternalReferences = containsExternalLink;
-            return definedName;
-        }
-
-        /// <summary>
         /// Checks whether the defined name contains an external link (not applicable for constants)
         /// </summary>
         /// <param name="worksheet">optional worksheet name</param>
@@ -315,7 +335,7 @@ namespace NanoXLSX
             {
                 case NameType.Formula:
                     string formula = value as string;
-                    return FormulaData.ContainsExternalReference(formula);
+                    return ParserUtils.ContainsExternalReference(formula);
                 case NameType.Range:
                 case NameType.Cell:
                     return worksheet != null && EXT_WORKSHEET_REFERENCE_REGEX.IsMatch(worksheet);

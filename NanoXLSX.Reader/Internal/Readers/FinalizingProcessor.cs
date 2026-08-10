@@ -98,7 +98,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         private void RetagReferenceCells()
         {
-            if (Workbook.GetDefinedNames().Count == 0)
+            if (!Workbook.Features.ContainsDefinedNames)
             {
                 return;
             }

@@ -8,6 +8,8 @@
 using System;
 using System.Collections.Generic;
 using NanoXLSX.Enums;
+using NanoXLSX.Internal;
+using NanoXLSX.Utils;
 
 namespace NanoXLSX
 {
@@ -43,6 +45,9 @@ namespace NanoXLSX
         }
         #endregion
 
+        private bool hasExternalRefernces = false;
+        private DefinedName definedNameReference = null;
+
         #region properties
 
         /// <summary>
@@ -54,14 +59,22 @@ namespace NanoXLSX
             internal set
             {
                 expression = value;
-                HasExternalReferences = ContainsExternalReference(value);
+                HasExternalReferences = ParserUtils.ContainsExternalReference(value);
             }
         }
 
         /// <summary>
         /// Gets whether the formula expression contains a reference to an external workbook.
         /// </summary>
-        public bool HasExternalReferences { get; internal set; }
+        public bool HasExternalReferences
+        {
+            get { return hasExternalRefernces; }
+            internal set
+            {
+                hasExternalRefernces = value;
+                Features.SetFormulaFeatures(definedNameReference == null ? false : true, hasExternalRefernces);
+            }
+        }
 
         /// <summary>
         /// Type of the formula. Default is <see cref="FormulaType.Normal"/>
@@ -77,8 +90,15 @@ namespace NanoXLSX
         /// Resolved defined name, if the complete formula expression is a direct reference to exactly one defined name.
         /// </summary>
         /// \remark <remarks>Defined names within a formula expression are currently not resolved and will not be set in this property, even if only one defined name occurs in the expression.</remarks>
-        public DefinedName DefinedNameReference { get; internal set; }
-
+        public DefinedName DefinedNameReference
+        {
+            get { return definedNameReference; }
+            internal set
+            {
+                definedNameReference = value;
+                Features.SetFormulaFeatures(definedNameReference == null ? false : true, hasExternalRefernces);
+            }
+        }
         /// <summary>
         /// Gets the cached value of the formula
         /// </summary>
@@ -95,6 +115,11 @@ namespace NanoXLSX
         /// Gets the address of the formula's master cell. This is mainly used in case of <see cref="FormulaType.Array"/>.
         /// </summary>
         public string MasterCellAddress { get; internal set; }
+
+        /// <summary>
+        /// Internal feature set for cascading feature detection (consider in  <see cref="Copy"/> but not in Equals, GetHashCode etc.)
+        /// </summary>
+        internal FeatureSet Features { get; private set; } = FeatureSet.CreateFormula();
 
         #endregion
 
@@ -162,75 +187,6 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Determines whether a formula contains an external workbook reference without parsing the formula.
-        /// String literals, structured references, and relative R1C1 references are ignored.
-        /// </summary>
-        /// <param name="formulaExpression">Formula expression without a leading equal sign.</param>
-        /// <returns>True if an external workbook reference was found.</returns>
-        internal static bool ContainsExternalReference(string formulaExpression)
-        {
-            if (string.IsNullOrEmpty(formulaExpression) || formulaExpression.IndexOf('[') < 0)
-            {
-                return false;
-            }
-
-            bool inStringLiteral = false;
-            for (int i = 0; i < formulaExpression.Length; i++)
-            {
-                char current = formulaExpression[i];
-                if (current == '"')
-                {
-                    if (inStringLiteral && i + 1 < formulaExpression.Length && formulaExpression[i + 1] == '"')
-                    {
-                        i++;
-                        continue;
-                    }
-                    inStringLiteral = !inStringLiteral;
-                    continue;
-                }
-                if (inStringLiteral || current != '[')
-                {
-                    continue;
-                }
-
-                int closingBracket = formulaExpression.IndexOf(']', i + 1);
-                if (closingBracket <= i + 1)
-                {
-                    continue;
-                }
-
-                bool hasWorksheetName = false;
-                for (int j = closingBracket + 1; j < formulaExpression.Length; j++)
-                {
-                    char referenceCharacter = formulaExpression[j];
-                    if (referenceCharacter == '!')
-                    {
-                        if (hasWorksheetName)
-                        {
-                            return true;
-                        }
-                        break;
-                    }
-                    if (referenceCharacter == '[' || referenceCharacter == ']' || referenceCharacter == '"'
-                        || referenceCharacter == '+' || referenceCharacter == '-' || referenceCharacter == '*'
-                        || referenceCharacter == '/' || referenceCharacter == '^' || referenceCharacter == '&'
-                        || referenceCharacter == '=' || referenceCharacter == '<' || referenceCharacter == '>'
-                        || referenceCharacter == ',' || referenceCharacter == ';' || referenceCharacter == '('
-                        || referenceCharacter == ')' || referenceCharacter == '{' || referenceCharacter == '}')
-                    {
-                        break;
-                    }
-                    if (!char.IsWhiteSpace(referenceCharacter) && referenceCharacter != '\'')
-                    {
-                        hasWorksheetName = true;
-                    }
-                }
-                i = closingBracket;
-            }
-            return false;
-        }
-
-        /// <summary>
         /// Copies the current object into a new one (without copying <see cref="DefinedNameReference"/>)
         /// </summary>
         /// <returns>Copy of the current instance</returns>
@@ -244,6 +200,7 @@ namespace NanoXLSX
             data.CachedValue = this.CachedValue;
             data.CachedValueType = this.CachedValueType;
             data.MasterCellAddress = this.MasterCellAddress;
+            data.Features = this.Features.Copy(); // New feature set
             data.DefinedNameReference = this.DefinedNameReference; // object reference
             return data;
         }

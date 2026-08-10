@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Text;
 using NanoXLSX.Enums;
 using NanoXLSX.Exceptions;
+using NanoXLSX.Internal;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
 using FormatException = NanoXLSX.Exceptions.FormatException;
@@ -183,7 +184,9 @@ namespace NanoXLSX
         /// <summary>
         /// Formula object in case of the cell has the DataType <see cref="CellType.Formula"/>. Default is null, if the cell does not contain a formula
         /// </summary>
-        /// \remark <remarks>The plain text of the formula is still set in <see cref="Value"/>. One exception are linked cells (<see cref="FormulaData.FormulaType.Array"/> and <see cref="FormulaData.MasterCellAddress"/> is set). In this case, the cached value will be in <see cref="Value"/> due to compatibility reason.</remarks>
+        /// \remark <remarks>The plain text of the formula is still set in <see cref="Value"/>. One exception are linked cells (<see cref="FormulaData.FormulaType.Array"/> and <see cref="FormulaData.MasterCellAddress"/> is set). 
+        /// In this case, the cached value will be in <see cref="Value"/> due to compatibility reason. 
+        /// <br />API note: Do not manually tamper with Formula. There is <see cref="FeatureSet"/> inside, responsible for up-stream propagated feature counters.</remarks>
         public FormulaData Formula { get; internal set; }
 
         #endregion

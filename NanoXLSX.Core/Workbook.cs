@@ -10,6 +10,7 @@ using System.Linq;
 using NanoXLSX.Colors;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
+using NanoXLSX.Internal;
 using NanoXLSX.Registry;
 using NanoXLSX.Themes;
 using NanoXLSX.Utils;
@@ -144,6 +145,10 @@ namespace NanoXLSX
         /// </summary>
         public Theme WorkbookTheme { get; set; } = Theme.GetDefaultTheme();
 
+        /// <summary>
+        /// Internal feature set for cascading feature detection
+        /// </summary>
+        internal FeatureSet Features { get; } = new FeatureSet() { };
 
         #endregion
 
@@ -250,6 +255,8 @@ namespace NanoXLSX
         {
             mruColors.Clear();
         }
+
+        #region definedNames
 
         /// <summary>
         /// Adds a defined name, pointing to a single cell, to the workbook
@@ -422,7 +429,7 @@ namespace NanoXLSX
             {
                 throw new WorksheetException("A formula value pointing to a defined name cannot be null or empty");
             }
-            // Note: Added strings like '[0]' will out-of-the-box throw an exception on saveing a workbook 
+            // Note: Added strings like '[0]' will out-of-the-box throw an exception on saving a workbook 
             return AddDefinedName(name, DefinedName.NameType.Formula, formula, null, localWorksheet, comment);
         }
 
@@ -485,6 +492,7 @@ namespace NanoXLSX
             {
                 InvalidateDefinedNameReferences(definedName);
             }
+            definedName.Features.Remove(Features);  // Decrease counter of defined name features
             definedNames.RemoveAt(index);
             return true;
         }
@@ -530,6 +538,8 @@ namespace NanoXLSX
             return -1;
         }
 
+        #endregion
+
         /// <summary>
         /// Adding a new Worksheet. The new worksheet will be defined as current worksheet
         /// </summary>
@@ -549,6 +559,7 @@ namespace NanoXLSX
             Worksheet newWs = new Worksheet(name, number, this);
             currentWorksheet = newWs;
             worksheets.Add(newWs);
+            newWs.Features.Add(Features);
             shortener.SetCurrentWorksheetInternal(currentWorksheet);
         }
 
@@ -615,6 +626,7 @@ namespace NanoXLSX
             currentWorksheet = worksheet;
             worksheets.Add(worksheet);
             worksheet.WorkbookReference = this;
+            worksheet.Features.Add(Features);
         }
 
         /// <summary>
@@ -948,6 +960,10 @@ namespace NanoXLSX
         {
             foreach (Worksheet worksheet in worksheets)
             {
+                if (!worksheet.Features.ContainsDefinedNameFormulas)
+                {
+                    continue;
+                }
                 foreach (KeyValuePair<string, Cell> cell in worksheet.Cells)
                 {
                     if (cell.Value.DataType == Cell.CellType.Formula)
@@ -970,6 +986,7 @@ namespace NanoXLSX
         /// <param name="resetCurrentWorksheet">If true, the current worksheet will be relocated to the last worksheet in the list</param>
         private void RemoveWorksheet(int index, bool resetCurrentWorksheet)
         {
+            worksheets[index].Features.Remove(Features); // Remove cascading features
             worksheets.RemoveAt(index);
             if (worksheets.Count > 0)
             {

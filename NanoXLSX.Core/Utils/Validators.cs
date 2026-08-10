@@ -55,7 +55,7 @@ namespace NanoXLSX.Utils
         /// <param name="scope">Optional parameter to validate for a specific address scope (Any, SingleAddress, Range). Default is: Any</param>
         /// <exception cref="FormatException">A format exception is thrown if the passed address is not a valid cell address or range</exception>
         /// \remark <remarks>If <paramref name="scope"/> is <see cref="Cell.AddressScope.Range"/>, an explicit range expression is required; a single address is rejected even though <see cref="Cell.ResolveCellRange(string)"/> can represent it as a one-cell range. If the scope is <see cref="Cell.AddressScope.Invalid"/>, the validation is inverted, so that a valid cell or range will throw an exception.</remarks>
-        internal static void ValidateCellAddressExpression(string expression, Cell.AddressScope scope = Cell.AddressScope.Any)
+        public static void ValidateCellAddressExpression(string expression, Cell.AddressScope scope = Cell.AddressScope.Any)
         {
             bool isCellAddress = false;
             bool isRange = false;

@@ -597,6 +597,49 @@ namespace NanoXLSX.Test.Core.UtilsTest
             Assert.True(match);
         }
 
+        [Theory(DisplayName = "Test of external workbook reference detection in formulas")]
+        [InlineData("[1]Sheet1!A1")]
+        [InlineData("SUM([12]Sheet_Name!$A$1)")]
+        [InlineData("'[1]Sheet 1'!$A$1")]
+        [InlineData("[Book.xlsx]Sheet1!A1")]
+        [InlineData("SUM('[Book.xlsx]Owner''s Sheet'!A1)")]
+        [InlineData("[1]Sheet1!A1+[2]Sheet2!B2")]
+        [InlineData("'..\\[Book.xlsx]Sheet1'!$A$1")]
+        [InlineData("'../[Book.xlsx]Sheet1'!$A$1")]
+        [InlineData("'C:\\temp\\[book one.xlsx]Sheet 1'!$A$1")]
+        [InlineData("SUM('C:\\temp\\[book one.xlsx]Sheet 1'!$A$1,'..\\[other.xlsx]Data'!$B$2)")]
+        public void ContainsExternalReferenceTest(string expression)
+        {
+            FormulaData data = new FormulaData(expression);
+
+            Assert.True(data.HasExternalReferences);
+            Assert.True(ParserUtils.ContainsExternalReference(expression));
+        }
+
+        [Theory(DisplayName = "Test of expressions without external workbook references")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("SUM(A1:A2)")]
+        [InlineData("Table1[Column]")]
+        [InlineData("Table1[1]")]
+        [InlineData("R[1]C[1]")]
+        [InlineData("[")]
+        [InlineData("[]Sheet1!A1")]
+        [InlineData("[1]")]
+        [InlineData("[1]!A1")]
+        [InlineData("[1]Sheet1+A1")]
+        [InlineData("Table1[Column]+Sheet1!A1")]
+        [InlineData("\"[1]Sheet1!A1\"")]
+        [InlineData("INDIRECT(\"[1]Sheet1!A1\")")]
+        [InlineData("\"escaped \"\"[1]Sheet1!A1\"\" text\"")]
+        public void ContainsExternalReferenceNegativeTest(string expression)
+        {
+            FormulaData data = new FormulaData(expression);
+
+            Assert.False(data.HasExternalReferences);
+            Assert.False(ParserUtils.ContainsExternalReference(expression));
+        }
+
         private class InvalidStringValue
         {
             public override string ToString()
