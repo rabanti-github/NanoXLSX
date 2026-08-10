@@ -102,7 +102,9 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the cached value of the formula
         /// </summary>
-        /// \remark <remarks>This value can be supplied through the constructor or set when a Workbook is loaded. It is not evaluated when a new formula was defined by <see cref="Worksheet.AddCellFormula(string, int, int)"/> or its overload methods</remarks>
+        /// \remark <remarks>This value can be supplied through the constructor or set when a Workbook is loaded. Formula error results are represented by
+        /// <see cref="Errors.FormulaError"/> values. The value is not evaluated when a new formula was defined by
+        /// <see cref="Worksheet.AddCellFormula(string, int, int)"/> or its overload methods.</remarks>
         public object CachedValue { get; internal set; }
 
         /// <summary>

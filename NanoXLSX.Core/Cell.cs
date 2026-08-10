@@ -50,10 +50,11 @@ namespace NanoXLSX
             /// <summary>Type for empty cells. This type is only used for merged cells (all cells except the first of the cell range)</summary>
             Empty,
             /// <summary>
-            /// Type for errors in a cell (mostly formula)
+            /// Type for a standalone error value in a cell
             /// </summary>
-            /// \remark <remarks>Although not intended / intuitive, this type can deliberately be set on a cell. Values will be not written in this case, but (currently) a <see cref="Errors.FormulaError.Name"/>. 
-            /// However, the type is usually only used to mark errors in cells, when a workbook is loaded.</remarks>
+            /// \remark <remarks>The preferred value for this type is an <see cref="Errors.FormulaError"/>. A formula whose cached result is an error
+            /// remains a <see cref="Formula"/> cell and exposes the error through <see cref="FormulaData.CachedValue"/> and
+            /// <see cref="FormulaData.CachedValueType"/>. Explicitly changing a formula cell to this type discards its formula metadata.</remarks>
             Error,
             /// <summary>Default Type, not specified</summary>
             Default
@@ -209,7 +210,8 @@ namespace NanoXLSX
         public AddressType CellAddressType { get; set; }
 
         /// <summary>Gets or sets the value of the cell (generic object type). When setting a value, the <see cref="DataType"/> is automatically resolved</summary>
-        /// \remark <remarks>Assigning a value automatically resolves the cell type and may therefore replace formula metadata. 
+        /// \remark <remarks>Assigning a value automatically resolves the cell type and may therefore replace formula metadata. An
+        /// <see cref="Errors.FormulaError"/> value resolves to a standalone <see cref="CellType.Error"/> cell.
         /// For formula cells, the assigned value is also synchronized with <see cref="FormulaData.Expression"/>. Linked formula cells whose
         /// <see cref="FormulaData.MasterCellAddress"/> is set retain their special cached-value behavior.</remarks>
         public object Value
@@ -520,6 +522,8 @@ namespace NanoXLSX
                 DataType = CellType.Time;
                 SetStyle(BasicStyles.TimeFormat);
             }
+            else if (t == typeof(Errors.FormulaError))
+            { DataType = CellType.Error; }
             else { DataType = CellType.String; } // Default (char, string, object)
         }
 

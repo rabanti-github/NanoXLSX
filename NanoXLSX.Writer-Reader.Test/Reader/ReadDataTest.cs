@@ -410,7 +410,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertFormulaData(givenWorksheet.Cells["A1"], "SUM(A2:A3)", FormulaData.FormulaType.Normal, null, "3", Cell.CellType.Number);
             AssertFormulaData(givenWorksheet.Cells["B1"], "SUM(B2:B3)", FormulaData.FormulaType.Array, "B1:B3", "4", Cell.CellType.Number);
             AssertFormulaData(givenWorksheet.Cells["C1"], "C2", FormulaData.FormulaType.Shared, "C1:C3", "1", Cell.CellType.Bool);
-            AssertFormulaData(givenWorksheet.Cells["D1"], "TABLE(D2,D3)", FormulaData.FormulaType.DataTable, "D1:D3", "#DIV/0!", Cell.CellType.Error);
+            AssertFormulaData(givenWorksheet.Cells["D1"], "TABLE(D2,D3)", FormulaData.FormulaType.DataTable, "D1:D3", Errors.FormulaError.DivisionByZero, Cell.CellType.Error);
             AssertFormulaData(givenWorksheet.Cells["E1"], null, FormulaData.FormulaType.Normal, null, "linked value", Cell.CellType.String);
             Assert.Equal("linked value", givenWorksheet.Cells["E1"].Value);
         }
@@ -567,7 +567,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             Assert.Equal(expected, given);
         }
 
-        private static void AssertFormulaData(Cell cell, string expression, FormulaData.FormulaType type, string formulaRange, string cachedValue, Cell.CellType cachedValueType)
+        private static void AssertFormulaData(Cell cell, string expression, FormulaData.FormulaType type, string formulaRange, object cachedValue, Cell.CellType cachedValueType)
         {
             Assert.Equal(Cell.CellType.Formula, cell.DataType);
             Assert.NotNull(cell.Formula);

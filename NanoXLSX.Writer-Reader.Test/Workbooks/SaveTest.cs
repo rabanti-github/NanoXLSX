@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using NanoXLSX.Enums;
+using NanoXLSX.Extensions;
 using NanoXLSX.Test.Writer_Reader.Utils;
 using Xunit;
 
@@ -154,19 +155,53 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             await Assert.ThrowsAnyAsync<Exception>(() => workbook.SaveAsStreamAsync(null));
         }
 
-        // TODO consider move this test to another test class (currently for test coverage)
-        [Fact(DisplayName = "Test worksheet serialization of error cells")]
-        public void SaveErrorCellTest()
+        [Theory(DisplayName = "Test worksheet round-trip of typed error cells")]
+        [InlineData(Errors.FormulaError.Null, "#NULL!")]
+        [InlineData(Errors.FormulaError.DivisionByZero, "#DIV/0!")]
+        [InlineData(Errors.FormulaError.Value, "#VALUE!")]
+        [InlineData(Errors.FormulaError.Reference, "#REF!")]
+        [InlineData(Errors.FormulaError.Name, "#NAME?")]
+        [InlineData(Errors.FormulaError.Number, "#NUM!")]
+        [InlineData(Errors.FormulaError.NotAvailable, "#N/A")]
+        [InlineData(Errors.FormulaError.GettingData, "#GETTING_DATA")]
+        public void SaveErrorCellTest(Errors.FormulaError error, string expectedValue)
         {
             Workbook workbook = new Workbook("worksheet1");
-            workbook.CurrentWorksheet.AddCell(new Cell(Errors.FormulaError.Name, Cell.CellType.Error, "A1"), "A1");
+            workbook.CurrentWorksheet.AddCell(new Cell(error, Cell.CellType.Error, "A1"), "A1");
+
+            using MemoryStream stream = new MemoryStream();
+            workbook.SaveAsStream(stream, true);
+
+            TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", "t=\"e\"");
+            TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", "<v>" + expectedValue + "</v>");
+
+            stream.Position = 0;
+            Cell loadedCell = WorkbookReader.Load(stream).CurrentWorksheet.Cells["A1"];
+            Assert.Equal(Cell.CellType.Error, loadedCell.DataType);
+            Assert.Equal(error, loadedCell.Value);
+            Assert.Null(loadedCell.Formula);
+        }
+
+        [Fact(DisplayName = "Test worksheet serialization compatibility of string-backed error cells")]
+        public void SaveStringErrorCellTest()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            workbook.CurrentWorksheet.AddCell(new Cell("#REF!", Cell.CellType.Error, "A1"), "A1");
+            workbook.CurrentWorksheet.AddCell(new Cell("unsupported", Cell.CellType.Error, "B1"), "B1");
 
             using MemoryStream stream = new MemoryStream();
             workbook.SaveAsStream(stream, true);
 
             TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", "r=\"A1\"");
             TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", "t=\"e\"");
+            TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", "<v>#REF!</v>");
             TestUtils.AssertZipEntry(stream, "xl/worksheets/sheet1.xml", "<v>#NAME?</v>");
+
+            stream.Position = 0;
+            Workbook loadedWorkbook = WorkbookReader.Load(stream);
+            Assert.Equal(Errors.FormulaError.Reference, loadedWorkbook.CurrentWorksheet.Cells["A1"].Value);
+            Assert.Equal(Errors.FormulaError.Name, loadedWorkbook.CurrentWorksheet.Cells["B1"].Value);
+            Assert.Equal(0, loadedWorkbook.Features.FormulaCount);
         }
 
         // TODO consider move this test to another test class (currently for test coverage)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -92,13 +92,13 @@ namespace NanoXLSX.Test.Writer_Reader.Reader
         [InlineData("B1", Cell.CellType.Number, "3")]
         [InlineData("C1", Cell.CellType.String, "0")]
         [InlineData("D1", Cell.CellType.Bool, "1")]
-        [InlineData("E1", Cell.CellType.Error, "#DIV/0!")]
+        [InlineData("E1", Cell.CellType.Error, Errors.FormulaError.DivisionByZero)]
         [InlineData("F1", Cell.CellType.Date, "2026-07-30T00:00:00Z")]
         [InlineData("G1", Cell.CellType.String, "shared")]
         [InlineData("H1", Cell.CellType.String, "inline")]
         [InlineData("I1", Cell.CellType.Default, "unsupported")]
         [InlineData("J1", Cell.CellType.Default, null)]
-        public void FormulaCachedValueReadTest(string address, Cell.CellType expectedCachedValueType, string expectedCachedValue)
+        public void FormulaCachedValueReadTest(string address, Cell.CellType expectedCachedValueType, object expectedCachedValue)
         {
             using (MemoryStream stream = CreateStandardsFormulaWorkbook())
             {
@@ -108,6 +108,34 @@ namespace NanoXLSX.Test.Writer_Reader.Reader
                 Assert.Equal("1+1", cell.Value);
                 Assert.Equal(expectedCachedValue, cell.Formula.CachedValue);
                 Assert.Equal(expectedCachedValueType, cell.Formula.CachedValueType);
+            }
+        }
+
+        [Fact(DisplayName = "Test of distinguishing standalone errors from formula error results when reading")]
+        public void ErrorCellAndFormulaReadTest()
+        {
+            using (MemoryStream stream = CreateStandardsFormulaWorkbook(true))
+            {
+                Workbook workbook = WorkbookReader.Load(stream);
+                Cell formulaCell = workbook.CurrentWorksheet.Cells["E1"];
+                Cell errorCell = workbook.CurrentWorksheet.Cells["K1"];
+                Cell unknownErrorCell = workbook.CurrentWorksheet.Cells["L1"];
+
+                Assert.Equal(Cell.CellType.Formula, formulaCell.DataType);
+                Assert.Equal("[1]ExternalSheet!A1", formulaCell.Value);
+                Assert.Equal("[1]ExternalSheet!A1", formulaCell.Formula.Expression);
+                Assert.Equal(Errors.FormulaError.DivisionByZero, formulaCell.Formula.CachedValue);
+                Assert.Equal(Cell.CellType.Error, formulaCell.Formula.CachedValueType);
+
+                Assert.Equal(Cell.CellType.Error, errorCell.DataType);
+                Assert.Equal(Errors.FormulaError.Reference, errorCell.Value);
+                Assert.Null(errorCell.Formula);
+                Assert.Equal(Cell.CellType.Error, unknownErrorCell.DataType);
+                Assert.Equal(Errors.FormulaError.UnknownError, unknownErrorCell.Value);
+                Assert.Null(unknownErrorCell.Formula);
+
+                Assert.Equal(10, workbook.Features.FormulaCount);
+                Assert.Equal(1, workbook.Features.ExternalLinkCount);
             }
         }
 
@@ -210,23 +238,27 @@ namespace NanoXLSX.Test.Writer_Reader.Reader
             return stream;
         }
 
-        private static MemoryStream CreateStandardsFormulaWorkbook()
+        // TODO try to make this configurable (builder)
+        private static MemoryStream CreateStandardsFormulaWorkbook(bool useExternalErrorFormula = false)
         {
             Workbook workbook = CreateWorkbook();
             workbook.CurrentWorksheet.AddCell("shared", "A1");
             MemoryStream stream = SaveWorkbook(workbook);
-            const string worksheetXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
+            string errorFormula = useExternalErrorFormula ? "[1]ExternalSheet!A1" : "1+1";
+            string worksheetXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
                 + "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\">"
                 + "<c r=\"A1\"><f>1+1</f><v>2</v></c>"
                 + "<c r=\"B1\" t=\"n\"><f>1+1</f><v>3</v></c>"
                 + "<c r=\"C1\" t=\"str\"><f>1+1</f><v>0</v></c>"
                 + "<c r=\"D1\" t=\"b\"><f>1+1</f><v>1</v></c>"
-                + "<c r=\"E1\" t=\"e\"><f>1+1</f><v>#DIV/0!</v></c>"
+                + "<c r=\"E1\" t=\"e\"><f>" + errorFormula + "</f><v>#DIV/0!</v></c>"
                 + "<c r=\"F1\" t=\"d\"><f>1+1</f><v>2026-07-30T00:00:00Z</v></c>"
                 + "<c r=\"G1\" t=\"s\"><f>1+1</f><v>0</v></c>"
                 + "<c r=\"H1\" t=\"inlineStr\"><f>1+1</f><is><t>inline</t></is></c>"
                 + "<c r=\"I1\" t=\"unsupported\"><f>1+1</f><v>unsupported</v></c>"
                 + "<c r=\"J1\" t=\"str\"><f>1+1</f></c>"
+                + "<c r=\"K1\" t=\"e\"><v>#REF!</v></c>"
+                + "<c r=\"L1\" t=\"e\"><v>#UNKNOWN!</v></c>"
                 + "</row></sheetData></worksheet>";
             ReplaceZipEntry(stream, "xl/worksheets/sheet1.xml", worksheetXml);
             return stream;

@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using NanoXLSX.Enums;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Reader;
@@ -774,7 +775,16 @@ namespace NanoXLSX.Internal.Readers
         {
             Cell.CellType importedType = Cell.CellType.Default;
             object rawValue;
-            if (type == "b")
+            if (type == "e")
+            {
+                importedType = Cell.CellType.Error;
+                if (!Errors.TryParseFormulaError(raw, out Errors.FormulaError error))
+                {
+                    error = Errors.FormulaError.UnknownError;
+                }
+                rawValue = error;
+            }
+            else if (type == "b")
             {
                 rawValue = TryParseBool(raw);
                 if (rawValue != null)
@@ -859,9 +869,21 @@ namespace NanoXLSX.Internal.Readers
                 return;
             }
             FormulaData formula = cell.Formula ?? new FormulaData();
+            Cell.CellType resolvedCachedValueType = ResolveFormulaCachedValueType(cachedValueType, hasCachedValue);
             formula.Expression = expression;
-            formula.CachedValue = cachedValue;
-            formula.CachedValueType = ResolveFormulaCachedValueType(cachedValueType, hasCachedValue);
+            if (resolvedCachedValueType == Cell.CellType.Error)
+            {
+                if (!Errors.TryParseFormulaError(cachedValue, out Errors.FormulaError error))
+                {
+                    error = Errors.FormulaError.UnknownError;
+                }
+                formula.CachedValue = error;
+            }
+            else
+            {
+                formula.CachedValue = cachedValue;
+            }
+            formula.CachedValueType = resolvedCachedValueType;
             formula.FormulaRange = formulaReference;
             if (!string.IsNullOrEmpty(formulaType))
             {
@@ -953,6 +975,8 @@ namespace NanoXLSX.Internal.Readers
                     return Cell.CellType.Time;
                 case bool _:
                     return Cell.CellType.Bool;
+                case Errors.FormulaError _:
+                    return Cell.CellType.Error;
                 default:
                     return Cell.CellType.String;
             }

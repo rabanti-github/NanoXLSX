@@ -113,6 +113,10 @@ namespace NanoXLSX.Test.Worksheets
         [InlineData(Cell.CellType.String)]
         [InlineData(Cell.CellType.Number)]
         [InlineData(Cell.CellType.Bool)]
+        [InlineData(Cell.CellType.Date)]
+        [InlineData(Cell.CellType.Time)]
+        [InlineData(Cell.CellType.Empty)]
+        [InlineData(Cell.CellType.Error)]
         public void CellFormulaTypeChange_RemovesFeatures(Cell.CellType targetType)
         {
             Workbook workbook = new Workbook("Sheet1");
@@ -131,6 +135,25 @@ namespace NanoXLSX.Test.Worksheets
             Assert.Equal(0, worksheet.Features.ExternalLinkCount);
             Assert.Equal(0, workbook.Features.FormulaCount);
             Assert.Equal(0, workbook.Features.ExternalLinkCount);
+        }
+
+        [Fact(DisplayName = "A cached formula error preserves formula and external-link features")]
+        public void CellFormulaCachedError_PreservesFeatures()
+        {
+            Workbook workbook = new Workbook("Sheet1");
+            Worksheet worksheet = workbook.CurrentWorksheet;
+            worksheet.AddCellFormula("[1]ExternalSheet!A1", "A1");
+            Cell cell = worksheet.Cells["A1"];
+
+            cell.Formula.CachedValue = Enums.Errors.FormulaError.Reference;
+            cell.Formula.CachedValueType = Cell.CellType.Error;
+
+            Assert.Equal(Cell.CellType.Formula, cell.DataType);
+            Assert.Equal("[1]ExternalSheet!A1", cell.Formula.Expression);
+            Assert.Equal(1, worksheet.Features.FormulaCount);
+            Assert.Equal(1, worksheet.Features.ExternalLinkCount);
+            Assert.Equal(1, workbook.Features.FormulaCount);
+            Assert.Equal(1, workbook.Features.ExternalLinkCount);
         }
 
         [Fact(DisplayName = "Replacing formula metadata keeps feature counters balanced")]

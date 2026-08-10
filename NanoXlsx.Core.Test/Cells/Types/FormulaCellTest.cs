@@ -77,6 +77,23 @@ namespace NanoXLSX.Test.Core.Cells.Types
             Assert.Null(cell.Formula);
         }
 
+        [Fact(DisplayName = "A cached formula error does not change the formula cell type or expression")]
+        public void FormulaCachedErrorTest()
+        {
+            Cell cell = new Cell("A1/0", CellType.Formula);
+            FormulaData formula = cell.Formula;
+
+            formula.CachedValue = Enums.Errors.FormulaError.DivisionByZero;
+            formula.CachedValueType = CellType.Error;
+
+            Assert.Equal(CellType.Formula, cell.DataType);
+            Assert.Equal("A1/0", cell.Value);
+            Assert.Same(formula, cell.Formula);
+            Assert.Equal("A1/0", cell.Formula.Expression);
+            Assert.Equal(Enums.Errors.FormulaError.DivisionByZero, cell.Formula.CachedValue);
+            Assert.Equal(CellType.Error, cell.Formula.CachedValueType);
+        }
+
         [Fact(DisplayName = "Linked formula cells retain cached-value behavior")]
         public void LinkedFormulaValueTest()
         {

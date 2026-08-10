@@ -683,8 +683,7 @@ namespace NanoXLSX.Internal.Writers
                 }
                 else if (item.DataType == Cell.CellType.Error)
                 {
-                    // TODO add specific error type (if deliberately wanted by user)
-                    cellValue = Errors.FormulaErrorToString(Errors.FormulaError.Name);
+                    cellValue = ResolveErrorValue(item.Value);
                     cellType = XmlAttribute.CreateAttribute("t", "e");
                 }
                 // else Cell.CellType.Empty or Cell.CellType.Empty lead to empty cell (no "t" attribute & <v> element)
@@ -703,6 +702,35 @@ namespace NanoXLSX.Internal.Writers
 
             }
             return row;
+        }
+
+        /// <summary>
+        /// Resolves a standalone cell error to its OOXML representation.
+        /// </summary>
+        /// <param name="value">Typed or string-backed error value.</param>
+        /// <returns>OOXML error token, or #NAME? if the value is unsupported.</returns>
+        private static string ResolveErrorValue(object value)
+        {
+            if (value is Errors.FormulaError formulaError)
+            {
+                switch (formulaError)
+                {
+                    case Errors.FormulaError.Null:
+                    case Errors.FormulaError.DivisionByZero:
+                    case Errors.FormulaError.Value:
+                    case Errors.FormulaError.Reference:
+                    case Errors.FormulaError.Name:
+                    case Errors.FormulaError.Number:
+                    case Errors.FormulaError.NotAvailable:
+                    case Errors.FormulaError.GettingData:
+                        return Errors.FormulaErrorToString(formulaError);
+                }
+            }
+            else if (value is string errorText && Errors.TryParseFormulaError(errorText, out Errors.FormulaError parsedError))
+            {
+                return Errors.FormulaErrorToString(parsedError);
+            }
+            return Errors.FormulaErrorToString(Errors.FormulaError.Name);
         }
 
         /// <summary>
