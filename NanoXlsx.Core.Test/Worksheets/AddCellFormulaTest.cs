@@ -115,6 +115,19 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             InvokeAddCellFormulaTest<string>("=B2", initialAddress.GetAddress(), worksheet.AddCellFormula, initialAddress.GetAddress(), expectedNextColumn, expectedNextRow);
         }
 
+        [Fact(DisplayName = "Test of the formula handling of attached feature sets. an identical feature set should not be reattached (coverage)")]
+        public void PreventFeatureRebindTest()
+        {
+            Workbook workbook = new Workbook();
+            Worksheet worksheet = new Worksheet("worksheet1");
+            workbook.AddWorksheet(worksheet);
+            Cell cell1 = new Cell("A1+A2", Cell.CellType.Formula);
+            worksheet.AddCell(cell1, "B1");
+            worksheet.AddCell(cell1, "B2");
+            Assert.True(object.ReferenceEquals(workbook.CurrentWorksheet.Cells["B1"].Formula.Features, workbook.CurrentWorksheet.Cells["B2"].Formula.Features));
+
+        }
+
         private void InvokeAddCellFormulaTest<T1>(string value, T1 parameter1, Action<string, T1> action, string expectedAddress, int expectedNextColumn, int expectedNextRow, Style expectedStyle = null)
         {
             Assert.Empty(worksheet.Cells);

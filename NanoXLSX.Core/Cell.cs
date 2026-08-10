@@ -161,15 +161,6 @@ namespace NanoXLSX
             {
                 if (dataType == value)
                 {
-                    if (value == CellType.Formula && formula == null)
-                    {
-                        Formula = new FormulaData(GetValueAsFormulaExpression()); // Only upsert missing object
-                    }
-                    return;
-                }
-                if (dataType != CellType.Formula && value != CellType.Formula)
-                {
-                    dataType = value;
                     return;
                 }
                 if (value == CellType.Formula)
@@ -177,19 +168,22 @@ namespace NanoXLSX
                     dataType = value;
                     if (formula == null)
                     {
-                        Formula = new FormulaData(GetValueAsFormulaExpression()); // Upsert missing object
+                        Formula = new FormulaData(GetValueAsFormulaExpression());
                     }
                     else
                     {
                         AttachFormulaFeatures();
+                        SynchronitzeValueFromFormula();
                     }
                     return;
                 }
-                ClearFormula();
+                if (dataType == CellType.Formula)
+                {
+                    ClearFormula();
+                }
                 dataType = value;
             }
         }
-
 
         /// <summary>Gets or sets the number of the row (zero-based)</summary>
         /// <exception cref="RangeException">Throws a RangeException if the row number is out of range</exception>
@@ -249,17 +243,13 @@ namespace NanoXLSX
             get { return formula; }
             internal set
             {
-                FormulaData replacement = value;
-                if (replacement == null && dataType == CellType.Formula)
-                {
-                    replacement = new FormulaData(GetValueAsFormulaExpression());
-                }
-                if (ReferenceEquals(formula, replacement))
+                if (ReferenceEquals(formula, value))
                 {
                     return;
                 }
                 DetachFormulaFeatures();
-                formula = replacement;
+                formula = value;
+                SynchronitzeValueFromFormula();
                 AttachFormulaFeatures();
             }
         }
@@ -474,8 +464,8 @@ namespace NanoXLSX
                 }
                 formula.CachedValue = ParserUtils.ToCachedValueString(cachedValue); // Force value as plain OOXML string
             }
-            this.Formula = formula;
             this.DataType = CellType.Formula; // Force type
+            this.Formula = formula;
             this.value = definedName.Name;
             return referenceRange;
         }
@@ -1120,6 +1110,17 @@ namespace NanoXLSX
         {
             DetachFormulaFeatures();
             worksheetFeatures = null;
+        }
+
+        /// <summary>
+        /// Propagates Cell.Formula.Expression back to Cell.Value
+        /// </summary>
+        private void SynchronitzeValueFromFormula()
+        {
+            if (formula.MasterCellAddress == null)
+            {
+                this.value = formula.Expression;  // Sync back from formula to cell
+            }
         }
 
         /// <summary>

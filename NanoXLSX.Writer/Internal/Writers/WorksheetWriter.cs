@@ -748,49 +748,41 @@ namespace NanoXLSX.Internal.Writers
             XmlAttribute? formulaRangeAttribute = null;
             string formulaExpression;
             bool omitFormula = false;
-            if (cell.Formula != null)
+            switch (cell.Formula.Type)
             {
-                switch (cell.Formula.Type)
-                {
-                    case FormulaData.FormulaType.DataTable:
-                        formulaTypeAttribute = new XmlAttribute("t", "dataTable");
-                        break;
-                    case FormulaData.FormulaType.Shared:
-                        formulaTypeAttribute = new XmlAttribute("t", "shared");
-                        break;
-                    case FormulaData.FormulaType.Array:
-                        formulaTypeAttribute = new XmlAttribute("t", "array");
-                        break;
-                    default:
-                        formulaTypeAttribute = new XmlAttribute("t", "normal");
-                        break;
-                }
-                if (cell.Formula.FormulaRange != null)
-                {
-                    formulaRangeAttribute = new XmlAttribute("ref", cell.Formula.FormulaRange); // Assumed as validated
-                }
-                ResolveFormulaCachedValue(cell.Formula, out cellValue, out cellType);
-                if (cell.Formula.MasterCellAddress != null)
-                {
-                    omitFormula = true; // Array referenced cells are only internal formulas
-                }
-                if (cell.Formula.DefinedNameReference != null)
-                {
-                    if (cell.Formula.DefinedNameReference.Error != Errors.FormulaError.NoError)
-                    {
-                        cellType = XmlAttribute.CreateAttribute("t", "e"); // Mark cell type as error (propagated form defined name)
-                    }
-                    formulaExpression = XmlUtils.SanitizeXmlValue(cell.Formula.DefinedNameReference.Name); // reflects currently cell.Value
-                }
-                else
-                {
-                    formulaExpression = XmlUtils.SanitizeXmlValue(cell.Formula.Expression); // reflects currently cell.Value
-                }
+                case FormulaData.FormulaType.DataTable:
+                    formulaTypeAttribute = new XmlAttribute("t", "dataTable");
+                    break;
+                case FormulaData.FormulaType.Shared:
+                    formulaTypeAttribute = new XmlAttribute("t", "shared");
+                    break;
+                case FormulaData.FormulaType.Array:
+                    formulaTypeAttribute = new XmlAttribute("t", "array");
+                    break;
+                default:
+                    formulaTypeAttribute = new XmlAttribute("t", "normal");
+                    break;
             }
-            else // Fallback (TODO check whether is reachable)
+            if (cell.Formula.FormulaRange != null)
             {
-                formulaExpression = XmlUtils.SanitizeXmlValue(cell.Value.ToString());
-                cellValue = string.Empty; // Resolution of cached values is currently not handled
+                formulaRangeAttribute = new XmlAttribute("ref", cell.Formula.FormulaRange); // Assumed as validated
+            }
+            ResolveFormulaCachedValue(cell.Formula, out cellValue, out cellType);
+            if (cell.Formula.MasterCellAddress != null)
+            {
+                omitFormula = true; // Array referenced cells are only internal formulas
+            }
+            if (cell.Formula.DefinedNameReference != null)
+            {
+                if (cell.Formula.DefinedNameReference.Error != Errors.FormulaError.NoError)
+                {
+                    cellType = XmlAttribute.CreateAttribute("t", "e"); // Mark cell type as error (propagated form defined name)
+                }
+                formulaExpression = XmlUtils.SanitizeXmlValue(cell.Formula.DefinedNameReference.Name); // reflects currently cell.Value
+            }
+            else
+            {
+                formulaExpression = XmlUtils.SanitizeXmlValue(cell.Formula.Expression); // reflects currently cell.Value
             }
             if (!omitFormula)
             {

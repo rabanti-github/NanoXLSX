@@ -65,6 +65,27 @@ namespace NanoXLSX.Test.Core.Cells.Types
             Assert.Null(cell.Formula);
         }
 
+
+        [Fact(DisplayName = "Test of reattaching the feature set to a formula cell, when a new FormulaData object is assigned")]
+        public void FormulaReattachFeatureSetTest()
+        {
+            Cell cell = new Cell("A1+B1", CellType.Formula);
+            cell.DataType = CellType.String;
+            Assert.Null(cell.Formula);
+            Assert.Equal(Cell.CellType.String, cell.DataType);
+            Assert.Equal("A1+B1", cell.Value.ToString());
+
+            FormulaData formulaData = new FormulaData("A2+B2");
+            cell.Formula = formulaData;
+            Assert.Equal("A2+B2", cell.Value.ToString()); // Main value is synced back
+
+            cell.DataType = CellType.Formula; // Re-set
+            Assert.NotNull(cell.Formula);
+            Assert.Equal(Cell.CellType.Formula, cell.DataType);
+            Assert.Equal("A2+B2", cell.Formula.Expression);
+        }
+
+
         [Fact(DisplayName = "Assigning null to a formula cell resolves Empty and clears formula metadata")]
         public void FormulaToEmptyByValueTest()
         {
