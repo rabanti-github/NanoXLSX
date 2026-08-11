@@ -415,6 +415,43 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             Assert.Equal("linked value", givenWorksheet.Cells["E1"].Value);
         }
 
+        [Fact(DisplayName = "Test of reading an invalid formula cached error as an unknown error")]
+        public void ReadInvalidFormulaCachedErrorTest()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            workbook.CurrentWorksheet.AddCellFormula("1/0", "A1");
+            workbook.CurrentWorksheet.Cells["A1"].Formula.CachedValue = "invalid error";
+            workbook.CurrentWorksheet.Cells["A1"].Formula.CachedValueType = Cell.CellType.Error;
+            using MemoryStream stream = new MemoryStream();
+            workbook.SaveAsStream(stream, true);
+            stream.Position = 0;
+
+            Cell cell = WorkbookReader.Load(stream).CurrentWorksheet.Cells["A1"];
+
+            AssertFormulaData(
+                cell,
+                "1/0",
+                FormulaData.FormulaType.Normal,
+                null,
+                Errors.FormulaError.UnknownError,
+                Cell.CellType.Error);
+        }
+
+        [Fact(DisplayName = "Test that reader options preserve the type of error cells")]
+        public void ReadErrorWithOptionsTest()
+        {
+            Workbook workbook = new Workbook("worksheet1");
+            workbook.CurrentWorksheet.AddCell(Errors.FormulaError.Reference, "A1");
+            using MemoryStream stream = new MemoryStream();
+            workbook.SaveAsStream(stream, true);
+            stream.Position = 0;
+
+            Cell cell = WorkbookReader.Load(stream, new ReaderOptions()).CurrentWorksheet.Cells["A1"];
+
+            Assert.Equal(Cell.CellType.Error, cell.DataType);
+            Assert.Equal(Errors.FormulaError.Reference, cell.Value);
+        }
+
         [Fact(DisplayName = "Test of decimal enforcement fallback for an overflowing double")]
         public void ReadDecimalOverflowTest()
         {

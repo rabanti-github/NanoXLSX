@@ -204,6 +204,30 @@ namespace NanoXLSX.Test.Core.UtilsTest
             Assert.Equal(expectedValue, value);
         }
 
+        [Theory(DisplayName = "Test of the ParserUtils IsAsciiDigit function")]
+        [InlineData('0', true)]
+        [InlineData('1', true)]
+        [InlineData('5', true)]
+        [InlineData('9', true)]
+        [InlineData('/', false)]
+        [InlineData(':', false)]
+        [InlineData('a', false)]
+        [InlineData('\0', false)]
+        [InlineData('\t', false)]
+        [InlineData('\n', false)]
+        [InlineData('\u0661', false)] // Arabic-Indic digit one
+        [InlineData('\u06F1', false)] // Extended Arabic-Indic digit one
+        [InlineData('\u0967', false)] // Devanagari digit one
+        [InlineData('\uFF11', false)] // Fullwidth digit one
+        [InlineData('\u00B2', false)] // Superscript two
+        [InlineData('\u2460', false)] // Circled digit one
+        public void IsAsciiDigitTest(char givenCharacter, bool expectedMatch)
+        {
+            bool match = ParserUtils.IsAsciiDigit(givenCharacter);
+
+            Assert.Equal(expectedMatch, match);
+        }
+
 
         [Theory(DisplayName = "Test of the ParserUtils ParseFloat function (no error handling)")]
         [InlineData("1", 1f)]
@@ -595,6 +619,96 @@ namespace NanoXLSX.Test.Core.UtilsTest
             match = ParserUtils.TryParseDouble("1.7976931348623157E+308", out var dbValue);
             Assert.Equal(double.MaxValue, dbValue);
             Assert.True(match);
+        }
+
+        [Theory(DisplayName = "Test of valid and invalid external link identifiers")]
+        [InlineData("[0]", true)]
+        [InlineData("[1]", true)]
+        [InlineData("[001]", true)]
+        [InlineData("[1234567890]", true)]
+        [InlineData(null, false)]
+        [InlineData("", false)]
+        [InlineData("[]", false)]
+        [InlineData("[a]", false)]
+        [InlineData("[1a]", false)]
+        [InlineData("[ 1]", false)]
+        [InlineData("[1 ]", false)]
+        [InlineData("[\0]", false)]
+        [InlineData("[\t]", false)]
+        [InlineData("[\u0661]", false)]
+        [InlineData("1]", false)]
+        [InlineData("[1", false)]
+        [InlineData("prefix[1]", false)]
+        [InlineData("[1]suffix", false)]
+        public void IsValidExternalLinkIdTest(string givenIdentifier, bool expectedMatch)
+        {
+            bool match = ParserUtils.IsValidExternalLinkId(givenIdentifier);
+
+            Assert.Equal(expectedMatch, match);
+        }
+
+        [Theory(DisplayName = "Test of successfully reading external link identifiers")]
+        [InlineData("[0]Sheet1!A1", 0, "[0]")]
+        [InlineData("SUM([12]Sheet_Name!$A$1)", 4, "[12]")]
+        [InlineData("'[003]Sheet name'!A1", 1, "[003]")]
+        [InlineData("+[4]!ExternalName", 1, "[4]")]
+        [InlineData("=[5]#REF!A1", 1, "[5]")]
+        [InlineData(" [6]工作表!A1", 1, "[6]")]
+        public void TryReadExternalLinkIdTest(string givenExpression, int givenStartIndex, string expectedIdentifier)
+        {
+            bool match = ParserUtils.TryReadExternalLinkId(givenExpression, givenStartIndex, out int identifierLength);
+
+            Assert.True(match);
+            Assert.Equal(expectedIdentifier.Length, identifierLength);
+            Assert.Equal(expectedIdentifier, givenExpression.Substring(givenStartIndex, identifierLength));
+        }
+
+        [Theory(DisplayName = "Test of failing to read malformed or incorrectly bounded external link identifiers")]
+        [InlineData(null, 0)]
+        [InlineData("", 0)]
+        [InlineData("[1]Sheet", -1)]
+        [InlineData("[1]Sheet", 8)]
+        [InlineData("A1", 0)]
+        [InlineData("[", 0)]
+        [InlineData("[]Sheet", 0)]
+        [InlineData("[a]Sheet", 0)]
+        [InlineData("[\u0661]Sheet", 0)]
+        [InlineData("[12", 0)]
+        [InlineData("[12Sheet", 0)]
+        [InlineData("[12a]Sheet", 0)]
+        [InlineData("[1]", 0)]
+        [InlineData("[1] Sheet", 0)]
+        [InlineData("[1]\tSheet", 0)]
+        [InlineData("Table[1]Column", 5)]
+        [InlineData("1[1]Column", 1)]
+        [InlineData("_[1]Column", 1)]
+        [InlineData("\\[1]Column", 1)]
+        [InlineData(".[1]Column", 1)]
+        [InlineData("名[1]Column", 1)]
+        [InlineData("[1]\"Sheet", 0)]
+        [InlineData("[1][Sheet", 0)]
+        [InlineData("[1]]Sheet", 0)]
+        [InlineData("[1](Sheet", 0)]
+        [InlineData("[1])Sheet", 0)]
+        [InlineData("[1],Sheet", 0)]
+        [InlineData("[1];Sheet", 0)]
+        [InlineData("[1]+Sheet", 0)]
+        [InlineData("[1]-Sheet", 0)]
+        [InlineData("[1]*Sheet", 0)]
+        [InlineData("[1]/Sheet", 0)]
+        [InlineData("[1]^Sheet", 0)]
+        [InlineData("[1]&Sheet", 0)]
+        [InlineData("[1]=Sheet", 0)]
+        [InlineData("[1]<Sheet", 0)]
+        [InlineData("[1]>Sheet", 0)]
+        [InlineData("[1]%Sheet", 0)]
+        [InlineData("[1]:Sheet", 0)]
+        public void TryReadExternalLinkIdFailTest(string givenExpression, int givenStartIndex)
+        {
+            bool match = ParserUtils.TryReadExternalLinkId(givenExpression, givenStartIndex, out int identifierLength);
+
+            Assert.False(match);
+            Assert.Equal(0, identifierLength);
         }
 
         [Theory(DisplayName = "Test of external workbook reference detection in formulas")]

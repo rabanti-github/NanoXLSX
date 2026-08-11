@@ -220,10 +220,11 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Internal Method to replace a string expression of a <see cref="NameType.Formula"/> instance
+        /// Internal Method to replace a string expression of a <see cref="NameType.Formula"/> instance. Other types are ignored
         /// </summary>
         /// <param name="expression">New string expression</param>
-        internal void ReplaceExpression(string expression)
+        /// \remark <remarks>This method is mainly supposed to replace external link tokes by compatibility plug-ins</remarks>
+        internal void ReplaceExpression(string expression) // Do not remove. This method may be used by NanoXLSX.Compatibility
         {
             if (Type == NameType.Formula)
             {

@@ -1232,7 +1232,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             }
         }
 
-        [Theory(DisplayName = "Test of the reader option property EnforceStrictValidation")]
+        [Theory(DisplayName = "Test of the reader option property EnforceStrictValidation on columns")]
         [InlineData("valid_column_row_dimensions.xlsx", true, false, 0)]
         [InlineData("invalid_column_width_min.xlsx", true, true, -1)]
         [InlineData("invalid_column_width_max.xlsx", true, true, 1)]
@@ -1245,6 +1245,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
         [InlineData("invalid_column_width_max.xlsx", false, false, 1)]
         public void EnforceValidColumnDimensionsTest(string fileName, bool givenOptionValue, bool expectedThrow, int columnFlag)
         {
+            // Note: DiscoveryReaderTest.cs (in NanoXLSX.Writer-Reader.Test) contains other cases, created on-the-fly
             ReaderOptions options = new ReaderOptions
             {
                 EnforceStrictValidation = givenOptionValue
@@ -1270,6 +1271,30 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 {
                     Assert.True(true);
                 }
+            }
+        }
+
+        [Theory(DisplayName = "Test of the reader option property EnforceStrictValidation on Styles (generic)")]
+        [InlineData("invalid_number_format.xlsx", true, true)]
+        [InlineData("invalid_number_format.xlsx", false, false)]
+        // TODO add other cases where "EnforceStrictValidation = false" is tested 
+        public void EnforceValidStyleTest(string fileName, bool givenOptionValue, bool expectedThrow)
+        {
+            // Note: DiscoveryReaderTest.cs (in NanoXLSX.Writer-Reader.Test) contains other cases, created on-the-fly
+            ReaderOptions options = new ReaderOptions
+            {
+                EnforceStrictValidation = givenOptionValue
+            };
+            using Stream stream = TestUtils.GetResource(fileName);
+
+            if (expectedThrow)
+            {
+                Assert.ThrowsAny<Exception>(() => WorkbookReader.Load(stream, options));
+            }
+            else
+            {
+               Workbook wb = WorkbookReader.Load(stream, options);
+               Assert.NotNull(wb); // NoOp -> Type of fix is not checked here (generic test)
             }
         }
 

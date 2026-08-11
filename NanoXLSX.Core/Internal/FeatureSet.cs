@@ -22,50 +22,6 @@
         private FeatureSetType type;
         private FeatureSet parent;
 
-        /// <summary>
-        /// Creates an aggregate feature set. Intended for Workbook and Worksheet.
-        /// </summary>
-        internal FeatureSet()
-        {
-            type = FeatureSetType.Aggregate;
-        }
-
-        /// <summary>
-        /// Creates a feature set representing a non-aggregate feature
-        /// </summary>
-        /// <param name="type">Type of the feature set</param>
-        private FeatureSet(FeatureSetType type)
-        {
-            this.type = type;
-            //this.isFormulaFeatureSet = isFormulaFeatureSet;
-
-            if (type == FeatureSetType.Formula)
-            {
-                FormulaCount = 1;
-            }
-            else if (type == FeatureSetType.DefinedName)
-            {
-                DefinedNameCount = 1;
-            }
-        }
-
-        /// <summary>
-        /// Creates a feature set representing exactly one formula.
-        /// </summary>
-        internal static FeatureSet CreateFormula()
-        {
-            return new FeatureSet(FeatureSetType.Formula);
-        }
-
-        /// <summary>
-        /// Creates a feature set representing exactly one defined name
-        /// </summary>
-        /// <returns></returns>
-        internal static FeatureSet CreateDefinedName()
-        {
-            return new FeatureSet(FeatureSetType.DefinedName);
-        }
-
         internal int FormulaCount { get; private set; }
 
         /// <summary>
@@ -115,6 +71,50 @@
         /// If true, the feature set contains external links (defined names and cells)
         /// </summary>
         internal bool ContainsExternalLinks => ExternalLinkCount > 0;
+
+
+        /// <summary>
+        /// Creates a feature set representing exactly one formula.
+        /// </summary>
+        internal static FeatureSet CreateFormula()
+        {
+            return new FeatureSet(FeatureSetType.Formula);
+        }
+
+        /// <summary>
+        /// Creates a feature set representing exactly one defined name
+        /// </summary>
+        /// <returns></returns>
+        internal static FeatureSet CreateDefinedName()
+        {
+            return new FeatureSet(FeatureSetType.DefinedName);
+        }
+        /// <summary>
+        /// Creates an aggregate feature set. Intended for Workbook and Worksheet.
+        /// </summary>
+        internal FeatureSet()
+        {
+            type = FeatureSetType.Aggregate;
+        }
+
+        /// <summary>
+        /// Creates a feature set representing a non-aggregate feature
+        /// </summary>
+        /// <param name="type">Type of the feature set</param>
+        private FeatureSet(FeatureSetType type)
+        {
+            this.type = type;
+            //this.isFormulaFeatureSet = isFormulaFeatureSet;
+
+            if (type == FeatureSetType.Formula)
+            {
+                FormulaCount = 1;
+            }
+            else if (type == FeatureSetType.DefinedName)
+            {
+                DefinedNameCount = 1;
+            }
+        }
 
         /// <summary>
         /// Adds this feature set to the specified parent. The current counts are propagated to the complete parent hierarchy.

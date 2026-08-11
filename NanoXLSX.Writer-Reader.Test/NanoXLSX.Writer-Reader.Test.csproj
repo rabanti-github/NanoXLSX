@@ -37,6 +37,7 @@
 	  <None Remove="Resources\invalid_column_width_min.xlsx" />
 	  <None Remove="Resources\invalid_metadata_app.xlsx" />
 	  <None Remove="Resources\invalid_metadata_core.xlsx" />
+	  <None Remove="Resources\invalid_number_format.xlsx" />
 	  <None Remove="Resources\invalid_relationship.xlsx" />
 	  <None Remove="Resources\invalid_row_height_max.xlsx" />
 	  <None Remove="Resources\invalid_row_height_min.xlsx" />
@@ -74,6 +75,7 @@
 	  <EmbeddedResource Include="Resources\invalid_column_width_min.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_app.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_metadata_core.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_number_format.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_relationship.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_row_height_max.xlsx" />
 	  <EmbeddedResource Include="Resources\invalid_row_height_min.xlsx" />

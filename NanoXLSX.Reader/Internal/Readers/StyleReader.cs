@@ -174,10 +174,7 @@ namespace NanoXLSX.Internal.Readers
                         {
                             throw new Exceptions.FormatException("A format code cannot be null or empty, but was read so in the styles");
                         }
-                        else
-                        {
-                            continue; // Skip an invalid number format
-                        }
+                        continue; // Skip an invalid number format
                     }
                     numberFormat.CustomFormatID = id;
                     numberFormat.Number = FormatNumber.Custom;

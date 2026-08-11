@@ -216,7 +216,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             workbook.AddDefinedNameCell("Alpha", workbook.CurrentWorksheet, "A2");
             workbook.AddDefinedNameCell("Gamma", workbook.CurrentWorksheet, "A3");
             Workbook given = TestUtils.WriteAndReadWorkbook(workbook);
-            System.Collections.Generic.IReadOnlyList<DefinedName> names = given.GetDefinedNames();
+            IReadOnlyList<DefinedName> names = given.GetDefinedNames();
             Assert.Equal(3, names.Count);
             Assert.Equal("Beta", names[0].Name);
             Assert.Equal("Alpha", names[1].Name);
@@ -374,7 +374,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
                 CompatibilityProcessor processor = new CompatibilityProcessor();
                 processor.Init(writer, null);
                 Assert.Throws<NotSupportedContentException>(() => processor.Execute());
-                Assert.True(writer.WriterProcessingData.HasExternalFormulaReferences);
+                Assert.True(workbook.Features.ContainsExternalLinks);
             }
         }
 
@@ -428,21 +428,6 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             Assert.Throws<NotSupportedContentException>(() => processor.Execute());
         }
 
-        [Fact(DisplayName = "Test that a plugin-provided false external-formula cache is authoritative")]
-        public void Formulas_ExternalLinkFalseCacheTest()
-        {
-            Workbook workbook = new Workbook("sheet1");
-            workbook.CurrentWorksheet.AddCellFormula("[1]ExternalSheet!A1", "A1");
-            XlsxWriter writer = CreateWriterWithProcessingData(workbook);
-            writer.WriterProcessingData.HasExternalFormulaReferences = false;
-            CompatibilityProcessor processor = new CompatibilityProcessor();
-            processor.Init(writer, null);
-
-            processor.Execute();
-
-            Assert.False(writer.WriterProcessingData.HasExternalFormulaReferences);
-        }
-
         [Fact(DisplayName = "Test that an external formula in a copied worksheet is rejected")]
         public void Formulas_CopiedWorksheetExternalLinkCompatibilityCheckFailTest()
         {
@@ -479,7 +464,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             workbook.CurrentWorksheet.AddCell(cell, "A1");
             cell.DataType = Cell.CellType.Formula;
             cell.Value = "[1]ExternalSheet!A1";
-            Assert.Null(workbook.CurrentWorksheet.Cells["A1"].Formula);
+            Assert.NotNull(workbook.CurrentWorksheet.Cells["A1"].Formula);
 
             CompatibilityProcessor processor = new CompatibilityProcessor();
             processor.Init(CreateWriterWithProcessingData(workbook), null);
@@ -498,7 +483,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
 
             processor.Execute();
 
-            Assert.False(writer.WriterProcessingData.HasExternalFormulaReferences);
+            Assert.False(workbook.Features.ContainsExternalLinks);// writer.WriterProcessingData.HasExternalFormulaReferences);
         }
 
         [Fact(DisplayName = "Test that an external formula stored as a raw non-string value is rejected")]
@@ -538,8 +523,7 @@ namespace NanoXLSX.Test.Writer_Reader.WorkbookTest
             processor.Init(writer, null);
 
             processor.Execute();
-            Assert.False(writer.WriterProcessingData.HasExternalFormulaReferences);
-            processor.Execute();
+            Assert.False(workbook.Features.ContainsExternalLinks);
         }
 
         [Fact(DisplayName = "Test of DefinedNameDefinition properties")]

@@ -1,5 +1,6 @@
 ﻿using System;
 using NanoXLSX.Enums;
+using NanoXLSX.Utils;
 using Xunit;
 
 namespace NanoXLSX.Test.Core.CellTest
@@ -48,49 +49,6 @@ namespace NanoXLSX.Test.Core.CellTest
             Assert.Equal(Cell.CellType.Time, new FormulaData("A1", TimeSpan.FromHours(2)).CachedValueType);
             Assert.Equal(Cell.CellType.Error, new FormulaData("A1", Errors.FormulaError.DivisionByZero).CachedValueType);
             Assert.Equal(Cell.CellType.String, new FormulaData("A1", new object()).CachedValueType);
-        }
-
-        [Theory(DisplayName = "Test of external workbook reference detection in formulas")]
-        [InlineData("[1]Sheet1!A1")]
-        [InlineData("SUM([12]Sheet_Name!$A$1)")]
-        [InlineData("'[1]Sheet 1'!$A$1")]
-        [InlineData("[Book.xlsx]Sheet1!A1")]
-        [InlineData("SUM('[Book.xlsx]Owner''s Sheet'!A1)")]
-        [InlineData("[1]Sheet1!A1+[2]Sheet2!B2")]
-        [InlineData("'..\\[Book.xlsx]Sheet1'!$A$1")]
-        [InlineData("'../[Book.xlsx]Sheet1'!$A$1")]
-        [InlineData("'C:\\temp\\[book one.xlsx]Sheet 1'!$A$1")]
-        [InlineData("SUM('C:\\temp\\[book one.xlsx]Sheet 1'!$A$1,'..\\[other.xlsx]Data'!$B$2)")]
-        public void ExternalReferenceDetectionTest(string expression)
-        {
-            FormulaData data = new FormulaData(expression);
-
-            Assert.True(data.HasExternalReferences);
-            Assert.True(FormulaData.ContainsExternalReference(expression));
-        }
-
-        [Theory(DisplayName = "Test of expressions without external workbook references")]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("SUM(A1:A2)")]
-        [InlineData("Table1[Column]")]
-        [InlineData("Table1[1]")]
-        [InlineData("R[1]C[1]")]
-        [InlineData("[")]
-        [InlineData("[]Sheet1!A1")]
-        [InlineData("[1]")]
-        [InlineData("[1]!A1")]
-        [InlineData("[1]Sheet1+A1")]
-        [InlineData("Table1[Column]+Sheet1!A1")]
-        [InlineData("\"[1]Sheet1!A1\"")]
-        [InlineData("INDIRECT(\"[1]Sheet1!A1\")")]
-        [InlineData("\"escaped \"\"[1]Sheet1!A1\"\" text\"")]
-        public void ExternalReferenceDetectionNegativeTest(string expression)
-        {
-            FormulaData data = new FormulaData(expression);
-
-            Assert.False(data.HasExternalReferences);
-            Assert.False(FormulaData.ContainsExternalReference(expression));
         }
 
         [Fact(DisplayName = "Test that external workbook reference detection follows expression changes")]

@@ -343,6 +343,44 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Assert.Throws<FormatException>(() => new DefinedName(new Workbook(), DefinedName.NameType.Formula, "Name", "", null));
         }
 
+        [Theory(DisplayName = "Test of the ReplaceExpression method")]
+        [InlineData("$A$1-$A$2", "$B$2-$C$2")]
+        [InlineData("A1", "B1")]
+        [InlineData("x", "x")] // keep
+        [InlineData("A", "a")] // case
+        [InlineData("[1]worksheet1!$C$1", "[extWorkbook.xlsx]worksheet1!$C$1")]
+        public void ReplaceExpressionTest(string oldExpression, string newExpression)
+        {
+            Workbook wb = new Workbook("sheet1");
+            wb.AddDefinedName("name", DefinedName.NameType.Formula, oldExpression, null, null, "comment");
+            Assert.Equal(oldExpression, wb.GetDefinedName("name").TextValue);
+
+            wb.GetDefinedName("name").ReplaceExpression(newExpression);
+
+            DefinedName name = wb.GetDefinedName("name");
+            Assert.Equal(newExpression, name.TextValue);
+            Assert.Equal(DefinedName.NameType.Formula, name.Type);
+            Assert.Equal("comment", name.Comment);
+        }
+
+        [Theory(DisplayName = "Test of the ignoring ReplaceExpression method on incompatible types")]
+        [InlineData(DefinedName.NameType.Constant, "A")]
+        [InlineData(DefinedName.NameType.Cell, "$B$2")]
+        [InlineData(DefinedName.NameType.Range, "$A$1:$C$2")]
+        public void ReplaceExpressionIgnoreTest(DefinedName.NameType type, string expression)
+        {
+            Workbook wb = new Workbook("sheet1");
+            wb.AddDefinedName("name", type, expression, null, null, "comment");
+            Assert.Equal(expression, wb.GetDefinedName("name").TextValue);
+
+            wb.GetDefinedName("name").ReplaceExpression("newExpression");
+
+            DefinedName name = wb.GetDefinedName("name");
+            Assert.Equal(expression, name.TextValue);
+            Assert.Equal(type, name.Type);
+            Assert.Equal("comment", name.Comment);
+        }
+
         private static object CreateConstant(string kind)
         {
             switch (kind)

@@ -667,7 +667,8 @@ namespace NanoXLSX.Utils
         internal static bool TryReadExternalLinkId(string expression, int startIndex, out int identifierLength)
         {
             identifierLength = 0;
-            if (startIndex < 0 || startIndex >= expression.Length || expression[startIndex] != '[')
+            if (string.IsNullOrEmpty(expression) ||
+                startIndex < 0 || startIndex >= expression.Length || expression[startIndex] != '[')
             {
                 return false;
             }
