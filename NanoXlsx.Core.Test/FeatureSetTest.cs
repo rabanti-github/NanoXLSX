@@ -44,25 +44,25 @@ namespace NanoXLSX.Test.Core
             formula.Add(aggregate);
             definedName.Add(aggregate);
 
-            AssertFeatures(aggregate, 2, 1, 1, 2);
+            AssertFeatures(aggregate, 2, 1, 1, 2, 1);
             AssertFeatures(parent, 0, 0, 0, 0);
             AssertFeatures(root, 0, 0, 0, 0);
 
             aggregate.Add(parent);
 
-            AssertFeatures(parent, 2, 1, 1, 2);
-            AssertFeatures(root, 2, 1, 1, 2);
+            AssertFeatures(parent, 2, 1, 1, 2, 1);
+            AssertFeatures(root, 2, 1, 1, 2, 1);
 
             formula.Remove(aggregate);
 
-            AssertFeatures(formula, 1, 0, 1, 1);
-            AssertFeatures(aggregate, 1, 1, 0, 1);
-            AssertFeatures(parent, 1, 1, 0, 1);
-            AssertFeatures(root, 1, 1, 0, 1);
+            AssertFeatures(formula, 1, 0, 0, 1, 1);
+            AssertFeatures(aggregate, 1, 1, 1, 1);
+            AssertFeatures(parent, 1, 1, 1, 1);
+            AssertFeatures(root, 1, 1, 1, 1);
 
             definedName.Remove(aggregate);
 
-            AssertFeatures(definedName, 1, 1, 0, 1);
+            AssertFeatures(definedName, 1, 1, 1, 1);
             AssertFeatures(aggregate, 0, 0, 0, 0);
             AssertFeatures(parent, 0, 0, 0, 0);
             AssertFeatures(root, 0, 0, 0, 0);
@@ -86,17 +86,17 @@ namespace NanoXLSX.Test.Core
             // Test transitions from false to true and from true to false.
             formula.SetFormulaFeatures(containsDefinedName, containsExternalLink);
 
-            int definedNameFormulaCount = containsDefinedName ? 1 : 0;
+            int definedNameReferenceFormulaCount = containsDefinedName ? 1 : 0;
             int externalLinkCount = containsExternalLink ? 1 : 0;
-            AssertFeatures(formula, 1, 0, definedNameFormulaCount, externalLinkCount);
-            AssertFeatures(parent, 1, 0, definedNameFormulaCount, externalLinkCount);
-            AssertFeatures(root, 1, 0, definedNameFormulaCount, externalLinkCount);
+            AssertFeatures(formula, 1, 0, 0, externalLinkCount, definedNameReferenceFormulaCount);
+            AssertFeatures(parent, 1, 0, 0, externalLinkCount, definedNameReferenceFormulaCount);
+            AssertFeatures(root, 1, 0, 0, externalLinkCount, definedNameReferenceFormulaCount);
 
             formula.SetFormulaFeatures(containsDefinedName, containsExternalLink);
 
-            AssertFeatures(formula, 1, 0, definedNameFormulaCount, externalLinkCount);
-            AssertFeatures(parent, 1, 0, definedNameFormulaCount, externalLinkCount);
-            AssertFeatures(root, 1, 0, definedNameFormulaCount, externalLinkCount);
+            AssertFeatures(formula, 1, 0, 0, externalLinkCount, definedNameReferenceFormulaCount);
+            AssertFeatures(parent, 1, 0, 0, externalLinkCount, definedNameReferenceFormulaCount);
+            AssertFeatures(root, 1, 0, 0, externalLinkCount, definedNameReferenceFormulaCount);
         }
 
         [Theory(DisplayName = "Setting defined-name features updates local and parent feature values")]
@@ -119,15 +119,37 @@ namespace NanoXLSX.Test.Core
 
             int formulaCount = isFormula ? 1 : 0;
             int externalLinkCount = containsExternalLink ? 1 : 0;
-            AssertFeatures(definedName, formulaCount, 1, 0, externalLinkCount);
-            AssertFeatures(parent, formulaCount, 1, 0, externalLinkCount);
-            AssertFeatures(root, formulaCount, 1, 0, externalLinkCount);
+            AssertFeatures(definedName, formulaCount, 1, formulaCount, externalLinkCount);
+            AssertFeatures(parent, formulaCount, 1, formulaCount, externalLinkCount);
+            AssertFeatures(root, formulaCount, 1, formulaCount, externalLinkCount);
 
             definedName.SetDefinedNameFeatures(isFormula, containsExternalLink);
 
-            AssertFeatures(definedName, formulaCount, 1, 0, externalLinkCount);
-            AssertFeatures(parent, formulaCount, 1, 0, externalLinkCount);
-            AssertFeatures(root, formulaCount, 1, 0, externalLinkCount);
+            AssertFeatures(definedName, formulaCount, 1, formulaCount, externalLinkCount);
+            AssertFeatures(parent, formulaCount, 1, formulaCount, externalLinkCount);
+            AssertFeatures(root, formulaCount, 1, formulaCount, externalLinkCount);
+        }
+
+        [Fact(DisplayName = "A defined-name formula with an external link is not counted as a worksheet formula")]
+        public void DefinedNameExternalFormula_UpdatesWorkbookFeatures()
+        {
+            Workbook workbook = new Workbook("Sheet1");
+
+            workbook.AddDefinedNameFormula("ExternalFormula", "[1]ExternalSheet!A1");
+
+            Assert.Empty(workbook.CurrentWorksheet.Cells);
+            Assert.Equal(1, workbook.Features.FormulaCount);
+            Assert.Equal(1, workbook.Features.DefinedNameCount);
+            Assert.Equal(1, workbook.Features.DefinedNameFormulaCount);
+            Assert.Equal(0, workbook.Features.DefinedNameReferenceFormulaCount);
+            Assert.Equal(0, workbook.Features.WorksheetFormulaCount);
+            Assert.Equal(1, workbook.Features.ExternalLinkCount);
+            Assert.True(workbook.Features.ContainsDefinedNameFormulas);
+            Assert.False(workbook.Features.ContainsDefinedNameReferences);
+            Assert.False(workbook.Features.ContainsWorksheetFormulas);
+
+            Assert.True(workbook.RemoveDefinedName("ExternalFormula"));
+            AssertFeatures(workbook.Features, 0, 0, 0, 0);
         }
 
         [Fact(DisplayName = "Copying a feature set preserves its values without retaining its parent")]
@@ -141,13 +163,13 @@ namespace NanoXLSX.Test.Core
             FeatureSet copy = original.Copy();
 
             Assert.NotSame(original, copy);
-            AssertFeatures(copy, 1, 0, 1, 1);
+            AssertFeatures(copy, 1, 0, 0, 1, 1);
 
             copy.SetFormulaFeatures(false, false);
 
             AssertFeatures(copy, 1, 0, 0, 0);
-            AssertFeatures(original, 1, 0, 1, 1);
-            AssertFeatures(parent, 1, 0, 1, 1);
+            AssertFeatures(original, 1, 0, 0, 1, 1);
+            AssertFeatures(parent, 1, 0, 0, 1, 1);
         }
 
         [Theory(DisplayName = "Changing a formula cell to a non-formula type removes its feature contribution")]
@@ -230,15 +252,17 @@ namespace NanoXLSX.Test.Core
             worksheet.AddCellReference(definedName, "A1");
             Cell cell = worksheet.Cells["A1"];
 
-            Assert.Equal(1, worksheet.Features.DefinedNameFormulaCount);
-            Assert.Equal(1, workbook.Features.DefinedNameFormulaCount);
+            Assert.Equal(1, worksheet.Features.DefinedNameReferenceFormulaCount);
+            Assert.Equal(1, workbook.Features.DefinedNameReferenceFormulaCount);
+            Assert.Equal(0, worksheet.Features.DefinedNameFormulaCount);
+            Assert.Equal(0, workbook.Features.DefinedNameFormulaCount);
 
             cell.Value = "A1";
 
             Assert.Null(cell.Formula.DefinedNameReference);
             Assert.Equal("A1", cell.Formula.Expression);
-            Assert.Equal(0, worksheet.Features.DefinedNameFormulaCount);
-            Assert.Equal(0, workbook.Features.DefinedNameFormulaCount);
+            Assert.Equal(0, worksheet.Features.DefinedNameReferenceFormulaCount);
+            Assert.Equal(0, workbook.Features.DefinedNameReferenceFormulaCount);
             Assert.Equal(1, workbook.Features.DefinedNameCount);
             Assert.Equal(1, workbook.Features.FormulaCount);
         }
@@ -248,16 +272,19 @@ namespace NanoXLSX.Test.Core
             int formulaCount,
             int definedNameCount,
             int definedNameFormulaCount,
-            int externalLinkCount)
+            int externalLinkCount,
+            int definedNameReferenceFormulaCount = 0)
         {
             Assert.Equal(formulaCount, featureSet.FormulaCount);
             Assert.Equal(definedNameCount, featureSet.DefinedNameCount);
             Assert.Equal(definedNameFormulaCount, featureSet.DefinedNameFormulaCount);
+            Assert.Equal(definedNameReferenceFormulaCount, featureSet.DefinedNameReferenceFormulaCount);
             Assert.Equal(formulaCount - definedNameFormulaCount, featureSet.WorksheetFormulaCount);
             Assert.Equal(externalLinkCount, featureSet.ExternalLinkCount);
             Assert.Equal(formulaCount > 0, featureSet.ContainsFormulas);
             Assert.Equal(definedNameCount > 0, featureSet.ContainsDefinedNames);
             Assert.Equal(definedNameFormulaCount > 0, featureSet.ContainsDefinedNameFormulas);
+            Assert.Equal(definedNameReferenceFormulaCount > 0, featureSet.ContainsDefinedNameReferences);
             Assert.Equal(formulaCount - definedNameFormulaCount > 0, featureSet.ContainsWorksheetFormulas);
             Assert.Equal(externalLinkCount > 0, featureSet.ContainsExternalLinks);
         }

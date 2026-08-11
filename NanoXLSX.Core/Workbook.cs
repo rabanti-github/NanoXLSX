@@ -960,7 +960,7 @@ namespace NanoXLSX
         {
             foreach (Worksheet worksheet in worksheets)
             {
-                if (!worksheet.Features.ContainsDefinedNameFormulas)
+                if (!worksheet.Features.ContainsDefinedNameReferences)
                 {
                     continue;
                 }
