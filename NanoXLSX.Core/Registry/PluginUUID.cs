@@ -119,6 +119,13 @@ namespace NanoXLSX.Registry
         public const string CompatibilityInlineProcessor = "B86C2CD1-1E94-465A-AEA1-BF8C4108533D";
         #endregion
 
+        #region writerEntityUUIDs
+        /// <summary>
+        /// UUID for the currently highest defined order number of a package part, when a workbook is saved 
+        /// </summary>
+        public const string LastPackageOrderNumber = "C6165F97-98A7-478C-AD88-D21FDC58D234";
+        #endregion
+
         #region readerUUIDs
         /// <summary>
         /// UUID for the password reader, when a workbook is loaded
@@ -223,7 +230,7 @@ namespace NanoXLSX.Registry
         public const string FinalizingInlineProcessor = "0DAF416F-C735-4EB1-962A-859495E034DC";
         #endregion
 
-        #region entityUUIDs
+        #region readerEntityUUIDs
         /// <summary>
         /// UUID for the worksheet definitions section, on reading a workbook
         /// </summary>

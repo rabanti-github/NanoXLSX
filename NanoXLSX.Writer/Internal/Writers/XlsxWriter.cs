@@ -149,10 +149,10 @@ namespace NanoXLSX.Internal.Writers
                 compatibilityProcessor.Init(this, WriterPlugInHandler.HandleInlineQueueProcessorPlugins);
                 compatibilityProcessor.Execute();
                 // Workbook can now be written
+                RegisterCommonPackageParts();
                 HandlePackageRegistryQueuePlugIns();
                 HandleQueuePlugIns(PlugInUUID.WriterPrependingQueue);
 
-                RegisterCommonPackageParts();
                 using (Package xlsxPackage = Package.Open(stream, FileMode.Create))
                 {
                     this.package = xlsxPackage;
@@ -241,6 +241,7 @@ namespace NanoXLSX.Internal.Writers
                     }
 
                 }
+                Workbook.AuxiliaryData.ClearTemporaryData();
             }
             catch (Exception e)
             {
@@ -285,6 +286,8 @@ namespace NanoXLSX.Internal.Writers
             postWorksheetOrderNumber += 1000;
             RegisterPackagePart(PackagePartType.Other, postWorksheetOrderNumber, SHARED_STRINGS, @"application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml", @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings");
             // TODO: add themeIndex once if media is embedded
+
+            this.Workbook.AuxiliaryData.SetData(PlugInUUID.WriterPackageRegistryQueue, PlugInUUID.LastPackageOrderNumber, postWorksheetOrderNumber, false);
         }
 
         /// <summary>
@@ -439,20 +442,27 @@ namespace NanoXLSX.Internal.Writers
                 queueWriter = PlugInLoader.GetNextQueuePlugIn<IPluginWriter>(queueUuid, lastUuid, out string currentUuid);
                 if (queueWriter != null)
                 {
-                    queueWriter.Init(this);
-                    queueWriter.Execute();
+                    lastUuid = currentUuid;
                     if (queueWriter is IPluginPackageWriter packageWriter)
                     {
-                        if (!string.IsNullOrEmpty(packageWriter.PackagePartPath) && !string.IsNullOrEmpty(packageWriter.PackagePartFileName))
+                        // IPluginPackageWriter plug-ins were previously called in HandlePackageRegistryQueuePlugIns
+                        ValidatePackageWriterPlugin(packageWriter);
+                        int counter = packageWriter.XmlElements.Count;
+                        for (int i = 0; i < counter; i++)
                         {
-                            if (packageParts.ContainsKey(packageWriter.PackagePartPath) && packageParts[packageWriter.PackagePartPath].ContainsKey(packageWriter.PackagePartFileName))
+                            if (!string.IsNullOrEmpty(packageWriter.PackagePartPaths[i]) && !string.IsNullOrEmpty(packageWriter.PackagePartFileNames[i]))
                             {
-                                PackagePart pp = packageParts[packageWriter.PackagePartPath][packageWriter.PackagePartFileName];
-                                AppendXmlToPackagePart(packageWriter.XmlElement, pp);
+                                if (packageParts.ContainsKey(packageWriter.PackagePartPaths[i]) && packageParts[packageWriter.PackagePartPaths[i]].ContainsKey(packageWriter.PackagePartFileNames[i]))
+                                {
+                                    PackagePart pp = packageParts[packageWriter.PackagePartPaths[i]][packageWriter.PackagePartFileNames[i]];
+                                    AppendXmlToPackagePart(packageWriter.XmlElements[i], pp);
+                                }
                             }
                         }
+                        continue; // Skip Init and Execute in case of IPluginPackageWriter
                     }
-                    lastUuid = currentUuid;
+                    queueWriter.Init(this);
+                    queueWriter.Execute();
                 }
                 else
                 {
@@ -474,17 +484,23 @@ namespace NanoXLSX.Internal.Writers
                 queueWriter = PlugInLoader.GetNextQueuePlugIn<IPluginPackageWriter>(PlugInUUID.WriterPackageRegistryQueue, lastUuid, out string currentUuid);
                 if (queueWriter != null)
                 {
-                    queueWriter.Execute(); // Execute anything that could be defined
-                    PackagePartType packagePartType;
-                    if (queueWriter.IsRootPackagePart)
+                    ValidatePackageWriterPlugin(queueWriter);
+                    int counter = queueWriter.XmlElements.Count;
+                    for (int i = 0; i < counter; i++)
                     {
-                        packagePartType = PackagePartType.Root;
+                        queueWriter.CurrentIndex = i;
+                        queueWriter.Execute(); // Execute anything that could be defined, under the consideration of the index
+                        PackagePartType packagePartType;
+                        if (queueWriter.ArePackagePartsRoot[i])
+                        {
+                            packagePartType = PackagePartType.Root;
+                        }
+                        else
+                        {
+                            packagePartType = PackagePartType.Other;
+                        }
+                        RegisterPackagePart(packagePartType, queueWriter.OrderNumbers[i], new DocumentPath(queueWriter.PackagePartFileNames[i], queueWriter.PackagePartPaths[i]), queueWriter.ContentTypes[i], queueWriter.RelationshipTypes[i]);
                     }
-                    else
-                    {
-                        packagePartType = PackagePartType.Other;
-                    }
-                    RegisterPackagePart(packagePartType, queueWriter.OrderNumber, new DocumentPath(queueWriter.PackagePartFileName, queueWriter.PackagePartPath), queueWriter.ContentType, queueWriter.RelationshipType);
                     lastUuid = currentUuid;
                 }
                 else
@@ -493,6 +509,24 @@ namespace NanoXLSX.Internal.Writers
                 }
 
             } while (queueWriter != null);
+        }
+
+        private void ValidatePackageWriterPlugin(IPluginPackageWriter plugin)
+        {
+            HashSet<int> counts = new HashSet<int>
+            {
+                plugin.OrderNumbers.Count,
+                plugin.ArePackagePartsRoot.Count,
+                plugin.ContentTypes.Count,
+                plugin.PackagePartFileNames.Count,
+                plugin.PackagePartPaths.Count,
+                plugin.RelationshipTypes.Count,
+                plugin.XmlElements.Count
+            };
+            if (counts.Count != 1 || counts.First() == 0)
+            {
+                throw new IOException("Inconsistent package writer plug-in detected: " + plugin.GetType().Name);
+            }
         }
 
         /// <summary>
