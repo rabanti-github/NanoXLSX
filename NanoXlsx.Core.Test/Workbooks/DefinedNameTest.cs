@@ -245,6 +245,26 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Assert.False(workbook.RemoveDefinedName("missing"));
         }
 
+        [Fact(DisplayName = "Test of removing all defined names and invalidating formula references")]
+        public void RemoveAllDefinedNameTest()
+        {
+            Workbook workbook = new Workbook("Sheet1");
+            DefinedName name1 = workbook.AddDefinedNameConstant("name1", 5);
+            DefinedName name2 = workbook.AddDefinedNameConstant("name2", 6);
+            workbook.CurrentWorksheet.AddCellReference(name1, "A1");
+            workbook.CurrentWorksheet.AddCellReference(name2, "A2");
+            workbook.AddWorksheet("Sheet2");
+            workbook.CurrentWorksheet.AddCellReference(name1, "B1");
+
+            workbook.ClearDefinedNames();
+
+            Assert.Null(workbook.Worksheets[0].Cells["A1"].Formula.DefinedNameReference);
+            Assert.Null(workbook.Worksheets[0].Cells["A2"].Formula.DefinedNameReference);
+            Assert.Null(workbook.Worksheets[1].Cells["B1"].Formula.DefinedNameReference);
+            Assert.Empty(workbook.GetDefinedNames());
+            Assert.NotNull(workbook.GetDefinedNames());
+        }
+
         [Fact(DisplayName = "Test of DefinedName equality, hashing and object equality")]
         public void EqualityTest()
         {

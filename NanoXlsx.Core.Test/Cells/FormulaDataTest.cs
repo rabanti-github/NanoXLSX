@@ -1,6 +1,5 @@
 ﻿using System;
 using NanoXLSX.Enums;
-using NanoXLSX.Utils;
 using Xunit;
 
 namespace NanoXLSX.Test.Core.CellTest

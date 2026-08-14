@@ -1293,8 +1293,8 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             }
             else
             {
-               Workbook wb = WorkbookReader.Load(stream, options);
-               Assert.NotNull(wb); // NoOp -> Type of fix is not checked here (generic test)
+                Workbook wb = WorkbookReader.Load(stream, options);
+                Assert.NotNull(wb); // NoOp -> Type of fix is not checked here (generic test)
             }
         }
 

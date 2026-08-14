@@ -476,7 +476,7 @@ namespace NanoXLSX
         /// Removes the defined name with the supplied name and scope with optional invalidation of formula references.
         /// </summary>
         /// <param name="name">Name of the defined name to remove.</param>
-        /// <param name="invalidate">If true, all references in Formula cells will be removed, otherwise left untouched</param>
+        /// <param name="invalidate">If true, all references in formula cells will be removed, otherwise left untouched</param>
         /// <param name="localSheet">Worksheet scope, or null for workbook scope.</param>
         /// <returns>True if a matching defined name was removed, false if no match was found.</returns>
         /// \remark <remarks><b>Important:</b> Removing defined names may remove references in worksheets. If a workbook is saved in this state, it can lead to broken formula references, indicated by "#NAME?"</remarks>
@@ -495,6 +495,21 @@ namespace NanoXLSX
             definedName.Features.Remove(Features);  // Decrease counter of defined name features
             definedNames.RemoveAt(index);
             return true;
+        }
+
+        /// <summary>
+        /// Removes all defined names of the workbook and removes their references from formula cells 
+        /// </summary>
+        /// \remark <remarks><b>Important:</b> Removing defined names may remove references in worksheets. If a workbook is saved in this state, it can lead to broken formula references, indicated by "#NAME?"</remarks>
+        public void ClearDefinedNames()
+        {
+            for (int i = definedNames.Count - 1; i >= 0; i--)
+            {
+                DefinedName definedName = definedNames[i];
+                InvalidateDefinedNameReferences(definedName);
+                definedName.Features.Remove(Features);  // Decrease counter of defined name features
+                definedNames.RemoveAt(i);
+            }
         }
 
         /// <summary>
