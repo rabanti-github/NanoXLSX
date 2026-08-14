@@ -102,6 +102,29 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
+        /// Validates the passed string, whether it is an expression that can be used as worksheet name
+        /// </summary>
+        /// <param name="name">Name to validate</param>
+        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the worksheet name is too long (max. 31) or contains illegal characters [  ]  * ? / \</exception>
+        public static void ValidateWorksheetName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new FormatException("the worksheet name must be between 1 and " + Worksheet.MaxWorksheetNameLength + " characters");
+            }
+            if (name.Length > Worksheet.MaxWorksheetNameLength)
+            {
+                throw new FormatException("the worksheet name must be between 1 and " + Worksheet.MaxWorksheetNameLength + " characters");
+            }
+            Regex regex = new Regex(@"[\[\]\*\?/\\]");
+            Match match = regex.Match(name);
+            if (match.Captures.Count > 0)
+            {
+                throw new FormatException(@"the worksheet name must not contain the characters [  ]  * ? / \ ");
+            }
+        }
+
+        /// <summary>
         /// Validates the passed string, whether it is a valid RGB or ARGB value that can be used for Fills, Fonts or other styling components.
         /// </summary>
         /// <param name="hexCode">Hex string to check</param>

@@ -308,7 +308,7 @@ namespace NanoXLSX.Internal.Writers
                         throw new FormatException("The number format style component with the ID " + ParserUtils.ToString(item.CustomFormatID) + " cannot be null or empty");
                     }
                     // OOXML: Escaping according to Chp.18.8.31
-                    // TODO: v3> Add a custom format builder
+                    // TODO: v3> Externalize a custom format builder
                     XmlElement element = XmlElement.CreateElementWithAttribute("numFmt", "formatCode", XmlUtils.SanitizeXmlValue(item.CustomFormatCode));
                     element.AddAttribute("numFmtId", ParserUtils.ToString(item.CustomFormatID));
                     elements.Add(element);

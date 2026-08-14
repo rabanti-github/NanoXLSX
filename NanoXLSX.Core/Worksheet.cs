@@ -2622,20 +2622,7 @@ namespace NanoXLSX
         /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the worksheet name is too long (max. 31) or contains illegal characters [  ]  * ? / \</exception>
         public void SetSheetName(string name)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new FormatException("the worksheet name must be between 1 and " + MaxWorksheetNameLength + " characters");
-            }
-            if (name.Length > MaxWorksheetNameLength)
-            {
-                throw new FormatException("the worksheet name must be between 1 and " + MaxWorksheetNameLength + " characters");
-            }
-            Regex regex = new Regex(@"[\[\]\*\?/\\]");
-            Match match = regex.Match(name);
-            if (match.Captures.Count > 0)
-            {
-                throw new FormatException(@"the worksheet name must not contain the characters [  ]  * ? / \ ");
-            }
+            Validators.ValidateWorksheetName(name);
             sheetName = name;
         }
 

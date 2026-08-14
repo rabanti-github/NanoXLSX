@@ -274,6 +274,80 @@ namespace NanoXLSX.Core.Test.Misc
             Assert.Empty(result);
         }
 
+        [Fact(DisplayName = "Test of RemoveData with string valueId")]
+        public void RemoveDataWithStringValueIdTest()
+        {
+            var data = new AuxiliaryData();
+            data.SetData("plugin1", "entity1", "key1", "value1");
+            data.SetData("plugin1", "entity1", "key2", "value2");
+
+            Assert.True(data.RemoveData("plugin1", "entity1", "key1"));
+            Assert.Null(data.GetData("plugin1", "entity1", "key1"));
+            Assert.Equal("value2", data.GetData("plugin1", "entity1", "key2"));
+            Assert.False(data.RemoveData("plugin1", "entity1", "missing"));
+            Assert.False(data.RemoveData("missing", "entity1", "key1"));
+        }
+
+        [Fact(DisplayName = "Test of RemoveEntityData with integer valueId")]
+        public void RemoveEntityDataWithIntValueIdTest()
+        {
+            var data = new AuxiliaryData();
+            data.SetData("plugin1", "entity1", 42, "value1");
+
+            Assert.True(data.RemoveEntityData("plugin1", "entity1", 42));
+            Assert.Null(data.GetData<object>("plugin1", "entity1", 42));
+            Assert.False(data.RemoveEntityData("plugin1", "entity1", 42));
+        }
+
+        [Fact(DisplayName = "Test of RemoveEntityData with object reference")]
+        public void RemoveEntityDataWithObjectReferenceTest()
+        {
+            var data = new AuxiliaryData();
+            var value = new object();
+            var otherValue = new object();
+            var equalValue = new string(new[] { 'v', 'a', 'l', 'u', 'e' });
+            var equalButDifferentReference = new string(new[] { 'v', 'a', 'l', 'u', 'e' });
+            data.SetData("plugin1", "entity1", "key1", value);
+            data.SetData("plugin1", "entity1", "key2", otherValue);
+            data.SetData("plugin1", "entity1", "key3", equalValue);
+
+            Assert.False(data.RemoveEntityData("plugin1", "entity1", equalButDifferentReference));
+            Assert.True(data.RemoveEntityData("plugin1", "entity1", value));
+            Assert.Null(data.GetData("plugin1", "entity1", "key1"));
+            Assert.Same(otherValue, data.GetData("plugin1", "entity1", "key2"));
+            Assert.Same(equalValue, data.GetData("plugin1", "entity1", "key3"));
+            Assert.False(data.RemoveEntityData("plugin1", "entity1", value));
+        }
+
+        [Fact(DisplayName = "Test of ClearEntityData")]
+        public void ClearEntityDataTest()
+        {
+            var data = new AuxiliaryData();
+            data.SetData("plugin1", "entity1", "key1", "value1");
+            data.SetData("plugin1", "entity2", "key1", "value2");
+            data.SetData("plugin2", "entity1", "key1", "value3");
+
+            data.ClearEntityData("plugin1", "entity1");
+
+            Assert.Null(data.GetData("plugin1", "entity1", "key1"));
+            Assert.Equal("value2", data.GetData("plugin1", "entity2", "key1"));
+            Assert.Equal("value3", data.GetData("plugin2", "entity1", "key1"));
+            data.ClearEntityData("plugin1", "missing");
+            data.ClearEntityData("missing", "entity1");
+        }
+
+        [Fact(DisplayName = "Test of ClearEntityData removing the last plug-in entity")]
+        public void ClearEntityDataRemovesLastPluginEntityTest()
+        {
+            var data = new AuxiliaryData();
+            data.SetData("plugin1", "entity1", "key1", "value1");
+
+            data.ClearEntityData("plugin1", "entity1");
+
+            Assert.Null(data.GetData("plugin1", "entity1", "key1"));
+            Assert.Empty(data.GetDataList<string>("plugin1", "entity1"));
+        }
+
         [Fact(DisplayName = "Test of persistent data with ClearTemporaryData")]
         public void PersistentDataTest()
         {

@@ -14,7 +14,7 @@ using NanoXLSX.Registry.Attributes;
 
 namespace NanoXLSX.Internal.Readers
 {
-
+    // TODO V4 (next major version): remove
     /// <summary>
     /// Class representing the legacy workbook relationship reader of XLSX files.
     /// </summary>
@@ -72,7 +72,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         public void Execute()
         {
-            // TODO (next major version): Replace this compatibility staging reader after its UUID and inline plug-in contracts can be retired.
+            // V4 TODO (next major version): Replace this compatibility staging reader after its UUID and inline plug-in contracts can be retired.
             if (stream == null) return;
             using (stream) // Close after processing
             {

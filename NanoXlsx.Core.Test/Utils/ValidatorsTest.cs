@@ -1,4 +1,5 @@
-﻿using NanoXLSX.Utils;
+﻿using NanoXLSX.Exceptions;
+using NanoXLSX.Utils;
 using Xunit;
 
 namespace NanoXLSX.Test.Core.UtilsTest
@@ -133,7 +134,7 @@ namespace NanoXLSX.Test.Core.UtilsTest
         [InlineData("$A$$1", Cell.AddressScope.SingleAddress)]
         public void ValidateCellAddressExpressionFailTest(string givenExpression, Cell.AddressScope givenScope)
         {
-            Exceptions.FormatException exception = Assert.Throws<Exceptions.FormatException>(
+            FormatException exception = Assert.Throws<FormatException>(
                 () => Validators.ValidateCellAddressExpression(givenExpression, givenScope));
             Assert.NotNull(exception.InnerException);
         }
@@ -144,11 +145,43 @@ namespace NanoXLSX.Test.Core.UtilsTest
         [InlineData("A1:B2")]
         public void ValidateCellAddressExpressionInvalidScopeFailTest(string givenExpression)
         {
-            Exceptions.FormatException exception = Assert.Throws<Exceptions.FormatException>(
+            FormatException exception = Assert.Throws<FormatException>(
                 () => Validators.ValidateCellAddressExpression(givenExpression, Cell.AddressScope.Invalid));
             Assert.Null(exception.InnerException);
             // TODO fix this term if the naming changes in ValidateCellAddressExpression
             Assert.Equal("The passed expression is valid cell address or range, but the validation was explicitly inverted", exception.Message);
+        }
+
+        [Theory(DisplayName = "Test of the ValidateWorksheetName function")]
+        [InlineData("1", true)]
+        [InlineData("test", true)]
+        [InlineData("test-test", true)]
+        [InlineData("$$$", true)]
+        [InlineData("a b", true)]
+        [InlineData("a\tb", true)]
+        [InlineData("-------------------------------", true)]
+        [InlineData("", false)]
+        [InlineData(null, false)]
+        [InlineData("a[b", false)]
+        [InlineData("a]b", false)]
+        [InlineData("a*b", false)]
+        [InlineData("a?b", false)]
+        [InlineData("a/b", false)]
+        [InlineData("a\\b", false)]
+        [InlineData("--------------------------------", false)]
+        public void SetSheetNameTest(string name, bool expectedValid)
+        {
+            Worksheet worksheet = new Worksheet();
+            Assert.Null(worksheet.SheetName);
+            if (expectedValid)
+            {
+                Validators.ValidateWorksheetName(name);
+                Assert.True(true);
+            }
+            else
+            {
+                Assert.Throws<FormatException>(() => Validators.ValidateWorksheetName(name));
+            }
         }
     }
 }

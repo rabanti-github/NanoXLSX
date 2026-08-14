@@ -234,6 +234,86 @@ namespace NanoXLSX
         }
 
         /// <summary>
+        /// Removes a value for a given plug-in and entity.
+        /// </summary>
+        /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
+        /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
+        /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
+        /// <returns>True if the value was removed; otherwise false</returns>
+        public bool RemoveData(string plugInId, string entityId, string valueId)
+        {
+            if (!data.TryGetValue(plugInId, out Dictionary<string, Dictionary<string, DataEntry>> pluginData) ||
+                !pluginData.TryGetValue(entityId, out Dictionary<string, DataEntry> entityData) ||
+                !entityData.Remove(valueId))
+            {
+                return false;
+            }
+
+            if (entityData.Count == 0)
+            {
+                pluginData.Remove(entityId);
+            }
+            if (pluginData.Count == 0)
+            {
+                data.Remove(plugInId);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Removes a value for a given plug-in and entity.
+        /// </summary>
+        /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
+        /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
+        /// <param name="valueId">ID of the value, represented as number (e.g. index)</param>
+        /// <returns>True if the value was removed; otherwise false</returns>
+        public bool RemoveEntityData(string plugInId, string entityId, int valueId)
+        {
+            string id = ParserUtils.ToString(valueId);
+            return RemoveData(plugInId, entityId, id);
+        }
+
+        /// <summary>
+        /// Removes the first value matching the specified object reference for a given plug-in and entity.
+        /// </summary>
+        /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
+        /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
+        /// <param name="obj">Object reference to remove</param>
+        /// <returns>True if a value with the specified object reference was removed; otherwise false</returns>
+        public bool RemoveEntityData(string plugInId, string entityId, object obj)
+        {
+            if (data.TryGetValue(plugInId, out Dictionary<string, Dictionary<string, DataEntry>> pluginData) &&
+                pluginData.TryGetValue(entityId, out Dictionary<string, DataEntry> entityData))
+            {
+                foreach (KeyValuePair<string, DataEntry> entry in entityData)
+                {
+                    if (ReferenceEquals(entry.Value.Value, obj))
+                    {
+                        return RemoveData(plugInId, entityId, entry.Key);
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Clears all values for a given plug-in and entity.
+        /// </summary>
+        /// <param name="plugInId">Plug-in ID / UUID or any kind of general identification</param>
+        /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
+        public void ClearEntityData(string plugInId, string entityId)
+        {
+            if (data.TryGetValue(plugInId, out Dictionary<string, Dictionary<string, DataEntry>> pluginData))
+            {
+                pluginData.Remove(entityId);
+                if (pluginData.Count == 0)
+                {
+                    data.Remove(plugInId);
+                }
+            }
+        }
+
+        /// <summary>
         /// Clears only temporary (non-persistent) entries.
         /// </summary>
         public void ClearTemporaryData()

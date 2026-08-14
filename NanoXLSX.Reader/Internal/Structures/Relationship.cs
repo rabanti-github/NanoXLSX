@@ -10,6 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace NanoXLSX.Internal.Readers
 {
+    // TODO V4 (next major version): remove
     /// <summary>
     /// Class to represent a workbook relation (do not use)
     /// </summary>

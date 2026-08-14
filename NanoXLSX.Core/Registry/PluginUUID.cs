@@ -14,7 +14,7 @@ namespace NanoXLSX.Registry
     public static class PlugInUUID
     {
 
-        // TODO (next major version): Re-evaluate whether string-based UUID dispatch can be replaced by a strongly typed registration mechanism.
+        // TODO V4 (next major version): Re-evaluate whether string-based UUID dispatch can be replaced by a strongly typed registration mechanism.
 
         #region writerUUIDs
         /// <summary>
@@ -162,7 +162,7 @@ namespace NanoXLSX.Registry
         /// <summary>
         /// UUID for the relationship reader, when a workbook is loaded
         /// </summary>
-        // TODO (next major version): Reconsider the legacy RelationshipReader UUID after discovery-based resolution fully replaces its compatibility hooks.
+        // TODO V4 (next major version): Reconsider the legacy RelationshipReader UUID after discovery-based resolution fully replaces its compatibility hooks.
         public const string RelationshipReader = "DB9AF89B-6181-4F94-A666-5AB70840EDDF";
         /// <summary>
         /// UUID for the package relationship discovery reader, when a workbook is loaded
