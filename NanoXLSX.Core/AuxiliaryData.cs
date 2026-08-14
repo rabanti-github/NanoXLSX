@@ -240,7 +240,7 @@ namespace NanoXLSX
         /// <param name="entityId">ID of the entity (e.g. a worksheet ID)</param>
         /// <param name="valueId">ID of the value (e.g. cell address in a worksheet)</param>
         /// <returns>True if the value was removed; otherwise false</returns>
-        public bool RemoveData(string plugInId, string entityId, string valueId)
+        public bool RemoveEntityData(string plugInId, string entityId, string valueId)
         {
             if (!data.TryGetValue(plugInId, out Dictionary<string, Dictionary<string, DataEntry>> pluginData) ||
                 !pluginData.TryGetValue(entityId, out Dictionary<string, DataEntry> entityData) ||
@@ -270,7 +270,7 @@ namespace NanoXLSX
         public bool RemoveEntityData(string plugInId, string entityId, int valueId)
         {
             string id = ParserUtils.ToString(valueId);
-            return RemoveData(plugInId, entityId, id);
+            return RemoveEntityData(plugInId, entityId, id);
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace NanoXLSX
                 {
                     if (ReferenceEquals(entry.Value.Value, obj))
                     {
-                        return RemoveData(plugInId, entityId, entry.Key);
+                        return RemoveEntityData(plugInId, entityId, entry.Key);
                     }
                 }
             }

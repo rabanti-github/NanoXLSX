@@ -281,11 +281,11 @@ namespace NanoXLSX.Core.Test.Misc
             data.SetData("plugin1", "entity1", "key1", "value1");
             data.SetData("plugin1", "entity1", "key2", "value2");
 
-            Assert.True(data.RemoveData("plugin1", "entity1", "key1"));
+            Assert.True(data.RemoveEntityData("plugin1", "entity1", "key1"));
             Assert.Null(data.GetData("plugin1", "entity1", "key1"));
             Assert.Equal("value2", data.GetData("plugin1", "entity1", "key2"));
-            Assert.False(data.RemoveData("plugin1", "entity1", "missing"));
-            Assert.False(data.RemoveData("missing", "entity1", "key1"));
+            Assert.False(data.RemoveEntityData("plugin1", "entity1", "missing"));
+            Assert.False(data.RemoveEntityData("missing", "entity1", "key1"));
         }
 
         [Fact(DisplayName = "Test of RemoveEntityData with integer valueId")]
@@ -311,7 +311,7 @@ namespace NanoXLSX.Core.Test.Misc
             data.SetData("plugin1", "entity1", "key2", otherValue);
             data.SetData("plugin1", "entity1", "key3", equalValue);
 
-            Assert.False(data.RemoveEntityData("plugin1", "entity1", equalButDifferentReference));
+            Assert.False(data.RemoveEntityData("plugin1", "entity1", (object)equalButDifferentReference));
             Assert.True(data.RemoveEntityData("plugin1", "entity1", value));
             Assert.Null(data.GetData("plugin1", "entity1", "key1"));
             Assert.Same(otherValue, data.GetData("plugin1", "entity1", "key2"));
