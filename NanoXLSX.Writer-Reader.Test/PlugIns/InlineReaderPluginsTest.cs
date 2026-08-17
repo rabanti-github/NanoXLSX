@@ -21,7 +21,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
     {
         public void Dispose()
         {
-            PlugInLoader.DisposePlugins();
+            PlugInLoaderTestIsolation.Reset();
         }
 
         private const string VALUE_ID = "valueId";

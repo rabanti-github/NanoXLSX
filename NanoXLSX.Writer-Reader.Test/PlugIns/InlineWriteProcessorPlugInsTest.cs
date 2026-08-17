@@ -18,7 +18,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
         public void Dispose()
         {
             CompatibilityInlineProcessor.ExecuteAction = null;
-            PlugInLoader.DisposePlugins();
+            PlugInLoaderTestIsolation.Reset();
         }
 
         [Fact(DisplayName = "Test marking a writer feature as prepared from an inline processor")]

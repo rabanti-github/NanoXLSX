@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using NanoXLSX.Interfaces;
+using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry.Attributes;
 
 namespace NanoXLSX.Registry
@@ -282,36 +283,76 @@ namespace NanoXLSX.Registry
         /// <returns>Plug-in instance or null, if the end of the queue was reached</returns>
         /// \remark <remarks>This method is not intended to manage preserved plugin instances. When called, always a new instance of the plugin will be created</remarks>
         internal static T GetNextQueuePlugIn<T>(string queueUUID, string lastPlugInUUID, out string currentPlugInUUID)
+            where T : class, IPlugin
         {
-            if (queuePlugInClasses.TryGetValue(queueUUID, out var plugInList) && plugInList.Count > 0)
+            return GetNextQueuePlugIn<T>(queueUUID, lastPlugInUUID, out currentPlugInUUID, null);
+        }
+
+        /// <summary>
+        /// Method to get the next instance of a queue plug-in, providing a writer context to plug-ins that support contextual construction
+        /// </summary>
+        /// <typeparam name="T">Plug-in type</typeparam>
+        /// <param name="queueUUID">UUID of the queue</param>
+        /// <param name="lastPlugInUUID">UUID of the last plug-in instance, to determine the next one</param>
+        /// <param name="currentPlugInUUID">Out parameter that returns the UUID of the determined next plug-in instance</param>
+        /// <param name="baseWriter">Writer context supplied to a compatible constructor</param>
+        /// <returns>Plug-in instance or null, if the end of the queue was reached</returns>
+        internal static T GetNextQueuePlugIn<T>(string queueUUID, string lastPlugInUUID, out string currentPlugInUUID, IBaseWriter baseWriter)
+            where T : class, IPlugin
+        {
+            currentPlugInUUID = null;
+            if (!queuePlugInClasses.TryGetValue(queueUUID, out var plugInList) || plugInList.Count == 0)
             {
-                PlugInInstance plugIn = null;
-                if (lastPlugInUUID == null)
-                {
-                    plugIn = plugInList[0];
-                }
-                else
-                {
-                    // Find the next plug-in after the currentPlugInUUID
-                    int index = plugInList.FindIndex(p => p.UUID == lastPlugInUUID);
-                    if (index >= 0 && index + 1 < plugInList.Count)
-                    {
-                        plugIn = plugInList[index + 1]; // Get the next plug-in in the list
-                    }
-                }
-                if (plugIn == null)
-                {
-                    currentPlugInUUID = null;
-                    return default;
-                }
-                currentPlugInUUID = plugIn.UUID;
-                return (T)Activator.CreateInstance(plugIn.Type, true);
-            }
-            else
-            {
-                currentPlugInUUID = null;
                 return default;
             }
+
+            int startIndex = 0;
+            if (lastPlugInUUID != null)
+            {
+                int lastIndex = plugInList.FindIndex(p => p.UUID == lastPlugInUUID);
+                if (lastIndex < 0)
+                {
+                    return default;
+                }
+
+                startIndex = lastIndex + 1;
+            }
+
+            Type requestedType = typeof(T);
+            for (int i = startIndex; i < plugInList.Count; i++)
+            {
+                PlugInInstance plugIn = plugInList[i];
+                if (!requestedType.IsAssignableFrom(plugIn.Type))
+                {
+                    continue;
+                }
+
+                object instance = null;
+                if (baseWriter != null)
+                {
+                    ConstructorInfo contextualConstructor = plugIn.Type
+                        .GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                        .FirstOrDefault(constructor =>
+                        {
+                            ParameterInfo[] parameters = constructor.GetParameters();
+                            return parameters.Length == 1 && parameters[0].ParameterType == typeof(IBaseWriter);
+                        });
+                    if (contextualConstructor != null)
+                    {
+                        instance = contextualConstructor.Invoke(new object[] { baseWriter });
+                    }
+                }
+
+                if (instance == null)
+                {
+                    instance = Activator.CreateInstance(plugIn.Type, true);
+                }
+
+                currentPlugInUUID = plugIn.UUID;
+                return (T)instance;
+            }
+
+            return default;
         }
 
         /// <summary>
@@ -330,7 +371,7 @@ namespace NanoXLSX.Registry
             /// <summary>
             /// Class type of the plug-in
             /// </summary>
-            /// \remark <remarks>All types, representing a NanoXLSX plug-in must have an empty constructor that can be uses for initialization</remarks>
+            /// \remark <remarks>Plug-ins must provide either an empty constructor or a supported context-aware constructor</remarks>
             public Type Type { get; private set; }
 
             /// <summary>

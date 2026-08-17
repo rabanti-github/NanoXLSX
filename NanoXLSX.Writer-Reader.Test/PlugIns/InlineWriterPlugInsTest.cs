@@ -17,7 +17,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugIns
     {
         public void Dispose()
         {
-            PlugInLoader.DisposePlugins();
+            PlugInLoaderTestIsolation.Reset();
         }
 
         [Theory(DisplayName = "Test of the plug-in handling for inline writer plug-ins")]

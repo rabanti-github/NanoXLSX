@@ -21,7 +21,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
     {
         public void Dispose()
         {
-            PlugInLoader.DisposePlugins();
+            PlugInLoaderTestIsolation.Reset();
         }
 
         [Fact(DisplayName = "Discovery reader registration uses the discovery UUID")]

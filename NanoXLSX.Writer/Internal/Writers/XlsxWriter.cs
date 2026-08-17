@@ -6,6 +6,7 @@
  */
 
 using NanoXLSX.Exceptions;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Internal.Structures;
 using NanoXLSX.Registry;
@@ -50,6 +51,7 @@ namespace NanoXLSX.Internal.Writers
         private readonly Dictionary<string, Dictionary<string, PackagePart>> packageParts = new Dictionary<string, Dictionary<string, PackagePart>>();
         private readonly Dictionary<int, DocumentPath> worksheetPaths = new Dictionary<int, DocumentPath>();
         private readonly HashSet<string> preparedWriterFeatures = new HashSet<string>();
+        private readonly Dictionary<string, PackagePart> queuedPackageParts = new Dictionary<string, PackagePart>(StringComparer.Ordinal);
 
         #endregion
 
@@ -304,17 +306,22 @@ namespace NanoXLSX.Internal.Writers
                 {
                     continue;
                 }
+                PackagePart createdPart;
                 if (definition.PartType == PackagePartType.Root)
                 {
-                    CreateRootPackagePart(definition.Path, definition.ContentType, definition.RelationshipType);
+                    createdPart = CreateRootPackagePart(definition.Path, definition.ContentType, definition.RelationshipType);
                 }
                 else
                 {
-                    CreateXlPackagePart(workbookPart, definition.Path, definition.ContentType, definition.RelationshipType);
+                    createdPart = CreateXlPackagePart(workbookPart, definition.Path, definition.ContentType, definition.RelationshipType);
                     if (definition.PartType == PackagePartType.Worksheet)
                     {
                         worksheetPaths.Add(definition.GetWorksheetIndex(), definition.Path);
                     }
+                }
+                if (definition.UniquePackagePartIndex != null)
+                {
+                    queuedPackageParts.Add(definition.UniquePackagePartIndex, createdPart);
                 }
             }
         }
@@ -347,7 +354,7 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="documentPath">Document path of the part</param>
         /// <param name="contentType">Content type of the part</param>
         /// <param name="relationshipType">Scheme URL of the part</param>
-        internal void CreateXlPackagePart(PackagePart parentPart, DocumentPath documentPath, string contentType, string relationshipType)
+        internal PackagePart CreateXlPackagePart(PackagePart parentPart, DocumentPath documentPath, string contentType, string relationshipType)
         {
             Uri uri = new Uri(documentPath.GetFullPath(), UriKind.Relative);
             PackagePart part = this.package.CreatePart(uri, contentType, CompressionOption.Normal);
@@ -358,6 +365,7 @@ namespace NanoXLSX.Internal.Writers
             packageParts[documentPath.Path].Add(documentPath.Filename, part);
             parentPart.CreateRelationship(uri, TargetMode.Internal, relationshipType, "rId" + ParserUtils.ToString(xlPackageIndex));
             xlPackageIndex++;
+            return part;
         }
 
         /// <summary>
@@ -385,6 +393,20 @@ namespace NanoXLSX.Internal.Writers
         internal void RegisterPackagePart(PackagePartType type, int orderNumber, DocumentPath documentPath, string contentType, string relationshipType)
         {
             this.packagePartDefinitions.Add(new PackagePartDefinition(type, orderNumber, documentPath, contentType, relationshipType));
+        }
+
+        /// <summary>
+        /// Method to register a package part for a queued indexed writer
+        /// </summary>
+        /// <param name="type">Type of the package part, used for handling differentiation</param>
+        /// <param name="orderNumber">Order number during registration</param>
+        /// <param name="documentPath">Document path with all relevant file and path information</param>
+        /// <param name="contentType">Content type of the target file of the part (usually kind of XML)</param>
+        /// <param name="relationshipType">Schema URL of the target file of the part (usually kind of XML schema)</param>
+        /// <param name="uniquePackagePartIndex">Unique index used by a queued writer to select this package part</param>
+        private void RegisterPackagePart(PackagePartType type, int orderNumber, DocumentPath documentPath, string contentType, string relationshipType, string uniquePackagePartIndex)
+        {
+            this.packagePartDefinitions.Add(new PackagePartDefinition(type, orderNumber, documentPath, contentType, relationshipType, uniquePackagePartIndex));
         }
 
         #endregion
@@ -435,41 +457,80 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="queueUuid">Queue UUID</param>
         private void HandleQueuePlugIns(string queueUuid)
         {
-            IPluginWriter queueWriter;
+            IPlugin queuePlugIn;
             string lastUuid = null;
             do
             {
-                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPluginWriter>(queueUuid, lastUuid, out string currentUuid);
-                if (queueWriter != null)
+                queuePlugIn = PlugInLoader.GetNextQueuePlugIn<IPlugin>(queueUuid, lastUuid, out string currentUuid);
+                if (queuePlugIn != null)
                 {
                     lastUuid = currentUuid;
-                    if (queueWriter is IPluginPackageWriter packageWriter)
+                    if (!(queuePlugIn is IPluginWriter queueWriter))
                     {
-                        // IPluginPackageWriter plug-ins were previously called in HandlePackageRegistryQueuePlugIns
-                        ValidatePackageWriterPlugin(packageWriter);
-                        int counter = packageWriter.XmlElements.Count;
-                        for (int i = 0; i < counter; i++)
-                        {
-                            if (!string.IsNullOrEmpty(packageWriter.PackagePartPaths[i]) && !string.IsNullOrEmpty(packageWriter.PackagePartFileNames[i]))
-                            {
-                                if (packageParts.ContainsKey(packageWriter.PackagePartPaths[i]) && packageParts[packageWriter.PackagePartPaths[i]].ContainsKey(packageWriter.PackagePartFileNames[i]))
-                                {
-                                    PackagePart pp = packageParts[packageWriter.PackagePartPaths[i]][packageWriter.PackagePartFileNames[i]];
-                                    AppendXmlToPackagePart(packageWriter.XmlElements[i], pp);
-                                }
-                            }
-                        }
-                        continue; // Skip Init and Execute in case of IPluginPackageWriter
+                        continue;
                     }
                     queueWriter.Init(this);
-                    queueWriter.Execute();
+                    if (queueWriter is IPluginIndexedWriter indexedWriter)
+                    {
+                        HandleIndexedWriter(indexedWriter, queueUuid);
+                    }
+                    else
+                    {
+                        queueWriter.Execute();
+                    }
                 }
                 else
                 {
                     lastUuid = null;
                 }
 
-            } while (queueWriter != null);
+            } while (queuePlugIn != null);
+        }
+
+        /// <summary>
+        /// Executes an indexed writer and appends each generated XML element to its registered package part
+        /// </summary>
+        /// <param name="indexedWriter">Indexed writer to execute</param>
+        /// <param name="queueUuid">UUID of the queue currently being handled</param>
+        private void HandleIndexedWriter(IPluginIndexedWriter indexedWriter, string queueUuid)
+        {
+            int maxIndex = indexedWriter.MaxIndex;
+            if (maxIndex < -1)
+            {
+                throw new IOException("Invalid maximum index in indexed writer plug-in: " + indexedWriter.GetType().Name);
+            }
+            if (maxIndex == -1)
+            {
+                return;
+            }
+            if (queueUuid == PlugInUUID.WriterPrependingQueue)
+            {
+                throw new IOException("Indexed writer plug-ins cannot be executed in the writer prepending queue: " + indexedWriter.GetType().Name);
+            }
+
+            for (int i = 0; i <= maxIndex; i++)
+            {
+                indexedWriter.CurrentIndex = i;
+                indexedWriter.Execute();
+                string uniquePackagePartIndex = indexedWriter.CurrentUniquePackagePartIndex;
+                if (uniquePackagePartIndex == null)
+                {
+                    continue;
+                }
+                if (string.IsNullOrWhiteSpace(uniquePackagePartIndex))
+                {
+                    throw new IOException("Blank package part index in indexed writer plug-in: " + indexedWriter.GetType().Name);
+                }
+                if (!queuedPackageParts.TryGetValue(uniquePackagePartIndex, out PackagePart packagePart))
+                {
+                    throw new IOException("Unknown package part index '" + uniquePackagePartIndex + "' in indexed writer plug-in: " + indexedWriter.GetType().Name);
+                }
+                if (indexedWriter.XmlElement == null)
+                {
+                    throw new IOException("Missing XML element in indexed writer plug-in: " + indexedWriter.GetType().Name);
+                }
+                AppendXmlToPackagePart(indexedWriter.XmlElement, packagePart);
+            }
         }
 
         /// <summary>
@@ -477,55 +538,95 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         private void HandlePackageRegistryQueuePlugIns()
         {
-            IPluginPackageWriter queueWriter;
+            IPlugin queuePlugIn;
             string lastUuid = null;
             do
             {
-                queueWriter = PlugInLoader.GetNextQueuePlugIn<IPluginPackageWriter>(PlugInUUID.WriterPackageRegistryQueue, lastUuid, out string currentUuid);
-                if (queueWriter != null)
+                queuePlugIn = PlugInLoader.GetNextQueuePlugIn<IPlugin>(PlugInUUID.WriterPackageRegistryQueue, lastUuid, out string currentUuid);
+                if (queuePlugIn != null)
                 {
-                    ValidatePackageWriterPlugin(queueWriter);
-                    int counter = queueWriter.XmlElements.Count;
+                    lastUuid = currentUuid;
+                    if (!(queuePlugIn is IPluginPackageRegistry packageRegistry))
+                    {
+                        continue;
+                    }
+                    packageRegistry.Init(this);
+                    packageRegistry.Execute();
+                    int counter = ValidatePackageRegistryPlugin(packageRegistry);
                     for (int i = 0; i < counter; i++)
                     {
-                        queueWriter.CurrentIndex = i;
-                        queueWriter.Execute(); // Execute anything that could be defined, under the consideration of the index
-                        PackagePartType packagePartType;
-                        if (queueWriter.ArePackagePartsRoot[i])
-                        {
-                            packagePartType = PackagePartType.Root;
-                        }
-                        else
-                        {
-                            packagePartType = PackagePartType.Other;
-                        }
-                        RegisterPackagePart(packagePartType, queueWriter.OrderNumbers[i], new DocumentPath(queueWriter.PackagePartFileNames[i], queueWriter.PackagePartPaths[i]), queueWriter.ContentTypes[i], queueWriter.RelationshipTypes[i]);
+                        ValidatePackageRegistryEntry(packageRegistry, i);
+                        PackagePartType packagePartType = packageRegistry.ArePackagePartsRoot[i] ? PackagePartType.Root : PackagePartType.Other;
+                        RegisterPackagePart(
+                            packagePartType,
+                            packageRegistry.OrderNumbers[i],
+                            new DocumentPath(packageRegistry.PackagePartFileNames[i], packageRegistry.PackagePartPaths[i]),
+                            packageRegistry.ContentTypes[i],
+                            packageRegistry.RelationshipTypes[i],
+                            packageRegistry.UniquePackagePartIndices[i]);
                     }
-                    lastUuid = currentUuid;
                 }
                 else
                 {
                     lastUuid = null;
                 }
 
-            } while (queueWriter != null);
+            } while (queuePlugIn != null);
         }
 
-        private void ValidatePackageWriterPlugin(IPluginPackageWriter plugin)
+        /// <summary>
+        /// Validates the collection structure of a package registry plug-in
+        /// </summary>
+        /// <param name="plugin">Package registry plug-in to validate</param>
+        /// <returns>Number of registered package parts</returns>
+        private static int ValidatePackageRegistryPlugin(IPluginPackageRegistry plugin)
         {
-            HashSet<int> counts = new HashSet<int>
+            if (plugin.OrderNumbers == null ||
+                plugin.ArePackagePartsRoot == null ||
+                plugin.ContentTypes == null ||
+                plugin.PackagePartFileNames == null ||
+                plugin.PackagePartPaths == null ||
+                plugin.RelationshipTypes == null ||
+                plugin.UniquePackagePartIndices == null)
             {
-                plugin.OrderNumbers.Count,
-                plugin.ArePackagePartsRoot.Count,
-                plugin.ContentTypes.Count,
-                plugin.PackagePartFileNames.Count,
-                plugin.PackagePartPaths.Count,
-                plugin.RelationshipTypes.Count,
-                plugin.XmlElements.Count
-            };
-            if (counts.Count != 1 || counts.First() == 0)
+                throw new IOException("Null collection in package registry plug-in: " + plugin.GetType().Name);
+            }
+
+            int count = plugin.OrderNumbers.Count;
+            if (plugin.ArePackagePartsRoot.Count != count ||
+                plugin.ContentTypes.Count != count ||
+                plugin.PackagePartFileNames.Count != count ||
+                plugin.PackagePartPaths.Count != count ||
+                plugin.RelationshipTypes.Count != count ||
+                plugin.UniquePackagePartIndices.Count != count)
             {
-                throw new IOException("Inconsistent package writer plug-in detected: " + plugin.GetType().Name);
+                throw new IOException("Inconsistent package registry plug-in detected: " + plugin.GetType().Name);
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// Validates one package part definition supplied by a registry plug-in
+        /// </summary>
+        /// <param name="plugin">Package registry plug-in to validate</param>
+        /// <param name="index">Index of the definition to validate</param>
+        private void ValidatePackageRegistryEntry(IPluginPackageRegistry plugin, int index)
+        {
+            string uniquePackagePartIndex = plugin.UniquePackagePartIndices[index];
+            if (string.IsNullOrWhiteSpace(uniquePackagePartIndex))
+            {
+                throw new IOException("Blank package part index in package registry plug-in: " + plugin.GetType().Name);
+            }
+            if (packagePartDefinitions.Any(definition => string.Equals(definition.UniquePackagePartIndex, uniquePackagePartIndex, StringComparison.Ordinal)))
+            {
+                throw new IOException("Duplicate package part index '" + uniquePackagePartIndex + "' in package registry plug-in: " + plugin.GetType().Name);
+            }
+            if (string.IsNullOrWhiteSpace(plugin.PackagePartPaths[index]) ||
+                string.IsNullOrWhiteSpace(plugin.PackagePartFileNames[index]) ||
+                string.IsNullOrWhiteSpace(plugin.ContentTypes[index]) ||
+                string.IsNullOrWhiteSpace(plugin.RelationshipTypes[index]))
+            {
+                throw new IOException("Invalid package part definition in package registry plug-in: " + plugin.GetType().Name);
             }
         }
 

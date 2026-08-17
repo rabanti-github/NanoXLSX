@@ -77,6 +77,10 @@ namespace NanoXLSX.Internal.Structures
         /// Schema URL of the target file of the part (usually kind of XML schema)
         /// </summary>
         public string RelationshipType { get; private set; }
+        /// <summary>
+        /// Optional unique index that associates a queued writer with this package part
+        /// </summary>
+        internal string UniquePackagePartIndex { get; private set; }
 
         /// <summary>
         /// Constructor with all fields
@@ -100,12 +104,27 @@ namespace NanoXLSX.Internal.Structures
         /// <param name="contentType">Content type of the target file of the part (usually kind of XML)</param>
         /// <param name="relationshipType">Schema URL of the target file of the part (usually kind of XML schema)</param>
         internal PackagePartDefinition(PackagePartType type, int orderNumber, DocumentPath documentPath, string contentType, string relationshipType)
+            : this(type, orderNumber, documentPath, contentType, relationshipType, null)
+        {
+        }
+
+        /// <summary>
+        /// Constructor with a unique package part index for queued plug-ins
+        /// </summary>
+        /// <param name="type">Type of the package part, used for handling differentiation</param>
+        /// <param name="orderNumber">Order number during registration</param>
+        /// <param name="documentPath">Document path with all relevant file and path information</param>
+        /// <param name="contentType">Content type of the target file of the part (usually kind of XML)</param>
+        /// <param name="relationshipType">Schema URL of the target file of the part (usually kind of XML schema)</param>
+        /// <param name="uniquePackagePartIndex">Unique index used by a queued writer to select this package part</param>
+        internal PackagePartDefinition(PackagePartType type, int orderNumber, DocumentPath documentPath, string contentType, string relationshipType, string uniquePackagePartIndex)
         {
             this.PartType = type;
             this.OrderNumber = orderNumber;
             this.Path = documentPath;
             this.ContentType = contentType;
             this.RelationshipType = relationshipType;
+            this.UniquePackagePartIndex = uniquePackagePartIndex;
         }
 
         /// <summary>

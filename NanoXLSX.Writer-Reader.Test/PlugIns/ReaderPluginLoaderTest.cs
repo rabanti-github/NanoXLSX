@@ -17,7 +17,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
     {
         public void Dispose()
         {
-            PlugInLoader.DisposePlugins();
+            PlugInLoaderTestIsolation.Reset();
         }
 
         [Fact(DisplayName = "Test of the plug-in handling initializer (dummy; should not crash)")]

@@ -3,6 +3,7 @@ using Xunit;
 
 namespace NanoXLSX.Test.Writer_Reader.MiscTest
 {
+    [Collection(nameof(SequentialCollection2))]
     public class XlsxWriterTest
     {
         [Theory(DisplayName = "Test of common string cell values when writing a workbook")]
