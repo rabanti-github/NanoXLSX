@@ -54,5 +54,10 @@ namespace NanoXLSX.Interfaces.Writer
         /// List of unique index indicators that can be used from <see cref="IPluginIndexedWriter"/> instances to write package parts
         /// </summary>
         IReadOnlyList<string> UniquePackagePartIndices { get; }
+
+        /// <summary>
+        /// List of relationships owned by each registered package part. Entries correlate positionally with the other package part collections
+        /// </summary>
+        IReadOnlyList<IReadOnlyList<IPluginPackageRelationship>> PackagePartRelationships { get; }
     }
 }

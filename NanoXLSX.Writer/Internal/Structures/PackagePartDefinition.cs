@@ -5,7 +5,9 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using NanoXLSX.Interfaces.Writer;
 using System.Collections.Generic;
+using System.IO.Packaging;
 using System.Linq;
 
 namespace NanoXLSX.Internal.Structures
@@ -81,9 +83,13 @@ namespace NanoXLSX.Internal.Structures
         /// Optional unique index that associates a queued writer with this package part
         /// </summary>
         internal string UniquePackagePartIndex { get; private set; }
+        /// <summary>
+        /// Relationships owned by this package part
+        /// </summary>
+        internal IReadOnlyList<PackagePartRelationshipDefinition> Relationships { get; private set; }
 
         /// <summary>
-        /// Constructor with all fields
+        /// Constructor with common fields, without defined relationships
         /// </summary>
         /// <param name="type">Type of the package part, used for handling differentiation</param>
         /// <param name="orderNumber">Order number during registration</param>
@@ -118,6 +124,21 @@ namespace NanoXLSX.Internal.Structures
         /// <param name="relationshipType">Schema URL of the target file of the part (usually kind of XML schema)</param>
         /// <param name="uniquePackagePartIndex">Unique index used by a queued writer to select this package part</param>
         internal PackagePartDefinition(PackagePartType type, int orderNumber, DocumentPath documentPath, string contentType, string relationshipType, string uniquePackagePartIndex)
+            : this(type, orderNumber, documentPath, contentType, relationshipType, uniquePackagePartIndex, null)
+        {
+        }
+
+        /// <summary>
+        /// Constructor with a unique package part index and relationships for queued plug-ins
+        /// </summary>
+        /// <param name="type">Type of the package part, used for handling differentiation</param>
+        /// <param name="orderNumber">Order number during registration</param>
+        /// <param name="documentPath">Document path with all relevant file and path information</param>
+        /// <param name="contentType">Content type of the target file of the part (usually kind of XML)</param>
+        /// <param name="relationshipType">Schema URL of the target file of the part (usually kind of XML schema)</param>
+        /// <param name="uniquePackagePartIndex">Unique index used by a queued writer to select this package part</param>
+        /// <param name="relationships">Relationships owned by this package part</param>
+        internal PackagePartDefinition(PackagePartType type, int orderNumber, DocumentPath documentPath, string contentType, string relationshipType, string uniquePackagePartIndex, IReadOnlyList<IPluginPackageRelationship> relationships)
         {
             this.PartType = type;
             this.OrderNumber = orderNumber;
@@ -125,6 +146,9 @@ namespace NanoXLSX.Internal.Structures
             this.ContentType = contentType;
             this.RelationshipType = relationshipType;
             this.UniquePackagePartIndex = uniquePackagePartIndex;
+            this.Relationships = relationships == null
+                ? new List<PackagePartRelationshipDefinition>()
+                : relationships.Select(relationship => new PackagePartRelationshipDefinition(relationship)).ToList();
         }
 
         /// <summary>
@@ -145,6 +169,25 @@ namespace NanoXLSX.Internal.Structures
         internal static List<PackagePartDefinition> Sort(List<PackagePartDefinition> packagePartDefinitions)
         {
             return packagePartDefinitions.OrderBy(p => p.OrderNumber).ToList();
+        }
+    }
+
+    /// <summary>
+    /// Immutable snapshot of a relationship owned by a package part
+    /// </summary>
+    internal sealed class PackagePartRelationshipDefinition
+    {
+        internal string RelationshipId { get; private set; }
+        internal string RelationshipType { get; private set; }
+        internal string Target { get; private set; }
+        internal TargetMode TargetMode { get; private set; }
+
+        internal PackagePartRelationshipDefinition(IPluginPackageRelationship relationship)
+        {
+            RelationshipId = relationship.RelationshipId;
+            RelationshipType = relationship.RelationshipType;
+            Target = relationship.Target;
+            TargetMode = relationship.TargetMode;
         }
     }
 

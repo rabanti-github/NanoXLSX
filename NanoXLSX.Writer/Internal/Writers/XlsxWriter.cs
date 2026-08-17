@@ -323,6 +323,21 @@ namespace NanoXLSX.Internal.Writers
                 {
                     queuedPackageParts.Add(definition.UniquePackagePartIndex, createdPart);
                 }
+                CreatePackagePartRelationships(createdPart, definition.Relationships);
+            }
+        }
+
+        /// <summary>
+        /// Creates relationships owned by a registered package part
+        /// </summary>
+        /// <param name="packagePart">Owning package part</param>
+        /// <param name="relationships">Relationship definitions to create</param>
+        private static void CreatePackagePartRelationships(PackagePart packagePart, IReadOnlyList<PackagePartRelationshipDefinition> relationships)
+        {
+            foreach (PackagePartRelationshipDefinition relationship in relationships)
+            {
+                Uri targetUri = new Uri(relationship.Target, UriKind.RelativeOrAbsolute);
+                packagePart.CreateRelationship(targetUri, relationship.TargetMode, relationship.RelationshipType, relationship.RelationshipId);
             }
         }
 
@@ -404,9 +419,10 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="contentType">Content type of the target file of the part (usually kind of XML)</param>
         /// <param name="relationshipType">Schema URL of the target file of the part (usually kind of XML schema)</param>
         /// <param name="uniquePackagePartIndex">Unique index used by a queued writer to select this package part</param>
-        private void RegisterPackagePart(PackagePartType type, int orderNumber, DocumentPath documentPath, string contentType, string relationshipType, string uniquePackagePartIndex)
+        /// <param name="relationships">Relationships owned by the package part</param>
+        private void RegisterPackagePart(PackagePartType type, int orderNumber, DocumentPath documentPath, string contentType, string relationshipType, string uniquePackagePartIndex, IReadOnlyList<IPluginPackageRelationship> relationships)
         {
-            this.packagePartDefinitions.Add(new PackagePartDefinition(type, orderNumber, documentPath, contentType, relationshipType, uniquePackagePartIndex));
+            this.packagePartDefinitions.Add(new PackagePartDefinition(type, orderNumber, documentPath, contentType, relationshipType, uniquePackagePartIndex, relationships));
         }
 
         #endregion
@@ -563,7 +579,8 @@ namespace NanoXLSX.Internal.Writers
                             new DocumentPath(packageRegistry.PackagePartFileNames[i], packageRegistry.PackagePartPaths[i]),
                             packageRegistry.ContentTypes[i],
                             packageRegistry.RelationshipTypes[i],
-                            packageRegistry.UniquePackagePartIndices[i]);
+                            packageRegistry.UniquePackagePartIndices[i],
+                            packageRegistry.PackagePartRelationships[i]);
                     }
                 }
                 else
@@ -587,7 +604,8 @@ namespace NanoXLSX.Internal.Writers
                 plugin.PackagePartFileNames == null ||
                 plugin.PackagePartPaths == null ||
                 plugin.RelationshipTypes == null ||
-                plugin.UniquePackagePartIndices == null)
+                plugin.UniquePackagePartIndices == null ||
+                plugin.PackagePartRelationships == null)
             {
                 throw new IOException("Null collection in package registry plug-in: " + plugin.GetType().Name);
             }
@@ -598,7 +616,8 @@ namespace NanoXLSX.Internal.Writers
                 plugin.PackagePartFileNames.Count != count ||
                 plugin.PackagePartPaths.Count != count ||
                 plugin.RelationshipTypes.Count != count ||
-                plugin.UniquePackagePartIndices.Count != count)
+                plugin.UniquePackagePartIndices.Count != count ||
+                plugin.PackagePartRelationships.Count != count)
             {
                 throw new IOException("Inconsistent package registry plug-in detected: " + plugin.GetType().Name);
             }
@@ -627,6 +646,75 @@ namespace NanoXLSX.Internal.Writers
                 string.IsNullOrWhiteSpace(plugin.RelationshipTypes[index]))
             {
                 throw new IOException("Invalid package part definition in package registry plug-in: " + plugin.GetType().Name);
+            }
+            ValidatePackagePartRelationships(plugin, index);
+        }
+
+        /// <summary>
+        /// Validates relationships owned by one package part supplied by a registry plug-in
+        /// </summary>
+        /// <param name="plugin">Package registry plug-in to validate</param>
+        /// <param name="index">Index of the owning package part definition</param>
+        private static void ValidatePackagePartRelationships(IPluginPackageRegistry plugin, int index)
+        {
+            IReadOnlyList<IPluginPackageRelationship> relationships = plugin.PackagePartRelationships[index];
+            if (relationships == null)
+            {
+                throw new IOException("Null package relationship collection in package registry plug-in: " + plugin.GetType().Name);
+            }
+
+            HashSet<string> relationshipIds = new HashSet<string>(StringComparer.Ordinal);
+            foreach (IPluginPackageRelationship relationship in relationships)
+            {
+                ValidatePackagePartRelationship(plugin, relationship, relationshipIds);
+            }
+        }
+
+        /// <summary>
+        /// Validates one relationship supplied by a registry plug-in
+        /// </summary>
+        /// <param name="plugin">Package registry plug-in to validate</param>
+        /// <param name="relationship">Relationship to validate</param>
+        /// <param name="relationshipIds">Relationship IDs already used by the owning package part</param>
+        private static void ValidatePackagePartRelationship(IPluginPackageRegistry plugin, IPluginPackageRelationship relationship, HashSet<string> relationshipIds)
+        {
+            if (relationship == null)
+            {
+                throw new IOException("Null package relationship in package registry plug-in: " + plugin.GetType().Name);
+            }
+            if (string.IsNullOrWhiteSpace(relationship.RelationshipId))
+            {
+                throw new IOException("Blank package relationship ID in package registry plug-in: " + plugin.GetType().Name);
+            }
+            try
+            {
+                XmlConvert.VerifyNCName(relationship.RelationshipId);
+            }
+            catch (XmlException)
+            {
+                throw new IOException("Invalid package relationship ID '" + relationship.RelationshipId + "' in package registry plug-in: " + plugin.GetType().Name);
+            }
+            if (!relationshipIds.Add(relationship.RelationshipId))
+            {
+                throw new IOException("Duplicate package relationship ID '" + relationship.RelationshipId + "' in package registry plug-in: " + plugin.GetType().Name);
+            }
+            if (string.IsNullOrWhiteSpace(relationship.RelationshipType) ||
+                !Uri.TryCreate(relationship.RelationshipType, UriKind.Absolute, out _)) // Check URI of type, not target
+            {
+                throw new IOException("Invalid package relationship type in package registry plug-in: " + plugin.GetType().Name);
+            }
+            if (string.IsNullOrWhiteSpace(relationship.Target) ||
+                !Uri.TryCreate(relationship.Target, UriKind.RelativeOrAbsolute, out Uri targetUri)) // Check URI of target
+            {
+                throw new IOException("Invalid package relationship target in package registry plug-in: " + plugin.GetType().Name);
+            }
+            if (relationship.TargetMode != TargetMode.Internal && relationship.TargetMode != TargetMode.External)
+            {
+                throw new IOException("Invalid package relationship target mode in package registry plug-in: " + plugin.GetType().Name);
+            }
+            if (relationship.TargetMode == TargetMode.Internal && targetUri.IsAbsoluteUri)
+            {
+                throw new IOException("Absolute internal package relationship target in package registry plug-in: " + plugin.GetType().Name);
             }
         }
 
