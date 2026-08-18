@@ -124,6 +124,10 @@ namespace NanoXLSX.Registry
         /// UUID for the currently highest defined order number of a package part, when a workbook is saved 
         /// </summary>
         public const string LastPackageOrderNumber = "C6165F97-98A7-478C-AD88-D21FDC58D234";
+        /// <summary>
+        /// UUID for workbook relationship IDs assigned to registered package parts, when a workbook is saved
+        /// </summary>
+        public const string PackagePartRelationshipId = "66C4B211-A4F6-404A-974D-4B3E260F8E29";
         #endregion
 
         #region readerUUIDs

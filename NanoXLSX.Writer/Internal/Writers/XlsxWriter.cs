@@ -307,13 +307,14 @@ namespace NanoXLSX.Internal.Writers
                     continue;
                 }
                 PackagePart createdPart;
+                string workbookRelationshipId = null;
                 if (definition.PartType == PackagePartType.Root)
                 {
                     createdPart = CreateRootPackagePart(definition.Path, definition.ContentType, definition.RelationshipType);
                 }
                 else
                 {
-                    createdPart = CreateXlPackagePart(workbookPart, definition.Path, definition.ContentType, definition.RelationshipType);
+                    createdPart = CreateXlPackagePart(workbookPart, definition.Path, definition.ContentType, definition.RelationshipType, out workbookRelationshipId);
                     if (definition.PartType == PackagePartType.Worksheet)
                     {
                         worksheetPaths.Add(definition.GetWorksheetIndex(), definition.Path);
@@ -322,6 +323,10 @@ namespace NanoXLSX.Internal.Writers
                 if (definition.UniquePackagePartIndex != null)
                 {
                     queuedPackageParts.Add(definition.UniquePackagePartIndex, createdPart);
+                    if (workbookRelationshipId != null)
+                    {
+                        Workbook.AuxiliaryData.SetData(PlugInUUID.WriterPackageRegistryQueue, PlugInUUID.PackagePartRelationshipId, definition.UniquePackagePartIndex, workbookRelationshipId);
+                    }
                 }
                 CreatePackagePartRelationships(createdPart, definition.Relationships);
             }
@@ -369,7 +374,8 @@ namespace NanoXLSX.Internal.Writers
         /// <param name="documentPath">Document path of the part</param>
         /// <param name="contentType">Content type of the part</param>
         /// <param name="relationshipType">Scheme URL of the part</param>
-        internal PackagePart CreateXlPackagePart(PackagePart parentPart, DocumentPath documentPath, string contentType, string relationshipType)
+        /// <param name="relationshipId">Relationship ID assigned by the parent package part</param>
+        internal PackagePart CreateXlPackagePart(PackagePart parentPart, DocumentPath documentPath, string contentType, string relationshipType, out string relationshipId)
         {
             Uri uri = new Uri(documentPath.GetFullPath(), UriKind.Relative);
             PackagePart part = this.package.CreatePart(uri, contentType, CompressionOption.Normal);
@@ -378,7 +384,8 @@ namespace NanoXLSX.Internal.Writers
                 packageParts.Add(documentPath.Path, new Dictionary<string, PackagePart>());
             }
             packageParts[documentPath.Path].Add(documentPath.Filename, part);
-            parentPart.CreateRelationship(uri, TargetMode.Internal, relationshipType, "rId" + ParserUtils.ToString(xlPackageIndex));
+            relationshipId = "rId" + ParserUtils.ToString(xlPackageIndex);
+            parentPart.CreateRelationship(uri, TargetMode.Internal, relationshipType, relationshipId);
             xlPackageIndex++;
             return part;
         }
