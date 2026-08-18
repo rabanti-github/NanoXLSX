@@ -254,6 +254,64 @@ namespace NanoXLSX.Utils.Xml
         }
 
         /// <summary>
+        /// Adds a child element before the first occurrence of the first matching ancestor name.
+        /// </summary>
+        /// <param name="xmlElement">Nullable child element instance. If null, nothing will be added</param>
+        /// <param name="ancestors">Names of possible ancestors, ordered by priority</param>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">Thrown if none of the specified ancestors exists</exception>
+        internal void AddChildElementBefore(XmlElement xmlElement, params string[] ancestors)
+        {
+            if (xmlElement == null)
+            {
+                return;
+            }
+            if (hasChildren && ancestors != null)
+            {
+                for (int ancestorIndex = 0; ancestorIndex < ancestors.Length; ancestorIndex++)
+                {
+                    for (int childIndex = 0; childIndex < Children.Count; childIndex++)
+                    {
+                        if (Children[childIndex].Name == ancestors[ancestorIndex])
+                        {
+                            Children.Insert(childIndex, xmlElement);
+                            return;
+                        }
+                    }
+                }
+            }
+            throw new NanoXLSX.Exceptions.IOException("None of the specified ancestor elements were found");
+        }
+
+        /// <summary>
+        /// Adds a child element after the last occurrence of the first matching successor name.
+        /// </summary>
+        /// <param name="xmlElement">Nullable child element instance. If null, nothing will be added</param>
+        /// <param name="successors">Names of possible successors, ordered by priority</param>
+        /// <exception cref="NanoXLSX.Exceptions.IOException">Thrown if none of the specified successors exists</exception>
+        internal void AddChildElementAfter(XmlElement xmlElement, params string[] successors)
+        {
+            if (xmlElement == null)
+            {
+                return;
+            }
+            if (hasChildren && successors != null)
+            {
+                for (int successorIndex = 0; successorIndex < successors.Length; successorIndex++)
+                {
+                    for (int childIndex = Children.Count - 1; childIndex >= 0; childIndex--)
+                    {
+                        if (Children[childIndex].Name == successors[successorIndex])
+                        {
+                            Children.Insert(childIndex + 1, xmlElement);
+                            return;
+                        }
+                    }
+                }
+            }
+            throw new NanoXLSX.Exceptions.IOException("None of the specified successor elements were found");
+        }
+
+        /// <summary>
         /// Transforms this custom XmlElement (and its children) into a standard XmlDocument.
         /// </summary>
         /// <returns>A new XmlDocument representing the hierarchical XML structure.</returns>

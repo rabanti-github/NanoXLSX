@@ -261,6 +261,136 @@ namespace NanoXLSX.Core.Test.UtilsTest
             Assert.Equal(childrenList.Count, parent.Children.Count);
         }
 
+        [Fact(DisplayName = "AddChildElementBefore should insert before the first occurrence of the first matching ancestor")]
+        public void AddChildElementBeforeTest()
+        {
+            XmlElement parent = XmlElement.CreateElement("Parent");
+            XmlElement firstAncestor = parent.AddChildElement("Ancestor");
+            XmlElement secondAncestor = parent.AddChildElement("Ancestor");
+            XmlElement child = XmlElement.CreateElement("Child");
+
+            parent.AddChildElementBefore(child, "Ancestor");
+
+            Assert.Equal(3, parent.Children.Count);
+            Assert.Same(child, parent.Children[0]);
+            Assert.Same(firstAncestor, parent.Children[1]);
+            Assert.Same(secondAncestor, parent.Children[2]);
+        }
+
+        [Fact(DisplayName = "AddChildElementBefore should use ancestor names as ordered fallbacks")]
+        public void AddChildElementBeforeFallbackTest()
+        {
+            XmlElement parent = XmlElement.CreateElement("Parent");
+            XmlElement first = parent.AddChildElement("First");
+            XmlElement fallbackAncestor = parent.AddChildElement("FallbackAncestor");
+            XmlElement child = XmlElement.CreateElement("Child");
+
+            parent.AddChildElementBefore(child, "MissingAncestor", "FallbackAncestor");
+
+            Assert.Equal(3, parent.Children.Count);
+            Assert.Same(first, parent.Children[0]);
+            Assert.Same(child, parent.Children[1]);
+            Assert.Same(fallbackAncestor, parent.Children[2]);
+        }
+
+        [Fact(DisplayName = "AddChildElementAfter should insert after the last occurrence of the first matching successor")]
+        public void AddChildElementAfterTest()
+        {
+            XmlElement parent = XmlElement.CreateElement("Parent");
+            XmlElement firstSuccessor = parent.AddChildElement("Successor");
+            XmlElement secondSuccessor = parent.AddChildElement("Successor");
+            XmlElement trailingChild = parent.AddChildElement("TrailingChild");
+            XmlElement child = XmlElement.CreateElement("Child");
+
+            parent.AddChildElementAfter(child, "Successor");
+
+            Assert.Equal(4, parent.Children.Count);
+            Assert.Same(firstSuccessor, parent.Children[0]);
+            Assert.Same(secondSuccessor, parent.Children[1]);
+            Assert.Same(child, parent.Children[2]);
+            Assert.Same(trailingChild, parent.Children[3]);
+        }
+
+        [Fact(DisplayName = "AddChildElementAfter should use successor names as ordered fallbacks")]
+        public void AddChildElementAfterFallbackTest()
+        {
+            XmlElement parent = XmlElement.CreateElement("Parent");
+            XmlElement fallbackSuccessor = parent.AddChildElement("FallbackSuccessor");
+            XmlElement last = parent.AddChildElement("Last");
+            XmlElement child = XmlElement.CreateElement("Child");
+
+            parent.AddChildElementAfter(child, "MissingSuccessor", "FallbackSuccessor");
+
+            Assert.Equal(3, parent.Children.Count);
+            Assert.Same(fallbackSuccessor, parent.Children[0]);
+            Assert.Same(child, parent.Children[1]);
+            Assert.Same(last, parent.Children[2]);
+        }
+
+        [Theory(DisplayName = "Relative child insertion should throw IOException when no named sibling exists")]
+        [InlineData(true, false)]
+        [InlineData(true, true)]
+        [InlineData(false, false)]
+        [InlineData(false, true)]
+        public void AddChildElementRelativeMissingSiblingTest(bool insertBefore, bool addUnrelatedChild)
+        {
+            XmlElement parent = XmlElement.CreateElement("Parent");
+            if (addUnrelatedChild)
+            {
+                parent.AddChildElement("Unrelated");
+            }
+            XmlElement child = XmlElement.CreateElement("Child");
+
+            NanoXLSX.Exceptions.IOException exception = insertBefore
+                ? Assert.Throws<NanoXLSX.Exceptions.IOException>(() => parent.AddChildElementBefore(child, "Missing", "AlsoMissing"))
+                : Assert.Throws<NanoXLSX.Exceptions.IOException>(() => parent.AddChildElementAfter(child, "Missing", "AlsoMissing"));
+
+            Assert.Contains(insertBefore ? "ancestor" : "successor", exception.Message);
+            Assert.DoesNotContain(child, parent.Children ?? new List<XmlElement>());
+        }
+
+        [Theory(DisplayName = "Relative child insertion should throw IOException when no sibling names are supplied")]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void AddChildElementRelativeMissingNamesTest(bool insertBefore)
+        {
+            XmlElement parent = XmlElement.CreateElement("Parent");
+            XmlElement child = XmlElement.CreateElement("Child");
+
+            if (insertBefore)
+            {
+                Assert.Throws<NanoXLSX.Exceptions.IOException>(() => parent.AddChildElementBefore(child));
+                Assert.Throws<NanoXLSX.Exceptions.IOException>(() => parent.AddChildElementBefore(child, null));
+            }
+            else
+            {
+                Assert.Throws<NanoXLSX.Exceptions.IOException>(() => parent.AddChildElementAfter(child));
+                Assert.Throws<NanoXLSX.Exceptions.IOException>(() => parent.AddChildElementAfter(child, null));
+            }
+            Assert.Null(parent.Children);
+        }
+
+        [Theory(DisplayName = "Relative child insertion should ignore a null child element")]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void AddChildElementRelativeNullChildTest(bool insertBefore)
+        {
+            XmlElement parent = XmlElement.CreateElement("Parent");
+            XmlElement sibling = parent.AddChildElement("Sibling");
+
+            if (insertBefore)
+            {
+                parent.AddChildElementBefore(null, "Sibling");
+            }
+            else
+            {
+                parent.AddChildElementAfter(null, "Sibling");
+            }
+
+            Assert.Single(parent.Children);
+            Assert.Same(sibling, parent.Children[0]);
+        }
+
         [Theory(DisplayName = "CreateElement should instantiate an element with the given name and optional prefix")]
         [InlineData("TestElement", "prefix")]
         [InlineData("TestElement", "")]
