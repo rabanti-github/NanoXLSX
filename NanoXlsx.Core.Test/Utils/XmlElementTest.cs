@@ -575,6 +575,28 @@ namespace NanoXLSX.Core.Test.UtilsTest
             Assert.Single(givenResult.Where(n => n.InnerValue == "test3"));
         }
 
+        [Fact(DisplayName = "FindElementByName should return an IEnumerable with multiple element in the expected order")]
+        public void FindElementByNameOrderTest()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            root.AddChildElementWithValue("node", "v3");
+            root.AddChildElementWithValue("unrelated", "v3");
+            root.AddChildElementWithValue("node", "v2");
+            root.AddChildElementWithValue("unrelated", "v2");
+            root.AddChildElementWithValue("node", "v1");
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByName("node");
+            Assert.Equal(3, givenResult.Count());
+            List<XmlElement> elements = givenResult.ToList();
+            Assert.Equal("node", elements[0].Name);
+            Assert.Equal("v3", elements[0].InnerValue);
+
+            Assert.Equal("node", elements[1].Name);
+            Assert.Equal("v2", elements[1].InnerValue);
+
+            Assert.Equal("node", elements[2].Name);
+            Assert.Equal("v1", elements[2].InnerValue);
+        }
+
         [Theory(DisplayName = "FindElementByName should return an empty IEnumerable, if there is no matching child")]
         [InlineData(null)]
         [InlineData("")]
@@ -764,6 +786,62 @@ namespace NanoXLSX.Core.Test.UtilsTest
             XmlElement root = XmlElement.CreateElement("root");
             IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1", "test1");
             Assert.Empty(givenResult);
+        }
+
+        [Fact(DisplayName = "FindElementByNameAndAttribute should return an IEnumerable with multiple element in the expected order")]
+        public void FindElementByNameAndAttributeOrderTest()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            root.AddChildElementWithAttribute("node", "att1", "v3");
+            root.AddChildElementWithValue("unrelated", "v3");
+            root.AddChildElementWithAttribute("unrelated", "att1", "v2");
+            XmlElement element = root.AddChildElementWithAttribute("node", "att1", "v2");
+            element.InnerValue = "content";
+            root.AddChildElementWithAttribute("node", "att2", "unrelated");
+            root.AddChildElementWithAttribute("node", "att1", "v1", "pfx"); // Should also be considered
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1");
+            Assert.Equal(3, givenResult.Count());
+            List<XmlElement> elements = givenResult.ToList();
+            Assert.Equal("node", elements[0].Name);
+            Assert.Equal("v3", elements[0].Attributes.ToList()[0].Value);
+
+            Assert.Equal("node", elements[1].Name);
+            Assert.Equal("v2", elements[1].Attributes.ToList()[0].Value);
+            Assert.Equal("content", elements[1].InnerValue);
+
+            Assert.Equal("node", elements[2].Name);
+            Assert.Equal("v1", elements[2].Attributes.ToList()[0].Value);
+        }
+
+        [Fact(DisplayName = "FindElementByNameAndAttribute with value should return an IEnumerable with multiple element in the expected order")]
+        public void FindElementByNameAndAttributeValueOrderTest()
+        {
+            XmlElement root = XmlElement.CreateElement("root");
+            XmlElement element1 = root.AddChildElementWithAttribute("node", "att1", "val");
+            element1.InnerValue = "content3";
+            root.AddChildElementWithValue("unrelated", "v3");
+            root.AddChildElementWithAttribute("unrelated", "att1", "v2");
+            XmlElement unrelated1 = root.AddChildElementWithAttribute("node", "att1", "val2");
+            unrelated1.InnerValue = "content4";
+            XmlElement element2 = root.AddChildElementWithAttribute("node", "att1", "val");
+            element2.InnerValue = "content2";
+            root.AddChildElementWithAttribute("node", "att2", "unrelated");
+            XmlElement element3 = root.AddChildElementWithAttribute("node", "att1", "val", "pfx"); // Should also be considered
+            element3.InnerValue = "content1";
+            IEnumerable<XmlElement> givenResult = root.FindChildElementsByNameAndAttribute("node", "att1", "val");
+            Assert.Equal(3, givenResult.Count());
+            List<XmlElement> elements = givenResult.ToList();
+            Assert.Equal("node", elements[0].Name);
+            Assert.Equal("val", elements[0].Attributes.ToList()[0].Value);
+            Assert.Equal("content3", elements[0].InnerValue);
+
+            Assert.Equal("node", elements[1].Name);
+            Assert.Equal("val", elements[1].Attributes.ToList()[0].Value);
+            Assert.Equal("content2", elements[1].InnerValue);
+
+            Assert.Equal("node", elements[2].Name);
+            Assert.Equal("val", elements[2].Attributes.ToList()[0].Value);
+            Assert.Equal("content1", elements[2].InnerValue);
         }
 
         private static string SerializeWriteTo(XmlElement root)
