@@ -43,6 +43,17 @@
       "bundled": true,
       "apiDocsUrl": "https://rabanti-github.github.io/NanoXLSX.Formatting/",
       "nuGetUrl": "https://www.nuget.org/packages/NanoXLSX.Formatting"
+    },
+    {
+      "id": "NanoXLSX.Compatibility",
+      "title": "NanoXLSX.Compatibility API",
+      "path": "https://rabanti-github.github.io/NanoXLSX.Compatibility",
+      "description": "Compatibility plugin: handling of external links. Depends on Core. Maintained in an external repository.",
+      "repository": "https://github.com/rabanti-github/NanoXLSX.Compatibility",
+      "repositoryDisplayName": "NanoXLSX.Compatibility",
+      "bundled": true,
+      "apiDocsUrl": "https://rabanti-github.github.io/NanoXLSX.Compatibility/",
+      "nuGetUrl": "https://www.nuget.org/packages/NanoXLSX.Compatibility"
     }
   ]
 }

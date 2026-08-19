@@ -28,6 +28,7 @@ NanoXLSX v3 is split into modular NuGet packages:
 | **[NanoXLSX.Reader](https://www.nuget.org/packages/NanoXLSX.Reader)** | :large_blue_circle: Optional, Bundled | Extension methods to read/load XLSX files. Depends on Core |
 | **[NanoXLSX.Writer](https://www.nuget.org/packages/NanoXLSX.Writer)** | :large_blue_circle: Optional, Bundled | Extension methods to write/save XLSX files. Depends on Core |
 | **[NanoXLSX.Formatting](https://www.nuget.org/packages/NanoXLSX.Formatting)** | :large_blue_circle: Optional, Bundled | In-line cell formatting (rich text). [External repo](https://github.com/rabanti-github/NanoXLSX.Formatting). Depends on Core |
+| **[NanoXLSX.Compatibility](https://www.nuget.org/packages/NanoXLSX.Compatibility)** | :large_blue_circle: Optional, Bundled | Compatibility features: handling of external links. [External repo](https://github.com/rabanti-github/NanoXLSX.Compatibility). Depends on Core |
 | **[NanoXLSX](https://www.nuget.org/packages/NanoXLSX)** | :star: Meta-Package | Bundles all of the above. **Recommended for most users** |
 
 > **Note:** All bundled modules are included when you install the `NanoXLSX` meta-package. There are currently no non-bundled (standalone) modules.

@@ -3,10 +3,16 @@
 ## v3.2.0
 
 ---
-Release Date: **(17.07.2026)** <sup>(DMY)</sup>
+Release Date: **(20.08.2026)** <sup>(DMY)</sup>
 
+- Added writing of defined names.
+- Added writing of extended formula metadata and cached formula values.
+- Added writing of cell error values.
+- Updated internal writer processing and package-part handling.
+- Added infrastructure for writing external workbook references through compatibility plug-ins.
 - Version bump of NanoXLSX.Core to v3.2.0
 - Implemented writing of defined names (cell references)
+- Code maintenance
 
 
 ## v3.1.0

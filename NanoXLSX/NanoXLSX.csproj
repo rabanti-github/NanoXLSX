@@ -63,12 +63,14 @@
 		<ProjectReference Include="..\NanoXLSX.Reader\NanoXLSX.Reader.csproj" />
 		<ProjectReference Include="..\NanoXLSX.Writer\NanoXLSX.Writer.csproj" />
 		<PackageReference Include="NanoXLSX.Formatting" Version="[3.2.0, 4.0.0)" />
+		<PackageReference Include="NanoXLSX.Compatibility" Version="[3.2.0, 4.0.0)" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
 		<PackageReference Include="NanoXLSX.Core" Version="[3.2.0, 4.0.0)" />
 		<PackageReference Include="NanoXLSX.Reader" Version="[3.2.0, 4.0.0)" />
-		<PackageReference Include="NanoXLSX.Writer" Version="[3.1.0, 4.0.0)" /> <!-- TDOO update -->
+		<PackageReference Include="NanoXLSX.Writer" Version="[3.2.0, 4.0.0)" />
 		<PackageReference Include="NanoXLSX.Formatting" Version="[3.2.0, 4.0.0)" />
+		<PackageReference Include="NanoXLSX.Compatibility" Version="[3.2.0, 4.0.0)" />
 	</ItemGroup>
 	
 	<Target Name="GenerateDocsIndex" AfterTargets="Pack;Build" Condition="'$(TargetFramework)' == 'netstandard2.0'">

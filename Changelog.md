@@ -4,13 +4,41 @@
 
 ---
 
-Release Date: **(xx.yy.2026)** <sup>(DMY)</sup>
+Release Date: **(20.08.2026)** <sup>(DMY)</sup>
+
+- Package: **NanoXLSX**
+  * Added support for external workbook links through the bundled `NanoXLSX.Compatibility` package.
 
 - Package: **NanoXLSX.Core**
- * Updated internal plug-in handling
+  * Added detection and metadata handling for external workbook references in formulas and defined names.
+  * Added support for defined names, including cell and range references, formulas, constants, workbook/worksheet scope and comments.
+  * Added `FormulaData` for extended formula metadata, including formula types, ranges, cached values, defined-name references and external-reference detection.
+  * Added support for cell error values (`CellType.Error` and `Errors.FormulaError`).
+  * Added `Validators.ValidateWorksheetName(...)`.
+  * Extended and optimized internal feature detection and processing.
+  * Extended the plug-in infrastructure with additional Reader and Writer interfaces and updated plug-in registration.
+
+- Package: **NanoXLSX.Reader**
+  * Added reading of defined names.
+  * Added reading of formula metadata and cached formula values, including cached error results.
+  * Added reading of standalone cell error values.
+  * Improved workbook-part and relationship discovery for more robust XLSX processing.
+  * Tolerant reader mode now skips invalid custom number formats with missing format codes; strict validation continues to reject them.
+  * Improved internal workbook finalization and formula/defined-name resolution.
+  * Added infrastructure for resolving external workbook references through compatibility plug-ins.
+
+
+- Package: **NanoXLSX.Writer**
+  * Added writing of defined names.
+  * Added writing of extended formula metadata and cached formula values.
+  * Added writing of cell error values.
+  * Updated internal writer processing and package-part handling.
+  * Added infrastructure for writing external workbook references through compatibility plug-ins.
+
 - **General**
- * Fixed unit tests
- * Code maintenance
+  * Various internal processing optimizations.
+  * Added and extended test coverage for formulas, defined names, cell errors, relationship discovery and plug-ins.
+  * Code maintenance.
 
 
 ## v3.1.0

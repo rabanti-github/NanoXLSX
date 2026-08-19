@@ -4,14 +4,21 @@
 
 ---
 
-Release Date: **(xx.yy.2026)** <sup>(DMY)</sup>
+Release Date: **(20.08.2026)** <sup>(DMY)</sup>
 
+- Added reading of defined names.
+- Added reading of formula metadata and cached formula values, including cached error results.
+- Added reading of standalone cell error values.
+- Improved workbook-part and relationship discovery for more robust XLSX processing.
+- Tolerant reader mode now skips invalid custom number formats with missing format codes;strict validation continues to reject them.
+- Improved internal workbook finalization and formula/defined-name resolution.
+- Added infrastructure for resolving external workbook references through compatibility plug-ins.
 - Introduced a discovery reader to make the reading process more robust (collect data about all parts in a XLSX file)
 - Updated readers with the new reader interfaces
 - Deprecated RelationshipReader (replaced by DiscoveryReader)
 - Added unit test for discovery
-- Code maintenance 
-
+- Version bump of NanoXLSX.Core to v3.2.0
+- Code maintenance
 
 ## v3.1.0
 
