@@ -9,7 +9,8 @@ var searchData=
   ['worksheetinlinewriter_6',['WorksheetInlineWriter',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a3d6130a50006bd065e010a5a35124d0c',1,'NanoXLSX::Registry::PlugInUUID']]],
   ['worksheetreader_7',['WorksheetReader',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a787bd2668ced0c8bbdd02f97a12acab5',1,'NanoXLSX::Registry::PlugInUUID']]],
   ['worksheetwriter_8',['WorksheetWriter',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a5d7b235b885d4496f625b455ee8867c6',1,'NanoXLSX::Registry::PlugInUUID']]],
-  ['writerappendingqueue_9',['WriterAppendingQueue',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a9e1d9e96cf5bae65416f7d5e177bc3d6',1,'NanoXLSX::Registry::PlugInUUID']]],
-  ['writerpackageregistryqueue_10',['WriterPackageRegistryQueue',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a132678b47ea4d8582f77c8ccd5e0d246',1,'NanoXLSX::Registry::PlugInUUID']]],
-  ['writerprependingqueue_11',['WriterPrependingQueue',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#aeb6b79dbe489cac0f3521a2002d1be2a',1,'NanoXLSX::Registry::PlugInUUID']]]
+  ['writeexternallinkfeature_9',['WriteExternalLinkFeature',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#acfc89a67d3665887e6d3a6024166e783',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['writerappendingqueue_10',['WriterAppendingQueue',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a9e1d9e96cf5bae65416f7d5e177bc3d6',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['writerpackageregistryqueue_11',['WriterPackageRegistryQueue',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a132678b47ea4d8582f77c8ccd5e0d246',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['writerprependingqueue_12',['WriterPrependingQueue',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#aeb6b79dbe489cac0f3521a2002d1be2a',1,'NanoXLSX::Registry::PlugInUUID']]]
 ];

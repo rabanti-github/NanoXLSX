@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.1.0</span>
+   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.2.0</span>
    </div>
   </td>
  </tr>
@@ -101,12 +101,63 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a941733ab2095d2d48816ab332001f708"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates the passed string, whether it is a valid RGB or ARGB value that can be used for Fills, Fonts or other styling components. The method automatically tries to validate for ARGB (8 characters) first, then for RGB (6 characters).  <br /></td></tr>
 <tr class="memitem:ab4ac5c167db407716f7475c70312ddd1" id="r_ab4ac5c167db407716f7475c70312ddd1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4ac5c167db407716f7475c70312ddd1">ValidateColor</a> (string hexCode, bool useAlpha, bool allowEmpty=false)</td></tr>
 <tr class="memdesc:ab4ac5c167db407716f7475c70312ddd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates the passed string, whether it is a valid RGB or ARGB value that can be used for Fills, Fonts or other styling components.  <br /></td></tr>
+<tr class="memitem:a81d4240c93b9d48148ac49aef76259d6" id="r_a81d4240c93b9d48148ac49aef76259d6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a81d4240c93b9d48148ac49aef76259d6">ValidateCellAddressExpression</a> (string expression, <a class="el" href="classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66f">Cell.AddressScope</a> scope=<a class="el" href="classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66faed36a1ef76a59ee3f15180e0441188ad">Cell.AddressScope.Any</a>)</td></tr>
+<tr class="memdesc:a81d4240c93b9d48148ac49aef76259d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates the passed string, whether it is a valid single cell address or cell range. The address or range can contain modifier characters (<a class="el" href="classNanoXLSX_1_1Cell.html#a6eec9f04ff3237d4589ddb4b118dbdf8" title="Enum for the referencing style of the address.">Cell.AddressType</a>).  <br /></td></tr>
+<tr class="memitem:a1d3e273a67c2530b41784b4c13605c10" id="r_a1d3e273a67c2530b41784b4c13605c10"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d3e273a67c2530b41784b4c13605c10">ValidateWorksheetName</a> (string name)</td></tr>
+<tr class="memdesc:a1d3e273a67c2530b41784b4c13605c10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates the passed string, whether it is an expression that can be used as worksheet name.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class providing general validator methods. </p>
 
-<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00010">10</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00012">12</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a81d4240c93b9d48148ac49aef76259d6" name="a81d4240c93b9d48148ac49aef76259d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81d4240c93b9d48148ac49aef76259d6">&#9670;&#160;</a></span>ValidateCellAddressExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NanoXLSX.Utils.Validators.ValidateCellAddressExpression </td>
+          <td>(</td>
+          <td class="paramtype">string</td>          <td class="paramname"><span class="paramname"><em>expression</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66f">Cell.AddressScope</a></td>          <td class="paramname"><span class="paramname"><em>scope</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66faed36a1ef76a59ee3f15180e0441188ad">Cell::AddressScope::Any</a></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Validates the passed string, whether it is a valid single cell address or cell range. The address or range can contain modifier characters (<a class="el" href="classNanoXLSX_1_1Cell.html#a6eec9f04ff3237d4589ddb4b118dbdf8" title="Enum for the referencing style of the address.">Cell.AddressType</a>). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">expression</td><td>The address expression to validate</td></tr>
+    <tr><td class="paramname">scope</td><td>Optional parameter to validate for a specific address scope (Any, SingleAddress, <a class="el" href="structNanoXLSX_1_1Range.html" title="Struct representing a cell range with a start and end address.">Range</a>). Default is: Any</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a></td><td>A format exception is thrown if the passed address is not a valid cell address or range</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section remark"><dt>Remarks</dt><dd>If <em>scope</em>  is <a class="el" href="classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66fa87ba2ecc8b6915e8bd6f5089918229fd" title="The address represents a range of cells.">Cell.AddressScope.Range</a>, an explicit range expression is required; a single address is rejected even though <a class="el" href="classNanoXLSX_1_1Cell.html#a81816809328713f2dbb7755c36528210" title="Resolves a cell range from the format like A1:B3 or AAD556:AAD1000.">Cell.ResolveCellRange(string)</a> can represent it as a one-cell range. If the scope is <a class="el" href="classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66fa4bbb8f967da6d1a610596d7257179c2b" title="The address expression is invalid.">Cell.AddressScope.Invalid</a>, the validation is inverted, so that a valid cell or range will throw an exception.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00058">58</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
+
+</div>
+</div>
 <a id="ab4ac5c167db407716f7475c70312ddd1" name="ab4ac5c167db407716f7475c70312ddd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab4ac5c167db407716f7475c70312ddd1">&#9670;&#160;</a></span>ValidateColor()</h2>
 
@@ -155,7 +206,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00040">40</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00042">42</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
 
 </div>
 </div>
@@ -195,7 +246,48 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00019">19</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00021">21</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
+
+</div>
+</div>
+<a id="a1d3e273a67c2530b41784b4c13605c10" name="a1d3e273a67c2530b41784b4c13605c10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d3e273a67c2530b41784b4c13605c10">&#9670;&#160;</a></span>ValidateWorksheetName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NanoXLSX.Utils.Validators.ValidateWorksheetName </td>
+          <td>(</td>
+          <td class="paramtype">string</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Validates the passed string, whether it is an expression that can be used as worksheet name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>Name to validate</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">NanoXLSX.Exceptions.FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if the worksheet name is too long (max. 31) or contains illegal characters [ ] * ? / &lt;/exception&gt; </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00109">109</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
 
 </div>
 </div>

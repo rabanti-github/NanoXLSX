@@ -13,6 +13,8 @@ var namespaceNanoXLSX =
     [ "BasicFormulas", "classNanoXLSX_1_1BasicFormulas.html", "classNanoXLSX_1_1BasicFormulas" ],
     [ "Cell", "classNanoXLSX_1_1Cell.html", "classNanoXLSX_1_1Cell" ],
     [ "Column", "classNanoXLSX_1_1Column.html", "classNanoXLSX_1_1Column" ],
+    [ "DefinedName", "classNanoXLSX_1_1DefinedName.html", "classNanoXLSX_1_1DefinedName" ],
+    [ "FormulaData", "classNanoXLSX_1_1FormulaData.html", "classNanoXLSX_1_1FormulaData" ],
     [ "LegacyPassword", "classNanoXLSX_1_1LegacyPassword.html", "classNanoXLSX_1_1LegacyPassword" ],
     [ "Metadata", "classNanoXLSX_1_1Metadata.html", "classNanoXLSX_1_1Metadata" ],
     [ "ReaderOptions", "classNanoXLSX_1_1ReaderOptions.html", "classNanoXLSX_1_1ReaderOptions" ],

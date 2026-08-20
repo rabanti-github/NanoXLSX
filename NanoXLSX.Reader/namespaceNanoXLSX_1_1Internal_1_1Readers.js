@@ -1,5 +1,7 @@
 var namespaceNanoXLSX_1_1Internal_1_1Readers =
 [
+    [ "DiscoveryReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1DiscoveryReader.html", "classNanoXLSX_1_1Internal_1_1Readers_1_1DiscoveryReader" ],
+    [ "FinalizingProcessor", "classNanoXLSX_1_1Internal_1_1Readers_1_1FinalizingProcessor.html", "classNanoXLSX_1_1Internal_1_1Readers_1_1FinalizingProcessor" ],
     [ "LegacyPasswordReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader.html", "classNanoXLSX_1_1Internal_1_1Readers_1_1LegacyPasswordReader" ],
     [ "MetadataAppReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataAppReader.html", "classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataAppReader" ],
     [ "MetadataCoreReader", "classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataCoreReader.html", "classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataCoreReader" ],

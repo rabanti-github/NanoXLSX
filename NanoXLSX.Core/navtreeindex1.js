@@ -1,5 +1,11 @@
 var NAVTREEINDEX1 =
 {
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html":[3,0,0,0,2],
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#a11e604afe0ec1967b6c67b2f2220cfc1":[2,0,0,0,2,1],
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#a11e604afe0ec1967b6c67b2f2220cfc1":[3,0,0,0,2,1],
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#a21af10778032ab44e588bcacd482c59a":[2,0,0,0,2,13],
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#a21af10778032ab44e588bcacd482c59a":[3,0,0,0,2,13],
+"classNanoXLSX_1_1Colors_1_1IndexedColor.html#a30332e6491170978cef01f50b794ca2a":[2,0,0,0,2,2],
 "classNanoXLSX_1_1Colors_1_1IndexedColor.html#a30332e6491170978cef01f50b794ca2a":[3,0,0,0,2,2],
 "classNanoXLSX_1_1Colors_1_1IndexedColor.html#a64cb415e50ab8afef8e13ea6956cca67":[2,0,0,0,2,5],
 "classNanoXLSX_1_1Colors_1_1IndexedColor.html#a64cb415e50ab8afef8e13ea6956cca67":[3,0,0,0,2,5],
@@ -243,11 +249,5 @@ var NAVTREEINDEX1 =
 "classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4ad91c771541c13c846b2a5a385cc0c304":[3,0,0,0,4,0,17],
 "classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4ae7d013f3e19ed99a0259febfa3934f2d":[2,0,0,0,4,0,2],
 "classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4ae7d013f3e19ed99a0259febfa3934f2d":[3,0,0,0,4,0,2],
-"classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4afeb49a92fbcde070118d1586ecf5cb9a":[2,0,0,0,4,0,21],
-"classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4afeb49a92fbcde070118d1586ecf5cb9a":[3,0,0,0,4,0,21],
-"classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4aff4bc63fb1d28657f46fa1c23d5e8462":[2,0,0,0,4,0,24],
-"classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4aff4bc63fb1d28657f46fa1c23d5e8462":[3,0,0,0,4,0,24],
-"classNanoXLSX_1_1Colors_1_1SystemColor.html#ab4a37250afa32a4015f2e872e6f7c269":[2,0,0,0,4,5],
-"classNanoXLSX_1_1Colors_1_1SystemColor.html#ab4a37250afa32a4015f2e872e6f7c269":[3,0,0,0,4,5],
-"classNanoXLSX_1_1Colors_1_1SystemColor.html#ab68e50cb3382a0c37baf8052c4a16757":[2,0,0,0,4,2]
+"classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4afeb49a92fbcde070118d1586ecf5cb9a":[2,0,0,0,4,0,21]
 };

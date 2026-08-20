@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="NanoXLSXlib.png"/></td>
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Reader<span id="projectnumber">&#160;3.1.0</span>
+   <div id="projectname">NanoXLSX.Reader<span id="projectnumber">&#160;3.2.0</span>
    </div>
   </td>
  </tr>
@@ -159,9 +159,32 @@ $(function(){initNavTree('ReaderPlugInHandler_8cs_source.html','',''); });
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                owned?.Dispose();</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            }</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        }</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    }</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>}</div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Readers_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Readers.html">NanoXLSX.Internal.Readers</a></div><div class="ttdef"><b>Definition</b> <a href="LegacyPasswordReader_8cs_source.html#l00017">LegacyPasswordReader.cs:18</a></div></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        [ExcludeFromCodeCoverage] <span class="comment">// No testable logic, only plug-in handling</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> HandleInlineQueueProcessorPlugins(Workbook workbook, <span class="keywordtype">string</span> queueUuid, IOptions readerOptions, <span class="keywordtype">int</span>? index)</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            IPluginInlineReadProcessor queueProcessor = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            <span class="keywordtype">string</span> lastUuid = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            <span class="keywordflow">do</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            {</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                <span class="keywordtype">string</span> currentUuid;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                queueProcessor = PlugInLoader.GetNextQueuePlugIn&lt;IPluginInlineReadProcessor&gt;(queueUuid, lastUuid, out currentUuid);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                <span class="keywordflow">if</span> (queueProcessor != <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                    queueProcessor.Init(workbook, readerOptions, index);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                    queueProcessor.Execute();</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                    lastUuid = currentUuid;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                }</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                {</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                    lastUuid = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            } <span class="keywordflow">while</span> (queueProcessor != <span class="keyword">null</span>);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    }</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>}</div>
+<div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Readers_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Readers.html">NanoXLSX.Internal.Readers</a></div><div class="ttdef"><b>Definition</b> <a href="DiscoveryReader_8cs_source.html#l00021">DiscoveryReader.cs:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

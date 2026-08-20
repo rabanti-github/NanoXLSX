@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['xmlattribute_0',['XmlAttribute',['../structNanoXLSX_1_1Utils_1_1Xml_1_1XmlAttribute.html',1,'NanoXLSX::Utils::Xml']]],
-  ['xmlelement_1',['XmlElement',['../classNanoXLSX_1_1Utils_1_1Xml_1_1XmlElement.html',1,'NanoXLSX::Utils::Xml']]],
-  ['xmlstreamutils_2',['XmlStreamUtils',['../classNanoXLSX_1_1Utils_1_1Xml_1_1XmlStreamUtils.html',1,'NanoXLSX::Utils::Xml']]],
-  ['xmlutils_3',['XmlUtils',['../classNanoXLSX_1_1Utils_1_1Xml_1_1XmlUtils.html',1,'NanoXLSX::Utils::Xml']]]
+  ['workbook_0',['Workbook',['../classNanoXLSX_1_1Workbook.html',1,'NanoXLSX']]],
+  ['worksheet_1',['Worksheet',['../classNanoXLSX_1_1Worksheet.html',1,'NanoXLSX']]],
+  ['worksheetexception_2',['WorksheetException',['../classNanoXLSX_1_1Exceptions_1_1WorksheetException.html',1,'NanoXLSX::Exceptions']]]
 ];

@@ -10,11 +10,12 @@ var searchData=
   ['defaultcolumnwidth_7',['DefaultColumnWidth',['../classNanoXLSX_1_1Worksheet.html#a023d95eace6c803500714f73062bb228',1,'NanoXLSX::Worksheet']]],
   ['defaultrowheight_8',['DefaultRowHeight',['../classNanoXLSX_1_1Worksheet.html#a06a87693769408534f58facaa6a136e6',1,'NanoXLSX::Worksheet']]],
   ['defaulttheme_9',['DefaultTheme',['../classNanoXLSX_1_1Themes_1_1Theme.html#acf73bb50c06ab8e3d79fbf9c7d2bd68b',1,'NanoXLSX::Themes::Theme']]],
-  ['description_10',['Description',['../classNanoXLSX_1_1Metadata.html#ad42c2ad3aa8f12ee888de3bc5414ae47',1,'NanoXLSX::Metadata']]],
-  ['diagonalcolor_11',['DiagonalColor',['../classNanoXLSX_1_1Styles_1_1Border.html#ad3c78b6611b23609d15a44386d2673c2',1,'NanoXLSX::Styles::Border']]],
-  ['diagonaldown_12',['DiagonalDown',['../classNanoXLSX_1_1Styles_1_1Border.html#a320318ab27b74d2722c9f21aceccebef',1,'NanoXLSX::Styles::Border']]],
-  ['diagonalstyle_13',['DiagonalStyle',['../classNanoXLSX_1_1Styles_1_1Border.html#a25efdd7eb0f521e797c70b93a4deaeec',1,'NanoXLSX::Styles::Border']]],
-  ['diagonalup_14',['DiagonalUp',['../classNanoXLSX_1_1Styles_1_1Border.html#a9c1546b92e6f42dafaec82c6f0ae575a',1,'NanoXLSX::Styles::Border']]],
-  ['dottedfill_5f0_5f125_15',['DottedFill_0_125',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#a9afb55cb2c46959d3f01b3a57af41603',1,'NanoXLSX::Styles::BasicStyles']]],
-  ['doubleunderline_16',['DoubleUnderline',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#a56bccb40f972e17b99d296beed3b5b48',1,'NanoXLSX::Styles::BasicStyles']]]
+  ['definednamereference_10',['DefinedNameReference',['../classNanoXLSX_1_1FormulaData.html#a5da6804d40812449f7b0559d76d422eb',1,'NanoXLSX::FormulaData']]],
+  ['description_11',['Description',['../classNanoXLSX_1_1Metadata.html#ad42c2ad3aa8f12ee888de3bc5414ae47',1,'NanoXLSX::Metadata']]],
+  ['diagonalcolor_12',['DiagonalColor',['../classNanoXLSX_1_1Styles_1_1Border.html#ad3c78b6611b23609d15a44386d2673c2',1,'NanoXLSX::Styles::Border']]],
+  ['diagonaldown_13',['DiagonalDown',['../classNanoXLSX_1_1Styles_1_1Border.html#a320318ab27b74d2722c9f21aceccebef',1,'NanoXLSX::Styles::Border']]],
+  ['diagonalstyle_14',['DiagonalStyle',['../classNanoXLSX_1_1Styles_1_1Border.html#a25efdd7eb0f521e797c70b93a4deaeec',1,'NanoXLSX::Styles::Border']]],
+  ['diagonalup_15',['DiagonalUp',['../classNanoXLSX_1_1Styles_1_1Border.html#a9c1546b92e6f42dafaec82c6f0ae575a',1,'NanoXLSX::Styles::Border']]],
+  ['dottedfill_5f0_5f125_16',['DottedFill_0_125',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#a9afb55cb2c46959d3f01b3a57af41603',1,'NanoXLSX::Styles::BasicStyles']]],
+  ['doubleunderline_17',['DoubleUnderline',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#a56bccb40f972e17b99d296beed3b5b48',1,'NanoXLSX::Styles::BasicStyles']]]
 ];

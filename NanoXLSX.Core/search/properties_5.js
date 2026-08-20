@@ -5,5 +5,7 @@ var searchData=
   ['followedhyperlink_2',['FollowedHyperlink',['../interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a914cd8abdaca5052cb4b766524142e14',1,'NanoXLSX.Interfaces.IColorScheme.FollowedHyperlink'],['../classNanoXLSX_1_1Themes_1_1ColorScheme.html#aa2429319d7a5e4cef75f46cb65507dc4',1,'NanoXLSX.Themes.ColorScheme.FollowedHyperlink']]],
   ['forceapplyalignment_3',['ForceApplyAlignment',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a4fb57d9d290801097e0542195f668a05',1,'NanoXLSX::Styles::CellXf']]],
   ['foregroundcolor_4',['ForegroundColor',['../classNanoXLSX_1_1Styles_1_1Fill.html#acc0463f7109bf396d370218605af887d',1,'NanoXLSX::Styles::Fill']]],
-  ['freezesplitpanes_5',['FreezeSplitPanes',['../classNanoXLSX_1_1Worksheet.html#ad21cd1a8a489d8d3d0643c18f92855db',1,'NanoXLSX::Worksheet']]]
+  ['formula_5',['Formula',['../classNanoXLSX_1_1Cell.html#ab1ac7c700a6a3090515af08086926c70',1,'NanoXLSX::Cell']]],
+  ['formularange_6',['FormulaRange',['../classNanoXLSX_1_1FormulaData.html#a163e536fc63a092b1093fee7904dc15c',1,'NanoXLSX::FormulaData']]],
+  ['freezesplitpanes_7',['FreezeSplitPanes',['../classNanoXLSX_1_1Worksheet.html#ad21cd1a8a489d8d3d0643c18f92855db',1,'NanoXLSX::Worksheet']]]
 ];

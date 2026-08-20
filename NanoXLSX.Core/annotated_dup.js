@@ -10,6 +10,7 @@ var annotated_dup =
         [ "ThemeColor", "classNanoXLSX_1_1Colors_1_1ThemeColor.html", "classNanoXLSX_1_1Colors_1_1ThemeColor" ]
       ] ],
       [ "Enums", "namespaceNanoXLSX_1_1Enums.html", [
+        [ "Errors", "classNanoXLSX_1_1Enums_1_1Errors.html", "classNanoXLSX_1_1Enums_1_1Errors" ],
         [ "Password", "classNanoXLSX_1_1Enums_1_1Password.html", "classNanoXLSX_1_1Enums_1_1Password" ]
       ] ],
       [ "Exceptions", "namespaceNanoXLSX_1_1Exceptions.html", [
@@ -76,6 +77,8 @@ var annotated_dup =
       [ "BasicFormulas", "classNanoXLSX_1_1BasicFormulas.html", "classNanoXLSX_1_1BasicFormulas" ],
       [ "Cell", "classNanoXLSX_1_1Cell.html", "classNanoXLSX_1_1Cell" ],
       [ "Column", "classNanoXLSX_1_1Column.html", "classNanoXLSX_1_1Column" ],
+      [ "DefinedName", "classNanoXLSX_1_1DefinedName.html", "classNanoXLSX_1_1DefinedName" ],
+      [ "FormulaData", "classNanoXLSX_1_1FormulaData.html", "classNanoXLSX_1_1FormulaData" ],
       [ "LegacyPassword", "classNanoXLSX_1_1LegacyPassword.html", "classNanoXLSX_1_1LegacyPassword" ],
       [ "Metadata", "classNanoXLSX_1_1Metadata.html", "classNanoXLSX_1_1Metadata" ],
       [ "ReaderOptions", "classNanoXLSX_1_1ReaderOptions.html", "classNanoXLSX_1_1ReaderOptions" ],

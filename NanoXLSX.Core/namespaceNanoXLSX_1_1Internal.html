@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.1.0</span>
+   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.2.0</span>
    </div>
   </td>
  </tr>
@@ -96,6 +96,14 @@ $(function(){initNavTree('namespaceNanoXLSX_1_1Internal.html','',''); });
 Classes</h2></td></tr>
 <tr class="memitem:CellKey" id="r_CellKey"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>CellKey</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compact, hash-efficient key for the internal cell dictionary. Uses integer (col, row) coordinates instead of rendered address strings, eliminating string allocation on every cell insert/lookup. <br /></td></tr>
+<tr class="memitem:RelationshipCatalog" id="r_RelationshipCatalog"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>RelationshipCatalog</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the ordered relationship graph discovered while loading an OOXML package. <br /></td></tr>
+<tr class="memitem:RelationshipDiscoveryIssue" id="r_RelationshipDiscoveryIssue"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>RelationshipDiscoveryIssue</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes a relationship entry or part that could not be discovered in tolerant reader mode. <br /></td></tr>
+<tr class="memitem:RelationshipInfo" id="r_RelationshipInfo"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>RelationshipInfo</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes one relationship discovered in an OOXML package. <br /></td></tr>
+<tr class="memitem:FeatureSet" id="r_FeatureSet"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>FeatureSet</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to count and aggregate features on the level of cells, worksheets and workbooks. <br /></td></tr>
 <tr class="memitem:StringKeyedCellView" id="r_StringKeyedCellView"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>StringKeyedCellView</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-materializing read-only view over the internal cell dictionary that exposes cells keyed by their rendered address string (e.g. "A1"). All read paths delegate directly to the backing dictionary, translating keys on-the-fly without allocating a snapshot copy. Mutation is intentionally unsupported — use <code><a class="el" href="classNanoXLSX_1_1Worksheet.html#a881b27045a37c867d2859f784f3c5130" title="Adds an object to the defined cell address. If the type of the value does not match with one of the s...">Worksheet.AddCell</a></code> / <code><a class="el" href="classNanoXLSX_1_1Worksheet.html#a6925be6fe3a08de709f4bba1bbbdf672" title="Removes a previous inserted cell at the defined address.">Worksheet.RemoveCell</a></code>. <br /></td></tr>
 </table>

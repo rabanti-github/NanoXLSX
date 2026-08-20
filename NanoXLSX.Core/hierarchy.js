@@ -10,6 +10,7 @@ var hierarchy =
     [ "NanoXLSX.Column", "classNanoXLSX_1_1Column.html", null ],
     [ "NanoXLSX.Utils.Comparators", "classNanoXLSX_1_1Utils_1_1Comparators.html", null ],
     [ "NanoXLSX.Utils.DataUtils", "classNanoXLSX_1_1Utils_1_1DataUtils.html", null ],
+    [ "NanoXLSX.Enums.Errors", "classNanoXLSX_1_1Enums_1_1Errors.html", null ],
     [ "Exception", null, [
       [ "NanoXLSX.Exceptions.FormatException", "classNanoXLSX_1_1Exceptions_1_1FormatException.html", null ],
       [ "NanoXLSX.Exceptions.IOException", "classNanoXLSX_1_1Exceptions_1_1IOException.html", null ],
@@ -38,6 +39,8 @@ var hierarchy =
     [ "IComparable", null, [
       [ "NanoXLSX.Address", "structNanoXLSX_1_1Address.html", null ],
       [ "NanoXLSX.Cell", "classNanoXLSX_1_1Cell.html", null ],
+      [ "NanoXLSX.DefinedName", "classNanoXLSX_1_1DefinedName.html", null ],
+      [ "NanoXLSX.FormulaData", "classNanoXLSX_1_1FormulaData.html", null ],
       [ "NanoXLSX.Styles.AbstractStyle", "classNanoXLSX_1_1Styles_1_1AbstractStyle.html", [
         [ "NanoXLSX.Styles.Border", "classNanoXLSX_1_1Styles_1_1Border.html", null ],
         [ "NanoXLSX.Styles.CellXf", "classNanoXLSX_1_1Styles_1_1CellXf.html", null ],
@@ -48,7 +51,9 @@ var hierarchy =
       ] ]
     ] ],
     [ "IEquatable", null, [
-      [ "NanoXLSX.Address", "structNanoXLSX_1_1Address.html", null ]
+      [ "NanoXLSX.Address", "structNanoXLSX_1_1Address.html", null ],
+      [ "NanoXLSX.DefinedName", "classNanoXLSX_1_1DefinedName.html", null ],
+      [ "NanoXLSX.FormulaData", "classNanoXLSX_1_1FormulaData.html", null ]
     ] ],
     [ "NanoXLSX.Interfaces.IOptions", "interfaceNanoXLSX_1_1Interfaces_1_1IOptions.html", [
       [ "NanoXLSX.ReaderOptions", "classNanoXLSX_1_1ReaderOptions.html", null ]

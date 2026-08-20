@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="NanoXLSXlib.png"/></td>
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Reader<span id="projectnumber">&#160;3.1.0</span>
+   <div id="projectname">NanoXLSX.Reader<span id="projectnumber">&#160;3.2.0</span>
    </div>
   </td>
  </tr>
@@ -115,6 +115,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a5589020220368fa46aa733718530fec8" id="r_a5589020220368fa46aa733718530fec8"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5589020220368fa46aa733718530fec8">DocumentType</a><code> [get]</code></td></tr>
+<tr class="memdesc:a5589020220368fa46aa733718530fec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the relationship type URI of a shared strings document.  <br /></td></tr>
 <tr class="memitem:a8bdf200f82e94007707c15beac0a4a23" id="r_a8bdf200f82e94007707c15beac0a4a23"><td class="memItemLeft" align="right" valign="top">List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8bdf200f82e94007707c15beac0a4a23">SharedStrings</a><code> [get]</code></td></tr>
 <tr class="memdesc:a8bdf200f82e94007707c15beac0a4a23"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of shared string entries.  <br /></td></tr>
 <tr class="memitem:a6f37b9191f84c2a9a2153457a9f2625b" id="r_a6f37b9191f84c2a9a2153457a9f2625b"><td class="memItemLeft" align="right" valign="top">Workbook&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f37b9191f84c2a9a2153457a9f2625b">Workbook</a><code> [get, set]</code></td></tr>
@@ -146,7 +148,7 @@ Properties</h2></td></tr>
 
 <p>Default constructor - Must be defined for instantiation of the plug-ins. </p>
 
-<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00064">64</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00069">69</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
 
 </div>
 </div>
@@ -174,7 +176,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00095">95</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00100">100</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
 
 </div>
 </div>
@@ -218,11 +220,37 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00079">79</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00084">84</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
 
 </div>
 </div>
 <a name="doc-property-members" id="doc-property-members"></a><h2 id="header-doc-property-members" class="groupheader">Property Documentation</h2>
+<a id="a5589020220368fa46aa733718530fec8" name="a5589020220368fa46aa733718530fec8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5589020220368fa46aa733718530fec8">&#9670;&#160;</a></span>DocumentType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual string NanoXLSX.Internal.Readers.SharedStringsReader.DocumentType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel get">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the relationship type URI of a shared strings document. </p>
+
+<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00041">41</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
+
+</div>
+</div>
 <a id="a2bc9d4bc1fed865f70abaa2c0cf54f44" name="a2bc9d4bc1fed865f70abaa2c0cf54f44"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2bc9d4bc1fed865f70abaa2c0cf54f44">&#9670;&#160;</a></span>InlinePluginHandler</h2>
 
@@ -245,7 +273,7 @@ Properties</h2></td></tr>
 
 <p>Reference to the ReaderPlugInHandler, to be used for post operations in the <a class="el" href="#af1c50a47240c9e8bec30c92e7d6f128e" title="Method to execute the main logic of the plug-in (interface implementation).">Execute</a> method. </p>
 
-<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00057">57</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00062">62</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
 
 </div>
 </div>
@@ -271,7 +299,7 @@ Properties</h2></td></tr>
 
 <p>Reader options. </p>
 
-<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00053">53</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00058">58</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
 
 </div>
 </div>
@@ -298,7 +326,7 @@ Properties</h2></td></tr>
 <p>List of shared string entries. </p>
 <p>String entry, sorted by its internal index of the table </p>
 
-<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00044">44</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00049">49</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
 
 </div>
 </div>
@@ -324,7 +352,7 @@ Properties</h2></td></tr>
 
 <p>Workbook reference where read data is stored (should not be null). </p>
 
-<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00049">49</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SharedStringsReader_8cs_source.html#l00054">54</a> of file <a class="el" href="SharedStringsReader_8cs_source.html">SharedStringsReader.cs</a>.</p>
 
 </div>
 </div>

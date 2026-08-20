@@ -1,6 +1,7 @@
 var classNanoXLSX_1_1Cell =
 [
     [ "AddressScope", "classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66f", [
+      [ "Any", "classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66faed36a1ef76a59ee3f15180e0441188ad", null ],
       [ "SingleAddress", "classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66fa14d18cafb7494530823ac66b38364774", null ],
       [ "Range", "classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66fa87ba2ecc8b6915e8bd6f5089918229fd", null ],
       [ "Invalid", "classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66fa4bbb8f967da6d1a610596d7257179c2b", null ]
@@ -19,6 +20,7 @@ var classNanoXLSX_1_1Cell =
       [ "Bool", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aac26f15e86e3de4c398a8273272aba034", null ],
       [ "Formula", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa313a6a3d25aa041ee3dc3cbd65d4f22b", null ],
       [ "Empty", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aace2c8aed9c2fa0cfbed56cbda4d8bf07", null ],
+      [ "Error", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa902b0d55fddef6f8d651fe1035b7d4bd", null ],
       [ "Default", "classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa7a1920d61156abc05a60135aefe8bc67", null ]
     ] ],
     [ "Cell", "classNanoXLSX_1_1Cell.html#a40d7104e0759b58e20fe25bd88cb76c7", null ],
@@ -60,6 +62,7 @@ var classNanoXLSX_1_1Cell =
     [ "CellStyle", "classNanoXLSX_1_1Cell.html#a77b5046b4b652a289daa5e23f12de696", null ],
     [ "ColumnNumber", "classNanoXLSX_1_1Cell.html#ab99e94694a638a50f45f011d553572a9", null ],
     [ "DataType", "classNanoXLSX_1_1Cell.html#a8f6789ce70e71d0d122a9bbf9770fa34", null ],
+    [ "Formula", "classNanoXLSX_1_1Cell.html#ab1ac7c700a6a3090515af08086926c70", null ],
     [ "RowNumber", "classNanoXLSX_1_1Cell.html#a8793b748888ec860d3673cfa02bd4ee6", null ],
     [ "Value", "classNanoXLSX_1_1Cell.html#ae3b98944385576f4af31f73211a99233", null ]
 ];

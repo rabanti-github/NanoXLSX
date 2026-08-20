@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.1.0</span>
+   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.2.0</span>
    </div>
   </td>
  </tr>
@@ -113,7 +113,9 @@ Public Types</h2></td></tr>
 &#160;&#160;<a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aac26f15e86e3de4c398a8273272aba034">Bool</a>
 , <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aa313a6a3d25aa041ee3dc3cbd65d4f22b">Formula</a>
 , <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aace2c8aed9c2fa0cfbed56cbda4d8bf07">Empty</a>
-, <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aa7a1920d61156abc05a60135aefe8bc67">Default</a>
+, <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aa902b0d55fddef6f8d651fe1035b7d4bd">Error</a>
+, <br />
+&#160;&#160;<a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aa7a1920d61156abc05a60135aefe8bc67">Default</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a3b982ec2b27c789a7bb54d00b5bde26a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum defines the basic data types of a cell.  <a href="#a3b982ec2b27c789a7bb54d00b5bde26a">More...</a><br /></td></tr>
@@ -123,7 +125,8 @@ Public Types</h2></td></tr>
 , <a class="el" href="#a6eec9f04ff3237d4589ddb4b118dbdf8aa9b1f271e93290702491cbaefbc80d6c">FixedRowAndColumn</a>
  }</td></tr>
 <tr class="memdesc:a6eec9f04ff3237d4589ddb4b118dbdf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum for the referencing style of the address.  <a href="#a6eec9f04ff3237d4589ddb4b118dbdf8">More...</a><br /></td></tr>
-<tr class="memitem:aadcea057ac77522a6b70a5024841e66f" id="r_aadcea057ac77522a6b70a5024841e66f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aadcea057ac77522a6b70a5024841e66f">AddressScope</a> { <a class="el" href="#aadcea057ac77522a6b70a5024841e66fa14d18cafb7494530823ac66b38364774">SingleAddress</a>
+<tr class="memitem:aadcea057ac77522a6b70a5024841e66f" id="r_aadcea057ac77522a6b70a5024841e66f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aadcea057ac77522a6b70a5024841e66f">AddressScope</a> { <a class="el" href="#aadcea057ac77522a6b70a5024841e66faed36a1ef76a59ee3f15180e0441188ad">Any</a>
+, <a class="el" href="#aadcea057ac77522a6b70a5024841e66fa14d18cafb7494530823ac66b38364774">SingleAddress</a>
 , <a class="el" href="#aadcea057ac77522a6b70a5024841e66fa87ba2ecc8b6915e8bd6f5089918229fd">Range</a>
 , <a class="el" href="#aadcea057ac77522a6b70a5024841e66fa4bbb8f967da6d1a610596d7257179c2b">Invalid</a>
  }</td></tr>
@@ -219,11 +222,13 @@ Properties</h2></td></tr>
 <tr class="memdesc:accdbf765d4466fc35afd020138547492"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the optional address type that can be part of the cell address.  <br /></td></tr>
 <tr class="memitem:ae3b98944385576f4af31f73211a99233" id="r_ae3b98944385576f4af31f73211a99233"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3b98944385576f4af31f73211a99233">Value</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ae3b98944385576f4af31f73211a99233"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the value of the cell (generic object type). When setting a value, the <a class="el" href="#a8f6789ce70e71d0d122a9bbf9770fa34" title="Gets or sets the type of the cell.">DataType</a> is automatically resolved.  <br /></td></tr>
+<tr class="memitem:ab1ac7c700a6a3090515af08086926c70" id="r_ab1ac7c700a6a3090515af08086926c70"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNanoXLSX_1_1FormulaData.html">FormulaData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1ac7c700a6a3090515af08086926c70">Formula</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:ab1ac7c700a6a3090515af08086926c70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Formula object in case of the cell has the DataType <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aa313a6a3d25aa041ee3dc3cbd65d4f22b" title="Type for Formulas (The cell will be handled differently).">CellType.Formula</a>. Default is null, if the cell does not contain a formula.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a cell of a worksheet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00022">22</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00024">24</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 </div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Member Enumeration Documentation</h2>
 <a id="aadcea057ac77522a6b70a5024841e66f" name="aadcea057ac77522a6b70a5024841e66f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aadcea057ac77522a6b70a5024841e66f">&#9670;&#160;</a></span>AddressScope</h2>
@@ -239,7 +244,9 @@ Properties</h2></td></tr>
 
 <p>Enum to define the scope of a passed address string (used in static context). </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aadcea057ac77522a6b70a5024841e66fa14d18cafb7494530823ac66b38364774" name="aadcea057ac77522a6b70a5024841e66fa14d18cafb7494530823ac66b38364774"></a>SingleAddress&#160;</td><td class="fielddoc"><p>The address represents a single cell. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aadcea057ac77522a6b70a5024841e66faed36a1ef76a59ee3f15180e0441188ad" name="aadcea057ac77522a6b70a5024841e66faed36a1ef76a59ee3f15180e0441188ad"></a>Any&#160;</td><td class="fielddoc"><p>The address represents a single cell or a range of cells. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aadcea057ac77522a6b70a5024841e66fa14d18cafb7494530823ac66b38364774" name="aadcea057ac77522a6b70a5024841e66fa14d18cafb7494530823ac66b38364774"></a>SingleAddress&#160;</td><td class="fielddoc"><p>The address represents a single cell. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aadcea057ac77522a6b70a5024841e66fa87ba2ecc8b6915e8bd6f5089918229fd" name="aadcea057ac77522a6b70a5024841e66fa87ba2ecc8b6915e8bd6f5089918229fd"></a>Range&#160;</td><td class="fielddoc"><p>The address represents a range of cells. </p>
 </td></tr>
@@ -247,7 +254,7 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00072">72</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00081">81</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -275,7 +282,7 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00057">57</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00066">66</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -307,11 +314,14 @@ Properties</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a3b982ec2b27c789a7bb54d00b5bde26aace2c8aed9c2fa0cfbed56cbda4d8bf07" name="a3b982ec2b27c789a7bb54d00b5bde26aace2c8aed9c2fa0cfbed56cbda4d8bf07"></a>Empty&#160;</td><td class="fielddoc"><p>Type for empty cells. This type is only used for merged cells (all cells except the first of the cell range). </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a3b982ec2b27c789a7bb54d00b5bde26aa902b0d55fddef6f8d651fe1035b7d4bd" name="a3b982ec2b27c789a7bb54d00b5bde26aa902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"><p>Type for a standalone error value in a cell. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>The preferred value for this type is an Errors.FormulaError. A formula whose cached result is an error remains a <a class="el" href="#ab1ac7c700a6a3090515af08086926c70" title="Formula object in case of the cell has the DataType CellType.Formula. Default is null,...">Formula</a> cell and exposes the error through <a class="el" href="classNanoXLSX_1_1FormulaData.html#a9aee6c9a9c97697e3b2b709694589bbd" title="Gets the cached value of the formula.">FormulaData.CachedValue</a> and <a class="el" href="classNanoXLSX_1_1FormulaData.html#ace1676ea7511c39e9d00439dfcf454a7" title="Gets the data type of CachedValue. The default is Cell.CellType.Default if no cached value or no supp...">FormulaData.CachedValueType</a>. Explicitly changing a formula cell to this type discards its formula metadata.</dd></dl>
+</td></tr>
 <tr><td class="fieldname"><a id="a3b982ec2b27c789a7bb54d00b5bde26aa7a1920d61156abc05a60135aefe8bc67" name="a3b982ec2b27c789a7bb54d00b5bde26aa7a1920d61156abc05a60135aefe8bc67"></a>Default&#160;</td><td class="fielddoc"><p>Default Type, not specified. </p>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00032">32</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00034">34</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -333,7 +343,7 @@ Properties</h2></td></tr>
 
 <p>Default constructor. Cells created with this constructor do not have a link to a worksheet initially. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00177">177</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00261">261</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -366,7 +376,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>If the <a class="el" href="#a8f6789ce70e71d0d122a9bbf9770fa34" title="Gets or sets the type of the cell.">DataType</a> is defined as <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aace2c8aed9c2fa0cfbed56cbda4d8bf07" title="Type for empty cells. This type is only used for merged cells (all cells except the first of the cell...">CellType.Empty</a> any passed value will be set to null</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00188">188</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00272">272</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -405,7 +415,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>If the <a class="el" href="#a8f6789ce70e71d0d122a9bbf9770fa34" title="Gets or sets the type of the cell.">DataType</a> is defined as <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aace2c8aed9c2fa0cfbed56cbda4d8bf07" title="Type for empty cells. This type is only used for merged cells (all cells except the first of the cell...">CellType.Empty</a> any passed value will be set to null</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00212">212</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00296">296</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -444,7 +454,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>If the <a class="el" href="#a8f6789ce70e71d0d122a9bbf9770fa34" title="Gets or sets the type of the cell.">DataType</a> is defined as <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aace2c8aed9c2fa0cfbed56cbda4d8bf07" title="Type for empty cells. This type is only used for merged cells (all cells except the first of the cell...">CellType.Empty</a> any passed value will be set to null</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00237">237</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00321">321</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -488,7 +498,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00264">264</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00348">348</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -519,7 +529,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that this method only compares the row and column numbers, since the values or styles may be completely different types, and therefore hard to compare at all.<br  />
  The <a class="el" href="#a9a1022f7c9645b36ff81c94fe8b942af" title="Compares two objects whether they are addresses and equal.">Equals(object)</a> method considers values and style, though.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00285">285</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00369">369</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -561,7 +571,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>List of cells</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00552">552</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00691">691</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -589,7 +599,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if not null, of the same type and equal</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00304">304</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00388">388</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -625,7 +635,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Scope of the address expression</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00902">902</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01041">1041</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -667,13 +677,13 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>List of cell addresses</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">NanoXLSX.Exceptions.FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if a part of the passed addresses is malformed</td></tr>
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if a part of the passed addresses is malformed</td></tr>
     <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a> if the value of one passed address is out of range (A-XFD and 1 to 1048576) </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00671">671</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00810">810</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -732,7 +742,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00656">656</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00795">795</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -769,13 +779,13 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>List of cell addresses</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">NanoXLSX.Exceptions.FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if a part of the passed range is malformed</td></tr>
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if a part of the passed range is malformed</td></tr>
     <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a> if the range is out of range (A-XFD and 1 to 1048576) </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00626">626</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00765">765</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -817,13 +827,13 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>List of cell addresses</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">NanoXLSX.Exceptions.FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if a part of the passed range is malformed</td></tr>
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if a part of the passed range is malformed</td></tr>
     <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a> if the range is out of range (A-XFD and 1 to 1048576) </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00640">640</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00779">779</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -845,7 +855,7 @@ Properties</h2></td></tr>
 <p>Gets the hash code of the cell. </p>
 <dl class="section return"><dt>Returns</dt><dd>Hash code of the cell</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00445">445</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00583">583</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -886,7 +896,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if the specified <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> instances are not equal; otherwise, <code>false</code>.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00482">482</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00621">621</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -929,7 +939,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that this method only compares the row and column numbers, since the values or styles may be completely different types, and therefore hard to compare at all.<br  />
  The <a class="el" href="#a9a1022f7c9645b36ff81c94fe8b942af" title="Compares two objects whether they are addresses and equal.">Equals(object)</a> method considers values and style, though.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00496">496</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00635">635</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -972,7 +982,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that this method only compares the row and column numbers, since the values or styles may be completely different types, and therefore hard to compare at all.<br  />
  The <a class="el" href="#a9a1022f7c9645b36ff81c94fe8b942af" title="Compares two objects whether they are addresses and equal.">Equals(object)</a> method considers values and style, though.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00510">510</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00649">649</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1013,7 +1023,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if the specified <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> instances are equal; otherwise, <code>false</code>.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00466">466</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00605">605</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1056,7 +1066,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that this method only compares the row and column numbers, since the values or styles may be completely different types, and therefore hard to compare at all.<br  />
  The <a class="el" href="#a9a1022f7c9645b36ff81c94fe8b942af" title="Compares two objects whether they are addresses and equal.">Equals(object)</a> method considers values and style, though.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00524">524</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00663">663</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1099,7 +1109,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that this method only compares the row and column numbers, since the values or styles may be completely different types, and therefore hard to compare at all.<br  />
  The <a class="el" href="#a9a1022f7c9645b36ff81c94fe8b942af" title="Compares two objects whether they are addresses and equal.">Equals(object)</a> method considers values and style, though.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00538">538</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00677">677</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1120,7 +1130,7 @@ Properties</h2></td></tr>
 
 <p>Removes the assigned style from the cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00333">333</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00421">421</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1173,7 +1183,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> <a class="el" href="structNanoXLSX_1_1Address.html" title="Struct representing the cell address as column and row (zero based).">Address</a> as string in the format A1 - XFD1048576. Depending on the type, Addresses like '$A55', 'B$2' or '$A$5' are possible outputs</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00716">716</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00855">855</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1210,13 +1220,13 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Struct with row and column</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">NanoXLSX.Exceptions.FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if the passed address is malformed</td></tr>
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if the passed address is malformed</td></tr>
     <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a> if the value of the passed address is out of range (A-XFD and 1 to 1048576) </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00740">740</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00879">879</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1263,13 +1273,13 @@ Properties</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">NanoXLSX.Exceptions.FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if the range address was malformed</td></tr>
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if the range address was malformed</td></tr>
     <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a> if the row or column number was out of range</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00757">757</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00896">896</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1322,13 +1332,13 @@ Properties</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">NanoXLSX.Exceptions.FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if the range address was malformed</td></tr>
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if the range address was malformed</td></tr>
     <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a> if the row or column number was out of range</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00771">771</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00910">910</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1365,13 +1375,13 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structNanoXLSX_1_1Range.html" title="Struct representing a cell range with a start and end address.">Range</a> object</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">NanoXLSX.Exceptions.FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if the start or end address was malformed</td></tr>
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1FormatException.html" title="Class for exceptions regarding format error incidents.">FormatException</a> if the start or end address was malformed</td></tr>
     <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1RangeException.html" title="Class for exceptions regarding range incidents (e.g. out-of-range).">RangeException</a> if the range is out of range (A-XFD and 1 to 1048576) </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00831">831</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00970">970</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1392,7 +1402,7 @@ Properties</h2></td></tr>
 
 <p>Method resets the <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> type and tries to find the actual type. This is used if a <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> was created with the <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26a" title="Enum defines the basic data types of a cell.">CellType</a> DEFAULT or automatically if a value was set by <a class="el" href="#ae3b98944385576f4af31f73211a99233" title="Gets or sets the value of the cell (generic object type). When setting a value, the DataType is autom...">Value</a>. <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26a" title="Enum defines the basic data types of a cell.">CellType</a> FORMULA will skip this method and EMPTY will discard the value of the cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00342">342</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00477">477</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1434,7 +1444,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00855">855</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00994">994</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1476,7 +1486,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00882">882</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01021">1021</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1515,7 +1525,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>The listed exception should never happen because the mentioned style is internally generated</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00390">390</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00527">527</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1548,7 +1558,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the passed style already exists in the repository, the existing one will be returned, otherwise the passed one</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00412">412</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00549">549</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1589,7 +1599,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00929">929</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01068">1068</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1630,7 +1640,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00943">943</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01082">1082</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1657,7 +1667,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets the combined cell <a class="el" href="structNanoXLSX_1_1Address.html" title="Struct representing the cell address as column and row (zero based).">Address</a> as string in the format A1 - XFD1048576. The address may contain a <a class="el" href="#a6eec9f04ff3237d4589ddb4b118dbdf8" title="Enum for the referencing style of the address.">Cell.AddressType</a> modifier (e.g. C$50). </p>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00096">96</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00110">110</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1683,7 +1693,7 @@ Properties</h2></td></tr>
 
 <p>Gets or sets the combined cell <a class="el" href="structNanoXLSX_1_1Address.html" title="Struct representing the cell address as column and row (zero based).">Address</a> as <a class="el" href="structNanoXLSX_1_1Address.html" title="Struct representing the cell address as column and row (zero based).">Address</a> object. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00108">108</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00122">122</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1710,7 +1720,7 @@ Properties</h2></td></tr>
 <p>Gets or sets the optional address type that can be part of the cell address. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>The type has no influence on the behavior of the cell, though. It is preserved to avoid losing information on the address object of the cell</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00159">159</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00204">204</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1736,7 +1746,7 @@ Properties</h2></td></tr>
 
 <p>Gets the assigned style of the cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00122">122</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00136">136</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1769,7 +1779,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00129">129</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00143">143</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1794,8 +1804,37 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets or sets the type of the cell. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Changing the type of an existing cell can create or discard formula metadata and update aggregated workbook features. Prefer assigning <a class="el" href="#ae3b98944385576f4af31f73211a99233" title="Gets or sets the value of the cell (generic object type). When setting a value, the DataType is autom...">Value</a> when automatic type resolution is intended. Repeated manual transitions to or from <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aa313a6a3d25aa041ee3dc3cbd65d4f22b" title="Type for Formulas (The cell will be handled differently).">CellType.Formula</a> may allocate formula metadata and cause feature-counter propagation.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00140">140</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00157">157</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+
+</div>
+</div>
+<a id="ab1ac7c700a6a3090515af08086926c70" name="ab1ac7c700a6a3090515af08086926c70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1ac7c700a6a3090515af08086926c70">&#9670;&#160;</a></span>Formula</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classNanoXLSX_1_1FormulaData.html">FormulaData</a> NanoXLSX.Cell.Formula</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel get">get</span><span class="mlabel set">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Formula object in case of the cell has the DataType <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aa313a6a3d25aa041ee3dc3cbd65d4f22b" title="Type for Formulas (The cell will be handled differently).">CellType.Formula</a>. Default is null, if the cell does not contain a formula. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>The plain text of the formula is still set in <a class="el" href="#ae3b98944385576f4af31f73211a99233" title="Gets or sets the value of the cell (generic object type). When setting a value, the DataType is autom...">Value</a>. One exception are linked cells (<a class="el" href="classNanoXLSX_1_1FormulaData.html#a6cbdada4b39b1530e41d292a02c65f9ba4410ec34d9e6c1a68100ca0ce033fb17" title="Cell contains a formula that is part of an array.">FormulaData.FormulaType.Array</a> and <a class="el" href="classNanoXLSX_1_1FormulaData.html#a944b550388f013bfbda174ecb001e025" title="Gets the address of the formula&#39;s master cell. This is mainly used in case of FormulaType....">FormulaData.MasterCellAddress</a> is set). In this case, the cached value will be in <a class="el" href="#ae3b98944385576f4af31f73211a99233" title="Gets or sets the value of the cell (generic object type). When setting a value, the DataType is autom...">Value</a> due to compatibility reason. <br  />
+API note: Do not manually tamper with Formula. There is FeatureSet inside, responsible for up-stream propagated feature counters.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00241">241</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1827,7 +1866,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00145">145</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00190">190</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1852,8 +1891,9 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets or sets the value of the cell (generic object type). When setting a value, the <a class="el" href="#a8f6789ce70e71d0d122a9bbf9770fa34" title="Gets or sets the type of the cell.">DataType</a> is automatically resolved. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Assigning a value automatically resolves the cell type and may therefore replace formula metadata. An Errors.FormulaError value resolves to a standalone <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aa902b0d55fddef6f8d651fe1035b7d4bd" title="Type for a standalone error value in a cell.">CellType.Error</a> cell. For formula cells, the assigned value is also synchronized with <a class="el" href="classNanoXLSX_1_1FormulaData.html#a6b6fbc08ad3fcf6a70409356f783fd21" title="Gets the formula expression as string. This value is currently identical with Cell....">FormulaData.Expression</a>. Linked formula cells whose <a class="el" href="classNanoXLSX_1_1FormulaData.html#a944b550388f013bfbda174ecb001e025" title="Gets the address of the formula&#39;s master cell. This is mainly used in case of FormulaType....">FormulaData.MasterCellAddress</a> is set retain their special cached-value behavior.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00162">162</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00211">211</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>

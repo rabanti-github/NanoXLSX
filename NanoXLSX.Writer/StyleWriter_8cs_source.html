@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="NanoXLSXlib.png"/></td>
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Writer<span id="projectnumber">&#160;3.1.0</span>
+   <div id="projectname">NanoXLSX.Writer<span id="projectnumber">&#160;3.2.0</span>
    </div>
   </td>
  </tr>
@@ -129,7 +129,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">        #region properties</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keyword">public</span> Workbook Workbook { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keyword">public</span> XmlElement XmlElement { <span class="keyword">get</span> =&gt; styleSheet; }</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keyword">public</span> XmlElement XmlElement =&gt; styleSheet;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">        #endregion</span></div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">        #region constructors</span></div>
@@ -141,7 +141,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">        #region methods</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="keyword">public</span> <span class="keywordtype">void</span> Init(IBaseWriter baseWriter)</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            this.styles = baseWriter.Styles;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            this.styles = baseWriter.WriterProcessingData.StyleManager;</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            this.Workbook = baseWriter.Workbook;</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            this.colorWriter = PlugInLoader.GetPlugIn&lt;IColorWriter&gt;(PlugInUUID.ColorWriter, <span class="keyword">new</span> ColorWriter());</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        }</div>
@@ -368,7 +368,7 @@ $(function(){initNavTree('StyleWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>                        <span class="keywordflow">throw</span> <span class="keyword">new</span> FormatException(<span class="stringliteral">&quot;The number format style component with the ID &quot;</span> + ParserUtils.ToString(item.CustomFormatID) + <span class="stringliteral">&quot; cannot be null or empty&quot;</span>);</div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>                    }</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>                    <span class="comment">// OOXML: Escaping according to Chp.18.8.31</span></div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>                    <span class="comment">// TODO: v3&gt; Add a custom format builder</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>                    <span class="comment">// TODO: v3&gt; Externalize a custom format builder</span></div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>                    XmlElement element = XmlElement.CreateElementWithAttribute(<span class="stringliteral">&quot;numFmt&quot;</span>, <span class="stringliteral">&quot;formatCode&quot;</span>, XmlUtils.SanitizeXmlValue(item.CustomFormatCode));</div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                    element.AddAttribute(<span class="stringliteral">&quot;numFmtId&quot;</span>, ParserUtils.ToString(item.CustomFormatID));</div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>                    elements.Add(element);</div>

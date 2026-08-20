@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.1.0</span>
+   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.2.0</span>
    </div>
   </td>
  </tr>
@@ -94,18 +94,28 @@ $(function(){initNavTree('namespaceNanoXLSX_1_1Interfaces_1_1Reader.html','','')
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:IDiscoveryPackageReader" id="r_IDiscoveryPackageReader"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><b>IDiscoveryPackageReader</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a queued reader that is dispatched to package parts by their discovered OOXML relationship type. <br /></td></tr>
+<tr class="memitem:IDiscoveryReader" id="r_IDiscoveryReader"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><b>IDiscoveryReader</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface for readers that discover package-level information before document readers execute. <br /></td></tr>
+<tr class="memitem:IDocumentReader" id="r_IDocumentReader"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><b>IDocumentReader</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface for readers that process a document identified by an OOXML relationship type. <br /></td></tr>
 <tr class="memitem:IPasswordReader" id="r_IPasswordReader"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html">IPasswordReader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface, used by password readers.  <a href="interfaceNanoXLSX_1_1Interfaces_1_1Reader_1_1IPasswordReader.html#details">More...</a><br /></td></tr>
 <tr class="memitem:IPluginBaseReader" id="r_IPluginBaseReader"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><b>IPluginBaseReader</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface, used by base plug-ins in XML reader classes. <br /></td></tr>
 <tr class="memitem:IPluginInlineReader" id="r_IPluginInlineReader"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><b>IPluginInlineReader</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface, used by in-line (queue) plug-ins in XML reader classes. <br /></td></tr>
+<tr class="memitem:IPluginInlineReadProcessor" id="r_IPluginInlineReadProcessor"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><b>IPluginInlineReadProcessor</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface, used by in-line (queue) reader plug-ins that are not handling a stream, but data in IPluginReader.Workbook. <br /></td></tr>
 <tr class="memitem:IPluginPackageReader" id="r_IPluginPackageReader"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><b>IPluginPackageReader</b></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface, used by package reader plug-ins. <br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a queued package reader that optionally reads one ZIP entry with a fixed, known path. <br /></td></tr>
 <tr class="memitem:IPluginQueueReader" id="r_IPluginQueueReader"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><b>IPluginQueueReader</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface, used by XML queue reader classes. <br /></td></tr>
 <tr class="memitem:IPluginReader" id="r_IPluginReader"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><b>IPluginReader</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface, used by XML reader classes. <br /></td></tr>
+<tr class="memitem:IPluginReadProcessor" id="r_IPluginReadProcessor"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><b>IPluginReadProcessor</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface, used by base reader plug-ins that are not handling a stream, but data in IPluginReader.Workbook. <br /></td></tr>
 <tr class="memitem:ISharedStringReader" id="r_ISharedStringReader"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><b>ISharedStringReader</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface, used by shared string readers. <br /></td></tr>
 <tr class="memitem:IWorksheetReader" id="r_IWorksheetReader"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><b>IWorksheetReader</b></td></tr>

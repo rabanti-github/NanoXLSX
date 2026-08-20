@@ -1,5 +1,6 @@
 var classNanoXLSX_1_1Utils_1_1ParserUtils =
 [
+    [ "IsAsciiDigit", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#ac0b3bbf7ab1974b6393f7a8ff30e3f25", null ],
     [ "NormalizeNewLines", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#acacf22f27a2dbc50b5b888452ba280ac", null ],
     [ "NotStartsWith", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a8fa1f8d7145cb3ade442b079d8f40fa6", null ],
     [ "ParseBinaryBool", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#adc06e6be4a046f259bb4e8db690ab8e3", null ],
@@ -7,6 +8,7 @@ var classNanoXLSX_1_1Utils_1_1ParserUtils =
     [ "ParseFloat", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a87e267b1349777bba129111661c0738b", null ],
     [ "ParseInt", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a9f13c1f7d02dea3b2361aa3c9b508603", null ],
     [ "StartsWith", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a1b164d51e611bbaf58190514114f5f9a", null ],
+    [ "ToCachedValueString", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a4a4f1966fbc53b24e37b1e197ecf710e", null ],
     [ "ToLower", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a526ec726c66d9fa53c3e2623ca30ebc8", null ],
     [ "ToString", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a0694bfb281f9a007fef71e55fa1da306", null ],
     [ "ToString", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a28e2172cf08400e1c48e3621a08586ed", null ],
@@ -20,13 +22,16 @@ var classNanoXLSX_1_1Utils_1_1ParserUtils =
     [ "ToString", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a1245754e7b8f7c8c6500240442020ce7", null ],
     [ "ToString", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a710f86a55519b6e2761a81e4fc3287ff", null ],
     [ "ToUpper", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a1fa9e3ec6ce177c8c82a5297b44c7631", null ],
+    [ "TryParseBool", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#aae3bc49289e2c80e3b621ee21cf6c4f4", null ],
     [ "TryParseDecimal", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a07f3d02979aaa032b55645d397d6aff2", null ],
-    [ "TryParseDouble", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#af3a0eb346700c3379e65122c1bb20e9c", null ],
+    [ "TryParseDouble", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#ab8974924baaab34bd34ef07bd8ac2ba3", null ],
     [ "TryParseFloat", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a123711e0d69272c945c8878a39c08bd8", null ],
+    [ "TryParseFormulaStringConstant", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#ac5560c60a1729d3f3c08d9461ed504e3", null ],
     [ "TryParseInt", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a56c0b46e587e6acdbffc3b3f29dd10cc", null ],
     [ "TryParseLong", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a65b9b15091c892391c611b184a709faf", null ],
     [ "TryParseUint", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#aab25d523e113b604f739b43860347146", null ],
     [ "TryParseUlong", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a6b4c674448450c38e78392a9848d150a", null ],
+    [ "TryParseWorksheetQualifiedReference", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#adaa521c64db9e5bb2168d473238de8ae", null ],
     [ "InvariantCulture", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a06b2b906a884f6ebebf8243a9156ec43", null ],
     [ "NumericFormat", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a024930575d5b9384a64f9900482bbab9", null ]
 ];

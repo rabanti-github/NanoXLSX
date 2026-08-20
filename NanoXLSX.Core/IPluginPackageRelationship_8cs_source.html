@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>NanoXLSX.Core: IInlinePluginWriter.cs Source File</title>
+<title>NanoXLSX.Core: IPluginPackageRelationship.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.1.0</span>
+   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.2.0</span>
    </div>
   </td>
  </tr>
@@ -62,7 +62,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('IInlinePluginWriter_8cs_source.html','',''); });
+$(function(){initNavTree('IPluginPackageRelationship_8cs_source.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -88,7 +88,7 @@ $(function(){initNavTree('IInlinePluginWriter_8cs_source.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">IInlinePluginWriter.cs</div></div>
+  <div class="headertitle"><div class="title">IPluginPackageRelationship.cs</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*</span></div>
@@ -98,32 +98,29 @@ $(function(){initNavTree('IInlinePluginWriter_8cs_source.html','',''); });
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">using </span><a class="code hl_namespace" href="namespaceNanoXLSX_1_1Utils_1_1Xml.html">NanoXLSX.Utils.Xml</a>;</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">using </span>System.IO.Packaging;</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>{</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">internal</span> <span class="keyword">interface </span>IInlinePluginWriter : IPlugin</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    {</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        Workbook Workbook { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        XmlElement RootElement { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        XmlElement XmlElement { <span class="keyword">get</span>; }</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="keywordtype">void</span> Init(ref XmlElement rootElement, Workbook workbook, <span class="keywordtype">int</span>? index = <span class="keyword">null</span>);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    }</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}</div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_1_1Writer_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a></div><div class="ttdef"><b>Definition</b> <a href="IBaseWriter_8cs_source.html#l00011">IBaseWriter.cs:12</a></div></div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Utils_1_1Xml_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Utils_1_1Xml.html">NanoXLSX.Utils.Xml</a></div><div class="ttdef"><b>Definition</b> <a href="XmlAttribute_8cs_source.html#l00011">XmlAttribute.cs:12</a></div></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keyword">internal</span> <span class="keyword">interface </span>IPluginPackageRelationship</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keywordtype">string</span> RelationshipId { <span class="keyword">get</span>; }</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keywordtype">string</span> RelationshipType { <span class="keyword">get</span>; }</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="keywordtype">string</span> Target { <span class="keyword">get</span>; }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        TargetMode TargetMode { <span class="keyword">get</span>; }</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    }</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
+<div class="ttc" id="anamespaceNanoXLSX_1_1Interfaces_1_1Writer_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a></div><div class="ttdef"><b>Definition</b> <a href="IBaseWriter_8cs_source.html#l00008">IBaseWriter.cs:9</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="dir_d7a24015de3ad3397ba9b230e38f5b53.html">Interfaces</a></li><li class="navelem"><a href="dir_f9f9b03946692f58159708066d147be6.html">Writer</a></li><li class="navelem"><b>IInlinePluginWriter.cs</b></li>
+    <li class="navelem"><a href="dir_d7a24015de3ad3397ba9b230e38f5b53.html">Interfaces</a></li><li class="navelem"><a href="dir_f9f9b03946692f58159708066d147be6.html">Writer</a></li><li class="navelem"><b>IPluginPackageRelationship.cs</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
   </ul>
 </div>

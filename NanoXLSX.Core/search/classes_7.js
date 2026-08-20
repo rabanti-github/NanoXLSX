@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['metadata_0',['Metadata',['../classNanoXLSX_1_1Metadata.html',1,'NanoXLSX']]]
+  ['legacypassword_0',['LegacyPassword',['../classNanoXLSX_1_1LegacyPassword.html',1,'NanoXLSX']]]
 ];

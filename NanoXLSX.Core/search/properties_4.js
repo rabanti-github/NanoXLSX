@@ -7,5 +7,7 @@ var searchData=
   ['enforcephoneticcharacterimport_4',['EnforcePhoneticCharacterImport',['../interfaceNanoXLSX_1_1Interfaces_1_1ITextOptions.html#ae8d166646da4643bdbe0f3645fdda0b6',1,'NanoXLSX.Interfaces.ITextOptions.EnforcePhoneticCharacterImport'],['../classNanoXLSX_1_1ReaderOptions.html#a983361b2881f32f709a5791146cfb09d',1,'NanoXLSX.ReaderOptions.EnforcePhoneticCharacterImport']]],
   ['enforcestrictvalidation_5',['EnforceStrictValidation',['../classNanoXLSX_1_1ReaderOptions.html#ae54bb73d771b404db0f5bd14227ebd1c',1,'NanoXLSX::ReaderOptions']]],
   ['enforcingstartrownumber_6',['EnforcingStartRowNumber',['../classNanoXLSX_1_1ReaderOptions.html#a3600d5515643b19e61b3379a80c08589',1,'NanoXLSX::ReaderOptions']]],
-  ['extend_7',['Extend',['../classNanoXLSX_1_1Styles_1_1Font.html#a8bab599d1041c929117a1ff994c92a65',1,'NanoXLSX::Styles::Font']]]
+  ['error_7',['Error',['../classNanoXLSX_1_1DefinedName.html#a3401971d9009fd4a74029868ba3ccbe1',1,'NanoXLSX::DefinedName']]],
+  ['expression_8',['Expression',['../classNanoXLSX_1_1FormulaData.html#a6b6fbc08ad3fcf6a70409356f783fd21',1,'NanoXLSX::FormulaData']]],
+  ['extend_9',['Extend',['../classNanoXLSX_1_1Styles_1_1Font.html#a8bab599d1041c929117a1ff994c92a65',1,'NanoXLSX::Styles::Font']]]
 ];

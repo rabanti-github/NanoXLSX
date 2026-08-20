@@ -1,14 +1,16 @@
 var searchData=
 [
-  ['temporalcultureinfo_0',['TemporalCultureInfo',['../classNanoXLSX_1_1ReaderOptions.html#ab5c7118e9ff19d950b7a7e68c7cb9797',1,'NanoXLSX::ReaderOptions']]],
-  ['textdirection_1',['TextDirection',['../classNanoXLSX_1_1Styles_1_1CellXf.html#aa54dad8abb79ea794ef6c3f7e3c91697',1,'NanoXLSX::Styles::CellXf']]],
-  ['textrotation_2',['TextRotation',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a4ba04cfa3de247df425abb2b4285185c',1,'NanoXLSX::Styles::CellXf']]],
-  ['themecolor_3',['ThemeColor',['../classNanoXLSX_1_1Colors_1_1Color.html#a0b30808576099eb5c57cc31704aef209',1,'NanoXLSX::Colors::Color']]],
-  ['timeformat_4',['TimeFormat',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#a18981f59bedab9f783cebfa51c5ba0a6',1,'NanoXLSX::Styles::BasicStyles']]],
-  ['timespanformat_5',['TimeSpanFormat',['../classNanoXLSX_1_1ReaderOptions.html#a95effcf28a5c9a04b0b0a7a58187cdbc',1,'NanoXLSX::ReaderOptions']]],
-  ['tint_6',['Tint',['../classNanoXLSX_1_1Colors_1_1Color.html#a3c72c7c09901438e291f8729c0f88ebf',1,'NanoXLSX::Colors::Color']]],
-  ['title_7',['Title',['../classNanoXLSX_1_1Metadata.html#a05bc6b4f4d27f9f147f441f6dbc75288',1,'NanoXLSX::Metadata']]],
-  ['topcolor_8',['TopColor',['../classNanoXLSX_1_1Styles_1_1Border.html#ab789195e6533e1421babb53558f4f1b8',1,'NanoXLSX::Styles::Border']]],
-  ['topstyle_9',['TopStyle',['../classNanoXLSX_1_1Styles_1_1Border.html#a903582defd067410df5bf4e17f12b462',1,'NanoXLSX::Styles::Border']]],
-  ['type_10',['Type',['../structNanoXLSX_1_1Address.html#ad3e5a2f37ebff84a225ab0cf0ed6e393',1,'NanoXLSX.Address.Type'],['../classNanoXLSX_1_1Colors_1_1Color.html#add2089e3ad6208ddf60b692134f3c205',1,'NanoXLSX.Colors.Color.Type'],['../interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#aee6e8af4d30ba1c746288eeeee56eb2e',1,'NanoXLSX.Interfaces.Writer.IPasswordWriter.Type'],['../classNanoXLSX_1_1LegacyPassword.html#a653ef9fd8a1d2afee9303fed260b19d8',1,'NanoXLSX.LegacyPassword.Type']]]
+  ['targetworksheet_0',['TargetWorksheet',['../classNanoXLSX_1_1DefinedName.html#acd677440e1a4d745146c6a9e9e123289',1,'NanoXLSX::DefinedName']]],
+  ['temporalcultureinfo_1',['TemporalCultureInfo',['../classNanoXLSX_1_1ReaderOptions.html#ab5c7118e9ff19d950b7a7e68c7cb9797',1,'NanoXLSX::ReaderOptions']]],
+  ['textdirection_2',['TextDirection',['../classNanoXLSX_1_1Styles_1_1CellXf.html#aa54dad8abb79ea794ef6c3f7e3c91697',1,'NanoXLSX::Styles::CellXf']]],
+  ['textrotation_3',['TextRotation',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a4ba04cfa3de247df425abb2b4285185c',1,'NanoXLSX::Styles::CellXf']]],
+  ['textvalue_4',['TextValue',['../classNanoXLSX_1_1DefinedName.html#a4cba43668e17ed12d25830c9673b6586',1,'NanoXLSX::DefinedName']]],
+  ['themecolor_5',['ThemeColor',['../classNanoXLSX_1_1Colors_1_1Color.html#a0b30808576099eb5c57cc31704aef209',1,'NanoXLSX::Colors::Color']]],
+  ['timeformat_6',['TimeFormat',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#a18981f59bedab9f783cebfa51c5ba0a6',1,'NanoXLSX::Styles::BasicStyles']]],
+  ['timespanformat_7',['TimeSpanFormat',['../classNanoXLSX_1_1ReaderOptions.html#a95effcf28a5c9a04b0b0a7a58187cdbc',1,'NanoXLSX::ReaderOptions']]],
+  ['tint_8',['Tint',['../classNanoXLSX_1_1Colors_1_1Color.html#a3c72c7c09901438e291f8729c0f88ebf',1,'NanoXLSX::Colors::Color']]],
+  ['title_9',['Title',['../classNanoXLSX_1_1Metadata.html#a05bc6b4f4d27f9f147f441f6dbc75288',1,'NanoXLSX::Metadata']]],
+  ['topcolor_10',['TopColor',['../classNanoXLSX_1_1Styles_1_1Border.html#ab789195e6533e1421babb53558f4f1b8',1,'NanoXLSX::Styles::Border']]],
+  ['topstyle_11',['TopStyle',['../classNanoXLSX_1_1Styles_1_1Border.html#a903582defd067410df5bf4e17f12b462',1,'NanoXLSX::Styles::Border']]],
+  ['type_12',['Type',['../structNanoXLSX_1_1Address.html#ad3e5a2f37ebff84a225ab0cf0ed6e393',1,'NanoXLSX.Address.Type'],['../classNanoXLSX_1_1Colors_1_1Color.html#add2089e3ad6208ddf60b692134f3c205',1,'NanoXLSX.Colors.Color.Type'],['../classNanoXLSX_1_1DefinedName.html#a93646e6a7f2aa3a4364770e5972975b4',1,'NanoXLSX.DefinedName.Type'],['../classNanoXLSX_1_1FormulaData.html#aebea8aef8a4e2b2755a03fcd763b04cc',1,'NanoXLSX.FormulaData.Type'],['../interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#aee6e8af4d30ba1c746288eeeee56eb2e',1,'NanoXLSX.Interfaces.Writer.IPasswordWriter.Type'],['../classNanoXLSX_1_1LegacyPassword.html#a653ef9fd8a1d2afee9303fed260b19d8',1,'NanoXLSX.LegacyPassword.Type']]]
 ];

@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['packageexception_0',['PackageException',['../classNanoXLSX_1_1Exceptions_1_1PackageException.html',1,'NanoXLSX::Exceptions']]],
-  ['parserutils_1',['ParserUtils',['../classNanoXLSX_1_1Utils_1_1ParserUtils.html',1,'NanoXLSX::Utils']]],
-  ['password_2',['Password',['../classNanoXLSX_1_1Enums_1_1Password.html',1,'NanoXLSX::Enums']]],
-  ['pluginloader_3',['PlugInLoader',['../classNanoXLSX_1_1Registry_1_1PlugInLoader.html',1,'NanoXLSX::Registry']]],
-  ['pluginuuid_4',['PlugInUUID',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html',1,'NanoXLSX::Registry']]]
+  ['nanoxlsxpluginattribute_0',['NanoXlsxPlugInAttribute',['../classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxPlugInAttribute.html',1,'NanoXLSX::Registry::Attributes']]],
+  ['nanoxlsxqueuepluginattribute_1',['NanoXlsxQueuePlugInAttribute',['../classNanoXLSX_1_1Registry_1_1Attributes_1_1NanoXlsxQueuePlugInAttribute.html',1,'NanoXLSX::Registry::Attributes']]],
+  ['notsupportedcontentexception_2',['NotSupportedContentException',['../classNanoXLSX_1_1Exceptions_1_1NotSupportedContentException.html',1,'NanoXLSX::Exceptions']]],
+  ['numberformat_3',['NumberFormat',['../classNanoXLSX_1_1Styles_1_1NumberFormat.html',1,'NanoXLSX::Styles']]]
 ];

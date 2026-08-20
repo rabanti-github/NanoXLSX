@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="NanoXLSXlib.png"/></td>
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Reader<span id="projectnumber">&#160;3.1.0</span>
+   <div id="projectname">NanoXLSX.Reader<span id="projectnumber">&#160;3.2.0</span>
    </div>
   </td>
  </tr>
@@ -115,6 +115,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a787b9f7756547c487e945a342f77fc3d" id="r_a787b9f7756547c487e945a342f77fc3d"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a787b9f7756547c487e945a342f77fc3d">DocumentType</a><code> [get]</code></td></tr>
+<tr class="memdesc:a787b9f7756547c487e945a342f77fc3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the relationship type URI of a style document.  <br /></td></tr>
 <tr class="memitem:a9ba35b25724975601ba6ba1a4fea4b29" id="r_a9ba35b25724975601ba6ba1a4fea4b29"><td class="memItemLeft" align="right" valign="top">Workbook&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ba35b25724975601ba6ba1a4fea4b29">Workbook</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a9ba35b25724975601ba6ba1a4fea4b29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Workbook reference where read data is stored (should not be null).  <br /></td></tr>
 <tr class="memitem:aeeb74df07e614ba7f411db942981c024" id="r_aeeb74df07e614ba7f411db942981c024"><td class="memItemLeft" align="right" valign="top">IOptions&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeeb74df07e614ba7f411db942981c024">Options</a><code> [get, set]</code></td></tr>
@@ -144,7 +146,7 @@ Properties</h2></td></tr>
 
 <p>Default constructor - Must be defined for instantiation of the plug-ins. </p>
 
-<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00059">59</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00065">65</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
 
 </div>
 </div>
@@ -172,7 +174,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00085">85</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00092">92</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
 
 </div>
 </div>
@@ -216,11 +218,37 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00073">73</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00079">79</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
 
 </div>
 </div>
 <a name="doc-property-members" id="doc-property-members"></a><h2 id="header-doc-property-members" class="groupheader">Property Documentation</h2>
+<a id="a787b9f7756547c487e945a342f77fc3d" name="a787b9f7756547c487e945a342f77fc3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a787b9f7756547c487e945a342f77fc3d">&#9670;&#160;</a></span>DocumentType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual string NanoXLSX.Internal.Readers.StyleReader.DocumentType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel get">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the relationship type URI of a style document. </p>
+
+<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00045">45</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
+
+</div>
+</div>
 <a id="a410e743a7bbbc9fd4712834375aaa92d" name="a410e743a7bbbc9fd4712834375aaa92d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a410e743a7bbbc9fd4712834375aaa92d">&#9670;&#160;</a></span>InlinePluginHandler</h2>
 
@@ -243,7 +271,7 @@ Properties</h2></td></tr>
 
 <p>Reference to the ReaderPlugInHandler, to be used for post operations in the <a class="el" href="#aae66ad02cff2e5184c2e310006e784dc" title="Method to execute the main logic of the plug-in (interface implementation).">Execute</a> method. </p>
 
-<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00052">52</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00058">58</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
 
 </div>
 </div>
@@ -269,7 +297,7 @@ Properties</h2></td></tr>
 
 <p>Reader options. </p>
 
-<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00048">48</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00054">54</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
 
 </div>
 </div>
@@ -295,7 +323,7 @@ Properties</h2></td></tr>
 
 <p>Workbook reference where read data is stored (should not be null). </p>
 
-<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00044">44</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StyleReader_8cs_source.html#l00050">50</a> of file <a class="el" href="StyleReader_8cs_source.html">StyleReader.cs</a>.</p>
 
 </div>
 </div>

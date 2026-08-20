@@ -40,5 +40,5 @@ var searchData=
   ['formatcells_37',['FormatCells',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca362e5c489b3cb3e0b574f7cd2a8c8fee',1,'NanoXLSX::Worksheet']]],
   ['formatcolumns_38',['FormatColumns',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84aca86378202afc51f3550ea0304fca63009',1,'NanoXLSX::Worksheet']]],
   ['formatrows_39',['FormatRows',['../classNanoXLSX_1_1Worksheet.html#a4297e94bf8e3d25afbd5e080d8bc84acaabd565d8bbc714b2681f797c936313d2',1,'NanoXLSX::Worksheet']]],
-  ['formula_40',['Formula',['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa313a6a3d25aa041ee3dc3cbd65d4f22b',1,'NanoXLSX::Cell']]]
+  ['formula_40',['Formula',['../classNanoXLSX_1_1Cell.html#a3b982ec2b27c789a7bb54d00b5bde26aa313a6a3d25aa041ee3dc3cbd65d4f22b',1,'NanoXLSX.Cell.Formula'],['../classNanoXLSX_1_1DefinedName.html#adf12918881a513030b063bd349a267f0a313a6a3d25aa041ee3dc3cbd65d4f22b',1,'NanoXLSX.DefinedName.Formula']]]
 ];

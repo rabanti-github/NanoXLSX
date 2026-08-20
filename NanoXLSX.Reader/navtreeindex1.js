@@ -1,0 +1,19 @@
+var NAVTREEINDEX1 =
+{
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md11":[1,5],
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md13":[1,6],
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md15":[1,7],
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md3":[1,1],
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md5":[1,2],
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md7":[1,3],
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md9":[1,4],
+"namespaceNanoXLSX.html":[2,0,0],
+"namespaceNanoXLSX_1_1Extensions.html":[2,0,0,0],
+"namespaceNanoXLSX_1_1Internal.html":[2,0,0,1],
+"namespaceNanoXLSX_1_1Internal_1_1Readers.html":[2,0,0,1,0],
+"namespaceNanoXLSX_1_1Internal_1_1Readers.html#a1e95196e5ad470954e386d4b11b48a72":[2,0,0,1,0,13],
+"namespacemembers.html":[2,1,0],
+"namespacemembers_type.html":[2,1,1],
+"namespaces.html":[2,0],
+"pages.html":[]
+};

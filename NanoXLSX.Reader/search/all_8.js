@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['dependencies_0',['Dependencies',['../index.html#autotoc_md18',1,'']]],
-  ['description_1',['Description',['../index.html#autotoc_md17',1,'']]],
-  ['dispose_2',['Dispose',['../classNanoXLSX_1_1Internal_1_1Readers_1_1XlsxReader.html#a2f76477c8b3b29f71eebd0a84a404ff4',1,'NanoXLSX::Internal::Readers::XlsxReader']]]
+  ['dependencies_0',['Dependencies',['../index.html#autotoc_md20',1,'']]],
+  ['description_1',['Description',['../index.html#autotoc_md19',1,'']]],
+  ['discoveryreader_2',['DiscoveryReader',['../classNanoXLSX_1_1Internal_1_1Readers_1_1DiscoveryReader.html',1,'NanoXLSX.Internal.Readers.DiscoveryReader'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1DiscoveryReader.html#a65a8a4ee6d138253114907c0142e383f',1,'NanoXLSX.Internal.Readers.DiscoveryReader.DiscoveryReader()']]],
+  ['dispose_3',['Dispose',['../classNanoXLSX_1_1Internal_1_1Readers_1_1XlsxReader.html#a2f76477c8b3b29f71eebd0a84a404ff4',1,'NanoXLSX::Internal::Readers::XlsxReader']]],
+  ['documenttype_4',['DocumentType',['../classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataAppReader.html#ae13e533ccb841be3fef4cef45fd2ddf3',1,'NanoXLSX.Internal.Readers.MetadataAppReader.DocumentType'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1MetadataCoreReader.html#aa5edf428b50a33ad959608f746710800',1,'NanoXLSX.Internal.Readers.MetadataCoreReader.DocumentType'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1SharedStringsReader.html#a5589020220368fa46aa733718530fec8',1,'NanoXLSX.Internal.Readers.SharedStringsReader.DocumentType'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1StyleReader.html#a787b9f7756547c487e945a342f77fc3d',1,'NanoXLSX.Internal.Readers.StyleReader.DocumentType'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1ThemeReader.html#a45e131778407c6a42e6c35ca5d5a222e',1,'NanoXLSX.Internal.Readers.ThemeReader.DocumentType'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1WorkbookReader.html#adf15c07afe71945c65055531320cbe90',1,'NanoXLSX.Internal.Readers.WorkbookReader.DocumentType'],['../classNanoXLSX_1_1Internal_1_1Readers_1_1WorksheetReader.html#ac5e5ddee3dcb93011058b189742148a3',1,'NanoXLSX.Internal.Readers.WorksheetReader.DocumentType']]]
 ];

@@ -5,7 +5,8 @@ var searchData=
   ['leftstyle_2',['LeftStyle',['../classNanoXLSX_1_1Styles_1_1Border.html#a3198b065dc20f238d39fb8202eb01855',1,'NanoXLSX::Styles::Border']]],
   ['light1_3',['Light1',['../interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#a277888d262c74f0f41dd1e721062b0fe',1,'NanoXLSX.Interfaces.IColorScheme.Light1'],['../classNanoXLSX_1_1Themes_1_1ColorScheme.html#a91af94a295c8ca6a3ee57b231131217c',1,'NanoXLSX.Themes.ColorScheme.Light1']]],
   ['light2_4',['Light2',['../interfaceNanoXLSX_1_1Interfaces_1_1IColorScheme.html#ae731d8537c77f6cb5adf078181a8992d',1,'NanoXLSX.Interfaces.IColorScheme.Light2'],['../classNanoXLSX_1_1Themes_1_1ColorScheme.html#a5bc7f3b3fb33f35a2cb3a67c66022f0b',1,'NanoXLSX.Themes.ColorScheme.Light2']]],
-  ['locked_5',['Locked',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a5956b51ac72a429205405b61216d94cc',1,'NanoXLSX::Styles::CellXf']]],
-  ['lockstructureifprotected_6',['LockStructureIfProtected',['../classNanoXLSX_1_1Workbook.html#a61760198fd83acf858e8222fd3e54974',1,'NanoXLSX::Workbook']]],
-  ['lockwindowsifprotected_7',['LockWindowsIfProtected',['../classNanoXLSX_1_1Workbook.html#ab8eca092a3b34367c12ea657eef935a0',1,'NanoXLSX::Workbook']]]
+  ['localsheet_5',['LocalSheet',['../classNanoXLSX_1_1DefinedName.html#a780cbf83599254b3d87f0df1ad767b04',1,'NanoXLSX::DefinedName']]],
+  ['locked_6',['Locked',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a5956b51ac72a429205405b61216d94cc',1,'NanoXLSX::Styles::CellXf']]],
+  ['lockstructureifprotected_7',['LockStructureIfProtected',['../classNanoXLSX_1_1Workbook.html#a61760198fd83acf858e8222fd3e54974',1,'NanoXLSX::Workbook']]],
+  ['lockwindowsifprotected_8',['LockWindowsIfProtected',['../classNanoXLSX_1_1Workbook.html#ab8eca092a3b34367c12ea657eef935a0',1,'NanoXLSX::Workbook']]]
 ];

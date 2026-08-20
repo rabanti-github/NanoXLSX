@@ -26,5 +26,8 @@ var searchData=
   ['defaultverticalalign_23',['DefaultVerticalAlign',['../classNanoXLSX_1_1Styles_1_1Font.html#a233ad5b9d9d811f5eb82f6d2e9462e0f',1,'NanoXLSX::Styles::Font']]],
   ['defaultverticalalignment_24',['DefaultVerticalAlignment',['../classNanoXLSX_1_1Styles_1_1CellXf.html#a320b7cee27f764e9620ff33e1d320fc4',1,'NanoXLSX::Styles::CellXf']]],
   ['defaultworksheetcolumnwidth_25',['DefaultWorksheetColumnWidth',['../classNanoXLSX_1_1Worksheet.html#a548798eab8abf531a42431efbd13a181',1,'NanoXLSX::Worksheet']]],
-  ['defaultworksheetrowheight_26',['DefaultWorksheetRowHeight',['../classNanoXLSX_1_1Worksheet.html#a553d3c6126761d625cc0fc25a7684c63',1,'NanoXLSX::Worksheet']]]
+  ['defaultworksheetrowheight_26',['DefaultWorksheetRowHeight',['../classNanoXLSX_1_1Worksheet.html#a553d3c6126761d625cc0fc25a7684c63',1,'NanoXLSX::Worksheet']]],
+  ['definednameentity_27',['DefinedNameEntity',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#af583e12227f58de33f20236eb6617b39',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['discoverycatalogentity_28',['DiscoveryCatalogEntity',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#aa6e5d82222e5156f22a07d8d52e8d4c8',1,'NanoXLSX::Registry::PlugInUUID']]],
+  ['discoveryreader_29',['DiscoveryReader',['../classNanoXLSX_1_1Registry_1_1PlugInUUID.html#a789d6032b45fdc9cdfd8ab9e19559d3b',1,'NanoXLSX::Registry::PlugInUUID']]]
 ];
