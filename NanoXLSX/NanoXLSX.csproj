@@ -88,7 +88,9 @@
 			<_Lines Include="  &quot;packageName&quot;: &quot;$(MSBuildProjectName)&quot;," />
 			<_Lines Include="  &quot;version&quot;: &quot;$(Version)&quot;," />
 			<_Lines Include="  &quot;description&quot;: &quot;$(Description)&quot;," />
-			<_Lines Include="  &quot;nuGetUrl&quot;: &quot;https://www.nuget.org/packages/$(PackageId)&quot;" />
+			<_Lines Include="  &quot;nuGetUrl&quot;: &quot;https://www.nuget.org/packages/$(PackageId)&quot;," />
+			<_Lines Include="  &quot;pmInstallCommand&quot;: &quot;Install-Package $(PackageId)&quot;," />
+			<_Lines Include="  &quot;cliInstallCommand&quot;: &quot;dotnet add package $(PackageId)&quot;" />
 			<_Lines Include="}" />
 		</ItemGroup>
 

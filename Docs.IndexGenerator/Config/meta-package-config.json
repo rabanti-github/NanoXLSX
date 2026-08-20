@@ -2,5 +2,7 @@
 "packageName": "NanoXLSX",
 "version": "3.2.0",
 "description": "NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way. This package is the meta package of NanoXLSX and should be used in most cases as dependency in your project.",
-"nuGetUrl": "https://www.nuget.org/packages/NanoXLSX"
+"nuGetUrl": "https://www.nuget.org/packages/NanoXLSX",
+"pmInstallCommand": "Install-Package NanoXLSX",
+"cliInstallCommand": "dotnet add package NanoXLSX"
 }

@@ -4,6 +4,11 @@
 
 NanoXLSX is a meta-package bundling NanoXLSX.Core,  NanoXLSX.Reader, NanoXLSX.Writer, and NanoXLSX.Formatting.
 
+## Installation
+
+- Install via NuGet (Package Manager): `Install-Package NanoXLSX`
+- Install via .NET CLI: `dotnet add package NanoXLSX`
+
 ## Packages
 
 - [NanoXLSX](https://www.nuget.org/packages/NanoXLSX): NanoXLSX is a library to generate and read Microsoft Excel files (XLSX) in an easy and native way. This package is the meta package of NanoXLSX and should be used in most cases as dependency in your project.
