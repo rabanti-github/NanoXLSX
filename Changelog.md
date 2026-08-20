@@ -17,6 +17,7 @@ Release Date: **(20.08.2026)** <sup>(DMY)</sup>
   * Added `Validators.ValidateWorksheetName(...)`.
   * Extended and optimized internal feature detection and processing.
   * Extended the plug-in infrastructure with additional Reader and Writer interfaces and updated plug-in registration.
+  * Fixed a bug regarding plug-in loading. Bug fix provided by yolkin-games
 
 - Package: **NanoXLSX.Reader**
   * Added reading of defined names.

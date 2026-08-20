@@ -67,8 +67,8 @@ namespace Docs.IndexGenerator.Generation
 
         private static string RenderListItems(PluginConfig cfg)
         {
-            var sb = new StringBuilder();
-            foreach (var e in cfg.Entries)
+            StringBuilder sb = new StringBuilder();
+            foreach (DocEntry e in cfg.Entries)
             {
                 string repoUrl = Uri.EscapeUriString(e.Repository ?? string.Empty);
                 string docUrl = $"{Uri.EscapeUriString(e.Path)}/index.html";
