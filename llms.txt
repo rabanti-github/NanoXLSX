@@ -11,6 +11,7 @@ NanoXLSX is a meta-package bundling NanoXLSX.Core,  NanoXLSX.Reader, NanoXLSX.Wr
 - [NanoXLSX.Reader](https://www.nuget.org/packages/NanoXLSX.Reader): Reader plugin: extension methods to load XLSX files. Depends on Core. (bundled)
 - [NanoXLSX.Writer](https://www.nuget.org/packages/NanoXLSX.Writer): Writer plugin: extension methods to save XLSX files. Depends on Core. (bundled)
 - [NanoXLSX.Formatting](https://www.nuget.org/packages/NanoXLSX.Formatting): Formatting plugin: in-line cell formatting (rich text). Depends on Core. Maintained in an external repository. (bundled)
+- [NanoXLSX.Compatibility](https://www.nuget.org/packages/NanoXLSX.Compatibility): Compatibility plugin: handling of external links. Depends on Core. Maintained in an external repository. (bundled)
 
 ## Usage
 
@@ -33,11 +34,13 @@ Workbook workbook = WorkbookReader.Load("myWorkbook.xlsx");
 - [NanoXLSX.Reader](https://rabanti-github.github.io/NanoXLSX/NanoXLSX.Reader/): Reader plugin: extension methods to load XLSX files. Depends on Core.
 - [NanoXLSX.Writer](https://rabanti-github.github.io/NanoXLSX/NanoXLSX.Writer/): Writer plugin: extension methods to save XLSX files. Depends on Core.
 - [NanoXLSX.Formatting](https://rabanti-github.github.io/NanoXLSX.Formatting/): Formatting plugin: in-line cell formatting (rich text). Depends on Core. Maintained in an external repository.
+- [NanoXLSX.Compatibility](https://rabanti-github.github.io/NanoXLSX.Compatibility/): Compatibility plugin: handling of external links. Depends on Core. Maintained in an external repository.
 
 ## Source
 
 - [NanoXLSX](https://github.com/rabanti-github/NanoXLSX): Primary repository (meta-package, docs)
 - [NanoXLSX.Formatting](https://github.com/rabanti-github/NanoXLSX.Formatting): Source code (external)
+- [NanoXLSX.Compatibility](https://github.com/rabanti-github/NanoXLSX.Compatibility): Source code (external)
 
 ## Optional
 
