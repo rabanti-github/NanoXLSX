@@ -29,7 +29,7 @@ namespace NanoXLSX.Colors
             ThreeDimensionalLight,
             ///<summary>Active Border System Color: Specifies an Active Window Border Color</summary>
             ActiveBorder,
-            ///<summary>Active Caption System Color: Specifies the active window title bar color. In particular the left side color in the color gradient of an active window"s title bar if the gradient effect is enabled</summary>
+            ///<summary>Active Caption System Color: Specifies the active window title bar color. In particular the left side color in the color gradient of an active window's title bar if the gradient effect is enabled</summary>
             ActiveCaption,
             ///<summary>Application Workspace System Color: Specifies the Background color of multiple document interface (MDI) applications</summary>
             AppWorkspace,
@@ -45,9 +45,9 @@ namespace NanoXLSX.Colors
             ButtonText,
             ///<summary>Caption Text System Color: Specifies the color of text in the caption, size box, and scroll bar arrow box</summary>
             CaptionText,
-            ///<summary>Gradient Active Caption System Color: Specifies the right side color in the color gradient of an active window"s title bar</summary>
+            ///<summary>Gradient Active Caption System Color: Specifies the right side color in the color gradient of an active window's title bar</summary>
             GradientActiveCaption,
-            ///<summary>Gradient Inactive Caption System Color:  Specifies the right side color in the color gradient of an inactive window"s title bar</summary>
+            ///<summary>Gradient Inactive Caption System Color:  Specifies the right side color in the color gradient of an inactive window's title bar</summary>
             GradientInactiveCaption,
             ///<summary>Gray Text System Color: Specifies a grayed (disabled) text. This color is set to 0 if the current display driver does not support a solid gray color</summary>
             GrayText,
@@ -59,7 +59,7 @@ namespace NanoXLSX.Colors
             HotLight,
             ///<summary>Inactive Border System Color: Specifies the color of the Inactive window border</summary>
             InactiveBorder,
-            ///<summary>Inactive Caption System Color: Specifies the color of the Inactive window caption. Specifies the left side color in the color gradient of an inactive window"s title bar if the gradient effect is enabled</summary>
+            ///<summary>Inactive Caption System Color: Specifies the color of the Inactive window caption. Specifies the left side color in the color gradient of an inactive window's title bar if the gradient effect is enabled</summary>
             InactiveCaption,
             ///<summary>Inactive Caption Text System Color: Specifies the color of text in an inactive caption</summary>
             InactiveCaptionText,

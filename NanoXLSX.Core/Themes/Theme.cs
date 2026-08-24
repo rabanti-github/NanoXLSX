@@ -20,7 +20,7 @@ namespace NanoXLSX.Themes
         /// <summary>
         /// Default theme ID, stated in the workbook document
         /// </summary>
-        /// \remark <remarks>According to the official OOXML documentation (part 1, chapter 18.2.28) the version consists of the application version and build where the excel file was created.
+        /// \remark <remarks>According to the official OOXML documentation (part 1, chapter 18.2.28) the version consists of the application version and build where the Excel file was created.
         /// The value was extracted from a valid Excel file, created with Excel 2019. However, although '16' can be assumed to be the Version of Excel 2019, 
         /// the build part '6925' cannot be originated, is not reflecting the retrieved application build version, and seems not to be listed publicly
         /// </remarks>

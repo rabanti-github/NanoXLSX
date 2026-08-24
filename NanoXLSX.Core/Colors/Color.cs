@@ -142,7 +142,7 @@ namespace NanoXLSX.Colors
 
         #region factory methods
         /// <summary>
-        /// Creates an Color with no color (empty element)
+        /// Creates a Color with no color (empty element)
         /// </summary>
         /// <return>Returns a dummy instance of the Color class, where <see cref="ColorType"/> is set to None</return>
         public static Color CreateNone()
@@ -151,7 +151,7 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Creates an Color with auto=true
+        /// Creates a Color with auto=true
         /// </summary>
         /// <returns>Returns a dummy instance of the Color class, where <see cref="ColorType"/> is set to Auto</returns>
         public static Color CreateAuto()
@@ -164,7 +164,7 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Creates an Color from an RGB/ARGB color
+        /// Creates a Color from an RGB/ARGB color
         /// </summary>
         /// <param name="color">Instance of the type <see cref="SrgbColor"/></param>
         /// <returns>Color instance with the value type <see cref="SrgbColor"></see>/></returns>
@@ -179,7 +179,7 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Creates an Color from an RGB string (e.g., "FFAABBCC")
+        /// Creates a Color from an RGB string (e.g., "FFAABBCC")
         /// </summary>
         /// <param name="rgbValue">RGB or ARGB value as string</param>
         /// <returns>Color instance with the value type <see cref="SrgbColor"></see>/></returns>
@@ -195,7 +195,7 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Creates an Color from an indexed color
+        /// Creates a Color from an indexed color
         /// </summary>
         /// <param name="color">Instance of the type <see cref="IndexedColor"/></param>
         /// <returns>Color instance with the value type <see cref="IndexedColor"></see>/></returns>
@@ -213,7 +213,7 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Creates an Color from an indexed color value (see <see cref="IndexedColor.Value"/>)
+        /// Creates a Color from an indexed color value (see <see cref="IndexedColor.Value"/>)
         /// </summary>
         /// <param name="indexValue">Color index enum value</param>
         /// <returns>Color instance with the value type <see cref="IndexedColor"></see>/></returns>
@@ -227,7 +227,7 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Creates an Color from a color index (0 to 65)
+        /// Creates a Color from a color index (0 to 65)
         /// </summary>
         /// <param name="index">Color index (0 to 65)</param>
         /// <returns>Color instance with the value type <see cref="IndexedColor"></see>/></returns>
@@ -242,7 +242,7 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Creates an Color from a theme color instance
+        /// Creates a Color from a theme color instance
         /// </summary>
         /// <param name="color">Instance of the type <see cref="ThemeColor"></see></param>
         /// <param name="tint">Optional tint value (from -1 to 1)</param>
@@ -262,7 +262,7 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Creates an Color from a theme color scheme element
+        /// Creates a Color from a theme color scheme element
         /// </summary>
         /// <param name="index">Color scheme element</param>
         /// <param name="tint">Optional tint value (from -1 to 1)</param>
@@ -278,7 +278,7 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Creates an Color from the index of a theme color scheme element
+        /// Creates a Color from the index of a theme color scheme element
         /// </summary>
         /// <param name="index">Color scheme element index</param>
         /// <param name="tint">Optional tint value (from -1 to 1)</param>
@@ -294,7 +294,7 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Creates an Color from a system color
+        /// Creates a Color from a system color
         /// </summary>
         /// <param name="color">Instance of the type  <see cref="SystemColor"></see></param>
         /// <returns>Color instance with the value type <see cref="SystemColor"></see></returns>
@@ -312,7 +312,7 @@ namespace NanoXLSX.Colors
         }
 
         /// <summary>
-        /// Creates an Color from a system color instance
+        /// Creates a Color from a system color instance
         /// </summary>
         /// <param name="systemColorValue">System color value</param>
         /// <returns>Color instance with the value type <see cref="SystemColor"></see></returns>
