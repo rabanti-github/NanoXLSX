@@ -1,10 +1,20 @@
 # Change Log - NanoXLSX.Core
 
+## v3.2.1
+
+---
+
+Release Date: **(25.08.2026)** <sup>(DMY)</sup>
+
+- Added constant`MaxZoomFactor` in Worksheet. The exiting constant `maxZoomFactor` is obsolete and will be removed with the next major release
+- Code maintenance
+
+
 ## v3.2.0
 
 ---
 
-Release Date: **(xx.yy.2026)** <sup>(DMY)</sup>
+Release Date: **(20.08.2026)** <sup>(DMY)</sup>
 
 - Added new interfaces for plug-ins
 - Updated internal plug-in registry 

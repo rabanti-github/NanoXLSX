@@ -1,5 +1,15 @@
 # Change Log - NanoXLSX.Writer
 
+## v3.2.1
+
+---
+
+Release Date: **(25.08.2026)** <sup>(DMY)</sup>
+
+- Fixed a bug regarding path handling on writing files
+- Added tests
+- Code maintenance
+
 ## v3.2.0
 
 ---

@@ -4,8 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
 using System.IO.Packaging;
+using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 using NanoXLSX.Interfaces.Reader;
 using NanoXLSX.Internal;
 using NanoXLSX.Internal.Readers;
@@ -401,6 +403,28 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             }
         }
 
+        [Fact(DisplayName = "XLSX reader rejects shared-string cells when the shared strings relationship is missing")]
+        public void MissingSharedStringsRelationshipWithSharedStringCellTest()
+        {
+            using (MemoryStream stream = CreateWorkbookWithoutSharedStringsRelationship("shared"))
+            {
+                IOException exception = Assert.Throws<IOException>(() => Extensions.WorkbookReader.Load(stream));
+
+                Assert.Contains("no shared strings relationship", exception.Message);
+            }
+        }
+
+        [Fact(DisplayName = "XLSX reader permits a missing shared strings relationship when no cell uses it")]
+        public void MissingSharedStringsRelationshipWithoutSharedStringCellTest()
+        {
+            using (MemoryStream stream = CreateWorkbookWithoutSharedStringsRelationship(42))
+            {
+                Workbook workbook = Extensions.WorkbookReader.Load(stream);
+
+                Assert.Equal(42, Convert.ToInt32(workbook.Worksheets[0].GetCell(new Address("A1")).Value));
+            }
+        }
+
         [Fact(DisplayName = "XLSX reader resolves renamed built-in parts through discovery")]
         public void RenamedBuiltInPartsTest()
         {
@@ -759,6 +783,46 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             }
         }
 
+        private static MemoryStream CreateWorkbookWithoutSharedStringsRelationship(object cellValue)
+        {
+            Workbook workbook = new Workbook("Sheet1");
+            workbook.CurrentWorksheet.AddCell(cellValue, "A1");
+            MemoryStream originalStream = new MemoryStream();
+            workbook.SaveAsStream(originalStream, true);
+            originalStream.Position = 0;
+
+            MemoryStream resultStream = new MemoryStream();
+            using (originalStream)
+            using (ZipArchive originalArchive = new ZipArchive(originalStream, ZipArchiveMode.Read, true))
+            using (ZipArchive resultArchive = new ZipArchive(resultStream, ZipArchiveMode.Create, true))
+            {
+                foreach (ZipArchiveEntry originalEntry in originalArchive.Entries)
+                {
+                    ZipArchiveEntry resultEntry = resultArchive.CreateEntry(originalEntry.FullName);
+                    using (Stream source = originalEntry.Open())
+                    using (Stream target = resultEntry.Open())
+                    {
+                        if (originalEntry.FullName == "xl/_rels/workbook.xml.rels")
+                        {
+                            XDocument document = XDocument.Load(source);
+                            XNamespace relationshipNamespace = "http://schemas.openxmlformats.org/package/2006/relationships";
+                            document.Root
+                                .Elements(relationshipNamespace + "Relationship")
+                                .Where(element => (string)element.Attribute("Type") == new SharedStringsReader().DocumentType)
+                                .Remove();
+                            document.Save(target);
+                        }
+                        else
+                        {
+                            source.CopyTo(target);
+                        }
+                    }
+                }
+            }
+            resultStream.Position = 0;
+            return resultStream;
+        }
+
         [ExcludeFromCodeCoverage]
         public static IEnumerable<object[]> InvalidRelationshipCases // Must be public to be resolved
         {
@@ -773,6 +837,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
                 yield return new object[] { RelationshipXml("rIdInvalid", "http://example.test/type", "http://[", "External"), "valid URI" };
                 yield return new object[] { RelationshipXml("rIdInvalid", "http://example.test/type", "part.xml", "Remote"), "TargetMode" };
                 yield return new object[] { RelationshipXml("rIdInvalid", "http://example.test/type", "https://example.test/part.xml"), "absolute URI" };
+                yield return new object[] { RelationshipXml("rIdInvalid", "http://example.test/type", "//example.test/part.xml"), "network-path" };
             }
         }
 

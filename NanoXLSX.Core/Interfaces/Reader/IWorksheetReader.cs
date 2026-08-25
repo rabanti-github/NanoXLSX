@@ -20,7 +20,8 @@ namespace NanoXLSX.Interfaces.Reader
         int CurrentWorksheetID { get; set; }
 
         /// <summary>
-        /// Gets or Sets the list of the shared strings. The index of the list corresponds to the index, defined in cell values
+        /// Gets or sets the list of shared strings. The index of the list corresponds to the index defined in cell values.
+        /// A null value indicates that the workbook has no usable shared strings relationship.
         /// </summary>
         List<string> SharedStrings { get; set; }
     }

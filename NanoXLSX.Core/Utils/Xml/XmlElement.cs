@@ -11,6 +11,7 @@ using System.Xml;
 
 namespace NanoXLSX.Utils.Xml
 {
+    // TODO Set to internal in next major release
     /// <summary>
     /// Class representing an internally used XML element / node
     /// </summary>

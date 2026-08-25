@@ -96,7 +96,13 @@ namespace NanoXLSX
         /// <summary>
         /// Maximum zoom factor of a worksheet
         /// </summary>
-        public const int maxZoomFactor = 400;
+        public const int MaxZoomFactor = 400;
+        //TODO remove with next major release
+        /// <summary>
+        /// Maximum zoom factor of a worksheet
+        /// </summary>
+        [Obsolete("Use MaxZoomFactor instead.")]
+        public const int maxZoomFactor = MaxZoomFactor;
         #endregion
 
         #region enums
@@ -510,7 +516,7 @@ namespace NanoXLSX
         /// Gets or sets the zoom factor of the <see cref="ViewType"/> of the current worksheet. If <see cref="AutoZoomFactor"/>, the zoom factor is set to automatic
         /// </summary>
         /// \remark <remarks>It is possible to add further zoom factors for inactive view types, using the function <see cref="SetZoomFactor(SheetViewType, int)"/> </remarks>
-        /// <exception cref="WorksheetException">Throws a WorksheetException if the zoom factor is not <see cref="AutoZoomFactor"/> or below <see cref="MinZoomFactor"/> or above <see cref="maxZoomFactor"/></exception>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the zoom factor is not <see cref="AutoZoomFactor"/> or below <see cref="MinZoomFactor"/> or above <see cref="MaxZoomFactor"/></exception>
         public int ZoomFactor
         {
             set
@@ -2846,12 +2852,12 @@ namespace NanoXLSX
         /// <param name="sheetViewType">Sheet view type to apply the zoom factor on</param>
         /// <param name="zoomFactor">Zoom factor in percent</param>
         /// \remark <remarks>This factor is not the currently set factor. use the property <see cref="ZoomFactor"/> to set the factor for the current <see cref="ViewType"/></remarks>
-        /// <exception cref="WorksheetException">Throws a WorksheetException if the zoom factor is not <see cref="AutoZoomFactor"/> or below <see cref="MinZoomFactor"/> or above <see cref="maxZoomFactor"/></exception>
+        /// <exception cref="WorksheetException">Throws a WorksheetException if the zoom factor is not <see cref="AutoZoomFactor"/> or below <see cref="MinZoomFactor"/> or above <see cref="MaxZoomFactor"/></exception>
         public void SetZoomFactor(SheetViewType sheetViewType, int zoomFactor)
         {
-            if (zoomFactor != AutoZoomFactor && (zoomFactor < MinZoomFactor || zoomFactor > maxZoomFactor))
+            if (zoomFactor != AutoZoomFactor && (zoomFactor < MinZoomFactor || zoomFactor > MaxZoomFactor))
             {
-                throw new WorksheetException("The zoom factor " + zoomFactor + " is not valid. Valid are values between " + MinZoomFactor + " and " + maxZoomFactor + ", or " + AutoZoomFactor + " (automatic)");
+                throw new WorksheetException("The zoom factor " + zoomFactor + " is not valid. Valid are values between " + MinZoomFactor + " and " + MaxZoomFactor + ", or " + AutoZoomFactor + " (automatic)");
             }
             if (this.zoomFactor.ContainsKey(sheetViewType))
             {

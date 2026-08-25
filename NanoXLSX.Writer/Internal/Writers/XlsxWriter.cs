@@ -147,7 +147,7 @@ namespace NanoXLSX.Internal.Writers
                 preparingProcessor.Init(this, WriterPlugInHandler.HandleInlineQueueProcessorPlugins);
                 preparingProcessor.Execute();
                 // Compatibility check
-                IPluginWriteProcessor compatibilityProcessor = new CompatibilityProcessor(); // This core processor cannot be overwritten
+                CompatibilityProcessor compatibilityProcessor = new CompatibilityProcessor(); // This core processor cannot be overwritten
                 compatibilityProcessor.Init(this, WriterPlugInHandler.HandleInlineQueueProcessorPlugins);
                 compatibilityProcessor.Execute();
                 // Workbook can now be written
@@ -341,7 +341,9 @@ namespace NanoXLSX.Internal.Writers
         {
             foreach (PackagePartRelationshipDefinition relationship in relationships)
             {
-                Uri targetUri = new Uri(relationship.Target, UriKind.RelativeOrAbsolute);
+                bool rootRelativeInternalTarget = relationship.TargetMode == TargetMode.Internal
+                    && relationship.Target.StartsWith("/", StringComparison.Ordinal);
+                Uri targetUri = new Uri(relationship.Target, rootRelativeInternalTarget ? UriKind.Relative : UriKind.RelativeOrAbsolute);
                 packagePart.CreateRelationship(targetUri, relationship.TargetMode, relationship.RelationshipType, relationship.RelationshipId);
             }
         }
@@ -462,7 +464,7 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="uuid">UUID to validate</param>
         /// <exception cref="ArgumentException">Thrown if the feature UUID is not valid</exception>
-        private void ValidateFeatureUuid(string uuid)
+        private static void ValidateFeatureUuid(string uuid)
         {
             if (string.IsNullOrWhiteSpace(uuid))
             {
@@ -719,7 +721,12 @@ namespace NanoXLSX.Internal.Writers
             {
                 throw new IOException("Invalid package relationship target mode in package registry plug-in: " + plugin.GetType().Name);
             }
-            if (relationship.TargetMode == TargetMode.Internal && targetUri.IsAbsoluteUri)
+            bool rootRelativeTarget = relationship.Target.StartsWith("/", StringComparison.Ordinal);
+            if (relationship.TargetMode == TargetMode.Internal && relationship.Target.StartsWith("//", StringComparison.Ordinal))
+            {
+                throw new IOException("Network-path internal package relationship target in package registry plug-in: " + plugin.GetType().Name);
+            }
+            if (relationship.TargetMode == TargetMode.Internal && targetUri.IsAbsoluteUri && !rootRelativeTarget)
             {
                 throw new IOException("Absolute internal package relationship target in package registry plug-in: " + plugin.GetType().Name);
             }
@@ -730,7 +737,7 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="rootElement">Root element</param>
         /// <param name="pp">Package part</param>
-        private void AppendXmlToPackagePart(XmlElement rootElement, PackagePart pp)
+        private static void AppendXmlToPackagePart(XmlElement rootElement, PackagePart pp)
         {
             using (MemoryStream ms = new MemoryStream())
             {
@@ -758,7 +765,7 @@ namespace NanoXLSX.Internal.Writers
         /// </summary>
         /// <param name="stream">Stream to add</param>
         /// <param name="pp">Package part</param>
-        internal void AddStreamToPackagePart(MemoryStream stream, PackagePart pp)
+        internal static void AddStreamToPackagePart(MemoryStream stream, PackagePart pp)
         {
             stream.Position = 0;
             stream.CopyTo(pp.GetStream());

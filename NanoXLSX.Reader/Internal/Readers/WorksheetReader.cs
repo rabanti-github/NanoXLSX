@@ -64,7 +64,8 @@ namespace NanoXLSX.Internal.Readers
         public int CurrentWorksheetID { get; set; }
 
         /// <summary>
-        /// Gets or Sets the list of the shared strings. The index of the list corresponds to the index, defined in cell values
+        /// Gets or sets the list of shared strings. The index of the list corresponds to the index defined in cell values.
+        /// A null value indicates that the workbook has no usable shared strings relationship.
         /// </summary>
         public List<String> SharedStrings { get; set; }
         #endregion
@@ -162,6 +163,10 @@ namespace NanoXLSX.Internal.Readers
             catch (NotSupportedContentException)
             {
                 throw; // rethrow
+            }
+            catch (IOException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
@@ -1412,7 +1417,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="raw">String to parse</param>
         /// <param name="readerOptions">Reader options</param>
         /// <returns>TimeSpan instance or null if not possible to parse</returns>
-        private TimeSpan? TryParseTime(string raw, ReaderOptions readerOptions)
+        private static TimeSpan? TryParseTime(string raw, ReaderOptions readerOptions)
         {
             TimeSpan timeSpan;
             bool isTimeSpan;
@@ -1544,7 +1549,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="data">Raw data</param>
         /// <param name="readerOptions">Reader options</param>
         /// <returns>Converted string or null in case of null as input</returns>
-        private string ConvertToString(object data, ReaderOptions readerOptions)
+        private static string ConvertToString(object data, ReaderOptions readerOptions)
         {
             switch (data)
             {
@@ -1711,7 +1716,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="readerOptions">Reader options</param>
         /// <returns>Modified column width in case <see cref="ReaderOptions.EnforceStrictValidation"/> is set to false, and the raw value was invalid</returns>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the raw value was invalid and <see cref="ReaderOptions.EnforceStrictValidation"/> is set to true</exception>
-        private float GetValidatedWidth(float rawValue, ReaderOptions readerOptions)
+        private static float GetValidatedWidth(float rawValue, ReaderOptions readerOptions)
         {
             if (rawValue < Worksheet.MinColumnWidth)
             {
@@ -1748,7 +1753,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="readerOptions">Reader options</param>
         /// <returns>Modified row height in case <see cref="ReaderOptions.EnforceStrictValidation"/> is set to false, and the raw value was invalid</returns>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the raw value was invalid and <see cref="ReaderOptions.EnforceStrictValidation"/> is set to true</exception>
-        private float GetValidatedHeight(float rawValue, ReaderOptions readerOptions)
+        private static float GetValidatedHeight(float rawValue, ReaderOptions readerOptions)
         {
             if (rawValue < Worksheet.MinRowHeight)
             {
@@ -1785,6 +1790,10 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Resolved string or the raw value if no shared string could be determined</returns>
         private string ResolveSharedString(string raw)
         {
+            if (SharedStrings == null)
+            {
+                throw new IOException("The worksheet contains a shared-string cell, but no shared strings relationship was found for the workbook.");
+            }
             int stringId;
             if (ParserUtils.TryParseInt(raw, out stringId))
             {

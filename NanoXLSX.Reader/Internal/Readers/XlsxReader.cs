@@ -257,7 +257,7 @@ namespace NanoXLSX.Internal.Readers
             relationships.Execute(); // Only for remaining plugin handling
 
             IWorksheetReader worksheetReader = PlugInLoader.GetPlugIn<IWorksheetReader>(PlugInUUID.WorksheetReader, new WorksheetReader());
-            worksheetReader.SharedStrings = sharedStringsReader.SharedStrings;
+            worksheetReader.SharedStrings = sharedStringsRelationship == null ? null : sharedStringsReader.SharedStrings;
             int worksheetVisualIndex = 0;
             WorksheetDefinition definition;
             while ((definition = wb.AuxiliaryData.GetData<WorksheetDefinition>(PlugInUUID.WorkbookReader, PlugInUUID.WorksheetDefinitionEntity, worksheetVisualIndex)) != null)

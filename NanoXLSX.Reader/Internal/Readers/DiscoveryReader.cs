@@ -238,15 +238,11 @@ namespace NanoXLSX.Internal.Readers
             string resolvedTargetPath = null;
             if (targetMode == TargetMode.Internal)
             {
-                // [VENDOR-PATCH NanoXLSX#mono-rootrelative-target] A target beginning with '/' is a
-                // ROOT-RELATIVE path, which OPC permits for an internal relationship. Mono's System.Uri
-                // parses such a string as an ABSOLUTE Uri while .NET's does not, so testing IsAbsoluteUri
-                // alone silently discards every root-relative relationship on Mono. In practice that is
-                // sharedStrings.xml: the relationship is dropped from the catalog, the (optional) shared
-                // strings part is never read, and every string cell is left holding its raw shared-string
-                // INDEX instead of its text -- with no exception raised. Test for a real scheme instead,
-                // and rebuild the target as relative so ResolvePartUri agrees on both runtimes.
                 bool rootRelativeTarget = target.StartsWith("/", StringComparison.Ordinal);
+                if (target.StartsWith("//", StringComparison.Ordinal))
+                {
+                    return HandleRelationshipIssue(relationshipPartPath, id, "An internal relationship target cannot be a network-path reference.", issues, null);
+                }
                 if (targetUri.IsAbsoluteUri && !rootRelativeTarget)
                 {
                     return HandleRelationshipIssue(relationshipPartPath, id, "An internal relationship target cannot be an absolute URI.", issues, null);

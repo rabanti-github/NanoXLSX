@@ -255,6 +255,7 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         [InlineData(typeof(InvalidRelationshipTargetRegistry), "Invalid package relationship target")]
         [InlineData(typeof(InvalidRelationshipTargetModeRegistry), "Invalid package relationship target mode")]
         [InlineData(typeof(AbsoluteInternalRelationshipTargetRegistry), "Absolute internal package relationship target")]
+        [InlineData(typeof(NetworkPathInternalRelationshipTargetRegistry), "Network-path internal package relationship target")]
         public void InvalidPackageRelationshipTest(Type registryType, string expectedMessage)
         {
             InjectPlugins(registryType);
@@ -898,6 +899,14 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         internal class AbsoluteInternalRelationshipTargetRegistry : InvalidRelationshipRegistryBase
         {
             public AbsoluteInternalRelationshipTargetRegistry() : base(new PluginPackageRelationship("rId1", InternalRelationshipType, "https://example.org/internal", TargetMode.Internal))
+            {
+            }
+        }
+
+        [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_NETWORK_PATH_INTERNAL_RELATIONSHIP_TARGET_REGISTRY", QueueUUID = PlugInUUID.WriterPackageRegistryQueue)]
+        internal class NetworkPathInternalRelationshipTargetRegistry : InvalidRelationshipRegistryBase
+        {
+            public NetworkPathInternalRelationshipTargetRegistry() : base(new PluginPackageRelationship("rId1", InternalRelationshipType, "//example.org/internal", TargetMode.Internal))
             {
             }
         }

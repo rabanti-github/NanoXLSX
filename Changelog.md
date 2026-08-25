@@ -1,5 +1,16 @@
 # Change Log
 
+## v3.2.1
+
+---
+
+Release Date: **(25.08.2026)** <sup>(DMY)</sup>
+
+- Fixed a bug regarding path handling on reading files. Bug fix provided by yolkin-games
+- Fixed a bug regarding path handling on writing files
+- Added constant`MaxZoomFactor` in Worksheet. The exiting constant `maxZoomFactor` is obsolete and will be removed with the next major release
+- Code maintenance
+
 ## v3.2.0
 
 ---
@@ -39,7 +50,7 @@ Release Date: **(20.08.2026)** <sup>(DMY)</sup>
 - **General**
   * Various internal processing optimizations.
   * Added and extended test coverage for formulas, defined names, cell errors, relationship discovery and plug-ins.
-  * Code maintenance.
+  * Code maintenance
 
 
 ## v3.1.0

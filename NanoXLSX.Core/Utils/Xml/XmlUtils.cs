@@ -10,6 +10,7 @@ using System.Text;
 
 namespace NanoXLSX.Utils.Xml
 {
+    // TODO Set to internal in next major release
     /// <summary>
     /// Class providing static methods to manipulate XML during packing or unpacking
     /// </summary>
