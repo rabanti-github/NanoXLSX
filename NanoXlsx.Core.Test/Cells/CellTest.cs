@@ -576,12 +576,52 @@ namespace NanoXLSX.Test.Core.CellTest
         }
 
         [Fact(DisplayName = "Test of the failing ResolveColumnAddress method")]
-        public void ResolveColumnAddressTest2()
+        public void ResolveColumnAddressFailingTest()
         {
             Exception ex = Assert.Throws<RangeException>(() => Cell.ResolveColumnAddress(-1));
             Assert.Equal(typeof(RangeException), ex.GetType());
             ex = Assert.Throws<RangeException>(() => Cell.ResolveColumnAddress(16384));
             Assert.Equal(typeof(RangeException), ex.GetType());
+        }
+
+        [Theory(DisplayName = "Test of the ValidateColumnNumber method")]
+        [InlineData(-1, false)]
+        [InlineData(0, true)]
+        [InlineData(1, true)]
+        [InlineData(16382, true)]
+        [InlineData(16383, true)]
+        [InlineData(16384, false)]
+        public void ValidateColumnNumberTest(int column, bool valid)
+        {
+            if (valid)
+            {
+                Cell.ValidateColumnNumber(column);
+                Assert.True(true); // Pass if reached this line
+            }
+            else
+            {
+                Assert.Throws<RangeException>(() => Cell.ValidateColumnNumber(column));
+            }
+        }
+
+        [Theory(DisplayName = "Test of the ValidateRowNumber method")]
+        [InlineData(-1, false)]
+        [InlineData(0, true)]
+        [InlineData(1, true)]
+        [InlineData(1048574, true)]
+        [InlineData(1048575, true)]
+        [InlineData(1048576, false)]
+        public void ValidateRowNumberTest(int row, bool valid)
+        {
+            if (valid)
+            {
+                Cell.ValidateRowNumber(row);
+                Assert.True(true); // Pass if reached this line
+            }
+            else
+            {
+                Assert.Throws<RangeException>(() => Cell.ValidateRowNumber(row));
+            }
         }
 
         [Theory(DisplayName = "Test of the address scope check function")]

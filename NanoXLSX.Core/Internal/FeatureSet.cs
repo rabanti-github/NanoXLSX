@@ -15,13 +15,16 @@
             Aggregate,
             /// <summary>Feature set is on a formula (leaf element)</summary>
             Formula,
-            /// <summary>Feature set is on defined name instance (leaf element) </summary>
+            /// <summary>Feature set is on defined name instance (leaf element)</summary>
             DefinedName
         }
 
         private FeatureSetType type;
         private FeatureSet parent;
 
+        /// <summary>
+        /// Number of formulas in the feature set.
+        /// </summary>
         internal int FormulaCount { get; private set; }
 
         /// <summary>
@@ -113,8 +116,6 @@
         private FeatureSet(FeatureSetType type)
         {
             this.type = type;
-            //this.isFormulaFeatureSet = isFormulaFeatureSet;
-
             if (type == FeatureSetType.Formula)
             {
                 FormulaCount = 1;
@@ -128,6 +129,7 @@
         /// <summary>
         /// Adds this feature set to the specified parent. The current counts are propagated to the complete parent hierarchy.
         /// </summary>
+        /// <param name="parent">Parent feature set</param>
         internal void Add(FeatureSet parent)
         {
             parent.ApplyDelta(
@@ -144,6 +146,7 @@
         /// Removes this feature set from the specified parent.
         /// The current counts are subtracted from the complete parent hierarchy.
         /// </summary>
+        /// <param name="parent">Parent feature set</param>
         internal void Remove(FeatureSet parent)
         {
             parent.ApplyDelta(

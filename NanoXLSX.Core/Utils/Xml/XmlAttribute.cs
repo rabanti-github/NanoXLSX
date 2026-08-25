@@ -10,6 +10,7 @@ using System.Linq;
 
 namespace NanoXLSX.Utils.Xml
 {
+    // TODO Set to internal in next major release
     /// <summary>
     /// Struct representing an internally used XML attribute
     /// </summary>
@@ -52,7 +53,7 @@ namespace NanoXLSX.Utils.Xml
         /// </summary>
         /// <param name="name">Attribute name</param>
         /// <param name="value">Attribute value</param>
-        /// <param name="prefix">Optional attribute prefix</param>
+        /// <param name="prefix">Optional attribute prefix (do not pass null)</param>
         /// <returns>Attribute instance</returns>
         public static XmlAttribute CreateAttribute(string name, string value, string prefix = "")
         {
