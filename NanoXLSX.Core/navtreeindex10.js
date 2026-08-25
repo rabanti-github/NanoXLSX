@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#a9890beb6a7d8215f270a71f47bdcc8d8":[2,0,0,3,1,1,1],
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#a9890beb6a7d8215f270a71f47bdcc8d8":[3,0,0,3,1,1,1],
 "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#ad01f6331d49f2521253f809a0f8cc9db":[2,0,0,3,1,1,0],
 "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#ad01f6331d49f2521253f809a0f8cc9db":[3,0,0,3,1,1,0],
 "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#aee6e8af4d30ba1c746288eeeee56eb2e":[2,0,0,3,1,1,2],
@@ -10,6 +12,7 @@ var NAVTREEINDEX10 =
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md13":[1,6],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md15":[1,7],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md17":[1,8],
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md19":[1,9],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md3":[1,1],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md5":[1,2],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md7":[1,3],

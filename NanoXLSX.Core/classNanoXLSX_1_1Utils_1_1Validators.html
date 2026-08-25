@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.2.0</span>
+   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.2.1</span>
    </div>
   </td>
  </tr>
@@ -154,7 +154,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>If <em>scope</em>  is <a class="el" href="classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66fa87ba2ecc8b6915e8bd6f5089918229fd" title="The address represents a range of cells.">Cell.AddressScope.Range</a>, an explicit range expression is required; a single address is rejected even though <a class="el" href="classNanoXLSX_1_1Cell.html#a81816809328713f2dbb7755c36528210" title="Resolves a cell range from the format like A1:B3 or AAD556:AAD1000.">Cell.ResolveCellRange(string)</a> can represent it as a one-cell range. If the scope is <a class="el" href="classNanoXLSX_1_1Cell.html#aadcea057ac77522a6b70a5024841e66fa4bbb8f967da6d1a610596d7257179c2b" title="The address expression is invalid.">Cell.AddressScope.Invalid</a>, the validation is inverted, so that a valid cell or range will throw an exception.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00058">58</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00059">59</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
 
 </div>
 </div>
@@ -191,12 +191,6 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Validates the passed string, whether it is a valid RGB or ARGB value that can be used for Fills, Fonts or other styling components. </p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1StyleException.html" title="Class for exceptions regarding Style incidents.">StyleException</a></td><td>A <a class="el" href="classNanoXLSX_1_1Exceptions_1_1StyleException.html" title="Class for exceptions regarding Style incidents.">StyleException</a> is thrown if an invalid hex value is passed</td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">hexCode</td><td>Hex string to check</td></tr>
@@ -205,8 +199,14 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1StyleException.html" title="Class for exceptions regarding Style incidents.">StyleException</a></td><td>A <a class="el" href="classNanoXLSX_1_1Exceptions_1_1StyleException.html" title="Class for exceptions regarding Style incidents.">StyleException</a> is thrown if an invalid hex value is passed</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00042">42</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00043">43</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
 
 </div>
 </div>
@@ -246,7 +246,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00021">21</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00022">22</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
 
 </div>
 </div>
@@ -287,7 +287,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00109">109</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Validators_8cs_source.html#l00110">110</a> of file <a class="el" href="Validators_8cs_source.html">Validators.cs</a>.</p>
 
 </div>
 </div>

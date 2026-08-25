@@ -153,6 +153,7 @@ var classNanoXLSX_1_1Worksheet =
     [ "MaxRowHeight", "classNanoXLSX_1_1Worksheet.html#aeedcdff6ec997ce71713e264a8ebbb41", null ],
     [ "MaxRowNumber", "classNanoXLSX_1_1Worksheet.html#a5ba242d4798c72738e722f6ab5df968d", null ],
     [ "MaxWorksheetNameLength", "classNanoXLSX_1_1Worksheet.html#a015a76a5b1c99b322693ce7b460584f9", null ],
+    [ "MaxZoomFactor", "classNanoXLSX_1_1Worksheet.html#ad3237c38319e32160bc98c1f9e74c014", null ],
     [ "maxZoomFactor", "classNanoXLSX_1_1Worksheet.html#acd2c83ef6e953992ed4285b6293e8f12", null ],
     [ "MinColumnNumber", "classNanoXLSX_1_1Worksheet.html#a2ad4cb6310df8d3959335f63e5dc6462", null ],
     [ "MinColumnWidth", "classNanoXLSX_1_1Worksheet.html#abd849651ee8c47e146f8783ecebc7392", null ],

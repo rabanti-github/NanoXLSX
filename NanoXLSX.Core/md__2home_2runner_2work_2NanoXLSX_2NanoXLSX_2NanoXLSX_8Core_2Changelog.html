@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.2.0</span>
+   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.2.1</span>
    </div>
   </td>
  </tr>
@@ -93,16 +93,24 @@ $(function(){initNavTree('md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a></p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
+v3.2.1</h1>
+<hr  />
+<p>Release Date: <b>(25.08.2026)</b> <sup>(DMY)</sup></p>
+<ul>
+<li>Added constant<span class="tt">MaxZoomFactor</span> in Worksheet. The exiting constant <span class="tt">maxZoomFactor</span> is obsolete and will be removed with the next major release</li>
+<li>Code maintenance</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
 v3.2.0</h1>
 <hr  />
-<p>Release Date: <b>(xx.yy.2026)</b> <sup>(DMY)</sup></p>
+<p>Release Date: <b>(20.08.2026)</b> <sup>(DMY)</sup></p>
 <ul>
 <li>Added new interfaces for plug-ins</li>
 <li>Updated internal plug-in registry</li>
 <li>Fixed unit tests</li>
 <li>Code maintenance</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
 v3.1.0</h1>
 <hr  />
 <p> Release Date: <b>(04.05.2026)</b> <sup>(DMY)</sup></p>
@@ -113,7 +121,7 @@ v3.1.0</h1>
 <li>Added <span class="tt">Worksheet.CellValues</span> property (<span class="tt">IEnumerable&lt;Cell&gt;</span>): allocation-free enumeration over all cells in a worksheet, preferred for hot iteration paths.</li>
 </ul>
 <p>Note: Direct manipulation of the cell dictionary through <span class="tt">Worksheet.Cells</span> (e.g. <span class="tt">Cells.Add(...)</span>, <span class="tt">Cells.Remove(...)</span>, <span class="tt">Cells["A1"] = new Cell(...)</span>) was never an intended or documented API. Doing so bypassed address validation, style normalisation and internal bookkeeping performed by <span class="tt">AddCell</span> and <span class="tt">RemoveCell</span>, and could silently produce invalid workbooks. The change to <span class="tt">IReadOnlyDictionary</span> makes this boundary explicit.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
 v3.0.0</h1>
 <hr  />
 <p> Release Date: <b>(28.02.2026)</b> <sup>(DMY)</sup></p>
@@ -121,14 +129,14 @@ v3.0.0</h1>
 <li>Final release of NanoXLSX.Core</li>
 <li>See the <a href="https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md">main changelog</a> for a comprehensive summary of all changes since v2.6.7</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
 v3.0.0-rc.7</h1>
 <hr  />
 <p> Release Date: <b>15.02.2026</b> <sup>(DMY)</sup></p>
 <ul>
 <li>Fixed a bug in the PlugInLoader</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
 v3.0.0-rc.5</h1>
 <hr  />
 <p> Release Date: <b>22.01.2026</b> <sup>(DMY)</sup></p>
@@ -139,14 +147,14 @@ v3.0.0-rc.5</h1>
 <li>Moved internal interfaces of the Reader and Writer package to NanoXLSX.Core (namespace <span class="tt"><a class="el" href="namespaceNanoXLSX_1_1Interfaces_1_1Reader.html">NanoXLSX.Interfaces.Reader</a></span> and <span class="tt"><a class="el" href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">NanoXLSX.Interfaces.Writer</a></span>)</li>
 <li>Moved and consolidated enums of password types to NanoXLSX.Core (namespace <span class="tt"><a class="el" href="classNanoXLSX_1_1Enums_1_1Password.html" title="Static class that contains shared enums for password handling, during read or write operations.">NanoXLSX.Enums.Password</a></span>)</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
 v3.0.0-rc.4</h1>
 <hr  />
 <p> Release Date: <b>07.01.2026</b> <sup>(DMY)</sup></p>
 <ul>
 <li>Added Font properties: <span class="tt">Font.Outline</span>, <span class="tt">Font.Shadow</span>, <span class="tt">Font.Condense</span> and <span class="tt">Font.Extend</span> (optional font properties)</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
 v3.0.0-rc.3</h1>
 <hr  />
 <p> Release Date: <b>04.01.2026</b> <sup>(DMY)</sup></p>
@@ -156,14 +164,14 @@ v3.0.0-rc.3</h1>
 <li>Removed the property <span class="tt">ColorTheme</span> from the <span class="tt">Font</span> class</li>
 <li>Changed the type of the property <span class="tt">ColorVlaue</span> of the Font class from <span class="tt">string</span> to <span class="tt">Color</span> (namespace <span class="tt">NanoXLES.Colors</span>)</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
 v3.0.0-rc.2</h1>
 <hr  />
 <p> Release Date: <b>27.11.2025</b> <sup>(DMY)</sup></p>
 <ul>
 <li>Refactoring of several enums from lowercase start to uppercase start for better consistency</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md19"></a>
 v3.0.0-rc.1</h1>
 <hr  />
 <p> Release Date: <b>25.11.2025</b> <sup>(DMY)</sup></p>

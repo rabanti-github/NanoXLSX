@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.2.0</span>
+   <div id="projectname">NanoXLSX.Core<span id="projectnumber">&#160;3.2.1</span>
    </div>
   </td>
  </tr>
@@ -394,7 +394,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="memdesc:a936ee03eb31e0da3c0a128b843a37019"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatic zoom factor of a worksheet.  <br /></td></tr>
 <tr class="memitem:ae177222a119c746ca23d038d3dffb142" id="r_ae177222a119c746ca23d038d3dffb142"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae177222a119c746ca23d038d3dffb142">MinZoomFactor</a> = 10</td></tr>
 <tr class="memdesc:ae177222a119c746ca23d038d3dffb142"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic.  <br /></td></tr>
-<tr class="memitem:acd2c83ef6e953992ed4285b6293e8f12" id="r_acd2c83ef6e953992ed4285b6293e8f12"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd2c83ef6e953992ed4285b6293e8f12">maxZoomFactor</a> = 400</td></tr>
+<tr class="memitem:ad3237c38319e32160bc98c1f9e74c014" id="r_ad3237c38319e32160bc98c1f9e74c014"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3237c38319e32160bc98c1f9e74c014">MaxZoomFactor</a> = 400</td></tr>
+<tr class="memdesc:ad3237c38319e32160bc98c1f9e74c014"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum zoom factor of a worksheet.  <br /></td></tr>
+<tr class="memitem:acd2c83ef6e953992ed4285b6293e8f12" id="r_acd2c83ef6e953992ed4285b6293e8f12"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd2c83ef6e953992ed4285b6293e8f12">maxZoomFactor</a> = <a class="el" href="#ad3237c38319e32160bc98c1f9e74c014">MaxZoomFactor</a></td></tr>
 <tr class="memdesc:acd2c83ef6e953992ed4285b6293e8f12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum zoom factor of a worksheet.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
@@ -504,7 +506,7 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00106">106</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00112">112</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -554,7 +556,7 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00119">119</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00125">125</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -580,7 +582,7 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00172">172</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00178">178</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -608,7 +610,7 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00157">157</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00163">163</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -630,7 +632,7 @@ Properties</h2></td></tr>
 
 <p>Default Constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00549">549</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00555">555</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -652,7 +654,7 @@ Properties</h2></td></tr>
 <p>Constructor with worksheet name. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that the worksheet name is not checked and fully sanitized against other worksheets with this operation. This is later performed when the worksheet is added to the workbook</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00581">581</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00587">587</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -690,7 +692,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00593">593</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00599">599</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -719,7 +721,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>If <a class="el" href="#a4297e94bf8e3d25afbd5e080d8bc84acafdf428e8a01f6d9406f50f2ab590772f" title="If selected, the user can select locked cells if the worksheets is protected.">SheetProtectionValue.SelectLockedCells</a> is added, <a class="el" href="#a4297e94bf8e3d25afbd5e080d8bc84acaebcc091b34025eaadf61fbeb68fae2b6" title="If selected, the user can select unlocked cells if the worksheets is protected.">SheetProtectionValue.SelectUnlockedCells</a> is added automatically</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01779">1779</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01785">1785</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -764,7 +766,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00748">748</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00754">754</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -816,7 +818,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00765">765</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00771">771</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -856,7 +858,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00781">781</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00787">787</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -903,7 +905,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00801">801</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00807">807</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -947,7 +949,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00854">854</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00860">860</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -997,7 +999,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00868">868</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00874">874</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1036,7 +1038,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00820">820</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00826">826</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1082,7 +1084,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00838">838</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00844">844</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1127,7 +1129,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01063">1063</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01069">1069</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1179,7 +1181,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01080">1080</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01086">1086</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1218,7 +1220,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01128">1128</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01134">1134</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1264,7 +1266,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01144">1144</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01150">1150</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1304,7 +1306,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01095">1095</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01101">1101</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1351,7 +1353,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01113">1113</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01119">1119</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1404,7 +1406,7 @@ Properties</h2></td></tr>
 </dl>
 <p>To remove a cell reference, use the <a class="el" href="#a6925be6fe3a08de709f4bba1bbbdf672" title="Removes a previous inserted cell at the defined address.">RemoveCell(int, int)</a> method. If a values is set by <a class="el" href="classNanoXLSX_1_1Cell.html#ae3b98944385576f4af31f73211a99233" title="Gets or sets the value of the cell (generic object type). When setting a value, the DataType is autom...">Cell.Value</a> it will be overwritten.</p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00917">917</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00923">923</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1463,7 +1465,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00955">955</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00961">961</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1510,7 +1512,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00991">991</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00997">997</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1564,7 +1566,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01014">1014</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01020">1020</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1597,7 +1599,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01797">1797</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01803">1803</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1630,7 +1632,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01807">1807</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01813">1813</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1663,7 +1665,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01818">1818</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01824">1824</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1697,7 +1699,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00613">613</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00619">619</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1737,7 +1739,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00629">629</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00635">635</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1770,7 +1772,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00880">880</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00886">886</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1808,7 +1810,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00893">893</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00899">899</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1835,7 +1837,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02496">2496</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02502">2502</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1867,7 +1869,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02474">2474</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02480">2480</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1894,7 +1896,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02464">2464</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02470">2470</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1921,7 +1923,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02483">2483</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02489">2489</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1949,7 +1951,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A list of cells that contain the specified value.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01748">1748</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01754">1754</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1970,7 +1972,7 @@ Properties</h2></td></tr>
 
 <p>Clears the active style of the worksheet. All later added calls will contain no style unless another active style is set. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01826">1826</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01832">1832</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -1991,7 +1993,7 @@ Properties</h2></td></tr>
 
 <p>Removes all cell selections of this worksheet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02504">2504</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02510">2510</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2014,7 +2016,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Not considered in the copy are the internal ID, the worksheet name and the workbook reference. Since styles are managed in a shared repository, no dereferencing is applied (<a class="el" href="namespaceNanoXLSX_1_1Styles.html">Styles</a> are not deep-copied). Use <a class="el" href="classNanoXLSX_1_1Workbook.html#aff9bda8565a9a733509748670fb4c4af" title="Copies a worksheet of any workbook into the another workbook.">Workbook.CopyWorksheetTo(Worksheet, string, Workbook, bool)</a> or <a class="el" href="classNanoXLSX_1_1Workbook.html#ac6e8a94b46ee91eb7df77a162d0b77a7" title="Copies a worksheet of any workbook into the current workbook.">Workbook.CopyWorksheetIntoThis(Worksheet, string, bool)</a> to add a copy of worksheet to a workbook. These methods will set the internal ID, name and workbook reference. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Copy of this worksheet</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02774">2774</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02780">2780</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2042,7 +2044,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The first cell containing the searched value or null if the value was not found</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01727">1727</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01733">1733</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2070,7 +2072,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The first cell containing the searched value or null if the value was not found</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01738">1738</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01744">1744</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2104,7 +2106,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01838">1838</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01844">1844</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2143,7 +2145,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01854">1854</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01860">1860</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2171,7 +2173,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>List of cell objects. If the column doesn't exist, an empty list is returned</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01939">1939</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01945">1945</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2205,7 +2207,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>List of cell objects. If the column doesn't exist, an empty list is returned</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01928">1928</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01934">1934</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2227,7 +2229,7 @@ Properties</h2></td></tr>
 <p>Gets the current column number (zero based). </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classNanoXLSX_1_1Column.html" title="Class representing a column of a worksheet.">Column</a> number (zero-based)</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01957">1957</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01963">1963</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2249,7 +2251,7 @@ Properties</h2></td></tr>
 <p>Gets the current row number (zero based). </p>
 <dl class="section return"><dt>Returns</dt><dd>Row number (zero-based)</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01966">1966</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01972">1972</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2272,7 +2274,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Nullable <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> <a class="el" href="structNanoXLSX_1_1Address.html" title="Struct representing the cell address as column and row (zero based).">Address</a>. If no cell address could be determined, null will be returned</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><a class="el" href="#a4cd4c9e172058fe036ddd215f2c3bfad" title="Gets the first existing cell in the current worksheet (bottom right).">GetFirstCellAddress()</a> will not return the first cell with data in any case. If there is a formatted but empty cell (or many) before the first cell with data, <a class="el" href="#a57415e6cf20e011510b8ae8f98ef9f62" title="Gets the last existing cell in the current worksheet (bottom right).">GetLastCellAddress()</a> will return the address of this empty cell. Use <a class="el" href="#a8b179c22ae692daad6add6f62da576ef" title="Gets the first existing cell with data in the current worksheet (bottom right).">GetFirstDataCellAddress</a> in this case.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01441">1441</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01447">1447</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2295,7 +2297,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Zero-based column number. In case of an empty worksheet, -1 will be returned</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><a class="el" href="#a221eaaf76e689fdb93365aea676b35f3" title="Gets the first existing column number in the current worksheet (zero-based).">GetFirstColumnNumber()</a> will not return the first column with data in any case. If there is a formatted but empty cell (or many) before the first cell with data, <a class="el" href="#a221eaaf76e689fdb93365aea676b35f3" title="Gets the first existing column number in the current worksheet (zero-based).">GetFirstColumnNumber()</a> will return the column number of this empty cell. Use <a class="el" href="#aaf2c64cc107f23bfbfa597131318b11e" title="Gets the first existing column number with data in the current worksheet (zero-based).">GetFirstDataColumnNumber</a> in this case.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01313">1313</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01319">1319</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2318,7 +2320,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Nullable <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> <a class="el" href="structNanoXLSX_1_1Address.html" title="Struct representing the cell address as column and row (zero based).">Address</a>. If no cell address could be determined, null will be returned</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><a class="el" href="#a8b179c22ae692daad6add6f62da576ef" title="Gets the first existing cell with data in the current worksheet (bottom right).">GetFirstDataCellAddress()</a> will ignore formatted but empty cells before the first cell with data. If you want the first defined cell, use <a class="el" href="#a4cd4c9e172058fe036ddd215f2c3bfad" title="Gets the first existing cell in the current worksheet (bottom right).">GetFirstCellAddress</a> instead.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01458">1458</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01464">1464</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2341,7 +2343,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Zero-based column number. In case of an empty worksheet, -1 will be returned</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><a class="el" href="#aaf2c64cc107f23bfbfa597131318b11e" title="Gets the first existing column number with data in the current worksheet (zero-based).">GetFirstDataColumnNumber()</a> will ignore formatted but empty cells before the first column with data. If you want the first defined column, use <a class="el" href="#a221eaaf76e689fdb93365aea676b35f3" title="Gets the first existing column number in the current worksheet (zero-based).">GetFirstColumnNumber</a> instead.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01324">1324</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01330">1330</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2364,7 +2366,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Zero-based row number. In case of an empty worksheet, -1 will be returned</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><a class="el" href="#a013e06750365d96acfbec7e56764e390" title="Gets the first existing row number with data in the current worksheet (zero-based).">GetFirstDataRowNumber()</a> will ignore formatted but empty cells before the first row with data. If you want the first defined row, use <a class="el" href="#aaae9aa2197e95911c1582c611a949168" title="Gets the first existing row number in the current worksheet (zero-based).">GetFirstRowNumber</a> instead.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01346">1346</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01352">1352</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2387,7 +2389,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Zero-based row number. In case of an empty worksheet, -1 will be returned</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><a class="el" href="#aaae9aa2197e95911c1582c611a949168" title="Gets the first existing row number in the current worksheet (zero-based).">GetFirstRowNumber()</a> will not return the first row with data in any case. If there is a formatted but empty cell (or many) before the first cell with data, <a class="el" href="#aaae9aa2197e95911c1582c611a949168" title="Gets the first existing row number in the current worksheet (zero-based).">GetFirstRowNumber()</a> will return the row number of this empty cell. Use <a class="el" href="#a013e06750365d96acfbec7e56764e390" title="Gets the first existing row number with data in the current worksheet (zero-based).">GetFirstDataRowNumber</a> in this case.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01335">1335</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01341">1341</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2410,7 +2412,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Nullable <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> <a class="el" href="structNanoXLSX_1_1Address.html" title="Struct representing the cell address as column and row (zero based).">Address</a>. If no cell address could be determined, null will be returned</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><a class="el" href="#a57415e6cf20e011510b8ae8f98ef9f62" title="Gets the last existing cell in the current worksheet (bottom right).">GetLastCellAddress()</a> will not return the last cell with data in any case. If there is a formatted (or with definitions of hidden states, AutoFilters, heights or widths) but empty cell (or many) after the last cell with data, <a class="el" href="#a57415e6cf20e011510b8ae8f98ef9f62" title="Gets the last existing cell in the current worksheet (bottom right).">GetLastCellAddress()</a> will return the address of this empty cell. Use <a class="el" href="#a411f6cbbbf9adda62b95afc298119b59" title="Gets the last existing cell with data in the current worksheet (bottom right).">GetLastDataCellAddress</a> in this case.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01406">1406</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01412">1412</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2433,7 +2435,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Zero-based column number. In case of an empty worksheet, -1 will be returned</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><a class="el" href="#a0d0b2761ed1a5000ab8c3b4744104d98" title="Gets the last existing column number in the current worksheet (zero-based).">GetLastColumnNumber()</a> will not return the last column with data in any case. If there is a formatted (or with the definition of AutoFilter, column width or hidden state) but empty cell (or many) after the last cell with data, <a class="el" href="#a0d0b2761ed1a5000ab8c3b4744104d98" title="Gets the last existing column number in the current worksheet (zero-based).">GetLastColumnNumber()</a> will return the column number of this empty cell. Use <a class="el" href="#aa54094e246988aa02aeec91d21e0922c" title="Gets the last existing column number with data in the current worksheet (zero-based).">GetLastDataColumnNumber</a> in this case.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01358">1358</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01364">1364</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2456,7 +2458,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Nullable <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> <a class="el" href="structNanoXLSX_1_1Address.html" title="Struct representing the cell address as column and row (zero based).">Address</a>. If no cell address could be determined, null will be returned</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><a class="el" href="#a411f6cbbbf9adda62b95afc298119b59" title="Gets the last existing cell with data in the current worksheet (bottom right).">GetLastDataCellAddress()</a> will ignore formatted (or with definitions of hidden states, AutoFilters, heights or widths) but empty cells after the last cell with data. If you want the last defined cell, use <a class="el" href="#a57415e6cf20e011510b8ae8f98ef9f62" title="Gets the last existing cell in the current worksheet (bottom right).">GetLastCellAddress</a> instead.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01424">1424</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01430">1430</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2479,7 +2481,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Zero-based column number. in case of an empty worksheet, -1 will be returned</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><a class="el" href="#aa54094e246988aa02aeec91d21e0922c" title="Gets the last existing column number with data in the current worksheet (zero-based).">GetLastDataColumnNumber()</a> will ignore formatted (or with the definition of AutoFilter, column width or hidden state) but empty cells after the last column with data. If you want the last defined column, use <a class="el" href="#a0d0b2761ed1a5000ab8c3b4744104d98" title="Gets the last existing column number in the current worksheet (zero-based).">GetLastColumnNumber</a> instead.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01369">1369</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01375">1375</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2502,7 +2504,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Zero-based row number. in case of an empty worksheet, -1 will be returned</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><a class="el" href="#aa54094e246988aa02aeec91d21e0922c" title="Gets the last existing column number with data in the current worksheet (zero-based).">GetLastDataColumnNumber()</a> will ignore formatted (or with the definition of row height or hidden state) but empty cells after the last column with data. If you want the last defined column, use <a class="el" href="#ae2ccc3fc92b81a04377f3ceaf6b52e71" title="Gets the last existing row number in the current worksheet (zero-based).">GetLastRowNumber</a> instead.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01393">1393</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01399">1399</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2525,7 +2527,7 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Zero-based row number. In case of an empty worksheet, -1 will be returned</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><a class="el" href="#ae2ccc3fc92b81a04377f3ceaf6b52e71" title="Gets the last existing row number in the current worksheet (zero-based).">GetLastRowNumber()</a> will not return the last row with data in any case. If there is a formatted (or with the definition of row height or hidden state) but empty cell (or many) after the last cell with data, <a class="el" href="#ae2ccc3fc92b81a04377f3ceaf6b52e71" title="Gets the last existing row number in the current worksheet (zero-based).">GetLastRowNumber()</a> will return the row number of this empty cell. Use <a class="el" href="#a5e84080761cf2ca52cef3baf7d3b0d39" title="Gets the last existing row number with data in the current worksheet (zero-based).">GetLastDataRowNumber</a> in this case.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01381">1381</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01387">1387</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2553,7 +2555,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>List of cell objects. If the row doesn't exist, an empty list is returned</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01908">1908</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01914">1914</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2574,7 +2576,7 @@ Properties</h2></td></tr>
 
 <p>Moves the current position to the next column. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01974">1974</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01980">1980</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2607,7 +2609,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>The value can also be negative. However, resulting column numbers below 0 or above 16383 will cause an exception</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01987">1987</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01993">1993</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2628,7 +2630,7 @@ Properties</h2></td></tr>
 
 <p>Moves the current position to the next row (use for a new line). </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02000">2000</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02006">2006</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2661,7 +2663,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>The value can also be negative. However, resulting row numbers below 0 or above 1048575 will cause an exception</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02013">2013</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02019">2019</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2689,7 +2691,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if the cell exists, otherwise <code>false</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01866">1866</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01872">1872</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2728,7 +2730,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01880">1880</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01886">1886</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2761,7 +2763,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01680">1680</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01686">1686</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2794,7 +2796,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01626">1626</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01632">1632</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2833,7 +2835,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02054">2054</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02060">2060</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2867,7 +2869,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02029">2029</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02035">2035</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2902,7 +2904,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02041">2041</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02047">2047</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2929,7 +2931,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02253">2253</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02259">2259</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2950,7 +2952,7 @@ Properties</h2></td></tr>
 
 <p>Removes auto filters from the worksheet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02173">2173</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02179">2179</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -2989,7 +2991,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01190">1190</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01196">1196</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3024,7 +3026,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01208">1208</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01214">1214</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3057,7 +3059,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02183">2183</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02189">2189</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3090,7 +3092,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02193">2193</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02199">2199</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3123,7 +3125,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02204">2204</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02210">2210</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3156,7 +3158,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02214">2214</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02220">2220</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3183,7 +3185,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02241">2241</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02247">2247</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3210,7 +3212,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02546">2546</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02552">2552</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3242,7 +3244,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02537">2537</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02543">2543</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3269,7 +3271,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02514">2514</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02520">2520</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3296,7 +3298,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02523">2523</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02529">2529</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3329,7 +3331,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Count of replaced <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> values</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01759">1759</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01765">1765</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3357,7 +3359,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01890">1890</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01896">1896</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3378,7 +3380,7 @@ Properties</h2></td></tr>
 
 <p>Resets splitting of the worksheet into panes, as well as their freezing. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02755">2755</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02761">2761</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3425,7 +3427,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Name of the sanitized worksheet</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02876">2876</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02882">2882</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3452,7 +3454,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02265">2265</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02271">2271</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3490,7 +3492,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02284">2284</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02290">2290</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3524,7 +3526,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02304">2304</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02310">2310</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3565,7 +3567,7 @@ b) if the column width is out of range (0 - 255.0)</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02396">2396</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02402">2402</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3606,7 +3608,7 @@ b) if the column width is out of range (0 - 255.0)</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02384">2384</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02390">2390</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3646,7 +3648,7 @@ b) if the column width is out of range (0 - 255.0)</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02356">2356</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02362">2362</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3686,7 +3688,7 @@ b) if the column width is out of range (0 - 255.0)</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02344">2344</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02350">2350</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3724,7 +3726,7 @@ b) if the column width is out of range (0 - 255.0)</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02418">2418</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02424">2424</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3758,7 +3760,7 @@ b) if the column width is out of range (0 - 255.0)</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02430">2430</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02436">2436</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3791,7 +3793,7 @@ b) if the column width is out of range (0 - 255.0)</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02443">2443</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02449">2449</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3824,7 +3826,7 @@ b) if the column width is out of range (0 - 255.0)</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02454">2454</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02460">2460</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3863,7 +3865,7 @@ The parameter is nullable</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02654">2654</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02660">2660</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3914,7 +3916,7 @@ The parameter is nullable</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02667">2667</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02673">2673</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3954,7 +3956,7 @@ b) if the row height is out of range (0 - 409.5)</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02575">2575</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02581">2581</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -3987,7 +3989,7 @@ b) if the row height is out of range (0 - 409.5)</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02623">2623</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02629">2629</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4025,7 +4027,7 @@ b) if the row height is out of range (0 - 409.5)</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02635">2635</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02641">2641</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4052,7 +4054,7 @@ b) if the row height is out of range (0 - 409.5)</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02555">2555</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02561">2561</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4099,7 +4101,7 @@ The parameter is nullable</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02742">2742</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02748">2748</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4158,7 +4160,7 @@ The parameter is nullable</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02708">2708</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02714">2714</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4191,7 +4193,7 @@ The parameter is nullable</td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01272">1272</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01278">1278</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4230,7 +4232,7 @@ The parameter is nullable</td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01260">1260</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01266">1266</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4263,7 +4265,7 @@ The parameter is nullable</td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01226">1226</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01232">1232</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4296,7 +4298,7 @@ The parameter is nullable</td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Note: This method may invalidate an existing date or time value since dates and times are defined by specific style. The result of a redefinition will be a number, instead of a date or time</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01285">1285</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l01291">1291</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4335,7 +4337,7 @@ The parameter is nullable</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02678">2678</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02684">2684</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4386,7 +4388,7 @@ The parameter is nullable</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02692">2692</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02698">2698</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4420,12 +4422,12 @@ The parameter is nullable</td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>This factor is not the currently set factor. use the property <a class="el" href="#a06c3d58921bcd633c0583d5a96f5ab1d" title="Gets or sets the zoom factor of the ViewType of the current worksheet. If AutoZoomFactor,...">ZoomFactor</a> to set the factor for the current <a class="el" href="#a8b657335b5f76385124e2678a61118e6" title="Gets or sets how the current worksheet is displayed in the spreadsheet application (Excel).">ViewType</a></dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a> if the zoom factor is not <a class="el" href="#a936ee03eb31e0da3c0a128b843a37019" title="Automatic zoom factor of a worksheet.">AutoZoomFactor</a> or below <a class="el" href="#ae177222a119c746ca23d038d3dffb142" title="Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic.">MinZoomFactor</a> or above <a class="el" href="#acd2c83ef6e953992ed4285b6293e8f12" title="Maximum zoom factor of a worksheet.">maxZoomFactor</a></td></tr>
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a> if the zoom factor is not <a class="el" href="#a936ee03eb31e0da3c0a128b843a37019" title="Automatic zoom factor of a worksheet.">AutoZoomFactor</a> or below <a class="el" href="#ae177222a119c746ca23d038d3dffb142" title="Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic.">MinZoomFactor</a> or above <a class="el" href="#ad3237c38319e32160bc98c1f9e74c014" title="Maximum zoom factor of a worksheet.">MaxZoomFactor</a></td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02850">2850</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l02856">2856</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4638,8 +4640,8 @@ The parameter is nullable</td></tr>
 
 </div>
 </div>
-<a id="acd2c83ef6e953992ed4285b6293e8f12" name="acd2c83ef6e953992ed4285b6293e8f12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd2c83ef6e953992ed4285b6293e8f12">&#9670;&#160;</a></span>maxZoomFactor</h2>
+<a id="ad3237c38319e32160bc98c1f9e74c014" name="ad3237c38319e32160bc98c1f9e74c014"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3237c38319e32160bc98c1f9e74c014">&#9670;&#160;</a></span>MaxZoomFactor</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4648,7 +4650,7 @@ The parameter is nullable</td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const int NanoXLSX.Worksheet.maxZoomFactor = 400</td>
+          <td class="memname">const int NanoXLSX.Worksheet.MaxZoomFactor = 400</td>
         </tr>
       </table>
   </td>
@@ -4661,6 +4663,32 @@ The parameter is nullable</td></tr>
 <p>Maximum zoom factor of a worksheet. </p>
 
 <p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00099">99</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+
+</div>
+</div>
+<a id="acd2c83ef6e953992ed4285b6293e8f12" name="acd2c83ef6e953992ed4285b6293e8f12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd2c83ef6e953992ed4285b6293e8f12">&#9670;&#160;</a></span>maxZoomFactor</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NanoXLSX.Worksheet.maxZoomFactor = <a class="el" href="#ad3237c38319e32160bc98c1f9e74c014">MaxZoomFactor</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Maximum zoom factor of a worksheet. </p>
+
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00105">105</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4818,7 +4846,7 @@ The parameter is nullable</td></tr>
 <p>Gets the active Pane is splitting is applied.<br  />
  The value is nullable. If null, no splitting was defined. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00465">465</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00471">471</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4844,7 +4872,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets the active <a class="el" href="classNanoXLSX_1_1Styles_1_1Style.html" title="Class representing a Style with sub classes within a style sheet. An instance of this class is only a...">Style</a> of the worksheet. If null, no style is defined as active. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00473">473</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00479">479</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4870,7 +4898,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets the range of the auto-filter. Wrapped to Nullable to provide null as value. If null, no auto-filter is applied. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00218">218</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00224">224</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4896,7 +4924,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets the cells of the worksheet as read-only dictionary with the cell address string as key and the cell object as value. Use <a class="el" href="#a747a0f1da7a6ac0393dc136aa11ac952" title="Gets all cells of the worksheet as an enumerable sequence. Preferred over Cells in performance-critic...">CellValues</a> for iteration-heavy code paths to avoid per-cell address-string allocation. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00227">227</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00233">233</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4922,7 +4950,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets all cells of the worksheet as an enumerable sequence. Preferred over <a class="el" href="#ad5df1187d404f1152c524ee6bb4cdf1c" title="Gets the cells of the worksheet as read-only dictionary with the cell address string as key and the c...">Cells</a> in performance-critical paths (<a class="el" href="namespaceNanoXLSX_1_1Interfaces_1_1Writer.html">Writer</a>, StyleManager) because no address string is allocated per cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00236">236</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00242">242</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4948,7 +4976,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets all columns with non-standard properties, like auto filter applied or a special width as dictionary with the zero-based column index as key and the column object as value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00244">244</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00250">250</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -4974,7 +5002,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets or sets the direction when using AddNextCell method. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00252">252</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00258">258</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5006,7 +5034,7 @@ The parameter is nullable</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00258">258</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00264">264</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5038,7 +5066,7 @@ The parameter is nullable</td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00275">275</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00281">281</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5065,7 +5093,7 @@ The parameter is nullable</td></tr>
 <p>Gets whether split panes are frozen.<br  />
  The value is nullable. If null, no freezing is applied. This property also does not apply if <a class="el" href="#a978cd0ccb605d126d186ce9e1bb8b14b" title="Gets the split address for frozen panes or if pane split was defined in number of columns and / or ro...">PaneSplitAddress</a> is null. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00433">433</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00439">439</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5093,7 +5121,7 @@ The parameter is nullable</td></tr>
  If the worksheet is not part of a workbook, or the only one in the workbook, an exception will be thrown.<br  />
  If the worksheet is the selected one, and attempted to set hidden, an exception will be thrown. Define another selected worksheet prior to this call, in this case. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00390">390</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00396">396</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5120,7 +5148,7 @@ The parameter is nullable</td></tr>
 <p>Gets the hidden rows as dictionary with the zero-based row number as key and a boolean as value. True indicates hidden, false visible. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Entries with the value false are not affecting the worksheet. These entries can be removed</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00292">292</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00298">298</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5146,7 +5174,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets the merged cells (only references) as dictionary with the cell address as key and the range object as value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00308">308</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00314">314</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5175,7 +5203,7 @@ The parameter is nullable</td></tr>
  The value is nullable. If null, no frozen panes or split by columns / rows are applied to the worksheet. However, splitting can still be applied, if the value is defined in characters.<br  />
  See also: <a class="el" href="#afc2ed93e67f7bc16a7d01294b48391d6" title="Gets the width of the left, vertical split pane, measured from the left of the window....">PaneSplitLeftWidth</a> and <a class="el" href="#a94e16977b51c3ed60bc103888b45f4c6" title="Gets the height of the upper, horizontal split pane, measured from the top of the window....">PaneSplitTopHeight</a> for splitting in characters (without freezing). </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00455">455</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00461">461</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5205,7 +5233,7 @@ The parameter is nullable</td></tr>
  See also: <a class="el" href="#a978cd0ccb605d126d186ce9e1bb8b14b" title="Gets the split address for frozen panes or if pane split was defined in number of columns and / or ro...">PaneSplitAddress</a>. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Note: This value will be modified to the Excel-internal representation, calculated by <a class="el" href="classNanoXLSX_1_1Utils_1_1DataUtils.html#abb590d436e3bb00a98abcc34a89f8161" title="Calculates the internal width of a column in characters. This width is used only in the XML documents...">DataUtils.GetInternalColumnWidth(float, float, float)</a>.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00424">424</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00430">430</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5235,7 +5263,7 @@ The parameter is nullable</td></tr>
  See also: <a class="el" href="#a978cd0ccb605d126d186ce9e1bb8b14b" title="Gets the split address for frozen panes or if pane split was defined in number of columns and / or ro...">PaneSplitAddress</a>. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Note: This value will be modified to the Excel-internal representation, calculated by <a class="el" href="classNanoXLSX_1_1Utils_1_1DataUtils.html#a936072e9ef2694a2c4995086426c36bd" title="Calculates the internal height of a split pane in a worksheet. This height is used only in the XML do...">DataUtils.GetInternalPaneSplitHeight(float)</a>.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00411">411</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00417">417</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5263,7 +5291,7 @@ The parameter is nullable</td></tr>
  The column is only relevant for vertical split, whereas the row component is only relevant for a horizontal split.<br  />
  The value is nullable. If null, no splitting was defined. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00443">443</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00449">449</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5289,7 +5317,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets defined row heights as dictionary with the zero-based row number as key and the height (float from 0 to 409.5) as value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00300">300</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00306">306</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5315,7 +5343,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets the cell ranges of selected cells of this worksheet. Returns ans empty list if no cells are selected. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00316">316</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00322">322</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5341,7 +5369,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets or sets the internal ID of the worksheet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00324">324</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00330">330</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5367,7 +5395,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets or sets the name of the worksheet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00340">340</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00346">346</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5394,7 +5422,7 @@ The parameter is nullable</td></tr>
 <p>Password instance of the worksheet protection. If a password was set, the pain text representation and the hash can be read from the instance. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>The password of this property is stored in plain text at runtime but not stored to a worksheet. The plain text password cannot be recovered when loading a workbook. The hash is retrieved and can be reused</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00350">350</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00356">356</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5420,7 +5448,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets the list of SheetProtectionValues. These values define the allowed actions if the worksheet is protected. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00359">359</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00365">365</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5446,7 +5474,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets or sets whether grid lines are visible on the current worksheet. Default is true. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00481">481</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00487">487</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5472,7 +5500,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets or sets whether the column and row headers are visible on the current worksheet. Default is true. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00486">486</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00492">492</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5498,7 +5526,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets or sets whether a ruler is displayed over the column headers. This value only applies if <a class="el" href="#a8b657335b5f76385124e2678a61118e6" title="Gets or sets how the current worksheet is displayed in the spreadsheet application (Excel).">ViewType</a> is set to <a class="el" href="#a15e8e33d23ededb900bf73961a62dc05a932e0cd60f6e3347fb5be24041681e02" title="The worksheet is displayed like it would be printed.">SheetViewType.PageLayout</a>. Default is true. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00491">491</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00497">497</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5524,7 +5552,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets or sets whether the worksheet is protected. If true, protection is enabled. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00367">367</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00373">373</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5550,7 +5578,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets or sets how the current worksheet is displayed in the spreadsheet application (Excel). </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00496">496</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00502">502</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5576,7 +5604,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets or sets the Reference to the parent <a class="el" href="classNanoXLSX_1_1Workbook.html" title="Class representing a workbook.">Workbook</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00372">372</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00378">378</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5604,12 +5632,12 @@ The parameter is nullable</td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>It is possible to add further zoom factors for inactive view types, using the function <a class="el" href="#ab34d9902c0af0fcddd452153b39ec066" title="Sets a zoom factor for a given SheetViewType. If AutoZoomFactor, the zoom factor is set to automatic.">SetZoomFactor(SheetViewType, int)</a> </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a> if the zoom factor is not <a class="el" href="#a936ee03eb31e0da3c0a128b843a37019" title="Automatic zoom factor of a worksheet.">AutoZoomFactor</a> or below <a class="el" href="#ae177222a119c746ca23d038d3dffb142" title="Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic.">MinZoomFactor</a> or above <a class="el" href="#acd2c83ef6e953992ed4285b6293e8f12" title="Maximum zoom factor of a worksheet.">maxZoomFactor</a></td></tr>
+    <tr><td class="paramname"><a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a></td><td>Throws a <a class="el" href="classNanoXLSX_1_1Exceptions_1_1WorksheetException.html" title="Class for exceptions regarding worksheet incidents.">WorksheetException</a> if the zoom factor is not <a class="el" href="#a936ee03eb31e0da3c0a128b843a37019" title="Automatic zoom factor of a worksheet.">AutoZoomFactor</a> or below <a class="el" href="#ae177222a119c746ca23d038d3dffb142" title="Minimum zoom factor of a worksheet. If set to this value, the zoom is set to automatic.">MinZoomFactor</a> or above <a class="el" href="#ad3237c38319e32160bc98c1f9e74c014" title="Maximum zoom factor of a worksheet.">MaxZoomFactor</a></td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00514">514</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00520">520</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>
@@ -5635,7 +5663,7 @@ The parameter is nullable</td></tr>
 
 <p>Gets all defined zoom factors per <a class="el" href="#a15e8e33d23ededb900bf73961a62dc05" title="Enum to define how a worksheet is displayed in the spreadsheet application (Excel).">SheetViewType</a> of the current worksheet. Use <a class="el" href="#ab34d9902c0af0fcddd452153b39ec066" title="Sets a zoom factor for a given SheetViewType. If AutoZoomFactor, the zoom factor is set to automatic.">SetZoomFactor(SheetViewType, int)</a> to define the values. </p>
 
-<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00529">529</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Worksheet_8cs_source.html#l00535">535</a> of file <a class="el" href="Worksheet_8cs_source.html">Worksheet.cs</a>.</p>
 
 </div>
 </div>

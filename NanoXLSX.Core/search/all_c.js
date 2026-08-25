@@ -67,5 +67,5 @@ var searchData=
   ['formularange_64',['FormulaRange',['../classNanoXLSX_1_1FormulaData.html#a163e536fc63a092b1093fee7904dc15c',1,'NanoXLSX::FormulaData']]],
   ['formulatype_65',['FormulaType',['../classNanoXLSX_1_1FormulaData.html#a6cbdada4b39b1530e41d292a02c65f9b',1,'NanoXLSX::FormulaData']]],
   ['freezesplitpanes_66',['FreezeSplitPanes',['../classNanoXLSX_1_1Worksheet.html#ad21cd1a8a489d8d3d0643c18f92855db',1,'NanoXLSX::Worksheet']]],
-  ['further_20references_67',['Further References',['../index.html#autotoc_md23',1,'']]]
+  ['further_20references_67',['Further References',['../index.html#autotoc_md25',1,'']]]
 ];
