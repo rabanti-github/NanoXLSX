@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using System;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
@@ -84,13 +85,36 @@ namespace NanoXLSX
             get { return this.defaultColumnStyle; }
         }
 
+        // TODO remove with next major release
         /// <summary>
         /// Sets the default style of the column
         /// </summary>
         /// <param name="defaultColumnStyle">Style to assign as default column style. Can be null (to clear)</param>
         /// <param name="unmanaged">Internally used: If true, the style repository is not invoked and only the style object of the cell is updated. Do not use!</param>
         /// <returns>If the passed style already exists in the repository, the existing one will be returned, otherwise the passed one</returns>
+        [Obsolete("Use SetDefaultColumnStyle(Style defaultColumnStyle) instead")]
         public Style SetDefaultColumnStyle(Style defaultColumnStyle, bool unmanaged = false)
+        {
+            return SetDefaultColumnStyleInternal(defaultColumnStyle, unmanaged);
+        }
+
+        /// <summary>
+        /// Sets the default style of the column
+        /// </summary>
+        /// <param name="defaultColumnStyle">Style to assign as default column style. Can be null (to clear)</param>
+        /// <returns>If the passed style already exists in the repository, the existing one will be returned, otherwise the passed one</returns>
+        public Style SetDefaultColumnStyle(Style defaultColumnStyle)
+        {
+            return SetDefaultColumnStyleInternal(defaultColumnStyle, false);
+        }
+
+        /// <summary>
+        /// Sets the default style of the column internally
+        /// </summary>
+        /// <param name="defaultColumnStyle">Style to assign as default column style. Can be null (to clear)</param>
+        /// <param name="unmanaged">Internally use only: If true, the style repository is not invoked and only the style object of the cell is updated. Do not use!</param>
+        /// <returns>If the passed style already exists in the repository, the existing one will be returned, otherwise the passed one</returns>
+        internal Style SetDefaultColumnStyleInternal(Style defaultColumnStyle, bool unmanaged)
         {
             if (defaultColumnStyle == null)
             {
@@ -107,6 +131,7 @@ namespace NanoXLSX
             }
             return this.defaultColumnStyle;
         }
+
 
         /// <summary>
         /// Default constructor (private, since not valid without address)

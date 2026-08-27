@@ -43,7 +43,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Constructor with row and column as arguments. All referencing modifiers ($) are ignored and only the defined referencing type considered
+        /// Constructor with row, column and type as arguments. All referencing modifiers ($) are ignored and only the defined referencing type considered
         /// </summary>
         /// <param name="column">Column number (zero based)</param>
         /// <param name="row">Row number (zero based)</param>
@@ -235,7 +235,7 @@ namespace NanoXLSX
         /// <summary>
         /// Creates a (dereferenced, if applicable) deep copy of this address
         /// </summary>
-        /// <returns>Copy of this range</returns>
+        /// <returns>Copy of this address</returns>
         internal Address Copy()
         {
             return new Address(this.Column, this.Row, this.Type);

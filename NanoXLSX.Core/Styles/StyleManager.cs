@@ -289,7 +289,7 @@ namespace NanoXLSX.Styles
                     if (column.Value.DefaultColumnStyle != null)
                     {
                         Style resolvedStyle = styleManager.AddStyle(column.Value.DefaultColumnStyle);
-                        workbook.Worksheets[i].Columns[column.Key].SetDefaultColumnStyle(resolvedStyle, true);
+                        workbook.Worksheets[i].Columns[column.Key].SetDefaultColumnStyleInternal(resolvedStyle, true);
                     }
                 }
             }

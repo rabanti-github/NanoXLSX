@@ -150,7 +150,7 @@ namespace NanoXLSX.Utils.Xml
         }
 
         /// <summary>
-        /// Method to add a enumeration of attributes to the element
+        /// Method to add an enumeration of attributes to the element
         /// </summary>
         /// <param name="attributes">IEnumerable of Attributes to add. If null or empty, nothing will be added</param>
         internal void AddAttributes(IEnumerable<XmlAttribute> attributes)
@@ -536,8 +536,8 @@ namespace NanoXLSX.Utils.Xml
         /// <param name="name">Name of the element</param>
         /// <param name="attributeName">Attribute name</param>
         /// <param name="attributeValue">Attribute value</param>
-        /// <param name="namePrefix">Optional prefix of the attribute</param>
-        /// <param name="attributePrefix"></param>
+        /// <param name="namePrefix">Optional prefix of the name</param>
+        /// <param name="attributePrefix">Optional prefix of the attribute</param>
         /// <returns>Element instance</returns>
         internal static XmlElement CreateElementWithAttribute(string name, string attributeName, string attributeValue, string namePrefix = "", string attributePrefix = "")
         {

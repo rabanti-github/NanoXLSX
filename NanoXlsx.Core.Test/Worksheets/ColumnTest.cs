@@ -368,6 +368,17 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.ThrowsAny<Exception>(() => worksheet.SetColumnDefaultStyle(columnAddress, BasicStyles.Bold));
         }
 
+        [Fact(DisplayName = "Test of the obsolete SetDefaultColumnStyle function with unmanaged flag")]
+        public void SetDefaultColumnStyleInternalTest()
+        {
+            int styleNumber = StyleRepository.Instance.Styles.Count;
+            Worksheet worksheet = new Worksheet();
+            Style style = BasicStyles.Bold;
+            worksheet.SetColumnWidth("A", 50f); // Invoke column creation
+            worksheet.Columns[0].SetDefaultColumnStyle(style, true);
+            Assert.Equal(styleNumber, StyleRepository.Instance.Styles.Count); // Should not have changed
+        }
+
         private void AssertColumnValues(List<Cell> givenList, List<object> expectedValues)
         {
             Assert.Equal(expectedValues.Count, givenList.Count);

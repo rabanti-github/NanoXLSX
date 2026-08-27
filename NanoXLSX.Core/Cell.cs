@@ -920,7 +920,7 @@ namespace NanoXLSX
             bool fixedRow = false;
 
             // Optional $ for column
-            if (i < len && address[i] == '$') { fixedCol = true; i++; }
+            if (address[i] == '$') { fixedCol = true; i++; }
 
             // Column letters
             int colStart = i;
