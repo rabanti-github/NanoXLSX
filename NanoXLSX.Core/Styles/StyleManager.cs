@@ -10,10 +10,12 @@ using System.Collections.Generic;
 
 namespace NanoXLSX.Styles
 {
+    // TODO set internal in next major release & move to internal folder
     /// <summary>
     /// Class representing a style manager to maintain all styles and its components of a workbook. 
     /// This class is only internally used to compose the style environment right before saving an XLSX file
     /// </summary>
+    [Obsolete("Will be removed / set to internal in next major release")]
     internal class StyleManager
     {
         #region privateFields
@@ -281,7 +283,7 @@ namespace NanoXLSX.Styles
                     if (cell.CellStyle != null)
                     {
                         Style resolvedStyle = styleManager.AddStyle(cell.CellStyle);
-                        cell.SetStyle(resolvedStyle, true);
+                        cell.SetStyleInternal(resolvedStyle, true);
                     }
                 }
                 foreach (KeyValuePair<int, Column> column in workbook.Worksheets[i].Columns)

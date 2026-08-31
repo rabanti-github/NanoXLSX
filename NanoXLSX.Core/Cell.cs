@@ -173,7 +173,7 @@ namespace NanoXLSX
                     else
                     {
                         AttachFormulaFeatures();
-                        SynchronitzeValueFromFormula();
+                        SynchronizeValueFromFormula();
                     }
                     return;
                 }
@@ -249,7 +249,7 @@ namespace NanoXLSX
                 }
                 DetachFormulaFeatures();
                 formula = value;
-                SynchronitzeValueFromFormula();
+                SynchronizeValueFromFormula();
                 AttachFormulaFeatures();
             }
         }
@@ -358,62 +358,6 @@ namespace NanoXLSX
         #endregion
 
         #region methods
-        /// <summary>
-        /// Implemented CompareTo method
-        /// </summary>
-        /// <param name="other">Object to compare</param>
-        /// <returns>0 if values are the same, -1 if this object is smaller, 1 if it is bigger</returns>
-        /// \remark <remarks>Note that this method only compares the row and column numbers, 
-        /// since the values or styles may be completely different types, and therefore hard to compare at all.<br />
-        /// The <see cref="Equals(object)"/> method considers values and style, though.</remarks>
-        public int CompareTo(Cell other)
-        {
-            if (other == null)
-            {
-                return -1;
-            }
-            if (RowNumber == other.RowNumber)
-            {
-                return ColumnNumber.CompareTo(other.ColumnNumber);
-            }
-
-            return RowNumber.CompareTo(other.RowNumber);
-        }
-
-        /// <summary>
-        /// Compares two objects whether they are addresses and equal
-        /// </summary>
-        /// <param name="obj"> Other address</param>
-        /// <returns>True if not null, of the same type and equal</returns>
-        public override bool Equals(object obj)
-        {
-            if (obj == null || obj.GetType() != typeof(Cell))
-            {
-                return false;
-            }
-            Cell other = (Cell)obj;
-            if (!this.CellAddress2.Equals(other.CellAddress2))
-            {
-                return false;
-            }
-            if (this.cellStyle != null && other.CellStyle != null && !this.CellStyle.Equals(other.CellStyle))
-            {
-                return false;
-            }
-            if (this.Formula != null && other.Formula != null && !this.Formula.Equals(other.Formula))
-            {
-                return false;
-            }
-            if (this.DataType != other.DataType)
-            {
-                return false;
-            }
-            if (this.Value != null && other.Value != null && !this.Value.Equals(other.Value))
-            {
-                return false;
-            }
-            return true;
-        }
 
         /// <summary>
         /// Removes the assigned style from the cell
@@ -471,8 +415,8 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Method resets the Cell type and tries to find the actual type. This is used if a Cell was created with the CellType DEFAULT or automatically if a value was set by <see cref="Value"/>. 
-        /// CellType FORMULA will skip this method and EMPTY will discard the value of the cell
+        /// Method resets the Cell type and tries to find the actual type. This is used if a Cell was created with the  <see cref="CellType.Default"/> or automatically if a value was set by <see cref="Value"/>. 
+        /// <see cref="CellType.Formula"/> will skip this method and  <see cref="CellType.Empty"/> will discard the value of the cell
         /// </summary>
         public void ResolveCellType()
         {
@@ -540,13 +484,36 @@ namespace NanoXLSX
             SetStyle(lockStyle);
         }
 
+        // TODO remove with next major release
         /// <summary>
         /// Sets the style of the cell
         /// </summary>
         /// <param name="style">Style to assign</param>
         /// <param name="unmanaged">Internally used: If true, the style repository is not invoked and only the style object of the cell is updated. Do not use!</param>
         /// <returns>If the passed style already exists in the repository, the existing one will be returned, otherwise the passed one</returns>
+        [Obsolete("Use SetStyle(Style style) instead")]
         public Style SetStyle(Style style, bool unmanaged = false)
+        {
+            return SetStyleInternal(style, unmanaged);
+        }
+
+        /// <summary>
+        /// Sets the style of the cell
+        /// </summary>
+        /// <param name="style">Style to assign</param>
+        /// <returns>If the passed style already exists in the repository, the existing one will be returned, otherwise the passed one</returns>
+        public Style SetStyle(Style style)
+        {
+            return SetStyleInternal(style, false);
+        }
+
+        /// <summary>
+        /// Sets the style of the cell
+        /// </summary>
+        /// <param name="style">Style to assign</param>
+        /// <param name="unmanaged">Internally used: If true, the style repository is not invoked and only the style object of the cell is updated. Do not use!</param>
+        /// <returns>If the passed style already exists in the repository, the existing one will be returned, otherwise the passed one</returns>
+        internal Style SetStyleInternal(Style style, bool unmanaged)
         {
             if (style == null)
             {
@@ -572,10 +539,68 @@ namespace NanoXLSX
             };
             if (this.cellStyle != null)
             {
-                copy.SetStyle(this.cellStyle, true);
+                copy.SetStyleInternal(this.cellStyle, true);
             }
             return copy;
         }
+
+        /// <summary>
+        /// Implemented CompareTo method
+        /// </summary>
+        /// <param name="other">Object to compare</param>
+        /// <returns>0 if values are the same, -1 if this object is smaller, 1 if it is bigger</returns>
+        /// \remark <remarks>Note that this method only compares the row and column numbers, 
+        /// since the values or styles may be completely different types, and therefore hard to compare at all.<br />
+        /// The <see cref="Equals(object)"/> method considers values and style, though.</remarks>
+        public int CompareTo(Cell other)
+        {
+            if (other == null)
+            {
+                return -1;
+            }
+            if (RowNumber == other.RowNumber)
+            {
+                return ColumnNumber.CompareTo(other.ColumnNumber);
+            }
+
+            return RowNumber.CompareTo(other.RowNumber);
+        }
+
+        /// <summary>
+        /// Compares two objects whether they are addresses and equal
+        /// </summary>
+        /// <param name="obj"> Other address</param>
+        /// <returns>True if not null, of the same type and equal</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(Cell))
+            {
+                return false;
+            }
+            Cell other = (Cell)obj;
+            if (!this.CellAddress2.Equals(other.CellAddress2))
+            {
+                return false;
+            }
+            if (this.cellStyle != null && other.CellStyle != null && !this.CellStyle.Equals(other.CellStyle))
+            {
+                return false;
+            }
+            if (this.Formula != null && other.Formula != null && !this.Formula.Equals(other.Formula))
+            {
+                return false;
+            }
+            if (this.DataType != other.DataType)
+            {
+                return false;
+            }
+            if (this.Value != null && other.Value != null && !this.Value.Equals(other.Value))
+            {
+                return false;
+            }
+            return true;
+        }
+
         /// <summary>
         /// Gets the hash code of the cell
         /// </summary>
@@ -1115,7 +1140,7 @@ namespace NanoXLSX
         /// <summary>
         /// Propagates Cell.Formula.Expression back to Cell.Value
         /// </summary>
-        private void SynchronitzeValueFromFormula()
+        private void SynchronizeValueFromFormula()
         {
             if (formula.MasterCellAddress == null)
             {

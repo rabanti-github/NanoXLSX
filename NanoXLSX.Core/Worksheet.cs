@@ -327,6 +327,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets or sets the internal ID of the worksheet
         /// </summary>
+        /// <exception cref="FormatException">Thrown if the set sheet ID is smaller than 1</exception>
         public int SheetID
         {
             get => sheetID;

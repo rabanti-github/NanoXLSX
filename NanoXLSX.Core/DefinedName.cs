@@ -133,6 +133,9 @@ namespace NanoXLSX
         /// </summary>
         public bool HasExternalReferences { get { return Features.ContainsExternalLinks; } }
 
+        /// <summary>
+        /// Gets the feature set of the defined name
+        /// </summary>
         internal FeatureSet Features { get; private set; } = FeatureSet.CreateDefinedName();
 
         #endregion
@@ -199,7 +202,6 @@ namespace NanoXLSX
             FormulaError formulaError;
             object value = GetParsedObject(reference, out type, out worksheetName, out formulaError);
             bool containsExternalLink = ContainsExternalLink(worksheetName, type, value);
-            //workbook.Features.SetFormulaFeatures(false, containsExternalLink);
             Worksheet worksheet = null;
             if (worksheetName != null && !containsExternalLink)
             {
@@ -214,8 +216,6 @@ namespace NanoXLSX
             }
             DefinedName definedName = new DefinedName(workbook, type, name, value, worksheet, localSheet, comment, containsExternalLink);
             definedName.Error = formulaError;
-            //definedName.HasExternalReferences = containsExternalLink;
-            //definedName.Features.SetExternalLinkFeature(containsExternalLink);
             return definedName;
         }
 
@@ -292,8 +292,8 @@ namespace NanoXLSX
         /// <summary>
         /// Casts <see cref="Value"/> to a valid string for <see cref="TextValue"/>
         /// </summary>
-        /// <param name="workbook"></param>
-        /// <exception cref="FormatException">Thrown if a expected address or range expression is invalid</exception>
+        /// <param name="workbook">Workbook instance</param>
+        /// <exception cref="FormatException">Thrown if an expected address or range expression is invalid</exception>
         private void CastValue(Workbook workbook)
         {
             switch (this.Type)

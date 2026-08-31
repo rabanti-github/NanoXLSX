@@ -37,7 +37,7 @@ namespace NanoXLSX.Interfaces
         /// <summary>
         /// Gets whether a password was set or not
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if the password was set, otherwise false</returns>
         bool PasswordIsSet();
 
         /// <summary>

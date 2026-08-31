@@ -30,7 +30,6 @@ namespace NanoXLSX.Test.Core.StyleTest
             exampleStyle.PatternFill = PatternValue.LightGray;
         }
 
-
         [Fact(DisplayName = "Test of the default values")]
         public void DefaultValuesTest()
         {
@@ -39,8 +38,7 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(PatternValue.None, Fill.DefaultPatternFill);
         }
 
-
-        [Fact(DisplayName = "Test of the constructor with colors")]
+        [Fact(DisplayName = "Test of the constructor")]
         public void ConstructorTest()
         {
             Fill fill = new Fill();
@@ -49,7 +47,7 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(Fill.DefaultColor, fill.BackgroundColor);
         }
 
-        [Fact(DisplayName = "Test of the constructor")]
+        [Fact(DisplayName = "Test of the constructor with colors")]
         public void ConstructorTest2()
         {
             Fill fill = new Fill("FFAABBCC", "FF001122");
@@ -57,7 +55,6 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal("FFAABBCC", fill.ForegroundColor);
             Assert.Equal("FF001122", fill.BackgroundColor);
         }
-
 
         [Theory(DisplayName = "Test of the constructor with color and fill type")]
         [InlineData("FFAABBCC", FillType.FillColor, "FFAABBCC", "FF000000")]
@@ -91,7 +88,6 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Throws<StyleException>(() => new Fill(foreground, background));
         }
 
-
         [Theory(DisplayName = "Test of the failing constructor with color and fill type")]
         [InlineData("", FillType.FillColor)]
         [InlineData(null, FillType.FillColor)]
@@ -109,8 +105,6 @@ namespace NanoXLSX.Test.Core.StyleTest
         {
             Assert.Throws<StyleException>(() => new Fill(color, fillType));
         }
-
-
 
         [Theory(DisplayName = "Test of the get and set function of the BackgroundColor property")]
         [InlineData("77CCBB00")]
@@ -603,7 +597,6 @@ namespace NanoXLSX.Test.Core.StyleTest
         {
             Fill copy = (Fill)exampleStyle.Copy();
             copy.InternalID = 99;  // Should not influence
-            Assert.Equal(exampleStyle.GetHashCode(), copy.GetHashCode());
             Assert.Equal(exampleStyle.GetHashCode(), copy.GetHashCode()); // For code coverage
         }
 
@@ -612,7 +605,6 @@ namespace NanoXLSX.Test.Core.StyleTest
         {
             Fill copy = (Fill)exampleStyle.Copy();
             copy.BackgroundColor = "778800FF";
-            Assert.NotEqual(exampleStyle.GetHashCode(), copy.GetHashCode());
             Assert.NotEqual(exampleStyle.GetHashCode(), copy.GetHashCode()); // For code coverage
         }
 
