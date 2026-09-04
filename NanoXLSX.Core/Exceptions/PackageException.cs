@@ -12,6 +12,7 @@ namespace NanoXLSX.Exceptions
     /// <summary>
     /// Class for exceptions regarding plug-ins and packages. These exceptions should only occur on faulty configured packages
     /// </summary>
+    [Obsolete("Will be removed with the next major release")]
     [Serializable]
     public class PackageException : Exception
     {

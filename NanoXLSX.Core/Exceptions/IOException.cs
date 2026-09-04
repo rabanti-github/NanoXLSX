@@ -13,6 +13,7 @@ namespace NanoXLSX.Exceptions
     /// <summary>
     /// Class for exceptions regarding stream or save error incidents
     /// </summary>
+    [Obsolete("Will be removed with the next major release (historical artifact). Use System.IO.IOException instead.")]
     [Serializable]
     public class IOException : Exception
     {
