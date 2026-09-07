@@ -48,7 +48,7 @@ namespace NanoXLSX.Utils
             {
                 return true;
             }
-            else if (input == null && value != null)
+            else if (input == null)
             {
                 return false;
             }
@@ -64,7 +64,7 @@ namespace NanoXLSX.Utils
         /// </summary>
         /// <param name="input">String to check</param>
         /// <param name="value">Value to be checked, whether it occurs not at the beginning of the input string</param>
-        /// <returns>True if the input string does not starts with the specified value</returns>
+        /// <returns>True if the input string does not start with the specified value</returns>
         public static bool NotStartsWith(string input, string value)
         {
             return !StartsWith(input, value);
@@ -96,6 +96,16 @@ namespace NanoXLSX.Utils
         /// <param name="input">Integer to transform</param>
         /// <returns>Integer as string</returns>
         public static string ToString(int input)
+        {
+            return input.ToString(NumericFormat, InvariantCulture);
+        }
+
+        /// <summary>
+        /// Transforms a uint to an invariant sting
+        /// </summary>
+        /// <param name="input">Uint to transform</param>
+        /// <returns>Uint as string</returns>
+        public static string ToString(uint input)
         {
             return input.ToString(NumericFormat, InvariantCulture);
         }
@@ -151,16 +161,6 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
-        /// Transforms a uint to an invariant sting
-        /// </summary>
-        /// <param name="input">Uint to transform</param>
-        /// <returns>Uint as string</returns>
-        public static string ToString(uint input)
-        {
-            return input.ToString(NumericFormat, InvariantCulture);
-        }
-
-        /// <summary>
         /// Transforms a long to an invariant sting
         /// </summary>
         /// <param name="input">Long to transform</param>
@@ -201,7 +201,7 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
-        /// Parses a float independent from the culture info of the host
+        /// Parses a float independent of the culture info of the host
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <returns>Parsed float</returns>
@@ -212,7 +212,7 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
-        /// Parses an int independent from the culture info of the host
+        /// Parses an int independent of the culture info of the host
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <returns>Parsed int</returns>
@@ -223,7 +223,7 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
-        /// Parses a double independent from the culture info of the host
+        /// Parses a double independent of the culture info of the host
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <returns>Parsed int</returns>
@@ -238,7 +238,7 @@ namespace NanoXLSX.Utils
         /// </summary>
         /// <param name="rawValue">Raw number or expression as string</param>
         /// <returns>Parsed bool as number (0 = false, 1 = true)</returns>
-        public static int ParseBinaryBool(String rawValue)
+        public static int ParseBinaryBool(string rawValue)
         {
             if (string.IsNullOrEmpty(rawValue))
             {
@@ -258,7 +258,7 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
-        /// Tries to parse a bool from its string name (true/false), independent from the case
+        /// Tries to parse a bool from its string name (true/false), independent of the case
         /// </summary>
         /// <param name="rawValue">Raw bool as string</param>
         /// <param name="parsedValue">Parsed bool</param>
@@ -281,7 +281,7 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
-        /// Tries to parse an unsigned int (uint) independent from the culture info of the host
+        /// Tries to parse an unsigned int (uint) independent of the culture info of the host
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <param name="parsedValue">Parsed uint</param>
@@ -292,7 +292,7 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
-        /// Tries to parse a long independent from the culture info of the host
+        /// Tries to parse a long independent of the culture info of the host
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <param name="parsedValue">Parsed long</param>
@@ -303,7 +303,7 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
-        /// Tries to parse an unsigned long (ulong) independent from the culture info of the host
+        /// Tries to parse an unsigned long (ulong) independent of the culture info of the host
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <param name="parsedValue">Parsed ulong</param>
@@ -314,7 +314,7 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
-        /// Tries to parse a float (with any parsing style) independent from the culture info of the host
+        /// Tries to parse a float (with any parsing style) independent of the culture info of the host
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <param name="parsedValue">Parsed float</param>
@@ -325,7 +325,7 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
-        /// Tries to parse a decimal (with float parsing style) independent from the culture info of the host
+        /// Tries to parse a decimal (with float parsing style) independent of the culture info of the host
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <param name="parsedValue">Parsed decimal</param>
@@ -336,7 +336,7 @@ namespace NanoXLSX.Utils
         }
 
         /// <summary>
-        /// Tries to parse a double independent from the culture info of the host
+        /// Tries to parse a double independent of the culture info of the host
         /// </summary>
         /// <param name="rawValue">Raw number as string</param>
         /// <param name="parsedValue">Parsed double</param>

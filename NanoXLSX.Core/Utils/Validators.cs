@@ -87,7 +87,7 @@ namespace NanoXLSX.Utils
                 }
                 lastException = ex;
             }
-            if (scope == Cell.AddressScope.Range && isCellAddress && isRange)
+            if (scope == Cell.AddressScope.Range && isCellAddress)
             {
                 System.FormatException innerException = new System.FormatException("The expression (" + expression + ") is a single cell address, but a cell range was expected");
                 throw new FormatException(innerException.Message, innerException);

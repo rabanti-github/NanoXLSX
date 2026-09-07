@@ -15,9 +15,11 @@ using NanoXLSX.Utils;
 namespace NanoXLSX
 {
     /// <summary>
-    /// Class implementing a legacy password, based on the proprietary hashing algorithm of Excel
+    /// Legacy Excel protection password with explicit cleanup of owned storage.
+    /// Input and returned strings cannot be erased by this instance.
+    /// Not thread-safe.
     /// </summary>
-    public class LegacyPassword : IPassword
+    public class LegacyPassword : IPassword, IDisposable
     {
         /// <summary>
         /// Target type of the password
@@ -40,7 +42,6 @@ namespace NanoXLSX
         /// Current target type of the password instance
         /// </summary>
         public PasswordType Type { get; set; }
-
         /// <summary>
         /// Gets or sets the hashed password
         /// </summary>
@@ -53,8 +54,8 @@ namespace NanoXLSX
         /// <param name="type">Current target type of the password instance</param>
         public LegacyPassword(PasswordType type)
         {
-            this.Type = type;
-            this.PasswordHash = null;
+            Type = type;
+            PasswordHash = null;
         }
 
         /// <summary>
@@ -81,11 +82,10 @@ namespace NanoXLSX
                 UnsetPassword();
                 return;
             }
-            else
-            {
-                password = GetSecureString(plainText);
-                PasswordHash = GenerateLegacyPasswordHash(plainText);
-            }
+
+            string replacementHash = GenerateLegacyPasswordHash(plainText);
+            SecureString replacement = GetSecureString(plainText);
+            ReplacePassword(replacement, replacementHash);
         }
 
         /// <summary>
@@ -93,10 +93,7 @@ namespace NanoXLSX
         /// </summary>
         public void UnsetPassword()
         {
-            if (password != null)
-            {
-                password.Clear();
-            }
+            ClearPassword();
             PasswordHash = null;
         }
 
@@ -115,18 +112,85 @@ namespace NanoXLSX
         /// <param name="passwordInstance">Other instance (source)</param>
         public void CopyFrom(IPassword passwordInstance)
         {
-            this.PasswordHash = passwordInstance.PasswordHash;
-            this.password = GetSecureString(passwordInstance.GetPassword());
-            if (this.GetType() == passwordInstance.GetType())
+            if (passwordInstance == null)
             {
-                this.Type = ((LegacyPassword)passwordInstance).Type;
+                throw new ArgumentNullException(nameof(passwordInstance));
+            }
+
+            string replacementHash = passwordInstance.PasswordHash;
+            bool copyType = GetType() == passwordInstance.GetType();
+            PasswordType replacementType = copyType
+                ? ((LegacyPassword)passwordInstance).Type
+                : Type;
+            SecureString replacement;
+
+            if (passwordInstance.GetType() == typeof(LegacyPassword))
+            {
+                SecureString source = ((LegacyPassword)passwordInstance).password;
+                replacement = source == null ? null : source.Copy();
+            }
+            else
+            {
+                replacement = GetSecureString(passwordInstance.GetPassword());
+            }
+
+            ReplacePassword(replacement, replacementHash);
+            Type = replacementType;
+        }
+
+        /// <summary>
+        /// Clears owned password storage. Repeated disposal is harmless.
+        /// If reused afterwards, newly assigned storage requires cleanup again.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Clears owned password storage. Repeated disposal is harmless.
+        /// If reused afterwards, newly assigned storage requires cleanup again.
+        /// </summary>
+        /// <param name="disposing">If true, the password will be unset, otherwise no actions are taken</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                UnsetPassword();
             }
         }
 
         /// <summary>
-        /// Method to generate a legacy (Excel internal) password hash, to protect workbooks or worksheets<br />This method is derived from the c++ implementation by Kohei Yoshida (<a href="http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/">http://kohei.us/2008/01/18/excel-sheet-protection-password-hash/</a>)
+        /// Method to clear the password internally
         /// </summary>
-        /// \remark <remarks>WARNING! Do not use this method to encrypt 'real' passwords or data outside from NanoXLSX. This is only a minor security feature. Use a proper cryptography method instead.</remarks>
+        private void ClearPassword()
+        {
+            SecureString previous = password;
+            password = null;
+            if (previous != null)
+            {
+                previous.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Method to replace password with its hash internally
+        /// </summary>
+        /// <param name="replacement">Replacement password</param>
+        /// <param name="replacementHash">Associated hash</param>
+        private void ReplacePassword(SecureString replacement, string replacementHash)
+        {
+            ClearPassword();
+            password = replacement;
+            PasswordHash = replacementHash;
+        }
+
+        /// <summary>
+        /// Generates the legacy Excel protection hash, not a cryptographic
+        /// password hash. Null and empty inputs produce an empty string.
+        /// </summary>
+        /// \remark <remarks>WARNING! Do not reuse this method to encrypt 'real' passwords or data outside from NanoXLSX. This is only a minor security feature. Use a proper cryptography method instead.</remarks>
         /// <param name="password">Password string in UTF-8 to encrypt. Null or an empty string (even technical valid) are not allowed, since they cannot be inserted in a password field in Excel</param>
         /// <returns>16 bit hash as hex string. If the passed plain text password is null or empty, the returned hash will be empty</returns>
         public static string GenerateLegacyPasswordHash(string password)
@@ -134,14 +198,15 @@ namespace NanoXLSX
             if (string.IsNullOrEmpty(password)) { return string.Empty; }
             int passwordLength = password.Length;
             int passwordHash = 0;
-            char character;
             for (int i = passwordLength; i > 0; i--)
             {
-                character = password[i - 1];
-                passwordHash = ((passwordHash >> 14) & 0x01) | ((passwordHash << 1) & 0x7fff);
+                char character = password[i - 1];
+                passwordHash = ((passwordHash >> 14) & 0x01)
+                    | ((passwordHash << 1) & 0x7fff);
                 passwordHash ^= character;
             }
-            passwordHash = ((passwordHash >> 14) & 0x01) | ((passwordHash << 1) & 0x7fff);
+            passwordHash = ((passwordHash >> 14) & 0x01)
+                | ((passwordHash << 1) & 0x7fff);
             passwordHash ^= (0x8000 | ('N' << 8) | 'K');
             passwordHash ^= passwordLength;
             return passwordHash.ToString("X", ParserUtils.InvariantCulture);
@@ -154,41 +219,45 @@ namespace NanoXLSX
         /// <returns>SecureString instance of the pain text</returns>
         private static SecureString GetSecureString(string plaintextPassword)
         {
-            char[] chars;
-            if (string.IsNullOrEmpty(plaintextPassword))
+            SecureString result = new SecureString();
+            try
             {
-#pragma warning disable CA1825 // Suppress: 0-length array allocation (suggestion is not .Net 5.0 compatible)
-                chars = new char[0];
-#pragma warning restore CA1825 // Suppress: 0-length array allocation
+                if (!string.IsNullOrEmpty(plaintextPassword))
+                {
+                    foreach (char character in plaintextPassword)
+                    {
+                        result.AppendChar(character);
+                    }
+                }
+                return result;
             }
-            else
+            catch
             {
-                chars = plaintextPassword.ToCharArray();
+                result.Dispose();
+                throw;
             }
-            SecureString str = new SecureString();
-            foreach (char c in chars)
-            {
-                str.AppendChar(c);
-            }
-            return str;
         }
 
         /// <summary>
-        /// Method to retrieve the plain text from a <see cref="SecureString"/>
+        /// Method to get a plain text password from its secure string
         /// </summary>
-        /// <param name="secureString">SecureString instance. Cannot be null or empty</param>
-        /// <returns>Plain text or null, if no SecureString was defined</returns>
+        /// <param name="secureString">Secure string holding the password</param>
+        /// <returns>Plain text password</returns>
         private static string GetPasswordOfSecureString(SecureString secureString)
         {
             IntPtr unmanagedString = IntPtr.Zero;
             try
             {
                 unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(secureString);
+                // Preserve the snapshot's null-terminated string conversion behavior.
                 return Marshal.PtrToStringUni(unmanagedString);
             }
             finally
             {
-                Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
+                if (unmanagedString != IntPtr.Zero)
+                {
+                    Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
+                }
             }
         }
 
@@ -199,11 +268,10 @@ namespace NanoXLSX
         /// <returns>True if this instance and the other are the same</returns>
         public override bool Equals(object obj)
         {
-            LegacyPassword pwd = (LegacyPassword)obj;
-            return obj is LegacyPassword password &&
-                   Comparators.CompareSecureStrings(this.password, password.password) &&
-                   Type == password.Type &&
-                   PasswordHash == password.PasswordHash;
+            return obj is LegacyPassword other
+                && Comparators.CompareSecureStrings(password, other.password)
+                && Type == other.Type
+                && PasswordHash == other.PasswordHash;
         }
 
         /// <summary>
@@ -212,12 +280,12 @@ namespace NanoXLSX
         /// <returns>Hash code of the password instance</returns>
         public override int GetHashCode()
         {
-            // The actual password is not considered since its hash is sufficient
             unchecked
             {
                 var hashCode = 1034998357;
                 hashCode = hashCode * -1521134295 + Type.GetHashCode();
-                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(PasswordHash);
+                hashCode = hashCode * -1521134295
+                    + EqualityComparer<string>.Default.GetHashCode(PasswordHash);
                 hashCode = hashCode * -1521134295 + PasswordIsSet().GetHashCode();
                 return hashCode;
             }
