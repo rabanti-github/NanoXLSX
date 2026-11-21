@@ -45,6 +45,10 @@ namespace NanoXLSX.Registry
         /// </summary>
         private const int OPTIONAL_HEADER_OFFSET = 24;
         /// <summary>
+        /// Offset of SizeOfOptionalHeader from the start of the PE header (PE signature and COFF file header field offset)
+        /// </summary>
+        private const int SIZE_OF_OPTIONAL_HEADER_OFFSET = 20;
+        /// <summary>
         /// Magic number of a PE32 optional header
         /// </summary>
         private const ushort PE32_MAGIC = 0x10B;
@@ -182,6 +186,14 @@ namespace NanoXLSX.Registry
                     return false;
                 }
 
+                stream.Position = peHeaderPosition + SIZE_OF_OPTIONAL_HEADER_OFFSET;
+                ushort sizeOfOptionalHeader = reader.ReadUInt16();
+                long optionalHeaderEnd = optionalHeaderPosition + sizeOfOptionalHeader;
+                if (optionalHeaderEnd > length)
+                {
+                    return false;
+                }
+
                 stream.Position = optionalHeaderPosition;
                 ushort magic = reader.ReadUInt16();
                 long rvaCountPosition;
@@ -198,13 +210,21 @@ namespace NanoXLSX.Registry
                     return false;
                 }
 
-                long cliHeaderDirectoryPosition = rvaCountPosition + sizeof(uint) + (CLI_HEADER_DIRECTORY_INDEX * DATA_DIRECTORY_LENGTH);
-                if (cliHeaderDirectoryPosition + DATA_DIRECTORY_LENGTH > length)
+                long dataDirectoriesPosition = rvaCountPosition + sizeof(uint);
+                long cliHeaderDirectoryPosition = dataDirectoriesPosition + (CLI_HEADER_DIRECTORY_INDEX * DATA_DIRECTORY_LENGTH);
+                long cliHeaderDirectoryEnd = cliHeaderDirectoryPosition + DATA_DIRECTORY_LENGTH;
+                if (cliHeaderDirectoryEnd > optionalHeaderEnd)
                 {
                     return false;
                 }
                 stream.Position = rvaCountPosition;
-                if (reader.ReadUInt32() <= CLI_HEADER_DIRECTORY_INDEX)
+                uint numberOfRvaAndSizes = reader.ReadUInt32();
+                if (numberOfRvaAndSizes <= CLI_HEADER_DIRECTORY_INDEX)
+                {
+                    return false;
+                }
+                long declaredDataDirectoriesEnd = dataDirectoriesPosition + (numberOfRvaAndSizes * (long)DATA_DIRECTORY_LENGTH);
+                if (declaredDataDirectoriesEnd > optionalHeaderEnd)
                 {
                     return false;
                 }

@@ -90,6 +90,19 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             Assert.Equal(expectedResult, IsManagedAssemblyFile(image));
         }
 
+        [Theory(DisplayName = "The CLI header data directory must fit within the declared optional header")]
+        [InlineData(Pe32Magic, 15u, Pe32CliHeaderEndOffset, true)]
+        [InlineData(Pe32PlusMagic, 15u, Pe32PlusCliHeaderEndOffset, true)]
+        [InlineData(Pe32Magic, 15u, Pe32CliHeaderEndOffset - 1, false)]
+        [InlineData(Pe32PlusMagic, 15u, Pe32PlusCliHeaderEndOffset - 1, false)]
+        [InlineData(Pe32Magic, 16u, Pe32CliHeaderEndOffset, false)]
+        [InlineData(Pe32PlusMagic, 16u, Pe32PlusCliHeaderEndOffset, false)]
+        public void IsManagedAssemblyOptionalHeaderSizeTest(ushort magic, uint numberOfRvaAndSizes, ushort sizeOfOptionalHeader, bool expectedResult)
+        {
+            byte[] image = CreatePeImage(magic, numberOfRvaAndSizes, 0x2008, 0x48, sizeOfOptionalHeader);
+            Assert.Equal(expectedResult, IsManagedAssemblyFile(image));
+        }
+
         [Fact(DisplayName = "A managed PE image that ends within its headers is not detected as managed assembly")]
         public void IsManagedAssemblyTruncatedImageTest()
         {
@@ -101,6 +114,14 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 Array.Copy(image, truncatedImage, length);
                 Assert.False(IsManagedAssemblyFile(truncatedImage), $"Image truncated to {length} bytes");
             }
+        }
+
+        [Fact(DisplayName = "An optional header that extends beyond the file is not detected as managed assembly")]
+        public void IsManagedAssemblyOptionalHeaderBeyondEndOfFileTest()
+        {
+            byte[] image = CreatePeImage(Pe32Magic, 16, 0x2008, 0x48);
+            Array.Resize(ref image, image.Length - 1);
+            Assert.False(IsManagedAssemblyFile(image));
         }
 
         [Theory(DisplayName = "A file with a DOS signature but an invalid PE header position is not detected as managed assembly")]
@@ -127,15 +148,18 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         }
 
         /// <summary>
-        /// Creates the headers of a PE image, up to the end of the CLI header data directory. All other header fields are zero
+        /// Creates the headers of a PE image, including the declared optional header. All other header fields are zero
         /// </summary>
-        private static byte[] CreatePeImage(ushort magic, uint numberOfRvaAndSizes, uint cliHeaderRva, uint cliHeaderSize)
+        private static byte[] CreatePeImage(ushort magic, uint numberOfRvaAndSizes, uint cliHeaderRva, uint cliHeaderSize, ushort? sizeOfOptionalHeader = null)
         {
             const int peHeaderPosition = 0x80;
             int optionalHeaderPosition = peHeaderPosition + 24; // PE signature (4 bytes) and COFF file header (20 bytes)
             int rvaCountPosition = optionalHeaderPosition + (magic == Pe32PlusMagic ? 108 : 92);
             int cliHeaderDirectoryPosition = rvaCountPosition + 4 + (14 * 8); // Data directory 14, each directory is 8 bytes long
-            byte[] image = new byte[cliHeaderDirectoryPosition + 8];
+            int defaultOptionalHeaderSize = magic == Pe32PlusMagic ? Pe32PlusOptionalHeaderSize : Pe32OptionalHeaderSize;
+            ushort declaredOptionalHeaderSize = sizeOfOptionalHeader ?? (ushort)defaultOptionalHeaderSize;
+            int imageLength = optionalHeaderPosition + Math.Max(defaultOptionalHeaderSize, declaredOptionalHeaderSize);
+            byte[] image = new byte[imageLength];
             using (MemoryStream stream = new MemoryStream(image))
             using (BinaryWriter writer = new BinaryWriter(stream))
             {
@@ -144,6 +168,8 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
                 writer.Write(peHeaderPosition);
                 stream.Position = peHeaderPosition;
                 writer.Write(Encoding.ASCII.GetBytes("PE\0\0"));
+                stream.Position = peHeaderPosition + SizeOfOptionalHeaderOffset;
+                writer.Write(declaredOptionalHeaderSize);
                 stream.Position = optionalHeaderPosition;
                 writer.Write(magic);
                 stream.Position = rvaCountPosition;
@@ -177,6 +203,11 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
         private const ushort Pe32PlusMagic = 0x20B;
         private const ushort RomImageMagic = 0x107;
         private const int PeHeaderPointerPosition = 0x3C;
+        private const int SizeOfOptionalHeaderOffset = 20;
+        private const int Pe32OptionalHeaderSize = 224;
+        private const int Pe32PlusOptionalHeaderSize = 240;
+        private const ushort Pe32CliHeaderEndOffset = 216;
+        private const ushort Pe32PlusCliHeaderEndOffset = 232;
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_QUEUE_PLUGIN", QueueUUID = QueueUuid)]
         internal class QueuePlugin : IPlugin
