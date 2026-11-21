@@ -1,4 +1,4 @@
-/*
+﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
  * Copyright Raphael Stoeckli © 2026
  * This library is licensed under the MIT License.
@@ -8,7 +8,7 @@
 namespace NanoXLSX.Internal.Readers
 {
     /// <summary>
-    /// Class for defined-name meta-data on import. The information is captured by <see cref="WorkbookReader"/> and
+    /// Class for defined-name metadata on import. The information is captured by <see cref="WorkbookReader"/> and
     /// finalized into <see cref="DefinedName"/> instances by <see cref="WorksheetReader"/> once all worksheets are bound.
     /// </summary>
     internal class DefinedNameDefinition

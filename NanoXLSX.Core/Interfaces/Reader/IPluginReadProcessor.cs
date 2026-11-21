@@ -30,7 +30,7 @@ namespace NanoXLSX.Interfaces.Reader
         /// </summary>
         /// <param name="workbook">Workbook instance where read data is placed</param>
         /// <param name="readerOptions">Optional reader options</param>
-        /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in processor methods</param>
+        /// <param name="inlinePluginHandler">Reference to the handler action, to be used for post operations in processor methods</param>
         void Init(Workbook workbook, IOptions readerOptions, Action<Workbook, string, IOptions, int?> inlinePluginHandler);
 
     }

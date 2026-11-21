@@ -200,7 +200,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Workbook workbook = new Workbook("Sheet1");
             Worksheet worksheet = workbook.CurrentWorksheet;
             Assert.Throws<WorksheetException>(() => workbook.AddDefinedNameCell("Name1", null, new Address("A1")));
-            Assert.Throws<FormatException>(() => workbook.AddDefinedNameCell("Name2", worksheet, (Address)null));
+            Assert.Throws<FormatException>(() => workbook.AddDefinedNameCell("Name2", worksheet, (Address)null)); // This is a FormatException due to operator overloading
             Assert.Throws<WorksheetException>(() => workbook.AddDefinedNameRange("Name3", null, new Range("A1:B2")));
             Assert.Throws<FormatException>(() => workbook.AddDefinedNameRange("Name4", worksheet, (Range)null));
             Assert.Throws<FormatException>(() => workbook.AddDefinedNameCell("Name5", worksheet, "A1:B2"));

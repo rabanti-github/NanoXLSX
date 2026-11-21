@@ -27,7 +27,7 @@ namespace NanoXLSX.Interfaces.Reader
         /// <param name="stream">Stream, containing the XML file to red</param>
         /// <param name="workbook">Workbook instance where read data is placed</param>
         /// <param name="readerOptions">Optional reader options</param>
-        /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in reader methods</param>
+        /// <param name="inlinePluginHandler">Reference to the handler action, to be used for post operations in reader methods</param>
         void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler);
 
         /// <summary>

@@ -610,7 +610,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Assert.Equal("FFAABBCC", workbook.GetMruColors()[1]);
         }
 
-        [Fact(DisplayName = "Test of the 'GetWorksheet' function by name")]
+        [Fact(DisplayName = "Test of the GetWorksheet function by name")]
         public void GetWorksheetTest()
         {
             Workbook workbook = new Workbook("worksheet1");
@@ -623,7 +623,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Assert.Equal("WS2", givenWorksheet.Cells["A1"].Value);
         }
 
-        [Fact(DisplayName = "Test of the 'GetWorksheet' function by index")]
+        [Fact(DisplayName = "Test of the GetWorksheet function by index")]
         public void GetWorksheetTest2()
         {
             Workbook workbook = new Workbook("worksheet1");
@@ -636,7 +636,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Assert.Equal("WS2", givenWorksheet.Cells["A1"].Value);
         }
 
-        [Fact(DisplayName = "Test of the failing 'GetWorksheet' on a non existing worksheet name")]
+        [Fact(DisplayName = "Test of the failing GetWorksheet on a non existing worksheet name")]
         public void GetWorksheetFailTest()
         {
             Workbook workbook1 = new Workbook("worksheet1");

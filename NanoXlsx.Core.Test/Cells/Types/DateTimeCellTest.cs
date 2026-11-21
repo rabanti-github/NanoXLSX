@@ -19,7 +19,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [Fact(DisplayName = "DateTime value cell test: Test of the cell values, as well as proper modification")]
         public void DateCellTest()
         {
-            // Date is hard to parametrize, therefore hardcoded
+            // Date is complicated to parametrize, therefore hardcoded
             DateTime defaultDateTime = new DateTime(2020, 11, 1, 11, 22, 13, 99);
             utils.AssertCellCreation<DateTime>(defaultDateTime, new DateTime(1900, 1, 1), CellType.Date, (current, other) => { return current.Equals(other); });
             utils.AssertCellCreation<DateTime>(defaultDateTime, new DateTime(9999, 12, 31, 23, 59, 59), CellType.Date, (current, other) => { return current.Equals(other); });
@@ -29,7 +29,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [Fact(DisplayName = "TimeSpan value cell test: Test of the cell values, as well as proper modification")]
         public void TimeSpanCellTest()
         {
-            // TimeSpan is hard to parametrize, therefore hardcoded
+            // TimeSpan is complicated to parametrize, therefore hardcoded
             TimeSpan defaultTime = new TimeSpan(0, 22, 11, 7, 135);
             utils.AssertCellCreation<TimeSpan>(defaultTime, new TimeSpan(0, 0, 0), CellType.Time, (current, other) => { return current.Equals(other); });
             utils.AssertCellCreation<TimeSpan>(defaultTime, new TimeSpan(2958465, 23, 59, 59, 999), CellType.Time, (current, other) => { return current.Equals(other); });
@@ -38,7 +38,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [Fact(DisplayName = "Test of the DateTime comparison method on cells")]
         public void DateCellComparisonTest()
         {
-            // Hard to parametrize, thus hardcoded
+            // Complicated to parametrize, thus hardcoded
             DateTime baseDate = new DateTime(2020, 11, 5, 12, 23, 7, 157);
             DateTime nearBelowBase = new DateTime(2020, 11, 5, 12, 23, 7, 156);
             DateTime belowBase = new DateTime(2020, 11, 5, 8, 23, 7, 157);
@@ -62,7 +62,7 @@ namespace NanoXLSX.Test.Core.Cells.Types
         [Fact(DisplayName = "Test of the TimeSpan comparison method on cells")]
         public void TimeSpanCellComparisonTest()
         {
-            // Hard to parametrize, thus hardcoded
+            // Complicated to parametrize, thus hardcoded
             TimeSpan baseTime = new TimeSpan(1, 5, 7, 22, 113);
             TimeSpan nearBelowBase = new TimeSpan(1, 5, 7, 22, 112);
             TimeSpan belowBase = new TimeSpan(0, 5, 7, 22, 113);
