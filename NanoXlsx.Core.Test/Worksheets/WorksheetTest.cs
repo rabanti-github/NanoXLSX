@@ -67,7 +67,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("................................")]
         public void ConstructorFailingTest(string name)
         {
-            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => new Worksheet(name));
+            Assert.Throws<FormatException>(() => new Worksheet(name));
         }
 
 
@@ -81,7 +81,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         public void ConstructorFailingTest2(string name, int id)
         {
             Workbook workbook = new Workbook("test.xlsx", "sheet2");
-            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => new Worksheet(name, id, workbook));
+            Assert.Throws<FormatException>(() => new Worksheet(name, id, workbook));
         }
 
         [Fact(DisplayName = "Test of the get function of the AutoFilterRang property")]
@@ -90,7 +90,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Worksheet worksheet = new Worksheet();
             Assert.Null(worksheet.AutoFilterRange);
             worksheet.SetAutoFilter("B2:D4");
-            NanoXLSX.Range ExpectedRange = new NanoXLSX.Range("B1:D1"); // Function reduces range to row 1
+            Range ExpectedRange = new Range("B1:D1"); // Function reduces range to row 1
             Assert.Equal(ExpectedRange, worksheet.AutoFilterRange);
             worksheet.RemoveAutoFilter();
             Assert.Null(worksheet.AutoFilterRange);
@@ -165,7 +165,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         public void DefaultColumnWidthTest2(float value)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Throws<NanoXLSX.Exceptions.RangeException>(() => worksheet.DefaultColumnWidth = value);
+            Assert.Throws<RangeException>(() => worksheet.DefaultColumnWidth = value);
         }
 
         [Theory(DisplayName = "Test of the DefaultRowHeight property")]
@@ -187,7 +187,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         public void DefaultRowHeightTest2(float value)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Throws<NanoXLSX.Exceptions.RangeException>(() => worksheet.DefaultRowHeight = value);
+            Assert.Throws<RangeException>(() => worksheet.DefaultRowHeight = value);
         }
 
         [Fact(DisplayName = "Test of the get function of the HiddenRows property")]
@@ -212,8 +212,8 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Worksheet worksheet = new Worksheet();
             Assert.NotNull(worksheet.MergedCells);
             Assert.Empty(worksheet.MergedCells);
-            NanoXLSX.Range range1 = new NanoXLSX.Range("A2:C3");
-            NanoXLSX.Range range2 = new NanoXLSX.Range("S3:R2");
+            Range range1 = new Range("A2:C3");
+            Range range2 = new Range("S3:R2");
             worksheet.MergeCells(range1);
             worksheet.MergeCells(range2);
             Assert.Equal(2, worksheet.MergedCells.Count);
@@ -247,7 +247,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Worksheet worksheet = new Worksheet();
             Assert.Empty(worksheet.SelectedCells);
             worksheet.AddSelectedCells("B2:D4");
-            NanoXLSX.Range expectedRange = new NanoXLSX.Range("B2:D4");
+            Range expectedRange = new Range("B2:D4");
             Assert.Contains(expectedRange, worksheet.SelectedCells);
             worksheet.ClearSelectedCells();
             Assert.Empty(worksheet.SelectedCells);
@@ -260,11 +260,11 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.Equal(0, worksheet.SheetID);
             worksheet.SheetID = 12;
             Assert.Equal(12, worksheet.SheetID);
-            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => worksheet.SheetID = 0);
-            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => worksheet.SheetID = -1);
+            Assert.Throws<FormatException>(() => worksheet.SheetID = 0);
+            Assert.Throws<FormatException>(() => worksheet.SheetID = -1);
         }
 
-        [Theory(DisplayName = "Test of the  SheetName property")]
+        [Theory(DisplayName = "Test of the SheetName property")]
         [InlineData(".")]
         [InlineData(" ")]
         [InlineData("Test")]
@@ -290,8 +290,8 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         public void NameFailTest(string name)
         {
             Worksheet worksheet = new Worksheet();
-            Exception ex = Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => worksheet.SheetName = name);
-            Assert.Equal(typeof(NanoXLSX.Exceptions.FormatException), ex.GetType());
+            Exception ex = Assert.Throws<FormatException>(() => worksheet.SheetName = name);
+            Assert.Equal(typeof(FormatException), ex.GetType());
         }
 
         [Theory(DisplayName = "Test of the get function of the SheetProtectionPassword property")]
@@ -1038,6 +1038,8 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             Assert.Throws<FormatException>(() => worksheet.MergeCells(""));
+            string nullValue = null;
+            Assert.Throws<FormatException>(() => worksheet.MergeCells(nullValue));
         }
 
         [Fact(DisplayName = "Test of the internal RecalculateAutoFilter function")]
@@ -1572,9 +1574,6 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             }
         }
 
-
-
-
         [Theory(DisplayName = "Test of the SetSheetProtectionPassword function")]
         [InlineData(null, null, false)]
         [InlineData("", null, false)]
@@ -1885,7 +1884,6 @@ namespace NanoXLSX.Test.Core.WorksheetTest
 
             worksheet.InsertRow(1, 2);
 
-            // Assert
             Assert.Equal("A1", worksheet.Cells["A1"].Value);
             Assert.Equal("A2", worksheet.Cells["A2"].Value);
             Assert.Null(worksheet.Cells["A3"].Value);
@@ -1921,7 +1919,6 @@ namespace NanoXLSX.Test.Core.WorksheetTest
 
             worksheet.InsertColumn(1, 2);
 
-            // Assert
             Assert.Equal("A2", worksheet.Cells["A2"].Value);
             Assert.Equal("B2", worksheet.Cells["B2"].Value);
             Assert.Null(worksheet.Cells["C2"].Value);
@@ -1940,9 +1937,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.Null(worksheet.Cells["H3"].CellStyle);
         }
 
-
         #endregion
-
 
         public static Worksheet InitWorksheet(Worksheet worksheet, string address, Worksheet.CellDirection direction, Style style = null)
         {

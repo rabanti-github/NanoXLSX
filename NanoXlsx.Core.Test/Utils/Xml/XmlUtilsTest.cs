@@ -1,7 +1,7 @@
 ﻿using NanoXLSX.Utils.Xml;
 using Xunit;
 
-namespace NanoXLSX.Test.Core.UtilsTest
+namespace NanoXLSX.Core.Test.Utils.Xml
 {
     public class XmlUtilsTest
     {
@@ -15,7 +15,7 @@ namespace NanoXLSX.Test.Core.UtilsTest
         [InlineData("This is a \"quoted\" text", "This is a \"quoted\" text")]
         public void SanitizeXmlValueTest(string input, string expectedOutput)
         {
-            string result = XmlUtils.SanitizeXmlValue(input);
+            var result = XmlUtils.SanitizeXmlValue(input);
             Assert.Equal(expectedOutput, result);
         }
 
@@ -27,7 +27,7 @@ namespace NanoXLSX.Test.Core.UtilsTest
         //[InlineData("\x7F", " ")] // valid in XML v1.0
         public void SanitizeXmlValueSpecialCharactersTest(string input, string expectedOutput)
         {
-            string result = XmlUtils.SanitizeXmlValue(input);
+            var result = XmlUtils.SanitizeXmlValue(input);
             Assert.Equal(expectedOutput, result);
         }
     }

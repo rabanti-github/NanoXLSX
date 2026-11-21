@@ -102,7 +102,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.CellList)]
         public void AddCellRangeTest4(string range, RangeType type, TestType testType)
         {
-            NanoXLSX.Range cellRange = Cell.ResolveCellRange(range);
+            Range cellRange = Cell.ResolveCellRange(range);
             ListTuple data = GetList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type, testType);
             Worksheet worksheet = new Worksheet();
 
@@ -122,7 +122,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.CellList)]
         public void AddCellRangeTest5(string range, RangeType type, TestType testType)
         {
-            NanoXLSX.Range cellRange = Cell.ResolveCellRange(range);
+            Range cellRange = Cell.ResolveCellRange(range);
             ListTuple data = GetList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type, testType);
             Worksheet worksheet = new Worksheet();
 
@@ -143,7 +143,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.CellList)]
         public void AddCellRangeTest6(string range, RangeType type, TestType testType)
         {
-            NanoXLSX.Range cellRange = Cell.ResolveCellRange(range);
+            Range cellRange = Cell.ResolveCellRange(range);
             ListTuple data = GetList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type, testType);
             Worksheet worksheet = new Worksheet();
 
@@ -164,7 +164,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.CellList)]
         public void AddCellRangeTest7(string range, RangeType type, TestType testType)
         {
-            NanoXLSX.Range cellRange = Cell.ResolveCellRange(range);
+            Range cellRange = Cell.ResolveCellRange(range);
             ListTuple data = GetList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type, testType);
             Worksheet worksheet = new Worksheet();
             worksheet.SetActiveStyle(BasicStyles.BorderFrameHeader);
@@ -187,7 +187,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("T12:V15", RangeType.ThreeColumnsFourRows, TestType.CellList)]
         public void AddCellRangeTest8(string range, RangeType type, TestType testType)
         {
-            NanoXLSX.Range cellRange = Cell.ResolveCellRange(range);
+            Range cellRange = Cell.ResolveCellRange(range);
             ListTuple data = GetList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type, testType);
             Worksheet worksheet = new Worksheet();
             worksheet.SetActiveStyle(BasicStyles.BorderFrameHeader);
@@ -221,7 +221,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [InlineData("T12:V15", "T12:W15", RangeType.ThreeColumnsFourRows)]
         public void AddCellRangeFailingTest2(string givenRange, string falseRange, RangeType type)
         {
-            NanoXLSX.Range cellRange = Cell.ResolveCellRange(givenRange);
+            Range cellRange = Cell.ResolveCellRange(givenRange);
             ListTuple data = GetRandomList(cellRange.StartAddress.Column, cellRange.StartAddress.Row, type);
             Worksheet worksheet = new Worksheet();
 
@@ -232,7 +232,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Fact(DisplayName = "Test of the failing AddCellRange function with a null as passed list")]
         public void AddCellRangeFailingTest3()
         {
-            NanoXLSX.Range cellRange = "A1:A1";
+            Range cellRange = "A1:A1";
             Worksheet worksheet = new Worksheet();
             Assert.Empty(worksheet.Cells);
             Assert.Throws<RangeException>(() => worksheet.AddCellRange(null, cellRange));
