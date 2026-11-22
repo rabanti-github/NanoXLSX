@@ -433,6 +433,7 @@ namespace NanoXLSX
             }
             return string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase)
                 && Enum.Equals(Type, other.Type)
+                && Enum.Equals(Error, other.Error)
                 && string.Equals(TextValue, other.TextValue, StringComparison.Ordinal) // object implicit compared by string
                 && string.Equals(Comment, other.Comment, StringComparison.Ordinal)
                 && ReferenceEquals(TargetWorksheet, other.TargetWorksheet)
@@ -460,6 +461,7 @@ namespace NanoXLSX
                 int hash = 17;
                 hash = (hash * 31) + (Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(Name) : 0);
                 hash = (hash * 31) + Type.GetHashCode();
+                hash = (hash * 31) + Error.GetHashCode();
                 hash = (hash * 31) + (TextValue != null ? TextValue.GetHashCode() : 0); // Object implicit covered by string
                 hash = (hash * 31) + (Comment != null ? Comment.GetHashCode() : 0);
                 hash = (hash * 31) + (TargetWorksheet != null ? System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(TargetWorksheet) : 0);
@@ -488,6 +490,11 @@ namespace NanoXLSX
                 return cmp;
             }
             cmp = Type.CompareTo(other.Type);
+            if (cmp != 0)
+            {
+                return cmp;
+            }
+            cmp = Error.CompareTo(other.Error);
             if (cmp != 0)
             {
                 return cmp;
