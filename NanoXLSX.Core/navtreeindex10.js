@@ -1,5 +1,15 @@
 var NAVTREEINDEX10 =
 {
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html#a8878cee82c921806d18d40681efd582a":[2,0,0,3,1,0,1],
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html#a8878cee82c921806d18d40681efd582a":[3,0,0,3,1,0,1],
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html#a9f77f8f09f936434697c02b37a9b5ae8":[2,0,0,3,1,0,2],
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html#a9f77f8f09f936434697c02b37a9b5ae8":[3,0,0,3,1,0,2],
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html#ab7851f72bd40d4668b196c7cd6fb48a2":[2,0,0,3,1,0,3],
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html#ab7851f72bd40d4668b196c7cd6fb48a2":[3,0,0,3,1,0,3],
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html#ad88dfbf0f82c390caf52616290bc81d1":[2,0,0,3,1,0,4],
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html#ad88dfbf0f82c390caf52616290bc81d1":[3,0,0,3,1,0,4],
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html":[2,0,0,3,1,1],
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html":[3,0,0,3,1,1],
 "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#a9890beb6a7d8215f270a71f47bdcc8d8":[2,0,0,3,1,1,1],
 "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#a9890beb6a7d8215f270a71f47bdcc8d8":[3,0,0,3,1,1,1],
 "interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#ad01f6331d49f2521253f809a0f8cc9db":[2,0,0,3,1,1,0],
@@ -13,6 +23,7 @@ var NAVTREEINDEX10 =
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md15":[1,7],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md17":[1,8],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md19":[1,9],
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md21":[1,10],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md3":[1,1],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md5":[1,2],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md7":[1,3],

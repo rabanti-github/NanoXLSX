@@ -144,18 +144,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab4bfa79eef4ec3bd18a3b80588294dc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with value, cell type and address as struct. The worksheet reference is set to null and must be assigned later.  <br /></td></tr>
 <tr class="memitem:abafcd61b57ee09c77eef65ed931121a5" id="r_abafcd61b57ee09c77eef65ed931121a5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abafcd61b57ee09c77eef65ed931121a5">Cell</a> (object value, <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26a">CellType</a> type, int column, int row)</td></tr>
 <tr class="memdesc:abafcd61b57ee09c77eef65ed931121a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with value, cell type, row number and column number.  <br /></td></tr>
-<tr class="memitem:af4acabfd6747db4a372f9ded9714940e" id="r_af4acabfd6747db4a372f9ded9714940e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4acabfd6747db4a372f9ded9714940e">CompareTo</a> (<a class="el" href="#a40d7104e0759b58e20fe25bd88cb76c7">Cell</a> other)</td></tr>
-<tr class="memdesc:af4acabfd6747db4a372f9ded9714940e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implemented CompareTo method.  <br /></td></tr>
-<tr class="memitem:a9a1022f7c9645b36ff81c94fe8b942af" id="r_a9a1022f7c9645b36ff81c94fe8b942af"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a1022f7c9645b36ff81c94fe8b942af">Equals</a> (object obj)</td></tr>
-<tr class="memdesc:a9a1022f7c9645b36ff81c94fe8b942af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares two objects whether they are addresses and equal.  <br /></td></tr>
 <tr class="memitem:afb5155ac0c369b1a507f784e48a92e8d" id="r_afb5155ac0c369b1a507f784e48a92e8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb5155ac0c369b1a507f784e48a92e8d">RemoveStyle</a> ()</td></tr>
 <tr class="memdesc:afb5155ac0c369b1a507f784e48a92e8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the assigned style from the cell.  <br /></td></tr>
 <tr class="memitem:ac6115200eea9619680710f2ea3eab226" id="r_ac6115200eea9619680710f2ea3eab226"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6115200eea9619680710f2ea3eab226">ResolveCellType</a> ()</td></tr>
-<tr class="memdesc:ac6115200eea9619680710f2ea3eab226"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method resets the <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> type and tries to find the actual type. This is used if a <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> was created with the <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26a" title="Enum defines the basic data types of a cell.">CellType</a> DEFAULT or automatically if a value was set by <a class="el" href="#ae3b98944385576f4af31f73211a99233" title="Gets or sets the value of the cell (generic object type). When setting a value, the DataType is autom...">Value</a>. <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26a" title="Enum defines the basic data types of a cell.">CellType</a> FORMULA will skip this method and EMPTY will discard the value of the cell.  <br /></td></tr>
+<tr class="memdesc:ac6115200eea9619680710f2ea3eab226"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method resets the <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> type and tries to find the actual type. This is used if a <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> was created with the <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aa7a1920d61156abc05a60135aefe8bc67" title="Default Type, not specified.">CellType.Default</a> or automatically if a value was set by <a class="el" href="#ae3b98944385576f4af31f73211a99233" title="Gets or sets the value of the cell (generic object type). When setting a value, the DataType is autom...">Value</a>. <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aa313a6a3d25aa041ee3dc3cbd65d4f22b" title="Type for Formulas (The cell will be handled differently).">CellType.Formula</a> will skip this method and <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aace2c8aed9c2fa0cfbed56cbda4d8bf07" title="Type for empty cells. This type is only used for merged cells (all cells except the first of the cell...">CellType.Empty</a> will discard the value of the cell.  <br /></td></tr>
 <tr class="memitem:a45756bed795992da18e5051980762b7d" id="r_a45756bed795992da18e5051980762b7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a45756bed795992da18e5051980762b7d">SetCellLockedState</a> (bool isLocked, bool isHidden)</td></tr>
 <tr class="memdesc:a45756bed795992da18e5051980762b7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the lock state of the cell.  <br /></td></tr>
 <tr class="memitem:abe5708e1d06213a32091aae09f7e6664" id="r_abe5708e1d06213a32091aae09f7e6664"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe5708e1d06213a32091aae09f7e6664">SetStyle</a> (<a class="el" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a> style, bool unmanaged=false)</td></tr>
 <tr class="memdesc:abe5708e1d06213a32091aae09f7e6664"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the style of the cell.  <br /></td></tr>
+<tr class="memitem:a7786ec953ecf0f2c4217805489f4aede" id="r_a7786ec953ecf0f2c4217805489f4aede"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7786ec953ecf0f2c4217805489f4aede">SetStyle</a> (<a class="el" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a> style)</td></tr>
+<tr class="memdesc:a7786ec953ecf0f2c4217805489f4aede"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the style of the cell.  <br /></td></tr>
+<tr class="memitem:af4acabfd6747db4a372f9ded9714940e" id="r_af4acabfd6747db4a372f9ded9714940e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4acabfd6747db4a372f9ded9714940e">CompareTo</a> (<a class="el" href="#a40d7104e0759b58e20fe25bd88cb76c7">Cell</a> other)</td></tr>
+<tr class="memdesc:af4acabfd6747db4a372f9ded9714940e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implemented CompareTo method.  <br /></td></tr>
+<tr class="memitem:a9a1022f7c9645b36ff81c94fe8b942af" id="r_a9a1022f7c9645b36ff81c94fe8b942af"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a1022f7c9645b36ff81c94fe8b942af">Equals</a> (object obj)</td></tr>
+<tr class="memdesc:a9a1022f7c9645b36ff81c94fe8b942af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares two objects whether they are addresses and equal.  <br /></td></tr>
 <tr class="memitem:a1774e0f1c49e58b11ce04e5d5e20ad68" id="r_a1774e0f1c49e58b11ce04e5d5e20ad68"><td class="memItemLeft" align="right" valign="top">override int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1774e0f1c49e58b11ce04e5d5e20ad68">GetHashCode</a> ()</td></tr>
 <tr class="memdesc:a1774e0f1c49e58b11ce04e5d5e20ad68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the hash code of the cell.  <br /></td></tr>
 </table><table class="memberdecls">
@@ -529,7 +531,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that this method only compares the row and column numbers, since the values or styles may be completely different types, and therefore hard to compare at all.<br  />
  The <a class="el" href="#a9a1022f7c9645b36ff81c94fe8b942af" title="Compares two objects whether they are addresses and equal.">Equals(object)</a> method considers values and style, though.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00369">369</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00555">555</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -571,7 +573,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>List of cells</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00691">691</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00716">716</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -599,7 +601,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if not null, of the same type and equal</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00388">388</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00574">574</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -635,7 +637,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Scope of the address expression</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01041">1041</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01066">1066</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -683,7 +685,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00810">810</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00835">835</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -742,7 +744,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00795">795</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00820">820</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -785,7 +787,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00765">765</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00790">790</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -833,7 +835,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00779">779</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00804">804</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -855,7 +857,7 @@ Properties</h2></td></tr>
 <p>Gets the hash code of the cell. </p>
 <dl class="section return"><dt>Returns</dt><dd>Hash code of the cell</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00583">583</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00608">608</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -896,7 +898,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if the specified <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> instances are not equal; otherwise, <code>false</code>.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00621">621</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00646">646</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -939,7 +941,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that this method only compares the row and column numbers, since the values or styles may be completely different types, and therefore hard to compare at all.<br  />
  The <a class="el" href="#a9a1022f7c9645b36ff81c94fe8b942af" title="Compares two objects whether they are addresses and equal.">Equals(object)</a> method considers values and style, though.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00635">635</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00660">660</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -982,7 +984,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that this method only compares the row and column numbers, since the values or styles may be completely different types, and therefore hard to compare at all.<br  />
  The <a class="el" href="#a9a1022f7c9645b36ff81c94fe8b942af" title="Compares two objects whether they are addresses and equal.">Equals(object)</a> method considers values and style, though.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00649">649</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00674">674</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1023,7 +1025,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if the specified <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> instances are equal; otherwise, <code>false</code>.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00605">605</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00630">630</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1066,7 +1068,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that this method only compares the row and column numbers, since the values or styles may be completely different types, and therefore hard to compare at all.<br  />
  The <a class="el" href="#a9a1022f7c9645b36ff81c94fe8b942af" title="Compares two objects whether they are addresses and equal.">Equals(object)</a> method considers values and style, though.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00663">663</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00688">688</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1109,7 +1111,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Note that this method only compares the row and column numbers, since the values or styles may be completely different types, and therefore hard to compare at all.<br  />
  The <a class="el" href="#a9a1022f7c9645b36ff81c94fe8b942af" title="Compares two objects whether they are addresses and equal.">Equals(object)</a> method considers values and style, though.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00677">677</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00702">702</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1130,7 +1132,7 @@ Properties</h2></td></tr>
 
 <p>Removes the assigned style from the cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00421">421</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00365">365</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1183,7 +1185,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> <a class="el" href="structNanoXLSX_1_1Address.html" title="Struct representing the cell address as column and row (zero based).">Address</a> as string in the format A1 - XFD1048576. Depending on the type, Addresses like '$A55', 'B$2' or '$A$5' are possible outputs</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00855">855</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00880">880</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1226,7 +1228,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00879">879</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00904">904</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1279,7 +1281,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00896">896</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00921">921</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1338,7 +1340,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00910">910</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00935">935</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1381,7 +1383,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00970">970</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00995">995</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1400,9 +1402,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Method resets the <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> type and tries to find the actual type. This is used if a <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> was created with the <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26a" title="Enum defines the basic data types of a cell.">CellType</a> DEFAULT or automatically if a value was set by <a class="el" href="#ae3b98944385576f4af31f73211a99233" title="Gets or sets the value of the cell (generic object type). When setting a value, the DataType is autom...">Value</a>. <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26a" title="Enum defines the basic data types of a cell.">CellType</a> FORMULA will skip this method and EMPTY will discard the value of the cell. </p>
+<p>Method resets the <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> type and tries to find the actual type. This is used if a <a class="el" href="classNanoXLSX_1_1Cell.html" title="Class representing a cell of a worksheet.">Cell</a> was created with the <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aa7a1920d61156abc05a60135aefe8bc67" title="Default Type, not specified.">CellType.Default</a> or automatically if a value was set by <a class="el" href="#ae3b98944385576f4af31f73211a99233" title="Gets or sets the value of the cell (generic object type). When setting a value, the DataType is autom...">Value</a>. <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aa313a6a3d25aa041ee3dc3cbd65d4f22b" title="Type for Formulas (The cell will be handled differently).">CellType.Formula</a> will skip this method and <a class="el" href="#a3b982ec2b27c789a7bb54d00b5bde26aace2c8aed9c2fa0cfbed56cbda4d8bf07" title="Type for empty cells. This type is only used for merged cells (all cells except the first of the cell...">CellType.Empty</a> will discard the value of the cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00477">477</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00421">421</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1444,7 +1446,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00994">994</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01019">1019</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1486,7 +1488,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01021">1021</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01046">1046</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1525,12 +1527,40 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>The listed exception should never happen because the mentioned style is internally generated</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00527">527</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00471">471</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+
+</div>
+</div>
+<a id="a7786ec953ecf0f2c4217805489f4aede" name="a7786ec953ecf0f2c4217805489f4aede"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7786ec953ecf0f2c4217805489f4aede">&#9670;&#160;</a></span>SetStyle() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a> NanoXLSX.Cell.SetStyle </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a></td>          <td class="paramname"><span class="paramname"><em>style</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the style of the cell. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">style</td><td><a class="el" href="classNanoXLSX_1_1Styles_1_1Style.html" title="Class representing a Style with sub classes within a style sheet. An instance of this class is only a...">Style</a> to assign</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If the passed style already exists in the repository, the existing one will be returned, otherwise the passed one</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00505">505</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
 <a id="abe5708e1d06213a32091aae09f7e6664" name="abe5708e1d06213a32091aae09f7e6664"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe5708e1d06213a32091aae09f7e6664">&#9670;&#160;</a></span>SetStyle()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abe5708e1d06213a32091aae09f7e6664">&#9670;&#160;</a></span>SetStyle() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1558,7 +1588,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the passed style already exists in the repository, the existing one will be returned, otherwise the passed one</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00549">549</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l00495">495</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1599,7 +1629,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01068">1068</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01093">1093</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>
@@ -1640,7 +1670,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01082">1082</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cell_8cs_source.html#l01107">1107</a> of file <a class="el" href="Cell_8cs_source.html">Cell.cs</a>.</p>
 
 </div>
 </div>

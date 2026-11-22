@@ -2,6 +2,7 @@ var classNanoXLSX_1_1Column =
 [
     [ "Column", "classNanoXLSX_1_1Column.html#a7f2f82a0581575bf4ad341334351e6cc", null ],
     [ "Column", "classNanoXLSX_1_1Column.html#a8cfd04a5633ce89d560601adc477f8d7", null ],
+    [ "SetDefaultColumnStyle", "classNanoXLSX_1_1Column.html#aaf65bd447ca6d4377ecee0e2550ccea4", null ],
     [ "SetDefaultColumnStyle", "classNanoXLSX_1_1Column.html#a355902a913652896516123969f83f64c", null ],
     [ "ColumnAddress", "classNanoXLSX_1_1Column.html#a0fba4faed39ca4fdcdecb3e6eb0847cd", null ],
     [ "DefaultColumnStyle", "classNanoXLSX_1_1Column.html#a6b6b55fab60bea0ede5a4ef581ebba24", null ],

@@ -4,6 +4,7 @@ var NAVTREEINDEX1 =
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md13":[1,6],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md15":[1,7],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md17":[1,8],
+"md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md19":[1,9],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md3":[1,1],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md5":[1,2],
 "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Reader_2Changelog.html#autotoc_md7":[1,3],

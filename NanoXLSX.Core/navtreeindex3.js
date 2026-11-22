@@ -1,12 +1,20 @@
 var NAVTREEINDEX3 =
 {
+"classNanoXLSX_1_1LegacyPassword.html#a8fb96de930851c9ce0d2c7a7b7929f09":[3,0,0,14,2],
+"classNanoXLSX_1_1LegacyPassword.html#ab9bc5e97e2eb95a267ce80fafc4131af":[2,0,0,15,12],
+"classNanoXLSX_1_1LegacyPassword.html#ab9bc5e97e2eb95a267ce80fafc4131af":[3,0,0,14,12],
+"classNanoXLSX_1_1LegacyPassword.html#ac1fa66db009d504fab8ed72fcf55165d":[2,0,0,15,6],
+"classNanoXLSX_1_1LegacyPassword.html#ac1fa66db009d504fab8ed72fcf55165d":[3,0,0,14,6],
+"classNanoXLSX_1_1LegacyPassword.html#ad6c92af1f45bf4951ee02d517951d5ac":[2,0,0,15,4],
+"classNanoXLSX_1_1LegacyPassword.html#ad6c92af1f45bf4951ee02d517951d5ac":[3,0,0,14,4],
+"classNanoXLSX_1_1LegacyPassword.html#ad8b6afb43b2f117065e28a6c11dedf32":[2,0,0,15,0],
 "classNanoXLSX_1_1LegacyPassword.html#ad8b6afb43b2f117065e28a6c11dedf32":[3,0,0,14,0],
 "classNanoXLSX_1_1LegacyPassword.html#ad8b6afb43b2f117065e28a6c11dedf32af2613a3d86d8175aa7dab55114722f2a":[2,0,0,15,0,1],
 "classNanoXLSX_1_1LegacyPassword.html#ad8b6afb43b2f117065e28a6c11dedf32af2613a3d86d8175aa7dab55114722f2a":[3,0,0,14,0,1],
 "classNanoXLSX_1_1LegacyPassword.html#ad8b6afb43b2f117065e28a6c11dedf32afb484f7af816178a78a794aa865fb861":[2,0,0,15,0,0],
 "classNanoXLSX_1_1LegacyPassword.html#ad8b6afb43b2f117065e28a6c11dedf32afb484f7af816178a78a794aa865fb861":[3,0,0,14,0,0],
-"classNanoXLSX_1_1LegacyPassword.html#af3b822930baa719613d40a4d3cbbb20f":[2,0,0,15,7],
-"classNanoXLSX_1_1LegacyPassword.html#af3b822930baa719613d40a4d3cbbb20f":[3,0,0,14,7],
+"classNanoXLSX_1_1LegacyPassword.html#af3b822930baa719613d40a4d3cbbb20f":[2,0,0,15,9],
+"classNanoXLSX_1_1LegacyPassword.html#af3b822930baa719613d40a4d3cbbb20f":[3,0,0,14,9],
 "classNanoXLSX_1_1Metadata.html":[2,0,0,16],
 "classNanoXLSX_1_1Metadata.html":[3,0,0,15],
 "classNanoXLSX_1_1Metadata.html#a05bc6b4f4d27f9f147f441f6dbc75288":[2,0,0,16,15],
@@ -241,13 +249,5 @@ var NAVTREEINDEX3 =
 "classNanoXLSX_1_1Shortener.html#a05e034f7c8c215c08f978e42beaa4e3f":[3,0,0,18,12],
 "classNanoXLSX_1_1Shortener.html#a31d5f2defc0015cdb7189aa07f8c076e":[2,0,0,19,9],
 "classNanoXLSX_1_1Shortener.html#a31d5f2defc0015cdb7189aa07f8c076e":[3,0,0,18,9],
-"classNanoXLSX_1_1Shortener.html#a56b65c51b74a58bf5e3f6f68807176be":[2,0,0,19,11],
-"classNanoXLSX_1_1Shortener.html#a56b65c51b74a58bf5e3f6f68807176be":[3,0,0,18,11],
-"classNanoXLSX_1_1Shortener.html#a61b8099429ab23beaae73cb2af37bc9e":[2,0,0,19,2],
-"classNanoXLSX_1_1Shortener.html#a61b8099429ab23beaae73cb2af37bc9e":[3,0,0,18,2],
-"classNanoXLSX_1_1Shortener.html#a765929ca8a43211363b10222dac2dab1":[2,0,0,19,5],
-"classNanoXLSX_1_1Shortener.html#a765929ca8a43211363b10222dac2dab1":[3,0,0,18,5],
-"classNanoXLSX_1_1Shortener.html#a83a61ec5b41255df880bb5f39bab0e94":[2,0,0,19,3],
-"classNanoXLSX_1_1Shortener.html#a83a61ec5b41255df880bb5f39bab0e94":[3,0,0,18,3],
-"classNanoXLSX_1_1Shortener.html#a84e9264cf298b70943b43fa6d118679c":[2,0,0,19,10]
+"classNanoXLSX_1_1Shortener.html#a56b65c51b74a58bf5e3f6f68807176be":[2,0,0,19,11]
 };

@@ -53,6 +53,7 @@ var classNanoXLSX_1_1Cell =
     [ "ResolveColumn", "classNanoXLSX_1_1Cell.html#a8d8465fdff37592d9ef495ff13e5bda4", null ],
     [ "ResolveColumnAddress", "classNanoXLSX_1_1Cell.html#ae4505fabca63dea6ef9bee205a77a18a", null ],
     [ "SetCellLockedState", "classNanoXLSX_1_1Cell.html#a45756bed795992da18e5051980762b7d", null ],
+    [ "SetStyle", "classNanoXLSX_1_1Cell.html#a7786ec953ecf0f2c4217805489f4aede", null ],
     [ "SetStyle", "classNanoXLSX_1_1Cell.html#abe5708e1d06213a32091aae09f7e6664", null ],
     [ "ValidateColumnNumber", "classNanoXLSX_1_1Cell.html#a8be7ff0772e02e59a49b728b04e48b02", null ],
     [ "ValidateRowNumber", "classNanoXLSX_1_1Cell.html#a45ae13aca7309f01dece50eeb6a5eb97", null ],

@@ -9,7 +9,7 @@ var searchData=
   ['panesplitleftwidth_6',['PaneSplitLeftWidth',['../classNanoXLSX_1_1Worksheet.html#afc2ed93e67f7bc16a7d01294b48391d6',1,'NanoXLSX::Worksheet']]],
   ['panesplittopheight_7',['PaneSplitTopHeight',['../classNanoXLSX_1_1Worksheet.html#a94e16977b51c3ed60bc103888b45f4c6',1,'NanoXLSX::Worksheet']]],
   ['panesplittopleftcell_8',['PaneSplitTopLeftCell',['../classNanoXLSX_1_1Worksheet.html#a618b8e158408d8baf499dbc5a9785fae',1,'NanoXLSX::Worksheet']]],
-  ['parsebinarybool_9',['ParseBinaryBool',['../classNanoXLSX_1_1Utils_1_1ParserUtils.html#adc06e6be4a046f259bb4e8db690ab8e3',1,'NanoXLSX::Utils::ParserUtils']]],
+  ['parsebinarybool_9',['ParseBinaryBool',['../classNanoXLSX_1_1Utils_1_1ParserUtils.html#a2365275d06c7091f60b31d596aa9b8cb',1,'NanoXLSX::Utils::ParserUtils']]],
   ['parsedouble_10',['ParseDouble',['../classNanoXLSX_1_1Utils_1_1ParserUtils.html#a2e106a85c48cd27db8fecc614f490213',1,'NanoXLSX::Utils::ParserUtils']]],
   ['parsefloat_11',['ParseFloat',['../classNanoXLSX_1_1Utils_1_1ParserUtils.html#a87e267b1349777bba129111661c0738b',1,'NanoXLSX::Utils::ParserUtils']]],
   ['parseint_12',['ParseInt',['../classNanoXLSX_1_1Utils_1_1ParserUtils.html#a9f13c1f7d02dea3b2361aa3c9b508603',1,'NanoXLSX::Utils::ParserUtils']]],

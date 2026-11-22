@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['manager_0',['Manager',['../classNanoXLSX_1_1Metadata.html#a920ed6fc29e65b274ea9bdd47f1aec09',1,'NanoXLSX::Metadata']]],
-  ['mastercelladdress_1',['MasterCellAddress',['../classNanoXLSX_1_1FormulaData.html#a944b550388f013bfbda174ecb001e025',1,'NanoXLSX::FormulaData']]],
-  ['mergecellstyle_2',['MergeCellStyle',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#a722b493f0c4b007fbbbbcea5d600e140',1,'NanoXLSX::Styles::BasicStyles']]],
-  ['mergedcells_3',['MergedCells',['../classNanoXLSX_1_1Worksheet.html#acf7b266254e4811363aeb0106182460d',1,'NanoXLSX::Worksheet']]]
+  ['managedstyles_0',['ManagedStyles',['../classNanoXLSX_1_1Styles_1_1StyleRepository.html#acfd5fb5c68c2beea53c56ee3651c7aab',1,'NanoXLSX::Styles::StyleRepository']]],
+  ['manager_1',['Manager',['../classNanoXLSX_1_1Metadata.html#a920ed6fc29e65b274ea9bdd47f1aec09',1,'NanoXLSX::Metadata']]],
+  ['mastercelladdress_2',['MasterCellAddress',['../classNanoXLSX_1_1FormulaData.html#a944b550388f013bfbda174ecb001e025',1,'NanoXLSX::FormulaData']]],
+  ['mergecellstyle_3',['MergeCellStyle',['../classNanoXLSX_1_1Styles_1_1BasicStyles.html#a722b493f0c4b007fbbbbcea5d600e140',1,'NanoXLSX::Styles::BasicStyles']]],
+  ['mergedcells_4',['MergedCells',['../classNanoXLSX_1_1Worksheet.html#acf7b266254e4811363aeb0106182460d',1,'NanoXLSX::Worksheet']]]
 ];

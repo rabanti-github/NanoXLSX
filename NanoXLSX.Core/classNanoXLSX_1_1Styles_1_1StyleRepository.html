@@ -107,13 +107,15 @@ Properties</h2></td></tr>
 <tr class="memitem:a00b9b9bd2a1139c579723a36f5889c32" id="r_a00b9b9bd2a1139c579723a36f5889c32"><td class="memItemLeft" align="right" valign="top">static StyleRepository&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00b9b9bd2a1139c579723a36f5889c32">Instance</a><code> [get]</code></td></tr>
 <tr class="memdesc:a00b9b9bd2a1139c579723a36f5889c32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the singleton instance of the repository.  <br /></td></tr>
 <tr class="memitem:a9b6f65745fd292c9ba26a86a3aa578ab" id="r_a9b6f65745fd292c9ba26a86a3aa578ab"><td class="memItemLeft" align="right" valign="top">Dictionary&lt; int, <a class="el" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b6f65745fd292c9ba26a86a3aa578ab">Styles</a><code> [get]</code></td></tr>
-<tr class="memdesc:a9b6f65745fd292c9ba26a86a3aa578ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the currently managed styles of the repository.  <br /></td></tr>
+<tr class="memdesc:a9b6f65745fd292c9ba26a86a3aa578ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a snapshot of the currently managed styles of the repository.  <br /></td></tr>
+<tr class="memitem:acfd5fb5c68c2beea53c56ee3651c7aab" id="r_acfd5fb5c68c2beea53c56ee3651c7aab"><td class="memItemLeft" align="right" valign="top">IReadOnlyDictionary&lt; int, <a class="el" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acfd5fb5c68c2beea53c56ee3651c7aab">ManagedStyles</a><code> [get]</code></td></tr>
+<tr class="memdesc:acfd5fb5c68c2beea53c56ee3651c7aab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a read-only snapshot of the currently managed styles of the repository.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to manage all styles at runtime, before writing XLSX files. The main purpose is deduplication and decoupling of styles from workbooks at runtime. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Be careful when changing style data in this class. It may lead to inconsistencies</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="StyleRepository_8cs_source.html#l00016">16</a> of file <a class="el" href="StyleRepository_8cs_source.html">StyleRepository.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StyleRepository_8cs_source.html#l00018">18</a> of file <a class="el" href="StyleRepository_8cs_source.html">StyleRepository.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a2085b41bbd475a8f8001114d7b7f3867" name="a2085b41bbd475a8f8001114d7b7f3867"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2085b41bbd475a8f8001114d7b7f3867">&#9670;&#160;</a></span>AddStyle()</h2>
@@ -139,7 +141,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Reference from the repository. If the style to add already existed, the existing object is returned, otherwise the newly added one</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="StyleRepository_8cs_source.html#l00059">59</a> of file <a class="el" href="StyleRepository_8cs_source.html">StyleRepository.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StyleRepository_8cs_source.html#l00083">83</a> of file <a class="el" href="StyleRepository_8cs_source.html">StyleRepository.cs</a>.</p>
 
 </div>
 </div>
@@ -162,7 +164,7 @@ Properties</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Do not use this maintenance method while writing data on a worksheet or workbook. It will lead to invalid style data or even exceptions.<br  />
  Only use this method after all worksheets in all workbooks are disposed.It may free memory then.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="StyleRepository_8cs_source.html#l00082">82</a> of file <a class="el" href="StyleRepository_8cs_source.html">StyleRepository.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StyleRepository_8cs_source.html#l00106">106</a> of file <a class="el" href="StyleRepository_8cs_source.html">StyleRepository.cs</a>.</p>
 
 </div>
 </div>
@@ -189,7 +191,33 @@ Properties</h2></td></tr>
 
 <p>Gets the singleton instance of the repository. </p>
 
-<p class="definition">Definition at line <a class="el" href="StyleRepository_8cs_source.html#l00025">25</a> of file <a class="el" href="StyleRepository_8cs_source.html">StyleRepository.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StyleRepository_8cs_source.html#l00027">27</a> of file <a class="el" href="StyleRepository_8cs_source.html">StyleRepository.cs</a>.</p>
+
+</div>
+</div>
+<a id="acfd5fb5c68c2beea53c56ee3651c7aab" name="acfd5fb5c68c2beea53c56ee3651c7aab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfd5fb5c68c2beea53c56ee3651c7aab">&#9670;&#160;</a></span>ManagedStyles</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IReadOnlyDictionary&lt;int, <a class="el" href="classNanoXLSX_1_1Styles_1_1Style.html">Style</a>&gt; NanoXLSX.Styles.StyleRepository.ManagedStyles</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel get">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets a read-only snapshot of the currently managed styles of the repository. </p>
+
+<p class="definition">Definition at line <a class="el" href="StyleRepository_8cs_source.html#l00059">59</a> of file <a class="el" href="StyleRepository_8cs_source.html">StyleRepository.cs</a>.</p>
 
 </div>
 </div>
@@ -213,9 +241,10 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the currently managed styles of the repository. </p>
+<p>Gets a snapshot of the currently managed styles of the repository. </p>
+<p>&lt;deprecated&gt;Please use <a class="el" href="#acfd5fb5c68c2beea53c56ee3651c7aab" title="Gets a read-only snapshot of the currently managed styles of the repository.">ManagedStyles</a> instead&lt;/deprecated&gt; </p>
 
-<p class="definition">Definition at line <a class="el" href="StyleRepository_8cs_source.html#l00044">44</a> of file <a class="el" href="StyleRepository_8cs_source.html">StyleRepository.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StyleRepository_8cs_source.html#l00045">45</a> of file <a class="el" href="StyleRepository_8cs_source.html">StyleRepository.cs</a>.</p>
 
 </div>
 </div>

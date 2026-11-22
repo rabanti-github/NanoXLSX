@@ -25,23 +25,24 @@
 var NAVTREE =
 [
   [ "NanoXLSX.Core", "index.html", [
-    [ "NanoXLSX.Core", "index.html#autotoc_md21", [
-      [ "Description", "index.html#autotoc_md23", null ],
-      [ "Dependencies", "index.html#autotoc_md24", null ],
-      [ "Further References", "index.html#autotoc_md25", null ],
-      [ "Changes", "index.html#autotoc_md26", null ]
+    [ "NanoXLSX.Core", "index.html#autotoc_md23", [
+      [ "Description", "index.html#autotoc_md25", null ],
+      [ "Dependencies", "index.html#autotoc_md26", null ],
+      [ "Further References", "index.html#autotoc_md27", null ],
+      [ "Changes", "index.html#autotoc_md28", null ]
     ] ],
     [ "Change Log - NanoXLSX.Core", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html", [
-      [ "v3.2.1", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1", null ],
-      [ "v3.2.0", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md3", null ],
-      [ "v3.1.0", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md5", null ],
-      [ "v3.0.0", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md7", null ],
-      [ "v3.0.0-rc.7", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md9", null ],
-      [ "v3.0.0-rc.5", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md11", null ],
-      [ "v3.0.0-rc.4", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md13", null ],
-      [ "v3.0.0-rc.3", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md15", null ],
-      [ "v3.0.0-rc.2", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md17", null ],
-      [ "v3.0.0-rc.1", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md19", null ]
+      [ "v3.2.2", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md1", null ],
+      [ "v3.2.1", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md3", null ],
+      [ "v3.2.0", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md5", null ],
+      [ "v3.1.0", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md7", null ],
+      [ "v3.0.0", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md9", null ],
+      [ "v3.0.0-rc.7", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md11", null ],
+      [ "v3.0.0-rc.5", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md13", null ],
+      [ "v3.0.0-rc.4", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md15", null ],
+      [ "v3.0.0-rc.3", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md17", null ],
+      [ "v3.0.0-rc.2", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md19", null ],
+      [ "v3.0.0-rc.1", "md__2home_2runner_2work_2NanoXLSX_2NanoXLSX_2NanoXLSX_8Core_2Changelog.html#autotoc_md21", null ]
     ] ],
     [ "Packages", "namespaces.html", [
       [ "Package List", "namespaces.html", "namespaces_dup" ]
@@ -64,16 +65,16 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classNanoXLSX_1_1Colors_1_1IndexedColor.html",
-"classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4afeb49a92fbcde070118d1586ecf5cb9a",
-"classNanoXLSX_1_1LegacyPassword.html#ad8b6afb43b2f117065e28a6c11dedf32",
-"classNanoXLSX_1_1Shortener.html#a84e9264cf298b70943b43fa6d118679c",
-"classNanoXLSX_1_1Styles_1_1Fill.html#a4eb811c4b3624dde4e1a5c28f801e87a",
-"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a8a4999c45fa1b609944cf90bfb418b00",
-"classNanoXLSX_1_1Utils_1_1ParserUtils.html#a0694bfb281f9a007fef71e55fa1da306",
-"classNanoXLSX_1_1Worksheet.html#a06c3d58921bcd633c0583d5a96f5ab1d",
-"classNanoXLSX_1_1Worksheet.html#abd849651ee8c47e146f8783ecebc7392",
-"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IPasswordWriter.html#a9890beb6a7d8215f270a71f47bdcc8d8"
+"classNanoXLSX_1_1Colors_1_1Color.html#afa2a277f265126db5855b80c7b7ab3a8",
+"classNanoXLSX_1_1Colors_1_1SystemColor.html#aa7c4b493c8e5b05b094f15d0ef02abd4ae7d013f3e19ed99a0259febfa3934f2d",
+"classNanoXLSX_1_1LegacyPassword.html#a8fb96de930851c9ce0d2c7a7b7929f09",
+"classNanoXLSX_1_1Shortener.html#a56b65c51b74a58bf5e3f6f68807176be",
+"classNanoXLSX_1_1Styles_1_1Fill.html#a27021880029b7379b443bc0c60e8821d",
+"classNanoXLSX_1_1Styles_1_1NumberFormat.html#a17d85cdbe9caa101b10f8f6bb79a13b3a7556fcf2a8b65687ee6fb624411eb970",
+"classNanoXLSX_1_1Utils_1_1DataUtils.html#aed02c37cec9c39db1ef00bd68dcdd1cc",
+"classNanoXLSX_1_1Worksheet.html#a053c6eac13d37c2ab3b2415772833871a9146bfc669fddc88db2c4d89297d0e9a",
+"classNanoXLSX_1_1Worksheet.html#ab34d9902c0af0fcddd452153b39ec066",
+"interfaceNanoXLSX_1_1Interfaces_1_1Writer_1_1IColorWriter.html#a8878cee82c921806d18d40681efd582a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

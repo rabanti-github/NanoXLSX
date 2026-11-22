@@ -6,6 +6,8 @@ var classNanoXLSX_1_1LegacyPassword =
     ] ],
     [ "LegacyPassword", "classNanoXLSX_1_1LegacyPassword.html#a6c84029301e6413a85307601ef17fed9", null ],
     [ "CopyFrom", "classNanoXLSX_1_1LegacyPassword.html#a8fb96de930851c9ce0d2c7a7b7929f09", null ],
+    [ "Dispose", "classNanoXLSX_1_1LegacyPassword.html#a55a644ea1265faadd60c2273b79f2121", null ],
+    [ "Dispose", "classNanoXLSX_1_1LegacyPassword.html#ad6c92af1f45bf4951ee02d517951d5ac", null ],
     [ "Equals", "classNanoXLSX_1_1LegacyPassword.html#a4d221f41508fac539bf8b45b90d5102a", null ],
     [ "GenerateLegacyPasswordHash", "classNanoXLSX_1_1LegacyPassword.html#ac1fa66db009d504fab8ed72fcf55165d", null ],
     [ "GetHashCode", "classNanoXLSX_1_1LegacyPassword.html#a113f1a23f9cf8179dc02798464e5815b", null ],

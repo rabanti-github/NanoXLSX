@@ -50,6 +50,9 @@ var hierarchy =
         [ "NanoXLSX.Styles.Style", "classNanoXLSX_1_1Styles_1_1Style.html", null ]
       ] ]
     ] ],
+    [ "IDisposable", null, [
+      [ "NanoXLSX.LegacyPassword", "classNanoXLSX_1_1LegacyPassword.html", null ]
+    ] ],
     [ "IEquatable", null, [
       [ "NanoXLSX.Address", "structNanoXLSX_1_1Address.html", null ],
       [ "NanoXLSX.DefinedName", "classNanoXLSX_1_1DefinedName.html", null ],

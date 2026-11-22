@@ -3,7 +3,7 @@ var classNanoXLSX_1_1Utils_1_1ParserUtils =
     [ "IsAsciiDigit", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#ac0b3bbf7ab1974b6393f7a8ff30e3f25", null ],
     [ "NormalizeNewLines", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#acacf22f27a2dbc50b5b888452ba280ac", null ],
     [ "NotStartsWith", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a8fa1f8d7145cb3ade442b079d8f40fa6", null ],
-    [ "ParseBinaryBool", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#adc06e6be4a046f259bb4e8db690ab8e3", null ],
+    [ "ParseBinaryBool", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a2365275d06c7091f60b31d596aa9b8cb", null ],
     [ "ParseDouble", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a2e106a85c48cd27db8fecc614f490213", null ],
     [ "ParseFloat", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a87e267b1349777bba129111661c0738b", null ],
     [ "ParseInt", "classNanoXLSX_1_1Utils_1_1ParserUtils.html#a9f13c1f7d02dea3b2361aa3c9b508603", null ],
