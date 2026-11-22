@@ -15,6 +15,7 @@ namespace NanoXLSX.Internal
     /// <summary>
     /// Class representing a collection of pre-processed styles and their components. This class is internally used and should not be used otherwise.
     /// </summary>
+    [Obsolete("Will be set to internal with next major version")]
     public class StyleReaderContainer
     {
 
