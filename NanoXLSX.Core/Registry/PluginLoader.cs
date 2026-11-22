@@ -157,10 +157,10 @@ namespace NanoXLSX.Registry
         }
 
         /// <summary>
-        /// Method to determine whether a file is a managed (.NET) assembly, by reading its PE header directly. A file is a managed assembly if it has a DOS and a PE signature, a PE32 or PE32+ optional header and a non-empty CLI header data directory
+        /// Performs a lightweight PE-header heuristic to determine whether the specified file appears to be a managed (.NET) assembly before it is passed to the runtime assembly loader. The check validates the DOS and PE signatures, the PE32 or PE32+ optional-header bounds, and a non-empty CLI header data-directory entry. It does not perform complete PE, CLI, metadata, or loadability validation.
         /// </summary>
         /// <param name="path">Path of the file to check</param>
-        /// <returns>True if the file is a managed assembly, otherwise false (e.g. a native DLL, or a file that is not a PE image or ends within its headers)</returns>
+        /// <returns>True if the inspected PE headers indicate that the file may be a managed assembly; otherwise false.</returns>
         /// \remark <remarks>The file is read as plain bytes because some runtimes (e.g. Mono) write an error to the host's log before throwing a BadImageFormatException when a native DLL is passed to Assembly.LoadFrom or AssemblyName.GetAssemblyName, and hosts like the Unity editor report each of these log entries as an error. IO exceptions (e.g. a locked file) are passed to the caller</remarks>
         internal static bool IsManagedAssembly(string path)
         {

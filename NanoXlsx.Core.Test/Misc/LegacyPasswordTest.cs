@@ -4,6 +4,7 @@ using System;
 using System.Reflection;
 using System.Security;
 using NanoXLSX.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NanoXLSX.Test.Core.MiscTest
 {
@@ -308,11 +309,13 @@ namespace NanoXLSX.Test.Core.MiscTest
 
             public string PasswordHash { get; set; }
 
+            [ExcludeFromCodeCoverage]
             public void SetPassword(string value)
             {
                 plainText = value;
             }
 
+            [ExcludeFromCodeCoverage]
             public void UnsetPassword()
             {
                 plainText = null;
@@ -324,11 +327,13 @@ namespace NanoXLSX.Test.Core.MiscTest
                 return plainText;
             }
 
+            [ExcludeFromCodeCoverage]
             public bool PasswordIsSet()
             {
                 return !string.IsNullOrEmpty(PasswordHash);
             }
 
+            [ExcludeFromCodeCoverage]
             public void CopyFrom(IPassword passwordInstance)
             {
                 plainText = passwordInstance.GetPassword();
@@ -340,11 +345,13 @@ namespace NanoXLSX.Test.Core.MiscTest
         {
             public string PasswordHash { get; set; } = "hash";
 
+            [ExcludeFromCodeCoverage]
             public void SetPassword(string plainText)
             {
                 throw new NotImplementedException();
             }
 
+            [ExcludeFromCodeCoverage]
             public void UnsetPassword()
             {
                 throw new NotImplementedException();
@@ -355,11 +362,13 @@ namespace NanoXLSX.Test.Core.MiscTest
                 throw new InvalidOperationException("Password retrieval failed");
             }
 
+            [ExcludeFromCodeCoverage]
             public bool PasswordIsSet()
             {
                 throw new NotImplementedException();
             }
 
+            [ExcludeFromCodeCoverage]
             public void CopyFrom(IPassword passwordInstance)
             {
                 throw new NotImplementedException();

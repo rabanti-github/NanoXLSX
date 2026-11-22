@@ -317,6 +317,10 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Assert.True(baseline.CompareTo(new DefinedName(workbook2, DefinedName.NameType.Constant, "Name", 2, null, first, "a")) < 0);
             Assert.True(baseline.CompareTo(new DefinedName(workbook2, DefinedName.NameType.Constant, "Name", 1, null, first, "b")) < 0);
 
+            DefinedName noError = DefinedName.ResolveDefinedName("ErrorName", "SUM(1,2)", workbook1, null, null);
+            DefinedName referenceError = DefinedName.ResolveDefinedName("ErrorName", "#REF!", workbook2, null, null);
+            Assert.True(noError.CompareTo(referenceError) < 0);
+
             DefinedName target1 = new DefinedName(workbook1, DefinedName.NameType.Cell, "Target", "A1", first, null);
             DefinedName target2 = new DefinedName(workbook2, DefinedName.NameType.Cell, "Target", "A1", second, null);
             Assert.True(target1.CompareTo(target2) < 0);
