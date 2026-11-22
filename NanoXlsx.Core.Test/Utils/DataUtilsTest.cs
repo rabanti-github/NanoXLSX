@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using NanoXLSX.Utils;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
-namespace NanoXLSX.Test.Core.MiscTest
+namespace NanoXLSX.Core.Test.Utils
 {
-    public class UtilsTest
+    public class DataUtilsTest
     {
         [Theory(DisplayName = "Test of the GetOADateTimestring function")]
         [InlineData("01.01.1900 00:00:00", "1")]
@@ -23,13 +22,13 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("12.12.5870 11:30:12", "1450360.47930556")]
         public void GetOADateTimeStringTest(string dateString, string expectedOaDate)
         {
-            CultureInfo provider = CultureInfo.InvariantCulture;
-            string format = "dd.MM.yyyy HH:mm:ss";
-            DateTime date = DateTime.ParseExact(dateString, format, provider);
-            string oaDate = DataUtils.GetOADateTimeString(date);
-            float expected = float.Parse(expectedOaDate, CultureInfo.InvariantCulture);
-            float given = float.Parse(oaDate, CultureInfo.InvariantCulture);
-            float threshold = 0.000000001f; // Ignore everything below a millisecond
+            var provider = CultureInfo.InvariantCulture;
+            var format = "dd.MM.yyyy HH:mm:ss";
+            var date = DateTime.ParseExact(dateString, format, provider);
+            var oaDate = DataUtils.GetOADateTimeString(date);
+            var expected = float.Parse(expectedOaDate, CultureInfo.InvariantCulture);
+            var given = float.Parse(oaDate, CultureInfo.InvariantCulture);
+            var threshold = 0.000000001f; // Ignore everything below a millisecond
             Assert.True(Math.Abs(expected - given) < threshold);
         }
 
@@ -46,11 +45,11 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("12.12.5870 11:30:12", 1450360.47930556d)]
         public void GetOADateTimeString(string dateString, double expectedOaDate)
         {
-            CultureInfo provider = CultureInfo.InvariantCulture;
-            string format = "dd.MM.yyyy HH:mm:ss";
-            DateTime date = DateTime.ParseExact(dateString, format, provider);
-            double oaDate = DataUtils.GetOADateTime(date);
-            float threshold = 0.00000001f; // Ignore everything below a millisecond (double precision may vary)
+            var provider = CultureInfo.InvariantCulture;
+            var format = "dd.MM.yyyy HH:mm:ss";
+            var date = DateTime.ParseExact(dateString, format, provider);
+            var oaDate = DataUtils.GetOADateTime(date);
+            var threshold = 0.00000001f; // Ignore everything below a millisecond (double precision may vary)
             Assert.True(Math.Abs(expectedOaDate - oaDate) < threshold);
         }
 
@@ -60,10 +59,10 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("31.12.1899 23:59:59")]
         public void GetOADateTimeTest2(string dateString)
         {
-            CultureInfo provider = CultureInfo.InvariantCulture;
-            string format = "dd.MM.yyyy HH:mm:ss";
-            DateTime date = DateTime.ParseExact(dateString, format, provider);
-            double given = DataUtils.GetOADateTime(date, true);
+            var provider = CultureInfo.InvariantCulture;
+            var format = "dd.MM.yyyy HH:mm:ss";
+            var date = DateTime.ParseExact(dateString, format, provider);
+            var given = DataUtils.GetOADateTime(date, true);
             Assert.NotEqual(0d, given);
         }
 
@@ -74,9 +73,9 @@ namespace NanoXLSX.Test.Core.MiscTest
         public void GetOADateTimeStringFailTest(string dateString)
         {
             // Note: Dates beyond the year 10000 cannot be tested though
-            CultureInfo provider = CultureInfo.InvariantCulture;
-            string format = "dd.MM.yyyy HH:mm:ss";
-            DateTime date = DateTime.ParseExact(dateString, format, provider);
+            var provider = CultureInfo.InvariantCulture;
+            var format = "dd.MM.yyyy HH:mm:ss";
+            var date = DateTime.ParseExact(dateString, format, provider);
             Assert.Throws<FormatException>(() => DataUtils.GetOADateTimeString(date));
         }
 
@@ -87,9 +86,9 @@ namespace NanoXLSX.Test.Core.MiscTest
         public void GetOADateTimeFailTest(string dateString)
         {
             // Note: Dates beyond the year 10000 cannot be tested though
-            CultureInfo provider = CultureInfo.InvariantCulture;
-            string format = "dd.MM.yyyy HH:mm:ss";
-            DateTime date = DateTime.ParseExact(dateString, format, provider);
+            var provider = CultureInfo.InvariantCulture;
+            var format = "dd.MM.yyyy HH:mm:ss";
+            var date = DateTime.ParseExact(dateString, format, provider);
             Assert.Throws<FormatException>(() => DataUtils.GetOADateTime(date));
         }
 
@@ -101,13 +100,13 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("18:00:00", "0.75")]
         public void GetOATimeStringTest(string timeString, string expectedOaTime)
         {
-            CultureInfo provider = CultureInfo.InvariantCulture;
-            string format = "hh\\:mm\\:ss";
-            TimeSpan time = TimeSpan.ParseExact(timeString, format, provider);
-            string oaDate = DataUtils.GetOATimeString(time);
-            float expected = float.Parse(expectedOaTime, CultureInfo.InvariantCulture);
-            float given = float.Parse(oaDate, CultureInfo.InvariantCulture);
-            float threshold = 0.000000001f; // Ignore everything below a millisecond
+            var provider = CultureInfo.InvariantCulture;
+            var format = "hh\\:mm\\:ss";
+            var time = TimeSpan.ParseExact(timeString, format, provider);
+            var oaDate = DataUtils.GetOATimeString(time);
+            var expected = float.Parse(expectedOaTime, CultureInfo.InvariantCulture);
+            var given = float.Parse(oaDate, CultureInfo.InvariantCulture);
+            var threshold = 0.000000001f; // Ignore everything below a millisecond
             Assert.True(Math.Abs(expected - given) < threshold);
         }
 
@@ -119,12 +118,30 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("18:00:00", 0.75d)]
         public void GetOATimeTest(string timeString, double expectedOaTime)
         {
-            CultureInfo provider = CultureInfo.InvariantCulture;
-            string format = "hh\\:mm\\:ss";
-            TimeSpan time = TimeSpan.ParseExact(timeString, format, provider);
-            double oaTime = DataUtils.GetOATime(time);
-            float threshold = 0.000000001f; // Ignore everything below a millisecond
+            var provider = CultureInfo.InvariantCulture;
+            var format = "hh\\:mm\\:ss";
+            var time = TimeSpan.ParseExact(timeString, format, provider);
+            var oaTime = DataUtils.GetOATime(time);
+            var threshold = 0.000000001f; // Ignore everything below a millisecond
             Assert.True(Math.Abs(expectedOaTime - oaTime) < threshold);
+        }
+
+        [Theory(DisplayName = "Test of the GetDateFromOA function")]
+        [InlineData(1, "01.01.1900 00:00:00")]
+        [InlineData(2.5245370370370401, "02.01.1900 12:35:20")]
+        [InlineData(58, "27.02.1900 00:00:00")]
+        [InlineData(59, "28.02.1900 00:00:00")]
+        [InlineData(59.521203703703705, "28.02.1900 12:30:32")]
+        [InlineData(61, "01.03.1900 00:00:00")]
+        [InlineData(61.339016203703707, "01.03.1900 08:08:11")]
+        [InlineData(22056.924363425926, "20.05.1960 22:11:05")]
+        [InlineData(44197, "01.01.2021 00:00:00")]
+        [InlineData(1450360.47930556, "12.12.5870 11:30:12")]
+        public void GetDateFromOATest(double givenValue, string expectedDateString)
+        {
+            var expectedDate = DateTime.ParseExact(expectedDateString, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            var date = DataUtils.GetDateFromOA(givenValue);
+            Assert.True(Math.Abs((expectedDate - date).TotalMilliseconds) < 1d);
         }
 
         [Theory(DisplayName = "Test of the GetInternalColumnWidth function")]
@@ -138,7 +155,7 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData(0, 0f)]
         public void GetInternalColumnWidthTest(float width, float expectedInternalWidth)
         {
-            float internalWidth = DataUtils.GetInternalColumnWidth(width);
+            var internalWidth = DataUtils.GetInternalColumnWidth(width);
             Assert.Equal(expectedInternalWidth, internalWidth);
         }
 
@@ -163,7 +180,7 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData(0, 0f)]
         public void GetInternalRowHeightTest(float height, float expectedInternalHeight)
         {
-            float internalHeight = DataUtils.GetInternalRowHeight(height);
+            var internalHeight = DataUtils.GetInternalRowHeight(height);
             Assert.Equal(expectedInternalHeight, internalHeight);
         }
 
@@ -190,7 +207,7 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData(-10, 390f)]
         public void GetInternalPaneSplitWidthTest(float width, float expectedSplitWidth)
         {
-            float splitWidth = DataUtils.GetInternalPaneSplitWidth(width);
+            var splitWidth = DataUtils.GetInternalPaneSplitWidth(width);
             Assert.Equal(expectedSplitWidth, splitWidth);
         }
 
@@ -206,7 +223,7 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData(-10, 300f)]
         public void GetInternalPaneSplitHeightTest(float height, float expectedSplitHeight)
         {
-            float splitHeight = DataUtils.GetInternalPaneSplitHeight(height);
+            var splitHeight = DataUtils.GetInternalPaneSplitHeight(height);
             Assert.Equal(expectedSplitHeight, splitHeight);
         }
 
@@ -222,7 +239,7 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData(-10, 0)]
         public void GetPaneSplitHeightTest(float height, float expectedSplitHeight)
         {
-            float splitHeight = DataUtils.GetPaneSplitHeight(height);
+            var splitHeight = DataUtils.GetPaneSplitHeight(height);
             Assert.Equal(expectedSplitHeight, splitHeight);
         }
 
@@ -236,27 +253,9 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData(105465f, 999.9286f)]
         public void GetPaneSplitWidthTest(float width, float expectedSplitWidth)
         {
-            float splitWidth = DataUtils.GetPaneSplitWidth(width);
-            float delta = Math.Abs(splitWidth - expectedSplitWidth);
+            var splitWidth = DataUtils.GetPaneSplitWidth(width);
+            var delta = Math.Abs(splitWidth - expectedSplitWidth);
             Assert.True(delta < 0.001);
-        }
-
-        [Theory(DisplayName = "Test of the GetDateFromOA function")]
-        [InlineData(1, "01.01.1900 00:00:00")]
-        [InlineData(2.5245370370370401, "02.01.1900 12:35:20")]
-        [InlineData(58, "27.02.1900 00:00:00")]
-        [InlineData(59, "28.02.1900 00:00:00")]
-        [InlineData(59.521203703703705, "28.02.1900 12:30:32")]
-        [InlineData(61, "01.03.1900 00:00:00")]
-        [InlineData(61.339016203703707, "01.03.1900 08:08:11")]
-        [InlineData(22056.924363425926, "20.05.1960 22:11:05")]
-        [InlineData(44197, "01.01.2021 00:00:00")]
-        [InlineData(1450360.47930556, "12.12.5870 11:30:12")]
-        public void GetDateFromOATest(double givenValue, string expectedDateString)
-        {
-            DateTime expectedDate = DateTime.ParseExact(expectedDateString, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-            DateTime date = DataUtils.GetDateFromOA(givenValue);
-            Assert.True(Math.Abs((expectedDate - date).TotalMilliseconds) < 1d);
         }
 
         [Theory(DisplayName = "Test of the MergeRange function")]
@@ -290,22 +289,22 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("B2:C5", "C4:D6", DataUtils.RangeMergeStrategy.NoMerge, "B2:B3,C2:C3,B4:B5,C4:C5,D4:D5,C6:C6,D6:D6")]
         public void MergeRangeTest(string givenRangesString, string rangeToAddString, DataUtils.RangeMergeStrategy mergeStrategy, string expectedRangesString)
         {
-            List<Range> givenRanges = givenRangesString
+            var givenRanges = givenRangesString
                     .Split(',', StringSplitOptions.RemoveEmptyEntries)
                     .Select(r => new Range(r))
                     .ToList();
 
-            Range rangeToAdd = new Range(rangeToAddString);
+            var rangeToAdd = new Range(rangeToAddString);
 
-            List<Range> expectedRanges = expectedRangesString
+            var expectedRanges = expectedRangesString
                 .Split(',', StringSplitOptions.RemoveEmptyEntries)
                 .Select(range => new Range(range))
                 .ToList();
 
-            IReadOnlyList<Range> resultRanges = DataUtils.MergeRange(givenRanges, rangeToAdd, mergeStrategy);
+            var resultRanges = DataUtils.MergeRange(givenRanges, rangeToAdd, mergeStrategy);
 
             Assert.Equal(resultRanges.Count, expectedRanges.Count);
-            foreach (Range range in expectedRanges)
+            foreach (var range in expectedRanges)
             {
                 Assert.Contains(resultRanges, r => r.ToString() == range.ToString());
             }
@@ -357,22 +356,22 @@ namespace NanoXLSX.Test.Core.MiscTest
         [InlineData("B3:C8,D3:F5,E7:F7", "C5:E7", DataUtils.RangeMergeStrategy.NoMerge, "B3:B4,C3:C4,D3:E4,F3:F4,B5:B5,F5:F5,B6:B6,B7:B7,F7:F7,B8:B8,C8:C8")]
         public void SubtractRangeTest(string givenRangesString, string rangeToRemoveString, DataUtils.RangeMergeStrategy mergeStrategy, string expectedRangesString)
         {
-            List<Range> givenRanges = givenRangesString
+            var givenRanges = givenRangesString
                     .Split(',', StringSplitOptions.RemoveEmptyEntries)
                     .Select(r => new Range(r))
                     .ToList();
 
-            Range rangeToRemove = new Range(rangeToRemoveString);
+            var rangeToRemove = new Range(rangeToRemoveString);
 
-            List<Range> expectedRanges = expectedRangesString
+            var expectedRanges = expectedRangesString
                 .Split(',', StringSplitOptions.RemoveEmptyEntries)
                 .Select(range => new Range(range))
                 .ToList();
 
-            IReadOnlyList<Range> resultRanges = DataUtils.SubtractRange(givenRanges, rangeToRemove, mergeStrategy);
+            var resultRanges = DataUtils.SubtractRange(givenRanges, rangeToRemove, mergeStrategy);
 
             Assert.Equal(resultRanges.Count, expectedRanges.Count);
-            foreach (Range range in expectedRanges)
+            foreach (var range in expectedRanges)
             {
                 Assert.Contains(resultRanges, r => r.ToString() == range.ToString());
             }

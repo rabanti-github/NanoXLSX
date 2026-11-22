@@ -384,8 +384,10 @@ namespace NanoXLSX.Test.Core.StyleTest
         [InlineData("origin")]
         public void EqualsTest5(object origin)
         {
-            Assert.False(exampleStyle.Equals(origin));
+            Border copy = (Border)exampleStyle.Copy();
+            Assert.False(copy.Equals(origin));
         }
+
 
         [Fact(DisplayName = "Test of the GetHashCode method (equality of two identical objects)")]
         public void GetHashCodeTest()

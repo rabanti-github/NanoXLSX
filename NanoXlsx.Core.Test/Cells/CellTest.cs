@@ -208,6 +208,16 @@ namespace NanoXLSX.Test.Core.CellTest
             Assert.NotEmpty(StyleRepository.Instance.Styles);
         }
 
+        [Fact(DisplayName = "Test of the obsolete set function of the Style property")]
+        public void CellSetStyleObsoleteTest()
+        {
+            Cell cell = utils.CreateVariantCell<int>(42, this.cellAddress);
+            int styleCount = StyleRepository.Instance.Styles.Count;
+            Style style = BasicStyles.BoldItalic;
+            cell.SetStyle(style, true);
+            Assert.Equal(styleCount, StyleRepository.Instance.Styles.Count);
+        }
+
         [Fact(DisplayName = "Test of the set function of the Style property where the style repository is unmanaged")]
         public void CellStyleTest3b()
         {
@@ -216,7 +226,7 @@ namespace NanoXLSX.Test.Core.CellTest
             StyleRepository.Instance.FlushStyles();
             Assert.Empty(StyleRepository.Instance.Styles);
             Style style = BasicStyles.BoldItalic;
-            cell.SetStyle(style, true);
+            cell.SetStyleInternal(style, true);
             // Note: Assert.Equals fails here because of object reference comparison 
             Assert.True(style.Equals(cell.CellStyle));
             Assert.Empty(StyleRepository.Instance.Styles);

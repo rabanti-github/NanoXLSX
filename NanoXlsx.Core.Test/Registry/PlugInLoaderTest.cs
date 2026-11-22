@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Text;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Interfaces.Writer;
 using NanoXLSX.Registry;
@@ -65,10 +67,147 @@ namespace NanoXLSX.Test.Writer_Reader.PlugInsTest
             Assert.Equal(ContextualPluginUuid, currentPluginUuid);
         }
 
+        [Theory(DisplayName = "An assembly file of the runtime or of NanoXLSX is detected as managed assembly")]
+        [InlineData(typeof(object))]
+        [InlineData(typeof(PlugInLoader))]
+        public void IsManagedAssemblyTest(Type typeOfAssembly)
+        {
+            Assert.True(PlugInLoader.IsManagedAssembly(typeOfAssembly.Assembly.Location));
+        }
+
+        [Theory(DisplayName = "A PE image is only detected as managed assembly if it declares a non-empty CLI header data directory")]
+        [InlineData(Pe32Magic, 16u, 0x2008u, 0x48u, true)]
+        [InlineData(Pe32PlusMagic, 16u, 0x2008u, 0x48u, true)]
+        [InlineData(Pe32Magic, 16u, 0u, 0u, false)]
+        [InlineData(Pe32PlusMagic, 16u, 0u, 0u, false)]
+        [InlineData(Pe32Magic, 16u, 0x2008u, 0u, false)]
+        [InlineData(Pe32Magic, 16u, 0u, 0x48u, false)]
+        [InlineData(Pe32Magic, 14u, 0x2008u, 0x48u, false)]
+        [InlineData(RomImageMagic, 16u, 0x2008u, 0x48u, false)]
+        public void IsManagedAssemblyPeImageTest(ushort magic, uint numberOfRvaAndSizes, uint cliHeaderRva, uint cliHeaderSize, bool expectedResult)
+        {
+            byte[] image = CreatePeImage(magic, numberOfRvaAndSizes, cliHeaderRva, cliHeaderSize);
+            Assert.Equal(expectedResult, IsManagedAssemblyFile(image));
+        }
+
+        [Theory(DisplayName = "The CLI header data directory must fit within the declared optional header")]
+        [InlineData(Pe32Magic, 15u, Pe32CliHeaderEndOffset, true)]
+        [InlineData(Pe32PlusMagic, 15u, Pe32PlusCliHeaderEndOffset, true)]
+        [InlineData(Pe32Magic, 15u, Pe32CliHeaderEndOffset - 1, false)]
+        [InlineData(Pe32PlusMagic, 15u, Pe32PlusCliHeaderEndOffset - 1, false)]
+        [InlineData(Pe32Magic, 16u, Pe32CliHeaderEndOffset, false)]
+        [InlineData(Pe32PlusMagic, 16u, Pe32PlusCliHeaderEndOffset, false)]
+        public void IsManagedAssemblyOptionalHeaderSizeTest(ushort magic, uint numberOfRvaAndSizes, ushort sizeOfOptionalHeader, bool expectedResult)
+        {
+            byte[] image = CreatePeImage(magic, numberOfRvaAndSizes, 0x2008, 0x48, sizeOfOptionalHeader);
+            Assert.Equal(expectedResult, IsManagedAssemblyFile(image));
+        }
+
+        [Fact(DisplayName = "A managed PE image that ends within its headers is not detected as managed assembly")]
+        public void IsManagedAssemblyTruncatedImageTest()
+        {
+            byte[] image = CreatePeImage(Pe32Magic, 16, 0x2008, 0x48);
+            Assert.True(IsManagedAssemblyFile(image));
+            for (int length = 0; length < image.Length; length++)
+            {
+                byte[] truncatedImage = new byte[length];
+                Array.Copy(image, truncatedImage, length);
+                Assert.False(IsManagedAssemblyFile(truncatedImage), $"Image truncated to {length} bytes");
+            }
+        }
+
+        [Fact(DisplayName = "An optional header that extends beyond the file is not detected as managed assembly")]
+        public void IsManagedAssemblyOptionalHeaderBeyondEndOfFileTest()
+        {
+            byte[] image = CreatePeImage(Pe32Magic, 16, 0x2008, 0x48);
+            Array.Resize(ref image, image.Length - 1);
+            Assert.False(IsManagedAssemblyFile(image));
+        }
+
+        [Theory(DisplayName = "A file with a DOS signature but an invalid PE header position is not detected as managed assembly")]
+        [InlineData(-1)]
+        [InlineData(0x40)]
+        [InlineData(int.MaxValue)]
+        public void IsManagedAssemblyInvalidPeHeaderPositionTest(int peHeaderPosition)
+        {
+            byte[] image = CreatePeImage(Pe32Magic, 16, 0x2008, 0x48);
+            using (MemoryStream stream = new MemoryStream(image))
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                stream.Position = PeHeaderPointerPosition;
+                writer.Write(peHeaderPosition);
+            }
+            Assert.False(IsManagedAssemblyFile(image));
+        }
+
+        [Fact(DisplayName = "A file that is not a PE image is not detected as managed assembly")]
+        public void IsManagedAssemblyPlainTextFileTest()
+        {
+            byte[] content = Encoding.ASCII.GetBytes(new string('x', 1024));
+            Assert.False(IsManagedAssemblyFile(content));
+        }
+
+        /// <summary>
+        /// Creates the headers of a PE image, including the declared optional header. All other header fields are zero
+        /// </summary>
+        private static byte[] CreatePeImage(ushort magic, uint numberOfRvaAndSizes, uint cliHeaderRva, uint cliHeaderSize, ushort? sizeOfOptionalHeader = null)
+        {
+            const int peHeaderPosition = 0x80;
+            int optionalHeaderPosition = peHeaderPosition + 24; // PE signature (4 bytes) and COFF file header (20 bytes)
+            int rvaCountPosition = optionalHeaderPosition + (magic == Pe32PlusMagic ? 108 : 92);
+            int cliHeaderDirectoryPosition = rvaCountPosition + 4 + (14 * 8); // Data directory 14, each directory is 8 bytes long
+            int defaultOptionalHeaderSize = magic == Pe32PlusMagic ? Pe32PlusOptionalHeaderSize : Pe32OptionalHeaderSize;
+            ushort declaredOptionalHeaderSize = sizeOfOptionalHeader ?? (ushort)defaultOptionalHeaderSize;
+            int imageLength = optionalHeaderPosition + Math.Max(defaultOptionalHeaderSize, declaredOptionalHeaderSize);
+            byte[] image = new byte[imageLength];
+            using (MemoryStream stream = new MemoryStream(image))
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                writer.Write(Encoding.ASCII.GetBytes("MZ"));
+                stream.Position = PeHeaderPointerPosition;
+                writer.Write(peHeaderPosition);
+                stream.Position = peHeaderPosition;
+                writer.Write(Encoding.ASCII.GetBytes("PE\0\0"));
+                stream.Position = peHeaderPosition + SizeOfOptionalHeaderOffset;
+                writer.Write(declaredOptionalHeaderSize);
+                stream.Position = optionalHeaderPosition;
+                writer.Write(magic);
+                stream.Position = rvaCountPosition;
+                writer.Write(numberOfRvaAndSizes);
+                stream.Position = cliHeaderDirectoryPosition;
+                writer.Write(cliHeaderRva);
+                writer.Write(cliHeaderSize);
+            }
+            return image;
+        }
+
+        private static bool IsManagedAssemblyFile(byte[] content)
+        {
+            string path = Path.GetTempFileName();
+            try
+            {
+                File.WriteAllBytes(path, content);
+                return PlugInLoader.IsManagedAssembly(path);
+            }
+            finally
+            {
+                File.Delete(path);
+            }
+        }
+
         private const string QueueUuid = "TEST_PLUGIN_LOADER_QUEUE";
         private const string WriterPluginUuid = "TEST_WRITER_QUEUE_PLUGIN";
         private const string ContextualQueueUuid = "TEST_CONTEXTUAL_PLUGIN_LOADER_QUEUE";
         private const string ContextualPluginUuid = "TEST_CONTEXTUAL_PLUGIN";
+        private const ushort Pe32Magic = 0x10B;
+        private const ushort Pe32PlusMagic = 0x20B;
+        private const ushort RomImageMagic = 0x107;
+        private const int PeHeaderPointerPosition = 0x3C;
+        private const int SizeOfOptionalHeaderOffset = 20;
+        private const int Pe32OptionalHeaderSize = 224;
+        private const int Pe32PlusOptionalHeaderSize = 240;
+        private const ushort Pe32CliHeaderEndOffset = 216;
+        private const ushort Pe32PlusCliHeaderEndOffset = 232;
 
         [NanoXlsxQueuePlugIn(PlugInUUID = "TEST_QUEUE_PLUGIN", QueueUUID = QueueUuid)]
         internal class QueuePlugin : IPlugin

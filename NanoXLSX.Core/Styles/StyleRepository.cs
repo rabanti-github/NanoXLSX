@@ -5,7 +5,9 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace NanoXLSX.Styles
 {
@@ -16,8 +18,8 @@ namespace NanoXLSX.Styles
     public class StyleRepository
     {
         private readonly object lockObject = new object();
-
-        private static StyleRepository instance;
+        private readonly Dictionary<int, Style> styles;
+        private static readonly StyleRepository instance = new StyleRepository();
 
         /// <summary>
         /// Gets the singleton instance of the repository
@@ -26,12 +28,9 @@ namespace NanoXLSX.Styles
         {
             get
             {
-                instance = instance ?? new StyleRepository();
                 return instance;
             }
         }
-
-        private Dictionary<int, Style> styles;
 
         /// <summary>
         /// If true certain exceptions will be suppressed and transformations on styles are performed when a worksheet is loaded
@@ -39,9 +38,34 @@ namespace NanoXLSX.Styles
         internal bool ImportInProgress { get; set; }
 
         /// <summary>
-        /// Gets the currently managed styles of the repository
+        /// Gets a snapshot of the currently managed styles of the repository
         /// </summary>
-        public Dictionary<int, Style> Styles { get => styles; }
+        /// <deprecated>Please use <see cref="ManagedStyles"/> instead</deprecated>
+        [Obsolete("Will be removed in the next major version. Use ManagedStyles instead.")]
+        public Dictionary<int, Style> Styles
+        {
+            get
+            {
+                lock (lockObject)
+                {
+                    return new Dictionary<int, Style>(styles);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a read-only snapshot of the currently managed styles of the repository
+        /// </summary>
+        public IReadOnlyDictionary<int, Style> ManagedStyles
+        {
+            get
+            {
+                lock (lockObject)
+                {
+                    return new ReadOnlyDictionary<int, Style>(new Dictionary<int, Style>(styles));
+                }
+            }
+        }
 
         /// <summary>
         /// Private constructor. The class is not intended to instantiate outside the singleton
@@ -81,7 +105,10 @@ namespace NanoXLSX.Styles
         /// Only use this method after all worksheets in all workbooks are disposed.It may free memory then.</remarks>
         public void FlushStyles()
         {
-            styles.Clear();
+            lock (lockObject)
+            {
+                styles.Clear();
+            }
         }
 
     }

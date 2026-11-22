@@ -109,7 +109,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="numberOfRows">Number of rows to move</param>
         /// <param name="keepColumnPosition">If true, the column position is preserved, otherwise set to 0</param>
-        /// \remark <remarks>An exception will be thrown if the row number is below 0. Values (number of rows) can be also negative. However, this is the equivalent of the function <see cref="Down(int, bool)"/></remarks>
+        /// \remark <remarks>An exception will be thrown if the row number is below 0. Values (number of rows) can be also negative. However, this is the equivalent of the function <see cref="Up(int, bool)"/></remarks>
         public void Down(int numberOfRows, bool keepColumnPosition = false)
         {
             NullCheck();

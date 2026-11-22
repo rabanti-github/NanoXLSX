@@ -8,7 +8,7 @@
 namespace NanoXLSX.Internal.Readers
 {
     /// <summary>
-    /// Class for worksheet Meta-data on import
+    /// Class for worksheet metadata on import
     /// </summary>
     internal class WorksheetDefinition
     {

@@ -139,7 +139,7 @@ namespace NanoXLSX
             InsertColumns,
             /// <summary>If selected, the user can insert rows if the worksheets is protected</summary>
             InsertRows,
-            /// <summary>If selected, the user can insert hyper links if the worksheets is protected</summary>
+            /// <summary>If selected, the user can insert hyperlinks if the worksheets is protected</summary>
             InsertHyperlinks,
             /// <summary>If selected, the user can delete columns if the worksheets is protected</summary>
             DeleteColumns,
@@ -214,7 +214,7 @@ namespace NanoXLSX
         private WorksheetPane? activePane;
         private int sheetID;
         private SheetViewType viewType;
-        private Dictionary<SheetViewType, int> zoomFactor;
+        private Dictionary<SheetViewType, int> zoomFactors;
         #endregion
 
         #region properties
@@ -317,7 +317,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Gets the cell ranges of selected cells of this worksheet. Returns ans empty list if no cells are selected
+        /// Gets the cell ranges of selected cells of this worksheet. Returns an empty list if no cells are selected
         /// </summary>
         public List<Range> SelectedCells
         {
@@ -327,6 +327,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets or sets the internal ID of the worksheet
         /// </summary>
+        /// <exception cref="FormatException">Thrown if the set sheet ID is smaller than 1</exception>
         public int SheetID
         {
             get => sheetID;
@@ -373,7 +374,7 @@ namespace NanoXLSX
         public bool UseSheetProtection { get; set; }
 
         /// <summary>
-        /// Gets or sets the Reference to the parent Workbook
+        /// Gets or sets the reference to the parent workbook
         /// </summary>
         public Workbook WorkbookReference
         {
@@ -389,7 +390,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// gets or sets whether the worksheet is hidden. If true, the worksheet is not listed in the worksheet tabs of the workbook.<br />
+        /// Gets or sets whether the worksheet is hidden. If true, the worksheet is not listed in the worksheet tabs of the workbook.<br />
         /// If the worksheet is not part of a workbook, or the only one in the workbook, an exception will be thrown.<br />
         /// If the worksheet is the selected one, and attempted to set hidden, an exception will be thrown. Define another selected worksheet prior to this call, in this case.
         /// </summary>
@@ -525,7 +526,7 @@ namespace NanoXLSX
             }
             get
             {
-                return zoomFactor[viewType];
+                return zoomFactors[viewType];
             }
         }
 
@@ -536,7 +537,7 @@ namespace NanoXLSX
         {
             get
             {
-                return zoomFactor;
+                return zoomFactors;
             }
         }
 
@@ -570,7 +571,7 @@ namespace NanoXLSX
             activeStyle = null;
             workbookReference = null;
             viewType = SheetViewType.Normal;
-            zoomFactor = new Dictionary<SheetViewType, int>
+            zoomFactors = new Dictionary<SheetViewType, int>
             {
                 { viewType, 100 }
             };
@@ -783,7 +784,7 @@ namespace NanoXLSX
         /// \remark <remarks>Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCell(object value, string address)
         {
             int column;
@@ -803,7 +804,7 @@ namespace NanoXLSX
         /// bool. All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCell(object value, string address, Style style)
         {
             int column;
@@ -822,7 +823,7 @@ namespace NanoXLSX
         /// <param name="formula">Formula expression to insert (without leading equal sign)</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCellFormula(string formula, string address)
         {
             int column;
@@ -840,7 +841,7 @@ namespace NanoXLSX
         /// <param name="style">Style to apply on the cell</param>
         /// <exception cref="StyleException">Throws a StyleException if the passed style was malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void AddCellFormula(string formula, string address, Style style)
         {
             int column;
@@ -916,7 +917,7 @@ namespace NanoXLSX
         /// <param name="columnNumber">Column number (zero-based).</param>
         /// <param name="rowNumber">Row number (zero-based).</param>
         /// <param name="cachedValue">Optional cached value that will be shown as long as the cell is not be refreshed. The value will be ignored if the defined name type is <see cref="DefinedName.NameType.Constant"/></param>
-        /// <returns>Returns a immutable list of cell addresses that are affected by the defined name. For <see cref="FormulaData.FormulaType.Array"/>, the list contains all addresses of the array elements and that of the master cell as first element. In all other cases, the list will just contain the passed address of this method</returns>
+        /// <returns>Returns an immutable list of cell addresses that are affected by the defined name. For <see cref="FormulaData.FormulaType.Array"/>, the list contains all addresses of the array elements and that of the master cell as first element. In all other cases, the list will just contain the passed address of this method</returns>
         /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
         /// <exception cref="RangeException">Thrown if the passed cell coordinate is out of range.</exception>
         /// <remarks>To remove a cell reference, use the <see cref="RemoveCell(int, int)"/> method. If a values is set by <see cref="Cell.Value"/> it will be overwritten.</remarks>
@@ -954,7 +955,7 @@ namespace NanoXLSX
         /// <param name="rowNumber">Row number (zero-based).</param>
         /// <param name="style">Style to apply on the cell.</param>
         /// <param name="cachedValue">Optional cached value that will be shown as long as the cell is not be refreshed. The value will be ignored if the defined name type is <see cref="DefinedName.NameType.Constant"/></param>
-        /// <returns>Returns a immutable list of cell addresses that are affected by the defined name. For <see cref="FormulaData.FormulaType.Array"/>, the list contains all addresses of the array elements and that of the master cell as first element. In all other cases, the list will just contain the passed address of this method</returns>
+        /// <returns>Returns an immutable list of cell addresses that are affected by the defined name. For <see cref="FormulaData.FormulaType.Array"/>, the list contains all addresses of the array elements and that of the master cell as first element. In all other cases, the list will just contain the passed address of this method</returns>
         /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
         /// <exception cref="RangeException">Thrown if the passed cell coordinate is out of range.</exception>
         /// <exception cref="StyleException">Thrown if the passed style is malformed.</exception>
@@ -990,7 +991,7 @@ namespace NanoXLSX
         /// <param name="definedName">Defined name to reference. Must not be null.</param>
         /// <param name="address">Cell address in the format A1 - XFD1048576.</param>
         /// <param name="cachedValue">Optional cached value that will be shown as long as the cell is not be refreshed. The value will be ignored if the defined name type is <see cref="DefinedName.NameType.Constant"/></param>
-        /// <returns>Returns a immutable list of cell addresses that are affected by the defined name. For <see cref="FormulaData.FormulaType.Array"/>, the list contains all addresses of the array elements and that of the master cell as first element. In all other cases, the list will just contain the passed address of this method</returns>
+        /// <returns>Returns an immutable list of cell addresses that are affected by the defined name. For <see cref="FormulaData.FormulaType.Array"/>, the list contains all addresses of the array elements and that of the master cell as first element. In all other cases, the list will just contain the passed address of this method</returns>
         /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
         /// <exception cref="RangeException">Thrown if the passed cell address is out of range.</exception>
         /// <exception cref="FormatException">Thrown if the passed cell address is malformed.</exception>
@@ -1012,7 +1013,7 @@ namespace NanoXLSX
         /// <param name="address">Cell address in the format A1 - XFD1048576.</param>
         /// <param name="style">Style to apply on the cell.</param>
         /// <param name="cachedValue">Optional cached value that will be shown as long as the cell is not be refreshed. The value will be ignored if the defined name type is <see cref="DefinedName.NameType.Constant"/></param>
-        /// <returns>Returns a immutable list of cell addresses that are affected by the defined name. For <see cref="FormulaData.FormulaType.Array"/>, the list contains all addresses of the array elements and that of the master cell as first element. In all other cases, the list will just contain the passed address of this method</returns>
+        /// <returns>Returns an immutable list of cell addresses that are affected by the defined name. For <see cref="FormulaData.FormulaType.Array"/>, the list contains all addresses of the array elements and that of the master cell as first element. In all other cases, the list will just contain the passed address of this method</returns>
         /// <exception cref="WorksheetException">Thrown if <paramref name="definedName"/> is null.</exception>
         /// <exception cref="RangeException">Thrown if the passed cell address is out of range.</exception>
         /// <exception cref="FormatException">Thrown if the passed cell address is malformed.</exception>
@@ -1097,7 +1098,7 @@ namespace NanoXLSX
         /// \remark <remarks>The data types in the passed list can be mixed. Recognized are the following data types: Cell (prepared object), string, int, uint, double, float, long, ulong, short, ushort, decimal, byte, sbyte, DateTime, TimeSpan, bool. 
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the passed cell range is malformed</exception>
         public void AddCellRange(IReadOnlyList<object> values, string cellRange)
         {
             Range range = Cell.ResolveCellRange(cellRange);
@@ -1115,7 +1116,7 @@ namespace NanoXLSX
         /// All other types will be cast into a string using the default ToString() method</remarks>
         /// <exception cref="RangeException">Throws a RangeException if the number of cells resolved from the range differs from the number of passed values</exception>
         /// <exception cref="StyleException">Throws a StyleException if the passed style is malformed</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the passed cell range is malformed</exception>
         public void AddCellRange(IReadOnlyList<object> values, string cellRange, Style style)
         {
             Range range = Cell.ResolveCellRange(cellRange);
@@ -1210,7 +1211,7 @@ namespace NanoXLSX
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <returns>Returns true if the cell could be removed (existed), otherwise false (did not exist)</returns>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public bool RemoveCell(string address)
         {
             int row;
@@ -1632,10 +1633,10 @@ namespace NanoXLSX
         public void InsertRow(int rowNumber, int numberOfNewRows)
         {
             // All cells below the first row must receive a new address (row + count);
-            var upperRow = this.GetRow(rowNumber);
+            IReadOnlyList<Cell> upperRow = this.GetRow(rowNumber);
 
             // Identify all cells below the insertion point to adjust their addresses
-            var cellsToChange = cells.Values.Where(c => c.CellAddress2.Row > rowNumber).ToList();
+            List<Cell> cellsToChange = cells.Values.Where(c => c.CellAddress2.Row > rowNumber).ToList();
 
             // Make a copy of the cells to be moved and then delete the original cells;
             List<Cell> newCells = new List<Cell>();
@@ -1685,8 +1686,8 @@ namespace NanoXLSX
         /// <param name="numberOfNewColumns">Number of columns to insert.</param>
         public void InsertColumn(int columnNumber, int numberOfNewColumns)
         {
-            var leftColumn = this.GetColumn(columnNumber);
-            var cellsToChange = cells.Values.Where(c => c.CellAddress2.Column > columnNumber).ToList();
+            IReadOnlyList<Cell> leftColumn = this.GetColumn(columnNumber);
+            List<Cell> cellsToChange = cells.Values.Where(c => c.CellAddress2.Column > columnNumber).ToList();
 
             List<Cell> newCells = new List<Cell>();
             foreach (Cell cell in cellsToChange)
@@ -1921,7 +1922,7 @@ namespace NanoXLSX
                     list.Add(cell);
                 }
             }
-            list.Sort((c1, c2) => (c1.ColumnNumber.CompareTo(c2.ColumnNumber))); // Lambda sort
+            list.Sort((c1, c2) => (c1.ColumnNumber.CompareTo(c2.ColumnNumber)));
             return list;
         }
 
@@ -1952,7 +1953,7 @@ namespace NanoXLSX
                     list.Add(cell);
                 }
             }
-            list.Sort((c1, c2) => (c1.RowNumber.CompareTo(c2.RowNumber))); // Lambda sort
+            list.Sort((c1, c2) => (c1.RowNumber.CompareTo(c2.RowNumber)));
             return list;
         }
 
@@ -2043,7 +2044,7 @@ namespace NanoXLSX
         /// <param name="cellRange">Range to merge (e.g. 'A1:B12')</param>
         /// <returns>Returns the validated range of the merged cells (e.g. 'A1:B12')</returns>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell range is out of range</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed cell range is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the passed cell range is malformed</exception>
         public string MergeCells(string cellRange)
         {
             Range range = Cell.ResolveCellRange(cellRange);
@@ -2306,7 +2307,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="range">Range to apply auto filter on. The range could be 'A1:C10' for instance. The end row will be recalculated automatically when saving the file</param>
         /// <exception cref="RangeException">Throws a RangeException if the passed range out of range</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed range is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the passed range is malformed</exception>
         public void SetAutoFilter(string range)
         {
             autoFilterRange = Cell.ResolveCellRange(range);
@@ -2432,12 +2433,10 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="address">Cell address in the format A1 - XFD1048576</param>
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the passed cell address is malformed</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the passed cell address is malformed</exception>
         public void SetCurrentCellAddress(string address)
         {
-            int row;
-            int column;
-            Cell.ResolveCellCoordinate(address, out column, out row);
+            Cell.ResolveCellCoordinate(address, out var column, out var row);
             SetCurrentCellAddress(column, row);
         }
 
@@ -2625,7 +2624,7 @@ namespace NanoXLSX
         /// Validates and sets the worksheet name
         /// </summary>
         /// <param name="name">Name to set</param>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the worksheet name is too long (max. 31) or contains illegal characters [  ]  * ? / \</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the worksheet name is too long (max. 31) or contains illegal characters [  ]  * ? / \</exception>
         public void SetSheetName(string name)
         {
             Validators.ValidateWorksheetName(name);
@@ -2633,7 +2632,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Sets the name of the worksheet
+        /// Sets the name of the worksheet with the option of sanitation
         /// </summary>
         /// <param name="name">Name of the worksheet</param>
         /// <param name="sanitize">If true, the filename will be sanitized automatically according to the specifications of Excel</param>
@@ -2803,6 +2802,7 @@ namespace NanoXLSX
             copy.hidden = this.hidden;
             foreach (KeyValuePair<int, bool> row in this.hiddenRows)
             {
+
                 copy.hiddenRows.Add(row.Key, row.Value);
             }
             foreach (KeyValuePair<string, Range> cell in this.mergedCells)
@@ -2838,8 +2838,8 @@ namespace NanoXLSX
             copy.ShowRowColumnHeaders = this.ShowRowColumnHeaders;
             copy.ShowRuler = this.ShowRuler;
             copy.ViewType = this.ViewType;
-            copy.zoomFactor.Clear();
-            foreach (KeyValuePair<SheetViewType, int> zoomFactor in this.zoomFactor)
+            copy.zoomFactors.Clear();
+            foreach (KeyValuePair<SheetViewType, int> zoomFactor in this.zoomFactors)
             {
                 copy.SetZoomFactor(zoomFactor.Key, zoomFactor.Value);
             }
@@ -2859,13 +2859,13 @@ namespace NanoXLSX
             {
                 throw new WorksheetException("The zoom factor " + zoomFactor + " is not valid. Valid are values between " + MinZoomFactor + " and " + MaxZoomFactor + ", or " + AutoZoomFactor + " (automatic)");
             }
-            if (this.zoomFactor.ContainsKey(sheetViewType))
+            if (this.zoomFactors.ContainsKey(sheetViewType))
             {
-                this.zoomFactor[sheetViewType] = zoomFactor;
+                this.zoomFactors[sheetViewType] = zoomFactor;
             }
             else
             {
-                this.zoomFactor.Add(sheetViewType, zoomFactor);
+                this.zoomFactors.Add(sheetViewType, zoomFactor);
             }
         }
 

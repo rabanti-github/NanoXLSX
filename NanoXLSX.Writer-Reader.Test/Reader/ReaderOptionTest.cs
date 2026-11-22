@@ -946,7 +946,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the reader options for the combination of a start row and a enforced column")]
+        [Theory(DisplayName = "Test of the reader options for the combination of a start row and an enforced column")]
         [InlineData(ReaderOptions.ColumnType.Bool, "1", true)]
         [InlineData(ReaderOptions.ColumnType.Bool, false, false)]
         [InlineData(ReaderOptions.ColumnType.Double, "-2.5", -2.5d)]
@@ -992,7 +992,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             AssertValues<object, object>(cells, options2, AssertApproximate, expectedCells);
         }
 
-        [Theory(DisplayName = "Test of the reader options for the combination of a start row and a enforced column on types Date and Time")]
+        [Theory(DisplayName = "Test of the reader options for the combination of a start row and an enforced column on types Date and Time")]
         [InlineData(ReaderOptions.ColumnType.Date)]
         [InlineData(ReaderOptions.ColumnType.Time)]
         public void EnforcingColumnStartRowTest2(ReaderOptions.ColumnType columnType)

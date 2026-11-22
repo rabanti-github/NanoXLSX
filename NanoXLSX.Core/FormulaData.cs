@@ -18,11 +18,9 @@ namespace NanoXLSX
     /// </summary>
     public class FormulaData : IEquatable<FormulaData>, IComparable<FormulaData>
     {
-        private string expression;
-
         #region enums
         /// <summary>
-        /// Enum to define the specific type of a formal if the Cell has the type <see cref="Cell.CellType.Formula"/>
+        /// Enum to define the specific type of a formula if the Cell has the type <see cref="Cell.CellType.Formula"/>
         /// </summary>
         public enum FormulaType
         {
@@ -45,6 +43,7 @@ namespace NanoXLSX
         }
         #endregion
 
+        private string expression;
         private bool hasExternalReferences;
         private DefinedName definedNameReference;
 
@@ -272,7 +271,8 @@ namespace NanoXLSX
                 && EqualityComparer<DefinedName>.Default.Equals(DefinedNameReference, other.DefinedNameReference)
                 && EqualityComparer<object>.Default.Equals(CachedValue, other.CachedValue)
                 && CachedValueType == other.CachedValueType
-                && string.Equals(MasterCellAddress, other.MasterCellAddress, StringComparison.Ordinal);
+                && string.Equals(MasterCellAddress, other.MasterCellAddress, StringComparison.Ordinal)
+                && HasExternalReferences == other.HasExternalReferences;
         }
 
         /// <summary>
@@ -301,6 +301,7 @@ namespace NanoXLSX
                 hash = (hash * 31) + (CachedValue != null ? CachedValue.GetHashCode() : 0);
                 hash = (hash * 31) + CachedValueType.GetHashCode();
                 hash = (hash * 31) + (MasterCellAddress != null ? MasterCellAddress.GetHashCode() : 0);
+                hash = (hash * 31) + HasExternalReferences.GetHashCode();
                 return hash;
             }
         }

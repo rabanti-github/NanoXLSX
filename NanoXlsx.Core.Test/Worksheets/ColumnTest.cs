@@ -230,7 +230,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         public void SetAutoFilterFailingTest2(string range)
         {
             Worksheet worksheet = new Worksheet();
-            Assert.Throws<NanoXLSX.Exceptions.FormatException>(() => worksheet.SetAutoFilter(range));
+            Assert.Throws<Exceptions.FormatException>(() => worksheet.SetAutoFilter(range));
         }
 
         [Theory(DisplayName = "Test of the SetColumnWidth function with column number and column address")]
@@ -349,6 +349,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Assert.Null(worksheet.Columns[0].DefaultColumnStyle);
             Assert.Null(worksheet.Columns[1].DefaultColumnStyle);
         }
+
         [Theory(DisplayName = "Test of the failing SetDefaultColumnStyle function")]
         [InlineData(-1)]
         [InlineData(16384)]
@@ -357,6 +358,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
             Worksheet worksheet = new Worksheet();
             Assert.Throws<RangeException>(() => worksheet.SetColumnDefaultStyle(column, BasicStyles.Bold));
         }
+
         [Theory(DisplayName = "Test of the failing SetDefaultColumnStyle function with column address")]
         [InlineData(null)]
         [InlineData("")]
@@ -366,6 +368,17 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         {
             Worksheet worksheet = new Worksheet();
             Assert.ThrowsAny<Exception>(() => worksheet.SetColumnDefaultStyle(columnAddress, BasicStyles.Bold));
+        }
+
+        [Fact(DisplayName = "Test of the obsolete SetDefaultColumnStyle function with unmanaged flag")]
+        public void SetDefaultColumnStyleInternalTest()
+        {
+            int styleNumber = StyleRepository.Instance.Styles.Count;
+            Worksheet worksheet = new Worksheet();
+            Style style = BasicStyles.Bold;
+            worksheet.SetColumnWidth("A", 50f); // Invoke column creation
+            worksheet.Columns[0].SetDefaultColumnStyle(style, true);
+            Assert.Equal(styleNumber, StyleRepository.Instance.Styles.Count); // Should not have changed
         }
 
         private void AssertColumnValues(List<Cell> givenList, List<object> expectedValues)

@@ -101,6 +101,20 @@ namespace NanoXLSX.Test.Core.InternalTest
             Assert.Equal(2, count);
         }
 
+        [Fact(DisplayName = "View: backing store changes are visible and mutation is unsupported")]
+        public void View_IsLiveAndReadOnly()
+        {
+            Dictionary<CellKey, Cell> store = new Dictionary<CellKey, Cell>();
+            StringKeyedCellView view = new StringKeyedCellView(store);
+            Cell cell = new Cell();
+
+            store[new CellKey(0, 0)] = cell;
+
+            Assert.Same(cell, view["A1"]);
+            Assert.IsAssignableFrom<IReadOnlyDictionary<string, Cell>>(view);
+            Assert.IsNotAssignableFrom<IDictionary<string, Cell>>(view);
+        }
+
         private static StringKeyedCellView BuildView(params (int col, int row, object value)[] entries)
         {
             Dictionary<CellKey, Cell> store = new Dictionary<CellKey, Cell>();

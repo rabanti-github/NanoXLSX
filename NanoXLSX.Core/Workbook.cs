@@ -97,7 +97,7 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Meta data object of the workbook
+        /// Metadata object of the workbook
         /// </summary>
         public Metadata WorkbookMetadata
         {
@@ -220,41 +220,6 @@ namespace NanoXLSX
 
         #region methods
 
-        /// <summary>
-        /// Adds a color value (HEX; 6-digit RGB or 8-digit ARGB) to the MRU list
-        /// </summary>
-        /// <param name="color">RGB code in hex format (either 6 characters, e.g. FF00AC or 8 characters with leading alpha value). Alpha will be set to full opacity (FF) in case of 6 characters</param>
-        public void AddMruColor(string color)
-        {
-            Validators.ValidateGenericColor(color);
-            mruColors.Add(Color.CreateRgb(color));
-        }
-
-        /// <summary>
-        /// Adds a generic color value. This can be an RGB/ARGB color, Auto, Theme, Indexed or System color
-        /// </summary>
-        /// <param name="color">Color instance</param>
-        public void AddMruColor(Color color)
-        {
-            mruColors.Add(color);
-        }
-
-        /// <summary>
-        /// Gets the MRU color list
-        /// </summary>
-        /// <returns>Immutable list of color instances</returns>
-        public IReadOnlyList<Color> GetMruColors()
-        {
-            return mruColors;
-        }
-
-        /// <summary>
-        /// Clears the MRU color list
-        /// </summary>
-        public void ClearMruColors()
-        {
-            mruColors.Clear();
-        }
 
         #region definedNames
 
@@ -556,11 +521,47 @@ namespace NanoXLSX
         #endregion
 
         /// <summary>
+        /// Adds a color value (HEX; 6-digit RGB or 8-digit ARGB) to the MRU list
+        /// </summary>
+        /// <param name="color">RGB code in hex format (either 6 characters, e.g. FF00AC or 8 characters with leading alpha value). Alpha will be set to full opacity (FF) in case of 6 characters</param>
+        public void AddMruColor(string color)
+        {
+            Validators.ValidateGenericColor(color);
+            mruColors.Add(Color.CreateRgb(color));
+        }
+
+        /// <summary>
+        /// Adds a generic color value. This can be an RGB/ARGB color, Auto, Theme, Indexed or System color
+        /// </summary>
+        /// <param name="color">Color instance</param>
+        public void AddMruColor(Color color)
+        {
+            mruColors.Add(color);
+        }
+
+        /// <summary>
+        /// Gets the MRU color list
+        /// </summary>
+        /// <returns>Immutable list of color instances</returns>
+        public IReadOnlyList<Color> GetMruColors()
+        {
+            return mruColors;
+        }
+
+        /// <summary>
+        /// Clears the MRU color list
+        /// </summary>
+        public void ClearMruColors()
+        {
+            mruColors.Clear();
+        }
+
+        /// <summary>
         /// Adding a new Worksheet. The new worksheet will be defined as current worksheet
         /// </summary>
         /// <param name="name">Name of the new worksheet</param>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the name of the worksheet already exists</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">Throws a FormatException if the name contains illegal characters or is out of range (length between 1 an 31 characters)</exception>
+        /// <exception cref="FormatException">Throws a FormatException if the name contains illegal characters or is out of range (length between 1 an 31 characters)</exception>
         public void AddWorksheet(string name)
         {
             foreach (Worksheet item in worksheets)
@@ -584,7 +585,7 @@ namespace NanoXLSX
         /// <param name="name">Name of the new worksheet</param>
         /// <param name="sanitizeSheetName">If true, the name of the worksheet will be sanitized automatically according to the specifications of Excel</param>
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists and sanitizeSheetName is false</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitizeSheetName is false</exception>
+        /// <exception cref="FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitizeSheetName is false</exception>
         public void AddWorksheet(string name, bool sanitizeSheetName)
         {
             if (sanitizeSheetName)
@@ -603,7 +604,7 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="worksheet">Prepared worksheet object</param>
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31)</exception>
+        /// <exception cref="FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31)</exception>
         public void AddWorksheet(Worksheet worksheet)
         {
             AddWorksheet(worksheet, false);
@@ -615,7 +616,7 @@ namespace NanoXLSX
         /// <param name="worksheet">Prepared worksheet object</param>
         /// <param name="sanitizeSheetName">If true, the name of the worksheet will be sanitized automatically according to the specifications of Excel</param>    
         /// <exception cref="WorksheetException">WorksheetException is thrown if the name of the worksheet already exists, when sanitation is false</exception>
-        /// <exception cref="NanoXLSX.Exceptions.FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitation is false</exception>
+        /// <exception cref="FormatException">FormatException is thrown if the worksheet name contains illegal characters or is out of range (length between 1 an 31) and sanitation is false</exception>
         public void AddWorksheet(Worksheet worksheet, bool sanitizeSheetName)
         {
             if (sanitizeSheetName)

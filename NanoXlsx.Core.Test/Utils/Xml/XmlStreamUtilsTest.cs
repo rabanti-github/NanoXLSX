@@ -1,9 +1,9 @@
-using System.IO;
+﻿using System.IO;
 using System.Xml;
 using NanoXLSX.Utils.Xml;
 using Xunit;
 
-namespace NanoXLSX.Core.Test.UtilsTest
+namespace NanoXLSX.Core.Test.Utils.Xml
 {
     public class XmlStreamUtilsTest
     {
@@ -12,21 +12,21 @@ namespace NanoXLSX.Core.Test.UtilsTest
         [Fact(DisplayName = "CreateSettings - IgnoreWhitespace should be true")]
         public void CreateSettings_IgnoreWhitespaceShouldBeTrue()
         {
-            XmlReaderSettings settings = XmlStreamUtils.CreateSettings();
+            var settings = XmlStreamUtils.CreateSettings();
             Assert.True(settings.IgnoreWhitespace);
         }
 
         [Fact(DisplayName = "CreateSettings - IgnoreComments should be true")]
         public void CreateSettings_IgnoreCommentsShouldBeTrue()
         {
-            XmlReaderSettings settings = XmlStreamUtils.CreateSettings();
+            var settings = XmlStreamUtils.CreateSettings();
             Assert.True(settings.IgnoreComments);
         }
 
         [Fact(DisplayName = "CreateSettings - IgnoreProcessingInstructions should be true")]
         public void CreateSettings_IgnoreProcessingInstructionsShouldBeTrue()
         {
-            XmlReaderSettings settings = XmlStreamUtils.CreateSettings();
+            var settings = XmlStreamUtils.CreateSettings();
             Assert.True(settings.IgnoreProcessingInstructions);
         }
 
@@ -42,7 +42,7 @@ namespace NanoXLSX.Core.Test.UtilsTest
         [InlineData("node", "NODE")]
         public void IsElement_Match(string elementName, string localName)
         {
-            using (XmlReader reader = CreateReaderAtFirstElement($"<{elementName}/>"))
+            using (var reader = CreateReaderAtFirstElement($"<{elementName}/>"))
             {
                 Assert.True(XmlStreamUtils.IsElement(reader, localName));
             }
@@ -54,7 +54,7 @@ namespace NanoXLSX.Core.Test.UtilsTest
         [InlineData("element", "elements")]
         public void IsElement_NoMatch(string elementName, string localName)
         {
-            using (XmlReader reader = CreateReaderAtFirstElement($"<{elementName}/>"))
+            using (var reader = CreateReaderAtFirstElement($"<{elementName}/>"))
             {
                 Assert.False(XmlStreamUtils.IsElement(reader, localName));
             }
@@ -63,7 +63,7 @@ namespace NanoXLSX.Core.Test.UtilsTest
         [Fact(DisplayName = "IsElement - Should return false when positioned on an end element")]
         public void IsElement_EndElement()
         {
-            using (XmlReader reader = XmlReader.Create(new StringReader("<root></root>"), XmlStreamUtils.CreateSettings()))
+            using (var reader = XmlReader.Create(new StringReader("<root></root>"), XmlStreamUtils.CreateSettings()))
             {
                 reader.Read(); // positioned on <root> start element
                 reader.Read(); // positioned on </root> end element
@@ -75,7 +75,7 @@ namespace NanoXLSX.Core.Test.UtilsTest
         [Fact(DisplayName = "IsElement - Should strip namespace prefix and match only local name")]
         public void IsElement_NamespacePrefix()
         {
-            using (XmlReader reader = XmlReader.Create(new StringReader("<ns:root xmlns:ns=\"http://example.com\"/>"), XmlStreamUtils.CreateSettings()))
+            using (var reader = XmlReader.Create(new StringReader("<ns:root xmlns:ns=\"http://example.com\"/>"), XmlStreamUtils.CreateSettings()))
             {
                 reader.Read();
                 Assert.True(XmlStreamUtils.IsElement(reader, "root"));
@@ -89,9 +89,9 @@ namespace NanoXLSX.Core.Test.UtilsTest
         [Fact(DisplayName = "ReadElementText - Should return empty string for a self-closing (empty) element")]
         public void ReadElementText_EmptyElement()
         {
-            using (XmlReader reader = CreateReaderAtFirstElement("<node/>"))
+            using (var reader = CreateReaderAtFirstElement("<node/>"))
             {
-                string result = XmlStreamUtils.ReadElementText(reader);
+                var result = XmlStreamUtils.ReadElementText(reader);
                 Assert.Equal(string.Empty, result);
             }
         }
@@ -99,9 +99,9 @@ namespace NanoXLSX.Core.Test.UtilsTest
         [Fact(DisplayName = "ReadElementText - Should return empty string for an open/close element with no content")]
         public void ReadElementText_OpenCloseEmptyElement()
         {
-            using (XmlReader reader = CreateReaderAtFirstElement("<node></node>"))
+            using (var reader = CreateReaderAtFirstElement("<node></node>"))
             {
-                string result = XmlStreamUtils.ReadElementText(reader);
+                var result = XmlStreamUtils.ReadElementText(reader);
                 Assert.Equal(string.Empty, result);
             }
         }
@@ -113,9 +113,9 @@ namespace NanoXLSX.Core.Test.UtilsTest
         [InlineData("<node>line1</node>", "line1")]
         public void ReadElementText_WithContent(string xml, string expected)
         {
-            using (XmlReader reader = CreateReaderAtFirstElement(xml))
+            using (var reader = CreateReaderAtFirstElement(xml))
             {
-                string result = XmlStreamUtils.ReadElementText(reader);
+                var result = XmlStreamUtils.ReadElementText(reader);
                 Assert.Equal(expected, result);
             }
         }
@@ -126,7 +126,7 @@ namespace NanoXLSX.Core.Test.UtilsTest
 
         private static XmlReader CreateReaderAtFirstElement(string xml)
         {
-            XmlReader reader = XmlReader.Create(new StringReader(xml), XmlStreamUtils.CreateSettings());
+            var reader = XmlReader.Create(new StringReader(xml), XmlStreamUtils.CreateSettings());
             reader.Read();
             return reader;
         }

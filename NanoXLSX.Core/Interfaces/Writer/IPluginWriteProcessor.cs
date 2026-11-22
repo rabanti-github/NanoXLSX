@@ -29,7 +29,7 @@ namespace NanoXLSX.Interfaces.Writer
         /// Initializing method for the processor
         /// </summary>
         /// <param name="context">Context of the current writing operation.</param>
-        /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for preparing operations in processor methods</param>
+        /// <param name="inlinePluginHandler">Reference to the handler action, to be used for preparing operations in processor methods</param>
         void Init(IWriteContext context, Action<IWriteContext, string> inlinePluginHandler);
 
     }

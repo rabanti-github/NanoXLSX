@@ -133,6 +133,9 @@ namespace NanoXLSX
         /// </summary>
         public bool HasExternalReferences { get { return Features.ContainsExternalLinks; } }
 
+        /// <summary>
+        /// Gets the feature set of the defined name
+        /// </summary>
         internal FeatureSet Features { get; private set; } = FeatureSet.CreateDefinedName();
 
         #endregion
@@ -199,7 +202,6 @@ namespace NanoXLSX
             FormulaError formulaError;
             object value = GetParsedObject(reference, out type, out worksheetName, out formulaError);
             bool containsExternalLink = ContainsExternalLink(worksheetName, type, value);
-            //workbook.Features.SetFormulaFeatures(false, containsExternalLink);
             Worksheet worksheet = null;
             if (worksheetName != null && !containsExternalLink)
             {
@@ -214,8 +216,6 @@ namespace NanoXLSX
             }
             DefinedName definedName = new DefinedName(workbook, type, name, value, worksheet, localSheet, comment, containsExternalLink);
             definedName.Error = formulaError;
-            //definedName.HasExternalReferences = containsExternalLink;
-            //definedName.Features.SetExternalLinkFeature(containsExternalLink);
             return definedName;
         }
 
@@ -292,8 +292,8 @@ namespace NanoXLSX
         /// <summary>
         /// Casts <see cref="Value"/> to a valid string for <see cref="TextValue"/>
         /// </summary>
-        /// <param name="workbook"></param>
-        /// <exception cref="FormatException">Thrown if a expected address or range expression is invalid</exception>
+        /// <param name="workbook">Workbook instance</param>
+        /// <exception cref="FormatException">Thrown if an expected address or range expression is invalid</exception>
         private void CastValue(Workbook workbook)
         {
             switch (this.Type)
@@ -433,6 +433,7 @@ namespace NanoXLSX
             }
             return string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase)
                 && Enum.Equals(Type, other.Type)
+                && Enum.Equals(Error, other.Error)
                 && string.Equals(TextValue, other.TextValue, StringComparison.Ordinal) // object implicit compared by string
                 && string.Equals(Comment, other.Comment, StringComparison.Ordinal)
                 && ReferenceEquals(TargetWorksheet, other.TargetWorksheet)
@@ -460,6 +461,7 @@ namespace NanoXLSX
                 int hash = 17;
                 hash = (hash * 31) + (Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(Name) : 0);
                 hash = (hash * 31) + Type.GetHashCode();
+                hash = (hash * 31) + Error.GetHashCode();
                 hash = (hash * 31) + (TextValue != null ? TextValue.GetHashCode() : 0); // Object implicit covered by string
                 hash = (hash * 31) + (Comment != null ? Comment.GetHashCode() : 0);
                 hash = (hash * 31) + (TargetWorksheet != null ? System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(TargetWorksheet) : 0);
@@ -488,6 +490,11 @@ namespace NanoXLSX
                 return cmp;
             }
             cmp = Type.CompareTo(other.Type);
+            if (cmp != 0)
+            {
+                return cmp;
+            }
+            cmp = Error.CompareTo(other.Error);
             if (cmp != 0)
             {
                 return cmp;

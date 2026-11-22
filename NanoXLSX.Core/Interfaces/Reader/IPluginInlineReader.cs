@@ -16,7 +16,7 @@ namespace NanoXLSX.Interfaces.Reader
     internal interface IPluginInlineReader : IPluginReader
     {
         /// <summary>
-        /// Reference to the a handler action, to be used for post operations in reader methods. Only relevant for in-line plug-ins, therefore null for queue plug-ins.
+        /// Reference to the handler action, to be used for post operations in reader methods. Only relevant for in-line plug-ins, therefore null for queue plug-ins.
         /// </summary>
         Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 

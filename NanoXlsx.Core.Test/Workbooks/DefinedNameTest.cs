@@ -200,7 +200,7 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Workbook workbook = new Workbook("Sheet1");
             Worksheet worksheet = workbook.CurrentWorksheet;
             Assert.Throws<WorksheetException>(() => workbook.AddDefinedNameCell("Name1", null, new Address("A1")));
-            Assert.Throws<FormatException>(() => workbook.AddDefinedNameCell("Name2", worksheet, (Address)null));
+            Assert.Throws<FormatException>(() => workbook.AddDefinedNameCell("Name2", worksheet, (Address)null)); // This is a FormatException due to operator overloading
             Assert.Throws<WorksheetException>(() => workbook.AddDefinedNameRange("Name3", null, new Range("A1:B2")));
             Assert.Throws<FormatException>(() => workbook.AddDefinedNameRange("Name4", worksheet, (Range)null));
             Assert.Throws<FormatException>(() => workbook.AddDefinedNameCell("Name5", worksheet, "A1:B2"));
@@ -316,6 +316,10 @@ namespace NanoXLSX.Test.Core.WorkbookTest
             Assert.Equal(0, baseline.CompareTo(new DefinedName(workbook2, DefinedName.NameType.Constant, "name", 1, null, first, "a")));
             Assert.True(baseline.CompareTo(new DefinedName(workbook2, DefinedName.NameType.Constant, "Name", 2, null, first, "a")) < 0);
             Assert.True(baseline.CompareTo(new DefinedName(workbook2, DefinedName.NameType.Constant, "Name", 1, null, first, "b")) < 0);
+
+            DefinedName noError = DefinedName.ResolveDefinedName("ErrorName", "SUM(1,2)", workbook1, null, null);
+            DefinedName referenceError = DefinedName.ResolveDefinedName("ErrorName", "#REF!", workbook2, null, null);
+            Assert.True(noError.CompareTo(referenceError) < 0);
 
             DefinedName target1 = new DefinedName(workbook1, DefinedName.NameType.Cell, "Target", "A1", first, null);
             DefinedName target2 = new DefinedName(workbook2, DefinedName.NameType.Cell, "Target", "A1", second, null);

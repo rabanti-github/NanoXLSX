@@ -35,7 +35,6 @@ namespace NanoXLSX.Test.Core.StyleTest
             };
         }
 
-
         [Fact(DisplayName = "Test of the default values")]
         public void DefaultValuesTest()
         {
@@ -45,7 +44,6 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(VerticalTextAlignValue.None, Font.DefaultVerticalAlign);
             Assert.Equal("Calibri", Font.DefaultFontName);
         }
-
 
         [Fact(DisplayName = "Test of the constructor")]
         public void ConstructorTest()
@@ -60,7 +58,6 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Null(font.ColorValue.Value);
             Assert.Equal(CharsetValue.Default, font.Charset);
         }
-
 
         [Theory(DisplayName = "Test of the get and set function of the Bold property")]
         [InlineData(true)]
@@ -109,8 +106,6 @@ namespace NanoXLSX.Test.Core.StyleTest
             Assert.Equal(value, font.Strike);
         }
 
-
-
         [Theory(DisplayName = "Test of the get and set function of the Outline property")]
         [InlineData(true)]
         [InlineData(false)]
@@ -154,9 +149,6 @@ namespace NanoXLSX.Test.Core.StyleTest
             font.Extend = value;
             Assert.Equal(value, font.Extend);
         }
-
-
-
 
         [Theory(DisplayName = "Test of the get and set function of the Charset property")]
         [InlineData(CharsetValue.ANSI)]
@@ -219,7 +211,7 @@ namespace NanoXLSX.Test.Core.StyleTest
         [Theory(DisplayName = "Test of the get and set function of the Name property")]
         [InlineData("Calibri")]
         [InlineData("Arial")]
-        [InlineData("---")] // Not a font but a valid string
+        [InlineData("---")] // Not a font but a valid string as font definition
         public void NameTest(string value)
         {
             Font font = new Font();

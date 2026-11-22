@@ -40,7 +40,7 @@ namespace NanoXLSX.Internal.Readers
         /// </summary>
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
-        /// <param name="inlinePluginHandler">Reference to the a handler action, to be used for post operations in processor methods</param>
+        /// <param name="inlinePluginHandler">Reference to the handler action, to be used for post operations in processor methods</param>
         public void Init(Workbook workbook, IOptions readerOptions, Action<Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             // stream can be ignore

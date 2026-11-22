@@ -18,7 +18,7 @@ namespace NanoXLSX.Internal
     {
         private readonly List<string> indexEntries;
         private readonly Dictionary<IFormattableText, int> index;
-        private List<IFormattableText> keys;
+        private readonly List<IFormattableText> keys;
 
         /// <summary>
         /// Number of map entries

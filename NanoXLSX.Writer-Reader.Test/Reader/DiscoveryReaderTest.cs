@@ -649,6 +649,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             return "<Relationship Id=\"" + id + "\" Type=\"" + type + "\" Target=\"" + target + "\"" + targetModeAttribute + " />";
         }
 
+        [ExcludeFromCodeCoverage]
         private static MemoryStream CreateRenamedWorkbookArchive()
         {
             Workbook workbook = new Workbook("Sheet1");
@@ -697,6 +698,7 @@ namespace NanoXLSX.Test.Writer_Reader.ReaderTest
             return renamedStream;
         }
 
+        [ExcludeFromCodeCoverage]
         private static MemoryStream CreateWorkbookWithRenamedPart(string sourcePath, string renamedPath, string relationshipTarget, string renamedRelationshipTarget)
         {
             Workbook workbook = new Workbook("Sheet1");

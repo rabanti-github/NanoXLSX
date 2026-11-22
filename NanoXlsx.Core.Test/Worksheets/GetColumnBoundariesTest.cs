@@ -61,7 +61,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the GetLastColumnNumber function with an explicitly defined, empty cell besides other column definitions")]
         [InlineData("F5", 5)]
         [InlineData("A1", 4)]
-        void getLastColumnNumberTest6(string emptyCellAddress, int expectedLastColumn)
+        public void GetLastColumnNumberTest6(string emptyCellAddress, int expectedLastColumn)
         {
             Worksheet worksheet = new Worksheet();
             worksheet.AddHiddenColumn(3);

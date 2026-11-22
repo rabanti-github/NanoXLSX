@@ -387,7 +387,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the getFirstDataRowNumber and getLastDataRowNumber functions with an explicitly defined, empty cell besides other row definitions")]
         [InlineData("F5")]
         [InlineData("A1")]
-        void GetFirstOrLastDataRowNumberTest(string emptyCellAddress)
+        public void GetFirstOrLastDataRowNumberTest(string emptyCellAddress)
         {
             Worksheet worksheet = new Worksheet();
             worksheet.AddHiddenRow(3);
@@ -416,7 +416,7 @@ namespace NanoXLSX.Test.Core.WorksheetTest
         [Theory(DisplayName = "Test of the GetFirstDataRowNumber and GetLastDataRowNumber functions with an explicitly defined, cell with empty string besides other row definitions")]
         [InlineData("F5")]
         [InlineData("A1")]
-        void GetFirstOrLastDataRowNumberTest3(string emptyCellAddress)
+        public void GetFirstOrLastDataRowNumberTest3(string emptyCellAddress)
         {
             Worksheet worksheet = new Worksheet();
             worksheet.AddHiddenRow(3);

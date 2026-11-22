@@ -29,6 +29,51 @@ namespace NanoXLSX.Registry
         private static readonly Dictionary<string, List<PlugInInstance>> queuePlugInClasses = new Dictionary<string, List<PlugInInstance>>();
 
         /// <summary>
+        /// Signature "MZ" at the start of the DOS header of a PE image
+        /// </summary>
+        private const ushort DOS_SIGNATURE = 0x5A4D;
+        /// <summary>
+        /// Position of the DOS header field (e_lfanew) that holds the position of the PE header
+        /// </summary>
+        private const int PE_HEADER_POINTER_POSITION = 0x3C;
+        /// <summary>
+        /// Signature "PE\0\0" at the start of the PE header
+        /// </summary>
+        private const uint PE_SIGNATURE = 0x00004550;
+        /// <summary>
+        /// Offset of the optional header from the start of the PE header (PE signature and COFF file header)
+        /// </summary>
+        private const int OPTIONAL_HEADER_OFFSET = 24;
+        /// <summary>
+        /// Offset of SizeOfOptionalHeader from the start of the PE header (PE signature and COFF file header field offset)
+        /// </summary>
+        private const int SIZE_OF_OPTIONAL_HEADER_OFFSET = 20;
+        /// <summary>
+        /// Magic number of a PE32 optional header
+        /// </summary>
+        private const ushort PE32_MAGIC = 0x10B;
+        /// <summary>
+        /// Magic number of a PE32+ optional header
+        /// </summary>
+        private const ushort PE32_PLUS_MAGIC = 0x20B;
+        /// <summary>
+        /// Offset of the field NumberOfRvaAndSizes in a PE32 optional header. The data directories follow this field
+        /// </summary>
+        private const int PE32_RVA_COUNT_OFFSET = 92;
+        /// <summary>
+        /// Offset of the field NumberOfRvaAndSizes in a PE32+ optional header. The data directories follow this field
+        /// </summary>
+        private const int PE32_PLUS_RVA_COUNT_OFFSET = 108;
+        /// <summary>
+        /// Index of the CLI header data directory, which is only present in managed assemblies
+        /// </summary>
+        private const int CLI_HEADER_DIRECTORY_INDEX = 14;
+        /// <summary>
+        /// Length of a data directory entry (RVA and size)
+        /// </summary>
+        private const int DATA_DIRECTORY_LENGTH = 8;
+
+        /// <summary>
         /// Initializes the plug-in loader process. If already initialized, the method returns without action
         /// </summary>
         /// <returns>True if initialized in this call, otherwise false (if already initialized)</returns>
@@ -71,7 +116,7 @@ namespace NanoXLSX.Registry
                 }
             }
 
-            // 2. Load any remaining DLLs that haven't been loaded yet
+            // 2. Load any remaining managed DLLs that haven't been loaded yet
             IEnumerable<string> allLoadedPaths = loadedAssemblies
                 .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
                 .Select(a => a.Location);
@@ -98,13 +143,95 @@ namespace NanoXLSX.Registry
             {
                 try
                 {
-                    Assembly assembly = Assembly.LoadFrom(path);
-                    RegisterPlugIns(assembly);
+                    if (IsManagedAssembly(path))
+                    {
+                        Assembly assembly = Assembly.LoadFrom(path);
+                        RegisterPlugIns(assembly);
+                    }
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine($"Failed to load assembly: {path} - {ex.Message}");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Performs a lightweight PE-header heuristic to determine whether the specified file appears to be a managed (.NET) assembly before it is passed to the runtime assembly loader. The check validates the DOS and PE signatures, the PE32 or PE32+ optional-header bounds, and a non-empty CLI header data-directory entry. It does not perform complete PE, CLI, metadata, or loadability validation.
+        /// </summary>
+        /// <param name="path">Path of the file to check</param>
+        /// <returns>True if the inspected PE headers indicate that the file may be a managed assembly; otherwise false.</returns>
+        /// \remark <remarks>The file is read as plain bytes because some runtimes (e.g. Mono) write an error to the host's log before throwing a BadImageFormatException when a native DLL is passed to Assembly.LoadFrom or AssemblyName.GetAssemblyName, and hosts like the Unity editor report each of these log entries as an error. IO exceptions (e.g. a locked file) are passed to the caller</remarks>
+        internal static bool IsManagedAssembly(string path)
+        {
+            using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (BinaryReader reader = new BinaryReader(stream))
+            {
+                long length = stream.Length;
+                if (length < PE_HEADER_POINTER_POSITION + sizeof(int) || reader.ReadUInt16() != DOS_SIGNATURE)
+                {
+                    return false;
+                }
+
+                stream.Position = PE_HEADER_POINTER_POSITION;
+                long peHeaderPosition = reader.ReadInt32();
+                long optionalHeaderPosition = peHeaderPosition + OPTIONAL_HEADER_OFFSET;
+                if (peHeaderPosition < 0 || optionalHeaderPosition + sizeof(ushort) > length)
+                {
+                    return false;
+                }
+                stream.Position = peHeaderPosition;
+                if (reader.ReadUInt32() != PE_SIGNATURE)
+                {
+                    return false;
+                }
+
+                stream.Position = peHeaderPosition + SIZE_OF_OPTIONAL_HEADER_OFFSET;
+                ushort sizeOfOptionalHeader = reader.ReadUInt16();
+                long optionalHeaderEnd = optionalHeaderPosition + sizeOfOptionalHeader;
+                if (optionalHeaderEnd > length)
+                {
+                    return false;
+                }
+
+                stream.Position = optionalHeaderPosition;
+                ushort magic = reader.ReadUInt16();
+                long rvaCountPosition;
+                if (magic == PE32_MAGIC)
+                {
+                    rvaCountPosition = optionalHeaderPosition + PE32_RVA_COUNT_OFFSET;
+                }
+                else if (magic == PE32_PLUS_MAGIC)
+                {
+                    rvaCountPosition = optionalHeaderPosition + PE32_PLUS_RVA_COUNT_OFFSET;
+                }
+                else
+                {
+                    return false;
+                }
+
+                long dataDirectoriesPosition = rvaCountPosition + sizeof(uint);
+                long cliHeaderDirectoryPosition = dataDirectoriesPosition + (CLI_HEADER_DIRECTORY_INDEX * DATA_DIRECTORY_LENGTH);
+                long cliHeaderDirectoryEnd = cliHeaderDirectoryPosition + DATA_DIRECTORY_LENGTH;
+                if (cliHeaderDirectoryEnd > optionalHeaderEnd)
+                {
+                    return false;
+                }
+                stream.Position = rvaCountPosition;
+                uint numberOfRvaAndSizes = reader.ReadUInt32();
+                if (numberOfRvaAndSizes <= CLI_HEADER_DIRECTORY_INDEX)
+                {
+                    return false;
+                }
+                long declaredDataDirectoriesEnd = dataDirectoriesPosition + (numberOfRvaAndSizes * (long)DATA_DIRECTORY_LENGTH);
+                if (declaredDataDirectoriesEnd > optionalHeaderEnd)
+                {
+                    return false;
+                }
+                stream.Position = cliHeaderDirectoryPosition;
+                uint cliHeaderRva = reader.ReadUInt32();
+                uint cliHeaderSize = reader.ReadUInt32();
+                return cliHeaderRva != 0 && cliHeaderSize != 0;
             }
         }
 
