@@ -1,5 +1,14 @@
 # Change Log - NanoXLSX.Reader
 
+## v3.2.2
+
+---
+
+Release Date: **(22.11.2026)** <sup>(DMY)</sup>
+
+- Added deprecation remarks for `StyleReaderContainer` class. Will be internalized with next major version
+- Code maintenance
+
 ## v3.2.1
 
 ---

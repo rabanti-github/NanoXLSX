@@ -1,5 +1,16 @@
 # Change Log - NanoXLSX.Core
 
+## v3.2.2
+
+---
+
+Release Date: **(22.11.2026)** <sup>(DMY)</sup>
+
+- Fixed plug-in discovery incorrectly attempting to load native DLLs as managed assemblies. Bug fix provided by yolkin-games
+- Added a missing property in the `Equals()`, `GetHashCode()` and `CompareTo()` methods of the `DefinedName` class
+- Added tests
+- Code maintenance
+
 ## v3.2.1
 
 ---
